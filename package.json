@@ -9,13 +9,18 @@
   "author": "WP Shopify",
   "license": "GPL-2.0-or-later",
   "repository": {
-    "type" : "git",
-    "url" : "https://github.com/wpshopify/components.git"
+    "type": "git",
+    "url": "https://github.com/wpshopify/components.git"
   },
   "keywords": [
     "wordpres",
     "shopify",
     "ecommerce",
     "woocommerce"
-  ]
+  ],
+  "dependencies": {
+    "react": "^16.8.1",
+    "react-dom": "^16.8.1",
+    "shopify-buy": "^2.0.1"
+  }
 }
