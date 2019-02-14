@@ -8,6 +8,8 @@
 // console.log('client: ', client);
 
 export { default as ProductTitle } from './components/products/title';
+export { default as Search } from './components/search';
+
 
 //
 // import React, { useState } from 'react';

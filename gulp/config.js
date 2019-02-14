@@ -105,9 +105,6 @@ function webpackConfig(outputFinalname) {
       chunkFilename: '[name].min.js',
       jsonpFunction: 'wpshopify'
     },
-    resolve: {
-      extensions: ['.js']
-    },
     plugins: [
       new webpack.optimize.ModuleConcatenationPlugin(),
       new webpack.IgnorePlugin(/^\.\/locale$/, /moment$/),
@@ -144,6 +141,9 @@ function webpackConfig(outputFinalname) {
         new OptimizeCSSAssetsPlugin({})
       ]
     },
+    resolve: {
+      extensions: ['.js', '.jsx']
+    },
     module: {
       rules: [
         {
@@ -172,16 +172,6 @@ function webpackConfig(outputFinalname) {
         }
       ]
     }
-  }
-
-  if (config.isBuilding) {
-
-    webpackConfigObj.plugins.push(
-      new webpack.DefinePlugin({
-        'process.env.NODE_ENV': JSON.stringify('production')
-      })
-    );
-
   }
 
   return webpackConfigObj;
