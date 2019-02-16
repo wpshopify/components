@@ -1,11 +1,16 @@
-import React from 'react';
+import React, { useContext } from 'react';
 import ReactDOM from 'react-dom';
+// import ProductTitle from './title';
+import { ProductContext } from '../index';
 
-function ProductTitle({ data }) {
+
+function ProductTitle() {
+
+  const product = useContext(ProductContext);
 
   return (
     <h2 itemProp="name" className="wps-products-title" data-wps-is-ready="1">
-      { data.title }
+      { product.title }
     </h2>
   )
 
