@@ -22,8 +22,6 @@ function Search(props) {
 
   const debouncedGetResults           = debounce( () => getResults(), 200 );
 
-  console.log('dropZone ', props.dropZone);
-
   /*
 
   Search Value

@@ -7,13 +7,13 @@ import { Product } from '../products';
 function Items({ data }) {
 
   return (
-    <ul>
+    <section className="wps-products-container">
       {
         data.map( item => (
           <Product key={ item.id } data={ item } ></Product>
         ) )
       }
-    </ul>
+    </section>
   )
 
 }

@@ -7,24 +7,21 @@ function DropZone({ dropZone, items }) {
 
   const dropZoneElement = document.querySelector(dropZone);
 
-  console.log('dropZone ', dropZone);
-  console.log('dropZoneElement ', dropZoneElement);
-
   return (
     <>
       {
         (!dropZone ? (
 
-          <Items data={ items }></Items>
+          <Items data={items}></Items>
 
         ) : (
 
-          ReactDOM.createPortal(
-            <Items data={ items }></Items>,
-            dropZoneElement
-          )
+            ReactDOM.createPortal(
+              <Items data={items}></Items>,
+              dropZoneElement
+            )
 
-        ))
+          ))
       }
 
     </>
