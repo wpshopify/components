@@ -34,6 +34,7 @@
     "money": "^0.2.0",
     "react": "^16.8.1",
     "react-dom": "^16.8.1",
-    "shopify-buy": "^2.0.1"
+    "shopify-buy": "^2.0.1",
+    "use-debounce": "0.0.9"
   }
 }

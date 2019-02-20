@@ -1,17 +1,22 @@
 import React, { useContext } from 'react';
-import ReactDOM from 'react-dom';
-// import ProductTitle from './title';
 import { ProductContext } from '../index';
 
-function ProductTitle() {
+function ProductTitle({ product }) {
 
-  const product = useContext(ProductContext);
+   return (
+      <div
+         className="wps-component wps-component-products-title"
+         data-wps-is-component-wrapper
+         data-wps-product-id={product.id}
+         data-wps-post-id=""
+         data-wps-is-lite-sync="1">
 
-  return (
-    <h2 itemProp="name" className="wps-products-title" data-wps-is-ready="1">
-      {product.title}
-    </h2>
-  )
+         <h2 itemProp="name" className="wps-products-title" data-wps-is-ready="1">
+            {product.title}
+         </h2>
+
+      </div>
+   )
 
 }
 

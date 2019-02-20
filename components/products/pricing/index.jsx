@@ -8,44 +8,42 @@ import { getPrices } from '../../../common/pricing/data';
 import { formatPriceToCurrency } from '../../../common/pricing/formatting';
 
 
+function ProductPricing({ product }) {
 
-function ProductPricing() {
+   const newPrices = getPrices(product);
 
-	const product = useContext(ProductContext);
-	const newPrices = getPrices(product);
+   return (
 
-	return (
+      <div
+         className="wps-component wps-component-products-pricing"
+         data-wps-is-component-wrapper
+         data-wps-product-id={product.id}
+         data-wps-post-id=""
+         data-wps-is-lite-sync="1"
+         data-wps-is-showing-compare-at=""
+         data-wps-is-showing-local=""
+         data-wps-is-showing-price-range="">
 
-		<div
-			className="wps-component wps-component-products-pricing"
-			data-wps-is-component-wrapper
-			data-wps-product-id={product.id}
-			data-wps-post-id=""
-			data-wps-is-lite-sync="1"
-			data-wps-is-showing-compare-at=""
-			data-wps-is-showing-local=""
-			data-wps-is-showing-price-range="">
+         <h3
+            itemProp="offers"
+            itemScope
+            itemType="https://schema.org/Offer"
+            className="wps-products-price wps-product-pricing wps-products-price-one">
 
-			<h3
-				itemProp="offers"
-				itemScope
-				itemType="https://schema.org/Offer"
-				className="wps-products-price wps-product-pricing wps-products-price-one">
+            <div className="wps-price-wrapper"
+               data-wps-is-ready="1"
+               data-wps-is-multi-price="0"
+               data-wps-is-price-wrapper="1">
 
-				<div className="wps-price-wrapper"
-					data-wps-is-ready="1"
-					data-wps-is-multi-price="0"
-					data-wps-is-price-wrapper="1">
+               {formatPriceToCurrency(newPrices[0])}
 
-					{formatPriceToCurrency(newPrices[0])}
+            </div>
 
-				</div>
+         </h3>
 
-			</h3>
+      </div>
 
-		</div>
-
-	)
+   )
 
 }
 

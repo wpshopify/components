@@ -3,20 +3,15 @@ import ProductQuantity from '../quantity';
 import ProductOptions from '../options';
 import ProductAddButton from '../add-button';
 
-import { ProductContext } from '../index';
+function ProductBuyButton({ product }) {
 
-
-function ProductBuyButton() {
-
-  const product = useContext(ProductContext);
-
-  return (
-    <div className="wps-buy-button-wrapper">
-      <ProductQuantity></ProductQuantity>
-      <ProductOptions></ProductOptions>
-      <ProductAddButton></ProductAddButton>
-    </div>
-  )
+   return (
+      <div className="wps-buy-button-wrapper">
+         <ProductQuantity product={product}></ProductQuantity>
+         <ProductOptions product={product}></ProductOptions>
+         <ProductAddButton product={product}></ProductAddButton>
+      </div>
+   )
 
 }
 
