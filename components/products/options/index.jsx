@@ -11,7 +11,7 @@ function ProductOptions({ product }) {
          data-wps-is-component-wrapper
          data-wps-product-id={product.id}
          data-wps-post-id=""
-         data-wps-is-lite-sync="1">
+         data-wps-ignore-sync="1">
 
          {product.options.map(option => <ProductOption key={option.id} option={option}></ProductOption>)}
 

@@ -1,8 +1,10 @@
 import React, { useContext } from 'react';
-import ReactDOM from 'react-dom';
 import ProductVariants from '../variants';
+import { LoadingContext } from '../../../common/context';
 
 function ProductOption({ option }) {
+
+   const isLoading = useContext(LoadingContext);
 
    return (
 
@@ -19,7 +21,8 @@ function ProductOption({ option }) {
             href="#!"
             className="wps-btn wps-icon wps-icon-dropdown wps-modal-trigger"
             data-option=""
-            data-option-id="">
+            data-option-id=""
+            data-wps-is-ready={isLoading ? '0' : '1'}>
 
             {option.name}
 

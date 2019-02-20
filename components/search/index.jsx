@@ -3,6 +3,7 @@ import React, { useState, useEffect } from 'react';
 import { queryProducts } from '@wpshopify/api';
 import { useDebounce } from 'use-debounce';
 import { DropZone } from './dropzone';
+import { LoadingContext } from '../../common/context';
 
 
 /*
@@ -18,6 +19,7 @@ function Search(props) {
    const [searchData, setSearchData] = useState([]);
 
    const debouncedSearchTerm = useDebounce(searchTerm, 300);
+
 
    /*
  
@@ -37,12 +39,9 @@ function Search(props) {
 
    useEffect(() => {
 
-
+      console.log('use effect');
 
       if (!isIntialRender) {
-
-
-
          getResults();
          return;
       }
@@ -74,7 +73,6 @@ function Search(props) {
 
       setisLoading(true);
 
-      console.log('Right above fetch ');
       const results = await fetchProducts();
 
       console.log('results ', results);
@@ -116,7 +114,9 @@ function Search(props) {
 
          </form>
 
-         <DropZone dropZone={props.dropZone} items={searchData}></DropZone>
+         <LoadingContext.Provider value={isLoading}>
+            <DropZone dropZone={props.dropZone} items={searchData}></DropZone>
+         </LoadingContext.Provider>
 
       </>
 
@@ -135,4 +135,6 @@ function defaultProps() {
 
 Search.defaultProps = defaultProps();
 
-export default Search;
+export {
+   Search
+}

@@ -1,3 +1,6 @@
 export { default as Product } from './components/products';
 export { default as ProductTitle } from './components/products/title';
-export { default as Search } from './components/search';
+export { default as Sorting } from './components/sorting';
+export { default as Filters } from './components/filters';
+
+export { Search } from './components/search';
