@@ -1,9 +1,10 @@
 import 'babel-polyfill';
 import React, { useState, useEffect } from 'react';
-import { queryProducts } from '@wpshopify/api';
+import { queryProducts, fetchByTitleParams, fetchByTagParams } from '@wpshopify/api';
 import { useDebounce } from 'use-debounce';
 import { DropZone } from './dropzone';
 import { LoadingContext } from '../../common/context';
+
 
 
 /*
@@ -19,16 +20,6 @@ function Search(props) {
    const [searchData, setSearchData] = useState([]);
 
    const debouncedSearchTerm = useDebounce(searchTerm, 300);
-
-
-   /*
- 
-   Search Value
- 
-   */
-   function searchValue(value) {
-      return "title:" + value + "*";
-   }
 
 
    /*
@@ -53,13 +44,8 @@ function Search(props) {
 
 
    function fetchProducts() {
-
-      return queryProducts({
-         first: 20,
-         sortKey: 'PRICE',
-         query: searchValue(debouncedSearchTerm),
-         reverse: false
-      });
+      // return queryProducts(fetchByTitleParams(debouncedSearchTerm));
+      return queryProducts(fetchByTagParams(debouncedSearchTerm));
 
    }
 

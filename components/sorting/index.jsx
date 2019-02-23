@@ -6,7 +6,7 @@ function Sorting({ dropZone }) {
 
       <div className="wps-component wps-comonent-sorting">
 
-         <label htmlFor="wps-sorting">Sort by:</label>
+         <label className="wps-sorting-heading" htmlFor="wps-sorting">Sort by:</label>
 
          <select id="wps-sorting">
             <option value="">Choose an option</option>

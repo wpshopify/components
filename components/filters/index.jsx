@@ -1,13 +1,69 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
+import { getAllTags, getFilterData } from '@wpshopify/api';
+import FilterVendors from './vendors';
+import FilterTags from './tags';
+import assign from 'lodash/assign';
+import to from 'await-to-js';
 
-function Filters({ data }) {
+const FiltersContext = React.createContext();
+
+
+function combineFilterData(accumulator, currentValue) {
+   return assign(accumulator, currentValue);
+}
+
+function formatFilterData(data) {
+   return data.reduce(combineFilterData);
+}
+
+function getDataFromResponse(response) {
+   return response.map(item => item.data);
+}
+
+function Filters({ dropZone }) {
+
+   const [filterData, setFilterData] = useState([]);
+
+
+   async function getAllFilterData() {
+
+      var [respError, respData] = await to(getFilterData());
+      console.log('Filters error ', respError);
+
+      var allFilteredData = formatFilterData(getDataFromResponse(respData));
+
+      console.log('allFilteredData', allFilteredData);
+
+      setFilterData(allFilteredData);
+
+   }
+
+
+   // On component mount
+   useEffect(() => {
+      console.log('dropZone ', dropZone);
+
+      getAllFilterData();
+
+   }, []);
+
 
    return (
-      <aside>
-         Filter by
+      <aside className="wps-filters">
+
+         <h2 className="wps-filters-heading">Filter by</h2>
+
+         <FiltersContext.Provider value={filterData}>
+            <FilterTags />
+            <FilterVendors />
+         </FiltersContext.Provider>
+
       </aside>
    )
 
 }
 
-export default Filters;
+export {
+   Filters,
+   FiltersContext
+}
