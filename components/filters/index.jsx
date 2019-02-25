@@ -23,6 +23,8 @@ function getDataFromResponse(response) {
 function Filters({ dropZone }) {
 
    const [filterData, setFilterData] = useState([]);
+   const [isLoading, setIsLoading] = useState(true);
+   const [query, setQuery] = useState('');
 
 
    async function getAllFilterData() {
@@ -34,6 +36,7 @@ function Filters({ dropZone }) {
 
       console.log('allFilteredData', allFilteredData);
 
+      setIsLoading(false);
       setFilterData(allFilteredData);
 
    }
@@ -53,12 +56,17 @@ function Filters({ dropZone }) {
 
          <h2 className="wps-filters-heading">Filter by</h2>
 
-         <FiltersContext.Provider value={filterData}>
+         <FiltersContext.Provider value={{
+            data: filterData,
+            isLoading: isLoading,
+            query: query,
+            setQuery: setQuery
+         }}>
             <FilterTags />
             <FilterVendors />
          </FiltersContext.Provider>
 
-      </aside>
+      </aside >
    )
 
 }
