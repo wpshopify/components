@@ -4,42 +4,59 @@ import { FiltersContext } from '../index';
 import FilterTag from '../tag';
 import isEmpty from 'lodash/isEmpty';
 
+const TagsContext = React.createContext();
 
 function FilterTags() {
 
-   const context = useContext(FiltersContext);
+   const filtersContext = useContext(FiltersContext);
+   const [selectedTags, setSelectedTags] = useState([]);
+
+   useEffect(() => {
+
+      console.log('tags filtersContext.data.tags', filtersContext.data.tags);
+      console.log('tags filtersContext.isLoading', filtersContext.isLoading);
+
+   }, [filtersContext.data]);
 
 
    useEffect(() => {
 
-      console.log('tagscontext.data.tags', context.data.tags);
-      console.log('tags context.isLoading', context.isLoading);
+      filtersContext.setSelections({ tags: selectedTags });
 
-   }, [context.data]);
+   }, [selectedTags]);
 
 
    return (
       <Filter heading="Tags">
          <div className="wps-filter-content">
+
             {
-               context.isLoading
+               filtersContext.isLoading
                   ? <p data-wps-is-ready="0">Loading Tags ...</p>
                   : (
-                     isEmpty(context.data.tags)
+                     isEmpty(filtersContext.data.tags)
                         ? <p>No tags found</p>
                         : <ul className="wps-tags">
-                           {
-                              context.data.tags.map(tag =>
-                                 <FilterTag key={tag} tag={tag} />
-                              )
-                           }
+                           <TagsContext.Provider value={{
+                              selectedTags: selectedTags,
+                              setSelectedTags: setSelectedTags
+                           }}>
+                              {
+                                 filtersContext.data.tags.map(tag =>
+                                    <FilterTag key={tag} tag={tag} />
+                                 )
+                              }
+                           </TagsContext.Provider>
                         </ul>
                   )
             }
          </div>
-      </Filter>
+      </Filter >
    )
 
 }
 
-export default FilterTags;
+export {
+   FilterTags,
+   TagsContext
+}

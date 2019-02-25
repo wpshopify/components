@@ -1,7 +1,9 @@
 import React, { useEffect, useState } from 'react';
 import { getAllTags, getFilterData } from '@wpshopify/api';
 import FilterVendors from './vendors';
-import FilterTags from './tags';
+import { FilterTags } from './tags';
+import { FilterSelections } from './selections';
+
 import assign from 'lodash/assign';
 import to from 'await-to-js';
 
@@ -20,12 +22,23 @@ function getDataFromResponse(response) {
    return response.map(item => item.data);
 }
 
-function Filters({ dropZone }) {
 
+
+
+
+
+
+
+
+function Filters({ dropZone, showSelections, selectionsDropZone }) {
+
+   const [selections, setSelections] = useState({});
    const [filterData, setFilterData] = useState([]);
    const [isLoading, setIsLoading] = useState(true);
-   const [query, setQuery] = useState('');
+   const [query, setQuery] = useState(false);
 
+   console.log('selectionsDropZone ', selectionsDropZone);
+   console.log('showSelections ', showSelections);
 
    async function getAllFilterData() {
 
@@ -60,8 +73,13 @@ function Filters({ dropZone }) {
             data: filterData,
             isLoading: isLoading,
             query: query,
-            setQuery: setQuery
+            setQuery: setQuery,
+            selections: selections,
+            setSelections: setSelections
          }}>
+
+            {showSelections ? <FilterSelections dropZone={selectionsDropZone} /> : ''}
+
             <FilterTags />
             <FilterVendors />
          </FiltersContext.Provider>

@@ -30,12 +30,12 @@ function Search(props) {
 
    useEffect(() => {
 
-      console.log('use effect');
-
       if (!isIntialRender) {
          getResults();
          return;
       }
+
+      console.log('Intial Render: Search Component');
 
       setIsIntialRender(false);
 
