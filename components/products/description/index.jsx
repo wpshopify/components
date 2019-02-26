@@ -4,7 +4,7 @@ import { LoadingContext } from '../../../common/context';
 
 function ProductDescription({ product }) {
 
-   const isLoading = useContext(LoadingContext);
+   const { isFiltering } = useContext(LoadingContext);
 
    return (
 
@@ -14,7 +14,7 @@ function ProductDescription({ product }) {
          data-wps-product-id={product.id}
          data-wps-ignore-sync="1">
 
-         <div itemProp="description" className="wps-products-description" data-wps-is-ready={isLoading ? '0' : '1'}>
+         <div itemProp="description" className="wps-products-description" data-wps-is-ready={isFiltering ? '0' : '1'}>
             {product.description}
          </div>
 

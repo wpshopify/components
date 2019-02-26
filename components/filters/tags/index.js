@@ -11,17 +11,10 @@ function FilterTags() {
    const filtersContext = useContext(FiltersContext);
    const [selectedTags, setSelectedTags] = useState([]);
 
-   useEffect(() => {
-
-      console.log('tags filtersContext.data.tags', filtersContext.data.tags);
-      console.log('tags filtersContext.isLoading', filtersContext.isLoading);
-
-   }, [filtersContext.data]);
-
 
    useEffect(() => {
 
-      filtersContext.setSelections({ tags: selectedTags });
+      filtersContext.setSelections({ tag: selectedTags });
 
    }, [selectedTags]);
 
@@ -34,7 +27,7 @@ function FilterTags() {
                filtersContext.isLoading
                   ? <p data-wps-is-ready="0">Loading Tags ...</p>
                   : (
-                     isEmpty(filtersContext.data.tags)
+                     isEmpty(filtersContext.data.tag)
                         ? <p>No tags found</p>
                         : <ul className="wps-tags">
                            <TagsContext.Provider value={{
@@ -42,7 +35,7 @@ function FilterTags() {
                               setSelectedTags: setSelectedTags
                            }}>
                               {
-                                 filtersContext.data.tags.map(tag =>
+                                 filtersContext.data.tag.map(tag =>
                                     <FilterTag key={tag} tag={tag} />
                                  )
                               }

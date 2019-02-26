@@ -111,27 +111,18 @@ function FilterSelections({ dropZone }) {
          return;
       }
 
-      return (
-         <>{
-            createSelections(selections)
-         }</>
-      )
+      return createSelections(selections);
 
    }
 
-   function Tester({ selections }) {
-      return (
-         <div className="wps-filter-selections">
-            {renderAllSelections(selections)}
-         </div>
-      )
-   }
 
    return (
       <div>
 
          {ReactDOM.createPortal(
-            <Tester selections={selections} />,
+            <div className="wps-filter-selections">
+               {renderAllSelections(selections)}
+            </div>,
             document.querySelector(dropZone)
          )}
 

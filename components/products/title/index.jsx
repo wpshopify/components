@@ -3,7 +3,7 @@ import { LoadingContext } from '../../../common/context';
 
 function ProductTitle({ product }) {
 
-   const isLoading = useContext(LoadingContext);
+   const { isFiltering } = useContext(LoadingContext);
 
    return (
       <div
@@ -13,7 +13,7 @@ function ProductTitle({ product }) {
          data-wps-post-id=""
          data-wps-ignore-sync="1">
 
-         <h2 itemProp="name" className="wps-products-title" data-wps-is-ready={isLoading ? '0' : '1'}>
+         <h2 itemProp="name" className="wps-products-title" data-wps-is-ready={isFiltering ? '0' : '1'}>
             {product.title}
          </h2>
 

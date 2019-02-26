@@ -4,7 +4,7 @@ import { LoadingContext } from '../../../common/context';
 
 function ProductOption({ option }) {
 
-   const isLoading = useContext(LoadingContext);
+   const { isFiltering } = useContext(LoadingContext);
 
    return (
 
@@ -22,7 +22,7 @@ function ProductOption({ option }) {
             className="wps-btn wps-icon wps-icon-dropdown wps-modal-trigger"
             data-option=""
             data-option-id=""
-            data-wps-is-ready={isLoading ? '0' : '1'}>
+            data-wps-is-ready={isFiltering ? '0' : '1'}>
 
             {option.name}
 

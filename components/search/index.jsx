@@ -2,7 +2,7 @@ import 'babel-polyfill';
 import React, { useState, useEffect } from 'react';
 import { queryProducts, fetchByTitleParams, fetchByTagParams } from '@wpshopify/api';
 import { useDebounce } from 'use-debounce';
-import { DropZone } from './dropzone';
+import { DropZone } from '../dropzone';
 import { LoadingContext } from '../../common/context';
 
 
@@ -15,7 +15,7 @@ Component: Search
 function Search(props) {
 
    const [searchTerm, setSearchTerm] = useState('');
-   const [isLoading, setisLoading] = useState(false);
+   const [isFiltering, setIsFiltering] = useState(false);
    const [isIntialRender, setIsIntialRender] = useState(true);
    const [searchData, setSearchData] = useState([]);
 
@@ -44,9 +44,7 @@ function Search(props) {
 
 
    function fetchProducts() {
-      // return queryProducts(fetchByTitleParams(debouncedSearchTerm));
-      return queryProducts(fetchByTagParams(debouncedSearchTerm));
-
+      return queryProducts(fetchByTitleParams(debouncedSearchTerm));
    }
 
 
@@ -57,14 +55,14 @@ function Search(props) {
    */
    const getResults = async () => {
 
-      setisLoading(true);
+      setIsFiltering(true);
 
       const results = await fetchProducts();
 
       console.log('results ', results);
 
       setSearchData(results);
-      setisLoading(false);
+      setIsFiltering(false);
 
    }
 
@@ -80,7 +78,7 @@ function Search(props) {
       <>
          <form role="search" className="wps-search-form">
 
-            <div className="is-loading">{isLoading ? 'Loading ...' : ''}</div>
+            <div className="is-loading">{isFiltering ? 'Loading ...' : ''}</div>
 
             <div className="wps-search-wrapper">
 
@@ -100,7 +98,7 @@ function Search(props) {
 
          </form>
 
-         <LoadingContext.Provider value={isLoading}>
+         <LoadingContext.Provider value={{ isFiltering: isFiltering }}>
             <DropZone dropZone={props.dropZone} items={searchData}></DropZone>
          </LoadingContext.Provider>
 

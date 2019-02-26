@@ -8,13 +8,6 @@ function FilterVendors({ data }) {
 
    const context = useContext(FiltersContext);
 
-   useEffect(() => {
-
-      console.log('vendors context.data.vendors', context.data.vendors);
-      console.log('vendors context.isLoading', context.isLoading);
-
-   }, [context.data]);
-
    return (
       <Filter heading="Vendors">
          <div className="wps-filter-content">

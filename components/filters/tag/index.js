@@ -1,8 +1,6 @@
-import React, { useEffect, useContext, useState } from 'react';
-// import Filter from '../filter';
+import React, { useContext, useState, useEffect } from 'react';
 import { FiltersContext } from '../index';
 import { TagsContext } from '../tags';
-import compact from 'lodash/compact';
 import union from 'lodash/union';
 import without from 'lodash/without';
 
@@ -11,100 +9,46 @@ function FilterTag({ tag }) {
 
    const filtersContext = useContext(FiltersContext);
    const { selectedTags, setSelectedTags } = useContext(TagsContext);
-
    const [isSelected, setIsSelected] = useState(false);
-
-
-   // useEffect(() => {
-
-   //    // console.log('Tag selection changed');
-   //    // console.log('Selected Tags: ', selectedTags);
-
-   //    if (filtersContext.query === false) {
-   //       console.log('Intial Render FilterTag, skipping ...');
-   //       return;
-   //    }
-
-
-   //    // console.log('Not on load', context);
-
-   //    // if (isSelected) {
-   //    //    console.log('Updating query with this tag: ', tag);
-   //    //    filtersContext.setQuery('tag:' + tag);
-   //    // }
-
-   //    // console.log('New query: ', filtersContext.query);
-
-   //    // console.log('isSelected ', isSelected);
-
-
-   // }, [isSelected]);
-
-
-   function buildQueryFromTag(tag, currentQuery) {
-      console.log('currentQuery', currentQuery);
-
-      // If current query is false
-      if (!currentQuery) {
-         return 'tag:' + tag;
-      }
-
-      var parts = compact(currentQuery.split('tag:'));
-      console.log('parts ', parts);
-
-      var newstuff = parts.reduce(function (accumulator, currentValue) {
-
-         console.log('accumulator ', accumulator);
-         console.log('currentValue ', currentValue);
-
-         return accumulator + ' tag:' + currentValue;
-      });
-
-      console.log('newstuff ', newstuff);
-
-      return newstuff;
-
-   }
-
-
-
+   const [initialLoad, setInitialLoad] = useState(true);
 
    function getProductsFromTag(tag) {
+      console.log('tag ', tag);
+      console.log('selectedTags ', selectedTags);
+      console.log('isSelected ', isSelected);
 
-      if (isSelected) {
-         var removedList = without(selectedTags, tag);
-         console.log('removedList ', removedList);
-         setSelectedTags(removedList);
+      if (!isSelected) {
+         var newSelection = without(selectedTags, tag);
 
       } else {
-         setSelectedTags(union([tag], selectedTags));
+         var newSelection = union([tag], selectedTags);
       }
 
+      console.log('newSelection ', newSelection);
 
-
-      console.log('selected tag ', tag);
-
-
-      // console.log('Selected tag ', tag);
-      // console.log('Current query: ', filtersContext.query);
-
-      // var result = buildQueryFromTag(tag, filtersContext.query);
-
-
-      // console.log('result ', result);
-
-
-      // filtersContext.setQuery('tag:' + tag);
-      setIsSelected(!isSelected);
-      // filtersContext.setQuery(tag);
+      setSelectedTags(newSelection);
 
    }
+
+
+   useEffect(() => {
+
+      if (initialLoad) {
+         setInitialLoad(false);
+         return;
+      }
+
+      console.log('FilterTag before ', selectedTags);
+      getProductsFromTag(tag);
+      console.log('FilterTag after ', selectedTags);
+
+   }, [isSelected]);
 
    return (
       <li
          data-wps-is-selected={isSelected}
          className="wps-tag"
-         onClick={e => getProductsFromTag(tag)}>
+         onClick={e => setIsSelected(!isSelected)}>
 
          {tag}
 
