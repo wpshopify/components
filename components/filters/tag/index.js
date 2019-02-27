@@ -1,21 +1,19 @@
 import React, { useContext, useState, useEffect } from 'react';
-import { FiltersContext } from '../index';
 import { TagsContext } from '../tags';
 import union from 'lodash/union';
 import without from 'lodash/without';
+import isEmpty from 'lodash/isEmpty';
 
 
 function FilterTag({ tag }) {
 
-   const filtersContext = useContext(FiltersContext);
+   // const { isCleared } = useContext(FiltersContext);
    const { selectedTags, setSelectedTags } = useContext(TagsContext);
    const [isSelected, setIsSelected] = useState(false);
    const [initialLoad, setInitialLoad] = useState(true);
 
-   function getProductsFromTag(tag) {
-      console.log('tag ', tag);
-      console.log('selectedTags ', selectedTags);
-      console.log('isSelected ', isSelected);
+
+   function modifySelectionList(tag) {
 
       if (!isSelected) {
          var newSelection = without(selectedTags, tag);
@@ -23,8 +21,6 @@ function FilterTag({ tag }) {
       } else {
          var newSelection = union([tag], selectedTags);
       }
-
-      console.log('newSelection ', newSelection);
 
       setSelectedTags(newSelection);
 
@@ -38,11 +34,21 @@ function FilterTag({ tag }) {
          return;
       }
 
-      console.log('FilterTag before ', selectedTags);
-      getProductsFromTag(tag);
-      console.log('FilterTag after ', selectedTags);
+      modifySelectionList(tag);
 
    }, [isSelected]);
+
+
+   useEffect(() => {
+
+      if (isEmpty(selectedTags)) {
+         setIsSelected(false);
+      }
+
+   }, [selectedTags]);
+
+
+
 
    return (
       <li

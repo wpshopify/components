@@ -7,7 +7,7 @@ import { LoadingContext } from '../../common/context';
 
 function DropZone({ dropZone, items }) {
 
-   const { isFiltering } = useContext(LoadingContext);
+   const { isFiltering, from } = useContext(LoadingContext);
 
    console.log('isFiltering ', isFiltering);
 
@@ -19,9 +19,9 @@ function DropZone({ dropZone, items }) {
       <>
          {
             !dropZone
-               ? <Items items={items}></Items>
+               ? <Items items={items} from={from}></Items>
                : ReactDOM.createPortal(
-                  <Items items={items}></Items>,
+                  <Items items={items} from={from}></Items>,
                   dropZoneElement
                )
          }

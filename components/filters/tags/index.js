@@ -2,21 +2,46 @@ import React, { useEffect, useContext, useState } from 'react';
 import Filter from '../filter';
 import { FiltersContext } from '../index';
 import FilterTag from '../tag';
+
+import { hasSelections } from '../../../common/utils';
+
 import isEmpty from 'lodash/isEmpty';
 
 const TagsContext = React.createContext();
 
 function FilterTags() {
 
-   const filtersContext = useContext(FiltersContext);
+   const { selections, setSelections, isLoading, data, isCleared } = useContext(FiltersContext);
+   const [isInitialRender, setIsInitialRender] = useState(true);
    const [selectedTags, setSelectedTags] = useState([]);
 
 
    useEffect(() => {
 
-      filtersContext.setSelections({ tag: selectedTags });
+      if (isInitialRender) {
+         setIsInitialRender(false);
+         return;
+      }
+
+      console.log('INSIDIE SELECTED TAGS', selectedTags);
+      console.log('INSIDIE SELECTED TAGS isCleared', isCleared);
+
+
+      setSelections({ tag: selectedTags });
 
    }, [selectedTags]);
+
+
+   useEffect(() => {
+
+      console.log('selectionsselectionsselections ', selections);
+
+      if (!hasSelections(selections)) {
+         setSelectedTags([]);
+      }
+
+
+   }, [isCleared]);
 
 
    return (
@@ -24,10 +49,10 @@ function FilterTags() {
          <div className="wps-filter-content">
 
             {
-               filtersContext.isLoading
+               isLoading
                   ? <p data-wps-is-ready="0">Loading Tags ...</p>
                   : (
-                     isEmpty(filtersContext.data.tag)
+                     isEmpty(data.tag)
                         ? <p>No tags found</p>
                         : <ul className="wps-tags">
                            <TagsContext.Provider value={{
@@ -35,7 +60,7 @@ function FilterTags() {
                               setSelectedTags: setSelectedTags
                            }}>
                               {
-                                 filtersContext.data.tag.map(tag =>
+                                 data.tag.map(tag =>
                                     <FilterTag key={tag} tag={tag} />
                                  )
                               }

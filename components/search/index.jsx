@@ -98,7 +98,7 @@ function Search(props) {
 
          </form>
 
-         <LoadingContext.Provider value={{ isFiltering: isFiltering }}>
+         <LoadingContext.Provider value={{ isFiltering: isFiltering, from: 'search' }}>
             <DropZone dropZone={props.dropZone} items={searchData}></DropZone>
          </LoadingContext.Provider>
 

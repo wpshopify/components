@@ -92,6 +92,7 @@ function Filters({ dropZone, showSelections, selectionsDropZone }) {
    const [searchData, setSearchData] = useState([]);
    const [isInitialRender, setIsInitialRender] = useState(true);
    const [isLoading, setIsLoading] = useState(true);
+   const [isCleared, setIsCleared] = useState(true);
    const [isFiltering, setIsFiltering] = useState(false);
    const [query, setQuery] = useState(false);
 
@@ -131,6 +132,22 @@ function Filters({ dropZone, showSelections, selectionsDropZone }) {
       setQuery(buildQueryStringFromSelections(selections));
 
    }, [selections]);
+
+
+   // useEffect(() => {
+
+
+   //    if (isInitialRender) {
+   //       console.log('FILTERS TOP ISCLEAREd inital');
+   //       return;
+   //    }
+   //    console.log('FILTERS TOP ISCLEAREd');
+
+   //    setSelections({});
+
+   //    // setIsCleared(true);
+
+   // }, [isCleared]);
 
 
    useEffect(() => {
@@ -180,6 +197,8 @@ function Filters({ dropZone, showSelections, selectionsDropZone }) {
          <FiltersContext.Provider value={{
             data: filterData,
             isLoading: isLoading,
+            isCleared: isCleared,
+            setIsCleared: setIsCleared,
             query: query,
             setQuery: setQuery,
             selections: selections,
@@ -192,7 +211,7 @@ function Filters({ dropZone, showSelections, selectionsDropZone }) {
             <FilterVendors />
          </FiltersContext.Provider>
 
-         <LoadingContext.Provider value={{ isFiltering: isFiltering }}>
+         <LoadingContext.Provider value={{ isFiltering: isFiltering, from: 'filters' }}>
             <DropZone dropZone={dropZone} items={searchData}></DropZone>
          </LoadingContext.Provider>
 
