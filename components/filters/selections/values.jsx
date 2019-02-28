@@ -1,9 +1,8 @@
 import React, { useContext, useEffect, useState } from 'react';
-import Anime from 'react-anime';
 import { IconRemove } from "../../../common/icons/icon-remove.jsx";
 import { removeFrom } from "../../../common/utils";
 import { FiltersContext } from '../index';
-
+import { useSpring, useTransition, animated } from 'react-spring'
 
 
 function inSelection(selectionsArray, valToSearchFor) {
@@ -62,18 +61,20 @@ function FilterSelectionsValue({ selectionType, val }) {
 
 function FilterSelectionsValues({ selectionType, vals }) {
 
-   let animeProps = {
-      opacity: [0, 1],
-      translateY: [-64, 0],
-      opacity: [0, 1],
-      delay: (el, i) => i * 200
-   }
+   const transitions = useTransition(vals, item => item, {
+      from: { transform: 'translateX(40px)' },
+      enter: { transform: 'translateX(0)' },
+      leave: { display: 'none' },
+   })
 
-   return (
-      <Anime {...animeProps}>
-         vals.map(val => <FilterSelectionsValue key={val} selectionType={selectionType} val={val} />);
-      </Anime>
+   return transitions.map(({ item, props, key }) =>
+      <animated.div key={key} style={props}>
+         <FilterSelectionsValue key={item} selectionType={selectionType} val={item} />
+      </animated.div>
+
    )
+
+   // return vals.map(val => <FilterSelectionsValue key={val} selectionType={selectionType} val={val} />)
 
 }
 

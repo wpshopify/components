@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { getFilterData, queryProducts, fetchByQueryParams } from '@wpshopify/api';
+import { getFilterData, queryProducts, fetchByQueryParams } from '/Users/andrew/www/devil/devilbox/data/www/wpshopify-api';
 import FilterVendors from './vendors';
 import { FilterTags } from './tags';
 import { FilterSelections } from './selections';

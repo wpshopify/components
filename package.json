@@ -1,40 +1,40 @@
 {
-  "name": "@wpshopify/components",
-  "version": "0.1.0",
-  "description": "Front-end component library for WP Shopify",
-  "main": "index.js",
-  "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
-  },
-  "author": "WP Shopify",
-  "license": "GPL-2.0-or-later",
-  "repository": {
-    "type": "git",
-    "url": "https://github.com/wpshopify/components.git"
-  },
-  "keywords": [
-    "wordpres",
-    "shopify",
-    "ecommerce",
-    "woocommerce"
-  ],
-  "dependencies": {
-    "@babel/plugin-proposal-class-properties": "^7.3.4",
-    "@babel/plugin-proposal-json-strings": "^7.2.0",
-    "@babel/plugin-syntax-dynamic-import": "^7.2.0",
-    "@babel/plugin-syntax-import-meta": "^7.2.0",
-    "@babel/plugin-transform-regenerator": "^7.3.4",
-    "@babel/plugin-transform-runtime": "^7.3.4",
-    "accounting": "^0.4.1",
-    "await-to-js": "^2.1.1",
-    "babel-polyfill": "^6.26.0",
-    "country-data": "0.0.31",
-    "geolocator": "^2.1.5",
-    "lodash": "^4.17.11",
-    "money": "^0.2.0",
-    "react": "^16.8.3",
-    "react-anime": "^2.2.0",
-    "react-dom": "^16.8.3",
-    "use-debounce": "1.0.0"
-  }
+   "name": "@wpshopify/components",
+   "version": "0.1.0",
+   "description": "Front-end component library for WP Shopify",
+   "main": "index.js",
+   "scripts": {
+      "test": "echo \"Error: no test specified\" && exit 1"
+   },
+   "author": "WP Shopify",
+   "license": "GPL-2.0-or-later",
+   "repository": {
+      "type": "git",
+      "url": "https://github.com/wpshopify/components.git"
+   },
+   "keywords": [
+      "wordpres",
+      "shopify",
+      "ecommerce",
+      "woocommerce"
+   ],
+   "dependencies": {
+      "@babel/plugin-proposal-class-properties": "^7.3.4",
+      "@babel/plugin-proposal-json-strings": "^7.2.0",
+      "@babel/plugin-syntax-dynamic-import": "^7.2.0",
+      "@babel/plugin-syntax-import-meta": "^7.2.0",
+      "@babel/plugin-transform-regenerator": "^7.3.4",
+      "@babel/plugin-transform-runtime": "^7.3.4",
+      "accounting": "^0.4.1",
+      "await-to-js": "^2.1.1",
+      "babel-polyfill": "^6.26.0",
+      "country-data": "0.0.31",
+      "geolocator": "^2.1.5",
+      "lodash": "^4.17.11",
+      "money": "^0.2.0",
+      "react": "^16.8.3",
+      "react-dom": "^16.8.3",
+      "react-spring": "^8.0.8",
+      "use-debounce": "0.0.9"
+   }
 }

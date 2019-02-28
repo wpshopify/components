@@ -1,6 +1,6 @@
 import 'babel-polyfill';
 import React, { useState, useEffect } from 'react';
-import { queryProducts, fetchByTitleParams, fetchByTagParams } from '@wpshopify/api';
+import { queryProducts, fetchByTitleParams, fetchByTagParams } from '/Users/andrew/www/devil/devilbox/data/www/wpshopify-api';
 import { useDebounce } from 'use-debounce';
 import { DropZone } from '../dropzone';
 import { LoadingContext } from '../../common/context';

@@ -2,7 +2,6 @@ import React, { useContext } from "react";
 import ReactDOM from "react-dom";
 import merge from 'lodash/merge';
 import reduce from 'lodash/reduce';
-import { ClientContext } from "@wpshopify/api";
 
 // import { ProductContext } from "../index";
 import ProductVariant from '../variant';
@@ -22,8 +21,6 @@ function findVariantFromSelectedOptions(product, selectedOptions) {
 }
 
 function ProductVariants({ option }) {
-
-   //   const client = useContext(ClientContext);
 
    return (
       <ul className="wps-modal wps-variants">
