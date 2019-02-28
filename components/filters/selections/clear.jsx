@@ -4,22 +4,18 @@ import { FiltersContext } from '../index';
 
 function FilterSelectionsClear() {
 
-   const { setSelections, setIsCleared } = useContext(FiltersContext);
+   const { setSelections, isCleared, setIsCleared, isModified, setIsModified } = useContext(FiltersContext);
 
    function removeSelections() {
 
-      console.log('removedSelections');
-
-      setIsCleared(true);
       setSelections({});
+      setIsCleared(!isCleared);
+      setIsModified(!isModified);
 
    }
 
    useEffect(() => {
-      console.log('____________ hi');
-
       setIsCleared(false);
-
    }, []);
 
 

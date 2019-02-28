@@ -9,11 +9,7 @@ function DropZone({ dropZone, items }) {
 
    const { isFiltering, from } = useContext(LoadingContext);
 
-   console.log('isFiltering ', isFiltering);
-
    const dropZoneElement = document.querySelector(dropZone);
-
-   console.log('dropZoneElement ', dropZoneElement);
 
    return (
       <>

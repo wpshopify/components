@@ -6,12 +6,13 @@ function FilterSelectionsWrapper() {
 
    return (
       <div className="wps-filter-selections">
-         <FilterSelectionsClear />
          <FilterSelectionsTypes />
+         <FilterSelectionsClear />
       </div>
    )
 
 }
+
 
 export {
    FilterSelectionsWrapper

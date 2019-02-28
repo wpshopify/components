@@ -85,17 +85,24 @@ function buildQueryStringFromSelections(selections) {
 
 
 
+
+
+
+
+
+
 function Filters({ dropZone, showSelections, selectionsDropZone }) {
 
    const [selections, setSelections] = useState({});
    const [filterData, setFilterData] = useState([]);
    const [searchData, setSearchData] = useState([]);
+
    const [isInitialRender, setIsInitialRender] = useState(true);
    const [isLoading, setIsLoading] = useState(true);
    const [isCleared, setIsCleared] = useState(true);
    const [isFiltering, setIsFiltering] = useState(false);
    const [query, setQuery] = useState(false);
-
+   const [isModified, setIsModified] = useState(false);
 
    async function getAllFilterData() {
 
@@ -134,21 +141,6 @@ function Filters({ dropZone, showSelections, selectionsDropZone }) {
    }, [selections]);
 
 
-   // useEffect(() => {
-
-
-   //    if (isInitialRender) {
-   //       console.log('FILTERS TOP ISCLEAREd inital');
-   //       return;
-   //    }
-   //    console.log('FILTERS TOP ISCLEAREd');
-
-   //    setSelections({});
-
-   //    // setIsCleared(true);
-
-   // }, [isCleared]);
-
 
    useEffect(() => {
 
@@ -182,9 +174,7 @@ function Filters({ dropZone, showSelections, selectionsDropZone }) {
 
 
    function fetchProducts() {
-
       return queryProducts(fetchByQueryParams(query));
-
    }
 
 
@@ -202,13 +192,16 @@ function Filters({ dropZone, showSelections, selectionsDropZone }) {
             query: query,
             setQuery: setQuery,
             selections: selections,
-            setSelections: setSelections
+            setSelections: setSelections,
+            isModified: isModified,
+            setIsModified: setIsModified
          }}>
 
             {showSelections ? <FilterSelections dropZone={selectionsDropZone} /> : ''}
 
             <FilterTags />
             <FilterVendors />
+
          </FiltersContext.Provider>
 
          <LoadingContext.Provider value={{ isFiltering: isFiltering, from: 'filters' }}>
