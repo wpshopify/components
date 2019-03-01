@@ -1,5 +1,5 @@
 import 'babel-polyfill';
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { queryProducts, fetchByTitleParams, fetchByTagParams } from '/Users/andrew/www/devil/devilbox/data/www/wpshopify-api';
 import { useDebounce } from 'use-debounce';
 import { DropZone } from '../dropzone';
@@ -16,8 +16,8 @@ function Search(props) {
 
    const [searchTerm, setSearchTerm] = useState('');
    const [isFiltering, setIsFiltering] = useState(false);
-   const [isIntialRender, setIsIntialRender] = useState(true);
    const [searchData, setSearchData] = useState([]);
+   const isFirstRender = useRef(true);
 
    const debouncedSearchTerm = useDebounce(searchTerm, 300);
 
@@ -30,20 +30,20 @@ function Search(props) {
 
    useEffect(() => {
 
-      if (!isIntialRender) {
+      if (!isFirstRender.current) {
          getResults();
          return;
       }
 
       console.log('Intial Render: Search Component');
-
-      setIsIntialRender(false);
+      isFirstRender.current = false;
 
    }, [debouncedSearchTerm]);
 
 
 
    function fetchProducts() {
+      console.log('fetchProducts from <Search />');
       return queryProducts(fetchByTitleParams(debouncedSearchTerm));
    }
 

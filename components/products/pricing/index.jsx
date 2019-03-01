@@ -1,9 +1,4 @@
 import React, { useContext } from 'react';
-import ReactDOM from 'react-dom';
-
-import sortedUniq from 'lodash/sortedUniq';
-import sortBy from 'lodash/sortBy';
-import { ProductContext } from '../index';
 import { getPrices } from '../../../common/pricing/data';
 import { formatPriceToCurrency } from '../../../common/pricing/formatting';
 import { LoadingContext } from '../../../common/context';

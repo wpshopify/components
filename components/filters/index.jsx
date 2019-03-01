@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useRef } from 'react';
 import { getFilterData, queryProducts, fetchByQueryParams } from '/Users/andrew/www/devil/devilbox/data/www/wpshopify-api';
 import FilterVendors from './vendors';
 import { FilterTags } from './tags';
@@ -91,18 +91,28 @@ function buildQueryStringFromSelections(selections) {
 
 
 
+
+
+
+
+
+
+
+
+
 function Filters({ dropZone, showSelections, selectionsDropZone }) {
 
    const [selections, setSelections] = useState({});
    const [filterData, setFilterData] = useState([]);
    const [searchData, setSearchData] = useState([]);
 
-   const [isInitialRender, setIsInitialRender] = useState(true);
    const [isLoading, setIsLoading] = useState(true);
    const [isCleared, setIsCleared] = useState(true);
    const [isFiltering, setIsFiltering] = useState(false);
-   const [query, setQuery] = useState(false);
-   const [isModified, setIsModified] = useState(false);
+   const [query, setQuery] = useState('*');
+   const [isSelectionsModified, setIsSelectionsModified] = useState(false);
+   const isFirstRender = useRef(true);
+
 
    async function getAllFilterData() {
 
@@ -111,7 +121,7 @@ function Filters({ dropZone, showSelections, selectionsDropZone }) {
 
       var allFilteredData = formatFilterData(getDataFromResponse(respData));
 
-      // console.log('allFilteredData', allFilteredData);
+      console.log('allFilteredData', allFilteredData);
 
       setIsLoading(false);
       setFilterData(allFilteredData);
@@ -123,16 +133,17 @@ function Filters({ dropZone, showSelections, selectionsDropZone }) {
    useEffect(() => {
 
       getAllFilterData();
-      setIsInitialRender(false);
+      setSelections({ tag: [] });
 
    }, []);
 
 
 
-
    useEffect(() => {
+      console.log('useEffect selections from <Filters />');
 
-      if (isInitialRender) {
+      if (isFirstRender.current) {
+         isFirstRender.current = false;
          return;
       }
 
@@ -144,17 +155,20 @@ function Filters({ dropZone, showSelections, selectionsDropZone }) {
 
    useEffect(() => {
 
-      if (isInitialRender) {
+      console.log('useEffect query');
+
+      if (isFirstRender.current) {
+         isFirstRender.current = false;
          return;
       }
 
-      hihi();
+      loadData();
 
    }, [query]);
 
 
 
-   async function hihi() {
+   async function loadData() {
 
       try {
 
@@ -174,6 +188,9 @@ function Filters({ dropZone, showSelections, selectionsDropZone }) {
 
 
    function fetchProducts() {
+      console.log('fetchByQueryParams(query)', fetchByQueryParams(query));
+      console.log('fetchProducts from <Filters />');
+
       return queryProducts(fetchByQueryParams(query));
    }
 
@@ -185,7 +202,7 @@ function Filters({ dropZone, showSelections, selectionsDropZone }) {
          <h2 className="wps-filters-heading">Filter by</h2>
 
          <FiltersContext.Provider value={{
-            data: filterData,
+            filterData: filterData,
             isLoading: isLoading,
             isCleared: isCleared,
             setIsCleared: setIsCleared,
@@ -193,8 +210,8 @@ function Filters({ dropZone, showSelections, selectionsDropZone }) {
             setQuery: setQuery,
             selections: selections,
             setSelections: setSelections,
-            isModified: isModified,
-            setIsModified: setIsModified
+            isSelectionsModified: isSelectionsModified,
+            setIsSelectionsModified: setIsSelectionsModified
          }}>
 
             {showSelections ? <FilterSelections dropZone={selectionsDropZone} /> : ''}

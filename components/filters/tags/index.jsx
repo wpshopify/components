@@ -8,7 +8,7 @@ const TagsContext = React.createContext();
 
 function FilterTags() {
 
-   const { isLoading, data } = useContext(FiltersContext);
+   const { isLoading, filterData } = useContext(FiltersContext);
    const [selectedTags, setSelectedTags] = useState([]);
 
    return (
@@ -19,7 +19,7 @@ function FilterTags() {
                isLoading
                   ? <p data-wps-is-ready="0">Loading Tags ...</p>
                   : (
-                     isEmpty(data.tag)
+                     isEmpty(filterData.tag)
                         ? <p>No tags found</p>
                         : <ul className="wps-tags">
 
@@ -29,7 +29,7 @@ function FilterTags() {
                            }}>
 
                               {
-                                 data.tag.map(tag =>
+                                 filterData.tag.map(tag =>
                                     <FilterTag key={tag} tag={tag} />
                                  )
                               }

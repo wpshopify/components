@@ -1,11 +1,12 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 import Product from '../products';
 import size from 'lodash/size';
 
 function Items({ items, from }) {
 
    const [isActive, setIsActive] = useState(0);
-   const [isInitialRender, setIsInitialRender] = useState(true);
+   const isFirstRender = useRef(true);
+
 
    function hasItems(items) {
       return size(items) !== 0 ? true : false;
@@ -14,8 +15,8 @@ function Items({ items, from }) {
 
    useEffect(() => {
 
-      if (isInitialRender) {
-         setIsInitialRender(false);
+      if (isFirstRender.current) {
+         isFirstRender.current = false;
          return;
       }
 

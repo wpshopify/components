@@ -1,9 +1,6 @@
-import React, { useContext } from "react";
-import ReactDOM from "react-dom";
+import React from "react";
 import merge from 'lodash/merge';
 import reduce from 'lodash/reduce';
-
-// import { ProductContext } from "../index";
 import ProductVariant from '../variant';
 
 

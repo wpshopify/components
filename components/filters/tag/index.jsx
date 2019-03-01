@@ -1,74 +1,92 @@
-import React, { useContext, useState, useEffect } from 'react';
+import React, { useContext, useRef, useState, useEffect } from 'react';
 import { TagsContext } from '../tags';
 import { FiltersContext } from '../index';
+import {
+   updateSelectionList,
+   isSelectionsOfTypeEmpty,
+   findModifiedSelection,
+   changedSelectionMatch
+} from '../../../common/selections';
 
-import union from 'lodash/union';
-import without from 'lodash/without';
-import difference from 'lodash/difference';
+
+
+
+
+
+
+
+function useSelectionsChange(type, localValue, localSetter) {
+
+   console.log('FilterTag isSelectionsModified');
+
+}
+
+
+
+
 
 
 function FilterTag({ tag }) {
 
-   const { selections, setSelections, isCleared, isModified } = useContext(FiltersContext);
+   const { selections, setSelections, isCleared, isSelectionsModified } = useContext(FiltersContext);
    const { selectedTags, setSelectedTags } = useContext(TagsContext);
    const [isSelected, setIsSelected] = useState(false);
-   const [initialLoad, setInitialLoad] = useState(true);
+
+   const isFirstRender = useRef(true);
 
 
-   function modifySelectionList(tag) {
-
-      if (!isSelected) {
-         var newSelection = without(selections.tag, tag);
-
-      } else {
-         var newSelection = union([tag], selections.tag);
-      }
-
-      return newSelection;
-
-   }
 
 
+   /*
+   
+   When selections are changed ...
+   
+   */
    useEffect(() => {
 
-      if (initialLoad) {
-         setInitialLoad(false);
-         return;
-      }
+      // console.log('FilterTag isSelectionsModified');
 
-      if (!selections.tag) {
-         setIsSelected(false);
-         setSelectedTags([]);
-         return;
-      }
+      // if (isFirstRender.current) {
+      //    isFirstRender.current = false;
+      //    return;
+      // }
+
+      // // If selections of [type] are empty, zero everything out
+      // if (isSelectionsOfTypeEmpty()) {
+
+      //    setIsSelected(false);
+      //    setSelectedTags([]);
+      //    return;
+
+      // }
+
+      // var changedValues = findModifiedSelection(selectedTags, selections.tag);
+
+      // if (changedSelectionMatch(changedValues, tag)) {
+      //    setIsSelected(false);
+      //    setSelectedTags(selections.tag);
+
+      // }
+
+   }, [isSelectionsModified]);
 
 
-      var foundModifiedTag = difference(selectedTags, selections.tag);
 
 
-      if (foundModifiedTag[0] === tag) {
+   const onTagClick = () => {
 
-         setIsSelected(false);
-         setSelectedTags(selections.tag);
+      setIsSelected(!isSelected);
 
-      }
-
-   }, [isModified]);
-
-
-   useEffect(() => {
-
-      if (initialLoad) {
-         setInitialLoad(false);
-         return;
-      }
-
-      var newTagsList = modifySelectionList(tag);
+      var newTagsList = updateSelectionList({
+         isSelected: !isSelected,
+         currentList: selections.tag,
+         selectedValue: tag
+      });
 
       setSelectedTags(newTagsList);
       setSelections({ tag: newTagsList });
 
-   }, [isSelected]);
+   }
 
 
    return (
@@ -76,7 +94,7 @@ function FilterTag({ tag }) {
          data-wps-is-selected={isSelected}
          data-wps-tag={tag}
          className="wps-tag"
-         onClick={e => setIsSelected(!isSelected)}>
+         onClick={onTagClick}>
 
          {tag}
 

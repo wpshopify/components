@@ -1,4 +1,4 @@
-import React, { useContext, useEffect, useState } from 'react';
+import React, { useContext, useRef, useEffect, useState } from 'react';
 import { IconRemove } from "../../../common/icons/icon-remove.jsx";
 import { removeFrom } from "../../../common/utils";
 import { FiltersContext } from '../index';
@@ -12,9 +12,9 @@ function inSelection(selectionsArray, valToSearchFor) {
 
 function FilterSelectionsValue({ selectionType, val }) {
 
-   const { selections, setSelections, isModified, setIsModified } = useContext(FiltersContext);
+   const { selections, setSelections, isSelectionsModified, setIsSelectionsModified } = useContext(FiltersContext);
    const [isCleared, setIsCleared] = useState(false);
-   const [isInitialRender, setIsInitialRender] = useState(true);
+   const isFirstRender = useRef(true);
 
 
    function removeValueFromSelections(val) {
@@ -42,13 +42,13 @@ function FilterSelectionsValue({ selectionType, val }) {
 
    useEffect(() => {
 
-      if (isInitialRender) {
-         setIsInitialRender(false);
+      if (isFirstRender.current) {
+         isFirstRender.current = false;
          return;
       }
-
+      console.log('setSelections from <FilterSelectionsValue>');
       setSelections(buildNewSelectionObject(selectionType, removeValueFromSelections(val)));
-      setIsModified(!isModified);
+      setIsSelectionsModified(!isSelectionsModified);
 
    }, [isCleared]);
 

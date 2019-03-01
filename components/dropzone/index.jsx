@@ -7,7 +7,7 @@ import { LoadingContext } from '../../common/context';
 
 function DropZone({ dropZone, items }) {
 
-   const { isFiltering, from } = useContext(LoadingContext);
+   const { from } = useContext(LoadingContext);
 
    const dropZoneElement = document.querySelector(dropZone);
 

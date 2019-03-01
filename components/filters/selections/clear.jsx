@@ -4,13 +4,14 @@ import { FiltersContext } from '../index';
 
 function FilterSelectionsClear() {
 
-   const { setSelections, isCleared, setIsCleared, isModified, setIsModified } = useContext(FiltersContext);
+   const { setSelections, isCleared, setIsCleared, isSelectionsModified, setIsSelectionsModified } = useContext(FiltersContext);
 
    function removeSelections() {
+      console.log('setSelections from <FilterSelectionsClear>');
 
       setSelections({});
       setIsCleared(!isCleared);
-      setIsModified(!isModified);
+      setIsSelectionsModified(!isSelectionsModified);
 
    }
 
