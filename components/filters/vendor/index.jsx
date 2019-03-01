@@ -3,7 +3,7 @@ import { FiltersContext } from '../index';
 
 function FilterVendor({ vendor }) {
 
-   const { selections, setSelections, isCleared, isSelectionsModified } = useContext(FiltersContext);
+   const { selections, setSelections, isCleared, isSelectionsRemoved } = useContext(FiltersContext);
    const [isSelected, setIsSelected] = useState(false);
    const isFirstRender = useRef(true);
 

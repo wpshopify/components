@@ -5,7 +5,8 @@ import {
    updateSelectionList,
    isSelectionsOfTypeEmpty,
    findModifiedSelection,
-   changedSelectionMatch
+   changedSelectionMatch,
+   useSelectionsRemoved
 } from '../../../common/selections';
 
 
@@ -15,61 +16,21 @@ import {
 
 
 
-function useSelectionsChange(type, localValue, localSetter) {
-
-   console.log('FilterTag isSelectionsModified');
-
-}
 
 
 
 
 
 
-function FilterTag({ tag }) {
 
-   const { selections, setSelections, isCleared, isSelectionsModified } = useContext(FiltersContext);
+function FilterTag({ tag, isTagSelected }) {
+
+   const { selections, setSelections, isCleared, isSelectionsRemoved } = useContext(FiltersContext);
    const { selectedTags, setSelectedTags } = useContext(TagsContext);
    const [isSelected, setIsSelected] = useState(false);
 
    const isFirstRender = useRef(true);
-
-
-
-
-   /*
-   
-   When selections are changed ...
-   
-   */
-   useEffect(() => {
-
-      // console.log('FilterTag isSelectionsModified');
-
-      // if (isFirstRender.current) {
-      //    isFirstRender.current = false;
-      //    return;
-      // }
-
-      // // If selections of [type] are empty, zero everything out
-      // if (isSelectionsOfTypeEmpty()) {
-
-      //    setIsSelected(false);
-      //    setSelectedTags([]);
-      //    return;
-
-      // }
-
-      // var changedValues = findModifiedSelection(selectedTags, selections.tag);
-
-      // if (changedSelectionMatch(changedValues, tag)) {
-      //    setIsSelected(false);
-      //    setSelectedTags(selections.tag);
-
-      // }
-
-   }, [isSelectionsModified]);
-
+   // const { isDeselected, updatedSelections } = useSelectionsRemoved(selections, 'tag', tag, selectedTags);
 
 
 
@@ -83,6 +44,7 @@ function FilterTag({ tag }) {
          selectedValue: tag
       });
 
+      // checkSelectedValue(tag);
       setSelectedTags(newTagsList);
       setSelections({ tag: newTagsList });
 
@@ -91,7 +53,7 @@ function FilterTag({ tag }) {
 
    return (
       <li
-         data-wps-is-selected={isSelected}
+         data-wps-is-selected={isTagSelected()}
          data-wps-tag={tag}
          className="wps-tag"
          onClick={onTagClick}>

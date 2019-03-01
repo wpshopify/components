@@ -1,8 +1,8 @@
 import React, { useContext } from 'react';
 import { FilterSelectionsValues } from './values';
 import { FiltersContext } from '../index';
+import { getSelectionTypes } from '../../../common/selections';
 
-import { getSelectionTypes } from './index';
 
 function FilterSelectionsType({ selections, selectionType }) {
 

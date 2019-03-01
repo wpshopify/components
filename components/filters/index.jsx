@@ -110,7 +110,7 @@ function Filters({ dropZone, showSelections, selectionsDropZone }) {
    const [isCleared, setIsCleared] = useState(true);
    const [isFiltering, setIsFiltering] = useState(false);
    const [query, setQuery] = useState('*');
-   const [isSelectionsModified, setIsSelectionsModified] = useState(false);
+   const [isSelectionsRemoved, setIsSelectionsRemoved] = useState(false);
    const isFirstRender = useRef(true);
 
 
@@ -133,7 +133,7 @@ function Filters({ dropZone, showSelections, selectionsDropZone }) {
    useEffect(() => {
 
       getAllFilterData();
-      setSelections({ tag: [] });
+      setSelections({});
 
    }, []);
 
@@ -165,6 +165,63 @@ function Filters({ dropZone, showSelections, selectionsDropZone }) {
       loadData();
 
    }, [query]);
+
+
+
+
+
+
+
+
+   /*
+      
+      When selections are changed ...
+      
+      */
+   useEffect(() => {
+
+      if (isFirstRender.current) {
+         isFirstRender.current = false;
+         return;
+      }
+
+      // useSelectionsRemoved();
+
+      // console.log('FilterTag isSelectionsRemoved');
+
+      // if allTagsRemoved
+      // if tagRemoved
+
+      // if (isFirstRender.current) {
+      //    isFirstRender.current = false;
+      //    return;
+      // }
+
+      // // If selections of [type] are empty, zero everything out
+      // if (isSelectionsOfTypeEmpty()) {
+
+      //    setIsSelected(false);
+      //    setSelectedTags([]);
+      //    return;
+
+      // }
+
+      // var changedValues = findModifiedSelection(selectedTags, selections.tag);
+
+      // if (changedSelectionMatch(changedValues, tag)) {
+      //    setIsSelected(false);
+      //    setSelectedTags(selections.tag);
+
+      // }
+
+   }, [isSelectionsRemoved]);
+
+
+
+
+
+
+
 
 
 
@@ -210,8 +267,8 @@ function Filters({ dropZone, showSelections, selectionsDropZone }) {
             setQuery: setQuery,
             selections: selections,
             setSelections: setSelections,
-            isSelectionsModified: isSelectionsModified,
-            setIsSelectionsModified: setIsSelectionsModified
+            isSelectionsRemoved: isSelectionsRemoved,
+            setIsSelectionsRemoved: setIsSelectionsRemoved
          }}>
 
             {showSelections ? <FilterSelections dropZone={selectionsDropZone} /> : ''}

@@ -7,27 +7,27 @@ function removeFrom(array, valueToRemove) {
    return without(array, valueToRemove);
 }
 
-function hasSelections(object) {
+function objectIsEmpty(object) {
 
    if (isEmpty(object)) {
-      return false;
+      return true;
    }
 
-   var foundSome = false;
+   var foundNone = true;
 
    forOwn(object, function (value, key) {
 
       if (!isEmpty(value)) {
-         foundSome = true;
+         foundNone = false;
       }
 
    });
 
-   return foundSome;
+   return foundNone;
 
 }
 
 export {
-   hasSelections,
+   objectIsEmpty,
    removeFrom
 }

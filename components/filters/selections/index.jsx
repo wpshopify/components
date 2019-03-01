@@ -4,21 +4,8 @@ import isEmpty from 'lodash/isEmpty';
 
 import { FiltersContext } from '../index';
 import { FilterSelectionsWrapper } from './wrapper';
-import { hasSelections } from '../../../common/utils';
+import { objectIsEmpty } from '../../../common/utils';
 
-
-
-function getSelectionTypes(selections) {
-
-   var filterTypes = Object.keys(selections);
-
-   if (isEmpty(filterTypes) || !hasSelections(selections)) {
-      return [];
-   }
-
-   return filterTypes;
-
-}
 
 
 function FilterSelections({ dropZone }) {
@@ -29,7 +16,7 @@ function FilterSelections({ dropZone }) {
       <>
          {
             ReactDOM.createPortal(
-               hasSelections(selections) ? <FilterSelectionsWrapper /> : '',
+               !objectIsEmpty(selections) ? <FilterSelectionsWrapper /> : '',
                document.querySelector(dropZone)
             )
          }
@@ -39,6 +26,5 @@ function FilterSelections({ dropZone }) {
 }
 
 export {
-   FilterSelections,
-   getSelectionTypes
+   FilterSelections
 }
