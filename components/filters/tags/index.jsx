@@ -1,75 +1,20 @@
-import React, { useContext, useRef, useState, useEffect } from 'react';
+import React, { useContext, useState, useEffect } from 'react';
 import Filter from '../filter';
 import { FiltersContext } from '../index';
 import FilterTag from '../tag';
 import isEmpty from 'lodash/isEmpty';
-import { useSelectionsRemoved } from '../../../common/selections';
 
-const TagsContext = React.createContext();
 
 function FilterTags() {
 
-   const { selections, isLoading, filterData, isSelectionsRemoved } = useContext(FiltersContext);
+   const { isLoading, filterData, selections } = useContext(FiltersContext);
    const [selectedTags, setSelectedTags] = useState([]);
 
-   const isFirstRender = useRef(true);
-   // const { isDeselected, updatedSelections } = useSelectionsRemoved(selections, 'tag', 'test', selectedTags);
-
-
-   function checkIfIsTagSelected(tag) {
-      console.log('checking if tag is selected ...', tag);
-      console.log('checking if tag is selected selectedTags ...', selectedTags);
-
-      if (selectedTags.find(selected => selected === tag)) {
-         return true;
-      }
-
-      return false;
-
-   }
-
-   /*
-
-   When selections are changed ...
-
-   */
    useEffect(() => {
+      console.log('useEffect selections from <FilterTags />', selections.tag);
+      setSelectedTags(selections.tag);
 
-      if (isFirstRender.current) {
-         isFirstRender.current = false;
-         return;
-      }
-
-      console.log('FilterTag useEffect 1');
-
-      // if (isDeselected) {
-      //    console.log('FilterTag useEffect 2');
-      //    setIsSelected(false);
-      //    setSelectedTags(updatedSelections);
-      // }
-
-   }, [isSelectionsRemoved]);
-
-
-
-   // useEffect(() => {
-
-   //    if (isFirstRender.current) {
-   //       isFirstRender.current = false;
-   //       return;
-   //    }
-
-   //    console.log('FilterTag selectedTags ', selectedTags);
-
-   //    // if (isDeselected) {
-   //    //    console.log('FilterTag useEffect 2');
-   //    //    setIsSelected(false);
-   //    //    setSelectedTags(updatedSelections);
-   //    // }
-
-   // }, [selectedTags]);
-
-
+   }, [selections]);
 
    return (
       <Filter heading="Tags">
@@ -83,18 +28,11 @@ function FilterTags() {
                         ? <p>No tags found</p>
                         : <ul className="wps-tags">
 
-                           <TagsContext.Provider value={{
-                              selectedTags: selectedTags,
-                              setSelectedTags: setSelectedTags
-                           }}>
-
-                              {
-                                 filterData.tag.map(tag =>
-                                    <FilterTag isTagSelected={() => checkIfIsTagSelected(tag)} key={tag} tag={tag} />
-                                 )
-                              }
-
-                           </TagsContext.Provider>
+                           {
+                              filterData.tag.map(tag =>
+                                 <FilterTag selectedTags={selectedTags} setSelectedTags={setSelectedTags} key={tag} tag={tag} />
+                              )
+                           }
 
                         </ul>
                   )
@@ -106,6 +44,5 @@ function FilterTags() {
 }
 
 export {
-   FilterTags,
-   TagsContext
+   FilterTags
 }

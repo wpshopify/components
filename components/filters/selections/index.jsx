@@ -1,6 +1,5 @@
-import React, { useEffect, useContext } from 'react';
+import React, { useContext } from 'react';
 import ReactDOM from 'react-dom';
-import isEmpty from 'lodash/isEmpty';
 
 import { FiltersContext } from '../index';
 import { FilterSelectionsWrapper } from './wrapper';

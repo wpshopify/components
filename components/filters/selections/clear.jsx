@@ -11,7 +11,7 @@ function FilterSelectionsClear() {
       console.log('setSelections from <FilterSelectionsClear>');
 
       setSelections({});
-      // setIsCleared(!isCleared);
+      setIsCleared(!isCleared);
       // setIsSelectionsRemoved(!isSelectionsRemoved);
 
    }

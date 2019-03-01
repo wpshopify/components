@@ -1,4 +1,4 @@
-import React, { useEffect, useContext } from 'react';
+import React, { useState, useContext } from 'react';
 import Filter from '../filter';
 import isEmpty from 'lodash/isEmpty';
 import { FiltersContext } from '../index';
@@ -7,6 +7,7 @@ import { FilterVendor } from '../vendor';
 function FilterVendors() {
 
    const { filterData, isLoading } = useContext(FiltersContext);
+   const [selectedVendors, setSelectedVendors] = useState([]);
 
    return (
       <Filter heading="Vendors">
@@ -20,7 +21,7 @@ function FilterVendors() {
                         : <ul className="wps-vendors">
                            {
                               filterData.vendors.map(vendor =>
-                                 <FilterVendor vendor={vendor} key={vendor} />
+                                 <FilterVendor selectedVendors={selectedVendors} setSelectedVendors={setSelectedVendors} vendor={vendor} key={vendor} />
                               )
                            }
                         </ul>

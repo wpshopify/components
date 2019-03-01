@@ -91,6 +91,28 @@ function buildQueryStringFromSelections(selections) {
 
 
 
+function isCurrentlySelected(selections, valueSelected, type) {
+
+   // const isFirstRender = useRef(true);
+   // const [isSelected, setIsSelected] = useState(false);
+   var selected = false;
+
+   if (isEmpty(selections)) {
+      // console.log('2');
+      // setIsSelected(false);
+      selected = false;
+
+   } else if (selections[type].find(value => valueSelected === value)) {
+      selected = true;
+   }
+
+   return selected
+
+}
+
+
+
+
 
 
 
@@ -110,7 +132,7 @@ function Filters({ dropZone, showSelections, selectionsDropZone }) {
    const [isCleared, setIsCleared] = useState(true);
    const [isFiltering, setIsFiltering] = useState(false);
    const [query, setQuery] = useState('*');
-   const [isSelectionsRemoved, setIsSelectionsRemoved] = useState(false);
+
    const isFirstRender = useRef(true);
 
 
@@ -172,59 +194,6 @@ function Filters({ dropZone, showSelections, selectionsDropZone }) {
 
 
 
-
-   /*
-      
-      When selections are changed ...
-      
-      */
-   useEffect(() => {
-
-      if (isFirstRender.current) {
-         isFirstRender.current = false;
-         return;
-      }
-
-      // useSelectionsRemoved();
-
-      // console.log('FilterTag isSelectionsRemoved');
-
-      // if allTagsRemoved
-      // if tagRemoved
-
-      // if (isFirstRender.current) {
-      //    isFirstRender.current = false;
-      //    return;
-      // }
-
-      // // If selections of [type] are empty, zero everything out
-      // if (isSelectionsOfTypeEmpty()) {
-
-      //    setIsSelected(false);
-      //    setSelectedTags([]);
-      //    return;
-
-      // }
-
-      // var changedValues = findModifiedSelection(selectedTags, selections.tag);
-
-      // if (changedSelectionMatch(changedValues, tag)) {
-      //    setIsSelected(false);
-      //    setSelectedTags(selections.tag);
-
-      // }
-
-   }, [isSelectionsRemoved]);
-
-
-
-
-
-
-
-
-
-
    async function loadData() {
 
       try {
@@ -266,9 +235,7 @@ function Filters({ dropZone, showSelections, selectionsDropZone }) {
             query: query,
             setQuery: setQuery,
             selections: selections,
-            setSelections: setSelections,
-            isSelectionsRemoved: isSelectionsRemoved,
-            setIsSelectionsRemoved: setIsSelectionsRemoved
+            setSelections: setSelections
          }}>
 
             {showSelections ? <FilterSelections dropZone={selectionsDropZone} /> : ''}

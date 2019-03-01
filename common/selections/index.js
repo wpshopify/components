@@ -69,25 +69,26 @@ function getSelectionTypes(selections) {
 When selections are removed ...
 
 */
-function useSelectionsRemoved(selections, type, localValue, localValues) {
+function isCurrentlySelected(selections, valueSelected, type) {
 
-   const [isDeselected, setIsDeselected] = useState(false);
+   // const isFirstRender = useRef(true);
+   // const [isSelected, setIsSelected] = useState(false);
+   console.log('isCurrentlySelected', selections);
+   console.log('type', type);
+   console.log('selections[type]', selections[type]);
 
-   // If selections of [type] are empty, then it was removed
-   if (isSelectionsOfTypeEmpty(selections, type)) {
-      setIsDeselected(true);
+   var selected = false;
+
+   if (isEmpty(selections)) {
+      // console.log('2');
+      // setIsSelected(false);
+      selected = false;
+
+   } else if (selections[type].find(value => valueSelected === value)) {
+      selected = true;
    }
 
-   var deselectedValue = findDeselectedValue(localValues, selections[type]);
-
-   if (foundDeselectedValue(deselectedValue, localValue)) {
-      setIsDeselected(true);
-   }
-
-   return {
-      isDeselected: isDeselected,
-      updatedSelections: selections[type]
-   }
+   return selected
 
 }
 
@@ -110,6 +111,6 @@ export {
    isSelectionsOfTypeEmpty,
    findDeselectedValue,
    foundDeselectedValue,
-   useSelectionsRemoved,
+   isCurrentlySelected,
    getSelectionTypes
 }

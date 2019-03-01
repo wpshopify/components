@@ -1,36 +1,44 @@
 import React, { useEffect, useState, useContext, useRef } from 'react';
 import { FiltersContext } from '../index';
+import { updateSelectionList, isCurrentlySelected } from '../../../common/selections';
 
-function FilterVendor({ vendor }) {
+function FilterVendor({ vendor, selectedVendors, setSelectedVendors }) {
 
    const { selections, setSelections, isCleared, isSelectionsRemoved } = useContext(FiltersContext);
    const [isSelected, setIsSelected] = useState(false);
    const isFirstRender = useRef(true);
 
+
    useEffect(() => {
+
+      console.log('useEffect selections from <FilterVendor />');
 
       if (isFirstRender.current) {
          isFirstRender.current = false;
          return;
       }
+      console.log('111111');
 
-      // var newTagsList = updateSelectionList({
-      //    isSelected: isSelected,
-      //    currentList: selections.tag,
-      //    selectedValue: tag
+      setIsSelected(isCurrentlySelected(selections, vendor, 'vendor'));
+
+   }, [selectedVendors]);
+
+
+   const onClick = () => {
+
+      console.log('onClick from <FilterVendor />');
+      setIsSelected(!isSelected);
+
+      // var newList = updateSelectionList({
+      //    isSelected: !isSelected,
+      //    currentList: selections.vendor,
+      //    selectedValue: vendor
       // });
 
-      // setSelectedTags(newTagsList);
-
-      console.log('setSelections from <FilterVendor>');
-
       setSelections({ vendor: [vendor] });
+      setSelectedVendors([vendor]);
 
-      console.log('Selections: ', selections);
-      console.log('Vendor: ', vendor);
-
-   }, [isSelected]);
-
+   }
 
    return (
       <div
@@ -41,7 +49,7 @@ function FilterVendor({ vendor }) {
             id={"input-" + vendor}
             type="checkbox"
             className="wps-input-value"
-            onClick={e => setIsSelected(!isSelected)}></input>
+            onClick={onClick}></input>
 
          <label htmlFor={"input-" + vendor} className="wps-input-label">{vendor}</label>
 

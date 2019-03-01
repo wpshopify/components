@@ -12,7 +12,7 @@ function inSelection(selectionsArray, valToSearchFor) {
 
 function FilterSelectionsValue({ selectionType, val }) {
 
-   const { selections, setSelections, isSelectionsRemoved, setIsSelectionsRemoved } = useContext(FiltersContext);
+   const { selections, setSelections } = useContext(FiltersContext);
    const [isCleared, setIsCleared] = useState(false);
    const isFirstRender = useRef(true);
 
@@ -50,8 +50,6 @@ function FilterSelectionsValue({ selectionType, val }) {
       console.log('setSelections from <FilterSelectionsValue>');
 
       setSelections(buildNewSelectionObject(selectionType, removeValueFromSelections(val)));
-
-      setIsSelectionsRemoved(!isSelectionsRemoved);
 
    }, [isCleared]);
 

@@ -1,37 +1,30 @@
 import React, { useContext, useRef, useState, useEffect } from 'react';
-import { TagsContext } from '../tags';
 import { FiltersContext } from '../index';
-import {
-   updateSelectionList,
-   isSelectionsOfTypeEmpty,
-   findModifiedSelection,
-   changedSelectionMatch,
-   useSelectionsRemoved
-} from '../../../common/selections';
+import { updateSelectionList, isCurrentlySelected } from '../../../common/selections';
 
 
 
+function FilterTag({ tag, selectedTags, setSelectedTags }) {
 
-
-
-
-
-
-
-
-
-
-
-
-function FilterTag({ tag, isTagSelected }) {
-
-   const { selections, setSelections, isCleared, isSelectionsRemoved } = useContext(FiltersContext);
-   const { selectedTags, setSelectedTags } = useContext(TagsContext);
+   const { selections, setSelections } = useContext(FiltersContext);
    const [isSelected, setIsSelected] = useState(false);
 
-   const isFirstRender = useRef(true);
-   // const { isDeselected, updatedSelections } = useSelectionsRemoved(selections, 'tag', tag, selectedTags);
 
+   const isFirstRender = useRef(true);
+
+
+   useEffect(() => {
+      console.log('useEffect selections from <FilterTag />');
+
+      if (isFirstRender.current) {
+         isFirstRender.current = false;
+         return;
+      }
+      console.log('22222');
+
+      setIsSelected(isCurrentlySelected(selections, tag, 'tag'));
+
+   }, [selectedTags]);
 
 
    const onTagClick = () => {
@@ -44,16 +37,16 @@ function FilterTag({ tag, isTagSelected }) {
          selectedValue: tag
       });
 
-      // checkSelectedValue(tag);
-      setSelectedTags(newTagsList);
       setSelections({ tag: newTagsList });
+      setSelectedTags(newTagsList);
 
    }
 
 
    return (
       <li
-         data-wps-is-selected={isTagSelected()}
+         data-wps-is-current={isSelected}
+         data-wps-is-selected={isSelected}
          data-wps-tag={tag}
          className="wps-tag"
          onClick={onTagClick}>
