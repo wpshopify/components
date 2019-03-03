@@ -7,7 +7,7 @@ import { getSelectionTypes } from '../../../common/selections';
 function FilterSelectionsType({ selections, selectionType }) {
 
    return (
-      <div className="wps-filter-selection-type" key={selectionType}>
+      <div className="wps-filter-selection-type">
          <div className="wps-selections-group">
             <span className="wps-filter-selection-type-heading">{selectionType}: </span>
             <FilterSelectionsValues selectionType={selectionType} vals={selections[selectionType]} />
@@ -19,10 +19,9 @@ function FilterSelectionsType({ selections, selectionType }) {
 function FilterSelectionsTypes() {
 
    const { selections } = useContext(FiltersContext);
-
    const selectionTypes = getSelectionTypes(selections);
 
-   return selectionTypes.map(selectionType => <FilterSelectionsType selections={selections} key={selectionType} selectionType={selectionType} />);
+   return selectionTypes.map((selectionType, index) => <FilterSelectionsType selections={selections} key={index} selectionType={selectionType} />);
 
 }
 

@@ -1,6 +1,8 @@
 import React, { useEffect, useState, useContext, useRef } from 'react';
 import { FiltersContext } from '../index';
+import update from 'immutability-helper';
 import { updateSelectionList, isCurrentlySelected } from '../../../common/selections';
+
 
 function FilterVendor({ vendor, selectedVendors, setSelectedVendors }) {
 
@@ -11,32 +13,34 @@ function FilterVendor({ vendor, selectedVendors, setSelectedVendors }) {
 
    useEffect(() => {
 
-      console.log('useEffect selections from <FilterVendor />');
-
       if (isFirstRender.current) {
          isFirstRender.current = false;
          return;
       }
-      console.log('111111');
 
       setIsSelected(isCurrentlySelected(selections, vendor, 'vendor'));
 
    }, [selectedVendors]);
 
 
+
+
    const onClick = () => {
 
-      console.log('onClick from <FilterVendor />');
       setIsSelected(!isSelected);
 
-      // var newList = updateSelectionList({
-      //    isSelected: !isSelected,
-      //    currentList: selections.vendor,
-      //    selectedValue: vendor
-      // });
+      var newList = updateSelectionList({
+         isSelected: !isSelected,
+         currentList: selections.vendor,
+         selectedValue: vendor
+      });
 
-      setSelections({ vendor: [vendor] });
-      setSelectedVendors([vendor]);
+      const updatedSelections = update(selections, { $merge: { vendor: newList } });
+
+      console.log('Updated Vendors Selections ', updatedSelections);
+
+      setSelections(updatedSelections);
+      setSelectedVendors(newList);
 
    }
 

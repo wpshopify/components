@@ -10,7 +10,9 @@ function FilterTags() {
    const { isLoading, filterData, selections } = useContext(FiltersContext);
    const [selectedTags, setSelectedTags] = useState([]);
 
+
    useEffect(() => {
+
       console.log('useEffect selections from <FilterTags />', selections.tag);
       setSelectedTags(selections.tag);
 

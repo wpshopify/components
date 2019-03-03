@@ -1,30 +1,27 @@
 import React, { useContext, useRef, useState, useEffect } from 'react';
 import { FiltersContext } from '../index';
 import { updateSelectionList, isCurrentlySelected } from '../../../common/selections';
-
+import update from 'immutability-helper';
 
 
 function FilterTag({ tag, selectedTags, setSelectedTags }) {
 
    const { selections, setSelections } = useContext(FiltersContext);
    const [isSelected, setIsSelected] = useState(false);
-
-
    const isFirstRender = useRef(true);
 
 
    useEffect(() => {
-      console.log('useEffect selections from <FilterTag />');
 
       if (isFirstRender.current) {
          isFirstRender.current = false;
          return;
       }
-      console.log('22222');
 
       setIsSelected(isCurrentlySelected(selections, tag, 'tag'));
 
    }, [selectedTags]);
+
 
 
    const onTagClick = () => {
@@ -37,7 +34,9 @@ function FilterTag({ tag, selectedTags, setSelectedTags }) {
          selectedValue: tag
       });
 
-      setSelections({ tag: newTagsList });
+      const updatedSelections = update(selections, { $merge: { tag: newTagsList } });
+
+      setSelections(updatedSelections);
       setSelectedTags(newTagsList);
 
    }

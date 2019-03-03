@@ -38,6 +38,7 @@ function combineFilterTypes(selections, filterTypes) {
       return selections[filterType].map(value => filterType + ':' + value);
 
    }));
+
 }
 
 
@@ -63,7 +64,7 @@ function stringifyFilterTypes(filterTypes) {
       return '';
    }
 
-   return joinedTypes[0];
+   return joinedTypes.join(' ');
 
 }
 
@@ -73,7 +74,12 @@ function buildQueryStringFromSelections(selections) {
       return;
    }
 
-   return stringifyFilterTypes(combineFilterTypes(selections, Object.keys(selections)));
+   var keys = Object.keys(selections);
+   console.log('keys ', keys);
+   var asdfdsf = combineFilterTypes(selections, keys)
+   console.log('asdfdsf ', asdfdsf);
+
+   return stringifyFilterTypes(asdfdsf);
 
 }
 
@@ -91,24 +97,7 @@ function buildQueryStringFromSelections(selections) {
 
 
 
-function isCurrentlySelected(selections, valueSelected, type) {
 
-   // const isFirstRender = useRef(true);
-   // const [isSelected, setIsSelected] = useState(false);
-   var selected = false;
-
-   if (isEmpty(selections)) {
-      // console.log('2');
-      // setIsSelected(false);
-      selected = false;
-
-   } else if (selections[type].find(value => valueSelected === value)) {
-      selected = true;
-   }
-
-   return selected
-
-}
 
 
 
@@ -162,6 +151,7 @@ function Filters({ dropZone, showSelections, selectionsDropZone }) {
 
 
    useEffect(() => {
+
       console.log('useEffect selections from <Filters />');
 
       if (isFirstRender.current) {
@@ -169,7 +159,12 @@ function Filters({ dropZone, showSelections, selectionsDropZone }) {
          return;
       }
 
-      setQuery(buildQueryStringFromSelections(selections));
+      console.log('selections ..........', selections);
+      var queryString = buildQueryStringFromSelections(selections);
+
+      console.log('queryString ', queryString);
+
+      setQuery(queryString);
 
    }, [selections]);
 
@@ -214,9 +209,6 @@ function Filters({ dropZone, showSelections, selectionsDropZone }) {
 
 
    function fetchProducts() {
-      console.log('fetchByQueryParams(query)', fetchByQueryParams(query));
-      console.log('fetchProducts from <Filters />');
-
       return queryProducts(fetchByQueryParams(query));
    }
 

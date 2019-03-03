@@ -3,6 +3,7 @@ import { IconRemove } from "../../../common/icons/icon-remove.jsx";
 import { removeFrom } from "../../../common/utils";
 import { FiltersContext } from '../index';
 import { useSpring, useTransition, animated } from 'react-spring'
+import update from 'immutability-helper';
 
 
 function inSelection(selectionsArray, valToSearchFor) {
@@ -17,7 +18,7 @@ function FilterSelectionsValue({ selectionType, val }) {
    const isFirstRender = useRef(true);
 
 
-   function removeValueFromSelections(val) {
+   function maybeRemoveValueFromSelections(val) {
 
       var selectionsCopy = selections;
 
@@ -47,9 +48,10 @@ function FilterSelectionsValue({ selectionType, val }) {
          return;
       }
 
-      console.log('setSelections from <FilterSelectionsValue>');
+      const updatedSelectionsObj = buildNewSelectionObject(selectionType, maybeRemoveValueFromSelections(val));
+      const updatedSelections = update(selections, { $merge: updatedSelectionsObj });
 
-      setSelections(buildNewSelectionObject(selectionType, removeValueFromSelections(val)));
+      setSelections(updatedSelections);
 
    }, [isCleared]);
 
@@ -60,6 +62,7 @@ function FilterSelectionsValue({ selectionType, val }) {
 
 }
 
+
 function FilterSelectionsValues({ selectionType, vals }) {
 
    const transitions = useTransition(vals, item => item, {
@@ -69,7 +72,7 @@ function FilterSelectionsValues({ selectionType, vals }) {
    })
 
    return transitions.map(({ item, props, key }) =>
-      <animated.div key={key} style={props}>
+      <animated.div key={item} style={props}>
          <FilterSelectionsValue key={item} selectionType={selectionType} val={item} />
       </animated.div>
 

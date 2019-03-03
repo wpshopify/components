@@ -1,4 +1,4 @@
-import React, { useState, useContext } from 'react';
+import React, { useState, useContext, useEffect } from 'react';
 import Filter from '../filter';
 import isEmpty from 'lodash/isEmpty';
 import { FiltersContext } from '../index';
@@ -6,8 +6,17 @@ import { FilterVendor } from '../vendor';
 
 function FilterVendors() {
 
-   const { filterData, isLoading } = useContext(FiltersContext);
+   const { selections, filterData, isLoading } = useContext(FiltersContext);
    const [selectedVendors, setSelectedVendors] = useState([]);
+
+
+   useEffect(() => {
+
+      console.log('useEffect selections from <FilterVendors />', selections.vendor);
+      setSelectedVendors(selections.vendor);
+
+   }, [selections]);
+
 
    return (
       <Filter heading="Vendors">
