@@ -5,6 +5,8 @@ import { LoadingContext } from '../../../common/context';
 function ProductDescription({ product }) {
 
    const { isFiltering } = useContext(LoadingContext);
+   console.log('product.createdAt ', product.createdAt);
+   // console.log('product.updatedAt ', product.updatedAt);
 
    return (
 
@@ -15,10 +17,15 @@ function ProductDescription({ product }) {
          data-wps-ignore-sync="1">
 
          <div itemProp="description" className="wps-products-description" data-wps-is-ready={isFiltering ? '0' : '1'}>
+
+            <p>Created: {new Date(product.createdAt).toDateString()} at {new Date(product.createdAt).toLocaleTimeString('en-US')}</p>
+
+            <p>Updated: {new Date(product.updatedAt).toDateString()} at {new Date(product.updatedAt).toLocaleTimeString('en-US')}</p>
+
             {product.description}
          </div>
 
-      </div>
+      </div >
 
    )
 

@@ -6,7 +6,6 @@ import { FilterSelectionsWrapper } from './wrapper';
 import { objectIsEmpty } from '../../../common/utils';
 
 
-
 function FilterSelections({ dropZone }) {
 
    const { selections } = useContext(FiltersContext);

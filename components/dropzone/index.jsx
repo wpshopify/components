@@ -1,7 +1,6 @@
 import React, { useContext } from 'react';
 import ReactDOM from 'react-dom';
 import { Items } from '../items';
-
 import { LoadingContext } from '../../common/context';
 
 

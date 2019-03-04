@@ -5,11 +5,14 @@ import { FilterTags } from './tags';
 import { FilterSelections } from './selections';
 import { DropZone } from '../dropzone';
 import { LoadingContext } from '../../common/context';
+import { Sorting } from '../sorting';
 
 import assign from 'lodash/assign';
 import to from 'await-to-js';
 import isEmpty from 'lodash/isEmpty';
 import compact from 'lodash/compact';
+import size from 'lodash/size';
+
 
 const FiltersContext = React.createContext();
 
@@ -68,6 +71,8 @@ function stringifyFilterTypes(filterTypes) {
 
 }
 
+
+
 function buildQueryStringFromSelections(selections) {
 
    if (isEmpty(selections)) {
@@ -75,11 +80,8 @@ function buildQueryStringFromSelections(selections) {
    }
 
    var keys = Object.keys(selections);
-   console.log('keys ', keys);
-   var asdfdsf = combineFilterTypes(selections, keys)
-   console.log('asdfdsf ', asdfdsf);
 
-   return stringifyFilterTypes(asdfdsf);
+   return stringifyFilterTypes(combineFilterTypes(selections, keys));
 
 }
 
@@ -111,7 +113,7 @@ function buildQueryStringFromSelections(selections) {
 
 
 
-function Filters({ dropZone, showSelections, selectionsDropZone }) {
+function Filters({ dropZone, showSelections, selectionsDropZone, showSorting, sortingDropZone }) {
 
    const [selections, setSelections] = useState({});
    const [filterData, setFilterData] = useState([]);
@@ -120,7 +122,12 @@ function Filters({ dropZone, showSelections, selectionsDropZone }) {
    const [isLoading, setIsLoading] = useState(true);
    const [isCleared, setIsCleared] = useState(true);
    const [isFiltering, setIsFiltering] = useState(false);
+
    const [query, setQuery] = useState('*');
+   const [pageSize, setPageSize] = useState(9);
+   const [sortKey, setSortKey] = useState('TITLE');
+   const [reverse, setReverse] = useState(false);
+
 
    const isFirstRender = useRef(true);
 
@@ -150,6 +157,8 @@ function Filters({ dropZone, showSelections, selectionsDropZone }) {
 
 
 
+
+
    useEffect(() => {
 
       console.log('useEffect selections from <Filters />');
@@ -170,9 +179,10 @@ function Filters({ dropZone, showSelections, selectionsDropZone }) {
 
 
 
-   useEffect(() => {
 
-      console.log('useEffect query');
+
+
+   useEffect(() => {
 
       if (isFirstRender.current) {
          isFirstRender.current = false;
@@ -181,11 +191,21 @@ function Filters({ dropZone, showSelections, selectionsDropZone }) {
 
       loadData();
 
-   }, [query]);
+   }, [query, sortKey, reverse]);
 
 
 
 
+   function getFetchParams() {
+
+      return {
+         pageSize: pageSize,
+         sortKey: sortKey,
+         query: query,
+         reverse: reverse
+      }
+
+   }
 
 
 
@@ -195,7 +215,7 @@ function Filters({ dropZone, showSelections, selectionsDropZone }) {
 
          setIsFiltering(true);
 
-         var response = await fetchProducts();
+         var response = await fetchProducts(getFetchParams());
 
          setSearchData(response);
          setIsFiltering(false);
@@ -208,8 +228,8 @@ function Filters({ dropZone, showSelections, selectionsDropZone }) {
 
 
 
-   function fetchProducts() {
-      return queryProducts(fetchByQueryParams(query));
+   function fetchProducts(params) {
+      return queryProducts(fetchByQueryParams(getFetchParams()));
    }
 
 
@@ -226,11 +246,15 @@ function Filters({ dropZone, showSelections, selectionsDropZone }) {
             setIsCleared: setIsCleared,
             query: query,
             setQuery: setQuery,
+            sortKey: sortKey,
+            setSortKey: setSortKey,
             selections: selections,
-            setSelections: setSelections
+            setSelections: setSelections,
+            setReverse: setReverse
          }}>
 
             {showSelections ? <FilterSelections dropZone={selectionsDropZone} /> : ''}
+            {showSorting ? <Sorting dropZone={sortingDropZone} /> : ''}
 
             <FilterTags />
             <FilterVendors />
