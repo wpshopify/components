@@ -15,7 +15,7 @@ Component: Search
 function Search(props) {
 
    const [searchTerm, setSearchTerm] = useState('');
-   const [isFiltering, setIsFiltering] = useState(false);
+   const [isLoading, setIsLoading] = useState(false);
    const [searchData, setSearchData] = useState([]);
    const isFirstRender = useRef(true);
 
@@ -55,14 +55,14 @@ function Search(props) {
    */
    const getResults = async () => {
 
-      setIsFiltering(true);
+      setIsLoading(true);
 
       const results = await fetchProducts();
 
       console.log('results ', results);
 
       setSearchData(results);
-      setIsFiltering(false);
+      setIsLoading(false);
 
    }
 
@@ -78,7 +78,7 @@ function Search(props) {
       <>
          <form role="search" className="wps-search-form">
 
-            <div className="is-loading">{isFiltering ? 'Loading ...' : ''}</div>
+            <div className="is-loading">{isLoading ? 'Loading ...' : ''}</div>
 
             <div className="wps-search-wrapper">
 
@@ -98,7 +98,7 @@ function Search(props) {
 
          </form>
 
-         <LoadingContext.Provider value={{ isFiltering: isFiltering, from: 'search' }}>
+         <LoadingContext.Provider value={{ isLoading: isLoading, from: 'search' }}>
             <DropZone dropZone={props.dropZone} items={searchData}></DropZone>
          </LoadingContext.Provider>
 

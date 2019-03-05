@@ -3,7 +3,7 @@ import { LoadingContext } from '../../../common/context';
 
 function ProductAddButton({ product }) {
 
-   const { isFiltering } = useContext(LoadingContext);
+   const { isLoading } = useContext(LoadingContext);
 
    return (
 
@@ -22,7 +22,7 @@ function ProductAddButton({ product }) {
             href="#!"
             className="wps-btn wps-add-to-cart"
             title={product.title}
-            data-wps-is-ready={isFiltering ? '0' : '1'}>
+            data-wps-is-ready={isLoading ? '0' : '1'}>
 
             Add to cart
 

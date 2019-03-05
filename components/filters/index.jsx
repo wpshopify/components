@@ -6,12 +6,15 @@ import { FilterSelections } from './selections';
 import { DropZone } from '../dropzone';
 import { LoadingContext } from '../../common/context';
 import { Sorting } from '../sorting';
+import { Pagination } from '../pagination';
+
 
 import assign from 'lodash/assign';
 import to from 'await-to-js';
 import isEmpty from 'lodash/isEmpty';
 import compact from 'lodash/compact';
-import size from 'lodash/size';
+
+
 
 
 const FiltersContext = React.createContext();
@@ -87,6 +90,31 @@ function buildQueryStringFromSelections(selections) {
 
 
 
+function checkNextPage(items) {
+
+   if (!items || items.length == 0) {
+      return false;
+   }
+
+   return items[items.length - 1].hasNextPage;
+
+}
+
+
+function checkPrevPage(items) {
+
+   if (!items || items.length == 0) {
+      return false;
+   }
+
+   return items[0].hasPreviousPage;
+
+}
+
+
+function checkHasResults(items) {
+   return !isEmpty(items);
+}
 
 
 
@@ -104,30 +132,24 @@ function buildQueryStringFromSelections(selections) {
 
 
 
-
-
-
-
-
-
-
-
-
-function Filters({ dropZone, showSelections, selectionsDropZone, showSorting, sortingDropZone }) {
+function Filters({ dropZone, showSelections, selectionsDropZone, showSorting, sortingDropZone, showPagination, paginationDropZone }) {
 
    const [selections, setSelections] = useState({});
    const [filterData, setFilterData] = useState([]);
    const [searchData, setSearchData] = useState([]);
 
    const [isLoading, setIsLoading] = useState(true);
+   const [isBootstrapping, setIsBootstrapping] = useState(true);
+
    const [isCleared, setIsCleared] = useState(true);
-   const [isFiltering, setIsFiltering] = useState(false);
 
    const [query, setQuery] = useState('*');
-   const [pageSize, setPageSize] = useState(9);
+   const [pageSize, setPageSize] = useState(25);
    const [sortKey, setSortKey] = useState('TITLE');
    const [reverse, setReverse] = useState(false);
-
+   const [hasResults, setHasResults] = useState(false);
+   const [hasNextPage, setHasNextPage] = useState(true);
+   const [hasPrevPage, setHasPrevPage] = useState(true);
 
    const isFirstRender = useRef(true);
 
@@ -135,13 +157,10 @@ function Filters({ dropZone, showSelections, selectionsDropZone, showSorting, so
    async function getAllFilterData() {
 
       var [respError, respData] = await to(getFilterData());
-      // console.log('Filters error ', respError);
 
       var allFilteredData = formatFilterData(getDataFromResponse(respData));
 
-      console.log('allFilteredData', allFilteredData);
-
-      setIsLoading(false);
+      setIsBootstrapping(false);
       setFilterData(allFilteredData);
 
    }
@@ -151,7 +170,6 @@ function Filters({ dropZone, showSelections, selectionsDropZone, showSorting, so
    useEffect(() => {
 
       getAllFilterData();
-      setSelections({});
 
    }, []);
 
@@ -191,7 +209,7 @@ function Filters({ dropZone, showSelections, selectionsDropZone, showSorting, so
 
       loadData();
 
-   }, [query, sortKey, reverse]);
+   }, [query, sortKey, reverse, pageSize]);
 
 
 
@@ -210,15 +228,21 @@ function Filters({ dropZone, showSelections, selectionsDropZone, showSorting, so
 
 
    async function loadData() {
+      console.log('calling loadData');
 
       try {
 
-         setIsFiltering(true);
+         setIsLoading(true);
 
-         var response = await fetchProducts(getFetchParams());
+         var items = await fetchProducts(getFetchParams());
+         console.log('items', items);
 
-         setSearchData(response);
-         setIsFiltering(false);
+         setHasResults(checkHasResults(items))
+         setSearchData(items);
+         setIsLoading(false);
+
+         setHasNextPage(checkNextPage(items));
+         setHasPrevPage(checkPrevPage(items));
 
       } catch (error) {
          console.log('error ', error);
@@ -228,7 +252,7 @@ function Filters({ dropZone, showSelections, selectionsDropZone, showSorting, so
 
 
 
-   function fetchProducts(params) {
+   function fetchProducts() {
       return queryProducts(fetchByQueryParams(getFetchParams()));
    }
 
@@ -240,8 +264,10 @@ function Filters({ dropZone, showSelections, selectionsDropZone, showSorting, so
          <h2 className="wps-filters-heading">Filter by</h2>
 
          <FiltersContext.Provider value={{
+            isBootstrapping: isBootstrapping,
             filterData: filterData,
             isLoading: isLoading,
+            setIsLoading: setIsLoading,
             isCleared: isCleared,
             setIsCleared: setIsCleared,
             query: query,
@@ -250,18 +276,26 @@ function Filters({ dropZone, showSelections, selectionsDropZone, showSorting, so
             setSortKey: setSortKey,
             selections: selections,
             setSelections: setSelections,
-            setReverse: setReverse
+            setReverse: setReverse,
+            searchData: searchData,
+            setSearchData: setSearchData,
+            hasResults: hasResults,
+            hasNextPage: hasNextPage,
+            hasPrevPage: hasPrevPage,
+            pageSize: pageSize,
+            setPageSize: setPageSize
          }}>
 
             {showSelections ? <FilterSelections dropZone={selectionsDropZone} /> : ''}
             {showSorting ? <Sorting dropZone={sortingDropZone} /> : ''}
+            {showPagination ? <Pagination dropZone={paginationDropZone} /> : ''}
 
             <FilterTags />
             <FilterVendors />
 
          </FiltersContext.Provider>
 
-         <LoadingContext.Provider value={{ isFiltering: isFiltering, from: 'filters' }}>
+         <LoadingContext.Provider value={{ isLoading: isLoading, from: 'filters' }}>
             <DropZone dropZone={dropZone} items={searchData}></DropZone>
          </LoadingContext.Provider>
 

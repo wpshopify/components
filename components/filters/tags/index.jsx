@@ -7,7 +7,7 @@ import isEmpty from 'lodash/isEmpty';
 
 function FilterTags() {
 
-   const { isLoading, filterData, selections } = useContext(FiltersContext);
+   const { isBootstrapping, filterData, selections } = useContext(FiltersContext);
    const [selectedTags, setSelectedTags] = useState([]);
 
 
@@ -23,7 +23,7 @@ function FilterTags() {
          <div className="wps-filter-content">
 
             {
-               isLoading
+               isBootstrapping
                   ? <p data-wps-is-ready="0">Loading Tags ...</p>
                   : (
                      isEmpty(filterData.tag)

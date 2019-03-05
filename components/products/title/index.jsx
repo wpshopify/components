@@ -1,9 +1,9 @@
-import React, { useContext } from 'react';
+import React, { useContext, useEffect } from 'react';
 import { LoadingContext } from '../../../common/context';
 
 function ProductTitle({ product }) {
 
-   const { isFiltering } = useContext(LoadingContext);
+   const { isLoading } = useContext(LoadingContext);
 
    return (
       <div
@@ -13,7 +13,7 @@ function ProductTitle({ product }) {
          data-wps-post-id=""
          data-wps-ignore-sync="1">
 
-         <h2 itemProp="name" className="wps-products-title" data-wps-is-ready={isFiltering ? '0' : '1'}>
+         <h2 itemProp="name" className="wps-products-title" data-wps-is-ready={isLoading ? '0' : '1'}>
             {product.title}
          </h2>
 

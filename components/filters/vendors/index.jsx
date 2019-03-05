@@ -6,13 +6,12 @@ import { FilterVendor } from '../vendor';
 
 function FilterVendors() {
 
-   const { selections, filterData, isLoading } = useContext(FiltersContext);
+   const { selections, filterData, isBootstrapping } = useContext(FiltersContext);
    const [selectedVendors, setSelectedVendors] = useState([]);
 
 
    useEffect(() => {
 
-      console.log('useEffect selections from <FilterVendors />', selections.vendor);
       setSelectedVendors(selections.vendor);
 
    }, [selections]);
@@ -22,7 +21,7 @@ function FilterVendors() {
       <Filter heading="Vendors">
          <div className="wps-filter-content">
             {
-               isLoading
+               isBootstrapping
                   ? <p data-wps-is-ready="0">Loading Vendors ...</p>
                   : (
                      isEmpty(filterData)

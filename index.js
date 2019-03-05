@@ -6,3 +6,5 @@ export { FilterSelections } from './components/filters/selections';
 
 export { Filters } from './components/filters';
 export { Search } from './components/search';
+export { Pagination } from './components/pagination';
+

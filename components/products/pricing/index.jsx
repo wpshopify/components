@@ -5,7 +5,7 @@ import { LoadingContext } from '../../../common/context';
 
 function ProductPricing({ product }) {
 
-   const { isFiltering } = useContext(LoadingContext);
+   const { isLoading } = useContext(LoadingContext);
    const newPrices = getPrices(product);
 
    return (
@@ -27,7 +27,7 @@ function ProductPricing({ product }) {
             className="wps-products-price wps-product-pricing wps-products-price-one">
 
             <div className="wps-price-wrapper"
-               data-wps-is-ready={isFiltering ? '0' : '1'}
+               data-wps-is-ready={isLoading ? '0' : '1'}
                data-wps-is-multi-price="0"
                data-wps-is-price-wrapper="1">
 

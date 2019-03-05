@@ -8,7 +8,7 @@ function getFeaturedImageFromProduct(product) {
 function ProductFeaturedImage({ product }) {
 
    const featImage = getFeaturedImageFromProduct(product);
-   const { isFiltering } = useContext(LoadingContext);
+   const { isLoading } = useContext(LoadingContext);
 
    return (
 
@@ -20,13 +20,16 @@ function ProductFeaturedImage({ product }) {
             data-wps-post-id=""
             data-wps-ignore-sync="1">
 
-            <img
-               itemProp="image"
-               src={featImage.src}
-               className="wps-product-image"
-               alt={featImage.alt}
-               data-wps-is-ready={isFiltering ? '0' : '1'}
-            />
+            <div
+               className="wps-product-image-wrapper"
+               data-wps-is-ready={isLoading ? '0' : '1'}>
+               <img
+                  itemProp="image"
+                  src={featImage.src}
+                  className="wps-product-image"
+                  alt={featImage.alt}
+               />
+            </div>
 
          </div>
 
