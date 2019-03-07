@@ -2,34 +2,34 @@ import React, { useState, useContext, useEffect } from 'react';
 import Filter from '../filter';
 import isEmpty from 'lodash/isEmpty';
 import { FiltersContext } from '../index';
-import { FilterVendor } from '../vendor';
+import { FilterType } from '../type';
 
-function FilterVendors() {
+function FilterTypes() {
 
    const { selections, filterData, isBootstrapping } = useContext(FiltersContext);
-   const [selectedVendors, setSelectedVendors] = useState([]);
+   const [selectedTypes, setSelectedTypes] = useState([]);
 
 
    useEffect(() => {
 
-      setSelectedVendors(selections.vendor);
+      setSelectedTypes(selections.product_type);
 
    }, [selections]);
 
 
    return (
-      <Filter heading="Vendors">
+      <Filter heading="Types">
          <div className="wps-filter-content">
             {
                isBootstrapping
-                  ? <p data-wps-is-ready="0">Loading Vendors ...</p>
+                  ? <p data-wps-is-ready="0">Loading product types ...</p>
                   : (
                      isEmpty(filterData)
-                        ? <p>No vendors found</p>
-                        : <ul className="wps-filters-list wps-vendors">
+                        ? <p>No types found</p>
+                        : <ul className="wps-filters-list wps-types">
                            {
-                              filterData.vendors.map(vendor =>
-                                 <FilterVendor selectedVendors={selectedVendors} setSelectedVendors={setSelectedVendors} vendor={vendor} key={vendor} />
+                              filterData.types.map(type =>
+                                 <FilterType selectedTypes={selectedTypes} setSelectedTypes={setSelectedTypes} type={type} key={type} />
                               )
                            }
                         </ul>
@@ -42,5 +42,5 @@ function FilterVendors() {
 }
 
 export {
-   FilterVendors
+   FilterTypes
 }

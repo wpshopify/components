@@ -4,9 +4,9 @@ import update from 'immutability-helper';
 import { updateSelectionList, isCurrentlySelected } from '../../../common/selections';
 
 
-function FilterVendor({ vendor, selectedVendors, setSelectedVendors }) {
+function FilterType({ type, selectedTypes, setSelectedTypes }) {
 
-   const { selections, setSelections, isCleared, isSelectionsRemoved } = useContext(FiltersContext);
+   const { selections, setSelections } = useContext(FiltersContext);
    const [isSelected, setIsSelected] = useState(false);
    const isFirstRender = useRef(true);
 
@@ -18,11 +18,9 @@ function FilterVendor({ vendor, selectedVendors, setSelectedVendors }) {
          return;
       }
 
-      console.log('selectedVendors', selections);
+      setIsSelected(isCurrentlySelected(selections, type, 'product_type'));
 
-      setIsSelected(isCurrentlySelected(selections, vendor, 'vendor'));
-
-   }, [selectedVendors]);
+   }, [selectedTypes]);
 
 
 
@@ -33,16 +31,14 @@ function FilterVendor({ vendor, selectedVendors, setSelectedVendors }) {
 
       var newList = updateSelectionList({
          isSelected: !isSelected,
-         currentList: selections.vendor,
-         selectedValue: vendor
+         currentList: selections.product_type,
+         selectedValue: type
       });
 
-      const updatedSelections = update(selections, { $merge: { vendor: newList } });
-
-      console.log('Updated Vendors Selections ', updatedSelections);
+      const updatedSelections = update(selections, { $merge: { product_type: newList } });
 
       setSelections(updatedSelections);
-      setSelectedVendors(newList);
+      setSelectedTypes(newList);
 
    }
 
@@ -52,13 +48,13 @@ function FilterVendor({ vendor, selectedVendors, setSelectedVendors }) {
          data-wps-is-selected={isSelected}>
 
          <input
-            id={"input-" + vendor}
+            id={"input-" + type}
             type="checkbox"
             checked={isSelected ? 'checked' : ''}
             className="wps-input-value"
             onChange={onClick}></input>
 
-         <label htmlFor={"input-" + vendor} className="wps-input-label">{vendor}</label>
+         <label htmlFor={"input-" + type} className="wps-input-label">{type}</label>
 
       </div>
    )
@@ -66,5 +62,5 @@ function FilterVendor({ vendor, selectedVendors, setSelectedVendors }) {
 }
 
 export {
-   FilterVendor
+   FilterType
 }

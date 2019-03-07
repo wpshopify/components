@@ -13,7 +13,6 @@ function FilterTags() {
 
    useEffect(() => {
 
-      console.log('useEffect selections from <FilterTags />', selections.tag);
       setSelectedTags(selections.tag);
 
    }, [selections]);

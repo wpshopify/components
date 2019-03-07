@@ -5,17 +5,19 @@ import { FiltersContext } from '../filters';
 
 function PaginationNext() {
 
-   const { searchData, setSearchData, setIsLoading } = useContext(FiltersContext);
+   const { searchData, setSearchData, setIsLoading, isLoading } = useContext(FiltersContext);
 
    async function onNextPage() {
-      console.log('onNextPage searchData ', searchData);
 
       try {
 
          setIsLoading(true);
+
          var newProducts = await fetchNextPage(searchData);
-         console.log('newProducts.model ', newProducts.model);
-         setSearchData(newProducts.model);
+
+         console.log('NEW SEARCH DATA ', newProducts.model);
+
+         setSearchData(searchData.concat(newProducts.model));
          setIsLoading(false);
 
       } catch (err) {
@@ -24,8 +26,11 @@ function PaginationNext() {
 
    }
 
+
    return (
-      <button type="button" className="wps-btn-next-page" onClick={onNextPage}>Next page</button>
+      <button type="button" disabled={isLoading} className="wps-button wps-btn-next-page" onClick={onNextPage}>
+         {isLoading ? 'Loading ...' : 'Load more'}
+      </button>
    )
 
 }

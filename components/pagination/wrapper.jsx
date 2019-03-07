@@ -7,16 +7,25 @@ import { PaginationPageSize } from './page-size';
 
 function PaginationWrapper() {
 
-   const { hasResults, hasNextPage } = useContext(FiltersContext);
+   const { hasResults, hasPrevPage, hasNextPage, searchData } = useContext(FiltersContext);
+
+
+
+   // useEffect(() => {
+
+   //    // console.log('PaginationWrapper hasNextPage ', hasNextPage);
+   //    // console.log('PaginationWrapper hasPrevPage ', hasPrevPage);
+   //    // console.log('PaginationWrapper hasResults ', hasResults);
+
+   // }, [searchData]);
+
+
 
    return (
       <>
          {
             !hasResults ? '' :
-               hasNextPage
-                  ? <PaginationNext />
-                  : <PaginationPrev />
-
+               hasNextPage ? <PaginationNext /> : 'No more products to show!'
 
          }
 

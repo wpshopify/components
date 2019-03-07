@@ -1,10 +1,14 @@
 import React, { useEffect, useState, useRef } from 'react';
 import { getFilterData, queryProducts, fetchByQueryParams } from '/Users/andrew/www/devil/devilbox/data/www/wpshopify-api';
-import FilterVendors from './vendors';
+
+import { FilterVendors } from './vendors';
+import { FilterTypes } from './types';
+
 import { FilterTags } from './tags';
 import { FilterSelections } from './selections';
 import { DropZone } from '../dropzone';
 import { LoadingContext } from '../../common/context';
+import { checkHasResults, checkPrevPage, checkNextPage } from '../../common/pagination';
 import { Sorting } from '../sorting';
 import { Pagination } from '../pagination';
 
@@ -90,31 +94,7 @@ function buildQueryStringFromSelections(selections) {
 
 
 
-function checkNextPage(items) {
 
-   if (!items || items.length == 0) {
-      return false;
-   }
-
-   return items[items.length - 1].hasNextPage;
-
-}
-
-
-function checkPrevPage(items) {
-
-   if (!items || items.length == 0) {
-      return false;
-   }
-
-   return items[0].hasPreviousPage;
-
-}
-
-
-function checkHasResults(items) {
-   return !isEmpty(items);
-}
 
 
 
@@ -144,7 +124,7 @@ function Filters({ dropZone, showSelections, selectionsDropZone, showSorting, so
    const [isCleared, setIsCleared] = useState(true);
 
    const [query, setQuery] = useState('*');
-   const [pageSize, setPageSize] = useState(25);
+   const [first, setFirst] = useState(10);
    const [sortKey, setSortKey] = useState('TITLE');
    const [reverse, setReverse] = useState(false);
    const [hasResults, setHasResults] = useState(false);
@@ -152,6 +132,10 @@ function Filters({ dropZone, showSelections, selectionsDropZone, showSorting, so
    const [hasPrevPage, setHasPrevPage] = useState(true);
 
    const isFirstRender = useRef(true);
+
+
+
+
 
 
    async function getAllFilterData() {
@@ -209,7 +193,7 @@ function Filters({ dropZone, showSelections, selectionsDropZone, showSorting, so
 
       loadData();
 
-   }, [query, sortKey, reverse, pageSize]);
+   }, [query, sortKey, reverse, first]);
 
 
 
@@ -217,7 +201,7 @@ function Filters({ dropZone, showSelections, selectionsDropZone, showSorting, so
    function getFetchParams() {
 
       return {
-         pageSize: pageSize,
+         first: first,
          sortKey: sortKey,
          query: query,
          reverse: reverse
@@ -226,27 +210,32 @@ function Filters({ dropZone, showSelections, selectionsDropZone, showSorting, so
    }
 
 
+   function afterDataLoads(items) {
+
+      setHasResults(checkHasResults(items));
+
+      setHasNextPage(checkNextPage(items));
+      setHasPrevPage(checkPrevPage(items));
+
+      setSearchData(items);
+      setIsLoading(false);
+
+   }
+
+   function beforeDataLoads() {
+      setIsLoading(true);
+   }
+
 
    async function loadData() {
+
       console.log('calling loadData');
 
-      try {
+      beforeDataLoads();
 
-         setIsLoading(true);
+      var [itemsError, items] = await to(fetchProducts(getFetchParams()));
 
-         var items = await fetchProducts(getFetchParams());
-         console.log('items', items);
-
-         setHasResults(checkHasResults(items))
-         setSearchData(items);
-         setIsLoading(false);
-
-         setHasNextPage(checkNextPage(items));
-         setHasPrevPage(checkPrevPage(items));
-
-      } catch (error) {
-         console.log('error ', error);
-      }
+      afterDataLoads(items);
 
    }
 
@@ -282,8 +271,8 @@ function Filters({ dropZone, showSelections, selectionsDropZone, showSorting, so
             hasResults: hasResults,
             hasNextPage: hasNextPage,
             hasPrevPage: hasPrevPage,
-            pageSize: pageSize,
-            setPageSize: setPageSize
+            first: first,
+            setFirst: setFirst
          }}>
 
             {showSelections ? <FilterSelections dropZone={selectionsDropZone} /> : ''}
@@ -292,6 +281,7 @@ function Filters({ dropZone, showSelections, selectionsDropZone, showSorting, so
 
             <FilterTags />
             <FilterVendors />
+            <FilterTypes />
 
          </FiltersContext.Provider>
 
