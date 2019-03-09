@@ -1,70 +1,62 @@
-import React, { useRef, useEffect, useState } from "react";
-import merge from 'lodash/merge';
-import reduce from 'lodash/reduce';
+import React, { useRef, useEffect, useState, useContext } from "react";
 import { ProductVariant } from '../variant';
 
+import filter from 'lodash/filter';
+import merge from 'lodash/merge';
+import { createObj } from '../../../common/utils';
 
-function buildSelectedOptionsData(selectedOptions) {
+import { ProductBuyButtonContext } from '../buy-button';
+import { ProductOptionContext } from '../option';
 
-   // Reduce to a single object
-   return reduce(JSON.parse(selectedOptions), merge);
+
+
+
+function getAvailableVariants(product) {
+
+   var combinations = product.variants.map(variant => {
+      return variant.selectedOptions.map(selectableOption => createObj(selectableOption.name, selectableOption.value));
+   });
+
+   return combinations.map(combination => {
+      return merge(...combination);
+   });
 
 }
 
 
-function findVariantFromSelectedOptions(product, selectedOptions) {
-   return client.product.variantForOptions(product, buildSelectedOptionsData(selectedOptions));
-}
 
 
 
-function ProductVariants({ option, isOpen, setIsOpen, toggleVariantsModal }) {
-
-   const element = useRef();
-
-   const [selectedOptions, setSelectedOptions] = useState([]);
 
 
-   function handleClick(e) {
 
-      if (!element.current.contains(e.target)) {
+function ProductVariants({ option, isOpen }) {
 
-         // outside click
-         setIsOpen(false);
-         setSelectedOptions([]);
-      }
+   const isFirstRender = useRef(true);
 
-   }
+   const { product, setAvailableVariants } = useContext(ProductBuyButtonContext);
+   const { selectedOption } = useContext(ProductOptionContext);
 
-
-   function handleEsc(event) {
-
-      if (event.keyCode === 27) {
-         setSelectedOptions([]);
-         setIsOpen(false);
-      }
-
-   }
 
    useEffect(() => {
-      console.log('useEffect');
-      // add when mounted
-      document.addEventListener("mousedown", handleClick);
-      document.addEventListener("keydown", handleEsc, false);
 
-      // return function to be called when unmounted
-      return () => {
-         document.removeEventListener("mousedown", handleClick);
-         document.removeEventListener("keydown", handleEsc, false);
-
+      if (isFirstRender.current) {
+         isFirstRender.current = false;
+         return;
       }
 
-   }, []);
+      var filteredavialablevariants = filter(getAvailableVariants(product), selectedOption);
+
+      setAvailableVariants(filteredavialablevariants);
+
+
+   }, [selectedOption]);
+
 
 
    return (
-      <ul ref={element} className="wps-modal wps-variants" data-wps-modal-is-open={isOpen}>
-         {option.values.map(optionValue => <ProductVariant key={optionValue.value} option={optionValue} toggleVariantsModal={toggleVariantsModal} />)}
+      <ul className="wps-modal wps-variants" data-wps-modal-is-open={isOpen}>
+         {option.values.map(optionValue => <ProductVariant key={optionValue.value} variant={optionValue} />)}
       </ul>
    );
 

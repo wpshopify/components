@@ -1,6 +1,9 @@
-import React from 'react';
+import React, { useContext } from 'react';
+import { ProductBuyButtonContext } from '../buy-button';
 
-function ProductQuantity({ product, isLoading }) {
+function ProductQuantity() {
+
+   const { product, isLoading } = useContext(ProductBuyButtonContext);
 
    return (
       <div

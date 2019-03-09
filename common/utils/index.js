@@ -27,7 +27,19 @@ function objectIsEmpty(object) {
 
 }
 
+
+function createObj(name, value) {
+
+   const newObbj = {};
+
+   newObbj[name] = value;
+
+   return newObbj;
+
+}
+
 export {
    objectIsEmpty,
+   createObj,
    removeFrom
 }
