@@ -1,16 +1,20 @@
-import React, { useState, useRef, useEffect } from 'react';
-import Product from '../products';
+import React, { useState, useRef, useEffect, useContext } from 'react';
+import { Product } from '../products';
 import size from 'lodash/size';
+import { LoadingContext } from '../../common/context';
+
 
 function Items({ items, from }) {
 
    const [isActive, setIsActive] = useState(0);
    const isFirstRender = useRef(true);
+   const { isLoading } = useContext(LoadingContext);
 
 
    function hasItems(items) {
       return size(items) !== 0 ? true : false;
    }
+
 
 
    useEffect(() => {
@@ -24,6 +28,9 @@ function Items({ items, from }) {
       setIsActive(1);
 
    }, [items]);
+
+
+
 
    function resetAllOtherDropzones() {
 
@@ -47,13 +54,14 @@ function Items({ items, from }) {
    }
 
 
+
    return (
       <section className="wps-dropzone" data-wps-dropzone-for={from} data-wps-dropzone-is-active={isActive}>
          {
             !hasItems(items)
                ? <p>No results found</p>
                : items.map(item => (
-                  <Product key={item.id} product={item} ></Product>
+                  <Product key={item.id} product={item} isLoading={isLoading}></Product>
                ))
          }
       </section>

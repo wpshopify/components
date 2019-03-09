@@ -1,5 +1,5 @@
-export { default as Product } from './components/products';
-export { default as ProductTitle } from './components/products/title';
+export { Product } from './components/products';
+export { ProductTitle } from './components/products/title';
 export { Sorting } from './components/sorting';
 
 export { FilterSelections } from './components/filters/selections';

@@ -1,11 +1,9 @@
-import React, { useContext } from 'react';
+import React from 'react';
 import { getPrices } from '../../../common/pricing/data';
 import { formatPriceToCurrency } from '../../../common/pricing/formatting';
-import { LoadingContext } from '../../../common/context';
 
-function ProductPricing({ product }) {
+function ProductPricing({ product, isLoading }) {
 
-   const { isLoading } = useContext(LoadingContext);
    const newPrices = getPrices(product);
 
    return (
@@ -43,4 +41,6 @@ function ProductPricing({ product }) {
 
 }
 
-export default ProductPricing;
+export {
+   ProductPricing
+}

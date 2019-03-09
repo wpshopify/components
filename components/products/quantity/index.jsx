@@ -1,9 +1,6 @@
-import React, { useContext } from 'react';
-import { LoadingContext } from '../../../common/context';
+import React from 'react';
 
-function ProductQuantity({ product }) {
-
-   const { isLoading } = useContext(LoadingContext);
+function ProductQuantity({ product, isLoading }) {
 
    return (
       <div
@@ -30,4 +27,6 @@ function ProductQuantity({ product }) {
 
 }
 
-export default ProductQuantity;
+export {
+   ProductQuantity
+}

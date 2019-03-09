@@ -1,10 +1,7 @@
-import React, { useContext } from 'react';
-import { LoadingContext } from '../../../common/context';
+import React from 'react';
 
 
-function ProductDescription({ product }) {
-
-   const { isLoading } = useContext(LoadingContext);
+function ProductDescription({ product, isLoading }) {
 
    return (
 
@@ -29,4 +26,6 @@ function ProductDescription({ product }) {
 
 }
 
-export default ProductDescription;
+export {
+   ProductDescription
+}

@@ -1,39 +1,90 @@
-import React, { useContext } from 'react';
-import ProductVariants from '../variants';
-import { LoadingContext } from '../../../common/context';
+import React, { useState, useEffect } from 'react';
+import { ProductVariants } from '../variants';
+import { addLineItems } from '/Users/andrew/www/devil/devilbox/data/www/wpshopify-api';
 
-function ProductOption({ option }) {
+const ProductOptionContext = React.createContext();
 
-   const { isLoading } = useContext(LoadingContext);
+function getLineItemsToAdd() {
+   return [
+      { variantId: 'Z2lkOi8vc2hvcGlmeS9Qcm9kdWN0VmFyaWFudC8yOTEwNjAyMjc5Mg==', quantity: 5 }
+   ];
+}
+
+function ProductOption({ option, isLoading, product }) {
+
+   const [isOpen, setIsOpen] = useState(false);
+   const [isOptionSelected, setIsOptionSelected] = useState(false);
+
+
+
+   useEffect(() => {
+      console.log('isOptionSelected ', isOptionSelected);
+      // setIsOptionSelected(!isOptionSelected);
+   }, [isOptionSelected]);
+
+
+   async function toggleVariantsModal() {
+
+      console.log('option ', option);
+      console.log('product ', product);
+
+      setIsOpen(!isOpen);
+
+
+
+
+      const lineItems = getLineItemsToAdd();
+
+      try {
+         const result = await addLineItems(lineItems);
+         console.log('result ', result.userErrors[0].message);
+
+      } catch (errrr) {
+         console.log('errrr ', errrr);
+      }
+
+
+
+   }
 
    return (
 
-      <div
-         className="wps-btn-dropdown wps-col wps-col-1"
-         data-selected="false"
-         data-active="false"
-         data-open="false"
-         data-option-name=""
-         data-selected-val=""
-         data-option="">
+      <ProductOptionContext.Provider value={{
+         isOptionSelected: isOptionSelected,
+         setIsOptionSelected: setIsOptionSelected
+      }}>
 
-         <a
-            href="#!"
-            className="wps-btn wps-icon wps-icon-dropdown wps-modal-trigger"
-            data-option=""
-            data-option-id=""
-            data-wps-is-ready={isLoading ? '0' : '1'}>
+         <div
+            className="wps-btn-dropdown wps-col wps-col-1"
+            data-wps-is-selected={isOptionSelected}>
 
-            {option.name}
+            <a
+               href="#!"
+               className="wps-btn wps-icon wps-icon-dropdown wps-modal-trigger"
+               data-option=""
+               data-option-id=""
+               data-wps-is-ready={isLoading ? '0' : '1'}
+               onClick={toggleVariantsModal}>
 
-         </a>
+               {option.name}
 
-         <ProductVariants option={option}></ProductVariants>
+            </a>
 
-      </div>
+            <ProductVariants
+               setIsOpen={setIsOpen}
+               isOpen={isOpen}
+               option={option}
+               toggleVariantsModal={toggleVariantsModal} />
+
+         </div>
+
+      </ProductOptionContext.Provider>
 
    )
 
 }
 
-export default ProductOption;
+export {
+   ProductOption,
+   ProductOptionContext
+}

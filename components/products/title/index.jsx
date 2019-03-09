@@ -1,9 +1,6 @@
-import React, { useContext, useEffect } from 'react';
-import { LoadingContext } from '../../../common/context';
+import React from 'react';
 
-function ProductTitle({ product }) {
-
-   const { isLoading } = useContext(LoadingContext);
+function ProductTitle({ product, isLoading }) {
 
    return (
       <div
@@ -22,4 +19,6 @@ function ProductTitle({ product }) {
 
 }
 
-export default ProductTitle;
+export {
+   ProductTitle
+}

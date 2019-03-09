@@ -9,8 +9,6 @@ function PaginationWrapper() {
 
    const { hasResults, hasPrevPage, hasNextPage, searchData } = useContext(FiltersContext);
 
-
-
    // useEffect(() => {
 
    //    // console.log('PaginationWrapper hasNextPage ', hasNextPage);

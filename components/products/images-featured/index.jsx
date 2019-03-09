@@ -1,14 +1,12 @@
-import React, { useContext } from 'react';
-import { LoadingContext } from '../../../common/context';
+import React from 'react';
 
 function getFeaturedImageFromProduct(product) {
    return product.images[0];
 }
 
-function ProductFeaturedImage({ product }) {
+function ProductFeaturedImage({ product, isLoading }) {
 
    const featImage = getFeaturedImageFromProduct(product);
-   const { isLoading } = useContext(LoadingContext);
 
    return (
 
@@ -41,4 +39,6 @@ function ProductFeaturedImage({ product }) {
 
 }
 
-export default ProductFeaturedImage;
+export {
+   ProductFeaturedImage
+}

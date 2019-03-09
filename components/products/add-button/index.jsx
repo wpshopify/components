@@ -1,9 +1,7 @@
-import React, { useContext } from 'react';
-import { LoadingContext } from '../../../common/context';
+import React from 'react';
 
-function ProductAddButton({ product }) {
 
-   const { isLoading } = useContext(LoadingContext);
+function ProductAddButton({ product, isLoading }) {
 
    return (
 
@@ -34,4 +32,7 @@ function ProductAddButton({ product }) {
 
 }
 
-export default ProductAddButton;
+
+export {
+   ProductAddButton
+}

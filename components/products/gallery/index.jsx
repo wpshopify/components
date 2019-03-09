@@ -1,9 +1,7 @@
-import React, { useContext } from 'react';
-import { LoadingContext } from '../../../common/context';
+import React from 'react';
 
-function ProductGallery({ product }) {
 
-   const isLoading = useContext(LoadingContext);
+function ProductGallery({ product, isLoading }) {
 
    return (
       <h2
@@ -18,4 +16,6 @@ function ProductGallery({ product }) {
 
 }
 
-export default ProductGallery;
+export {
+   ProductGallery
+}
