@@ -1,7 +1,7 @@
 import React, { useState, useRef, useEffect, useContext } from 'react';
 import { Product } from '../products';
 import size from 'lodash/size';
-import { LoadingContext } from '../../common/context';
+import { LoadingContext } from '../../common/state/context';
 
 
 function Items({ items, from }) {

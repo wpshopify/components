@@ -1,31 +1,22 @@
-import React, { useState } from 'react';
+import React, { useState, useReducer, useContext } from 'react';
 import { ProductQuantity } from '../quantity';
 import { ProductOptions } from '../options';
 import { ProductAddButton } from '../add-button';
 
-const ProductBuyButtonContext = React.createContext();
+import { ProductBuyButtonReducer } from '../../../common/state/reducer/buy-button';
+import { getProductBuyButtonInitialState } from './state';
+import { ProductBuyButtonContext } from './context';
 
-function ProductBuyButton({ product, isLoading }) {
+function ProductBuyButton(props) {
 
-   const [allOptionsSelected, setAllOptionsSelected] = useState(false);
-   const [selectedOptions, setSelectedOptions] = useState({});
-   const [availableVariants, setAvailableVariants] = useState([]);
-   const [missingSelections, setMissingSelections] = useState(false);
+   const [state, dispatch] = useReducer(ProductBuyButtonReducer, getProductBuyButtonInitialState(props));
 
    return (
       <div className="wps-buy-button-wrapper">
 
          <ProductBuyButtonContext.Provider value={{
-            selectedOptions: selectedOptions,
-            setSelectedOptions: setSelectedOptions,
-            availableVariants: availableVariants,
-            setAvailableVariants: setAvailableVariants,
-            allOptionsSelected: allOptionsSelected,
-            setAllOptionsSelected: setAllOptionsSelected,
-            missingSelections: missingSelections,
-            setMissingSelections: setMissingSelections,
-            product: product,
-            isLoading: isLoading
+            state: state,
+            dispatch: dispatch
          }}>
 
             <ProductQuantity />

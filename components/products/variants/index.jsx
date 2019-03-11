@@ -1,40 +1,14 @@
 import React, { useRef, useEffect, useState, useContext } from "react";
 import { ProductVariant } from '../variant';
-
-import filter from 'lodash/filter';
-import merge from 'lodash/merge';
-import { createObj } from '../../../common/utils';
-
-import { ProductBuyButtonContext } from '../buy-button';
+import { ProductBuyButtonContext } from '../buy-button/context';
 import { ProductOptionContext } from '../option';
-
-
-
-
-function getAvailableVariants(product) {
-
-   var combinations = product.variants.map(variant => {
-      return variant.selectedOptions.map(selectableOption => createObj(selectableOption.name, selectableOption.value));
-   });
-
-   return combinations.map(combination => {
-      return merge(...combination);
-   });
-
-}
-
-
-
-
-
 
 
 
 function ProductVariants({ option, isOpen }) {
 
    const isFirstRender = useRef(true);
-
-   const { product, setAvailableVariants } = useContext(ProductBuyButtonContext);
+   const { dispatch } = useContext(ProductBuyButtonContext);
    const { selectedOption } = useContext(ProductOptionContext);
 
 
@@ -45,13 +19,9 @@ function ProductVariants({ option, isOpen }) {
          return;
       }
 
-      var filteredavialablevariants = filter(getAvailableVariants(product), selectedOption);
-
-      setAvailableVariants(filteredavialablevariants);
-
+      dispatch({ type: "SET_AVAILABLE_VARIANTS", payload: selectedOption });
 
    }, [selectedOption]);
-
 
 
    return (

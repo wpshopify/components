@@ -3,7 +3,7 @@ import React, { useState, useEffect, useRef } from 'react';
 import { queryProducts, fetchByTitleParams } from '/Users/andrew/www/devil/devilbox/data/www/wpshopify-api';
 import { useDebounce } from 'use-debounce';
 import { DropZone } from '../dropzone';
-import { LoadingContext } from '../../common/context';
+import { LoadingContext } from '../../common/state/context';
 
 
 

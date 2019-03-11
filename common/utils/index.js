@@ -1,6 +1,7 @@
 import isEmpty from 'lodash/isEmpty';
 import forOwn from 'lodash/forOwn';
 import without from 'lodash/without';
+import mapKeys from 'lodash/mapKeys';
 
 
 function removeFrom(array, valueToRemove) {
@@ -38,8 +39,19 @@ function createObj(name, value) {
 
 }
 
+
+/*
+
+Lowercase Object Keys
+
+*/
+function lowercaseObjKeys(obj) {
+   return mapKeys(obj, (value, key) => key.toLowerCase());
+}
+
 export {
    objectIsEmpty,
    createObj,
-   removeFrom
+   removeFrom,
+   lowercaseObjKeys
 }

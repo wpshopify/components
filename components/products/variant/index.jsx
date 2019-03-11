@@ -1,9 +1,9 @@
 import React, { useContext, useState, useEffect, useRef } from 'react';
 import { ProductOptionContext } from '../option';
-import { ProductBuyButtonContext } from '../buy-button';
+import { ProductBuyButtonContext } from '../buy-button/context';
 import update from 'immutability-helper';
 import find from 'lodash/find';
-import size from 'lodash/size';
+import isEmpty from 'lodash/isEmpty';
 import { createObj } from '../../../common/utils';
 
 
@@ -27,13 +27,7 @@ function ProductVariant({ variant }) {
       toggleDropdown
    } = useContext(ProductOptionContext);
 
-   const {
-      availableVariants,
-      selectedOptions,
-      setSelectedOptions,
-      allOptionsSelected
-   } = useContext(ProductBuyButtonContext);
-
+   const { state, dispatch } = useContext(ProductBuyButtonContext);
 
 
    function onVariantSelection() {
@@ -43,19 +37,20 @@ function ProductVariant({ variant }) {
       // console.log('newlySelected ', newlySelected);
       // console.log('selectedOptions ', selectedOptions);
 
-      const optionsUpdated = updateExistingSelections(selectedOptions, newlySelected);
+      // const optionsUpdated = updateExistingSelections(state.selectedOptions, newlySelected);
 
       // Opens or closes the dropdown
       toggleDropdown();
 
+      // console.log('optionsUpdated ', optionsUpdated);
 
-      setSelectedOptions(optionsUpdated);
+      // setSelectedOptions(optionsUpdated);
+      dispatch({ type: "UPDATE_SELECTED_OPTIONS", payload: newlySelected });
+
       setSelectedOption(newlySelected);
-
       setIsOptionSelected(true);
 
    }
-
 
 
    useEffect(() => {
@@ -66,7 +61,7 @@ function ProductVariant({ variant }) {
       }
 
       var thingtocheck = createObj(option.name, variant.value);
-      var found = find(availableVariants, thingtocheck);
+      var found = find(state.availableVariants, thingtocheck);
 
       if (found === undefined) {
          setIsSelectable(false);
@@ -75,8 +70,25 @@ function ProductVariant({ variant }) {
          setIsSelectable(true);
       }
 
-   }, [availableVariants]);
+   }, [state.availableVariants]);
 
+
+
+   useEffect(() => {
+
+      if (isFirstRender.current) {
+         isFirstRender.current = false;
+         return;
+      }
+
+      // console.log('state.allOptionsSelected', state.allOptionsSelected);
+      // console.log('state.selectedOptions ', state.selectedOptions);
+
+      if (isEmpty(state.selectedOptions)) {
+         setIsSelectable(true);
+      }
+
+   }, [state.selectedOptions]);
 
 
    return (
