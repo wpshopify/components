@@ -6,14 +6,14 @@ import { CartHeader } from '../cart-header';
 import { CartContents } from '../cart-contents';
 import { CartFooter } from '../cart-footer';
 
-import { CartContext } from '../cart/context';
-import { slideInRight, slideOutRight } from '../../common/animations';
+import { ShopContext } from '../../shop/context';
+import { slideInRight, slideOutRight } from '../../../common/animations';
 
 function CartBody() {
 
    const cart = useRef();
    const isFirstRender = useRef(true);
-   const { state } = useContext(CartContext);
+   const { state } = useContext(ShopContext);
 
    useEffect(() => {
 

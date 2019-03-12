@@ -3,6 +3,7 @@ export { ProductTitle } from './components/products/title';
 export { Sorting } from './components/sorting';
 export { Cart } from './components/cart';
 
+export { Shop } from './components/shop';
 
 export { FilterSelections } from './components/filters/selections';
 

@@ -1,6 +1,4 @@
-import update from 'immutability-helper';
-
-function CartReducer(state, action) {
+function ShopReducer(state, action) {
 
    switch (action.type) {
 
@@ -18,6 +16,13 @@ function CartReducer(state, action) {
             cartOpen: false
          }
 
+      case "SET_CHECKOUT":
+
+         return {
+            ...state,
+            checkout: action.payload
+         }
+
       default:
          return state;
 
@@ -26,5 +31,5 @@ function CartReducer(state, action) {
 }
 
 export {
-   CartReducer
+   ShopReducer
 }

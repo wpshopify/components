@@ -1,9 +1,9 @@
 import React, { useContext } from 'react';
-import { CartContext } from '../cart/context';
+import { ShopContext } from '../../shop/context';
 
 function CartTitle() {
 
-   const { state } = useContext(CartContext);
+   const { state } = useContext(ShopContext);
 
    return (
       <h2 className="wps-cart-title">{state.title}</h2>

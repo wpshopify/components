@@ -1,27 +1,23 @@
-import React, { useState, useReducer, useContext } from 'react';
-import { CartInitialState } from './initial-state';
-import { CartContext } from './context';
-import { CartReducer } from './reducer';
-import { CartButton } from '../cart-button';
-import { CartBody } from '../cart-body';
+import React, { useState, useReducer, useContext, useEffect } from 'react';
+// import { CartInitialState } from './initial-state';
+// import { CartContext } from './context';
+// import { ShopContext } from '../shop/context';
+import { CartButton } from './cart-button';
+import { CartBody } from './cart-body';
+// import { buildInstances } from '/Users/andrew/www/devil/devilbox/data/www/wpshopify-api';
 
+function Cart() {
 
-function Cart(props) {
+   //   const { state, dispatch } = useContext(ShopContext);
 
-   const [state, dispatch] = useReducer(CartReducer, CartInitialState(props));
-   console.log('cart', state);
+   // const [state, dispatch] = useReducer(CartReducer, CartInitialState(props));
+
+   // console.log('state', state);
 
    return (
       <>
-         <CartContext.Provider value={{
-            state: state,
-            dispatch: dispatch
-         }}>
-
-            <CartButton />
-            <CartBody />
-
-         </CartContext.Provider>
+         <CartButton />
+         <CartBody />
       </>
    )
 

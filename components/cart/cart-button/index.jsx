@@ -2,11 +2,11 @@ import React, { useContext } from 'react';
 import ReactDOM from 'react-dom';
 import { CartCounter } from '../cart-counter';
 import { CartIcon } from '../cart-icon';
-import { CartContext } from '../cart/context';
+import { ShopContext } from '../../shop/context';
 
 function CartButton() {
 
-   const { state, dispatch } = useContext(CartContext);
+   const { state, dispatch } = useContext(ShopContext);
 
    function openCart() {
       console.log('openCart');
