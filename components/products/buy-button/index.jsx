@@ -31,6 +31,5 @@ function ProductBuyButton(props) {
 }
 
 export {
-   ProductBuyButton,
-   ProductBuyButtonContext
+   ProductBuyButton
 }

@@ -25,6 +25,31 @@ function pulse(element, cb = false) {
 
 }
 
+function slideInRight(element) {
+   console.log('elementelement', element);
+
+   return anime({
+      targets: element,
+      translateX: ['100%', '0%'],
+      duration: 110,
+      easing: 'easeInOutQuad'
+   });
+
+}
+
+function slideOutRight(element) {
+   console.log('element slideOutRight', element);
+
+   return anime({
+      targets: element,
+      translateX: ['0%', '110%'],
+      duration: 110,
+      easing: 'easeInOutQuad'
+   });
+}
+
 export {
-   pulse
+   pulse,
+   slideInRight,
+   slideOutRight
 }
