@@ -1,38 +1,42 @@
 import React, { useContext, useRef, useEffect, useState } from 'react';
 import { ProductBuyButtonContext } from '../buy-button/context';
-import { pulse } from '../../../common/animations';
+import { ShopContext } from '../../../shop/context';
+
+import { pulse } from '../../../../common/animations';
 import { addLineItems, findVariantFromSelectedOptions } from '/Users/andrew/www/devil/devilbox/data/www/wpshopify-api';
-import { lowercaseObjKeys } from '../../../common/utils';
+import { lowercaseObjKeys } from '../../../../common/utils';
 
 
 function ProductAddButton() {
 
    const button = useRef();
    const isFirstRender = useRef(false);
-   const { state, dispatch } = useContext(ProductBuyButtonContext);
+   const { buyButtonState, buyButtonDispatch } = useContext(ProductBuyButtonContext);
+   const { shopState, shopDispatch } = useContext(ShopContext);
+
 
    async function handleClick() {
-      console.log('<ProductAddButton /> -- selectedOptions', state.selectedOptions);
-      console.log('<ProductAddButton /> -- allOptionsSelected', state.allOptionsSelected);
+      console.log('<ProductAddButton /> -- selectedOptions', buyButtonState.selectedOptions);
+      console.log('<ProductAddButton /> -- allOptionsSelected', buyButtonState.allOptionsSelected);
 
       // check if all options are selected 
       // if some are not selected, highlight them / shake them 
-      if (!state.allOptionsSelected) {
+      if (!buyButtonState.allOptionsSelected) {
          console.log('Not all dropdowns are selected');
          // setMissingSelections(true);
-         dispatch({ type: "SET_MISSING_SELECTIONS", payload: true });
+         buyButtonDispatch({ type: "SET_MISSING_SELECTIONS", payload: true });
 
       } else {
 
-         dispatch({ type: "SET_IS_ADDING_TO_CART", payload: true });
+         buyButtonDispatch({ type: "SET_IS_ADDING_TO_CART", payload: true });
 
          // if all options are selected, output the selected options
-         // var lowercased = lowercaseObjKeys(state.selectedOptions);
-         console.log('state.selectedOptions', state.selectedOptions);
-         console.log('state.product', state.product);
+         // var lowercased = lowercaseObjKeys(buyButtonState.selectedOptions);
+         console.log('buyButtonState.selectedOptions', buyButtonState.selectedOptions);
+         console.log('buyButtonState.product', buyButtonState.product);
          // console.log('lowercased ', lowercased);
 
-         const variant = findVariantFromSelectedOptions(state.product, state.selectedOptions);
+         const variant = findVariantFromSelectedOptions(buyButtonState.product, buyButtonState.selectedOptions);
 
          console.log('variant found? ', variant.id);
 
@@ -42,14 +46,18 @@ function ProductAddButton() {
 
          try {
 
-            var added = await addLineItems(lineItems);
-            console.log('added ', added);
+            var updatedCheckout = await addLineItems(lineItems);
+            console.log('updatedCheckout ', updatedCheckout.totalPrice);
 
             // Need to check for any errors here
-            if (added) {
-               dispatch({ type: "SET_ALL_SELECTED_OPTIONS", payload: false });
-               dispatch({ type: "SET_IS_ADDING_TO_CART", payload: false });
-               dispatch({ type: "REMOVE_SELECTED_OPTIONS" });
+            if (updatedCheckout) {
+
+               buyButtonDispatch({ type: "SET_ALL_SELECTED_OPTIONS", payload: false });
+               buyButtonDispatch({ type: "SET_IS_ADDING_TO_CART", payload: false });
+               buyButtonDispatch({ type: "REMOVE_SELECTED_OPTIONS" });
+
+               shopDispatch({ type: "UPDATED_CHECKOUT", payload: updatedCheckout });
+
             }
 
          } catch (erro) {
@@ -70,18 +78,18 @@ function ProductAddButton() {
          return;
       }
 
-      if (state.allOptionsSelected) {
+      if (buyButtonState.allOptionsSelected) {
          pulse(button.current);
       }
 
-   }, [state.allOptionsSelected]);
+   }, [buyButtonState.allOptionsSelected]);
 
    return (
 
       <div
          className="wps-component wps-component-products-add-button wps-btn-wrapper"
          data-wps-is-component-wrapper
-         data-wps-product-id={state.product.id}
+         data-wps-product-id={buyButtonState.product.id}
          data-wps-post-id=""
          data-wps-ignore-sync="1">
 
@@ -93,13 +101,13 @@ function ProductAddButton() {
             itemType="https://schema.org/BuyAction"
             href="#!"
             className="wps-btn wps-add-to-cart"
-            title={state.product.title}
-            data-wps-is-ready={state.isLoading ? '0' : '1'}
-            data-wps-is-adding={state.isAdding ? '1' : '0'}
-            disabled={state.isAdding ? true : false}
+            title={buyButtonState.product.title}
+            data-wps-is-ready={buyButtonState.isLoading ? '0' : '1'}
+            data-wps-is-adding={buyButtonState.isAdding ? '1' : '0'}
+            disabled={buyButtonState.isAdding ? true : false}
             onClick={handleClick}>
 
-            {state.isAdding ? 'Adding ...' : 'Add to cart'}
+            {buyButtonState.isAdding ? 'Adding ...' : 'Add to cart'}
 
          </button>
 

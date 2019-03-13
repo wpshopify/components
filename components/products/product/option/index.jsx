@@ -3,7 +3,7 @@ import { ProductVariants } from '../variants';
 import find from 'lodash/find';
 import isEmpty from 'lodash/isEmpty';
 import { ProductBuyButtonContext } from '../buy-button/context';
-import { pulse } from '../../../common/animations';
+import { pulse } from '../../../../common/animations';
 
 
 const ProductOptionContext = React.createContext();
@@ -16,7 +16,7 @@ function ProductOption({ option }) {
    const dropdown = useRef();
    const dropdownTrigger = useRef();
    const isFirstRender = useRef(true);
-   const { state, dispatch } = useContext(ProductBuyButtonContext);
+   const { buyButtonState, buyButtonDispatch } = useContext(ProductBuyButtonContext);
 
 
    function getOptionName(selectedOption, option) {
@@ -59,7 +59,7 @@ function ProductOption({ option }) {
 
    /*
    
-   When state.availableVariants changes ...
+   When buyButtonState.availableVariants changes ...
    
    */
    useEffect(() => {
@@ -69,17 +69,17 @@ function ProductOption({ option }) {
          return;
       }
 
-      var optionIsAvailable = find(state.availableVariants, selectedOption);
+      var optionIsAvailable = find(buyButtonState.availableVariants, selectedOption);
 
       if (optionIsAvailable === undefined) {
 
          setIsOptionSelected(false);
 
-         dispatch({ type: "UNSET_SELECTED_OPTIONS", payload: option.name });
+         buyButtonDispatch({ type: "UNSET_SELECTED_OPTIONS", payload: option.name });
 
       }
 
-   }, [state.availableVariants]);
+   }, [buyButtonState.availableVariants]);
 
 
 
@@ -90,14 +90,14 @@ function ProductOption({ option }) {
          return;
       }
 
-      // console.log('state.allOptionsSelected', state.allOptionsSelected);
-      // console.log('state.selectedOptions ', state.selectedOptions);
+      // console.log('buyButtonState.allOptionsSelected', buyButtonState.allOptionsSelected);
+      // console.log('buyButtonState.selectedOptions ', buyButtonState.selectedOptions);
 
-      if (isEmpty(state.selectedOptions)) {
+      if (isEmpty(buyButtonState.selectedOptions)) {
          setIsOptionSelected(false);
       }
 
-   }, [state.selectedOptions]);
+   }, [buyButtonState.selectedOptions]);
 
 
    /*
@@ -127,7 +127,7 @@ function ProductOption({ option }) {
 
    /*
 
-   When state.missingSelections changes ...
+   When buyButtonState.missingSelections changes ...
 
    */
    useEffect(() => {
@@ -137,15 +137,15 @@ function ProductOption({ option }) {
          return;
       }
 
-      if (!state.missingSelections) {
+      if (!buyButtonState.missingSelections) {
          return;
       }
 
       if (!isOptionSelected) {
-         pulse(dropdownTrigger.current, () => dispatch({ type: "SET_MISSING_SELECTIONS", payload: false }));
+         pulse(dropdownTrigger.current, () => buyButtonDispatch({ type: "SET_MISSING_SELECTIONS", payload: false }));
       }
 
-   }, [state.missingSelections]);
+   }, [buyButtonState.missingSelections]);
 
 
    return (
@@ -169,7 +169,7 @@ function ProductOption({ option }) {
                className="wps-btn wps-icon wps-icon-dropdown wps-modal-trigger"
                data-option=""
                data-option-id=""
-               data-wps-is-ready={state.isLoading ? '0' : '1'}
+               data-wps-is-ready={buyButtonState.isLoading ? '0' : '1'}
                onClick={toggleDropdown}
                ref={dropdownTrigger}>
 

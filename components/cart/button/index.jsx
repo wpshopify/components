@@ -1,16 +1,15 @@
 import React, { useContext } from 'react';
 import ReactDOM from 'react-dom';
-import { CartCounter } from '../cart-counter';
-import { CartIcon } from '../cart-icon';
-import { ShopContext } from '../../shop/context';
+import { CartCounter } from '../counter';
+import { CartIcon } from '../icon';
+import { CartContext } from '../context';
 
 function CartButton() {
 
-   const { state, dispatch } = useContext(ShopContext);
+   const { cartState, cartDispatch } = useContext(CartContext);
 
    function openCart() {
-      console.log('openCart');
-      dispatch({ type: "OPEN_CART" });
+      cartDispatch({ type: "OPEN_CART" });
    }
 
    return (
@@ -21,7 +20,7 @@ function CartButton() {
                   <CartCounter />
                   <CartIcon />
                </button>,
-               document.getElementById(state.cartButtonDropzone)
+               document.getElementById(cartState.cartButtonDropzone)
             )
          }
       </>

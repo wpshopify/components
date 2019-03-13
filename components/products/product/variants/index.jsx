@@ -8,7 +8,7 @@ import { ProductOptionContext } from '../option';
 function ProductVariants({ option, isOpen }) {
 
    const isFirstRender = useRef(true);
-   const { dispatch } = useContext(ProductBuyButtonContext);
+   const { buyButtonDispatch } = useContext(ProductBuyButtonContext);
    const { selectedOption } = useContext(ProductOptionContext);
 
 
@@ -19,7 +19,7 @@ function ProductVariants({ option, isOpen }) {
          return;
       }
 
-      dispatch({ type: "SET_AVAILABLE_VARIANTS", payload: selectedOption });
+      buyButtonDispatch({ type: "SET_AVAILABLE_VARIANTS", payload: selectedOption });
 
    }, [selectedOption]);
 

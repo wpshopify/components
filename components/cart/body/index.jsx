@@ -1,19 +1,19 @@
 import React, { useContext, useRef, useEffect } from 'react';
-import { CartTitle } from '../cart-title';
-import { CartClose } from '../cart-close';
+import { CartTitle } from '../title';
+import { CartClose } from '../close';
 
-import { CartHeader } from '../cart-header';
-import { CartContents } from '../cart-contents';
-import { CartFooter } from '../cart-footer';
+import { CartHeader } from '../header';
+import { CartContents } from '../contents';
+import { CartFooter } from '../footer';
 
-import { ShopContext } from '../../shop/context';
+import { CartContext } from '../context';
 import { slideInRight, slideOutRight } from '../../../common/animations';
 
 function CartBody() {
 
    const cart = useRef();
    const isFirstRender = useRef(true);
-   const { state } = useContext(ShopContext);
+   const { cartState } = useContext(CartContext);
 
    useEffect(() => {
 
@@ -22,17 +22,14 @@ function CartBody() {
          return;
       }
 
-      console.log('state.cartOpen', state.cartOpen);
-      console.log('cart.current', cart.current);
-
-      if (state.cartOpen) {
+      if (cartState.cartOpen) {
          slideInRight(cart.current);
 
       } else {
          slideOutRight(cart.current);
       }
 
-   }, [state.cartOpen]);
+   }, [cartState.cartOpen]);
 
    return (
       <section ref={cart} className="wps-cart">

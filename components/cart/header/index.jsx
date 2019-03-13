@@ -1,7 +1,7 @@
 import React, { useContext } from 'react';
-import { ShopContext } from '../../shop/context';
-import { CartTitle } from '../cart-title';
-import { CartClose } from '../cart-close';
+
+import { CartTitle } from '../title';
+import { CartClose } from '../close';
 
 function CartHeader() {
 

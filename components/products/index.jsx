@@ -1,25 +1,16 @@
-import 'babel-polyfill';
-import React from 'react';
-import { ProductTitle } from './title';
-import { ProductPricing } from './pricing';
-import { ProductDescription } from './description';
-import { ProductBuyButton } from './buy-button';
-import { ProductFeaturedImage } from './images-featured';
+import React, { useState, useEffect } from 'react';
+import { Product } from './product';
 
-function Product({ product, isLoading }) {
+function Products({ products }) {
 
    return (
-      <div className="wps-product">
-         <ProductFeaturedImage product={product} isLoading={isLoading}></ProductFeaturedImage>
-         <ProductTitle product={product} isLoading={isLoading}></ProductTitle>
-         <ProductPricing product={product} isLoading={isLoading}></ProductPricing>
-         <ProductDescription product={product} isLoading={isLoading}></ProductDescription>
-         <ProductBuyButton product={product} isLoading={isLoading}></ProductBuyButton>
-      </div>
+      <section className="wps-products">
+         {products.products.map(product => <Product key={product.id} isLoading={false} product={product}></Product>)}
+      </section>
    )
 
 }
 
 export {
-   Product
+   Products
 }

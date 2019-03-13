@@ -1,6 +1,6 @@
 import React from 'react';
-import { getPrices } from '../../../common/pricing/data';
-import { formatPriceToCurrency } from '../../../common/pricing/formatting';
+import { getPrices } from '../../../../common/pricing/data';
+import { formatPriceToCurrency } from '../../../../common/pricing/formatting';
 
 function ProductPricing({ product, isLoading }) {
 

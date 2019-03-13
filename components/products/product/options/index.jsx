@@ -12,32 +12,32 @@ function allOptionsSelectedMatch(onlySelectedOptions, product) {
 function ProductOptions() {
 
    const isFirstRender = useRef(true);
-   const { state, dispatch } = useContext(ProductBuyButtonContext);
+   const { buyButtonState, buyButtonDispatch } = useContext(ProductBuyButtonContext);
 
 
    useEffect(() => {
 
-      console.log('<ProductOptions /> - state.selectedOptions ', state.selectedOptions);
+      console.log('<ProductOptions /> - state.selectedOptions ', buyButtonState.selectedOptions);
 
       if (isFirstRender.current) {
          isFirstRender.current = false;
          return;
       }
 
-      if (allOptionsSelectedMatch(state.selectedOptions, state.product)) {
+      if (allOptionsSelectedMatch(buyButtonState.selectedOptions, buyButtonState.product)) {
 
          console.log('setAllOptionsSelected to TRUE');
-         // state.setAllOptionsSelected(true);
-         dispatch({ type: "SET_ALL_SELECTED_OPTIONS", payload: true });
+         // buyButtonState.setAllOptionsSelected(true);
+         buyButtonDispatch({ type: "SET_ALL_SELECTED_OPTIONS", payload: true });
 
       } else {
-         dispatch({ type: "SET_ALL_SELECTED_OPTIONS", payload: false });
+         buyButtonDispatch({ type: "SET_ALL_SELECTED_OPTIONS", payload: false });
 
       }
 
 
 
-   }, [state.selectedOptions]);
+   }, [buyButtonState.selectedOptions]);
 
 
 
@@ -46,11 +46,11 @@ function ProductOptions() {
       <div
          className="wps-component wps-component-products-options"
          data-wps-is-component-wrapper
-         data-wps-product-id={state.product.id}
+         data-wps-product-id={buyButtonState.product.id}
          data-wps-post-id=""
          data-wps-ignore-sync="1">
 
-         {state.product.options.map(option => <ProductOption key={option.id} option={option}></ProductOption>)}
+         {buyButtonState.product.options.map(option => <ProductOption key={option.id} option={option}></ProductOption>)}
 
       </div>
 

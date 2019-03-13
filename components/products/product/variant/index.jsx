@@ -4,7 +4,7 @@ import { ProductBuyButtonContext } from '../buy-button/context';
 import update from 'immutability-helper';
 import find from 'lodash/find';
 import isEmpty from 'lodash/isEmpty';
-import { createObj } from '../../../common/utils';
+import { createObj } from '../../../../common/utils';
 
 
 
@@ -27,7 +27,7 @@ function ProductVariant({ variant }) {
       toggleDropdown
    } = useContext(ProductOptionContext);
 
-   const { state, dispatch } = useContext(ProductBuyButtonContext);
+   const { buyButtonState, buyButtonDispatch } = useContext(ProductBuyButtonContext);
 
 
    function onVariantSelection() {
@@ -37,7 +37,7 @@ function ProductVariant({ variant }) {
       // console.log('newlySelected ', newlySelected);
       // console.log('selectedOptions ', selectedOptions);
 
-      // const optionsUpdated = updateExistingSelections(state.selectedOptions, newlySelected);
+      // const optionsUpdated = updateExistingSelections(buyButtonState.selectedOptions, newlySelected);
 
       // Opens or closes the dropdown
       toggleDropdown();
@@ -45,7 +45,7 @@ function ProductVariant({ variant }) {
       // console.log('optionsUpdated ', optionsUpdated);
 
       // setSelectedOptions(optionsUpdated);
-      dispatch({ type: "UPDATE_SELECTED_OPTIONS", payload: newlySelected });
+      buyButtonDispatch({ type: "UPDATE_SELECTED_OPTIONS", payload: newlySelected });
 
       setSelectedOption(newlySelected);
       setIsOptionSelected(true);
@@ -61,7 +61,7 @@ function ProductVariant({ variant }) {
       }
 
       var thingtocheck = createObj(option.name, variant.value);
-      var found = find(state.availableVariants, thingtocheck);
+      var found = find(buyButtonState.availableVariants, thingtocheck);
 
       if (found === undefined) {
          setIsSelectable(false);
@@ -70,7 +70,7 @@ function ProductVariant({ variant }) {
          setIsSelectable(true);
       }
 
-   }, [state.availableVariants]);
+   }, [buyButtonState.availableVariants]);
 
 
 
@@ -81,14 +81,14 @@ function ProductVariant({ variant }) {
          return;
       }
 
-      // console.log('state.allOptionsSelected', state.allOptionsSelected);
-      // console.log('state.selectedOptions ', state.selectedOptions);
+      // console.log('buyButtonState.allOptionsSelected', buyButtonState.allOptionsSelected);
+      // console.log('buyButtonState.selectedOptions ', buyButtonState.selectedOptions);
 
-      if (isEmpty(state.selectedOptions)) {
+      if (isEmpty(buyButtonState.selectedOptions)) {
          setIsSelectable(true);
       }
 
-   }, [state.selectedOptions]);
+   }, [buyButtonState.selectedOptions]);
 
 
    return (

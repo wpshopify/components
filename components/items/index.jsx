@@ -1,5 +1,5 @@
 import React, { useState, useRef, useEffect, useContext } from 'react';
-import { Product } from '../products';
+import { Product } from '../products/product';
 import size from 'lodash/size';
 import { LoadingContext } from '../../common/state/context';
 

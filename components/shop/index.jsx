@@ -15,7 +15,7 @@ function Shop(props) {
 
 
    async function getCheckout() {
-      
+
       var instances = await buildInstances();
 
       console.log('new state', instances);
@@ -25,21 +25,21 @@ function Shop(props) {
    }
 
 
-   useEffect( () => {
+   useEffect(() => {
 
       getCheckout();
-      
+
    }, []);
 
 
    return (
       <>
          <ShopContext.Provider value={{
-            state: state,
-            dispatch: dispatch
+            shopState: state,
+            shopDispatch: dispatch
          }}>
 
-            <Cart />
+            {props.children}
 
          </ShopContext.Provider>
       </>
