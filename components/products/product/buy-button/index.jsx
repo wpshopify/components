@@ -3,8 +3,8 @@ import { ProductQuantity } from '../quantity';
 import { ProductOptions } from '../options';
 import { ProductAddButton } from '../add-button';
 
-import { ProductBuyButtonReducer } from '../../../../common/state/reducer/buy-button';
-import { getProductBuyButtonInitialState } from './state';
+import { ProductBuyButtonReducer } from './reducer';
+import { getProductBuyButtonInitialState } from './initial-state';
 import { ProductBuyButtonContext } from './context';
 
 function ProductBuyButton(props) {

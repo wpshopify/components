@@ -30,7 +30,7 @@ function slideInRight(element) {
    return anime({
       targets: element,
       translateX: ['100%', '0%'],
-      duration: 110,
+      duration: 210,
       easing: 'easeInOutQuad'
    });
 
@@ -41,7 +41,7 @@ function slideOutRight(element) {
    return anime({
       targets: element,
       translateX: ['0%', '110%'],
-      duration: 110,
+      duration: 210,
       easing: 'easeInOutQuad'
    });
 }

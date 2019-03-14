@@ -1,4 +1,4 @@
-import React, { useContext } from 'react';
+import React, { useContext, useEffect, useRef } from 'react';
 import { ShopContext } from '../../shop/context';
 import { CartLineItems } from '../lineitems';
 
@@ -8,7 +8,7 @@ function CartContents() {
 
    return (
       <section className="wps-cart-contents">
-         <CartLineItems lineItems={shopState.checkout.lineItems} />
+         <CartLineItems lineItems={shopState.checkoutCache.variants} />
       </section>
    )
 

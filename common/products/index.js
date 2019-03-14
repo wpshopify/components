@@ -18,7 +18,20 @@ function filterAvailableVariantsBySelectedOption(product, selectedOption) {
    return filter(getAvailableVariants(product), selectedOption);
 }
 
+
+function addProductDetailsToVariant(variant, product) {
+
+   var variantCopy = variant;
+
+   variantCopy.productTitle = product.title;
+   variantCopy.productId = product.id;
+
+   return variantCopy;
+
+}
+
 export {
    getAvailableVariants,
-   filterAvailableVariantsBySelectedOption
+   filterAvailableVariantsBySelectedOption,
+   addProductDetailsToVariant
 }

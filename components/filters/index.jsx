@@ -163,7 +163,7 @@ function Filters({ dropZone, showSelections, selectionsDropZone, showSorting, so
 
    useEffect(() => {
 
-      console.log('useEffect selections from <Filters />');
+      // console.log('useEffect selections from <Filters />');
 
       if (isFirstRender.current) {
          isFirstRender.current = false;

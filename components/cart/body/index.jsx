@@ -22,9 +22,9 @@ function CartBody() {
 
 
    const { cartState, cartDispatch } = useContext(CartContext);
-   const { shopState } = useContext(ShopContext);
+   const { shopState, shopDispatch } = useContext(ShopContext);
 
-   console.log('cartState.cartOpen', cartState.cartOpen);
+
 
 
 
@@ -70,6 +70,7 @@ function CartBody() {
 
       if (shopState.notifyingCart) {
          cartDispatch({ type: "OPEN_CART" });
+         shopDispatch({ type: "NOTIFY_CART", payload: false });
       }
 
    }, [shopState.notifyingCart]);

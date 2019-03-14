@@ -1,23 +1,25 @@
-const setCache = (name, value) => {
-  return localStorage.setItem(name, value);
+import store from 'store';
+
+function setCache(name, value) {
+   return store.set(name, value);
 }
 
-const getCache = (name) => {
-  return localStorage.getItem(name);
+function getCache(name) {
+   return store.get(name);
 }
 
-const deleteCache = (name = false) => {
+function deleteCache(name = false) {
 
-  if (!name) {
-    return localStorage.clear();
-  }
+   if (!name) {
+      return store.clearAll();
+   }
 
-  return localStorage.removeItem(name);
+   return store.remove(name);
 
 }
 
 export {
-  setCache,
-  getCache,
-  deleteCache
+   setCache,
+   getCache,
+   deleteCache
 }

@@ -10,28 +10,28 @@ function CartFooter() {
 
    const { cartState } = useContext(CartContext);
 
-   const [totalPrice, setTotalPrice] = useState(shopState.checkout.totalPrice);
 
-   console.log('shopState.checkout.totalPrice', shopState.checkout.totalPrice);
 
-   // When our in-memory version updates
+
+   const [totalPrice, setTotalPrice] = useState(cartState.totalPrice);
+
    useEffect(() => {
 
-      console.log('Total price changed! ', totalPrice);
+
       setTotalPrice(maybeformatPriceToCurrency(cartState.totalPrice));
 
    }, [cartState.totalPrice]);
 
 
    // When the real checkout price updates (line items added, etc)
-   useEffect(() => {
+   // useEffect(() => {
 
-      console.log('Total price changed! ', totalPrice);
-      console.log('maybeformatPriceToCurrency(shopState.checkout.totalPrice) ', maybeformatPriceToCurrency(shopState.checkout.totalPrice));
+   //    console.log('Total price changed! ', totalPrice);
+   //    console.log('maybeformatPriceToCurrency(shopState.checkout.totalPrice) ', maybeformatPriceToCurrency(shopState.checkout.totalPrice));
 
-      setTotalPrice(maybeformatPriceToCurrency(shopState.checkout.totalPrice));
+   //    setTotalPrice(maybeformatPriceToCurrency(shopState.checkout.totalPrice));
 
-   }, [shopState.checkout.totalPrice]);
+   // }, [shopState.checkout.totalPrice]);
 
 
    return (

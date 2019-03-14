@@ -1,4 +1,4 @@
-import { filterAvailableVariantsBySelectedOption } from '../../products';
+import { filterAvailableVariantsBySelectedOption } from '../../../../common/products';
 import update from 'immutability-helper';
 
 
@@ -33,7 +33,6 @@ function ProductBuyButtonReducer(state, action) {
          }
 
       case "REMOVE_SELECTED_OPTIONS":
-         console.log('PRIOR REMOVE_SELECTED_OPTIONS', state.selectedOptions);
 
          return {
             ...state,
@@ -60,6 +59,13 @@ function ProductBuyButtonReducer(state, action) {
          return {
             ...state,
             isAdding: action.payload
+         }
+
+      case "UPDATE_QUANTITY":
+         // action.payload === new quantity
+         return {
+            ...state,
+            quantity: action.payload
          }
 
       default:

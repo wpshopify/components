@@ -3,7 +3,11 @@ function ShopInitialState(props = false) {
    return {
       checkout: { lineItems: [] },
       notifyingCart: false,
-      totalPrice: 0.00
+      isReady: false,
+      checkoutCache: {
+         lineItems: [],
+         variants: []
+      }
    }
 
 }

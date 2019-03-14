@@ -3,7 +3,14 @@ import { ProductBuyButtonContext } from '../buy-button/context';
 
 function ProductQuantity() {
 
-   const { buyButtonState } = useContext(ProductBuyButtonContext);
+   const { buyButtonState, buyButtonDispatch } = useContext(ProductBuyButtonContext);
+
+   function handleQuantityChange(e) {
+      console.log('e.target.value ', e.target.value);
+
+      buyButtonDispatch({type: 'UPDATE_QUANTITY', payload: Number(e.target.value)});
+
+   }
 
    return (
       <div
@@ -20,7 +27,7 @@ function ProductQuantity() {
             </div>
 
             <div className="wps-quantity-input wps-quantity-input-wrapper" data-wps-is-ready={buyButtonState.isLoading ? '0' : '1'}>
-               <input type="number" name="wps-product-quantity" className="wps-product-quantity wps-form-input" defaultValue="1" min="1" />
+               <input type="number" name="wps-product-quantity" className="wps-product-quantity wps-form-input" defaultValue={buyButtonState.quantity} onChange={handleQuantityChange} min="1" />
             </div>
 
          </div>

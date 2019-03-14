@@ -1,10 +1,11 @@
-function CartInitialState(props = false) {
+function CartInitialState(checkout, props) {
 
    return {
       title: 'Shopping cart',
       cartButtonDropzone: 'wps-cart-button-fixed',
       cartOpen: null,
-      totalPrice: 0.00
+      totalPrice: checkout.totalPrice,
+      isUpdating: false
    }
 
 }

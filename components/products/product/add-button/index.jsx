@@ -2,9 +2,21 @@ import React, { useContext, useRef, useEffect, useState } from 'react';
 import { ProductBuyButtonContext } from '../buy-button/context';
 import { ShopContext } from '../../../shop/context';
 
+import { getCache, setCache } from '../../../../common/cache';
 import { pulse } from '../../../../common/animations';
-import { addLineItems, findVariantFromSelectedOptions } from '/Users/andrew/www/devil/devilbox/data/www/wpshopify-api';
+import { addProductDetailsToVariant } from '../../../../common/products';
+
+import {
+   addLineItems,
+   findVariantFromSelectedOptions,
+   getCheckoutCache,
+   setCheckoutCache,
+   mergeCheckoutCacheVariants
+} from '/Users/andrew/www/devil/devilbox/data/www/wpshopify-api';
 import { lowercaseObjKeys } from '../../../../common/utils';
+
+
+
 
 
 function ProductAddButton() {
@@ -36,40 +48,79 @@ function ProductAddButton() {
          console.log('buyButtonState.product', buyButtonState.product);
          // console.log('lowercased ', lowercased);
 
+
+
          const variant = findVariantFromSelectedOptions(buyButtonState.product, buyButtonState.selectedOptions);
+         console.log('buyButtonState.quantity', buyButtonState.quantity);
 
-         console.log('variant found? ', variant.id);
+         const lineItem = { variantId: variant.id, quantity: buyButtonState.quantity };
+         const variantCopy = variant;
+         console.log('buyButtonState.product.id', buyButtonState.product.id);
 
-         const lineItems = [
-            { variantId: variant.id, quantity: 1 }
-         ];
 
-         try {
+         var modVariant = addProductDetailsToVariant(variant, buyButtonState.product);
 
-            var updatedCheckout = await addLineItems(lineItems);
+         console.log('variant found :: ', modVariant);
 
-            // Need to check for any errors here
-            if (updatedCheckout) {
 
-               buyButtonDispatch({ type: "SET_ALL_SELECTED_OPTIONS", payload: false });
-               buyButtonDispatch({ type: "SET_IS_ADDING_TO_CART", payload: false });
-               buyButtonDispatch({ type: "REMOVE_SELECTED_OPTIONS" });
 
-               shopDispatch({ type: "UPDATE_CHECKOUT", payload: updatedCheckout });
-               shopDispatch({ type: "NOTIFY_CART", payload: true });
-
+         shopDispatch({
+            type: "UPDATE_CHECKOUT_CACHE",
+            payload: {
+               checkoutID: shopState.checkout.id,
+               lineItems: [lineItem],
+               variants: [modVariant]
             }
+         });
 
-         } catch (erro) {
-            console.log('added erro', erro);
 
-         }
+
+
+
+
+
+
+
+
+
+
+         buyButtonDispatch({ type: "SET_ALL_SELECTED_OPTIONS", payload: false });
+         buyButtonDispatch({ type: "SET_IS_ADDING_TO_CART", payload: false });
+         buyButtonDispatch({ type: "REMOVE_SELECTED_OPTIONS" });
+
+         // shopDispatch({ type: "UPDATE_CHECKOUT", payload: updatedCheckout });
+         shopDispatch({ type: "NOTIFY_CART", payload: true });
+
+
+
+
+         // try {
+
+         //    var updatedCheckout = await addLineItems(lineItems);
+
+         //    // Need to check for any errors here
+         //    if (updatedCheckout) {
+
+         //       buyButtonDispatch({ type: "SET_ALL_SELECTED_OPTIONS", payload: false });
+         //       buyButtonDispatch({ type: "SET_IS_ADDING_TO_CART", payload: false });
+         //       buyButtonDispatch({ type: "REMOVE_SELECTED_OPTIONS" });
+
+         //       shopDispatch({ type: "UPDATE_CHECKOUT", payload: updatedCheckout });
+         //       shopDispatch({ type: "NOTIFY_CART", payload: true });
+
+         //    }
+
+         // } catch (erro) {
+         //    console.log('added erro', erro);
+
+         // }
 
 
       }
 
 
    }
+
 
    useEffect(() => {
 
@@ -83,6 +134,8 @@ function ProductAddButton() {
       }
 
    }, [buyButtonState.allOptionsSelected]);
+
+
 
    return (
 

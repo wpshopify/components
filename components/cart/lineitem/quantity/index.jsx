@@ -1,7 +1,7 @@
 import React, { useContext } from 'react';
 // import { ShopContext } from '../../shop/context';
 
-function CartLineItemQuantity({ lineItem, lineItemQuantity, setLineItemQuantity }) {
+function CartLineItemQuantity({ lineItem, lineItemQuantity, setLineItemQuantity, isReady }) {
 
    function handleQuantityChange() {
       console.log('handleQuantityChange');
@@ -19,7 +19,7 @@ function CartLineItemQuantity({ lineItem, lineItemQuantity, setLineItemQuantity 
 
    return (
 
-      <div className="wps-cart-lineitem-quantity-container">
+      <div className="wps-cart-lineitem-quantity-container" data-wps-is-ready={isReady}>
 
          <button className="wps-quantity-decrement" type="button" onClick={handleDecrement}>
             <span className="wps-quantity-icon wps-quantity-decrement-icon"></span>
