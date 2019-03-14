@@ -10,14 +10,24 @@ function ShopReducer(state, action) {
             totalPrice: action.payload.totalPrice
          }
 
-      case "UPDATED_CHECKOUT":
+      case "UPDATE_CHECKOUT":
 
          // action.payload === totalPrice
-         console.log('UPDATED_CHECKOUT ', action.payload);
+         console.log('UPDATE_CHECKOUT ', action.payload);
 
          return {
             ...state,
             checkout: action.payload
+         }
+
+      case "NOTIFY_CART":
+
+         // action.payload === totalPrice
+         console.log('NOTIFY_CART ', action.payload);
+
+         return {
+            ...state,
+            notifyingCart: action.payload
          }
 
       default:

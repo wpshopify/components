@@ -26,7 +26,6 @@ function pulse(element, cb = false) {
 }
 
 function slideInRight(element) {
-   console.log('elementelement', element);
 
    return anime({
       targets: element,
@@ -38,7 +37,6 @@ function slideInRight(element) {
 }
 
 function slideOutRight(element) {
-   console.log('element slideOutRight', element);
 
    return anime({
       targets: element,

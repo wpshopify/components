@@ -47,7 +47,6 @@ function ProductAddButton() {
          try {
 
             var updatedCheckout = await addLineItems(lineItems);
-            console.log('updatedCheckout ', updatedCheckout.totalPrice);
 
             // Need to check for any errors here
             if (updatedCheckout) {
@@ -56,7 +55,8 @@ function ProductAddButton() {
                buyButtonDispatch({ type: "SET_IS_ADDING_TO_CART", payload: false });
                buyButtonDispatch({ type: "REMOVE_SELECTED_OPTIONS" });
 
-               shopDispatch({ type: "UPDATED_CHECKOUT", payload: updatedCheckout });
+               shopDispatch({ type: "UPDATE_CHECKOUT", payload: updatedCheckout });
+               shopDispatch({ type: "NOTIFY_CART", payload: true });
 
             }
 

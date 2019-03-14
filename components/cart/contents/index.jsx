@@ -5,7 +5,6 @@ import { CartLineItems } from '../lineitems';
 function CartContents() {
 
    const { shopState } = useContext(ShopContext);
-   console.log('<CartContents> lineItems ', shopState.checkout.lineItems);
 
    return (
       <section className="wps-cart-contents">

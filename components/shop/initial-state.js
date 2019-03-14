@@ -1,7 +1,9 @@
 function ShopInitialState(props = false) {
 
    return {
-      checkout: { lineItems: [] }
+      checkout: { lineItems: [] },
+      notifyingCart: false,
+      totalPrice: 0.00
    }
 
 }

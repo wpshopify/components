@@ -1,8 +1,66 @@
-import React, { useContext } from 'react';
+import React, { useContext, useRef, useEffect, useState } from 'react';
 import { ShopContext } from '../../shop/context';
+import { CartContext } from '../../cart/context';
+import { CartLineItemQuantity } from './quantity';
+import { maybeformatPriceToCurrency } from '../../../common/pricing/formatting';
+
+
+
+
+
 
 function CartLineItem({ lineItem }) {
+
    console.log('lineItem ', lineItem);
+
+   const { shopState } = useContext(ShopContext);
+   const { cartState, cartDispatch } = useContext(CartContext);
+
+   const isFirstRender = useRef(true);
+   const [lineItemQuantity, setLineItemQuantity] = useState(lineItem.quantity);
+   const [lineItemPrice, setLineItemPrice] = useState(lineItem.variant.price);
+   const oldLineItemPrice = lineItem.variant.price;
+   const oldLineItemQuantity = lineItem.quantity;
+
+   const [localTotalPrice, setLocalTotalPrice] = useState(shopState.totalPrice);
+
+
+   function handleQuantityChange() {
+      console.log('handleQuantityChange');
+   }
+
+
+   useEffect(() => {
+
+      setLocalTotalPrice(localTotalPrice);
+
+   }, [cartState.totalPrice]);
+
+
+   useEffect(() => {
+
+      if (isFirstRender.current) {
+         isFirstRender.current = false;
+         return;
+      }
+
+      console.log('cartState.totalPrice ', localTotalPrice);
+      // console.log('shopState.totalPrice ', shopState.totalPrice);
+
+
+      cartDispatch({
+         type: "UPDATE_TOTAL_PRICE",
+         payload: {
+            currentTotalPrice: localTotalPrice,
+            lineItemPrice: lineItemPrice,
+            lineItemQuantity: lineItemQuantity,
+            oldLineItemPrice: oldLineItemPrice,
+            oldLineItemQuantity: oldLineItemQuantity
+         }
+      });
+
+   }, [lineItemQuantity]);
+
 
    return (
       <div className="wps-cart-lineitem row">
@@ -13,7 +71,6 @@ function CartLineItem({ lineItem }) {
          </a>
 
 
-
          <div className="wps-cart-lineitem-content">
 
             <div className="wps-cart-lineitem-content-row">
@@ -21,23 +78,15 @@ function CartLineItem({ lineItem }) {
                <a href="https://demo.wpshop.io/products/aerodynamic-aluminum-bench/" className="wps-cart-lineitem-title">{lineItem.title}</a>
             </div>
 
-            <div className="wps-cart-lineitem-content-row">
-               <div className="wps-cart-lineitem-quantity-container">
+            <div className="wps-cart-lineitem-content-row wps-row">
 
-                  <button className="wps-btn--seamless wps-quantity-decrement" type="button" data-variant-id="Z2lkOi8vc2hvcGlmeS9Qcm9kdWN0VmFyaWFudC8yMjIyMTc0NzE5MTg1Ng==" data-product-id="Z2lkOi8vc2hvcGlmeS9Qcm9kdWN0LzIyMTY4MjU3MTY3ODQ=">
-                     <span>-</span>
-                     <span className="wps-visuallyhidden"></span>
-                  </button>
+               <CartLineItemQuantity
+                  lineitem={lineItem}
+                  lineItemQuantity={lineItemQuantity}
+                  setLineItemQuantity={setLineItemQuantity} />
 
-                  <input className="wps-cart-lineitem-quantity" type="number" min="0" aria-label="Quantity" data-wps-previous-amount="1" value="1" />
-
-                  <button className="btn--seamless wps-quantity-increment" type="button" data-variant-id="Z2lkOi8vc2hvcGlmeS9Qcm9kdWN0VmFyaWFudC8yMjIyMTc0NzE5MTg1Ng==" data-product-id="Z2lkOi8vc2hvcGlmeS9Qcm9kdWN0LzIyMTY4MjU3MTY3ODQ=">
-                     <span>+</span>
-                     <span className="wps-visuallyhidden"></span>
-                  </button>
-
-                  <span className="wps-cart-lineitem-price"><span className="wps-cart-lineitem-quantity">x{lineItem.quantity}</span>{lineItem.variant.price}</span>
-
+               <div className="wps-cart-lineitem-price">
+                  <span className="wps-cart-lineitem-num-of">x{lineItemQuantity}</span> {maybeformatPriceToCurrency(lineItemPrice)}
                </div>
 
             </div>

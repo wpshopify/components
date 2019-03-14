@@ -6,11 +6,11 @@ import { showingLocalCurrency, getLocalCurrencyCodeCache, showingCurrencyCode } 
 
 function formatNumber(config) {
 
-  return new Intl.NumberFormat(config.locale, {
-    style: 'currency',
-    currency: config.countryCode,
-    currencyDisplay: config.currencyDisplay
-  }).format(config.amount);
+   return new Intl.NumberFormat(config.locale, {
+      style: 'currency',
+      currency: config.countryCode,
+      currencyDisplay: config.currencyDisplay
+   }).format(config.amount);
 
 }
 
@@ -27,12 +27,12 @@ Config: {
 */
 function formatPrice(config) {
 
-  // Uses the browser locale by default
-  if (!has(config, 'locale')) {
-    config.locale = false;
-  }
+   // Uses the browser locale by default
+   if (!has(config, 'locale')) {
+      config.locale = false;
+   }
 
-  return formatNumber(config);
+   return formatNumber(config);
 
 }
 
@@ -44,11 +44,11 @@ function formatPrice(config) {
 */
 function formatPriceToCurrency(price) {
 
-  return formatPrice({
-    countryCode: 'USD', // getLocalCurrencyCodeCache()
-    amount: price,
-    currencyDisplay: showingCurrencyCode() ? 'code' : 'symbol'
-  });
+   return formatPrice({
+      countryCode: 'USD', // getLocalCurrencyCodeCache()
+      amount: price,
+      currencyDisplay: showingCurrencyCode() ? 'code' : 'symbol'
+   });
 
 }
 
@@ -60,16 +60,16 @@ Format product price into format from Shopify
 */
 function maybeformatPriceToCurrency(price) {
 
-  // if ( showingLocalCurrency() ) {
-  //   return formatPriceToCurrency(price);
-  // }
+   // if ( showingLocalCurrency() ) {
+   //   return formatPriceToCurrency(price);
+   // }
 
-  return formatPriceToCurrency(price);
+   return formatPriceToCurrency(price);
 
 }
 
 export {
-  formatPrice,
-  formatPriceToCurrency,
-  maybeformatPriceToCurrency
+   formatPrice,
+   formatPriceToCurrency,
+   maybeformatPriceToCurrency
 }

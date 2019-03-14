@@ -4,9 +4,10 @@ import find from 'lodash/find';
 import isEmpty from 'lodash/isEmpty';
 import { ProductBuyButtonContext } from '../buy-button/context';
 import { pulse } from '../../../../common/animations';
-
+import { useOnClickOutside } from '../../../../common/hooks';
 
 const ProductOptionContext = React.createContext();
+
 
 function ProductOption({ option }) {
 
@@ -27,34 +28,6 @@ function ProductOption({ option }) {
       setIsOpen(!isOpen);
    }
 
-   function removeEvents() {
-      document.removeEventListener("mousedown", handleOutsideClick);
-      document.removeEventListener("keydown", handleEsc, false);
-   }
-
-
-   function handleOutsideClick(e) {
-
-      if (!dropdown.current.contains(e.target)) {
-
-         setIsOpen(false);
-         removeEvents();
-
-      }
-
-   }
-
-
-   function handleEsc(event) {
-
-      if (event.keyCode === 27) {
-
-         setIsOpen(false);
-         removeEvents();
-
-      }
-
-   }
 
 
    /*
@@ -90,9 +63,6 @@ function ProductOption({ option }) {
          return;
       }
 
-      // console.log('buyButtonState.allOptionsSelected', buyButtonState.allOptionsSelected);
-      // console.log('buyButtonState.selectedOptions ', buyButtonState.selectedOptions);
-
       if (isEmpty(buyButtonState.selectedOptions)) {
          setIsOptionSelected(false);
       }
@@ -100,28 +70,9 @@ function ProductOption({ option }) {
    }, [buyButtonState.selectedOptions]);
 
 
-   /*
-   
-   When isOpen changes ...
-   
-   */
-   useEffect(() => {
 
-      if (isFirstRender.current) {
-         isFirstRender.current = false;
-         return;
-      }
 
-      // add when mounted
-      document.addEventListener("mousedown", handleOutsideClick);
-      document.addEventListener("keydown", handleEsc, false);
-
-      // return function to be called when unmounted
-      return () => {
-         removeEvents();
-      }
-
-   }, [isOpen]);
+   useOnClickOutside(dropdown, (e) => setIsOpen(false), isOpen);
 
 
 
