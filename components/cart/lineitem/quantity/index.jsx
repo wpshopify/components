@@ -2,14 +2,14 @@ import React, { useContext } from 'react';
 import { ShopContext } from '../../../shop/context';
 import find from 'lodash/find';
 import { calcLineItemTotal } from '../../../../common/products';
-import { pulse } from '../../../../common/animations';
+import { useAnime, pulse } from '../../../../common/animations';
 
-function CartLineItemQuantity({ lineItem, variantId, lineItemQuantity, setLineItemQuantity, isReady, isFirstRender, setLineItemTotal, lineItemTotalElement }) {
+function CartLineItemQuantity({ lineItem, variantId, lineItemQuantity, setLineItemQuantity, isReady, isFirstRender, setLineItemTotal, lineItemTotalElement, elementExists }) {
 
    const { shopState, shopDispatch } = useContext(ShopContext);
+   const animePulse = useAnime(pulse);
 
-
-   function changeQuantity(newQuantity, oldQuantity) {
+   function changeQuantity(newQuantity) {
 
       let lineItemFoumd = getLineItemFromState(lineItem, shopState.checkoutCache.lineItems);
 
@@ -17,10 +17,14 @@ function CartLineItemQuantity({ lineItem, variantId, lineItemQuantity, setLineIt
          variantId.current = lineItemFoumd.variantId;
       }
 
-      pulse(lineItemTotalElement.current);
+      animePulse(lineItemTotalElement.current, elementExists);
 
       setLineItemQuantity(newQuantity);
       setLineItemTotal(calcLineItemTotal(newQuantity, lineItem.price));
+
+      if (isRemovingLineItem(newQuantity)) {
+         shopDispatch({ type: 'REMOVE_LINE_ITEM', payload: variantId.current });
+      }
 
       shopDispatch({
          type: 'UPDATE_LINE_ITEM_QUANTITY',
@@ -30,33 +34,34 @@ function CartLineItemQuantity({ lineItem, variantId, lineItemQuantity, setLineIt
          }
       });
 
-      shopDispatch({
-         type: 'UPDATE_CHECKOUT_TOTAL',
-         payload: {
-            lineItemPrice: lineItem.price,
-            lineItemOldQuantity: oldQuantity,
-            lineItemNewQuantity: newQuantity
-         }
-      });
+
+      shopDispatch({ type: 'UPDATE_CHECKOUT_TOTAL' });
+
 
    }
 
 
    function handleQuantityChange(e) {
-      console.log('handleQuantityChange', e.target.value);
-
       setLineItemQuantity(e.target.value);
    }
 
    function handleQuantityBlur(e) {
-      console.log('handleQuantityBlur', e.target.value);
-      console.log('lineItemQuantity', lineItemQuantity);
 
       if (isRemovingLineItem(e.target.value)) {
+
          shopDispatch({ type: 'REMOVE_LINE_ITEM', payload: variantId.current });
-         shopDispatch({ type: 'SET_CHECKOUT_TOTAL' });
+         shopDispatch({
+            type: 'UPDATE_LINE_ITEM_QUANTITY',
+            payload: {
+               variantId: variantId.current,
+               lineItemNewQuantity: 0
+            }
+         });
+
+         shopDispatch({ type: 'UPDATE_CHECKOUT_TOTAL' });
+
       }
-      // setLineItemQuantity(e.target.value);
+
    }
 
    // 1 is the previous value before decrementing _again_
@@ -68,33 +73,26 @@ function CartLineItemQuantity({ lineItem, variantId, lineItemQuantity, setLineIt
       return find(lineItemsFromState, { 'variantId': lineItem.id });
    }
 
+
+   /*
+
+   Responsible for: decrementing line item quantity
+
+   */
    function handleDecrement() {
+      console.log('elementExists handleDecrement', elementExists);
 
-      console.log('handleDecrement');
-
-      var oldQuantity = lineItemQuantity;
-      var newQuantity = lineItemQuantity - 1;
-
-      if (isRemovingLineItem(newQuantity)) {
-         console.log('variantId', variantId);
-
-         shopDispatch({ type: 'REMOVE_LINE_ITEM', payload: variantId.current });
-         shopDispatch({ type: 'SET_CHECKOUT_TOTAL' });
-      }
-
-      changeQuantity(newQuantity, oldQuantity);
-
+      changeQuantity(lineItemQuantity - 1);
    }
 
+
+   /*
+
+   Responsible for: incrementing line item quantity
+
+   */
    function handleIncrement() {
-
-      console.log('handleIncrement');
-
-      var oldQuantity = lineItemQuantity;
-      var newQuantity = lineItemQuantity + 1;
-
-      changeQuantity(newQuantity, oldQuantity);
-
+      changeQuantity(lineItemQuantity + 1);
    }
 
    return (

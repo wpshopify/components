@@ -1,6 +1,7 @@
+import { useState } from 'react';
 import anime from 'animejs/lib/anime.es.js';
 
-function pulse(element, cb = false) {
+function pulse(element, cb = false, params = false) {
 
    anime({
       targets: element,
@@ -8,8 +9,10 @@ function pulse(element, cb = false) {
       duration: 300,
       elasticity: 0,
       complete: function () {
+         console.log('elementExists', params);
 
          if (cb) {
+            console.log('here?');
             cb();
          }
 
@@ -25,48 +28,94 @@ function pulse(element, cb = false) {
 
 }
 
-function slideInRight(element) {
+function slideInRight(element, cb = false, params = false) {
 
    return anime({
       targets: element,
       translateX: ['100%', '0%'],
       duration: 210,
-      easing: 'easeInOutQuad'
+      easing: 'easeInOutQuad',
+      complete: function () {
+
+         if (cb) {
+            cb();
+         }
+
+      }
    });
 
 }
 
-function slideOutRight(element) {
+function slideOutRight(element, cb = false, params = false) {
 
    return anime({
       targets: element,
       translateX: ['0%', '110%'],
       duration: 210,
-      easing: 'easeInOutQuad'
+      easing: 'easeInOutQuad',
+      complete: function () {
+
+         if (cb) {
+            cb();
+         }
+
+      }
    });
 }
 
 
-
-function stagger(element, index) {
-
-   console.log('element .......', element);
-   console.log('index', index);
-   console.log('index * 50', index * 450);
+function stagger(element, cb, { index }) {
 
    return anime({
       targets: element,
       translateY: [-20, 0],
       opacity: [0, 1],
-      delay: (index * 50) // increase delay by 100ms for each element.
+      delay: (index * 50),
+      complete: function () {
+
+         if (cb) {
+            cb();
+         }
+
+      }
    });
 
 }
+
+
+
+
+function useAnime(animeType, elementExists = true) {
+
+   const [currentlyAnimating, setCurrentlyAnimating] = useState(false);
+
+   function animate(element, params = false) {
+
+      if (currentlyAnimating) {
+         return;
+      }
+      console.log('useAnime elementExists', elementExists);
+
+
+      setCurrentlyAnimating(true);
+      animeType(element, () => setCurrentlyAnimating(false), params);
+
+   }
+
+   return animate;
+
+}
+
+
+
+
+
 
 
 export {
    pulse,
    slideInRight,
    slideOutRight,
-   stagger
+   stagger,
+   useAnime
 }

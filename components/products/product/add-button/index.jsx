@@ -3,7 +3,7 @@ import { ProductBuyButtonContext } from '../buy-button/context';
 import { ShopContext } from '../../../shop/context';
 
 import { getCache, setCache } from '../../../../common/cache';
-import { pulse } from '../../../../common/animations';
+import { useAnime, pulse } from '../../../../common/animations';
 import { addProductDetailsToVariant } from '../../../../common/products';
 
 import {
@@ -23,6 +23,8 @@ function ProductAddButton() {
 
    const button = useRef();
    const isFirstRender = useRef(false);
+   const animePulse = useAnime(pulse);
+
    const { buyButtonState, buyButtonDispatch } = useContext(ProductBuyButtonContext);
    const { shopState, shopDispatch } = useContext(ShopContext);
 
@@ -64,7 +66,7 @@ function ProductAddButton() {
          console.log('variant found :: ', modVariant);
 
          shopDispatch({
-            type: "UPDATE_CHECKOUT_CACHE",
+            type: "UPDATE_LINE_ITEMS_AND_VARIANTS",
             payload: {
                checkoutID: shopState.checkout.id,
                lineItems: [lineItem],
@@ -72,7 +74,9 @@ function ProductAddButton() {
             }
          });
 
-         shopDispatch({ type: "SET_CHECKOUT_TOTAL" });
+         shopDispatch({ type: "UPDATE_CHECKOUT_TOTAL" });
+
+         shopDispatch({ type: "SET_IS_CART_EMPTY", payload: false });
 
          buyButtonDispatch({ type: "SET_ALL_SELECTED_OPTIONS", payload: false });
          buyButtonDispatch({ type: "SET_IS_ADDING_TO_CART", payload: false });
@@ -119,7 +123,7 @@ function ProductAddButton() {
       }
 
       if (buyButtonState.allOptionsSelected) {
-         pulse(button.current);
+         animePulse(button.current);
       }
 
    }, [buyButtonState.allOptionsSelected]);

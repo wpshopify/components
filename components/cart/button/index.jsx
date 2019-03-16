@@ -3,12 +3,14 @@ import ReactDOM from 'react-dom';
 import { CartCounter } from '../counter';
 import { CartIcon } from '../icon';
 import { CartContext } from '../context';
-import { slideInRight } from '../../../common/animations';
+import { useAnime, slideInRight } from '../../../common/animations';
+
 
 function CartButton() {
 
    const { cartState, cartDispatch } = useContext(CartContext);
    const counterElement = useRef();
+   const animeSlideInRight = useAnime(slideInRight);
 
    function openCart() {
       cartDispatch({ type: "OPEN_CART" });
@@ -16,7 +18,7 @@ function CartButton() {
 
    useEffect(() => {
 
-      slideInRight(counterElement.current);
+      animeSlideInRight(counterElement.current);
 
    }, []);
 

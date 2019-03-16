@@ -4,13 +4,16 @@ import flattenDepth from 'lodash/flattenDepth';
 import assign from 'lodash/assign';
 import reduce from 'lodash/reduce';
 import filter from 'lodash/filter';
-import head from 'lodash/head';
 import update from 'immutability-helper';
+import { calcCheckoutTotal } from '../../common/products';
 
 
-import { calcCheckoutTotal, calcLineItemTotal } from '../../common/products';
+/*
 
-function addProductInfoToVariants(productsFromCart, shopState) {
+Responsible for: adding product info to the variant information
+
+*/
+function addProductInfoToVariants(productsFromCart, checkoutCache) {
 
    return productsFromCart.map((product) => {
       return {
@@ -19,7 +22,7 @@ function addProductInfoToVariants(productsFromCart, shopState) {
             productId: product.id
          },
          variants: flattenDepth(product.variants.filter((variant) => {
-            return some(shopState.variants, { 'id': variant.id });
+            return some(checkoutCache.variants, { 'id': variant.id });
          }), 1)
       }
 
@@ -28,6 +31,11 @@ function addProductInfoToVariants(productsFromCart, shopState) {
 }
 
 
+/*
+
+Responsible for: only finding variants within the checkout
+
+*/
 function onlyVariantsInCheckout(allVariantsAndProducts) {
    return allVariantsAndProducts.map((variantsAndProducts) => {
       return {
@@ -38,15 +46,27 @@ function onlyVariantsInCheckout(allVariantsAndProducts) {
    });
 }
 
+
+/*
+
+Responsible for: combining all variants
+
+*/
 function combineAllVariants(variants) {
    return reduce(variants, function (result, value, key) {
       return result.concat(value.variants);
    }, []);
 }
 
-function findVariantsFromProductIds(productsFromCart, shopState) {
 
-   var productInfoAndVariants = addProductInfoToVariants(productsFromCart, shopState);
+/*
+
+Responsible for: finding variants from product ids
+
+*/
+function findVariantsFromProductIds(productsFromCart, checkoutCache) {
+
+   var productInfoAndVariants = addProductInfoToVariants(productsFromCart, checkoutCache);
    var variantsMulti = onlyVariantsInCheckout(productInfoAndVariants);
    var variantsCombined = combineAllVariants(variantsMulti);
 
@@ -55,14 +75,21 @@ function findVariantsFromProductIds(productsFromCart, shopState) {
 }
 
 
+/*
 
+Responsible for: checking whether the cart is empty or not
 
-
+*/
 function isCartEmpty(lineItems) {
    return lineItems.length === 0;
 }
 
 
+/*
+
+Responsible for: updating the ShopState "lineItems"
+
+*/
 function updateLineItemQuantity(state, payload) {
 
    state.lineItems = state.lineItems.map(lineItem => {
@@ -78,6 +105,73 @@ function updateLineItemQuantity(state, payload) {
    return state;
 
 }
+
+
+/*
+
+Responsible for: updating the checkout cache
+
+*/
+function updateLineItemsAndVariants(checkoutCache, payload) {
+
+   return {
+      lineItems: mergeCheckoutCacheLineItems(checkoutCache.lineItems, payload.lineItems),
+      variants: mergeCheckoutCacheVariants(checkoutCache.variants, payload.variants)
+   }
+
+}
+
+
+/*
+
+Responsible for: setting line items and variants
+
+*/
+function setLineItemsAndVariants(checkoutCache, payload) {
+
+   return {
+      lineItems: checkoutCache.lineItems,
+      variants: findVariantsFromProductIds(payload.products, checkoutCache)
+   }
+
+}
+
+
+/*
+
+Responsible for: removing line items and variants
+
+*/
+function removeLineItemsAndVariants(checkoutCache, payload) {
+
+   checkoutCache.lineItems = filter(checkoutCache.lineItems, (o) => o.variantId !== payload);
+   checkoutCache.variants = filter(checkoutCache.variants, (o) => o.id !== payload);
+
+   return checkoutCache;
+
+}
+
+
+/*
+
+Responsible for: setting the checkout total
+
+*/
+function updateCheckoutTotal(checkoutCache) {
+
+   checkoutCache.total = calcCheckoutTotal(checkoutCache);
+
+   return checkoutCache;
+
+}
+
+
+
+
+
+
+
+
 
 
 
@@ -104,7 +198,7 @@ function ShopReducer(state, action) {
 
       case "SET_CHECKOUT_CACHE": {
 
-         var checkoutCache = getCheckoutCache(action.payload.id);
+         const checkoutCache = getCheckoutCache(action.payload.id);
 
          // If the store doesn't exist, set it to our intial state from the reducer
          if (!checkoutCache) {
@@ -121,49 +215,29 @@ function ShopReducer(state, action) {
 
       }
 
-      case "UPDATE_CHECKOUT_CACHE": {
+      case "UPDATE_LINE_ITEMS_AND_VARIANTS": {
 
-         var checkoutCache = getCheckoutCache(action.payload.checkoutID);
+         const checkoutCacheUpdated = update(state.checkoutCache, {
+            $apply: checkoutCache => updateLineItemsAndVariants(checkoutCache, action.payload)
+         });
 
-         // If the store doesn't exist, set it to our intial state from the reducer
-         if (!checkoutCache) {
-
-            checkoutCache = {
-               lineItems: action.payload.lineItems,
-               variants: action.payload.variants
-            }
-
-            setCheckoutCache(action.payload.checkoutID, checkoutCache);
-
-         } else {
-
-            checkoutCache = {
-               lineItems: mergeCheckoutCacheLineItems(checkoutCache.lineItems, action.payload.lineItems),
-               variants: mergeCheckoutCacheVariants(checkoutCache.variants, action.payload.variants)
-            }
-
-            setCheckoutCache(action.payload.checkoutID, checkoutCache);
-
-         }
+         setCheckoutCache(action.payload.checkoutID, checkoutCacheUpdated);
 
          return {
             ...state,
-            checkoutCache: checkoutCache
+            checkoutCache: checkoutCacheUpdated
          }
 
       }
 
-      case "SET_CHECKOUT_CACHE_LINE_ITEMS": {
+      case "SET_LINE_ITEMS_AND_VARIANTS": {
+
+         const newCheckoutCache = update(state.checkoutCache, {
+            $apply: checkoutCache => setLineItemsAndVariants(checkoutCache, action.payload)
+         });
 
          // action.payload.products comes from an API call during bootstrap
-
-         const newCheckoutCache = {
-            lineItems: state.checkoutCache.lineItems,
-            variants: findVariantsFromProductIds(action.payload.products, state.checkoutCache)
-         }
-
          setCheckoutCache(state.checkout.id, newCheckoutCache);
-
 
          return {
             ...state,
@@ -174,23 +248,18 @@ function ShopReducer(state, action) {
 
       case "REMOVE_LINE_ITEM": {
 
-         const updatedCheckoutCache = state.checkoutCache;
+         const newCheckoutCache = update(state.checkoutCache, {
+            $apply: checkoutCache => removeLineItemsAndVariants(checkoutCache, action.payload)
+         });
 
-         const updateLineItems = filter(updatedCheckoutCache.lineItems, (o) => o.variantId !== action.payload);
-         const updateVariants = filter(updatedCheckoutCache.variants, (o) => o.id !== action.payload);
-
-         updatedCheckoutCache.lineItems = updateLineItems;
-         updatedCheckoutCache.variants = updateVariants;
-
-         setCheckoutCache(state.checkout.id, updatedCheckoutCache);
+         setCheckoutCache(state.checkout.id, newCheckoutCache);
 
          return {
             ...state,
-            checkoutCache: updatedCheckoutCache
+            checkoutCache: newCheckoutCache
          }
 
       }
-
 
       case "UPDATE_LINE_ITEM_QUANTITY": {
 
@@ -208,35 +277,13 @@ function ShopReducer(state, action) {
 
       }
 
-      case "SET_CHECKOUT_TOTAL": {
-
-         const updatedCheckoutCache = state.checkoutCache;
-
-         var checkoutTotal = calcCheckoutTotal(updatedCheckoutCache);
-
-         updatedCheckoutCache.total = checkoutTotal;
-
-         setCheckoutCache(state.checkout.id, updatedCheckoutCache);
-
-
-         return {
-            ...state,
-            checkoutCache: updatedCheckoutCache
-         }
-
-      }
-
       case "UPDATE_CHECKOUT_TOTAL": {
 
-         const updatedCheckoutCache = state.checkoutCache;
+         const updatedCheckoutCache = update(state.checkoutCache, {
+            $apply: checkoutCache => updateCheckoutTotal(checkoutCache)
+         });
 
-         var oldTotal = calcLineItemTotal(action.payload.lineItemOldQuantity, action.payload.lineItemPrice);
-         var newTotal = calcLineItemTotal(action.payload.lineItemNewQuantity, action.payload.lineItemPrice);
-
-         var checkoutTotalMinusOldLineItemTotal = updatedCheckoutCache.total - oldTotal;
-         var finalTotal = checkoutTotalMinusOldLineItemTotal += newTotal;
-
-         updatedCheckoutCache.total = finalTotal;
+         setCheckoutCache(state.checkout.id, updatedCheckoutCache);
 
          return {
             ...state,
@@ -246,8 +293,6 @@ function ShopReducer(state, action) {
       }
 
       case "SET_IS_CART_EMPTY": {
-
-         console.log('.......... SET_IS_CART_EMPTY');
 
          return {
             ...state,

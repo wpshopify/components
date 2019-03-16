@@ -11,18 +11,10 @@ import { objectIsEmpty } from '../utils';
 function updateSelectionList(params) {
 
    if (!params.isSelected) {
-      console.log('updateSelectionList 1');
       return without(params.currentList, params.selectedValue);
    }
 
-   console.log('[params.selectedValue]', [params.selectedValue]);
-   console.log('params.currentList', params.currentList);
-
-   var sdofksodfk = union([params.selectedValue], params.currentList);
-
-   console.log('updateSelectionList ', sdofksodfk);
-
-   return sdofksodfk;
+   return union([params.selectedValue], params.currentList);
 
 }
 
@@ -81,17 +73,9 @@ When selections are removed ...
 */
 function isCurrentlySelected(selections, valueSelected, type) {
 
-   // const isFirstRender = useRef(true);
-   // const [isSelected, setIsSelected] = useState(false);
-   // console.log('isCurrentlySelected', selections);
-   // console.log('type', type);
-   // console.log('selections[type]', selections[type]);
-
    var selected = false;
 
    if (isEmpty(selections)) {
-      // console.log('2');
-      // setIsSelected(false);
       selected = false;
 
    } else {
@@ -108,19 +92,6 @@ function isCurrentlySelected(selections, valueSelected, type) {
    return selected
 
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 export {

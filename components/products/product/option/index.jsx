@@ -3,7 +3,7 @@ import { ProductVariants } from '../variants';
 import find from 'lodash/find';
 import isEmpty from 'lodash/isEmpty';
 import { ProductBuyButtonContext } from '../buy-button/context';
-import { pulse } from '../../../../common/animations';
+import { useAnime, pulse } from '../../../../common/animations';
 import { useOnClickOutside } from '../../../../common/hooks';
 
 const ProductOptionContext = React.createContext();
@@ -17,6 +17,8 @@ function ProductOption({ option }) {
    const dropdown = useRef();
    const dropdownTrigger = useRef();
    const isFirstRender = useRef(true);
+   const animePulse = useAnime(pulse);
+
    const { buyButtonState, buyButtonDispatch } = useContext(ProductBuyButtonContext);
 
 
@@ -93,7 +95,10 @@ function ProductOption({ option }) {
       }
 
       if (!isOptionSelected) {
-         pulse(dropdownTrigger.current, () => buyButtonDispatch({ type: "SET_MISSING_SELECTIONS", payload: false }));
+
+         buyButtonDispatch({ type: "SET_MISSING_SELECTIONS", payload: false });
+         animePulse(dropdownTrigger.current);
+
       }
 
    }, [buyButtonState.missingSelections]);

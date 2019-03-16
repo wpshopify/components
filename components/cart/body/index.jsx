@@ -9,7 +9,7 @@ import { CartFooter } from '../footer';
 import { CartContext } from '../context';
 import { ShopContext } from '../../shop/context';
 
-import { slideInRight, slideOutRight } from '../../../common/animations';
+import { useAnime, slideInRight, slideOutRight } from '../../../common/animations';
 
 
 
@@ -18,14 +18,11 @@ function CartBody() {
    const cart = useRef();
    const isFirstRender = useRef(true);
 
-   // const [isCartOpen, setIsCartOpen] = useState(false);
-
+   const animeSlideInRight = useAnime(slideInRight);
+   const animeSlideOutRight = useAnime(slideOutRight);
 
    const { cartState, cartDispatch } = useContext(CartContext);
    const { shopState, shopDispatch } = useContext(ShopContext);
-
-
-
 
 
    function openingCart(cartState) {
@@ -39,7 +36,7 @@ function CartBody() {
    function closeCart(cartElement) {
 
       if (closingCart(cartState)) {
-         slideOutRight(cartElement);
+         animeSlideOutRight(cartElement);
       }
 
    }
@@ -47,7 +44,7 @@ function CartBody() {
    function openCart(cartElement) {
 
       if (openingCart(cartState)) {
-         slideInRight(cartElement);
+         animeSlideInRight(cartElement);
       }
 
    }
@@ -55,7 +52,7 @@ function CartBody() {
 
    useOnClickOutside(cart, (e) => {
 
-      slideOutRight(cart.current);
+      animeSlideOutRight(cart.current);
       cartDispatch({ type: "CLOSE_CART" });
 
    }, cartState.cartOpen);

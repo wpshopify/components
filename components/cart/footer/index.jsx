@@ -2,7 +2,7 @@ import React, { useContext, useEffect, useState, useRef } from 'react';
 import { ShopContext } from '../../shop/context';
 import { CartContext } from '../../cart/context';
 import { maybeformatPriceToCurrency } from '../../../common/pricing/formatting';
-import { pulse } from '../../../common/animations';
+import { pulse, useAnime } from '../../../common/animations';
 import { CartButtonCheckout } from '../button-checkout';
 
 
@@ -11,14 +11,12 @@ function CartFooter() {
    const { shopState } = useContext(ShopContext);
    const totalElement = useRef();
 
-   console.log('shopState.checkoutCache.total', shopState.checkoutCache.total);
+   const animate = useAnime(pulse);
 
 
    useEffect(() => {
 
-      console.log('shopState.checkoutCache ', shopState.checkoutCache);
-
-      pulse(totalElement.current);
+      animate(totalElement.current);
 
    }, [shopState.checkoutCache.total]);
 

@@ -46,13 +46,16 @@ function Shop(props) {
 
    const [state, dispatch] = useReducer(ShopReducer, ShopInitialState(props));
 
-
+   /*
+   
+   Responsible for: Bootstrapping the app
+   
+   */
    async function bootstrapShop() {
 
       var [instancesError, instances] = await to(buildInstances());
 
       if (instancesError) {
-         console.error('instancesError!', instancesError);
          return;
       }
 
@@ -67,10 +70,9 @@ function Shop(props) {
          return;
       }
 
-
       if (products) {
-         dispatch({ type: "SET_CHECKOUT_CACHE_LINE_ITEMS", payload: { products: products } });
-         dispatch({ type: "SET_CHECKOUT_TOTAL" });
+         dispatch({ type: "SET_LINE_ITEMS_AND_VARIANTS", payload: { products: products } });
+         dispatch({ type: "UPDATE_CHECKOUT_TOTAL" });
          dispatch({ type: "SET_IS_CART_EMPTY", payload: false });
 
       } else {

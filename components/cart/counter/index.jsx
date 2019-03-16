@@ -1,23 +1,35 @@
 import React, { useContext, useState, useEffect } from 'react';
 import { ShopContext } from '../../shop/context';
 
+function findTotalCartQuantities(lineItems) {
+
+   return lineItems.reduce(function (accumulator, lineItem) {
+
+      accumulator += lineItem.quantity;
+      return accumulator;
+
+   }, 0);
+
+}
+
+function isTotalEmpty(total) {
+   return total === 0;
+}
+
 
 function CartCounter() {
 
+   console.log('<CartCounter />');
+
    const { shopState } = useContext(ShopContext);
-   const [totalItems, setTotalItems] = useState(shopState.checkoutCache.lineItems.length);
-
-
-   function isEmptyTotal(total) {
-      return total === 0;
-   }
+   const [totalItems, setTotalItems] = useState(findTotalCartQuantities(shopState.checkoutCache.lineItems));
 
 
    useEffect(() => {
 
-      const total = shopState.checkoutCache.lineItems.length;
+      const total = findTotalCartQuantities(shopState.checkoutCache.lineItems);
 
-      if (!isEmptyTotal(total)) {
+      if (!isTotalEmpty(total)) {
          setTotalItems(total);
       }
 
@@ -27,7 +39,7 @@ function CartCounter() {
    return (
       <>
          {
-            !isEmptyTotal(totalItems)
+            !isTotalEmpty(totalItems)
                ? <span className="wps-cart-counter">{totalItems}</span>
                : ''
          }

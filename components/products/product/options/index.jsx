@@ -25,17 +25,12 @@ function ProductOptions() {
       }
 
       if (allOptionsSelectedMatch(buyButtonState.selectedOptions, buyButtonState.product)) {
-
-         console.log('setAllOptionsSelected to TRUE');
-         // buyButtonState.setAllOptionsSelected(true);
          buyButtonDispatch({ type: "SET_ALL_SELECTED_OPTIONS", payload: true });
 
       } else {
          buyButtonDispatch({ type: "SET_ALL_SELECTED_OPTIONS", payload: false });
 
       }
-
-
 
    }, [buyButtonState.selectedOptions]);
 

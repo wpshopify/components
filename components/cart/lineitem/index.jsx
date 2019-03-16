@@ -4,7 +4,7 @@ import { ShopContext } from '../../shop/context';
 
 import { CartLineItemQuantity } from './quantity';
 import { maybeformatPriceToCurrency } from '../../../common/pricing/formatting';
-import { stagger } from '../../../common/animations';
+import { useAnime, stagger } from '../../../common/animations';
 import { calcLineItemTotal } from '../../../common/products';
 import find from 'lodash/find';
 
@@ -14,21 +14,15 @@ function getLineItemFromState(lineItem, lineItemsFromState) {
 
 function CartLineItem({ lineItem, index }) {
 
-   console.log('lineItem ...', lineItem);
-
-   const { cartState, cartDispatch } = useContext(CartContext);
+   var isMounted = true;
+   const { cartState } = useContext(CartContext);
    const { shopState, shopDispatch } = useContext(ShopContext);
 
-   const [isUpdating, setIsUpdaing] = useState(false);
-
-   // const cachedLineItemData = getLineItemFromState(lineItem, shopState.checkoutCache.lineItems);
+   const [isUpdating] = useState(false);
+   const animeStagger = useAnime(stagger);
 
    const [lineItemQuantity, setLineItemQuantity] = useState(0);
    const [lineItemTotal, setLineItemTotal] = useState(0);
-
-   // const [lineItemPrice, setLineItemPrice] = useState(lineItem.price);
-   // const oldLineItemPrice = lineItem.price;
-   // const oldLineItemQuantity = 1;
 
    const variantId = useRef(false);
    const lineItemElement = useRef();
@@ -36,7 +30,21 @@ function CartLineItem({ lineItem, index }) {
    const lineItemTotalElement = useRef();
 
 
+   function removeLineItem(e) {
 
+      shopDispatch({ type: 'REMOVE_LINE_ITEM', payload: variantId.current });
+
+      shopDispatch({
+         type: 'UPDATE_LINE_ITEM_QUANTITY',
+         payload: {
+            variantId: variantId.current,
+            lineItemNewQuantity: 0
+         }
+      });
+
+      shopDispatch({ type: 'UPDATE_CHECKOUT_TOTAL' });
+
+   }
 
    useEffect(() => {
 
@@ -47,13 +55,22 @@ function CartLineItem({ lineItem, index }) {
       setLineItemQuantity(lineItemFoumd.quantity);
       setLineItemTotal(calcLineItemTotal(lineItem.price, lineItemFoumd.quantity));
 
+      return () => {
+         isMounted = false;
+      }
+
    }, [shopState.checkoutCache.lineItems]);
 
 
    useEffect(() => {
 
       if (cartState.cartOpen) {
-         stagger(lineItemElement.current, index);
+         // stagger(lineItemElement.current, index);
+         animeStagger(lineItemElement.current, index)
+      }
+
+      return () => {
+         isMounted = false;
       }
 
    }, [cartState.cartOpen]);
@@ -79,9 +96,13 @@ function CartLineItem({ lineItem, index }) {
 
             <div className="wps-cart-lineitem-content-row">
 
-               <span className="wps-cart-lineitem-title" data-wps-is-ready={shopState.isReady}>
+               <p className="wps-cart-lineitem-title" data-wps-is-ready={shopState.isReady}>
+
                   {lineItem.productTitle}
-               </span>
+
+                  <span className="wps-cart-lineitem-remove" onClick={removeLineItem}>Remove</span>
+
+               </p>
 
                <div className="wps-cart-lineitem-variant-title" data-wps-is-ready={shopState.isReady}>{lineItem.title}</div>
 
@@ -97,7 +118,8 @@ function CartLineItem({ lineItem, index }) {
                   isReady={shopState.isReady}
                   isFirstRender={isFirstRender}
                   setLineItemTotal={setLineItemTotal}
-                  lineItemTotalElement={lineItemTotalElement} />
+                  lineItemTotalElement={lineItemTotalElement}
+                  isMounted={isMounted} />
 
                <div
                   className="wps-cart-lineitem-price wps-cart-lineitem-price-total"

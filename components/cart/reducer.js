@@ -1,5 +1,3 @@
-import accounting from 'accounting';
-
 function CartReducer(state, action) {
 
    switch (action.type) {

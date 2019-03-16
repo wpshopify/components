@@ -15,7 +15,6 @@ function ProductBuyButtonReducer(state, action) {
 
       case "UNSET_SELECTED_OPTIONS":
 
-         // action.payload === option.name
          return {
             ...state,
             selectedOptions: update(state.selectedOptions, { $unset: [action.payload] })
@@ -23,10 +22,6 @@ function ProductBuyButtonReducer(state, action) {
 
       case "UPDATE_SELECTED_OPTIONS":
 
-         console.log('PRIOR UPDATE_SELECTED_OPTIONS', state.selectedOptions);
-         console.log('setting action.payload ', action.payload);
-
-         // action.payload === {Color: "Red"}
          return {
             ...state,
             selectedOptions: update(state.selectedOptions, { $merge: action.payload })
@@ -48,10 +43,11 @@ function ProductBuyButtonReducer(state, action) {
 
       case "SET_AVAILABLE_VARIANTS":
 
-         // action.payload === selectedOption
          return {
             ...state,
-            availableVariants: filterAvailableVariantsBySelectedOption(state.product, action.payload)
+            availableVariants: update(state.product, {
+               $apply: product => filterAvailableVariantsBySelectedOption(product, action.payload)
+            })
          }
 
       case "SET_IS_ADDING_TO_CART":
@@ -62,7 +58,7 @@ function ProductBuyButtonReducer(state, action) {
          }
 
       case "UPDATE_QUANTITY":
-         // action.payload === new quantity
+
          return {
             ...state,
             quantity: action.payload

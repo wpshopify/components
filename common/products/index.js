@@ -51,7 +51,6 @@ function calcCheckoutTotal(checkoutState) {
 
 
 function calcCheckoutTotalReducer(accumulator, lineItem, checkoutState) {
-   console.log('checkoutState', checkoutState);
 
    var variant = getVariantFromLineItem(checkoutState.variants, lineItem);
 
