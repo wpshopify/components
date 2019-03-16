@@ -71,6 +71,10 @@ function Shop(props) {
       if (products) {
          dispatch({ type: "SET_CHECKOUT_CACHE_LINE_ITEMS", payload: { products: products } });
          dispatch({ type: "SET_CHECKOUT_TOTAL" });
+         dispatch({ type: "SET_IS_CART_EMPTY", payload: false });
+
+      } else {
+         dispatch({ type: "SET_IS_CART_EMPTY", payload: true });
       }
 
       // App is ready to go

@@ -5,6 +5,8 @@ import assign from 'lodash/assign';
 import reduce from 'lodash/reduce';
 import filter from 'lodash/filter';
 import head from 'lodash/head';
+import update from 'immutability-helper';
+
 
 import { calcCheckoutTotal, calcLineItemTotal } from '../../common/products';
 
@@ -54,6 +56,28 @@ function findVariantsFromProductIds(productsFromCart, shopState) {
 
 
 
+
+
+function isCartEmpty(lineItems) {
+   return lineItems.length === 0;
+}
+
+
+function updateLineItemQuantity(state, payload) {
+
+   state.lineItems = state.lineItems.map(lineItem => {
+
+      if (lineItem.variantId === payload.variantId) {
+         lineItem.quantity = payload.lineItemNewQuantity;
+      }
+
+      return lineItem;
+
+   });
+
+   return state;
+
+}
 
 
 
@@ -170,25 +194,16 @@ function ShopReducer(state, action) {
 
       case "UPDATE_LINE_ITEM_QUANTITY": {
 
-         const updatedCheckoutCache = state.checkoutCache;
-
-         const updateLineItems = updatedCheckoutCache.lineItems.map(lineItem => {
-
-            if (lineItem.variantId === action.payload.variantId) {
-               lineItem.quantity = action.payload.lineItemNewQuantity;
-            }
-
-            return lineItem;
-
+         const checkoutCacheUpdated = update(state.checkoutCache, {
+            $apply: stateObj => updateLineItemQuantity(stateObj, action.payload)
          });
 
-         updatedCheckoutCache.lineItems = updateLineItems;
-
-         setCheckoutCache(state.checkout.id, updatedCheckoutCache);
+         setCheckoutCache(state.checkout.id, checkoutCacheUpdated);
 
          return {
             ...state,
-            checkoutCache: updatedCheckoutCache
+            isCartEmpty: isCartEmpty(checkoutCacheUpdated.lineItems),
+            checkoutCache: checkoutCacheUpdated
          }
 
       }
@@ -232,13 +247,11 @@ function ShopReducer(state, action) {
 
       case "SET_IS_CART_EMPTY": {
 
-         const updatedCheckoutCache = state.checkoutCache;
-
-         updatedCheckoutCache.isCartEmpty = action.payload;
+         console.log('.......... SET_IS_CART_EMPTY');
 
          return {
             ...state,
-            checkoutCache: updatedCheckoutCache
+            isCartEmpty: action.payload
          }
       }
 

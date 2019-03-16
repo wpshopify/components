@@ -7,16 +7,17 @@ import { CartNoticeEmpty } from '../notice/empty';
 function CartContents() {
 
    const { shopState } = useContext(ShopContext);
+   console.log('shopState.isCartEmpty', shopState.isCartEmpty);
 
    return (
       <section className="wps-cart-contents">
+
          {
-            !shopState.checkoutCache.isCartEmpty
-               ? <CartLineItems lineItems={shopState.checkoutCache.variants} />
-               : (<CartNotice>
-                  <CartNoticeEmpty />
-               </CartNotice>)
+            shopState.isCartEmpty
+               ? <CartNoticeEmpty />
+               : <CartLineItems lineItems={shopState.checkoutCache.variants} />
          }
+
       </section>
    )
 
