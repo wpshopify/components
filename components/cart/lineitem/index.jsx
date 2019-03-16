@@ -4,75 +4,66 @@ import { ShopContext } from '../../shop/context';
 
 import { CartLineItemQuantity } from './quantity';
 import { maybeformatPriceToCurrency } from '../../../common/pricing/formatting';
+import { stagger } from '../../../common/animations';
+import { calcLineItemTotal } from '../../../common/products';
+import find from 'lodash/find';
 
+function getLineItemFromState(lineItem, lineItemsFromState) {
+   return find(lineItemsFromState, { 'variantId': lineItem.id });
+}
 
+function CartLineItem({ lineItem, index }) {
 
-
-function CartLineItem({ lineItem }) {
-
+   console.log('lineItem ...', lineItem);
 
    const { cartState, cartDispatch } = useContext(CartContext);
-   const { shopState } = useContext(ShopContext);
+   const { shopState, shopDispatch } = useContext(ShopContext);
 
    const [isUpdating, setIsUpdaing] = useState(false);
 
-   const [lineItemQuantity, setLineItemQuantity] = useState(1);
-   const [lineItemPrice, setLineItemPrice] = useState(lineItem.price);
-   const oldLineItemPrice = lineItem.price;
-   const oldLineItemQuantity = 1;
+   // const cachedLineItemData = getLineItemFromState(lineItem, shopState.checkoutCache.lineItems);
 
+   const [lineItemQuantity, setLineItemQuantity] = useState(0);
+   const [lineItemTotal, setLineItemTotal] = useState(0);
+
+   // const [lineItemPrice, setLineItemPrice] = useState(lineItem.price);
+   // const oldLineItemPrice = lineItem.price;
+   // const oldLineItemQuantity = 1;
+
+   const variantId = useRef(false);
+   const lineItemElement = useRef();
    const isFirstRender = useRef(true);
-
-   // const [localTotalPrice, setLocalTotalPrice] = useState(cartState.totalPrice);
-
-
-   function handleQuantityChange() {
-      console.log('handleQuantityChange');
-   }
+   const lineItemTotalElement = useRef();
 
 
-   // useEffect(() => {
-
-   //    setLocalTotalPrice(localTotalPrice);
-
-   // }, [cartState.totalPrice]);
 
 
    useEffect(() => {
 
-      if (isFirstRender.current) {
-         isFirstRender.current = false;
-         return;
+      let lineItemFoumd = getLineItemFromState(lineItem, shopState.checkoutCache.lineItems);
+
+      variantId.current = lineItemFoumd.variantId;
+
+      setLineItemQuantity(lineItemFoumd.quantity);
+      setLineItemTotal(calcLineItemTotal(lineItem.price, lineItemFoumd.quantity));
+
+   }, [shopState.checkoutCache.lineItems]);
+
+
+   useEffect(() => {
+
+      if (cartState.cartOpen) {
+         stagger(lineItemElement.current, index);
       }
 
-      // console.log('......... cartState.totalPrice ', cartState.totalPrice);
-      console.log('<CartLineItem /> useEffect lineItemQuantity');
-      // console.log('shopState.totalPrice ', shopState.totalPrice);
-
-      cartDispatch({ type: 'SET_IS_UPDATING' });
-
-
-      // cartDispatch({
-      //    type: "UPDATE_TOTAL_PRICE",
-      //    payload: {
-      //       currentTotalPrice: cartState.totalPrice,
-      //       lineItemPrice: lineItemPrice,
-      //       lineItemQuantity: lineItemQuantity,
-      //       oldLineItemPrice: oldLineItemPrice,
-      //       oldLineItemQuantity: oldLineItemQuantity
-      //    }
-      // });
-
-
-   }, [lineItemQuantity]);
-
-
+   }, [cartState.cartOpen]);
 
 
    return (
       <div
          className="wps-cart-lineitem row"
-         data-wps-is-updating={isUpdating}>
+         data-wps-is-updating={isUpdating}
+         ref={lineItemElement}>
 
 
          <a href="https://demo.wpshop.io/products/aerodynamic-aluminum-bench/" className="wps-cart-lineitem-img-link" target="_blank">
@@ -87,25 +78,34 @@ function CartLineItem({ lineItem }) {
          <div className="wps-cart-lineitem-content">
 
             <div className="wps-cart-lineitem-content-row">
-               <div className="wps-cart-lineitem-variant-title" data-wps-is-ready={shopState.isReady}>{lineItem.title}</div>
 
-               <a
-                  href="https://demo.wpshop.io/products/aerodynamic-aluminum-bench/" className="wps-cart-lineitem-title" data-wps-is-ready={shopState.isReady}>
+               <span className="wps-cart-lineitem-title" data-wps-is-ready={shopState.isReady}>
                   {lineItem.productTitle}
-               </a>
+               </span>
+
+               <div className="wps-cart-lineitem-variant-title" data-wps-is-ready={shopState.isReady}>{lineItem.title}</div>
 
             </div>
 
             <div className="wps-cart-lineitem-content-row wps-row">
 
                <CartLineItemQuantity
-                  lineitem={lineItem}
+                  lineItem={lineItem}
+                  variantId={variantId}
                   lineItemQuantity={lineItemQuantity}
                   setLineItemQuantity={setLineItemQuantity}
-                  isReady={shopState.isReady} />
+                  isReady={shopState.isReady}
+                  isFirstRender={isFirstRender}
+                  setLineItemTotal={setLineItemTotal}
+                  lineItemTotalElement={lineItemTotalElement} />
 
-               <div className="wps-cart-lineitem-price" data-wps-is-ready={shopState.isReady}>
-                  <span className="wps-cart-lineitem-num-of">x{lineItemQuantity}</span> {maybeformatPriceToCurrency(lineItem.price)}
+               <div
+                  className="wps-cart-lineitem-price wps-cart-lineitem-price-total"
+                  data-wps-is-ready={shopState.isReady}
+                  ref={lineItemTotalElement}>
+
+                  {maybeformatPriceToCurrency(lineItemTotal)}
+
                </div>
 
             </div>

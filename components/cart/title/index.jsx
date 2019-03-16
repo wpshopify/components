@@ -6,7 +6,9 @@ function CartTitle() {
    const { cartState } = useContext(CartContext);
 
    return (
-      <h2 className="wps-cart-title">{cartState.title}</h2>
+      <>
+         <h2 className="wps-cart-title">{cartState.title}</h2>
+      </>
    )
 
 }

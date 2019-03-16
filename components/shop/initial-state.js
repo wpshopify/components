@@ -6,7 +6,9 @@ function ShopInitialState(props = false) {
       isReady: false,
       checkoutCache: {
          lineItems: [],
-         variants: []
+         variants: [],
+         total: 0.00,
+         isCartEmpty: true
       }
    }
 

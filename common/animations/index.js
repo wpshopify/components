@@ -46,8 +46,27 @@ function slideOutRight(element) {
    });
 }
 
+
+
+function stagger(element, index) {
+
+   console.log('element .......', element);
+   console.log('index', index);
+   console.log('index * 50', index * 450);
+
+   return anime({
+      targets: element,
+      translateY: [-20, 0],
+      opacity: [0, 1],
+      delay: (index * 50) // increase delay by 100ms for each element.
+   });
+
+}
+
+
 export {
    pulse,
    slideInRight,
-   slideOutRight
+   slideOutRight,
+   stagger
 }

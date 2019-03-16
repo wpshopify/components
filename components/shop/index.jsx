@@ -69,7 +69,8 @@ function Shop(props) {
 
 
       if (products) {
-         dispatch({ type: "SET_CHECKOUT_CACHE_LINEITEMS", payload: { products: products } });
+         dispatch({ type: "SET_CHECKOUT_CACHE_LINE_ITEMS", payload: { products: products } });
+         dispatch({ type: "SET_CHECKOUT_TOTAL" });
       }
 
       // App is ready to go

@@ -1,6 +1,8 @@
 import React, { useContext, useEffect, useRef } from 'react';
 import { ShopContext } from '../../shop/context';
 import { CartLineItems } from '../lineitems';
+import { CartNotice } from '../notice';
+import { CartNoticeEmpty } from '../notice/empty';
 
 function CartContents() {
 
@@ -8,7 +10,13 @@ function CartContents() {
 
    return (
       <section className="wps-cart-contents">
-         <CartLineItems lineItems={shopState.checkoutCache.variants} />
+         {
+            !shopState.checkoutCache.isCartEmpty
+               ? <CartLineItems lineItems={shopState.checkoutCache.variants} />
+               : (<CartNotice>
+                  <CartNoticeEmpty />
+               </CartNotice>)
+         }
       </section>
    )
 

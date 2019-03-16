@@ -3,7 +3,10 @@ import some from 'lodash/some';
 import flattenDepth from 'lodash/flattenDepth';
 import assign from 'lodash/assign';
 import reduce from 'lodash/reduce';
+import filter from 'lodash/filter';
+import head from 'lodash/head';
 
+import { calcCheckoutTotal, calcLineItemTotal } from '../../common/products';
 
 function addProductInfoToVariants(productsFromCart, shopState) {
 
@@ -41,12 +44,8 @@ function combineAllVariants(variants) {
 
 function findVariantsFromProductIds(productsFromCart, shopState) {
 
-   // var shopState = getCheckoutCache(checkoutId);
-
    var productInfoAndVariants = addProductInfoToVariants(productsFromCart, shopState);
-
    var variantsMulti = onlyVariantsInCheckout(productInfoAndVariants);
-
    var variantsCombined = combineAllVariants(variantsMulti);
 
    return variantsCombined;
@@ -63,35 +62,23 @@ function ShopReducer(state, action) {
 
    switch (action.type) {
 
-      case "SET_CHECKOUT":
-
-         return {
-            ...state,
-            checkout: action.payload,
-            totalPrice: action.payload.totalPrice
-         }
-
-      case "UPDATE_CHECKOUT": // should replace since were using cache 
-
-         // action.payload === totalPrice
-         console.log('UPDATE_CHECKOUT ', action.payload);
+      case "SET_CHECKOUT": {
 
          return {
             ...state,
             checkout: action.payload
          }
+      }
 
-      case "NOTIFY_CART":
-
-         // action.payload === totalPrice
-         console.log('NOTIFY_CART ', action.payload);
+      case "NOTIFY_CART": {
 
          return {
             ...state,
             notifyingCart: action.payload
          }
+      }
 
-      case "SET_CHECKOUT_CACHE":
+      case "SET_CHECKOUT_CACHE": {
 
          var checkoutCache = getCheckoutCache(action.payload.id);
 
@@ -108,12 +95,13 @@ function ShopReducer(state, action) {
             checkoutCache: checkoutCache
          }
 
-      case "UPDATE_CHECKOUT_CACHE":
+      }
+
+      case "UPDATE_CHECKOUT_CACHE": {
 
          var checkoutCache = getCheckoutCache(action.payload.checkoutID);
-         console.log('?? checkoutCache ', checkoutCache);
 
-         // // If the store doesn't exist, set it to our intial state from the reducer
+         // If the store doesn't exist, set it to our intial state from the reducer
          if (!checkoutCache) {
 
             checkoutCache = {
@@ -125,27 +113,23 @@ function ShopReducer(state, action) {
 
          } else {
 
-            console.log('Updating checkout action.payload.lineItems with ...', action.payload.lineItems);
-
             checkoutCache = {
                lineItems: mergeCheckoutCacheLineItems(checkoutCache.lineItems, action.payload.lineItems),
                variants: mergeCheckoutCacheVariants(checkoutCache.variants, action.payload.variants)
             }
 
-            console.log('Updating checkout checkoutCache ...', checkoutCache);
-
             setCheckoutCache(action.payload.checkoutID, checkoutCache);
 
          }
-
-
 
          return {
             ...state,
             checkoutCache: checkoutCache
          }
 
-      case "SET_CHECKOUT_CACHE_LINEITEMS":
+      }
+
+      case "SET_CHECKOUT_CACHE_LINE_ITEMS": {
 
          // action.payload.products comes from an API call during bootstrap
 
@@ -162,17 +146,116 @@ function ShopReducer(state, action) {
             checkoutCache: newCheckoutCache
          }
 
-      case "IS_READY":
+      }
+
+      case "REMOVE_LINE_ITEM": {
+
+         const updatedCheckoutCache = state.checkoutCache;
+
+         const updateLineItems = filter(updatedCheckoutCache.lineItems, (o) => o.variantId !== action.payload);
+         const updateVariants = filter(updatedCheckoutCache.variants, (o) => o.id !== action.payload);
+
+         updatedCheckoutCache.lineItems = updateLineItems;
+         updatedCheckoutCache.variants = updateVariants;
+
+         setCheckoutCache(state.checkout.id, updatedCheckoutCache);
+
+         return {
+            ...state,
+            checkoutCache: updatedCheckoutCache
+         }
+
+      }
+
+
+      case "UPDATE_LINE_ITEM_QUANTITY": {
+
+         const updatedCheckoutCache = state.checkoutCache;
+
+         const updateLineItems = updatedCheckoutCache.lineItems.map(lineItem => {
+
+            if (lineItem.variantId === action.payload.variantId) {
+               lineItem.quantity = action.payload.lineItemNewQuantity;
+            }
+
+            return lineItem;
+
+         });
+
+         updatedCheckoutCache.lineItems = updateLineItems;
+
+         setCheckoutCache(state.checkout.id, updatedCheckoutCache);
+
+         return {
+            ...state,
+            checkoutCache: updatedCheckoutCache
+         }
+
+      }
+
+      case "SET_CHECKOUT_TOTAL": {
+
+         const updatedCheckoutCache = state.checkoutCache;
+
+         var checkoutTotal = calcCheckoutTotal(updatedCheckoutCache);
+
+         updatedCheckoutCache.total = checkoutTotal;
+
+         setCheckoutCache(state.checkout.id, updatedCheckoutCache);
+
+
+         return {
+            ...state,
+            checkoutCache: updatedCheckoutCache
+         }
+
+      }
+
+      case "UPDATE_CHECKOUT_TOTAL": {
+
+         const updatedCheckoutCache = state.checkoutCache;
+
+         var oldTotal = calcLineItemTotal(action.payload.lineItemOldQuantity, action.payload.lineItemPrice);
+         var newTotal = calcLineItemTotal(action.payload.lineItemNewQuantity, action.payload.lineItemPrice);
+
+         var checkoutTotalMinusOldLineItemTotal = updatedCheckoutCache.total - oldTotal;
+         var finalTotal = checkoutTotalMinusOldLineItemTotal += newTotal;
+
+         updatedCheckoutCache.total = finalTotal;
+
+         return {
+            ...state,
+            checkoutCache: updatedCheckoutCache
+         }
+
+      }
+
+      case "SET_IS_CART_EMPTY": {
+
+         const updatedCheckoutCache = state.checkoutCache;
+
+         updatedCheckoutCache.isCartEmpty = action.payload;
+
+         return {
+            ...state,
+            checkoutCache: updatedCheckoutCache
+         }
+      }
+
+      case "IS_READY": {
 
          return {
             ...state,
             isReady: true
          }
+      }
 
-      default:
+      default: {
          return state;
+      }
 
    }
+
 
 }
 

@@ -1,42 +1,38 @@
-import React, { useContext, useEffect, useState } from 'react';
+import React, { useContext, useEffect, useState, useRef } from 'react';
 import { ShopContext } from '../../shop/context';
 import { CartContext } from '../../cart/context';
 import { maybeformatPriceToCurrency } from '../../../common/pricing/formatting';
+import { pulse } from '../../../common/animations';
+import { CartButtonCheckout } from '../button-checkout';
 
 
 function CartFooter() {
 
    const { shopState } = useContext(ShopContext);
+   const totalElement = useRef();
 
-   const { cartState } = useContext(CartContext);
+   console.log('shopState.checkoutCache.total', shopState.checkoutCache.total);
 
-
-
-
-   const [totalPrice, setTotalPrice] = useState(cartState.totalPrice);
 
    useEffect(() => {
 
+      console.log('shopState.checkoutCache ', shopState.checkoutCache);
 
-      setTotalPrice(maybeformatPriceToCurrency(cartState.totalPrice));
+      pulse(totalElement.current);
 
-   }, [cartState.totalPrice]);
-
-
-   // When the real checkout price updates (line items added, etc)
-   // useEffect(() => {
-
-   //    console.log('Total price changed! ', totalPrice);
-   //    console.log('maybeformatPriceToCurrency(shopState.checkout.totalPrice) ', maybeformatPriceToCurrency(shopState.checkout.totalPrice));
-
-   //    setTotalPrice(maybeformatPriceToCurrency(shopState.checkout.totalPrice));
-
-   // }, [shopState.checkout.totalPrice]);
+   }, [shopState.checkoutCache.total]);
 
 
    return (
       <section className="wps-cart-footer">
-         Total: {totalPrice}
+
+         <div className="wps-baseline wps-row wps-space-between">
+            <p className="wps-total-prefix">Subtotal:</p>
+            <p className="wps-total-amount" ref={totalElement} data-wps-is-ready={shopState.isReady}>{maybeformatPriceToCurrency(shopState.checkoutCache.total)}</p>
+         </div>
+
+         <CartButtonCheckout />
+
       </section>
    )
 

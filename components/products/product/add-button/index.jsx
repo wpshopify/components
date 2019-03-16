@@ -28,6 +28,7 @@ function ProductAddButton() {
 
 
    async function handleClick() {
+
       console.log('<ProductAddButton /> -- selectedOptions', buyButtonState.selectedOptions);
       console.log('<ProductAddButton /> -- allOptionsSelected', buyButtonState.allOptionsSelected);
 
@@ -62,8 +63,6 @@ function ProductAddButton() {
 
          console.log('variant found :: ', modVariant);
 
-
-
          shopDispatch({
             type: "UPDATE_CHECKOUT_CACHE",
             payload: {
@@ -73,22 +72,12 @@ function ProductAddButton() {
             }
          });
 
-
-
-
-
-
-
-
-
-
-
+         shopDispatch({ type: "SET_CHECKOUT_TOTAL" });
 
          buyButtonDispatch({ type: "SET_ALL_SELECTED_OPTIONS", payload: false });
          buyButtonDispatch({ type: "SET_IS_ADDING_TO_CART", payload: false });
          buyButtonDispatch({ type: "REMOVE_SELECTED_OPTIONS" });
 
-         // shopDispatch({ type: "UPDATE_CHECKOUT", payload: updatedCheckout });
          shopDispatch({ type: "NOTIFY_CART", payload: true });
 
 
