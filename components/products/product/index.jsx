@@ -1,25 +1,33 @@
 import 'babel-polyfill';
-import React from 'react';
+import React, { useReducer } from 'react';
 import { ProductTitle } from './title';
 import { ProductPricing } from './pricing';
 import { ProductDescription } from './description';
 import { ProductBuyButton } from './buy-button';
-import { ProductFeaturedImage } from './images-featured';
+import { ProductImages } from './images';
+import { ProductReducer } from './reducer';
+import { ProductContext } from './context';
+import { getProductInitialState } from './initial-state';
 
-function Product({ product, isLoading }) {
+function Product({ product }) {
+	const [ state, dispatch ] = useReducer(ProductReducer, getProductInitialState(product));
 
-   return (
-      <div className="wps-product">
-         <ProductFeaturedImage product={product} isLoading={isLoading}></ProductFeaturedImage>
-         <ProductTitle product={product} isLoading={isLoading}></ProductTitle>
-         <ProductPricing product={product} isLoading={isLoading}></ProductPricing>
-         <ProductDescription product={product} isLoading={isLoading}></ProductDescription>
-         <ProductBuyButton product={product} isLoading={isLoading}></ProductBuyButton>
-      </div>
-   )
-
+	return (
+		<div className="wps-product">
+			<ProductContext.Provider
+				value={{
+					productState: state,
+					productDispatch: dispatch
+				}}
+			>
+				<ProductImages />
+				<ProductTitle />
+				<ProductPricing />
+				<ProductDescription />
+				<ProductBuyButton />
+			</ProductContext.Provider>
+		</div>
+	);
 }
 
-export {
-   Product
-}
+export { Product };

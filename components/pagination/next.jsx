@@ -15,8 +15,6 @@ function PaginationNext() {
 
          var newProducts = await fetchNextPage(searchData);
 
-         console.log('NEW SEARCH DATA ', newProducts.model);
-
          setSearchData(searchData.concat(newProducts.model));
          setIsLoading(false);
 

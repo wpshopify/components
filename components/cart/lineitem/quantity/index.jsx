@@ -4,10 +4,26 @@ import find from 'lodash/find';
 import { calcLineItemTotal } from '../../../../common/products';
 import { useAnime, pulse } from '../../../../common/animations';
 
-function CartLineItemQuantity({ lineItem, variantId, lineItemQuantity, setLineItemQuantity, isReady, isFirstRender, setLineItemTotal, lineItemTotalElement, elementExists }) {
+
+
+// 1 is the previous value before decrementing _again_
+function isRemovingLineItem(quantity) {
+   return Number(quantity) === 0;
+}
+
+function getLineItemFromState(lineItem, lineItemsFromState) {
+   return find(lineItemsFromState, { 'variantId': lineItem.id });
+}
+
+
+
+function CartLineItemQuantity({ lineItem, variantId, lineItemQuantity, setLineItemQuantity, isReady, isFirstRender, setLineItemTotal, lineItemTotalElement }) {
 
    const { shopState, shopDispatch } = useContext(ShopContext);
    const animePulse = useAnime(pulse);
+
+
+
 
    function changeQuantity(newQuantity) {
 
@@ -17,7 +33,8 @@ function CartLineItemQuantity({ lineItem, variantId, lineItemQuantity, setLineIt
          variantId.current = lineItemFoumd.variantId;
       }
 
-      animePulse(lineItemTotalElement.current, elementExists);
+      animePulse(lineItemTotalElement.current);
+
 
       setLineItemQuantity(newQuantity);
       setLineItemTotal(calcLineItemTotal(newQuantity, lineItem.price));
@@ -48,30 +65,22 @@ function CartLineItemQuantity({ lineItem, variantId, lineItemQuantity, setLineIt
    function handleQuantityBlur(e) {
 
       if (isRemovingLineItem(e.target.value)) {
-
          shopDispatch({ type: 'REMOVE_LINE_ITEM', payload: variantId.current });
-         shopDispatch({
-            type: 'UPDATE_LINE_ITEM_QUANTITY',
-            payload: {
-               variantId: variantId.current,
-               lineItemNewQuantity: 0
-            }
-         });
-
-         shopDispatch({ type: 'UPDATE_CHECKOUT_TOTAL' });
-
       }
 
+      shopDispatch({
+         type: 'UPDATE_LINE_ITEM_QUANTITY',
+         payload: {
+            variantId: variantId.current,
+            lineItemNewQuantity: Number(e.target.value)
+         }
+      });
+
+      shopDispatch({ type: 'UPDATE_CHECKOUT_TOTAL' });
+
    }
 
-   // 1 is the previous value before decrementing _again_
-   function isRemovingLineItem(quantity) {
-      return Number(quantity) === 0;
-   }
 
-   function getLineItemFromState(lineItem, lineItemsFromState) {
-      return find(lineItemsFromState, { 'variantId': lineItem.id });
-   }
 
 
    /*
@@ -80,8 +89,6 @@ function CartLineItemQuantity({ lineItem, variantId, lineItemQuantity, setLineIt
 
    */
    function handleDecrement() {
-      console.log('elementExists handleDecrement', elementExists);
-
       changeQuantity(lineItemQuantity - 1);
    }
 

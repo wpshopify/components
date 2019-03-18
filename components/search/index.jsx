@@ -59,14 +59,10 @@ function Search(props) {
 
       const results = await fetchProducts();
 
-      console.log('results ', results);
-
       setSearchData(results);
       setIsLoading(false);
 
    }
-
-
 
 
    /*

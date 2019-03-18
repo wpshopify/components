@@ -5,7 +5,9 @@ import assign from 'lodash/assign';
 import reduce from 'lodash/reduce';
 import filter from 'lodash/filter';
 import update from 'immutability-helper';
+import find from 'lodash/find';
 import { calcCheckoutTotal } from '../../common/products';
+
 
 
 /*
@@ -64,13 +66,32 @@ function combineAllVariants(variants) {
 Responsible for: finding variants from product ids
 
 */
-function findVariantsFromProductIds(productsFromCart, checkoutCache) {
+function findVariantsFromProductIds(productsFromShopify, checkoutCache) {
 
-   var productInfoAndVariants = addProductInfoToVariants(productsFromCart, checkoutCache);
+   var productInfoAndVariants = addProductInfoToVariants(productsFromShopify, checkoutCache);
    var variantsMulti = onlyVariantsInCheckout(productInfoAndVariants);
    var variantsCombined = combineAllVariants(variantsMulti);
 
    return variantsCombined;
+
+}
+
+
+/*
+
+Responsible for: Only returning "available" line items. E.g., if Shop owner 
+removes a variant, this keeps our cache up to date
+
+*/
+function findLineItemsFromProducts(productsFromShopify, checkoutCache) {
+
+   return checkoutCache.lineItems.filter(lineItem => {
+
+      return find(productsFromShopify, function (product) {
+         return find(product.variants, { 'id': lineItem.variantId });
+      });
+
+   });
 
 }
 
@@ -126,11 +147,13 @@ function updateLineItemsAndVariants(checkoutCache, payload) {
 
 Responsible for: setting line items and variants
 
+// payload.products comes from the Shopify request on each page load
+
 */
 function setLineItemsAndVariants(checkoutCache, payload) {
 
    return {
-      lineItems: checkoutCache.lineItems,
+      lineItems: findLineItemsFromProducts(payload.products, checkoutCache),
       variants: findVariantsFromProductIds(payload.products, checkoutCache)
    }
 
@@ -301,6 +324,7 @@ function ShopReducer(state, action) {
       }
 
       case "IS_READY": {
+         console.log('...................................... IS_READY');
 
          return {
             ...state,

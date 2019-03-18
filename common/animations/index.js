@@ -9,10 +9,8 @@ function pulse(element, cb = false, params = false) {
       duration: 300,
       elasticity: 0,
       complete: function () {
-         console.log('elementExists', params);
 
-         if (cb) {
-            console.log('here?');
+         if (cb && document.body.contains(element)) {
             cb();
          }
 
@@ -37,7 +35,7 @@ function slideInRight(element, cb = false, params = false) {
       easing: 'easeInOutQuad',
       complete: function () {
 
-         if (cb) {
+         if (cb && document.body.contains(element)) {
             cb();
          }
 
@@ -55,7 +53,7 @@ function slideOutRight(element, cb = false, params = false) {
       easing: 'easeInOutQuad',
       complete: function () {
 
-         if (cb) {
+         if (cb && document.body.contains(element)) {
             cb();
          }
 
@@ -73,7 +71,7 @@ function stagger(element, cb, { index }) {
       delay: (index * 50),
       complete: function () {
 
-         if (cb) {
+         if (cb && document.body.contains(element)) {
             cb();
          }
 
@@ -94,8 +92,6 @@ function useAnime(animeType, elementExists = true) {
       if (currentlyAnimating) {
          return;
       }
-      console.log('useAnime elementExists', elementExists);
-
 
       setCurrentlyAnimating(true);
       animeType(element, () => setCurrentlyAnimating(false), params);

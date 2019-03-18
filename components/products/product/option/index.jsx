@@ -5,6 +5,7 @@ import isEmpty from 'lodash/isEmpty';
 import { ProductBuyButtonContext } from '../buy-button/context';
 import { useAnime, pulse } from '../../../../common/animations';
 import { useOnClickOutside } from '../../../../common/hooks';
+import { ShopContext } from '../../../shop/context';
 
 const ProductOptionContext = React.createContext();
 
@@ -19,7 +20,9 @@ function ProductOption({ option }) {
    const isFirstRender = useRef(true);
    const animePulse = useAnime(pulse);
 
+   const { shopState } = useContext(ShopContext);
    const { buyButtonState, buyButtonDispatch } = useContext(ProductBuyButtonContext);
+
 
 
    function getOptionName(selectedOption, option) {
@@ -125,7 +128,7 @@ function ProductOption({ option }) {
                className="wps-btn wps-icon wps-icon-dropdown wps-modal-trigger"
                data-option=""
                data-option-id=""
-               data-wps-is-ready={buyButtonState.isLoading ? '0' : '1'}
+               data-wps-is-ready={shopState.isReady ? '1' : '0'}
                onClick={toggleDropdown}
                ref={dropdownTrigger}>
 

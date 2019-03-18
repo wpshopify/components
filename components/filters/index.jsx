@@ -163,17 +163,12 @@ function Filters({ dropZone, showSelections, selectionsDropZone, showSorting, so
 
    useEffect(() => {
 
-      // console.log('useEffect selections from <Filters />');
-
       if (isFirstRender.current) {
          isFirstRender.current = false;
          return;
       }
 
-      console.log('selections ..........', selections);
       var queryString = buildQueryStringFromSelections(selections);
-
-      console.log('queryString ', queryString);
 
       setQuery(queryString);
 
@@ -228,8 +223,6 @@ function Filters({ dropZone, showSelections, selectionsDropZone, showSorting, so
 
 
    async function loadData() {
-
-      console.log('calling loadData');
 
       beforeDataLoads();
 

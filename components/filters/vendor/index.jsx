@@ -18,8 +18,6 @@ function FilterVendor({ vendor, selectedVendors, setSelectedVendors }) {
          return;
       }
 
-      console.log('selectedVendors', selections);
-
       setIsSelected(isCurrentlySelected(selections, vendor, 'vendor'));
 
    }, [selectedVendors]);
@@ -38,8 +36,6 @@ function FilterVendor({ vendor, selectedVendors, setSelectedVendors }) {
       });
 
       const updatedSelections = update(selections, { $merge: { vendor: newList } });
-
-      console.log('Updated Vendors Selections ', updatedSelections);
 
       setSelections(updatedSelections);
       setSelectedVendors(newList);

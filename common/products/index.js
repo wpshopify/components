@@ -54,6 +54,11 @@ function calcCheckoutTotalReducer(accumulator, lineItem, checkoutState) {
 
    var variant = getVariantFromLineItem(checkoutState.variants, lineItem);
 
+   // If variant was removed from the store, these will be undefined
+   if (!variant || !lineItem) {
+      return accumulator;
+   }
+
    accumulator += calcLineItemTotal(lineItem.quantity, variant.price);
 
    return accumulator;

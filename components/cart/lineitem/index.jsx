@@ -6,6 +6,10 @@ import { CartLineItemQuantity } from './quantity';
 import { maybeformatPriceToCurrency } from '../../../common/pricing/formatting';
 import { useAnime, stagger } from '../../../common/animations';
 import { calcLineItemTotal } from '../../../common/products';
+
+import { ProductNotice } from '../../products/product/notice';
+import { ProductNoticeOutOfStock } from '../../products/product/notice/out-of-stock';
+
 import find from 'lodash/find';
 
 function getLineItemFromState(lineItem, lineItemsFromState) {
@@ -14,7 +18,9 @@ function getLineItemFromState(lineItem, lineItemsFromState) {
 
 function CartLineItem({ lineItem, index }) {
 
-   var isMounted = true;
+   console.log('lineItem', lineItem);
+
+
    const { cartState } = useContext(CartContext);
    const { shopState, shopDispatch } = useContext(ShopContext);
 
@@ -55,10 +61,6 @@ function CartLineItem({ lineItem, index }) {
       setLineItemQuantity(lineItemFoumd.quantity);
       setLineItemTotal(calcLineItemTotal(lineItem.price, lineItemFoumd.quantity));
 
-      return () => {
-         isMounted = false;
-      }
-
    }, [shopState.checkoutCache.lineItems]);
 
 
@@ -69,10 +71,6 @@ function CartLineItem({ lineItem, index }) {
          animeStagger(lineItemElement.current, index)
       }
 
-      return () => {
-         isMounted = false;
-      }
-
    }, [cartState.cartOpen]);
 
 
@@ -80,6 +78,7 @@ function CartLineItem({ lineItem, index }) {
       <div
          className="wps-cart-lineitem row"
          data-wps-is-updating={isUpdating}
+         data-wps-is-available={lineItem.available}
          ref={lineItemElement}>
 
 
@@ -98,8 +97,7 @@ function CartLineItem({ lineItem, index }) {
 
                <p className="wps-cart-lineitem-title" data-wps-is-ready={shopState.isReady}>
 
-                  {lineItem.productTitle}
-
+                  <span className="wps-cart-lineitem-title-content">{lineItem.productTitle}</span>
                   <span className="wps-cart-lineitem-remove" onClick={removeLineItem}>Remove</span>
 
                </p>
@@ -108,29 +106,33 @@ function CartLineItem({ lineItem, index }) {
 
             </div>
 
-            <div className="wps-cart-lineitem-content-row wps-row">
+            {
+               !lineItem.available
+                  ? <ProductNotice type="warning"> <ProductNoticeOutOfStock /> </ProductNotice>
+                  : <div className="wps-cart-lineitem-content-row wps-row">
 
-               <CartLineItemQuantity
-                  lineItem={lineItem}
-                  variantId={variantId}
-                  lineItemQuantity={lineItemQuantity}
-                  setLineItemQuantity={setLineItemQuantity}
-                  isReady={shopState.isReady}
-                  isFirstRender={isFirstRender}
-                  setLineItemTotal={setLineItemTotal}
-                  lineItemTotalElement={lineItemTotalElement}
-                  isMounted={isMounted} />
+                     <CartLineItemQuantity
+                        lineItem={lineItem}
+                        variantId={variantId}
+                        lineItemQuantity={lineItemQuantity}
+                        setLineItemQuantity={setLineItemQuantity}
+                        isReady={shopState.isReady}
+                        isFirstRender={isFirstRender}
+                        setLineItemTotal={setLineItemTotal}
+                        lineItemTotalElement={lineItemTotalElement} />
 
-               <div
-                  className="wps-cart-lineitem-price wps-cart-lineitem-price-total"
-                  data-wps-is-ready={shopState.isReady}
-                  ref={lineItemTotalElement}>
+                     <div
+                        className="wps-cart-lineitem-price wps-cart-lineitem-price-total"
+                        data-wps-is-ready={shopState.isReady}
+                        ref={lineItemTotalElement}>
 
-                  {maybeformatPriceToCurrency(lineItemTotal)}
+                        {maybeformatPriceToCurrency(lineItemTotal)}
 
-               </div>
+                     </div>
 
-            </div>
+                  </div>
+
+            }
 
          </div>
       </div>

@@ -11,7 +11,6 @@ function ProductVariants({ option, isOpen }) {
    const { buyButtonDispatch } = useContext(ProductBuyButtonContext);
    const { selectedOption } = useContext(ProductOptionContext);
 
-
    useEffect(() => {
 
       if (isFirstRender.current) {

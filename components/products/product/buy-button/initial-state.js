@@ -1,4 +1,4 @@
-function getProductBuyButtonInitialState(props = false) {
+function getProductBuyButtonInitialState(product = false, props = false) {
 
    return {
       selectedOptions: {},
@@ -7,8 +7,7 @@ function getProductBuyButtonInitialState(props = false) {
       missingSelections: false,
       isAdding: false,
       quantity: 1,
-      product: props.product ? props.product : false,
-      isLoading: props.isLoading ? props.isLoading : false
+      product: product ? product : false,
    }
 
 }

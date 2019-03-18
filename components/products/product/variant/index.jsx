@@ -19,6 +19,7 @@ function ProductVariant({ variant }) {
    const [isSelectable, setIsSelectable] = useState(true);
    const isFirstRender = useRef(true);
 
+
    const {
       option,
       isOptionSelected,
