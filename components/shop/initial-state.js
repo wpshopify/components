@@ -1,5 +1,4 @@
 function ShopInitialState(props = false) {
-
    return {
       checkout: { lineItems: [] },
       notifyingCart: false,
@@ -7,13 +6,11 @@ function ShopInitialState(props = false) {
       checkoutCache: {
          lineItems: [],
          variants: [],
-         total: 0.00
+         total: 0.0
       },
-      isCartEmpty: true
-   }
-
+      isCartEmpty: true,
+      settings: WP_Shopify.settings
+   };
 }
 
-export {
-   ShopInitialState
-}
+export { ShopInitialState };
