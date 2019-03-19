@@ -10,7 +10,8 @@ function getVariantImage(variant) {
 	return variant.image;
 }
 
-function ProductFeaturedImage({ paneElement }) {
+function ProductFeaturedImage() {
+	const paneElement = useRef();
 	const isFirstRender = useRef(true);
 	const { productState } = useContext(ProductContext);
 
@@ -40,6 +41,7 @@ function ProductFeaturedImage({ paneElement }) {
 			data-wps-is-component-wrapper
 			data-wps-post-id=""
 			data-wps-ignore-sync="1"
+			ref={paneElement}
 		>
 			<div className="wps-product-image-wrapper">
 				<ProductImage isFeatured={true} image={featImage} paneElement={paneElement} />

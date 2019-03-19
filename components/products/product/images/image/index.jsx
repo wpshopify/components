@@ -7,14 +7,13 @@ function ProductImage({ isFeatured, image, paneElement }) {
 	const imageRef = useRef();
 
 	useEffect(() => {
-		console.log('isFeatured', isFeatured);
-
 		if (isFeatured) {
 			if (paneElement) {
+				console.log('imageRef.current', imageRef.current);
+				console.log('paneElement', paneElement.current);
+
 				new Drift(imageRef.current, {
-					paneContainer: document.querySelector(
-						'[data-wps-product-id="Z2lkOi8vc2hvcGlmeS9Qcm9kdWN0LzIyMTY4MjU3MTY3ODQ="]'
-					),
+					paneContainer: paneElement.current,
 					inlinePane: false
 				});
 			}

@@ -3,7 +3,7 @@ import { ProductContext } from '../../context';
 import { ProductThumbnailImage } from '../thumbnail';
 import { ProductFeaturedImage } from '../featured';
 
-function ProductGallery({ paneElement }) {
+function ProductGallery() {
 	const { productState } = useContext(ProductContext);
 
 	function isFeatImage(index) {
@@ -13,7 +13,7 @@ function ProductGallery({ paneElement }) {
 	return productState.product.images.map(
 		(image, index) =>
 			isFeatImage(index) ? (
-				<ProductFeaturedImage key={image.id} image={image} paneElement={paneElement} />
+				<ProductFeaturedImage key={image.id} image={image} />
 			) : (
 				<ProductThumbnailImage key={image.id} image={image} />
 			)

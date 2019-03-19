@@ -4,7 +4,6 @@ import { ProductGallery } from './gallery';
 import { ProductContext } from '../context';
 
 function ProductImages() {
-	const paneElement = useRef();
 	const { productState } = useContext(ProductContext);
 
 	function hasManyImages(product) {
@@ -12,12 +11,8 @@ function ProductImages() {
 	}
 
 	return (
-		<div className="wps-component wps-component-products-images" ref={paneElement}>
-			{hasManyImages(productState.product) ? (
-				<ProductGallery paneElement={paneElement} />
-			) : (
-				<ProductFeaturedImage />
-			)}
+		<div className="wps-component wps-component-products-images">
+			{hasManyImages(productState.product) ? <ProductGallery /> : <ProductFeaturedImage />}
 		</div>
 	);
 }
