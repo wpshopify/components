@@ -1,12 +1,9 @@
 function getProductInitialState(product = false) {
-
    return {
       product: product,
-      selectedVariant: false
-   }
-
+      selectedVariant: false,
+      isFeaturedOnly: false
+   };
 }
 
-export {
-   getProductInitialState
-}
+export { getProductInitialState };

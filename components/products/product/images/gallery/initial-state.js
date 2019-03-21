@@ -1,8 +1,8 @@
 function getProductGalleryInitialState() {
    return {
-      featImageOriginal: false,
-      featImageOptimized: false
-   };
+      featImage: false,
+      featImageElement: false
+   }
 }
 
-export { getProductGalleryInitialState };
+export { getProductGalleryInitialState }

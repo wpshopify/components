@@ -1,47 +1,39 @@
-import React, { useContext, useEffect, useState, useRef } from "react";
-import { ShopContext } from "../../../../shop/context";
-import Drift from "drift-zoom";
-import { addCustomSizingToImageUrl } from "../../../../../common/images";
+import React, { useContext, useEffect, useState, useRef } from 'react'
+import { ShopContext } from '../../../../shop/context'
+import { ProductGalleryContext } from '../gallery/context'
 
-function ProductImage({ isFeatured, image, paneElement }) {
-   const imageRef = useRef();
-   const { shopState } = useContext(ShopContext);
-   const [origFeatImage, setOrigFeatImage] = useState(image.src);
-   const [optFeatImage, setoptFeatImage] = useState(
-      addCustomSizingToImageUrl({
-         src: origFeatImage,
-         width: shopState.settings.productsImagesSizingWidth,
-         height: shopState.settings.productsImagesSizingHeight,
-         crop: shopState.settings.productsImagesSizingCrop,
-         scale: shopState.settings.productsImagesSizingScale
-      })
-   );
+import { addCustomSizingToImageUrl } from '../../../../../common/images'
+
+function ProductImage({ image, isFeatured }) {
+   const imageRef = useRef()
+   const { shopState } = useContext(ShopContext)
+   const { galleryDispatch } = useContext(ProductGalleryContext)
+
+   const imageOptimized = addCustomSizingToImageUrl({
+      src: image.src,
+      width: shopState.settings.productsImagesSizingWidth,
+      height: shopState.settings.productsImagesSizingHeight,
+      crop: shopState.settings.productsImagesSizingCrop,
+      scale: shopState.settings.productsImagesSizingScale
+   })
 
    useEffect(() => {
       if (isFeatured) {
-         if (paneElement) {
-            console.log("imageRef.current", imageRef.current);
-            console.log("paneElement", paneElement.current);
-
-            new Drift(imageRef.current, {
-               paneContainer: paneElement.current,
-               inlinePane: false
-            });
-         }
+         galleryDispatch({ type: 'SET_FEAT_IMAGE_ELEMENT', payload: imageRef.current })
       }
-   }, []);
+   }, [])
 
    return (
       <img
          ref={imageRef}
-         itemProp="image"
-         src={optFeatImage}
-         className="wps-product-image"
+         itemProp='image'
+         src={imageOptimized}
+         className='wps-product-image'
          alt={image.altText}
-         data-wps-is-ready={shopState.isReady ? "1" : "0"}
-         data-zoom={origFeatImage}
+         data-wps-is-ready={shopState.isReady ? '1' : '0'}
+         data-zoom={image.src}
       />
-   );
+   )
 }
 
-export { ProductImage };
+export { ProductImage }

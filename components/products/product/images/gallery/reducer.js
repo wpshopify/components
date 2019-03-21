@@ -1,23 +1,23 @@
 function ProductGalleryReducer(state, action) {
    switch (action.type) {
-      case "SET_FEAT_IMAGE_ORIGINAL": {
+      case 'SET_FEAT_IMAGE': {
          return {
             ...state,
-            featImageOriginal: action.payload
-         };
+            featImage: action.payload
+         }
       }
 
-      case "SET_FEAT_IMAGE_OPTIMIZED": {
+      case 'SET_FEAT_IMAGE_ELEMENT': {
          return {
             ...state,
-            featImageOptimized: action.payload
-         };
+            featImageElement: action.payload
+         }
       }
 
       default: {
-         return state;
+         return state
       }
    }
 }
 
-export { ProductGalleryReducer };
+export { ProductGalleryReducer }

@@ -1,11 +1,11 @@
-import 'babel-polyfill';
-import React, { useState, useEffect, useRef } from 'react';
-import { queryProducts, fetchByTitleParams } from '/Users/andrew/www/devil/devilbox/data/www/wpshopify-api';
-import { useDebounce } from 'use-debounce';
-import { DropZone } from '../dropzone';
-import { LoadingContext } from '../../common/state/context';
+import 'babel-polyfill'
+import React, { useState, useEffect, useRef } from 'react'
+import ReactDOM from 'react-dom'
 
-
+import { queryProducts, fetchByTitleParams } from '/Users/andrew/www/devil/devilbox/data/www/wpshopify-api'
+import { useDebounce } from 'use-debounce'
+import { DropZone } from '../dropzone'
+import { LoadingContext } from '../../common/state/context'
 
 /*
 
@@ -13,14 +13,12 @@ Component: Search
 
 */
 function Search(props) {
+   const [searchTerm, setSearchTerm] = useState('')
+   const [isLoading, setIsLoading] = useState(false)
+   const [searchData, setSearchData] = useState([])
+   const isFirstRender = useRef(true)
 
-   const [searchTerm, setSearchTerm] = useState('');
-   const [isLoading, setIsLoading] = useState(false);
-   const [searchData, setSearchData] = useState([]);
-   const isFirstRender = useRef(true);
-
-   const debouncedSearchTerm = useDebounce(searchTerm, 300);
-
+   const debouncedSearchTerm = useDebounce(searchTerm, 300)
 
    /*
  
@@ -29,24 +27,17 @@ function Search(props) {
    */
 
    useEffect(() => {
-
       if (!isFirstRender.current) {
-         getResults();
-         return;
+         getResults()
+         return
       }
 
-      console.log('Intial Render: Search Component');
-      isFirstRender.current = false;
-
-   }, [debouncedSearchTerm]);
-
-
+      isFirstRender.current = false
+   }, [debouncedSearchTerm])
 
    function fetchProducts() {
-      console.log('fetchProducts from <Search />');
-      return queryProducts(fetchByTitleParams(debouncedSearchTerm));
+      return queryProducts(fetchByTitleParams(debouncedSearchTerm))
    }
-
 
    /*
  
@@ -54,16 +45,13 @@ function Search(props) {
  
    */
    const getResults = async () => {
+      setIsLoading(true)
 
-      setIsLoading(true);
+      const results = await fetchProducts()
 
-      const results = await fetchProducts();
-
-      setSearchData(results);
-      setIsLoading(false);
-
+      setSearchData(results)
+      setIsLoading(false)
    }
-
 
    /*
  
@@ -71,50 +59,46 @@ function Search(props) {
  
    */
    return (
+
       <>
-         <form role="search" className="wps-search-form">
+         {
+            ReactDOM.createPortal(
+               <>
+                  <form role='search' className='wps-search-form'>
+                     <div className='is-loading'>{isLoading ? 'Loading ...' : ''}</div>
 
-            <div className="is-loading">{isLoading ? 'Loading ...' : ''}</div>
+                     <div className='wps-search-wrapper'>
+                        <input
+                           type='search'
+                           id='wps-search-input'
+                           name='search'
+                           val={debouncedSearchTerm}
+                           placeholder='Search the store'
+                           aria-label='Search store'
+                           onChange={e => setSearchTerm(e.target.value)}
+                        />
 
-            <div className="wps-search-wrapper">
-
-               <input
-                  type="search"
-                  id="wps-search-input"
-                  name="search"
-                  val={debouncedSearchTerm}
-                  placeholder="Search the store"
-                  aria-label="Search store"
-                  onChange={e => setSearchTerm(e.target.value)}
-               />
-
-               <button className="wps-search-submit">Search</button>
-
-            </div>
-
-         </form>
-
-         <LoadingContext.Provider value={{ isLoading: isLoading, from: 'search' }}>
-            <DropZone dropZone={props.dropZone} items={searchData}></DropZone>
-         </LoadingContext.Provider>
-
+                        <button className='wps-search-submit'>Search</button>
+                     </div>
+                  </form>
+                  <LoadingContext.Provider value={{ isLoading: isLoading, from: 'search' }}>
+                     <DropZone dropZone={props.dropZone} items={searchData} />
+                  </LoadingContext.Provider>
+               </>,
+               document.querySelector(props.componentDropZone)
+            )
+         }
       </>
-
+      
    )
-
 }
 
-
 function defaultProps() {
-
    return {
       dropZone: false
    }
-
 }
 
-Search.defaultProps = defaultProps();
+Search.defaultProps = defaultProps()
 
-export {
-   Search
-}
+export { Search }

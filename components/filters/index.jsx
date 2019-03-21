@@ -1,4 +1,6 @@
 import React, { useEffect, useState, useRef } from 'react';
+import ReactDOM from 'react-dom';
+
 import { getFilterData, queryProducts, fetchByQueryParams } from '/Users/andrew/www/devil/devilbox/data/www/wpshopify-api';
 
 import { FilterVendors } from './vendors';
@@ -112,7 +114,7 @@ function buildQueryStringFromSelections(selections) {
 
 
 
-function Filters({ dropZone, showSelections, selectionsDropZone, showSorting, sortingDropZone, showPagination, paginationDropZone }) {
+function Filters({ dropZone, showSelections, selectionsDropZone, showSorting, sortingDropZone, showPagination, paginationDropZone, filtersDropZone }) {
 
    const [selections, setSelections] = useState({});
    const [filterData, setFilterData] = useState([]);
@@ -241,48 +243,59 @@ function Filters({ dropZone, showSelections, selectionsDropZone, showSorting, so
 
 
    return (
-      <aside className="wps-filters">
 
-         <h2 className="wps-filters-heading">Filter by</h2>
+      <>
+         {
+            ReactDOM.createPortal(
+               <aside className="wps-filters">
 
-         <FiltersContext.Provider value={{
-            isBootstrapping: isBootstrapping,
-            filterData: filterData,
-            isLoading: isLoading,
-            setIsLoading: setIsLoading,
-            isCleared: isCleared,
-            setIsCleared: setIsCleared,
-            query: query,
-            setQuery: setQuery,
-            sortKey: sortKey,
-            setSortKey: setSortKey,
-            selections: selections,
-            setSelections: setSelections,
-            setReverse: setReverse,
-            searchData: searchData,
-            setSearchData: setSearchData,
-            hasResults: hasResults,
-            hasNextPage: hasNextPage,
-            hasPrevPage: hasPrevPage,
-            first: first,
-            setFirst: setFirst
-         }}>
+                  <h2 className="wps-filters-heading">Filter by</h2>
 
-            {showSelections ? <FilterSelections dropZone={selectionsDropZone} /> : ''}
-            {showSorting ? <Sorting dropZone={sortingDropZone} /> : ''}
-            {showPagination ? <Pagination dropZone={paginationDropZone} /> : ''}
+                  <FiltersContext.Provider value={{
+                     isBootstrapping: isBootstrapping,
+                     filterData: filterData,
+                     isLoading: isLoading,
+                     setIsLoading: setIsLoading,
+                     isCleared: isCleared,
+                     setIsCleared: setIsCleared,
+                     query: query,
+                     setQuery: setQuery,
+                     sortKey: sortKey,
+                     setSortKey: setSortKey,
+                     selections: selections,
+                     setSelections: setSelections,
+                     setReverse: setReverse,
+                     searchData: searchData,
+                     setSearchData: setSearchData,
+                     hasResults: hasResults,
+                     hasNextPage: hasNextPage,
+                     hasPrevPage: hasPrevPage,
+                     first: first,
+                     setFirst: setFirst
+                  }}>
 
-            <FilterTags />
-            <FilterVendors />
-            <FilterTypes />
+                     {showSelections ? <FilterSelections dropZone={selectionsDropZone} /> : ''}
+                     {showSorting ? <Sorting dropZone={sortingDropZone} /> : ''}
+                     {showPagination ? <Pagination dropZone={paginationDropZone} /> : ''}
 
-         </FiltersContext.Provider>
+                     <FilterTags />
+                     <FilterVendors />
+                     <FilterTypes />
 
-         <LoadingContext.Provider value={{ isLoading: isLoading, from: 'filters' }}>
-            <DropZone dropZone={dropZone} items={searchData}></DropZone>
-         </LoadingContext.Provider>
+                  </FiltersContext.Provider>
 
-      </aside >
+                  <LoadingContext.Provider value={{ isLoading: isLoading, from: 'filters' }}>
+                     <DropZone dropZone={dropZone} items={searchData}></DropZone>
+                  </LoadingContext.Provider>
+
+               </aside>,
+               document.querySelector(filtersDropZone)
+            )
+         }
+      </>
+      
+
+      
    )
 
 }
