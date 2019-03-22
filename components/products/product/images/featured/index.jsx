@@ -1,5 +1,7 @@
 import React, { useContext, useEffect, useState, useRef } from 'react'
 import { ProductContext } from '../../context'
+import { ShopContext } from '../../../../shop/context'
+
 import { ProductGalleryContext } from '../gallery/context'
 import { ProductImage } from '../image'
 import Drift from 'drift-zoom'
@@ -22,6 +24,8 @@ function ProductFeaturedImage() {
    const paneElement = useRef()
    const isFirstRender = useRef(true)
    const { productState } = useContext(ProductContext)
+   const { shopState } = useContext(ShopContext)
+
    const { galleryState } = useContext(ProductGalleryContext)
 
    const [featImageElemnent, setFeatImageElemnent] = useState(false)
@@ -51,7 +55,9 @@ function ProductFeaturedImage() {
          return
       }
 
-      if (galleryState.featImage && galleryState.featImageElement) {
+      console.log('shopState.settings', shopState.settings)
+
+      if (galleryState.featImage && galleryState.featImageElement && shopState.settings.productsImagesShowZoom) {
          console.log('Both feat image and feat image element are properly set, initing Drift ...')
          console.log('galleryState.featImageElement', galleryState.featImageElement)
 
@@ -59,7 +65,6 @@ function ProductFeaturedImage() {
 
          return () => {
             console.log('Destroying Drift ...')
-
             destroyDrift(drift)
          }
       }
@@ -74,12 +79,7 @@ function ProductFeaturedImage() {
    }, [productState.selectedVariant])
 
    return galleryState.featImage ? (
-      <div
-         className='wps-component wps-component-products-images-featured'
-         data-wps-is-component-wrapper
-         data-wps-post-id=''
-         data-wps-ignore-sync='1'
-         ref={paneElement}>
+      <div className='wps-component wps-component-products-images-featured' data-wps-is-component-wrapper data-wps-post-id='' data-wps-ignore-sync='1' ref={paneElement}>
          <div className='wps-product-image-wrapper'>
             <ProductImage isFeatured={true} image={featImage} />
          </div>

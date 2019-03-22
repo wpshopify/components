@@ -34,15 +34,13 @@ function ProductThumbnailImage({ image }) {
          return
       }
 
-      setIsActive(checkIsActive(productState.selectedVariant.image.src))
+      if (productState.selectedVariant) {
+         setIsActive(checkIsActive(productState.selectedVariant.image.src))
+      }
    }, [productState.selectedVariant])
 
    return (
-      <div
-         className='wps-component wps-component-products-images-thumbnail'
-         onClick={handleThumbnailClick}
-         data-wps-is-active={isActive}
-         data-wps-is-ready={shopState.isReady}>
+      <div className='wps-component wps-component-products-images-thumbnail' onClick={handleThumbnailClick} data-wps-is-active={isActive} data-wps-is-ready={shopState.isReady}>
          <ProductImage isFeatured={false} image={image} />
       </div>
    )
