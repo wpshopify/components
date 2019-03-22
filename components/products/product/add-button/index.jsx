@@ -3,7 +3,7 @@ import { ProductBuyButtonContext } from '../buy-button/context'
 import { ShopContext } from '../../../shop/context'
 import { useAnime, pulse } from '../../../../common/animations'
 import { addProductDetailsToVariant } from '../../../../common/products'
-import { findVariantFromSelectedOptions } from '/Users/andrew/www/devil/devilbox/data/www/wpshopify-api'
+import { findVariantFromSelectedOptions } from '@wpshopify/api'
 
 function ProductAddButton() {
    const button = useRef()

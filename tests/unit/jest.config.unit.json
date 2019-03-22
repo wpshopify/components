@@ -2,10 +2,17 @@
    "rootDir": "../../",
    "verbose": false,
    "testURL": "http://wpshopify.loc",
-   "modulePathIgnorePatterns": ["<rootDir>/node_modules", "<rootDir>/gulp", "<rootDir>/tests", "<rootDir>/.git"],
-   "roots": ["<rootDir>/common", "<rootDir>/components"],
+   "modulePathIgnorePatterns": ["<rootDir>/node_modules", "<rootDir>/gulp", "<rootDir>/.git"],
+   "roots": ["<rootDir>/tests"],
    "notify": true,
    "setupFiles": ["<rootDir>/tests/jest-test-env.js"],
    "setupFilesAfterEnv": ["<rootDir>/tests/jest-test-setup.js"],
-   "testRegex": ".test.js"
+   "testRegex": "unit.test.js",
+   "moduleNameMapper": {
+      "@wpshopify/api": "<rootDir>/node_modules/@wpshopify/api"
+   },
+   "transformIgnorePatterns": ["node_modules/(?!(@wpshopify/api)/)"],
+   "transform": {
+      "^.+\\.jsx?$": "babel-jest"
+   }
 }

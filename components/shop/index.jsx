@@ -1,50 +1,41 @@
-import React, { useReducer, useEffect } from 'react';
-import { ShopInitialState } from './initial-state';
-import { ShopContext } from './context';
-import { ShopReducer } from './reducer';
+import React, { useReducer, useEffect } from 'react'
+import { ShopInitialState } from './initial-state'
+import { ShopContext } from './context'
+import { ShopReducer } from './reducer'
 
-import uniq from 'lodash/uniq';
-import isEmpty from 'lodash/isEmpty';
-import { buildInstances, getProducts, getCheckoutCache, getCheckoutID } from '/Users/andrew/www/devil/devilbox/data/www/wpshopify-api';
-import to from 'await-to-js';
-
+import uniq from 'lodash/uniq'
+import isEmpty from 'lodash/isEmpty'
+import { buildInstances, getProducts, getCheckoutCache, getCheckoutID } from '@wpshopify/api'
+import to from 'await-to-js'
 
 function variantsFromCache() {
-
-   var cache = getCheckoutCache(getCheckoutID());
+   var cache = getCheckoutCache(getCheckoutID())
 
    if (!isEmpty(cache.variants)) {
-
-      return cache.variants;
+      return cache.variants
    }
 
-   return [];
-
+   return []
 }
 
 function getUniqueProductIdsFromVariants(variants) {
-   return uniq(variants.map(lineItem => lineItem.productId));
+   return uniq(variants.map(lineItem => lineItem.productId))
 }
 
-
 async function getProductIdsFromLineItems() {
-
    const uniqueIds = getUniqueProductIdsFromVariants(variantsFromCache())
 
    if (isEmpty(uniqueIds)) {
-      console.log('Cart is empty, returning ...');
-      return new Promise(resolve => resolve(false));
+      console.log('Cart is empty, returning ...')
+      return new Promise(resolve => resolve(false))
    }
 
-   console.log('Cart is NOT empty, flushing lineitems from Shopify');
-   return await getProducts(uniqueIds);
-
+   console.log('Cart is NOT empty, flushing lineitems from Shopify')
+   return await getProducts(uniqueIds)
 }
 
-
 function Shop(props) {
-
-   const [state, dispatch] = useReducer(ShopReducer, ShopInitialState(props));
+   const [state, dispatch] = useReducer(ShopReducer, ShopInitialState(props))
 
    /*
    
@@ -52,61 +43,50 @@ function Shop(props) {
    
    */
    async function bootstrapShop() {
-
-      var [instancesError, instances] = await to(buildInstances());
+      var [instancesError, instances] = await to(buildInstances())
 
       if (instancesError) {
-         return;
+         return
       }
 
-      dispatch({ type: "SET_CHECKOUT", payload: instances.checkout });
-      dispatch({ type: "SET_CHECKOUT_CACHE", payload: instances.checkout });
+      dispatch({ type: 'SET_CHECKOUT', payload: instances.checkout })
+      dispatch({ type: 'SET_CHECKOUT_CACHE', payload: instances.checkout })
 
-
-      var [productsError, products] = await to(getProductIdsFromLineItems());
+      var [productsError, products] = await to(getProductIdsFromLineItems())
 
       if (productsError) {
-         console.error('productsError!', productsError);
-         return;
+         console.error('productsError!', productsError)
+         return
       }
 
       if (products) {
-         dispatch({ type: "SET_LINE_ITEMS_AND_VARIANTS", payload: { products: products } });
-         dispatch({ type: "UPDATE_CHECKOUT_TOTAL" });
-         dispatch({ type: "SET_IS_CART_EMPTY", payload: false });
-
+         dispatch({ type: 'SET_LINE_ITEMS_AND_VARIANTS', payload: { products: products } })
+         dispatch({ type: 'UPDATE_CHECKOUT_TOTAL' })
+         dispatch({ type: 'SET_IS_CART_EMPTY', payload: false })
       } else {
-         dispatch({ type: "SET_IS_CART_EMPTY", payload: true });
+         dispatch({ type: 'SET_IS_CART_EMPTY', payload: true })
       }
 
       // App is ready to go
-      dispatch({ type: "IS_READY" });
-
+      dispatch({ type: 'IS_READY' })
    }
 
    // Bootstrap app on mount only
    useEffect(() => {
-
-      bootstrapShop();
-
-   }, []);
-
+      bootstrapShop()
+   }, [])
 
    return (
       <>
-         <ShopContext.Provider value={{
-            shopState: state,
-            shopDispatch: dispatch
-         }}>
-
+         <ShopContext.Provider
+            value={{
+               shopState: state,
+               shopDispatch: dispatch
+            }}>
             {props.children}
-
          </ShopContext.Provider>
       </>
    )
-
 }
 
-export {
-   Shop
-}
+export { Shop }

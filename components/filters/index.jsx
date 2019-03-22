@@ -1,257 +1,179 @@
-import React, { useEffect, useState, useRef } from 'react';
-import ReactDOM from 'react-dom';
+import React, { useEffect, useState, useRef } from 'react'
+import ReactDOM from 'react-dom'
 
-import { getFilterData, queryProducts, fetchByQueryParams } from '/Users/andrew/www/devil/devilbox/data/www/wpshopify-api';
+import { getFilterData, queryProducts, fetchByQueryParams } from '@wpshopify/api'
 
-import { FilterVendors } from './vendors';
-import { FilterTypes } from './types';
+import { FilterVendors } from './vendors'
+import { FilterTypes } from './types'
 
-import { FilterTags } from './tags';
-import { FilterSelections } from './selections';
-import { DropZone } from '../dropzone';
-import { LoadingContext } from '../../common/state/context';
-import { checkHasResults, checkPrevPage, checkNextPage } from '../../common/pagination';
-import { Sorting } from '../sorting';
-import { Pagination } from '../pagination';
+import { FilterTags } from './tags'
+import { FilterSelections } from './selections'
+import { DropZone } from '../dropzone'
+import { LoadingContext } from '../../common/state/context'
+import { checkHasResults, checkPrevPage, checkNextPage } from '../../common/pagination'
+import { Sorting } from '../sorting'
+import { Pagination } from '../pagination'
 
+import assign from 'lodash/assign'
+import to from 'await-to-js'
+import isEmpty from 'lodash/isEmpty'
+import compact from 'lodash/compact'
 
-import assign from 'lodash/assign';
-import to from 'await-to-js';
-import isEmpty from 'lodash/isEmpty';
-import compact from 'lodash/compact';
-
-
-
-
-const FiltersContext = React.createContext();
-
+const FiltersContext = React.createContext()
 
 function combineFilterData(accumulator, currentValue) {
-   return assign(accumulator, currentValue);
+   return assign(accumulator, currentValue)
 }
 
 function formatFilterData(data) {
-   return data.reduce(combineFilterData);
+   return data.reduce(combineFilterData)
 }
 
 function getDataFromResponse(response) {
-   return response.map(item => item.data);
+   return response.map(item => item.data)
 }
-
 
 function combineFilterTypes(selections, filterTypes) {
+   return compact(
+      filterTypes.map((filterType, index) => {
+         if (isEmpty(selections[filterType])) {
+            return
+         }
 
-   return compact(filterTypes.map((filterType, index) => {
-
-      if (isEmpty(selections[filterType])) {
-         return;
-      }
-
-      return selections[filterType].map(value => filterType + ':' + value);
-
-   }));
-
+         return selections[filterType].map(value => filterType + ':' + value)
+      })
+   )
 }
 
-
 function joinFilteredValues(value) {
-
    if (isEmpty(value)) {
-      return '';
+      return ''
    }
 
-   return value.join(' ');
-
+   return value.join(' ')
 }
 
 function stringifyFilterTypes(filterTypes) {
-
    if (!filterTypes) {
-      return '';
+      return ''
    }
 
-   var joinedTypes = filterTypes.map(joinFilteredValues);
+   var joinedTypes = filterTypes.map(joinFilteredValues)
 
    if (isEmpty(joinedTypes)) {
-      return '';
+      return ''
    }
 
-   return joinedTypes.join(' ');
-
+   return joinedTypes.join(' ')
 }
-
-
 
 function buildQueryStringFromSelections(selections) {
-
    if (isEmpty(selections)) {
-      return;
+      return
    }
 
-   var keys = Object.keys(selections);
+   var keys = Object.keys(selections)
 
-   return stringifyFilterTypes(combineFilterTypes(selections, keys));
-
+   return stringifyFilterTypes(combineFilterTypes(selections, keys))
 }
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 function Filters({ dropZone, showSelections, selectionsDropZone, showSorting, sortingDropZone, showPagination, paginationDropZone, filtersDropZone }) {
+   const [selections, setSelections] = useState({})
+   const [filterData, setFilterData] = useState([])
+   const [searchData, setSearchData] = useState([])
 
-   const [selections, setSelections] = useState({});
-   const [filterData, setFilterData] = useState([]);
-   const [searchData, setSearchData] = useState([]);
+   const [isLoading, setIsLoading] = useState(true)
+   const [isBootstrapping, setIsBootstrapping] = useState(true)
 
-   const [isLoading, setIsLoading] = useState(true);
-   const [isBootstrapping, setIsBootstrapping] = useState(true);
+   const [isCleared, setIsCleared] = useState(true)
 
-   const [isCleared, setIsCleared] = useState(true);
+   const [query, setQuery] = useState('*')
+   const [first, setFirst] = useState(10)
+   const [sortKey, setSortKey] = useState('TITLE')
+   const [reverse, setReverse] = useState(false)
+   const [hasResults, setHasResults] = useState(false)
+   const [hasNextPage, setHasNextPage] = useState(true)
+   const [hasPrevPage, setHasPrevPage] = useState(true)
 
-   const [query, setQuery] = useState('*');
-   const [first, setFirst] = useState(10);
-   const [sortKey, setSortKey] = useState('TITLE');
-   const [reverse, setReverse] = useState(false);
-   const [hasResults, setHasResults] = useState(false);
-   const [hasNextPage, setHasNextPage] = useState(true);
-   const [hasPrevPage, setHasPrevPage] = useState(true);
-
-   const isFirstRender = useRef(true);
-
-
-
-
-
+   const isFirstRender = useRef(true)
 
    async function getAllFilterData() {
+      var [respError, respData] = await to(getFilterData())
 
-      var [respError, respData] = await to(getFilterData());
+      var allFilteredData = formatFilterData(getDataFromResponse(respData))
 
-      var allFilteredData = formatFilterData(getDataFromResponse(respData));
-
-      setIsBootstrapping(false);
-      setFilterData(allFilteredData);
-
+      setIsBootstrapping(false)
+      setFilterData(allFilteredData)
    }
-
 
    // On component initial render
    useEffect(() => {
-
-      getAllFilterData();
-
-   }, []);
-
-
-
-
+      getAllFilterData()
+   }, [])
 
    useEffect(() => {
-
       if (isFirstRender.current) {
-         isFirstRender.current = false;
-         return;
+         isFirstRender.current = false
+         return
       }
 
-      var queryString = buildQueryStringFromSelections(selections);
+      var queryString = buildQueryStringFromSelections(selections)
 
-      setQuery(queryString);
-
-   }, [selections]);
-
-
-
-
-
+      setQuery(queryString)
+   }, [selections])
 
    useEffect(() => {
-
       if (isFirstRender.current) {
-         isFirstRender.current = false;
-         return;
+         isFirstRender.current = false
+         return
       }
 
-      loadData();
-
-   }, [query, sortKey, reverse, first]);
-
-
-
+      loadData()
+   }, [query, sortKey, reverse, first])
 
    function getFetchParams() {
-
       return {
          first: first,
          sortKey: sortKey,
          query: query,
          reverse: reverse
       }
-
    }
 
-
    function afterDataLoads(items) {
+      setHasResults(checkHasResults(items))
 
-      setHasResults(checkHasResults(items));
+      setHasNextPage(checkNextPage(items))
+      setHasPrevPage(checkPrevPage(items))
 
-      setHasNextPage(checkNextPage(items));
-      setHasPrevPage(checkPrevPage(items));
-
-      setSearchData(items);
-      setIsLoading(false);
-
+      setSearchData(items)
+      setIsLoading(false)
    }
 
    function beforeDataLoads() {
-      setIsLoading(true);
+      setIsLoading(true)
    }
-
 
    async function loadData() {
+      beforeDataLoads()
 
-      beforeDataLoads();
+      var [itemsError, items] = await to(fetchProducts(getFetchParams()))
 
-      var [itemsError, items] = await to(fetchProducts(getFetchParams()));
-
-      afterDataLoads(items);
-
+      afterDataLoads(items)
    }
-
-
 
    function fetchProducts() {
-      return queryProducts(fetchByQueryParams(getFetchParams()));
+      return queryProducts(fetchByQueryParams(getFetchParams()))
    }
 
-
-
    return (
-
       <>
-         {
-            ReactDOM.createPortal(
-               <aside className="wps-filters">
+         {ReactDOM.createPortal(
+            <aside className='wps-filters'>
+               <h2 className='wps-filters-heading'>Filter by</h2>
 
-                  <h2 className="wps-filters-heading">Filter by</h2>
-
-                  <FiltersContext.Provider value={{
+               <FiltersContext.Provider
+                  value={{
                      isBootstrapping: isBootstrapping,
                      filterData: filterData,
                      isLoading: isLoading,
@@ -273,34 +195,23 @@ function Filters({ dropZone, showSelections, selectionsDropZone, showSorting, so
                      first: first,
                      setFirst: setFirst
                   }}>
+                  {showSelections ? <FilterSelections dropZone={selectionsDropZone} /> : ''}
+                  {showSorting ? <Sorting dropZone={sortingDropZone} /> : ''}
+                  {showPagination ? <Pagination dropZone={paginationDropZone} /> : ''}
 
-                     {showSelections ? <FilterSelections dropZone={selectionsDropZone} /> : ''}
-                     {showSorting ? <Sorting dropZone={sortingDropZone} /> : ''}
-                     {showPagination ? <Pagination dropZone={paginationDropZone} /> : ''}
+                  <FilterTags />
+                  <FilterVendors />
+                  <FilterTypes />
+               </FiltersContext.Provider>
 
-                     <FilterTags />
-                     <FilterVendors />
-                     <FilterTypes />
-
-                  </FiltersContext.Provider>
-
-                  <LoadingContext.Provider value={{ isLoading: isLoading, from: 'filters' }}>
-                     <DropZone dropZone={dropZone} items={searchData}></DropZone>
-                  </LoadingContext.Provider>
-
-               </aside>,
-               document.querySelector(filtersDropZone)
-            )
-         }
+               <LoadingContext.Provider value={{ isLoading: isLoading, from: 'filters' }}>
+                  <DropZone dropZone={dropZone} items={searchData} />
+               </LoadingContext.Provider>
+            </aside>,
+            document.querySelector(filtersDropZone)
+         )}
       </>
-      
-
-      
    )
-
 }
 
-export {
-   Filters,
-   FiltersContext
-}
+export { Filters, FiltersContext }

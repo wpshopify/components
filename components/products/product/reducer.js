@@ -1,18 +1,18 @@
-import { findVariantFromSelectedOptions } from '/Users/andrew/www/devil/devilbox/data/www/wpshopify-api';
+import { findVariantFromSelectedOptions } from '@wpshopify/api'
 
 function ProductReducer(state, action) {
-	switch (action.type) {
-		case 'SET_SELECTED_VARIANT': {
-			return {
-				...state,
-				selectedVariant: findVariantFromSelectedOptions(action.payload.product, action.payload.selectedOptions)
-			};
-		}
+   switch (action.type) {
+      case 'SET_SELECTED_VARIANT': {
+         return {
+            ...state,
+            selectedVariant: findVariantFromSelectedOptions(action.payload.product, action.payload.selectedOptions)
+         }
+      }
 
-		default: {
-			return state;
-		}
-	}
+      default: {
+         return state
+      }
+   }
 }
 
-export { ProductReducer };
+export { ProductReducer }

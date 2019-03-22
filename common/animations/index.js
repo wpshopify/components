@@ -1,17 +1,15 @@
-import { useState } from 'react';
-import anime from 'animejs/lib/anime.es.js';
+import { useState } from 'react'
+import anime from 'animejs'
 
 function pulse(element, cb = false, params = false) {
-
    anime({
       targets: element,
       scale: 1.09,
       duration: 300,
       elasticity: 0,
-      complete: function () {
-
+      complete: function() {
          if (cb && document.body.contains(element)) {
-            cb();
+            cb()
          }
 
          anime({
@@ -19,99 +17,66 @@ function pulse(element, cb = false, params = false) {
             scale: 1,
             duration: 800,
             elasticity: 800
-         });
-
+         })
       }
-   });
-
+   })
 }
 
 function slideInRight(element, cb = false, params = false) {
-
    return anime({
       targets: element,
       translateX: ['100%', '0%'],
       duration: 210,
       easing: 'easeInOutQuad',
-      complete: function () {
-
+      complete: function() {
          if (cb && document.body.contains(element)) {
-            cb();
+            cb()
          }
-
       }
-   });
-
+   })
 }
 
 function slideOutRight(element, cb = false, params = false) {
-
    return anime({
       targets: element,
       translateX: ['0%', '110%'],
       duration: 210,
       easing: 'easeInOutQuad',
-      complete: function () {
-
+      complete: function() {
          if (cb && document.body.contains(element)) {
-            cb();
+            cb()
          }
-
       }
-   });
+   })
 }
 
-
 function stagger(element, cb, { index }) {
-
    return anime({
       targets: element,
       translateY: [-20, 0],
       opacity: [0, 1],
-      delay: (index * 50),
-      complete: function () {
-
+      delay: index * 50,
+      complete: function() {
          if (cb && document.body.contains(element)) {
-            cb();
+            cb()
          }
-
       }
-   });
-
+   })
 }
-
-
-
 
 function useAnime(animeType, elementExists = true) {
-
-   const [currentlyAnimating, setCurrentlyAnimating] = useState(false);
+   const [currentlyAnimating, setCurrentlyAnimating] = useState(false)
 
    function animate(element, params = false) {
-
       if (currentlyAnimating) {
-         return;
+         return
       }
 
-      setCurrentlyAnimating(true);
-      animeType(element, () => setCurrentlyAnimating(false), params);
-
+      setCurrentlyAnimating(true)
+      animeType(element, () => setCurrentlyAnimating(false), params)
    }
 
-   return animate;
-
+   return animate
 }
 
-
-
-
-
-
-
-export {
-   pulse,
-   slideInRight,
-   slideOutRight,
-   stagger,
-   useAnime
-}
+export { pulse, slideInRight, slideOutRight, stagger, useAnime }
