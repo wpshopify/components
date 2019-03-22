@@ -1,0 +1,11 @@
+{
+   "rootDir": "../../",
+   "verbose": false,
+   "testURL": "http://wpshopify.loc",
+   "modulePathIgnorePatterns": ["<rootDir>/node_modules", "<rootDir>/gulp", "<rootDir>/tests", "<rootDir>/.git"],
+   "roots": ["<rootDir>/common", "<rootDir>/components"],
+   "notify": true,
+   "setupFiles": ["<rootDir>/tests/jest-test-env.js"],
+   "setupFilesAfterEnv": ["<rootDir>/tests/jest-test-setup.js"],
+   "testRegex": ".test.js"
+}
