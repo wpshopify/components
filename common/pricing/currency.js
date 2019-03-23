@@ -1,32 +1,16 @@
-import geolocator from 'geolocator';
-import codes from 'country-data';
-import money from 'money';
-import accounting from 'accounting';
-import to from 'await-to-js';
-import { getCache, setCache } from '../cache';
+import geolocator from 'geolocator'
+import codes from 'country-data'
+import money from 'money'
+import to from 'await-to-js'
+import { getCache, setCache } from '../cache'
 
-import { getCurrencyCodeByLocationFallback, countryBlacklisted } from './fallbacks';
-import { maybeConvertPriceToLocalCurrency } from './conversion';
-import { maybeformatPriceToCurrency } from './formatting';
+import { getCurrencyCodeByLocationFallback, countryBlacklisted } from './fallbacks'
 
-
-
-function showingLocalCurrency() {
-  return WP_Shopify.settings.pricing.enableLocalCurrency;
-}
-
-function baseCurrency() {
-  return WP_Shopify.settings.pricing.baseCurrencyCode;
-}
-
-function showingCurrencyCode() {
-  return WP_Shopify.settings.hasCurrencyCode;
-}
+import { baseCurrency } from '../globals'
 
 function getCountryCodeFromLocation(location) {
-  return codes.lookup.countries( {name: location.address.country} )[0];
+   return codes.lookup.countries({ name: location.address.country })[0]
 }
-
 
 /*
 
@@ -34,161 +18,127 @@ Important: Re
 
 */
 function getCurrencyCodeFromLocation() {
+   var location = JSON.parse(getLocationCache())
+   var currencyCode = getCountryCodeFromLocation(location).currencies[0]
 
-  var location = JSON.parse( getLocationCache() );
-  var currencyCode = getCountryCodeFromLocation(location).currencies[0];
+   setLocalCurrencyCodeCache(currencyCode)
 
-  setLocalCurrencyCodeCache(currencyCode);
-
-  return currencyCode;
-
+   return currencyCode
 }
 
 function getCurrencyCodeByLocation(location) {
+   const country = getCountryCodeFromLocation(location)
 
-  const country = getCountryCodeFromLocation(location);
+   if (!country) {
+      return getCurrencyCodeByLocationFallback(location)
+   }
 
-  if (!country) {
-    return getCurrencyCodeByLocationFallback(location);
-  }
-
-  return country.currencies[0];
-
+   return country.currencies[0]
 }
 
 function getLocationCache() {
-  return getCache('wpshopify-geo-location');
+   return getCache('wpshopify-geo-location')
 }
 
 function getPricingRatesCache() {
-  return getCache('wpshopify-pricing-rates');
+   return getCache('wpshopify-pricing-rates')
 }
 
 function getLocalCurrencyCodeCache() {
-  return getCache('wpshopify-pricing-local-currency-code');
+   return getCache('wpshopify-pricing-local-currency-code')
 }
 
 function setLocalCurrencyCodeCache(currencyCode) {
-  return setCache('wpshopify-pricing-local-currency-code', currencyCode);
+   return setCache('wpshopify-pricing-local-currency-code', currencyCode)
 }
 
 function localCurrency() {
+   const cachedCode = getLocalCurrencyCodeCache()
 
-  const cachedCode = getLocalCurrencyCodeCache();
+   if (cachedCode) {
+      return cachedCode
+   }
 
-  if ( cachedCode ) {
-    return cachedCode;
-  }
-
-  return getCurrencyCodeFromLocation();
-
+   return getCurrencyCodeFromLocation()
 }
 
 function exchangeEndpoint(baseCode) {
-  return 'https://api.exchangeratesapi.io/latest?base=' + baseCode;
+   return 'https://api.exchangeratesapi.io/latest?base=' + baseCode
 }
-
 
 function getRates() {
+   return new Promise(async (resolve, reject) => {
+      var [ratesError, ratesData] = await to(getExchangeRates(exchangeEndpoint(baseCurrency())))
 
-  return new Promise( async (resolve, reject) => {
+      if (ratesError || !ratesData) {
+         reject(ratesError)
+      }
 
-    var [ratesError, ratesData] = await to( getExchangeRates( exchangeEndpoint( baseCurrency() ) ) );
+      var [ratesDataJSONError, ratesDataJSON] = await to(ratesData.json())
 
-    if (ratesError || !ratesData) {
-      reject(ratesError);
-    }
+      if (ratesDataJSONError) {
+         reject(ratesDataJSONError)
+      }
 
-    var [ratesDataJSONError, ratesDataJSON] = await to( ratesData.json() );
+      setCache('wpshopify-pricing-rates', JSON.stringify(ratesDataJSON))
 
-    if (ratesDataJSONError) {
-      reject(ratesDataJSONError);
-    }
-
-    setCache('wpshopify-pricing-rates', JSON.stringify(ratesDataJSON) );
-
-    resolve(ratesDataJSON);
-
-  });
-
+      resolve(ratesDataJSON)
+   })
 }
-
-
 
 function getExchangeRates(endpoint) {
-  return fetch(endpoint);
+   return fetch(endpoint)
 }
-
 
 function setRates(ratesDataJSON) {
-  return money.rates = ratesDataJSON.rates;
+   return (money.rates = ratesDataJSON.rates)
 }
-
 
 function getAndSetRates() {
+   return new Promise(async (resolve, reject) => {
+      var [ratesError, ratesData] = await to(getRates())
 
-  return new Promise( async (resolve, reject) => {
+      if (ratesError) {
+         return reject(ratesError)
+      }
 
-    var [ratesError, ratesData] = await to( getRates() );
+      setRates(ratesData)
 
-    if (ratesError) {
-      return reject(ratesError);
-    }
-
-    setRates(ratesData);
-
-    return resolve(ratesData);
-
-  });
-
+      return resolve(ratesData)
+   })
 }
-
 
 function getAndSetLocation() {
+   return new Promise((resolve, reject) => {
+      geolocator.locateByIP(false, function(err, location) {
+         if (err) {
+            return reject(err)
+         }
 
-  return new Promise( (resolve, reject) => {
+         // If we can't hit the API becuase the country is blacklisted, default to base currency
+         if (countryBlacklisted(location.address.country)) {
+            console.info("WP Shopify ℹ️ Country is blacklisted. Defaulting to the Shop's base currency instead.")
+            setLocalCurrencyCodeCache(baseCurrency())
 
-    geolocator.locateByIP(false, function (err, location) {
+            return resolve(baseCurrency())
+         } else {
+            setLocalCurrencyCodeCache(getCurrencyCodeByLocation(location))
+         }
 
-      if (err) {
-        return reject(err);
-      }
+         setCache('wpshopify-geo-location', JSON.stringify(location))
 
-      // If we can't hit the API becuase the country is blacklisted, default to base currency
-      if ( countryBlacklisted(location.address.country) ) {
-
-        console.info('WP Shopify ℹ️ Country is blacklisted. Defaulting to the Shop\'s base currency instead.');
-        setLocalCurrencyCodeCache( baseCurrency() );
-
-        return resolve( baseCurrency() );
-
-      } else {
-
-        setLocalCurrencyCodeCache( getCurrencyCodeByLocation(location) );
-
-      }
-
-      setCache('wpshopify-geo-location', JSON.stringify(location) );
-
-      return resolve(location);
-
-    });
-
-  });
-
+         return resolve(location)
+      })
+   })
 }
-
 
 function localCurrencyReady() {
+   if (getLocationCache() && getPricingRatesCache()) {
+      return true
+   }
 
-  if ( getLocationCache() && getPricingRatesCache() ) {
-    return true;
-  }
-
-  return false;
-
+   return false
 }
-
 
 /*
 
@@ -198,49 +148,27 @@ Both Shopify and the 'country-data' lib uses ISO 4217 for their currency code un
 
 */
 function bootstrapLocalCurrencyRequirements() {
+   if (!localCurrencyReady()) {
+      return new Promise(async (resolve, reject) => {
+         var [getAndSetLocationError, getAndSetLocationData] = await to(getAndSetLocation())
 
-  if ( !localCurrencyReady() ) {
+         if (getAndSetLocationError || getAndSetLocationData === baseCurrency()) {
+            return resolve([getAndSetLocationData, false])
+         }
 
-    return new Promise( async (resolve, reject) => {
+         var [getAndSetRatesError, getAndSetRatesData] = await to(getAndSetRates())
 
-      var [ getAndSetLocationError, getAndSetLocationData ] = await to( getAndSetLocation() );
+         if (getAndSetRatesError) {
+            reject(getAndSetRatesError)
+         }
 
-      if (getAndSetLocationError || getAndSetLocationData === baseCurrency() ) {
-        return resolve([getAndSetLocationData, false]);
-      }
+         resolve([getAndSetLocationData, getAndSetRatesData])
+      })
+   }
 
+   setRates(JSON.parse(getPricingRatesCache()))
 
-      var [ getAndSetRatesError, getAndSetRatesData ] = await to( getAndSetRates() );
-
-      if (getAndSetRatesError) {
-        reject(getAndSetRatesError);
-      }
-
-      resolve([getAndSetLocationData, getAndSetRatesData]);
-
-    });
-
-  }
-
-  setRates( JSON.parse( getPricingRatesCache() ) );
-
-  return Promise.resolve( JSON.parse( getPricingRatesCache() ) );
-
+   return Promise.resolve(JSON.parse(getPricingRatesCache()))
 }
 
-
-function convertAndFormatPrice(price) {
-  return maybeformatPriceToCurrency( maybeConvertPriceToLocalCurrency(price) );
-}
-
-
-export {
-  bootstrapLocalCurrencyRequirements,
-  showingLocalCurrency,
-  getLocalCurrencyCodeCache,
-  getCurrencyCodeByLocation,
-  baseCurrency,
-  localCurrency,
-  showingCurrencyCode,
-  convertAndFormatPrice
-}
+export { bootstrapLocalCurrencyRequirements, getLocalCurrencyCodeCache, getCurrencyCodeByLocation, localCurrency }

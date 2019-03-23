@@ -1,14 +1,37 @@
-import React, { useState, useEffect } from 'react';
-import { Product } from './product';
+import React, { useState, useEffect } from 'react'
+import { Product } from './product'
 
-function Products({ products }) {
-	console.log('<Products /> ', products);
-
-	return (
-		<section className="wps-products">
-			{products.products.map((product) => <Product key={product.id} product={product} />)}
-		</section>
-	);
+function productsDefaultProps() {
+   return {
+      products: [],
+      excludes: [],
+      includes: []
+   }
 }
 
-export { Products };
+/*
+
+Props has the same shape as productsDefaultProps
+
+*/
+function Products(props) {
+   console.log('props.options!!!!!', props)
+
+   return (
+      <>
+         {props.products ? (
+            <section className='wps-products'>
+               {props.products.map(product => (
+                  <Product key={product.id} product={product} {...props} />
+               ))}
+            </section>
+         ) : (
+            ''
+         )}
+      </>
+   )
+}
+
+Products.defaultProps = productsDefaultProps()
+
+export { Products }

@@ -7,7 +7,7 @@ function ProductImages() {
    const { productState } = useContext(ProductContext)
 
    return (
-      <div className='wps-component wps-component-products-images'>
+      <div className='wps-component wps-component-products-images' data-wps-component-order='0'>
          {productState.isFeaturedOnly ? <ProductFeaturedImage /> : <ProductGallery />}
       </div>
    )

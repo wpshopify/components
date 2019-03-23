@@ -7,6 +7,12 @@ import { useDebounce } from 'use-debounce'
 import { DropZone } from '../dropzone'
 import { LoadingContext } from '../../common/state/context'
 
+function searchDefaultProps() {
+   return {
+      dropZone: false
+   }
+}
+
 /*
 
 Component: Search
@@ -89,12 +95,6 @@ function Search(props) {
    )
 }
 
-function defaultProps() {
-   return {
-      dropZone: false
-   }
-}
-
-Search.defaultProps = defaultProps()
+Search.defaultProps = searchDefaultProps()
 
 export { Search }

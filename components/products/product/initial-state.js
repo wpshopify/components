@@ -1,9 +1,10 @@
-function getProductInitialState(product = false) {
+function getProductInitialState(props) {
    return {
-      product: product,
+      product: props.product,
       selectedVariant: false,
-      isFeaturedOnly: false
-   };
+      isFeaturedOnly: false,
+      ...props
+   }
 }
 
-export { getProductInitialState };
+export { getProductInitialState }
