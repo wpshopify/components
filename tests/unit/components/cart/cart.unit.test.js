@@ -16,6 +16,7 @@ function renderCart(props) {
 
    const cartNotice = queries.getByText(/Your cart is empty 🛒/i)
    const cartButtonFixed = queries.getByRole('button')
+
    return { ...queries, cartNotice, cartButtonFixed }
 }
 
