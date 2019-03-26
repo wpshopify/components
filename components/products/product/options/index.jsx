@@ -71,11 +71,7 @@ function ProductOptions() {
    }, [buyButtonState.selectedOptions])
 
    return (
-      <div
-         className='wps-component wps-component-products-options'
-         data-wps-is-component-wrapper
-         data-wps-post-id=''
-         data-wps-ignore-sync='1'>
+      <div className='wps-component wps-component-products-options' data-wps-is-component-wrapper>
          {options.map(option => (
             <ProductOption key={option.name} option={option} />
          ))}

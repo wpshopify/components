@@ -15,14 +15,12 @@ Props has the same shape as productsDefaultProps
 
 */
 function Products(props) {
-   console.log('props.options!!!!!', props)
-
    return (
       <>
          {props.products ? (
             <section className='wps-products'>
-               {props.products.map(product => (
-                  <Product key={product.id} product={product} {...props} />
+               {props.products.map(productOptions => (
+                  <Product key={productOptions.componentID} options={productOptions} {...props} />
                ))}
             </section>
          ) : (

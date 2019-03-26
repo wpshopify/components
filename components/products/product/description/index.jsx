@@ -7,7 +7,7 @@ function ProductDescription() {
    const { productState } = useContext(ProductContext)
 
    return (
-      <div className='wps-component wps-component-products-description' data-wps-is-component-wrapper data-wps-ignore-sync='1' data-wps-component-order='0'>
+      <div className='wps-component wps-component-products-description' data-wps-is-component-wrapper data-wps-component-order='0'>
          <div itemProp='description' className='wps-products-description' data-wps-is-ready={shopState.isReady ? '1' : '0'}>
             <p>
                Created: {new Date(productState.product.createdAt).toDateString()} at {new Date(productState.product.createdAt).toLocaleTimeString('en-US')}

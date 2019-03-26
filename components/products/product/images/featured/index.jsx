@@ -79,7 +79,7 @@ function ProductFeaturedImage() {
    }, [productState.selectedVariant])
 
    return galleryState.featImage ? (
-      <div className='wps-component wps-component-products-images-featured' data-wps-is-component-wrapper data-wps-post-id='' data-wps-ignore-sync='1' ref={paneElement}>
+      <div className='wps-component wps-component-products-images-featured' data-wps-is-component-wrapper ref={paneElement}>
          <div className='wps-product-image-wrapper'>
             <ProductImage isFeatured={true} image={featImage} />
          </div>

@@ -15,7 +15,6 @@ function ProductPricing() {
          className='wps-component wps-component-products-pricing'
          data-wps-is-component-wrapper
          data-wps-post-id=''
-         data-wps-ignore-sync='1'
          data-wps-is-showing-compare-at=''
          data-wps-is-showing-local=''
          data-wps-is-showing-price-range=''

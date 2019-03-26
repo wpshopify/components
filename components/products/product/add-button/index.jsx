@@ -59,12 +59,7 @@ function ProductAddButton() {
    }, [buyButtonState.allOptionsSelected])
 
    return (
-      <div
-         className='wps-component wps-component-products-add-button wps-btn-wrapper'
-         data-wps-is-component-wrapper
-         data-wps-product-id={buyButtonState.product.id}
-         data-wps-post-id=''
-         data-wps-ignore-sync='1'>
+      <div className='wps-component wps-component-products-add-button wps-btn-wrapper' data-wps-is-component-wrapper data-wps-product-id={buyButtonState.product.id} data-wps-post-id=''>
          <button
             ref={button}
             type='button'

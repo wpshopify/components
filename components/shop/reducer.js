@@ -184,7 +184,11 @@ function ShopReducer(state, action) {
          // If the store doesn't exist, set it to our intial state from the reducer
          if (!checkoutCache) {
             setCheckoutCache(action.payload.id, state.checkoutCache)
-            checkoutCache = state.checkoutCache
+
+            return {
+               ...state,
+               checkoutCache: state.checkoutCache
+            }
          }
 
          return {
