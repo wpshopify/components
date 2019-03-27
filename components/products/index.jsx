@@ -3,9 +3,7 @@ import { Product } from './product'
 
 function productsDefaultProps() {
    return {
-      products: [],
-      excludes: [],
-      includes: []
+      products: []
    }
 }
 

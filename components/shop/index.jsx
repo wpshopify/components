@@ -9,11 +9,8 @@ import { buildInstances, getProducts, getCheckoutCache, getCheckoutID } from '@w
 import to from 'await-to-js'
 
 function variantsFromCache() {
-   console.log('getCheckoutID()', getCheckoutID())
 
    var cache = getCheckoutCache(getCheckoutID())
-
-   console.log('cache', cache)
 
    if (cache && !isEmpty(cache.variants)) {
       return cache.variants

@@ -55,9 +55,6 @@ function ProductVariant({ variant }) {
          return
       }
 
-      // console.log('buyButtonState.allOptionsSelected', buyButtonState.allOptionsSelected);
-      // console.log('buyButtonState.selectedOptions ', buyButtonState.selectedOptions);
-
       if (isEmpty(buyButtonState.selectedOptions)) {
          setIsSelectable(true)
       }

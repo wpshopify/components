@@ -10,10 +10,8 @@ import { ProductContext } from './context'
 import { getProductInitialState } from './initial-state'
 
 function Product(props) {
-   console.log('propspropspropsprops', props)
 
    const [state, dispatch] = useReducer(ProductReducer, getProductInitialState(props))
-   console.log('<Product> state', state)
 
    return (
       <div className='wps-product'>

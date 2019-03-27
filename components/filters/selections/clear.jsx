@@ -8,8 +8,6 @@ function FilterSelectionsClear() {
 
    function removeSelections() {
 
-      console.log('setSelections from <FilterSelectionsClear>');
-
       setSelections({});
       setIsCleared(!isCleared);
       // setIsSelectionsRemoved(!isSelectionsRemoved);

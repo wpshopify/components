@@ -69,8 +69,6 @@ function usePortal(component, state) {
    }
 
    useState(() => {
-      console.log('inniital reeeeneder')
-
       state.element.setAttribute('data-wps-is-ready', '1')
       emptyComponentWrapper(state.element)
    }, [])

@@ -55,7 +55,6 @@ function ProductFeaturedImage() {
          return
       }
 
-      console.log('shopState.settings', shopState.settings)
 
       if (galleryState.featImage && galleryState.featImageElement && shopState.settings.productsImagesShowZoom) {
          console.log('Both feat image and feat image element are properly set, initing Drift ...')
@@ -71,7 +70,6 @@ function ProductFeaturedImage() {
    }, [galleryState.featImageElement])
 
    useEffect(() => {
-      console.log('productState.selectedVariant', productState.selectedVariant)
 
       if (productState.selectedVariant) {
          setFeatImage(getVariantImage(productState.selectedVariant))
