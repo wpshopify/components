@@ -1,19 +1,12 @@
-import React, { useContext, useState } from 'react'
-import ReactDOM from 'react-dom'
+import React, { useContext } from 'react'
 import { ShopContext } from '../../../shop/context'
 import { ProductContext } from '../context'
 
-function usePortal(component, componentID) {
-   return <>{ReactDOM.createPortal(component, document.querySelector('[data-wps-component-id="' + componentID + '"]'))}</>
-}
+import { usePortal } from '../../../../common/hooks'
 
 function ProductTitle() {
    const { shopState } = useContext(ShopContext)
    const { productState } = useContext(ProductContext)
-
-   useState(() => {
-      productState.element.setAttribute('data-wps-is-ready', '1')
-   }, [])
 
    return usePortal(
       <div className='wps-component wps-component-products-title' data-wps-component-order='0'>
@@ -21,7 +14,7 @@ function ProductTitle() {
             {productState.product.title}
          </h2>
       </div>,
-      productState.componentID
+      productState
    )
 }
 

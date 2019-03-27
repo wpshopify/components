@@ -1,69 +1,81 @@
-import React, { useEffect } from 'react';
-import hasIn from 'lodash/hasIn';
+import React, { useEffect, useState } from 'react'
+import ReactDOM from 'react-dom'
+import hasIn from 'lodash/hasIn'
 
 function useOnClickOutside(ref, handler, targeOpened = false) {
-
    function addEventListener(listener) {
-      document.addEventListener('mousedown', listener);
-      document.addEventListener('touchstart', listener);
-      document.addEventListener("keydown", listener, false);
+      document.addEventListener('mousedown', listener)
+      document.addEventListener('touchstart', listener)
+      document.addEventListener('keydown', listener, false)
    }
 
    function removeEventListener(listener) {
-      document.removeEventListener('mousedown', listener);
-      document.removeEventListener('touchstart', listener);
-      document.removeEventListener("keydown", listener, false);
+      document.removeEventListener('mousedown', listener)
+      document.removeEventListener('touchstart', listener)
+      document.removeEventListener('keydown', listener, false)
    }
 
    function isKeyboardEvent(event) {
-      return hasIn(event, 'keyCode');
+      return hasIn(event, 'keyCode')
    }
 
    function isEscKey(event) {
-      return event.keyCode === 27;
+      return event.keyCode === 27
    }
 
    function clickedInside(ref, event) {
-      return !ref.current || ref.current.contains(event.target);
+      return !ref.current || ref.current.contains(event.target)
    }
 
    function eventListener(event) {
-
       if (isKeyboardEvent(event)) {
-
          if (isEscKey(event)) {
-            handler(event);
+            handler(event)
          }
-
       } else {
-
          // Do nothing if clicking ref's element or descendent elements
          if (clickedInside(ref, event)) {
-            return;
+            return
          }
 
-         handler(event);
-
+         handler(event)
       }
-
    }
 
    useEffect(() => {
-
       if (targeOpened) {
-
-         addEventListener(eventListener);
+         addEventListener(eventListener)
 
          return () => {
-            removeEventListener(eventListener);
-         };
-
+            removeEventListener(eventListener)
+         }
       }
-
-   }, [ref, handler]);
-
+   }, [ref, handler])
 }
 
-export {
-   useOnClickOutside
+function usePortal(component, state) {
+   function getContainer() {
+      return document.querySelector('[data-wps-component-id="' + state.componentID + '"]')
+   }
+
+   function emptyComponentWrapper(element) {
+      while (element.firstChild) {
+         element.removeChild(element.firstChild)
+      }
+   }
+
+   function renderPortal() {
+      return <>{ReactDOM.createPortal(component, getContainer())}</>
+   }
+
+   useState(() => {
+      console.log('inniital reeeeneder')
+
+      state.element.setAttribute('data-wps-is-ready', '1')
+      emptyComponentWrapper(state.element)
+   }, [])
+
+   return renderPortal()
 }
+
+export { useOnClickOutside, usePortal }
