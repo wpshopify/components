@@ -10,8 +10,10 @@ import { ProductContext } from './context'
 import { getProductInitialState } from './initial-state'
 
 function Product(props) {
-
    const [state, dispatch] = useReducer(ProductReducer, getProductInitialState(props))
+   console.log('state.excludes', state.excludes)
+
+   const isShowing = type => !state.excludes.includes(type)
 
    return (
       <div className='wps-product'>
@@ -20,11 +22,11 @@ function Product(props) {
                productState: state,
                productDispatch: dispatch
             }}>
-            {!state.excludes.includes('images') ? <ProductImages /> : ''}
-            {!state.excludes.includes('title') ? <ProductTitle /> : ''}
-            {!state.excludes.includes('pricing') ? <ProductPricing /> : ''}
-            {!state.excludes.includes('description') ? <ProductDescription /> : ''}
-            {!state.excludes.includes('buy-button') ? <ProductBuyButton /> : ''}
+            {isShowing('images') ? <ProductImages /> : ''}
+            {isShowing('title') ? <ProductTitle /> : ''}
+            {isShowing('pricing') ? <ProductPricing /> : ''}
+            {isShowing('description') ? <ProductDescription /> : ''}
+            {isShowing('buy-button') ? <ProductBuyButton /> : ''}
          </ProductContext.Provider>
       </div>
    )

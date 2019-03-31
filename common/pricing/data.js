@@ -1,21 +1,36 @@
-function sortingSmallToBig(a, b) {
+function sortAsc(a, b) {
    return a - b
 }
 
-function sortPrices(prices) {
-   return prices.sort(sortingSmallToBig)
+function sortPricesAsc(prices) {
+   return prices.sort(sortAsc)
 }
 
-function convertPriceToFloat(variant) {
-   return parseFloat(variant.price)
+function convertToFloat(maybe_string) {
+   return parseFloat(maybe_string)
 }
 
-function mapPrices(product) {
-   return product.variants.map(convertPriceToFloat)
+function onlyPrices(variant) {
+   console.log('variant', variant)
+
+   return {
+      price: convertToFloat(variant.price),
+      compareAtPrice: convertToFloat(variant.compareAtPrice)
+   }
 }
 
-function getPrices(product) {
-   return sortPrices(mapPrices(product))
+function getPricesFromVariants(product) {
+   return product.variants.map(onlyPrices)
+}
+
+function getPrices(product, sort = false) {
+   const prices = getPricesFromVariants(product)
+
+   if (sort === 'asc') {
+      return sortPricesAsc(prices)
+   }
+
+   return prices
 }
 
 export { getPrices }

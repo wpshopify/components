@@ -1,53 +1,32 @@
-import React, { useContext, useState, useEffect } from 'react';
-import { ShopContext } from '../../shop/context';
+import React, { useContext, useState, useEffect } from 'react'
+import { ShopContext } from '../../shop/context'
 
 function findTotalCartQuantities(lineItems) {
-
-   return lineItems.reduce(function (accumulator, lineItem) {
-
-      accumulator += lineItem.quantity;
-      return accumulator;
-
-   }, 0);
-
+   return lineItems.reduce(function(accumulator, lineItem) {
+      accumulator += lineItem.quantity
+      return accumulator
+   }, 0)
 }
 
 function isTotalEmpty(total) {
-   return total === 0;
+   return total === 0
 }
-
 
 function CartCounter() {
-
-   console.log('<CartCounter />');
-
-   const { shopState } = useContext(ShopContext);
-   const [totalItems, setTotalItems] = useState(findTotalCartQuantities(shopState.checkoutCache.lineItems));
-
+   const { shopState } = useContext(ShopContext)
+   const [totalItems, setTotalItems] = useState(findTotalCartQuantities(shopState.checkoutCache.lineItems))
 
    useEffect(() => {
+      console.log('<CartCounter />')
 
-      const total = findTotalCartQuantities(shopState.checkoutCache.lineItems);
+      const total = findTotalCartQuantities(shopState.checkoutCache.lineItems)
 
       if (!isTotalEmpty(total)) {
-         setTotalItems(total);
+         setTotalItems(total)
       }
+   }, [shopState.checkoutCache.lineItems])
 
-   }, [shopState.checkoutCache.lineItems]);
-
-
-   return (
-      <>
-         {
-            !isTotalEmpty(totalItems)
-               ? <span className="wps-cart-counter">{totalItems}</span>
-               : ''
-         }
-      </>
-   )
-
+   return <>{!isTotalEmpty(totalItems) ? <span className='wps-cart-counter'>{totalItems}</span> : ''}</>
 }
 
-export {
-   CartCounter
-}
+export { CartCounter }

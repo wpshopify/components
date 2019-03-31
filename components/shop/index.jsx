@@ -9,7 +9,6 @@ import { buildInstances, getProducts, getCheckoutCache, getCheckoutID } from '@w
 import to from 'await-to-js'
 
 function variantsFromCache() {
-
    var cache = getCheckoutCache(getCheckoutID())
 
    if (cache && !isEmpty(cache.variants)) {
@@ -49,6 +48,8 @@ function Shop(props) {
       if (instancesError) {
          return
       }
+
+      console.log('instances.checkout.lineItemsSubtotalPrice', instances.checkout.lineItemsSubtotalPrice)
 
       dispatch({ type: 'SET_CHECKOUT', payload: instances.checkout })
       dispatch({ type: 'SET_CHECKOUT_CACHE', payload: instances.checkout })
