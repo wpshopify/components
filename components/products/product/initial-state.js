@@ -1,5 +1,5 @@
 function getProductInitialState({ options, ...props }) {
-   console.log('getProductInitialState', options.componentOptions)
+   console.log('options.componentOptions 🔥', options.componentOptions)
 
    return {
       product: options.product,
@@ -10,11 +10,7 @@ function getProductInitialState({ options, ...props }) {
       renderFromServer: options.componentOptions.renderFromServer,
       selectedVariant: false,
       isFeaturedOnly: false,
-      pricing: {
-         showing_compare_at: options.componentOptions.showing_compare_at,
-         showing_local: options.componentOptions.showing_local,
-         showing_price_range: options.componentOptions.showing_price_range
-      },
+      componentOptions: options.componentOptions,
       ...props
    }
 }

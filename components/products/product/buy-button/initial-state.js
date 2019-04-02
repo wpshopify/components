@@ -1,5 +1,4 @@
-function getProductBuyButtonInitialState(product = false, props = false) {
-
+function getProductBuyButtonInitialState(productState = false, props = false) {
    return {
       selectedOptions: {},
       availableVariants: [],
@@ -7,11 +6,9 @@ function getProductBuyButtonInitialState(product = false, props = false) {
       missingSelections: false,
       isAdding: false,
       quantity: 1,
-      product: product ? product : false,
+      product: productState.product ? productState.product : false,
+      componentOptions: productState.componentOptions
    }
-
 }
 
-export {
-   getProductBuyButtonInitialState
-}
+export { getProductBuyButtonInitialState }

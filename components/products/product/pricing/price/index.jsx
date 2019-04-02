@@ -1,8 +1,10 @@
 import React, { useContext } from 'react'
-import { formatPriceToCurrency } from '../../../../../common/pricing/formatting'
 import { ShopContext } from '../../../../shop/context'
 import isEmpty from 'lodash/isEmpty'
 import last from 'lodash/last'
+
+import { ProductPricingRange } from '../range'
+import { ProductPriceSingle } from '../single'
 
 function lastPrice(prices, type) {
    if (isEmpty(prices)) {
@@ -37,7 +39,24 @@ function lastPriceCompareAt(prices) {
 
 function ProductPrice({ range, compareAt, prices }) {
    const { shopState } = useContext(ShopContext)
-   console.log('prices..............', prices)
+
+   function isRegAndCompareSame() {
+      if (!range && compareAt) {
+         if (firstPriceCompareAt(prices) === firstRegPrice(prices)) {
+            return true
+         }
+      }
+
+      return false
+   }
+
+   function isFirstAndLastSame() {
+      if (getFirstPrice() === getLastPrice()) {
+         return true
+      }
+
+      return false
+   }
 
    function getFirstPrice() {
       if (compareAt) {
@@ -56,25 +75,19 @@ function ProductPrice({ range, compareAt, prices }) {
    }
 
    return (
-      <h3
-         itemScope
-         itemProp='offers'
-         itemType='https://schema.org/Offer'
-         className='wps-products-price wps-product-pricing wps-products-price-one'
-         data-wps-is-showing-compare-at={compareAt}
-         data-wps-is-ready={shopState.isReady ? '1' : '0'}>
-         {range ? (
-            <>
-               <small className='wps-product-from-price'>From:</small>{' '}
-               <span itemProp='price' className='wps-product-individual-price'>
-                  {formatPriceToCurrency(getFirstPrice())}
-               </span>{' '}
-               <span className='wps-product-from-price-separator'>-</span> <span className='wps-product-individual-price'>{formatPriceToCurrency(getLastPrice())}</span>
-            </>
-         ) : (
-            formatPriceToCurrency(getFirstPrice())
+      <>
+         {!isRegAndCompareSame() && (
+            <h3
+               itemScope
+               itemProp='offers'
+               itemType='https://schema.org/Offer'
+               className='wps-products-price wps-product-pricing wps-products-price-one'
+               data-wps-is-showing-compare-at={compareAt}
+               data-wps-is-ready={shopState.isReady ? '1' : '0'}>
+               {range ? <ProductPricingRange firstPrice={getFirstPrice()} lastPrice={getLastPrice()} isFirstAndLastSame={isFirstAndLastSame()} /> : <ProductPriceSingle price={getFirstPrice()} />}
+            </h3>
          )}
-      </h3>
+      </>
    )
 }
 

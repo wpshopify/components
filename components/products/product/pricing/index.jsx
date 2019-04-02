@@ -4,34 +4,29 @@ import { ProductContext } from '../context'
 import { ProductPrice } from './price'
 import { usePortal } from '../../../../common/hooks'
 
+function isShowingCompareAt(state) {
+   return state.componentOptions.showing_compare_at
+}
+
+function isShowingRange(state) {
+   return state.componentOptions.showing_price_range
+}
+
 function ProductPricing() {
    const { productState } = useContext(ProductContext)
    const [prices, setPrices] = useState([])
-   const [showingRange, setShowingRange] = useState(false)
-   const [showingCompareAt, setShowingCompareAt] = useState(false)
-
-   function isShowingCompareAt(state) {
-      return state.pricing.showing_compare_at
-   }
-
-   function isShowingRange(state) {
-      return state.pricing.showing_price_range
-   }
+   const [showingRange, setShowingRange] = useState(isShowingRange(productState))
+   const [showingCompareAt, setShowingCompareAt] = useState(isShowingCompareAt(productState))
 
    useEffect(() => {
       setShowingRange(isShowingRange(productState))
       setShowingCompareAt(isShowingCompareAt(productState))
 
       if (isShowingRange(productState)) {
-         console.log('lllllllllllllll')
-
          setPrices(getPrices(productState.product, 'asc'))
       } else {
-         console.log('ggggggggggggggggg')
          setPrices(getPrices(productState.product))
       }
-
-      console.log(':::::::::: prices', prices)
    }, [])
 
    return usePortal(

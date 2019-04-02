@@ -12,6 +12,9 @@ function ProductAddButton() {
 
    const { buyButtonState, buyButtonDispatch } = useContext(ProductBuyButtonContext)
    const { shopState, shopDispatch } = useContext(ShopContext)
+   const buttonStyle = {
+      backgroundColor: buyButtonState.componentOptions.button_color
+   }
 
    async function handleClick() {
       // check if all options are selected
@@ -72,7 +75,8 @@ function ProductAddButton() {
             data-wps-is-ready={shopState.isReady ? '1' : '0'}
             data-wps-is-adding={buyButtonState.isAdding ? '1' : '0'}
             disabled={buyButtonState.isAdding ? true : false}
-            onClick={handleClick}>
+            onClick={handleClick}
+            style={buttonStyle}>
             {buyButtonState.isAdding ? 'Adding ...' : 'Add to cart'}
          </button>
       </div>
