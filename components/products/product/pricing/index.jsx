@@ -1,37 +1,50 @@
 import React, { useContext, useEffect, useState } from 'react'
 import { getPrices } from '../../../../common/pricing/data'
-import { formatPriceToCurrency } from '../../../../common/pricing/formatting'
-import { ShopContext } from '../../../shop/context'
 import { ProductContext } from '../context'
+import { ProductPrice } from './price'
 import { usePortal } from '../../../../common/hooks'
 
 function ProductPricing() {
-   const { shopState } = useContext(ShopContext)
    const { productState } = useContext(ProductContext)
+   const [prices, setPrices] = useState([])
+   const [showingRange, setShowingRange] = useState(false)
+   const [showingCompareAt, setShowingCompareAt] = useState(false)
 
-   const [price, setPrice] = useState()
+   function isShowingCompareAt(state) {
+      return state.pricing.showing_compare_at
+   }
+
+   function isShowingRange(state) {
+      return state.pricing.showing_price_range
+   }
 
    useEffect(() => {
-      console.log('price', price)
-      console.log('<ProductPricing /> showing_compare_at state: ', productState.pricing.showing_compare_at)
-      console.log('<ProductPricing /> state : ', productState)
-      const thePrices = getPrices(productState.product)
+      setShowingRange(isShowingRange(productState))
+      setShowingCompareAt(isShowingCompareAt(productState))
 
-      console.log('thePrices', thePrices)
+      if (isShowingRange(productState)) {
+         console.log('lllllllllllllll')
 
-      if (productState.pricing.showing_compare_at === 1) {
-         setPrice(thePrices[0].compareAtPrice)
+         setPrices(getPrices(productState.product, 'asc'))
       } else {
-         setPrice(thePrices[0].price)
+         console.log('ggggggggggggggggg')
+         setPrices(getPrices(productState.product))
       }
+
+      console.log(':::::::::: prices', prices)
    }, [])
 
    return usePortal(
-      <h3 itemScope itemProp='offers' itemType='https://schema.org/Offer' className='wps-products-price wps-product-pricing wps-products-price-one'>
-         <div className='wps-price-wrapper' data-wps-is-ready={shopState.isReady ? '1' : '0'} data-wps-is-multi-price='0' data-wps-is-price-wrapper='1'>
-            {formatPriceToCurrency(price)}
-         </div>
-      </h3>,
+      <>
+         {showingCompareAt ? (
+            <>
+               <ProductPrice range={showingRange} compareAt={true} prices={prices} />
+               <ProductPrice range={showingRange} compareAt={false} prices={prices} />
+            </>
+         ) : (
+            <ProductPrice range={showingRange} compareAt={showingCompareAt} prices={prices} />
+         )}
+      </>,
       productState
    )
 }

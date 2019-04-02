@@ -1,5 +1,5 @@
 function getProductInitialState({ options, ...props }) {
-   console.log('options.componentOptions', options.componentOptions)
+   console.log('getProductInitialState', options.componentOptions)
 
    return {
       product: options.product,
