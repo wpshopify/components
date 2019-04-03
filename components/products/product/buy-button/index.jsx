@@ -14,8 +14,6 @@ function ProductBuyButton(props) {
    const { productState } = useContext(ProductContext)
    const [state, dispatch] = useReducer(ProductBuyButtonReducer, getProductBuyButtonInitialState(productState, props))
 
-   console.log('11111111111111111111111111111111111 buy button', state)
-
    return usePortal(
       <>
          <div className='wps-buy-button-wrapper' data-wps-component-order='0'>
@@ -26,13 +24,13 @@ function ProductBuyButton(props) {
                }}>
                {productState.product.availableForSale ? (
                   <>
-                     {' '}
-                     <ProductQuantity /> <ProductOptions /> <ProductAddButton />{' '}
+                     {!state.componentOptions.hide_quantity ? <ProductQuantity /> : ''}
+                     <ProductOptions />
+                     <ProductAddButton />
                   </>
                ) : (
                   <ProductNotice type='warning'>
-                     {' '}
-                     <ProductNoticeOutOfStock />{' '}
+                     <ProductNoticeOutOfStock />
                   </ProductNotice>
                )}
             </ProductBuyButtonContext.Provider>

@@ -77,7 +77,7 @@ function ProductAddButton() {
             disabled={buyButtonState.isAdding ? true : false}
             onClick={handleClick}
             style={buttonStyle}>
-            {buyButtonState.isAdding ? 'Adding ...' : 'Add to cart'}
+            {buyButtonState.isAdding ? 'Adding ...' : buyButtonState.componentOptions.button_text}
          </button>
       </div>
    )
