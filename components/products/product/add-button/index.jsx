@@ -59,6 +59,8 @@ function ProductAddButton() {
       if (buyButtonState.allOptionsSelected) {
          animePulse(button.current)
       }
+
+      console.log('allOptionsSelected!!!!!!!!! ', buyButtonState)
    }, [buyButtonState.allOptionsSelected])
 
    return (
