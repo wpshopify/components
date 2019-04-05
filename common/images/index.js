@@ -130,13 +130,7 @@ function addCustomSizeToImageUrl(width, height, imageUrl) {
       return imageUrl
    }
 
-   return (
-      splitParts.beforeExtension +
-      buildWidthHeightFilter(width, height) +
-      '.' +
-      splitParts.extension +
-      splitParts.afterExtension
-   )
+   return splitParts.beforeExtension + buildWidthHeightFilter(width, height) + '.' + splitParts.extension + splitParts.afterExtension
 }
 
 function autoWidthAndHeight(settings) {
@@ -159,13 +153,7 @@ function addCustomCropToImageUrl(settings, imageUrl) {
       return imageUrl
    }
 
-   return (
-      splitParts.beforeExtension +
-      buildCropFilter(settings.crop) +
-      '.' +
-      splitParts.extension +
-      splitParts.afterExtension
-   )
+   return splitParts.beforeExtension + buildCropFilter(settings.crop) + '.' + splitParts.extension + splitParts.afterExtension
 }
 
 /*
@@ -180,15 +168,12 @@ function addCustomScaleToImageUrl(settings, imageUrl) {
       return imageUrl
    }
 
-   return (
-      splitParts.beforeExtension +
-      buildScaleFilter(settings.scale) +
-      '.' +
-      splitParts.extension +
-      splitParts.afterExtension
-   )
+   return splitParts.beforeExtension + buildScaleFilter(settings.scale) + '.' + splitParts.extension + splitParts.afterExtension
 }
 
+function isPlaceholder(src) {
+   return src.includes('cdn.shopify.com/s/files/1/0533/2089/files/placeholder')
+}
 /*
 
 $settings is an array with this structure:
@@ -205,11 +190,12 @@ TODO: Just pass the $settings instead
 
 */
 function addCustomSizingToImageUrl(settings) {
+   if (settings.src && isPlaceholder(settings.src)) {
+      return settings.src
+   }
+
    // Returns a modified image URL
-   return addCustomScaleToImageUrl(
-      settings,
-      addCustomCropToImageUrl(settings, addCustomSizeToImageUrl(settings.width, settings.height, settings.src))
-   )
+   return addCustomScaleToImageUrl(settings, addCustomCropToImageUrl(settings, addCustomSizeToImageUrl(settings.width, settings.height, settings.src)))
 }
 
 export {

@@ -13,6 +13,8 @@ Props has the same shape as productsDefaultProps
 
 */
 function Products(props) {
+   console.log(':::::::::::::::: props.products[0].componentOptions.orderBy', props.products[0].componentOptions.orderby)
+
    return (
       <>
          {props.products ? (

@@ -1,5 +1,5 @@
-import React from "react";
+import React from 'react'
 
-const ProductGalleryContext = React.createContext();
+const ProductGalleryContext = React.createContext()
 
-export { ProductGalleryContext };
+export { ProductGalleryContext }

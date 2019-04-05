@@ -1,4 +1,4 @@
-import React, { useContext, useEffect, useState, useRef } from 'react'
+import React, { useContext, useEffect, useRef } from 'react'
 import { ShopContext } from '../../../../shop/context'
 import { ProductGalleryContext } from '../gallery/context'
 
@@ -23,17 +23,7 @@ function ProductImage({ image, isFeatured }) {
       }
    }, [])
 
-   return (
-      <img
-         ref={imageRef}
-         itemProp='image'
-         src={imageOptimized}
-         className='wps-product-image'
-         alt={image.altText}
-         data-wps-is-ready={shopState.isReady ? '1' : '0'}
-         data-zoom={image.src}
-      />
-   )
+   return <img ref={imageRef} itemProp='image' src={imageOptimized} className='wps-product-image' alt={image.altText} data-wps-is-ready={shopState.isReady ? '1' : '0'} data-zoom={image.src} />
 }
 
 export { ProductImage }

@@ -1,4 +1,4 @@
-import React, { useContext, useEffect, useState, useRef, useReducer } from 'react'
+import React, { useContext, useEffect, useReducer } from 'react'
 import { ProductContext } from '../../context'
 import { ProductThumbnailImages } from '../thumbnails'
 import { ProductFeaturedImage } from '../featured'
@@ -11,11 +11,17 @@ function ProductGallery() {
    const [galleryState, galleryDispatch] = useReducer(ProductGalleryReducer, getProductGalleryInitialState())
 
    function hasManyImages() {
+      console.log('hiihii')
+
       return productState.product.images.length >= 2
    }
 
    function getFeaturedImageFromProduct(product) {
       return product.images[0]
+   }
+
+   function isFeaturedOnly() {
+      return productState.componentOptions.show_featured_only
    }
 
    useEffect(() => {
@@ -32,15 +38,15 @@ function ProductGallery() {
                galleryState: galleryState,
                galleryDispatch: galleryDispatch
             }}>
-            <div className='wps-gallery-featured-wrapper'>
+            {isFeaturedOnly() ? (
                <ProductFeaturedImage />
-            </div>
-            {hasManyImages() ? (
-               <div className='wps-thumbnails-wrapper'>
+            ) : hasManyImages() ? (
+               <>
+                  <ProductFeaturedImage />
                   <ProductThumbnailImages />
-               </div>
+               </>
             ) : (
-               ''
+               <ProductFeaturedImage />
             )}
          </ProductGalleryContext.Provider>
       </>

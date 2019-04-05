@@ -25,8 +25,11 @@ function ProductFeaturedImage() {
    const isFirstRender = useRef(true)
    const { productState } = useContext(ProductContext)
    const { shopState } = useContext(ShopContext)
+   console.log('ProductGalleryContext', ProductGalleryContext)
 
    const { galleryState } = useContext(ProductGalleryContext)
+
+   console.log('............................... ProductFeaturedImage')
 
    const [featImageElemnent, setFeatImageElemnent] = useState(false)
    const [featImage, setFeatImage] = useState(false)
@@ -36,6 +39,14 @@ function ProductFeaturedImage() {
          paneContainer: paneElement.current,
          inlinePane: false
       }
+   }
+
+   function showZoom() {
+      return productState.componentOptions.show_zoom
+   }
+
+   function hasFeatImage() {
+      return galleryState.featImage && galleryState.featImageElement
    }
 
    useEffect(() => {
@@ -55,8 +66,7 @@ function ProductFeaturedImage() {
          return
       }
 
-
-      if (galleryState.featImage && galleryState.featImageElement && shopState.settings.productsImagesShowZoom) {
+      if (hasFeatImage() && showZoom()) {
          console.log('Both feat image and feat image element are properly set, initing Drift ...')
          console.log('galleryState.featImageElement', galleryState.featImageElement)
 
@@ -70,20 +80,17 @@ function ProductFeaturedImage() {
    }, [galleryState.featImageElement])
 
    useEffect(() => {
-
       if (productState.selectedVariant) {
          setFeatImage(getVariantImage(productState.selectedVariant))
       }
    }, [productState.selectedVariant])
 
-   return galleryState.featImage ? (
-      <div className='wps-component wps-component-products-images-featured' data-wps-is-component-wrapper ref={paneElement}>
+   return (
+      <div className='wps-gallery-featured-wrapper' ref={paneElement}>
          <div className='wps-product-image-wrapper'>
-            <ProductImage isFeatured={true} image={featImage} />
+            {galleryState.featImage ? <ProductImage isFeatured={true} image={featImage} /> : <ProductImage isFeatured={true} image={galleryState.featImagePlaceholder} />}
          </div>
       </div>
-   ) : (
-      <span>No image found</span>
    )
 }
 

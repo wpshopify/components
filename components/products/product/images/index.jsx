@@ -10,7 +10,7 @@ function ProductImages() {
    return usePortal(
       <>
          <div className='wps-component wps-component-products-images' data-wps-component-order='0'>
-            {productState.isFeaturedOnly ? <ProductFeaturedImage /> : <ProductGallery />}
+            <ProductGallery />
          </div>
       </>,
       productState
