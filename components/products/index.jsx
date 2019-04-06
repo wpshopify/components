@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react'
 import { Product } from './product'
+import sortBy from 'lodash/sortBy'
 
 function productsDefaultProps() {
    return {
@@ -7,13 +8,23 @@ function productsDefaultProps() {
    }
 }
 
+// function sortItems(items, sortType) {
+//    return sortBy(items, function(item) {
+//       return item.product[sortType]
+//    })
+// }
+
 /*
 
 Props has the same shape as productsDefaultProps
 
 */
 function Products(props) {
-   console.log(':::::::::::::::: props.products[0].componentOptions.orderBy', props.products[0].componentOptions.orderby)
+   // console.log(':::::::::::::::: BEFORE SORT', props.products)
+
+   // var sortedProducts = sortItems(props.products, 'title')
+
+   // console.log(':::::::::::::::: AFTER SORT', sortedProducts)
 
    return (
       <>
