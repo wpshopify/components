@@ -20,7 +20,7 @@ Props has the same shape as productsDefaultProps
 
 */
 function Products(props) {
-   // console.log(':::::::::::::::: BEFORE SORT', props.products)
+   console.log(':::::::::::::::: BEFORE SORT', props)
 
    // var sortedProducts = sortItems(props.products, 'title')
 

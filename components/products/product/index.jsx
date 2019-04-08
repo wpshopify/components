@@ -11,9 +11,17 @@ import { getProductInitialState } from './initial-state'
 
 function Product(props) {
    const [state, dispatch] = useReducer(ProductReducer, getProductInitialState(props))
+
+   console.log('state............', state)
    console.log('state.excludes', state.excludes)
 
-   const isShowing = type => !state.excludes.includes(type)
+   const isShowing = type => {
+      if (!state.excludes) {
+         return true
+      }
+
+      return !state.excludes.includes(type)
+   }
 
    return (
       <div className='wps-product'>

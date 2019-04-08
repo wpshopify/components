@@ -10,6 +10,9 @@ function CartButton() {
    const counterElement = useRef()
    const animeSlideInRight = useAnime(slideInRight)
 
+   console.log('cartState ...', cartState)
+   console.log('cartState.cartIcons ...', cartState.cartIcons)
+
    function openCart() {
       cartDispatch({ type: 'OPEN_CART' })
    }
@@ -25,7 +28,7 @@ function CartButton() {
                <CartCounter />
                <CartIcon />
             </button>,
-            document.getElementById(cartState.cartButtonDropzone)
+            cartState.cartIcons
          )}
       </>
    )
