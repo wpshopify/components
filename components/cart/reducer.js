@@ -1,28 +1,20 @@
 function CartReducer(state, action) {
-
    switch (action.type) {
-
-      case "OPEN_CART":
-
+      case 'OPEN_CART':
          return {
             ...state,
             cartOpen: true
          }
 
-      case "CLOSE_CART":
-
+      case 'CLOSE_CART':
          return {
             ...state,
             cartOpen: false
          }
 
       default:
-         return state;
-
+         return state
    }
-
 }
 
-export {
-   CartReducer
-}
+export { CartReducer }

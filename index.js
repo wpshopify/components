@@ -2,7 +2,7 @@ export { Product } from './components/products/product'
 export { Products } from './components/products'
 // export { ProductTitle } from './components/products/title';
 export { Sorting } from './components/sorting'
-export { Cart, CartButton, CartBody } from './components/cart'
+export { Cart, CartButtons, CartBody } from './components/cart'
 
 export { Shop } from './components/shop'
 

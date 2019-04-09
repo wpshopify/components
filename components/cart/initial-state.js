@@ -1,11 +1,6 @@
-function CartInitialState(shopState, props) {
-   console.log('props!!!!!!!!!!!!!!!!!', props)
-   console.log('props.cartIcons', props.cartIcons)
-
+function CartInitialState(props) {
    return {
       title: 'Shopping cart',
-      cartButtonDropzone: 'wps-cart-button-fixed',
-      cartIcons: props.cartIcons,
       cartOpen: null,
       isUpdating: false
    }

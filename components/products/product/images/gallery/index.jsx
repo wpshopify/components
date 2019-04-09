@@ -11,8 +11,6 @@ function ProductGallery() {
    const [galleryState, galleryDispatch] = useReducer(ProductGalleryReducer, getProductGalleryInitialState())
 
    function hasManyImages() {
-      console.log('hiihii', productState.product)
-
       return productState.product.images.length >= 2
    }
 

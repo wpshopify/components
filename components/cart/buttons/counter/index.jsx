@@ -1,5 +1,5 @@
 import React, { useContext, useState, useEffect } from 'react'
-import { ShopContext } from '../../shop/context'
+import { ShopContext } from '../../../shop/context'
 
 function findTotalCartQuantities(lineItems) {
    return lineItems.reduce(function(accumulator, lineItem) {

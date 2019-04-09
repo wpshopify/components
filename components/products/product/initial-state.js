@@ -1,6 +1,4 @@
-function getProductInitialState({ options, ...props }) {
-   console.log('Product Initial State 🔥', options.componentOptions)
-
+function getProductInitialState(options) {
    return {
       product: options.product,
       componentID: options.componentID,
@@ -9,8 +7,7 @@ function getProductInitialState({ options, ...props }) {
       excludes: options.componentOptions.excludes,
       renderFromServer: options.componentOptions.renderFromServer,
       selectedVariant: false,
-      componentOptions: options.componentOptions,
-      ...props
+      componentOptions: options.componentOptions
    }
 }
 

@@ -14,7 +14,7 @@ function ProductTitle() {
             {productState.product.title}
          </h2>
       </div>,
-      productState
+      productState.element
    )
 }
 

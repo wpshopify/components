@@ -53,11 +53,7 @@ function useOnClickOutside(ref, handler, targeOpened = false) {
    }, [ref, handler])
 }
 
-function usePortal(component, state) {
-   function getContainer() {
-      return document.querySelector('[data-wps-component-id="' + state.componentID + '"]')
-   }
-
+function usePortal(componentMarkup, containerElement) {
    function emptyComponentWrapper(element) {
       while (element.firstChild) {
          element.removeChild(element.firstChild)
@@ -65,12 +61,12 @@ function usePortal(component, state) {
    }
 
    function renderPortal() {
-      return <>{ReactDOM.createPortal(component, getContainer())}</>
+      return <>{ReactDOM.createPortal(componentMarkup, containerElement)}</>
    }
 
    useState(() => {
-      state.element.setAttribute('data-wps-is-ready', '1')
-      emptyComponentWrapper(state.element)
+      containerElement.setAttribute('data-wps-is-ready', '1')
+      emptyComponentWrapper(containerElement)
    }, [])
 
    return renderPortal()

@@ -1,15 +1,12 @@
 import React, { useReducer, useContext } from 'react'
 import { CartInitialState } from './initial-state'
-import { ShopContext } from '../shop/context'
 import { CartContext } from './context'
 import { CartReducer } from './reducer'
-import { CartButton } from './button'
+import { CartButtons } from './buttons'
 import { CartBody } from './body'
 
 function Cart(props) {
-   const { shopState } = useContext(ShopContext)
-   const [state, dispatch] = useReducer(CartReducer, CartInitialState(shopState, props))
-   console.log('CARTTT props', props)
+   const [state, dispatch] = useReducer(CartReducer, CartInitialState(props))
 
    return (
       <>
@@ -24,4 +21,4 @@ function Cart(props) {
    )
 }
 
-export { Cart, CartBody, CartButton }
+export { Cart, CartBody, CartButtons }

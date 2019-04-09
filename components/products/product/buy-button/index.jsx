@@ -36,7 +36,7 @@ function ProductBuyButton(props) {
             </ProductBuyButtonContext.Provider>
          </div>
       </>,
-      productState
+      productState.element
    )
 }
 

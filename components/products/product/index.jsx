@@ -9,11 +9,8 @@ import { ProductReducer } from './reducer'
 import { ProductContext } from './context'
 import { getProductInitialState } from './initial-state'
 
-function Product(props) {
-   const [state, dispatch] = useReducer(ProductReducer, getProductInitialState(props))
-
-   console.log('state............', state)
-   console.log('state.excludes', state.excludes)
+function Product({ options }) {
+   const [state, dispatch] = useReducer(ProductReducer, getProductInitialState(options))
 
    const isShowing = type => {
       if (!state.excludes) {

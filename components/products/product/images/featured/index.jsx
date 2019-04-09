@@ -25,11 +25,8 @@ function ProductFeaturedImage() {
    const isFirstRender = useRef(true)
    const { productState } = useContext(ProductContext)
    const { shopState } = useContext(ShopContext)
-   console.log('ProductGalleryContext', ProductGalleryContext)
 
    const { galleryState } = useContext(ProductGalleryContext)
-
-   console.log('............................... ProductFeaturedImage')
 
    const [featImageElemnent, setFeatImageElemnent] = useState(false)
    const [featImage, setFeatImage] = useState(false)

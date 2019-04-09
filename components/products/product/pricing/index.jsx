@@ -40,7 +40,7 @@ function ProductPricing() {
             <ProductPrice range={showingRange} compareAt={showingCompareAt} prices={prices} />
          )}
       </>,
-      productState
+      productState.element
    )
 }
 

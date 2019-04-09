@@ -13,7 +13,7 @@ function ProductImages() {
             <ProductGallery />
          </div>
       </>,
-      productState
+      productState.element
    )
 }
 

@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react'
 import { Product } from './product'
-import sortBy from 'lodash/sortBy'
+import isEmpty from 'lodash/isEmpty'
 
 function productsDefaultProps() {
    return {
@@ -20,22 +20,18 @@ Props has the same shape as productsDefaultProps
 
 */
 function Products(props) {
-   console.log(':::::::::::::::: BEFORE SORT', props)
-
-   // var sortedProducts = sortItems(props.products, 'title')
-
-   // console.log(':::::::::::::::: AFTER SORT', sortedProducts)
+   console.log('ProductsProducts props', props)
 
    return (
       <>
-         {props.products ? (
+         {!isEmpty(props.products) ? (
             <section className='wps-products'>
                {props.products.map(productOptions => (
-                  <Product key={productOptions.componentID} options={productOptions} {...props} />
+                  <Product key={productOptions.componentID} options={productOptions} />
                ))}
             </section>
          ) : (
-            ''
+            'No products found'
          )}
       </>
    )
