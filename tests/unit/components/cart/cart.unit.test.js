@@ -7,8 +7,19 @@ import { Cart, CartBody, CartButtons } from '../../../../components/cart'
 function cartButtonOptions() {
    return [
       {
-         type: 'fixed',
-         dropzone: document.getElementById('wps-cart-icon-fixed')
+         componentID: '5cad64a8a1878',
+         componentOptions: {
+            type: false,
+            icon_color: '#ddd',
+            counter_background_color: '#000',
+            counter_text_color: '#fff',
+            render_from_server: false
+         },
+         componentOptionsId: 'ed1c77f041d947e17caafefdcad39384ed1c77f041d947e17caafefdcad39384',
+         element: document.querySelectorAll('#wps-cart-icon-fixed')[0],
+         excludes: false,
+         gid: false,
+         renderFromServer: true
       }
    ]
 }

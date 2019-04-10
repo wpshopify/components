@@ -1,31 +1,15 @@
-import React, { useContext } from 'react';
-import ReactDOM from 'react-dom';
-import { Items } from '../items';
-import { LoadingContext } from '../../common/state/context';
-
+import React, { useContext } from 'react'
+import ReactDOM from 'react-dom'
+import { Items } from '../items'
+import { LoadingContext } from '../../common/state/context'
 
 function DropZone({ dropZone, items }) {
+   const { from } = useContext(LoadingContext)
 
-   const { from } = useContext(LoadingContext);
+   const dropZoneElement = document.querySelector(dropZone)
+   console.log('DropZone')
 
-   const dropZoneElement = document.querySelector(dropZone);
-
-   return (
-      <>
-         {
-            !dropZone
-               ? <Items items={items} from={from}></Items>
-               : ReactDOM.createPortal(
-                  <Items items={items} from={from}></Items>,
-                  dropZoneElement
-               )
-         }
-
-      </>
-   )
-
+   return <>{!dropZone ? <Items items={items} from={from} /> : ReactDOM.createPortal(<Items items={items} from={from} />, dropZoneElement)}</>
 }
 
-export {
-   DropZone
-}
+export { DropZone }

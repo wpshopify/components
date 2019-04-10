@@ -12,15 +12,11 @@ import { CartButtonContext } from './context'
 import { getCartButtonInitialState } from './initial-state'
 
 function CartButton({ options }) {
-   console.log('////////// options', options)
-
    const { shopState } = useContext(ShopContext)
    const { cartState, cartDispatch } = useContext(CartContext)
    const counterElement = useRef()
    const animeSlideInRight = useAnime(slideInRight)
    const [state, dispatch] = useReducer(CartButtonReducer, getCartButtonInitialState(options))
-
-   console.log('////////// cartState')
 
    function toggleCart() {
       if (cartState.isOpen) {

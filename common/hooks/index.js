@@ -54,6 +54,8 @@ function useOnClickOutside(ref, handler, targeOpened = false) {
 }
 
 function usePortal(componentMarkup, containerElement) {
+   console.log('containerElement', containerElement)
+
    function emptyComponentWrapper(element) {
       while (element.firstChild) {
          element.removeChild(element.firstChild)
@@ -61,12 +63,20 @@ function usePortal(componentMarkup, containerElement) {
    }
 
    function renderPortal() {
-      return <>{ReactDOM.createPortal(componentMarkup, containerElement)}</>
+      if (containerElement) {
+         return <>{ReactDOM.createPortal(componentMarkup, containerElement)}</>
+      } else {
+         console.log('11111111111111')
+
+         return <>{componentMarkup}</>
+      }
    }
 
    useState(() => {
-      containerElement.setAttribute('data-wps-is-ready', '1')
-      emptyComponentWrapper(containerElement)
+      if (containerElement) {
+         containerElement.setAttribute('data-wps-is-ready', '1')
+         emptyComponentWrapper(containerElement)
+      }
    }, [])
 
    return renderPortal()
