@@ -21,10 +21,6 @@ Component: Search
 function Search({ options }) {
    const [state, dispatch] = useReducer(SearchReducer, getSearchInitialState(options))
 
-   useEffect(function() {
-      console.log('INITAL Search RENDER')
-   }, [])
-
    return (
       <>
          <SearchContext.Provider

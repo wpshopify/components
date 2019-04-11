@@ -1,7 +1,8 @@
 import React, { useContext } from 'react'
 import { SearchContext } from '../../context'
-import { DropZone } from '../../../dropzone'
+import { Dropzone } from '../../../dropzone'
 import { LoadingContext } from '../../../../common/state/context'
+import { Products } from '../../../products'
 
 /*
 
@@ -10,14 +11,32 @@ Component: SearchNotices
 */
 function SearchDropzone() {
    const { searchState } = useContext(SearchContext)
-   console.log('searchState.dropzoneData length', searchState.dropzoneData.length)
 
-   return searchState.dropzoneData.length > 0 ? (
-      <LoadingContext.Provider value={{ isLoading: searchState.isLoading, from: 'search' }}>
-         <DropZone dropZone={searchState.componentOptions.dropzone} items={searchState.dropzoneData} />
-      </LoadingContext.Provider>
-   ) : (
-      ''
+   function buildOptions(products) {
+      return {
+         products: products.map(function(product) {
+            return {
+               product: product,
+               componentID: false,
+               element: false,
+               gid: false,
+               excludes: false,
+               renderFromServer: false,
+               selectedVariant: false,
+               componentOptions: false
+            }
+         })
+      }
+   }
+
+   console.log('searchState.componentOptions.dropzone', searchState.componentOptions.dropzone)
+
+   return (
+      searchState.dropzoneData.length > 0 && (
+         <Dropzone dropzone={searchState.componentOptions.dropzone}>
+            <Products options={buildOptions(searchState.dropzoneData)} />
+         </Dropzone>
+      )
    )
 }
 

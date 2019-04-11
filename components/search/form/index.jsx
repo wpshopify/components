@@ -1,7 +1,7 @@
 import React, { useContext, useEffect } from 'react'
 import { queryProducts, fetchByTitleParams } from '@wpshopify/api'
 import { useDebounce } from 'use-debounce'
-import { DropZone } from '../../dropzone'
+import { Dropzone } from '../../dropzone'
 import { LoadingContext } from '../../../common/state/context'
 import { SearchContext } from '../context'
 import { usePortal } from '../../../common/hooks'

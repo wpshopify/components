@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react'
 import { Product } from './product'
 import isEmpty from 'lodash/isEmpty'
+import uuidv4 from 'uuid/v4'
 
 function productsDefaultProps() {
    return {
@@ -19,15 +20,13 @@ function productsDefaultProps() {
 Props has the same shape as productsDefaultProps
 
 */
-function Products(props) {
-   console.log('ProductsProducts props', props)
-
+function Products({ options }) {
    return (
       <>
-         {!isEmpty(props.products) ? (
+         {!isEmpty(options.products) ? (
             <section className='wps-products'>
-               {props.products.map(productOptions => (
-                  <Product key={productOptions.componentID} options={productOptions} />
+               {options.products.map(productOption => (
+                  <Product key={uuidv4()} options={productOption} />
                ))}
             </section>
          ) : (

@@ -5,8 +5,8 @@ import { CartReducer } from './reducer'
 import { CartButtons } from './buttons'
 import { CartBody } from './body'
 
-function Cart(props) {
-   const [state, dispatch] = useReducer(CartReducer, CartInitialState(props))
+function Cart({ options }) {
+   const [state, dispatch] = useReducer(CartReducer, CartInitialState(options))
 
    return (
       <>
@@ -15,7 +15,8 @@ function Cart(props) {
                cartState: state,
                cartDispatch: dispatch
             }}>
-            {props.children}
+            <CartButtons />
+            <CartBody />
          </CartContext.Provider>
       </>
    )

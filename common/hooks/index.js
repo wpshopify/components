@@ -66,8 +66,6 @@ function usePortal(componentMarkup, containerElement) {
       if (containerElement) {
          return <>{ReactDOM.createPortal(componentMarkup, containerElement)}</>
       } else {
-         console.log('11111111111111')
-
          return <>{componentMarkup}</>
       }
    }

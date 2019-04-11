@@ -2,15 +2,16 @@ import React, { useState, useRef, useEffect, useContext } from 'react'
 import { Product } from '../products/product'
 import size from 'lodash/size'
 import { LoadingContext } from '../../common/state/context'
+import { Notice } from '../notice'
 
-function Items({ items, from }) {
+function hasItems(items) {
+   return size(items) !== 0 ? true : false
+}
+
+function Items({ items }) {
    const [isActive, setIsActive] = useState(0)
    const isFirstRender = useRef(true)
-   const { isLoading } = useContext(LoadingContext)
-
-   function hasItems(items) {
-      return size(items) !== 0 ? true : false
-   }
+   // const { isLoading } = useContext(LoadingContext)
 
    useEffect(() => {
       if (isFirstRender.current) {
@@ -18,27 +19,27 @@ function Items({ items, from }) {
          return
       }
 
-      resetAllOtherDropzones()
+      // resetAllOtherDropzones()
       setIsActive(1)
    }, [items])
 
-   function resetAllOtherDropzones() {
-      var elss = document.querySelectorAll('.wps-dropzone')
+   // function resetAllOtherDropzones() {
+   //    var elss = document.querySelectorAll('.wps-dropzone')
 
-      if (elss) {
-         elss.forEach(el => {
-            var osdf = el.getAttribute('data-wps-dropzone-for')
+   //    if (elss) {
+   //       elss.forEach(el => {
+   //          var osdf = el.getAttribute('data-wps-dropzone-for')
 
-            if (osdf !== from) {
-               el.setAttribute('data-wps-dropzone-is-active', '0')
-            } else {
-               el.setAttribute('data-wps-dropzone-is-active', '1')
-            }
-         })
-      }
-   }
+   //          if (osdf !== from) {
+   //             el.setAttribute('data-wps-dropzone-is-active', '0')
+   //          } else {
+   //             el.setAttribute('data-wps-dropzone-is-active', '1')
+   //          }
+   //       })
+   //    }
+   // }
 
-   function biuldOption(item) {
+   function buildOptions(item) {
       return {
          product: item,
          componentID: false,
@@ -52,8 +53,8 @@ function Items({ items, from }) {
    }
 
    return (
-      <section className='wps-dropzone' data-wps-dropzone-for={from} data-wps-dropzone-is-active={isActive}>
-         {!hasItems(items) ? <p>No results found</p> : items.map(item => <Product key={item.id} options={biuldOption(item)} />)}
+      <section className='wps-dropzone' data-wps-dropzone-is-active={isActive}>
+         {!hasItems(items) ? <Notice type='info' message='No results found' /> : items.map(item => <Product key={item.id} options={buildOptions(item)} />)}
       </section>
    )
 }

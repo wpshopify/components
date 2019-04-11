@@ -8,7 +8,7 @@ import { FilterTypes } from './types'
 
 import { FilterTags } from './tags'
 import { FilterSelections } from './selections'
-import { DropZone } from '../dropzone'
+import { Dropzone } from '../dropzone'
 import { LoadingContext } from '../../common/state/context'
 import { checkHasResults, checkPrevPage, checkNextPage } from '../../common/pagination'
 import { Sorting } from '../sorting'
@@ -205,7 +205,7 @@ function Filters({ dropZone, showSelections, selectionsDropZone, showSorting, so
                </FiltersContext.Provider>
 
                <LoadingContext.Provider value={{ isLoading: isLoading, from: 'filters' }}>
-                  <DropZone dropZone={dropZone} items={searchData} />
+                  <Dropzone dropZone={dropZone} items={searchData} />
                </LoadingContext.Provider>
             </aside>,
             document.querySelector(filtersDropZone)
