@@ -6,11 +6,10 @@ function ProductQuantity() {
    const { buyButtonState, buyButtonDispatch } = useContext(ProductBuyButtonContext)
    const { shopState } = useContext(ShopContext)
 
-   console.log('buyButtonState.componentOptions', buyButtonState.componentOptions)
-
-   const minQuantity = buyButtonState.componentOptions.min_quantity
-   const maxQuantity = buyButtonState.componentOptions.max_quantity
-   const showQuantityLabel = buyButtonState.componentOptions.show_quantity_label
+   const minQuantity = buyButtonState.componentOptions.minQuantity
+   const maxQuantity = buyButtonState.componentOptions.maxQuantity
+   const showQuantityLabel = buyButtonState.componentOptions.showQuantityLabel
+   const quantityLabel = buyButtonState.componentOptions.quantityLabelText
 
    function handleQuantityChange(e) {
       buyButtonDispatch({ type: 'UPDATE_QUANTITY', payload: Number(e.target.value) })
@@ -21,7 +20,7 @@ function ProductQuantity() {
          <div className='wps-form-control wps-row wps-product-quantity-wrapper'>
             {showQuantityLabel && (
                <div className='wps-quantity-input wps-quantity-label-wrapper' data-wps-is-ready={shopState.isReady ? '1' : '0'}>
-                  <label htmlFor='wps-product-quantity'>Quantity</label>
+                  <label htmlFor='wps-product-quantity'>{quantityLabel}</label>
                </div>
             )}
 

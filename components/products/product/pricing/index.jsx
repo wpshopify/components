@@ -5,11 +5,11 @@ import { ProductPrice } from './price'
 import { usePortal } from '../../../../common/hooks'
 
 function isShowingCompareAt(state) {
-   return state.componentOptions.showing_compare_at
+   return state.componentOptions.showingCompareAt
 }
 
 function isShowingRange(state) {
-   return state.componentOptions.showing_price_range
+   return state.componentOptions.showingPriceRange
 }
 
 function ProductPricing() {

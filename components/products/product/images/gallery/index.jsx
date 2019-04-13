@@ -19,7 +19,7 @@ function ProductGallery() {
    }
 
    function isFeaturedOnly() {
-      return productState.componentOptions.show_featured_only
+      return productState.componentOptions.showFeaturedOnly
    }
 
    useEffect(() => {

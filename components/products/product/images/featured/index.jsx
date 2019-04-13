@@ -39,7 +39,7 @@ function ProductFeaturedImage() {
    }
 
    function showZoom() {
-      return productState.componentOptions.show_zoom
+      return productState.componentOptions.showZoom
    }
 
    function hasFeatImage() {
@@ -64,9 +64,6 @@ function ProductFeaturedImage() {
       }
 
       if (hasFeatImage() && showZoom()) {
-         console.log('Both feat image and feat image element are properly set, initing Drift ...')
-         console.log('galleryState.featImageElement', galleryState.featImageElement)
-
          var drift = new Drift(galleryState.featImageElement, driftOptions())
 
          return () => {

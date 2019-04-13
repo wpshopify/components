@@ -4,8 +4,6 @@ import { CartButtonContext } from '../button/context'
 function CartIcon() {
    const { cartButtonState } = useContext(CartButtonContext)
 
-   console.log('cartButtonState', cartButtonState)
-
    return (
       <>
          {cartButtonState.componentOptions.icon ? (

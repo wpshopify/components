@@ -21,21 +21,17 @@ Component: SearchForm
 function SearchForm() {
    const { searchState, searchDispatch } = useContext(SearchContext)
 
-   const [debouncedSearchTerm] = useDebounce(searchState.searchTerm, 300)
-
    useEffect(() => {
       searchDispatch({ type: 'SET_IS_FIRST_RENDER', payload: false })
    }, [])
 
    useEffect(() => {
-      console.log('debouncedSearchTerm', debouncedSearchTerm)
-      console.log('searchState.isFirstRender', searchState.isFirstRender)
-
-      if (!searchState.isFirstRender) {
-         getSearchResults()
+      if (searchState.isFirstRender) {
          return
       }
-   }, [debouncedSearchTerm])
+
+      getSearchResults()
+   }, [searchState.searchTerm])
 
    /*
 
@@ -45,9 +41,7 @@ function SearchForm() {
    async function getSearchResults() {
       searchDispatch({ type: 'SET_IS_LOADING', payload: true })
 
-      const results = await fetchProducts(debouncedSearchTerm)
-
-      console.log('results', results)
+      const results = await fetchProducts(searchState.searchTerm)
 
       searchDispatch({ type: 'SET_DROPZONE_DATA', payload: results })
       searchDispatch({ type: 'SET_IS_LOADING', payload: false })

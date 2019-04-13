@@ -23,14 +23,14 @@ Props has the same shape as productsDefaultProps
 function Products({ options }) {
    return (
       <>
-         {!isEmpty(options.products) ? (
-            <section className='wps-products'>
+         {isEmpty(options.products) ? (
+            options.noResultsText
+         ) : (
+            <section className={'wps-products wps-products-' + options.type}>
                {options.products.map(productOption => (
                   <Product key={uuidv4()} options={productOption} />
                ))}
             </section>
-         ) : (
-            'No products found'
          )}
       </>
    )

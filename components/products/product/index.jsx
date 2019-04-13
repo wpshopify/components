@@ -1,5 +1,5 @@
 import 'babel-polyfill'
-import React, { useReducer } from 'react'
+import React, { useReducer, useContext, useEffect } from 'react'
 import { ProductTitle } from './title'
 import { ProductPricing } from './pricing'
 import { ProductDescription } from './description'
@@ -10,8 +10,6 @@ import { ProductContext } from './context'
 import { getProductInitialState } from './initial-state'
 
 function Product({ options }) {
-   console.log('item', options)
-
    const [state, dispatch] = useReducer(ProductReducer, getProductInitialState(options))
 
    const isShowing = type => {

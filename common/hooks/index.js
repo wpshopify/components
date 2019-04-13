@@ -54,8 +54,6 @@ function useOnClickOutside(ref, handler, targeOpened = false) {
 }
 
 function usePortal(componentMarkup, containerElement) {
-   console.log('containerElement', containerElement)
-
    function emptyComponentWrapper(element) {
       while (element.firstChild) {
          element.removeChild(element.firstChild)

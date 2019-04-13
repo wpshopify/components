@@ -22,7 +22,7 @@ function ProductOption({ option }) {
    const { buyButtonState, buyButtonDispatch } = useContext(ProductBuyButtonContext)
 
    const buttonStyle = {
-      backgroundColor: buyButtonState.componentOptions.variant_color
+      backgroundColor: buyButtonState.componentOptions.variantColor
    }
 
    function getOptionName(selectedOption, option) {

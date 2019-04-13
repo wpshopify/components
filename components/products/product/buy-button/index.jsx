@@ -24,7 +24,7 @@ function ProductBuyButton(props) {
                }}>
                {productState.product.availableForSale ? (
                   <>
-                     {!state.componentOptions.hide_quantity ? <ProductQuantity /> : ''}
+                     {!state.componentOptions.hideQuantity ? <ProductQuantity /> : ''}
                      <ProductOptions />
                      <ProductAddButton />
                   </>
