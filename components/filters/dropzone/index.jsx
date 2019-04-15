@@ -1,21 +1,20 @@
 import React, { useContext, useEffect, useRef, useState } from 'react'
-import { SearchContext } from '../../context'
-import { Dropzone } from '../../../dropzone'
-import { LoadingContext } from '../../../../common/state/context'
-import { Products } from '../../../products'
+import { FiltersContext } from '../_state/context'
+import { Dropzone } from '../../dropzone'
+import { Products } from '../../products'
 
 /*
 
 Component: SearchNotices
 
 */
-function SearchDropzone() {
-   const { searchState } = useContext(SearchContext)
+function FilterDropzone() {
+   const { filtersState } = useContext(FiltersContext)
    const [showData, setShowData] = useState(false)
    const isFirstRender = useRef(true)
 
    function hasNewData() {
-      return searchState.searchData.length > 0
+      return filtersState.filterData.length > 0
    }
 
    function buildOptions(products) {
@@ -33,7 +32,7 @@ function SearchDropzone() {
             }
          }),
          type: 'search',
-         noResultsText: searchState.componentOptions.noResultsText
+         noResultsText: filtersState.componentOptions.noResultsText
       }
    }
 
@@ -45,21 +44,21 @@ function SearchDropzone() {
          }
 
          if (hasNewData()) {
-            console.log('...... HAS DATA, SHOWING NOW .......')
+            console.log('...... HAS FILTERS DATA, SHOWING NOW .......')
 
             setShowData(true)
          }
       },
-      [searchState.searchData]
+      [filtersState.filterData]
    )
 
    return (
       showData && (
-         <Dropzone dropzone={searchState.componentOptions.dropzone} isLoading={searchState.isLoading}>
-            <Products options={buildOptions(searchState.searchData)} />
+         <Dropzone dropzone={filtersState.componentOptions.filterData} isLoading={filtersState.isLoading}>
+            <Products options={buildOptions(filtersState.filterData)} />
          </Dropzone>
       )
    )
 }
 
-export { SearchDropzone }
+export { FilterDropzone }

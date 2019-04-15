@@ -1,25 +1,22 @@
-import React, { useEffect, useState, useRef } from 'react'
-import ReactDOM from 'react-dom'
-
+import React, { useEffect, useReducer, useRef } from 'react'
 import { getFilterData, queryProducts, fetchByQueryParams } from '@wpshopify/api'
 
-import { FilterVendors } from './vendors'
-import { FilterTypes } from './types'
-
-import { FilterTags } from './tags'
 import { FilterSelections } from './selections'
-import { Dropzone } from '../dropzone'
-import { LoadingContext } from '../../common/state/context'
+import { FilterDropzone } from './dropzone'
+import { FilterOptions } from './options'
+import { FilterSorting } from './sorting'
+import { FilterPagination } from './pagination'
+
 import { checkHasResults, checkPrevPage, checkNextPage } from '../../common/pagination'
-import { Sorting } from '../sorting'
-import { Pagination } from '../pagination'
+
+import { getFiltersInitialState } from './_state/initial-state'
+import { FiltersReducer } from './_state/reducer'
+import { FiltersContext } from './_state/context'
 
 import assign from 'lodash/assign'
 import to from 'await-to-js'
 import isEmpty from 'lodash/isEmpty'
 import compact from 'lodash/compact'
-
-const FiltersContext = React.createContext()
 
 function combineFilterData(accumulator, currentValue) {
    return assign(accumulator, currentValue)
@@ -77,33 +74,30 @@ function buildQueryStringFromSelections(selections) {
    return stringifyFilterTypes(combineFilterTypes(selections, keys))
 }
 
-function Filters({ dropZone, showSelections, selectionsDropZone, showSorting, sortingDropZone, showPagination, paginationDropZone, filtersDropZone }) {
-   const [selections, setSelections] = useState({})
-   const [filterData, setFilterData] = useState([])
-   const [searchData, setSearchData] = useState([])
-
-   const [isLoading, setIsLoading] = useState(true)
-   const [isBootstrapping, setIsBootstrapping] = useState(true)
-
-   const [isCleared, setIsCleared] = useState(true)
-
-   const [query, setQuery] = useState('*')
-   const [first, setFirst] = useState(10)
-   const [sortKey, setSortKey] = useState('TITLE')
-   const [reverse, setReverse] = useState(false)
-   const [hasResults, setHasResults] = useState(false)
-   const [hasNextPage, setHasNextPage] = useState(true)
-   const [hasPrevPage, setHasPrevPage] = useState(true)
+function Filters({ options }) {
+   const [state, dispatch] = useReducer(FiltersReducer, getFiltersInitialState(options))
 
    const isFirstRender = useRef(true)
 
+   function fetchProducts() {
+      console.log('state.filterParams', state.filterParams)
+
+      return queryProducts(fetchByQueryParams(state.filterParams))
+   }
+
    async function getAllFilterData() {
+      console.log('Fetching filter data ...')
+
       var [respError, respData] = await to(getFilterData())
 
       var allFilteredData = formatFilterData(getDataFromResponse(respData))
 
-      setIsBootstrapping(false)
-      setFilterData(allFilteredData)
+      console.log('DONE fetching filter data ...', allFilteredData)
+
+      dispatch({ type: 'SET_IS_BOOTSTRAPPING', payload: false })
+      dispatch({ type: 'SET_FILTER_DATA', payload: allFilteredData })
+
+      // setFilterData(allFilteredData)
    }
 
    // On component initial render
@@ -116,100 +110,62 @@ function Filters({ dropZone, showSelections, selectionsDropZone, showSorting, so
          isFirstRender.current = false
          return
       }
+      console.log('...........')
 
-      var queryString = buildQueryStringFromSelections(selections)
-
-      setQuery(queryString)
-   }, [selections])
+      dispatch({ type: 'SET_QUERY', payload: { query: buildQueryStringFromSelections(state.selections) } })
+   }, [state.selections])
 
    useEffect(() => {
       if (isFirstRender.current) {
          isFirstRender.current = false
          return
       }
+      console.log('Loading data from params ...', state.filterParams)
 
       loadData()
-   }, [query, sortKey, reverse, first])
-
-   function getFetchParams() {
-      return {
-         first: first,
-         sortKey: sortKey,
-         query: query,
-         reverse: reverse
-      }
-   }
+   }, [state.filterParams])
 
    function afterDataLoads(items) {
-      setHasResults(checkHasResults(items))
+      // setHasResults()
+      dispatch({ type: 'SET_HAS_RESULTS', payload: checkHasResults(items) })
+      // setHasNextPage()
+      // setHasPrevPage()
+      dispatch({ type: 'SET_HAS_NEXT_PAGE', payload: checkNextPage(items) })
+      dispatch({ type: 'SET_HAS_PREV_PAGE', payload: checkPrevPage(items) })
 
-      setHasNextPage(checkNextPage(items))
-      setHasPrevPage(checkPrevPage(items))
-
-      setSearchData(items)
-      setIsLoading(false)
+      // setSearchData(items)
+      dispatch({ type: 'SET_SEARCH_DATA', payload: items })
+      // setIsLoading(false)
+      dispatch({ type: 'SET_IS_LOADING', payload: false })
    }
 
    function beforeDataLoads() {
-      setIsLoading(true)
+      // setIsLoading(true)
+      dispatch({ type: 'SET_IS_LOADING', payload: true })
    }
 
    async function loadData() {
       beforeDataLoads()
 
-      var [itemsError, items] = await to(fetchProducts(getFetchParams()))
+      var [itemsError, items] = await to(fetchProducts())
 
       afterDataLoads(items)
    }
 
-   function fetchProducts() {
-      return queryProducts(fetchByQueryParams(getFetchParams()))
-   }
-
    return (
       <>
-         {ReactDOM.createPortal(
-            <aside className='wps-filters'>
-               <h2 className='wps-filters-heading'>Filter by</h2>
+         <FiltersContext.Provider
+            value={{
+               filtersState: state,
+               filtersDispatch: dispatch
+            }}>
+            {state.componentOptions.showSelections ? <FilterSelections /> : ''}
+            {state.componentOptions.showSorting ? <FilterSorting /> : ''}
+            {state.componentOptions.showPagination ? <FilterPagination /> : ''}
 
-               <FiltersContext.Provider
-                  value={{
-                     isBootstrapping: isBootstrapping,
-                     filterData: filterData,
-                     isLoading: isLoading,
-                     setIsLoading: setIsLoading,
-                     isCleared: isCleared,
-                     setIsCleared: setIsCleared,
-                     query: query,
-                     setQuery: setQuery,
-                     sortKey: sortKey,
-                     setSortKey: setSortKey,
-                     selections: selections,
-                     setSelections: setSelections,
-                     setReverse: setReverse,
-                     searchData: searchData,
-                     setSearchData: setSearchData,
-                     hasResults: hasResults,
-                     hasNextPage: hasNextPage,
-                     hasPrevPage: hasPrevPage,
-                     first: first,
-                     setFirst: setFirst
-                  }}>
-                  {showSelections ? <FilterSelections dropZone={selectionsDropZone} /> : ''}
-                  {showSorting ? <Sorting dropZone={sortingDropZone} /> : ''}
-                  {showPagination ? <Pagination dropZone={paginationDropZone} /> : ''}
-
-                  <FilterTags />
-                  <FilterVendors />
-                  <FilterTypes />
-               </FiltersContext.Provider>
-
-               <LoadingContext.Provider value={{ isLoading: isLoading, from: 'filters' }}>
-                  <Dropzone dropZone={dropZone} items={searchData} />
-               </LoadingContext.Provider>
-            </aside>,
-            document.querySelector(filtersDropZone)
-         )}
+            <FilterOptions />
+            <FilterDropzone />
+         </FiltersContext.Provider>
       </>
    )
 }

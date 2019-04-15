@@ -1,60 +1,52 @@
-import React, { useContext, useRef, useState, useEffect } from 'react';
-import { FiltersContext } from '../index';
-import { updateSelectionList, isCurrentlySelected } from '../../../common/selections';
-import update from 'immutability-helper';
+import React, { useContext, useRef, useState, useEffect } from 'react'
+import { FiltersContext } from '../_state/context'
+import { updateSelectionList, isCurrentlySelected } from '../../../common/selections'
 
+function FilterTag({ tag }) {
+   const { filtersState, filtersDispatch } = useContext(FiltersContext)
+   const [isSelected, setIsSelected] = useState(false)
+   const isFirstRender = useRef(true)
 
-function FilterTag({ tag, selectedTags, setSelectedTags }) {
-
-   const { selections, setSelections } = useContext(FiltersContext);
-   const [isSelected, setIsSelected] = useState(false);
-   const isFirstRender = useRef(true);
-
-
-   useEffect(() => {
-
-      if (isFirstRender.current) {
-         isFirstRender.current = false;
-         return;
-      }
-
-      setIsSelected(isCurrentlySelected(selections, tag, 'tag'));
-
-   }, [selectedTags]);
-
-
-
-   const onTagClick = () => {
-
-      setIsSelected(!isSelected);
-
-      var newTagsList = updateSelectionList({
+   function buildNewSelection() {
+      return updateSelectionList({
          isSelected: !isSelected,
-         currentList: selections.tag,
+         currentList: filtersState.selections.tag,
          selectedValue: tag
-      });
-
-      const updatedSelections = update(selections, { $merge: { tag: newTagsList } });
-
-      setSelections(updatedSelections);
-      setSelectedTags(newTagsList);
-
+      })
    }
 
+   useEffect(() => {
+      if (isFirstRender.current) {
+         isFirstRender.current = false
+         return
+      }
+
+      setIsSelected(isCurrentlySelected(filtersState.selections, tag, 'tag'))
+   }, [filtersState.selectedTags])
+
+   const onTagClick = () => {
+      setIsSelected(!isSelected)
+
+      const newList = buildNewSelection()
+
+      console.log('Setting selections from <FilterTag>')
+
+      filtersDispatch({
+         type: 'SET_SELECTIONS',
+         payload: {
+            tag: newList
+         }
+      })
+      console.log('newList', newList)
+
+      filtersDispatch({ type: 'SET_SELECTED_TAGS', payload: newList })
+   }
 
    return (
-      <li
-         data-wps-is-current={isSelected}
-         data-wps-is-selected={isSelected}
-         data-wps-tag={tag}
-         className="wps-tag"
-         onClick={onTagClick}>
-
+      <li data-wps-is-current={isSelected} data-wps-is-selected={isSelected} data-wps-tag={tag} className='wps-tag' onClick={onTagClick}>
          {tag}
-
       </li>
    )
-
 }
 
-export default FilterTag;
+export { FilterTag }

@@ -1,28 +1,13 @@
-import React, { useContext } from 'react';
-import ReactDOM from 'react-dom';
+import React, { useContext } from 'react'
+import { FiltersContext } from '../_state/context'
+import { FilterSelectionsWrapper } from './wrapper'
+import { objectIsEmpty } from '../../../common/utils'
+import { usePortal } from '../../../common/hooks'
 
-import { FiltersContext } from '../index';
-import { FilterSelectionsWrapper } from './wrapper';
-import { objectIsEmpty } from '../../../common/utils';
+function FilterSelections() {
+   const { filtersState } = useContext(FiltersContext)
 
-
-function FilterSelections({ dropZone }) {
-
-   const { selections } = useContext(FiltersContext);
-
-   return (
-      <>
-         {
-            ReactDOM.createPortal(
-               !objectIsEmpty(selections) ? <FilterSelectionsWrapper /> : '',
-               document.querySelector(dropZone)
-            )
-         }
-      </>
-   )
-
+   return usePortal(!objectIsEmpty(filtersState.selections) ? <FilterSelectionsWrapper /> : '', document.querySelector(filtersState.componentOptions.dropzoneSelections))
 }
 
-export {
-   FilterSelections
-}
+export { FilterSelections }

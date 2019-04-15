@@ -2,7 +2,7 @@ import React, { useEffect, useState, useContext, useRef } from 'react'
 import { FiltersContext } from '../_state/context'
 import { updateSelectionList, isCurrentlySelected } from '../../../common/selections'
 
-function FilterVendor({ vendor }) {
+function FilterType({ type }) {
    const { filtersState, filtersDispatch } = useContext(FiltersContext)
    const [isSelected, setIsSelected] = useState(false)
    const isFirstRender = useRef(true)
@@ -10,8 +10,8 @@ function FilterVendor({ vendor }) {
    function buildNewSelection() {
       return updateSelectionList({
          isSelected: !isSelected,
-         currentList: filtersState.selections.vendor,
-         selectedValue: vendor
+         currentList: filtersState.selections.product_type,
+         selectedValue: type
       })
    }
 
@@ -21,29 +21,29 @@ function FilterVendor({ vendor }) {
          return
       }
 
-      setIsSelected(isCurrentlySelected(filtersState.selections, vendor, 'vendor'))
-   }, [filtersState.selectedVendors])
+      setIsSelected(isCurrentlySelected(filtersState.selections, type, 'product_type'))
+   }, [filtersState.selectedTypes])
 
    const onClick = () => {
       setIsSelected(!isSelected)
 
       const newList = buildNewSelection()
 
-      console.log('Setting selections from <FilterVendor>')
+      console.log('Setting selections from <FilterType>')
 
-      filtersDispatch({ type: 'SET_SELECTIONS', payload: { vendor: newList } })
-      filtersDispatch({ type: 'SET_SELECTED_VENDORS', payload: newList })
+      filtersDispatch({ type: 'SET_SELECTIONS', payload: { product_type: newList } })
+      filtersDispatch({ type: 'SET_SELECTED_TYPES', payload: newList })
    }
 
    return (
       <div className='wps-input-wrapper' data-wps-is-selected={isSelected}>
-         <input id={'input-' + vendor} type='checkbox' checked={isSelected ? 'checked' : ''} className='wps-input-value' onChange={onClick} />
+         <input id={'input-' + type} type='checkbox' checked={isSelected ? 'checked' : ''} className='wps-input-value' onChange={onClick} />
 
-         <label htmlFor={'input-' + vendor} className='wps-input-label'>
-            {vendor}
+         <label htmlFor={'input-' + type} className='wps-input-label'>
+            {type}
          </label>
       </div>
    )
 }
 
-export { FilterVendor }
+export { FilterType }

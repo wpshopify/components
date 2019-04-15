@@ -1,14 +1,14 @@
-import React, { useEffect, useState } from 'react'
+import React, { useState } from 'react'
 
 function Filter(props) {
-   const [drawToggle, setDrawToggle] = useState(false)
+   const [drawerToggle, setDrawerToggle] = useState(false)
 
    function toggleDrawer() {
-      setDrawToggle(!drawToggle)
+      setDrawerToggle(!drawerToggle)
    }
 
    return (
-      <div className='wps-filter' data-wps-drawer-toggle={drawToggle}>
+      <div className='wps-filter' data-wps-drawer-toggle={drawerToggle}>
          <h3 className='wps-drawer-trigger wps-filter-heading' onClick={toggleDrawer}>
             {props.heading} <span className='wps-drawer-icon' />
          </h3>
@@ -17,4 +17,4 @@ function Filter(props) {
    )
 }
 
-export default Filter
+export { Filter }

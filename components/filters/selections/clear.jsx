@@ -1,30 +1,21 @@
-import React, { useContext, useEffect } from 'react';
-import { FiltersContext } from '../index';
-
+import React, { useContext } from 'react'
+import { FiltersContext } from '../_state/context'
 
 function FilterSelectionsClear() {
+   const { filtersDispatch } = useContext(FiltersContext)
 
-   const { setSelections, isCleared, setIsCleared, isSelectionsRemoved, setIsSelectionsRemoved } = useContext(FiltersContext);
-
-   function removeSelections() {
-
-      setSelections({});
-      setIsCleared(!isCleared);
-      // setIsSelectionsRemoved(!isSelectionsRemoved);
-
+   function clearAllSelections() {
+      filtersDispatch({ type: 'CLEAR_SELECTIONS' })
+      filtersDispatch({ type: 'CLEAR_SELECTED_VENDORS' })
+      filtersDispatch({ type: 'CLEAR_SELECTED_TAGS' })
+      filtersDispatch({ type: 'CLEAR_SELECTED_TYPES' })
    }
 
-   useEffect(() => {
-      setIsCleared(false);
-   }, []);
-
-
    return (
-      <div className="wps-filter-selections-clear" onClick={removeSelections}>Clear all</div>
+      <div className='wps-filter-selections-clear' onClick={clearAllSelections}>
+         Clear all
+      </div>
    )
-
 }
 
-export {
-   FilterSelectionsClear
-}
+export { FilterSelectionsClear }

@@ -47,8 +47,6 @@ function Shop(props) {
          return
       }
 
-      console.log('instances.checkout.lineItemsSubtotalPrice', instances.checkout.lineItemsSubtotalPrice)
-
       dispatch({ type: 'SET_CHECKOUT', payload: instances.checkout })
       dispatch({ type: 'SET_CHECKOUT_CACHE', payload: instances.checkout })
 

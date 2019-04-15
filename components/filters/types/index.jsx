@@ -2,22 +2,22 @@ import React, { useContext } from 'react'
 import { Filter } from '../filter'
 import isEmpty from 'lodash/isEmpty'
 import { FiltersContext } from '../_state/context'
-import { FilterVendor } from '../vendor'
+import { FilterType } from '../type'
 
-function FilterVendors() {
+function FilterTypes() {
    const { filtersState } = useContext(FiltersContext)
 
    return (
-      <Filter heading='Vendors'>
+      <Filter heading='Types'>
          <div className='wps-filter-content'>
             {filtersState.isBootstrapping ? (
-               <p data-wps-is-ready='0'>Loading Vendors ...</p>
+               <p data-wps-is-ready='0'>Loading product types ...</p>
             ) : isEmpty(filtersState.filterData) ? (
-               <p>No vendors found</p>
+               <p>No types found</p>
             ) : (
-               <ul className='wps-filters-list wps-vendors'>
-                  {filtersState.filterData.vendors.map(vendor => (
-                     <FilterVendor vendor={vendor} key={vendor} />
+               <ul className='wps-filters-list wps-types'>
+                  {filtersState.filterData.types.map(type => (
+                     <FilterType key={type} type={type} />
                   ))}
                </ul>
             )}
@@ -26,4 +26,4 @@ function FilterVendors() {
    )
 }
 
-export { FilterVendors }
+export { FilterTypes }

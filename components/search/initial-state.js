@@ -5,7 +5,7 @@ function getSearchInitialState(options = {}) {
       renderFromServer: options.componentOptions ? options.componentOptions.renderFromServer : false,
       componentOptions: options.componentOptions ? options.componentOptions : false,
       isLoading: false,
-      dropzoneData: false,
+      searchData: false,
       isFirstRender: false
    }
 }

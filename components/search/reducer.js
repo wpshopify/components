@@ -13,10 +13,10 @@ function SearchReducer(state, action) {
          }
       }
 
-      case 'SET_DROPZONE_DATA': {
+      case 'SET_SEARCH_DATA': {
          return {
             ...state,
-            dropzoneData: action.payload
+            searchData: action.payload
          }
       }
 
