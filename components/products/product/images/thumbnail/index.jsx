@@ -40,7 +40,7 @@ function ProductThumbnailImage({ image }) {
    }, [productState.selectedVariant])
 
    return (
-      <div className='wps-component wps-component-products-images-thumbnail' onClick={handleThumbnailClick} data-wps-is-active={isActive} data-wps-is-ready={shopState.isReady}>
+      <div className='wps-component wps-component-products-images-thumbnail' onClick={handleThumbnailClick} data-wps-is-active={isActive} data-wps-is-ready={shopState.isShopReady}>
          <ProductImage isFeatured={false} image={image} />
       </div>
    )

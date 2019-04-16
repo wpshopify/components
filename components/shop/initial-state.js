@@ -2,7 +2,7 @@ function ShopInitialState(props = false) {
    return {
       checkout: { lineItems: [] },
       notifyingCart: false,
-      isReady: false,
+      isShopReady: false,
       checkoutCache: {
          lineItems: [],
          variants: [],
@@ -10,7 +10,7 @@ function ShopInitialState(props = false) {
       },
       isCartEmpty: true,
       settings: WP_Shopify.settings
-   };
+   }
 }
 
-export { ShopInitialState };
+export { ShopInitialState }

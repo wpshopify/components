@@ -1,6 +1,7 @@
 import React, { useState } from 'react'
+import { capitalizeFirstLetter } from '../../../common/utils'
 
-function Filter(props) {
+function Filter({ heading, children }) {
    const [drawerToggle, setDrawerToggle] = useState(false)
 
    function toggleDrawer() {
@@ -10,9 +11,9 @@ function Filter(props) {
    return (
       <div className='wps-filter' data-wps-drawer-toggle={drawerToggle}>
          <h3 className='wps-drawer-trigger wps-filter-heading' onClick={toggleDrawer}>
-            {props.heading} <span className='wps-drawer-icon' />
+            {capitalizeFirstLetter(heading)} <span className='wps-drawer-icon' />
          </h3>
-         <div className='wps-drawer-content'>{props.children}</div>
+         <div className='wps-drawer-content'>{children}</div>
       </div>
    )
 }

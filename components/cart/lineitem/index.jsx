@@ -74,20 +74,20 @@ function CartLineItem({ lineItem, index }) {
             <div
                className='wps-cart-lineitem-img'
                style={{ backgroundImage: `url(${lineItem.image.src})` }}
-               data-wps-is-ready={shopState.isReady}
+               data-wps-is-ready={shopState.isShopReady}
             />
          </a>
 
          <div className='wps-cart-lineitem-content'>
             <div className='wps-cart-lineitem-content-row'>
-               <p className='wps-cart-lineitem-title' data-wps-is-ready={shopState.isReady}>
+               <p className='wps-cart-lineitem-title' data-wps-is-ready={shopState.isShopReady}>
                   <span className='wps-cart-lineitem-title-content'>{lineItem.productTitle}</span>
                   <span className='wps-cart-lineitem-remove' onClick={removeLineItem}>
                      Remove
                   </span>
                </p>
 
-               <div className='wps-cart-lineitem-variant-title' data-wps-is-ready={shopState.isReady}>
+               <div className='wps-cart-lineitem-variant-title' data-wps-is-ready={shopState.isShopReady}>
                   {lineItem.title}
                </div>
             </div>
@@ -104,7 +104,7 @@ function CartLineItem({ lineItem, index }) {
                      variantId={variantId}
                      lineItemQuantity={lineItemQuantity}
                      setLineItemQuantity={setLineItemQuantity}
-                     isReady={shopState.isReady}
+                     isReady={shopState.isShopReady}
                      isFirstRender={isFirstRender}
                      setLineItemTotal={setLineItemTotal}
                      lineItemTotalElement={lineItemTotalElement}
@@ -112,7 +112,7 @@ function CartLineItem({ lineItem, index }) {
 
                   <div
                      className='wps-cart-lineitem-price wps-cart-lineitem-price-total'
-                     data-wps-is-ready={shopState.isReady}
+                     data-wps-is-ready={shopState.isShopReady}
                      ref={lineItemTotalElement}>
                      {maybeformatPriceToCurrency(lineItemTotal)}
                   </div>

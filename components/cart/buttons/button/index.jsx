@@ -39,7 +39,7 @@ function CartButton({ options }) {
                cartButtonState: state,
                cartButtonDispatch: dispatch
             }}>
-            <button role='button' ref={counterElement} className={`wps-btn-cart wps-cart-icon-${state.componentOptions.type}`} onClick={toggleCart} data-wps-is-ready={shopState.isReady ? '1' : '0'}>
+            <button role='button' ref={counterElement} className={`wps-btn-cart wps-cart-icon-${state.componentOptions.type}`} onClick={toggleCart} data-wps-is-ready={shopState.isShopReady ? '1' : '0'}>
                <CartCounter />
                <CartIcon />
             </button>

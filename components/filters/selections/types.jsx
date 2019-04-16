@@ -2,17 +2,20 @@ import React, { useContext } from 'react'
 import { FilterSelectionsValues } from './values'
 import { FiltersContext } from '../_state/context'
 import { getSelectionTypes } from '../../../common/selections'
+import isEmpty from 'lodash/isEmpty'
 
 function FilterSelectionsType({ selectionType }) {
    const { filtersState } = useContext(FiltersContext)
 
    return (
-      <div className='wps-filter-selection-type'>
-         <div className='wps-selections-group'>
-            <span className='wps-filter-selection-type-heading'>{selectionType}: </span>
-            <FilterSelectionsValues selectionType={selectionType} vals={filtersState.selections[selectionType]} />
+      !isEmpty(filtersState.selections[selectionType]) && (
+         <div className='wps-filter-selection-type'>
+            <div className='wps-selections-group'>
+               <span className='wps-filter-selection-type-heading'>{selectionType}: </span>
+               <FilterSelectionsValues selectionType={selectionType} vals={filtersState.selections[selectionType]} />
+            </div>
          </div>
-      </div>
+      )
    )
 }
 

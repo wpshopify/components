@@ -103,7 +103,7 @@ function ProductOption({ option }) {
                className='wps-btn wps-icon wps-icon-dropdown wps-modal-trigger'
                data-option=''
                data-option-id=''
-               data-wps-is-ready={shopState.isReady ? '1' : '0'}
+               data-wps-is-ready={shopState.isShopReady ? '1' : '0'}
                onClick={toggleDropdown}
                ref={dropdownTrigger}
                style={buttonStyle}>

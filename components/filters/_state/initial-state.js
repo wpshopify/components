@@ -1,3 +1,5 @@
+import { Products } from '../../products'
+
 function getFiltersInitialState(options = {}) {
    return {
       componentID: options.componentID ? options.componentID : false,
@@ -5,8 +7,6 @@ function getFiltersInitialState(options = {}) {
       renderFromServer: options.componentOptions ? options.componentOptions.renderFromServer : false,
       componentOptions: options.componentOptions ? options.componentOptions : false,
       isLoading: false,
-      isBootstrapping: true,
-      filterData: [],
       isLoading: false,
       filterParams: {
          query: '*',
@@ -14,6 +14,7 @@ function getFiltersInitialState(options = {}) {
          sortKey: 'TITLE',
          reverse: false
       },
+      payload: [], // represents the actual filtered data (Products, collections, etc)
       selections: {},
       selectedTags: [],
       selectedTypes: [],

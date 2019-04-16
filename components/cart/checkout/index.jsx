@@ -10,7 +10,7 @@ function CartCheckout() {
 
    return (
       <>
-         <button className='wps-btn wps-btn-checkout' onClick={handleCheckout} data-wps-is-ready={shopState.isReady}>
+         <button className='wps-btn wps-btn-checkout' onClick={handleCheckout} data-wps-is-ready={shopState.isShopReady}>
             Checkout
          </button>
       </>

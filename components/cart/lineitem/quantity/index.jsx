@@ -17,7 +17,7 @@ function getLineItemFromState(lineItem, lineItemsFromState) {
 
 
 
-function CartLineItemQuantity({ lineItem, variantId, lineItemQuantity, setLineItemQuantity, isReady, isFirstRender, setLineItemTotal, lineItemTotalElement }) {
+function CartLineItemQuantity({ lineItem, variantId, lineItemQuantity, setLineItemQuantity, isShopReady, isFirstRender, setLineItemTotal, lineItemTotalElement }) {
 
    const { shopState, shopDispatch } = useContext(ShopContext);
    const animePulse = useAnime(pulse);
@@ -104,7 +104,7 @@ function CartLineItemQuantity({ lineItem, variantId, lineItemQuantity, setLineIt
 
    return (
 
-      <div className="wps-cart-lineitem-quantity-container" data-wps-is-ready={isReady}>
+      <div className="wps-cart-lineitem-quantity-container" data-wps-is-ready={isShopReady}>
 
          <button className="wps-quantity-decrement" type="button" onClick={handleDecrement}>
             <span className="wps-quantity-icon wps-quantity-decrement-icon"></span>

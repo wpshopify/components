@@ -45,8 +45,6 @@ function SearchDropzone() {
          }
 
          if (hasNewData()) {
-            console.log('...... HAS DATA, SHOWING NOW .......')
-
             setShowData(true)
          }
       },
@@ -55,8 +53,8 @@ function SearchDropzone() {
 
    return (
       showData && (
-         <Dropzone dropzone={searchState.componentOptions.dropzone} isLoading={searchState.isLoading}>
-            <Products options={buildOptions(searchState.searchData)} />
+         <Dropzone dropzone={searchState.componentOptions.dropzone}>
+            <Products options={buildOptions(searchState.searchData)} isLoading={searchState.isLoading} />
          </Dropzone>
       )
    )

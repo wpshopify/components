@@ -20,13 +20,13 @@ function productsDefaultProps() {
 Props has the same shape as productsDefaultProps
 
 */
-function Products({ options }) {
+function Products({ options, isLoading }) {
    return (
       <>
          {isEmpty(options.products) ? (
-            options.noResultsText
+            <span className='wps-notice wps-notice-inline wps-notice-warning'>{options.noResultsText}</span>
          ) : (
-            <section className={'wps-products wps-products-' + options.type}>
+            <section className={'wps-products wps-products-' + options.type} data-wps-test={isLoading}>
                {options.products.map(productOption => (
                   <Product key={uuidv4()} options={productOption} />
                ))}

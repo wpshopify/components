@@ -66,9 +66,11 @@ function Shop(props) {
       }
 
       // App is ready to go
-      dispatch({ type: 'IS_READY' })
+      dispatch({ type: 'IS_SHOP_READY' })
+
    }
 
+   
    // Bootstrap app on mount only
    useEffect(() => {
       bootstrapShop()

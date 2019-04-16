@@ -14,7 +14,7 @@ function FilterDropzone() {
    const isFirstRender = useRef(true)
 
    function hasNewData() {
-      return filtersState.filterData.length > 0
+      return filtersState.payload.length > 0
    }
 
    function buildOptions(products) {
@@ -31,7 +31,7 @@ function FilterDropzone() {
                componentOptions: false
             }
          }),
-         type: 'search',
+         type: 'filters',
          noResultsText: filtersState.componentOptions.noResultsText
       }
    }
@@ -43,19 +43,19 @@ function FilterDropzone() {
             return
          }
 
-         if (hasNewData()) {
-            console.log('...... HAS FILTERS DATA, SHOWING NOW .......')
-
-            setShowData(true)
+         if (!hasNewData()) {
+            return
          }
+
+         setShowData(true)
       },
-      [filtersState.filterData]
+      [filtersState.payload]
    )
 
    return (
       showData && (
-         <Dropzone dropzone={filtersState.componentOptions.filterData} isLoading={filtersState.isLoading}>
-            <Products options={buildOptions(filtersState.filterData)} />
+         <Dropzone dropzone={filtersState.componentOptions.dropzonePayload}>
+            <Products options={buildOptions(filtersState.payload)} isLoading={filtersState.isLoading} />
          </Dropzone>
       )
    )

@@ -72,7 +72,7 @@ function ProductAddButton() {
             href='#!'
             className='wps-btn wps-add-to-cart'
             title={buyButtonState.product.title}
-            data-wps-is-ready={shopState.isReady ? '1' : '0'}
+            data-wps-is-ready={shopState.isShopReady ? '1' : '0'}
             data-wps-is-adding={buyButtonState.isAdding ? '1' : '0'}
             disabled={buyButtonState.isAdding ? true : false}
             onClick={handleClick}

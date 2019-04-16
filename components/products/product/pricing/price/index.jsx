@@ -83,7 +83,7 @@ function ProductPrice({ range, compareAt, prices }) {
                itemType='https://schema.org/Offer'
                className='wps-products-price wps-product-pricing wps-products-price-one'
                data-wps-is-showing-compare-at={compareAt}
-               data-wps-is-ready={shopState.isReady ? '1' : '0'}>
+               data-wps-is-ready={shopState.isShopReady ? '1' : '0'}>
                {range ? <ProductPricingRange firstPrice={getFirstPrice()} lastPrice={getLastPrice()} isFirstAndLastSame={isFirstAndLastSame()} /> : <ProductPriceSingle price={getFirstPrice()} />}
             </h3>
          )}

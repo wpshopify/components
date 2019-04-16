@@ -23,7 +23,7 @@ function ProductImage({ image, isFeatured }) {
       }
    }, [])
 
-   return <img ref={imageRef} itemProp='image' src={imageOptimized} className='wps-product-image' alt={image.altText} data-wps-is-ready={shopState.isReady ? '1' : '0'} data-zoom={image.src} />
+   return <img ref={imageRef} itemProp='image' src={imageOptimized} className='wps-product-image' alt={image.altText} data-wps-is-ready={shopState.isShopReady ? '1' : '0'} data-zoom={image.src} />
 }
 
 export { ProductImage }

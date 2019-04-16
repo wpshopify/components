@@ -3,54 +3,43 @@ import { IconRemove } from '../../../common/icons/icon-remove.jsx'
 import { removeFrom } from '../../../common/utils'
 import { FiltersContext } from '../_state/context'
 import { useTransition, animated } from 'react-spring'
-import update from 'immutability-helper'
+import { updateSelectionList } from '../../../common/selections'
 
 function inSelection(selectionsArray, valToSearchFor) {
    return selectionsArray.find(element => element === valToSearchFor)
 }
 
+function typeSelectionsList(itemType, typeSelections) {
+   const temp = {}
+
+   temp[itemType] = typeSelections
+
+   return temp
+}
+
 function FilterSelectionsValue({ selectionType, val }) {
    const { filtersState, filtersDispatch } = useContext(FiltersContext)
 
-   const isFirstRender = useRef(true)
-
-   function maybeRemoveValueFromSelections(val) {
-      var selectionsCopy = filtersState.selections
-
-      if (inSelection(selectionsCopy[selectionType], val)) {
-         return removeFrom(selectionsCopy[selectionType], val)
-      }
-
-      // If not found, just return the original list
-      return selectionsCopy[selectionType]
+   function buildNewSelection() {
+      return updateSelectionList({
+         isSelected: false,
+         currentList: filtersState.selections[selectionType],
+         selectedValue: val
+      })
    }
-
-   function buildNewSelectionObject(type, newStuff) {
-      var newBuild = {}
-
-      newBuild[type] = newStuff
-
-      return newBuild
-   }
-
-   // useEffect(() => {
-   //    if (isFirstRender.current) {
-   //       isFirstRender.current = false
-   //       return
-   //    }
-
-   //    const updatedSelectionsObj = buildNewSelectionObject(selectionType, maybeRemoveValueFromSelections(val))
-   //    const updatedSelections = update(filtersState.selections, { $merge: updatedSelectionsObj })
-
-   //    // setSelections(updatedSelections);
-   //    console.log('Setting selections from <FilterSelectionsValue>')
-   //    filtersDispatch({ type: 'SET_SELECTIONS', payload: updatedSelections })
-   // }, [filtersState.isCleared])
 
    function onClick(val) {
-      console.log('Clearing from <FilterSelectionsValue>', val)
+      const newList = buildNewSelection()
 
-      filtersDispatch({ type: 'SET_IS_CLEARED', payload: true })
+      filtersDispatch({
+         type: 'SET_SELECTIONS',
+         payload: typeSelectionsList(selectionType, newList)
+      })
+
+      filtersDispatch({
+         type: 'SET_SELECTED_' + selectionType.toUpperCase(),
+         payload: newList
+      })
    }
 
    return (

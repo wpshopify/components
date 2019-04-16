@@ -19,12 +19,12 @@ function ProductQuantity() {
       <div className='wps-component wps-component-products-quantity' data-wps-is-component-wrapper data-wps-product-id={buyButtonState.product.id} data-wps-post-id=''>
          <div className='wps-form-control wps-row wps-product-quantity-wrapper'>
             {showQuantityLabel && (
-               <div className='wps-quantity-input wps-quantity-label-wrapper' data-wps-is-ready={shopState.isReady ? '1' : '0'}>
+               <div className='wps-quantity-input wps-quantity-label-wrapper' data-wps-is-ready={shopState.isShopReady ? '1' : '0'}>
                   <label htmlFor='wps-product-quantity'>{quantityLabel}</label>
                </div>
             )}
 
-            <div className='wps-quantity-input wps-quantity-input-wrapper' data-wps-is-ready={shopState.isReady ? '1' : '0'}>
+            <div className='wps-quantity-input wps-quantity-input-wrapper' data-wps-is-ready={shopState.isShopReady ? '1' : '0'}>
                <input
                   type='number'
                   name='wps-product-quantity'

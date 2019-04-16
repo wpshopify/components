@@ -2,13 +2,6 @@ import update from 'immutability-helper'
 
 function FiltersReducer(state, action) {
    switch (action.type) {
-      case 'SET_IS_BOOTSTRAPPING': {
-         return {
-            ...state,
-            isBootstrapping: action.payload
-         }
-      }
-
       case 'SET_IS_LOADING': {
          return {
             ...state,
@@ -55,25 +48,14 @@ function FiltersReducer(state, action) {
          }
       }
 
-      case 'SET_FILTER_DATA': {
+      case 'SET_PAYLOAD': {
          return {
             ...state,
-            filterData: action.payload
-         }
-      }
-
-      case 'SET_SEARCH_DATA': {
-         return {
-            ...state,
-            searchData: action.payload
+            payload: action.payload
          }
       }
 
       case 'SET_QUERY': {
-         // return {
-         //    ...state,
-         //    query: action.payload
-         // }
          return {
             ...state,
             filterParams: update(state.filterParams, { $merge: action.payload })
@@ -81,10 +63,6 @@ function FiltersReducer(state, action) {
       }
 
       case 'SET_FIRST': {
-         // return {
-         //    ...state,
-         //    first: action.payload
-         // }
          return {
             ...state,
             filterParams: update(state.filterParams, { $merge: action.payload })
@@ -92,10 +70,6 @@ function FiltersReducer(state, action) {
       }
 
       case 'SET_SORT_KEY': {
-         // return {
-         //    ...state,
-         //    sortKey: action.payload
-         // }
          return {
             ...state,
             filterParams: update(state.filterParams, { $merge: action.payload })

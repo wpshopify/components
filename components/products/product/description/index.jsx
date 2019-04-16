@@ -8,7 +8,7 @@ function ProductDescription() {
    const { productState } = useContext(ProductContext)
 
    return usePortal(
-      <div itemProp='description' className='wps-products-description' data-wps-is-ready={shopState.isReady ? '1' : '0'} dangerouslySetInnerHTML={{ __html: productState.product.descriptionHtml }}>
+      <div itemProp='description' className='wps-products-description' data-wps-is-ready={shopState.isShopReady ? '1' : '0'} dangerouslySetInnerHTML={{ __html: productState.product.descriptionHtml }}>
          {/* <p>
             Created: {new Date(productState.product.createdAt).toDateString()} at {new Date(productState.product.createdAt).toLocaleTimeString('en-US')}
          </p>

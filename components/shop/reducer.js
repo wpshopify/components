@@ -271,12 +271,12 @@ function ShopReducer(state, action) {
          }
       }
 
-      case 'IS_READY': {
+      case 'IS_SHOP_READY': {
          console.log('...................................... IS_READY')
 
          return {
             ...state,
-            isReady: true
+            isShopReady: true
          }
       }
 
