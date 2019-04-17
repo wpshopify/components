@@ -1,6 +1,6 @@
 import React, { useContext } from 'react'
 import { fetchNextPage } from '@wpshopify/api'
-import { FiltersContext } from '../_state/context'
+import { FiltersContext } from '../../_state/context'
 
 function PaginationNext() {
    const { filtersState, filtersDispatch } = useContext(FiltersContext)
@@ -9,10 +9,12 @@ function PaginationNext() {
       try {
          filtersDispatch({ type: 'SET_IS_LOADING', payload: true })
 
-         var newProducts = await fetchNextPage(filtersState.searchData)
+         var newProducts = await fetchNextPage(filtersState.payload)
 
-         // setSearchData(filtersState.searchData.concat(newProducts.model))
-         filtersDispatch({ type: 'SET_SEARCH_DATA', payload: filtersState.searchData.concat(newProducts.model) })
+         console.log('newProducts', newProducts)
+
+         // setpayload(filtersState.payload.concat(newProducts.model))
+         filtersDispatch({ type: 'SET_PAYLOAD', payload: filtersState.payload.concat(newProducts.model) })
 
          // setIsLoading(false)
          filtersDispatch({ type: 'SET_IS_LOADING', payload: false })

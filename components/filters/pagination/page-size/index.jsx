@@ -1,15 +1,20 @@
 import React, { useContext } from 'react'
-import { FiltersContext } from '../_state/context'
+import { FiltersContext } from '../../_state/context'
 
 function PaginationPageSize() {
    const { filtersState, filtersDispatch } = useContext(FiltersContext)
 
+   function updateFetchParams(event) {
+      return {
+         first: parseInt(event.target.value)
+      }
+   }
    function onChange(event) {
-      filtersDispatch({ type: 'SET_FIRST', payload: { first: parseInt(event.target.value) } })
+      filtersDispatch({ type: 'SET_FILTER_PARAMS', payload: updateFetchParams(event) })
    }
 
    return (
-      <div className='wps-component wps-comonent-sorting'>
+      <div className='wps-component wps-component-sorting'>
          <label className='wps-sorting-heading' htmlFor='wps-sorting'>
             Page size:
          </label>

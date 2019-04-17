@@ -55,28 +55,9 @@ function FiltersReducer(state, action) {
          }
       }
 
-      case 'SET_QUERY': {
-         return {
-            ...state,
-            filterParams: update(state.filterParams, { $merge: action.payload })
-         }
-      }
+      case 'SET_FILTER_PARAMS': {
+         console.log('SET_FILTER_PARAMS action.payload', action.payload)
 
-      case 'SET_FIRST': {
-         return {
-            ...state,
-            filterParams: update(state.filterParams, { $merge: action.payload })
-         }
-      }
-
-      case 'SET_SORT_KEY': {
-         return {
-            ...state,
-            filterParams: update(state.filterParams, { $merge: action.payload })
-         }
-      }
-
-      case 'SET_REVERSE': {
          return {
             ...state,
             filterParams: update(state.filterParams, { $merge: action.payload })

@@ -3,7 +3,7 @@ import { getFilterData } from '@wpshopify/api'
 import { usePortal } from '../../../common/hooks'
 import { FiltersContext } from '../_state/context'
 import { FilterOptionsGroup } from './group'
-import { FilterHeading } from '../heading'
+import { FilterOptionsHeading } from './heading'
 import { getFiltersOptionsInitialState } from './_state/initial-state'
 import { FiltersOptionsReducer } from './_state/reducer'
 import { FiltersOptionsContext } from './_state/context'
@@ -54,7 +54,7 @@ function FilterOptions() {
             filtersOptionsDispatch: dispatch
          }}>
          <>
-            {componentOptions.showHeading ? <FilterHeading /> : ''}
+            {componentOptions.showOptionsHeading ? <FilterOptionsHeading /> : ''}
             <aside className='wps-filters'>
                {componentOptions.showTags ? <FilterOptionsGroup groupType='tags' /> : ''}
                {componentOptions.showVendors ? <FilterOptionsGroup groupType='vendors' displayStyle='checkbox' /> : ''}

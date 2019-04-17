@@ -1,5 +1,5 @@
 import React, { useContext, useRef, useEffect, useState } from 'react'
-import { FiltersContext } from '../_state/context'
+import { FiltersContext } from '../../_state/context'
 
 function PaginationPrev() {
    function onPrevPage() {

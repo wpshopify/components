@@ -110,7 +110,7 @@ function Filters({ options }) {
          return
       }
 
-      dispatch({ type: 'SET_QUERY', payload: updateFetchParamsQuery() })
+      dispatch({ type: 'SET_FILTER_PARAMS', payload: updateFetchParamsQuery() })
    }, [state.selections])
 
    useEffect(() => {
@@ -149,9 +149,9 @@ function Filters({ options }) {
                filtersState: state,
                filtersDispatch: dispatch
             }}>
-            {state.componentOptions.showSelections ? <FilterSelections /> : ''}
-            {state.componentOptions.showSorting ? <FilterSorting /> : ''}
-            {state.componentOptions.showPagination ? <FilterPagination /> : ''}
+            {state.componentOptions.dropzoneSelections ? <FilterSelections /> : ''}
+            {state.componentOptions.dropzoneSorting ? <FilterSorting /> : ''}
+            {state.componentOptions.dropzonePagination ? <FilterPagination /> : ''}
 
             <FilterOptions />
             <FilterDropzone />
