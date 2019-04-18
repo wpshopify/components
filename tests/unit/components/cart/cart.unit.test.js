@@ -30,10 +30,7 @@ function renderCart(props) {
 
    const queries = render(
       <Shop>
-         <Cart>
-            <CartButtons options={cartButtonOptions()} />
-            <CartBody />
-         </Cart>
+         <Cart options={cartButtonOptions()} />
       </Shop>
    )
 

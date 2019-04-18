@@ -11,9 +11,11 @@ import { getProductInitialState } from './initial-state'
 
 function Product({ options }) {
    const [state, dispatch] = useReducer(ProductReducer, getProductInitialState(options))
-
+   console.log('product')
    const isShowing = type => {
       if (!state.excludes) {
+         console.log('NOT exlucding')
+
          return true
       }
 
