@@ -55,7 +55,7 @@ function FilterDropzone() {
    return (
       showData && (
          <Dropzone dropzone={filtersState.componentOptions.dropzonePayload}>
-            <Products options={buildOptions(filtersState.payload)} isLoading={filtersState.isLoading} />
+            <Products options={buildOptions(filtersState.payload)} />
          </Dropzone>
       )
    )

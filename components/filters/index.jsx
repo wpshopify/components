@@ -1,11 +1,10 @@
 import React, { useEffect, useReducer, useRef } from 'react'
-import { queryProducts, fetchByQueryParams } from '@wpshopify/api'
+import { getProductsFromQuery } from '@wpshopify/api'
 
 import { FilterSelections } from './selections'
 import { FilterDropzone } from './dropzone'
 import { FilterOptions } from './options'
 import { FilterSorting } from './sorting'
-import { FilterPagination } from './pagination'
 
 import { checkHasResults, checkPrevPage, checkNextPage } from '../../common/pagination'
 
@@ -95,7 +94,7 @@ function Filters({ options }) {
    const isFirstRender = useRef(true)
 
    function fetchProducts() {
-      return queryProducts(fetchByQueryParams(state.filterParams))
+      return getProductsFromQuery(state.filterParams)
    }
 
    function updateFetchParamsQuery() {
@@ -151,7 +150,6 @@ function Filters({ options }) {
             }}>
             {state.componentOptions.dropzoneSelections ? <FilterSelections /> : ''}
             {state.componentOptions.dropzoneSorting ? <FilterSorting /> : ''}
-            {state.componentOptions.dropzonePagination ? <FilterPagination /> : ''}
 
             <FilterOptions />
             <FilterDropzone />

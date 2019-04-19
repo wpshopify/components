@@ -7,7 +7,6 @@ function getFiltersInitialState(options = {}) {
       renderFromServer: options.componentOptions ? options.componentOptions.renderFromServer : false,
       componentOptions: options.componentOptions ? options.componentOptions : false,
       isLoading: false,
-      isLoading: false,
       filterParams: {
          query: '*',
          first: 10,

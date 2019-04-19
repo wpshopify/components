@@ -1,5 +1,4 @@
-import React, { useContext, useRef, useEffect, useState } from 'react'
-import { FiltersContext } from '../../_state/context'
+import React from 'react'
 
 function PaginationPrev() {
    function onPrevPage() {

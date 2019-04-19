@@ -5,7 +5,7 @@ import { ShopReducer } from './reducer'
 
 import uniq from 'lodash/uniq'
 import isEmpty from 'lodash/isEmpty'
-import { buildInstances, getProducts, getCheckoutCache, getCheckoutID } from '@wpshopify/api'
+import { buildInstances, getProductsFromIds, getCheckoutCache, getCheckoutID } from '@wpshopify/api'
 import to from 'await-to-js'
 
 function variantsFromCache() {
@@ -29,7 +29,7 @@ async function getProductIdsFromLineItems() {
       return new Promise(resolve => resolve(false))
    }
 
-   return await getProducts(uniqueIds)
+   return await getProductsFromIds(uniqueIds)
 }
 
 function Shop(props) {
@@ -67,10 +67,8 @@ function Shop(props) {
 
       // App is ready to go
       dispatch({ type: 'IS_SHOP_READY' })
-
    }
 
-   
    // Bootstrap app on mount only
    useEffect(() => {
       bootstrapShop()

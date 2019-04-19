@@ -1,4 +1,4 @@
-import { getCheckoutCache, setCheckoutCache, mergeCheckoutCacheVariants, mergeCheckoutCacheLineItems, getProducts } from '@wpshopify/api'
+import { getCheckoutCache, setCheckoutCache, mergeCheckoutCacheVariants, mergeCheckoutCacheLineItems } from '@wpshopify/api'
 import some from 'lodash/some'
 import flattenDepth from 'lodash/flattenDepth'
 import assign from 'lodash/assign'

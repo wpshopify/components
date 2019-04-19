@@ -1,31 +1,50 @@
 import React, { useContext } from 'react'
-import { fetchNextPage } from '@wpshopify/api'
-import { FiltersContext } from '../../_state/context'
+import { fetchNextPage, queryProducts, getProductsFromQuery, getProductsFromIds, fetchByCollectionTitle } from '@wpshopify/api'
+
+import { PaginationContext } from '../_state/context'
+import to from 'await-to-js'
 
 function PaginationNext() {
-   const { filtersState, filtersDispatch } = useContext(FiltersContext)
+   const { paginationState, paginationDispatch } = useContext(PaginationContext)
 
    async function onNextPage() {
+      const collectionTitle = await fetchByCollectionTitle()
+      console.log('collectionTitle', collectionTitle)
+
+      console.log('paginationState.payload', paginationState.payload)
+
+      const firstFive = await queryProducts({
+         first: 5
+      })
+
+      console.log('firstFive', firstFive)
+
+      let firstFiveNext = await fetchNextPage(firstFive)
+      console.log('firstFiveNext', firstFiveNext)
+
+      let payloadNext = await fetchNextPage(paginationState.payload)
+      console.log('payloadNext', payloadNext)
+
       try {
-         filtersDispatch({ type: 'SET_IS_LOADING', payload: true })
+         paginationDispatch({ type: 'SET_IS_LOADING', payload: true })
 
-         var newProducts = await fetchNextPage(filtersState.payload)
+         let newItems = await fetchNextPage(paginationState.payload)
 
-         console.log('newProducts', newProducts)
+         console.log('newItems', newItems)
 
-         // setpayload(filtersState.payload.concat(newProducts.model))
-         filtersDispatch({ type: 'SET_PAYLOAD', payload: filtersState.payload.concat(newProducts.model) })
+         // setpayload(paginationState.payload.concat(newItems.model))
+         paginationDispatch({ type: 'SET_PAYLOAD', payload: paginationState.componentItems.concat(newItems.model) })
 
          // setIsLoading(false)
-         filtersDispatch({ type: 'SET_IS_LOADING', payload: false })
+         paginationDispatch({ type: 'SET_IS_LOADING', payload: false })
       } catch (err) {
-         console.log('newProducts ERR', err)
+         console.log('newItems ERR', err)
       }
    }
 
    return (
-      <button type='button' disabled={filtersState.isLoading} className='wps-button wps-btn-next-page' onClick={onNextPage}>
-         {filtersState.isLoading ? 'Loading ...' : 'Load more'}
+      <button type='button' disabled={paginationState.isLoading} className='wps-button wps-btn-next-page' onClick={onNextPage}>
+         {paginationState.isLoading ? 'Loading ...' : 'Load more'}
       </button>
    )
 }

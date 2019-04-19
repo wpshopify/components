@@ -54,7 +54,7 @@ function SearchDropzone() {
    return (
       showData && (
          <Dropzone dropzone={searchState.componentOptions.dropzone}>
-            <Products options={buildOptions(searchState.searchData)} isLoading={searchState.isLoading} />
+            <Products options={buildOptions(searchState.searchData)} />
          </Dropzone>
       )
    )

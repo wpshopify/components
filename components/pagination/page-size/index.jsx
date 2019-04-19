@@ -1,16 +1,17 @@
 import React, { useContext } from 'react'
-import { FiltersContext } from '../../_state/context'
+import { PaginationContext } from '../_state/context'
 
 function PaginationPageSize() {
-   const { filtersState, filtersDispatch } = useContext(FiltersContext)
+   const { paginationState, paginationDispatch } = useContext(PaginationContext)
 
-   function updateFetchParams(event) {
+   function updateQueryParams(event) {
       return {
          first: parseInt(event.target.value)
       }
    }
+
    function onChange(event) {
-      filtersDispatch({ type: 'SET_FILTER_PARAMS', payload: updateFetchParams(event) })
+      paginationDispatch({ type: 'SET_QUERY_PARAMS', payload: updateQueryParams(event) })
    }
 
    return (
@@ -19,7 +20,7 @@ function PaginationPageSize() {
             Page size:
          </label>
 
-         <select value={filtersState.filterParams.first} id='wps-sorting' onChange={e => onChange(e)}>
+         <select value={paginationState.queryParams.first} id='wps-sorting' onChange={e => onChange(e)}>
             <option value='10'>10</option>
             <option value='25'>25</option>
             <option value='50' data-wps-reverse>
