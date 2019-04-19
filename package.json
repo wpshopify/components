@@ -22,7 +22,7 @@
       "woocommerce"
    ],
    "dependencies": {
-      "@wpshopify/api": "^0.1.6",
+      "@wpshopify/api": "^0.1.7",
       "accounting": "^0.4.1",
       "animejs": "^3.0.1",
       "await-to-js": "^2.1.1",
