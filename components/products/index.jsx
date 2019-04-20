@@ -40,7 +40,7 @@ function Products({ options }) {
 
    return usePortal(
       <>
-         {isEmpty(productsState.payload) ? (
+         {isEmpty(productsState.payload.model.products) ? (
             <span className='wps-notice wps-notice-inline wps-notice-warning'>{options.noResultsText}</span>
          ) : (
             <ProductsContext.Provider
@@ -49,7 +49,7 @@ function Products({ options }) {
                   productsDispatch: productsDispatch
                }}>
                <section className={'wps-items-' + productsState.type} data-wps-test={productsState.isLoading}>
-                  {productsState.payload.map(productPayload => (
+                  {productsState.payload.model.products.map(productPayload => (
                      <Product key={uuidv4()} payload={productPayload} />
                   ))}
                </section>
