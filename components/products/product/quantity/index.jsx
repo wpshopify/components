@@ -1,15 +1,18 @@
 import React, { useContext } from 'react'
 import { ProductBuyButtonContext } from '../buy-button/context'
 import { ShopContext } from '../../../shop/context'
+import { ProductsContext } from '../../../products/_state/context'
 
 function ProductQuantity() {
    const { buyButtonState, buyButtonDispatch } = useContext(ProductBuyButtonContext)
    const { shopState } = useContext(ShopContext)
+   const { productsState } = useContext(ProductsContext)
+   console.log('<ProductQuantity /> - productsState', productsState)
 
-   const minQuantity = buyButtonState.componentOptions.minQuantity
-   const maxQuantity = buyButtonState.componentOptions.maxQuantity
-   const showQuantityLabel = buyButtonState.componentOptions.showQuantityLabel
-   const quantityLabel = buyButtonState.componentOptions.quantityLabelText
+   const minQuantity = productsState.componentOptions.minQuantity
+   const maxQuantity = productsState.componentOptions.maxQuantity
+   const showQuantityLabel = productsState.componentOptions.showQuantityLabel
+   const quantityLabel = productsState.componentOptions.quantityLabelText
 
    function handleQuantityChange(e) {
       buyButtonDispatch({ type: 'UPDATE_QUANTITY', payload: Number(e.target.value) })

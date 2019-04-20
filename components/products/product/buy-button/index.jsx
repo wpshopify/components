@@ -7,10 +7,12 @@ import { ProductNoticeOutOfStock } from '../notice/out-of-stock'
 import { ProductBuyButtonReducer } from './reducer'
 import { getProductBuyButtonInitialState } from './initial-state'
 import { ProductBuyButtonContext } from './context'
-import { ProductContext } from '../context'
+import { ProductContext } from '../_state/context'
+import { ProductsContext } from '../../_state/context'
 import { usePortal } from '../../../../common/hooks'
 
 function ProductBuyButton(props) {
+   const { productsState } = useContext(ProductsContext)
    const { productState } = useContext(ProductContext)
    const [state, dispatch] = useReducer(ProductBuyButtonReducer, getProductBuyButtonInitialState(productState, props))
 
@@ -22,9 +24,9 @@ function ProductBuyButton(props) {
                   buyButtonState: state,
                   buyButtonDispatch: dispatch
                }}>
-               {productState.product.availableForSale ? (
+               {productState.payload.availableForSale ? (
                   <>
-                     {!state.componentOptions.hideQuantity ? <ProductQuantity /> : ''}
+                     {!productsState.componentOptions.hideQuantity ? <ProductQuantity /> : ''}
                      <ProductOptions />
                      <ProductAddButton />
                   </>

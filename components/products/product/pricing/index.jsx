@@ -1,31 +1,34 @@
 import React, { useContext, useEffect, useState } from 'react'
 import { getPrices } from '../../../../common/pricing/data'
-import { ProductContext } from '../context'
+import { ProductContext } from '../_state/context'
+import { ProductsContext } from '../../_state/context'
+
 import { ProductPrice } from './price'
 import { usePortal } from '../../../../common/hooks'
 
-function isShowingCompareAt(state) {
-   return state.componentOptions.showingCompareAt
-}
-
-function isShowingRange(state) {
-   return state.componentOptions.showingPriceRange
-}
-
 function ProductPricing() {
+   const { productsState } = useContext(ProductsContext)
    const { productState } = useContext(ProductContext)
    const [prices, setPrices] = useState([])
    const [showingRange, setShowingRange] = useState(isShowingRange(productState))
    const [showingCompareAt, setShowingCompareAt] = useState(isShowingCompareAt(productState))
 
-   useEffect(() => {
-      setShowingRange(isShowingRange(productState))
-      setShowingCompareAt(isShowingCompareAt(productState))
+   function isShowingCompareAt() {
+      return productsState.componentOptions.showingCompareAt
+   }
 
-      if (isShowingRange(productState)) {
-         setPrices(getPrices(productState.product, 'asc'))
+   function isShowingRange() {
+      return productsState.componentOptions.showingPriceRange
+   }
+
+   useEffect(() => {
+      setShowingRange(isShowingRange())
+      setShowingCompareAt(isShowingCompareAt())
+
+      if (isShowingRange()) {
+         setPrices(getPrices(productState.payload, 'asc'))
       } else {
-         setPrices(getPrices(productState.product))
+         setPrices(getPrices(productState.payload))
       }
    }, [])
 

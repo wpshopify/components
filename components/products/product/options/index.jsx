@@ -1,7 +1,7 @@
 import React, { useContext, useState, useEffect, useRef } from 'react'
 import { ProductOption } from '../option'
 import { ProductBuyButtonContext } from '../buy-button/context'
-import { ProductContext } from '../context'
+import { ProductContext } from '../_state/context'
 import size from 'lodash/size'
 import groupBy from 'lodash/groupBy'
 import map from 'lodash/map'
@@ -12,7 +12,9 @@ function allOptionsSelectedMatch(onlySelectedOptions, product) {
 }
 
 function onlyAvailableVariants(variants) {
-   return variants.filter(variant => variant.available)
+   console.log('variants', variants)
+
+   return variants.filter(variant => variant.availableForSale)
 }
 
 function onlyAvailableVariantsOptions(onlyAvailableVariants) {
@@ -48,6 +50,8 @@ function ProductOptions() {
    const { productDispatch } = useContext(ProductContext)
    const { buyButtonState, buyButtonDispatch } = useContext(ProductBuyButtonContext)
    const options = onlyAvailableOptionsFromVariants(buyButtonState.product.variants)
+
+   console.log('buyButtonState options ::::::::::::', options)
 
    useEffect(() => {
       if (isFirstRender.current) {

@@ -1,6 +1,6 @@
 import React, { useContext } from 'react'
 import { ShopContext } from '../../../shop/context'
-import { ProductContext } from '../context'
+import { ProductContext } from '../_state/context'
 import { usePortal } from '../../../../common/hooks'
 
 function ProductTitle() {
@@ -10,7 +10,7 @@ function ProductTitle() {
    return usePortal(
       <div className='wps-component wps-component-products-title' data-wps-component-order='0'>
          <h2 itemProp='name' className='wps-products-title' data-wps-is-ready={shopState.isShopReady ? '1' : '0'}>
-            {productState.product.title}
+            {productState.payload.title}
          </h2>
       </div>,
       productState.element

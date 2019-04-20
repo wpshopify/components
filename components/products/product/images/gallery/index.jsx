@@ -1,5 +1,6 @@
 import React, { useContext, useEffect, useReducer } from 'react'
-import { ProductContext } from '../../context'
+import { ProductContext } from '../../_state/context'
+import { ProductsContext } from '../../../_state/context'
 import { ProductThumbnailImages } from '../thumbnails'
 import { ProductFeaturedImage } from '../featured'
 import { ProductGalleryContext } from './context'
@@ -7,11 +8,17 @@ import { getProductGalleryInitialState } from './initial-state'
 import { ProductGalleryReducer } from './reducer'
 
 function ProductGallery() {
+   const { productsState } = useContext(ProductsContext)
    const { productState } = useContext(ProductContext)
    const [galleryState, galleryDispatch] = useReducer(ProductGalleryReducer, getProductGalleryInitialState())
 
    function hasManyImages() {
-      return productState.product.images.length >= 2
+      if (!productState) {
+         return false
+      }
+      console.log('productState', productState.payload)
+
+      return productState.payload.images.length >= 2
    }
 
    function getFeaturedImageFromProduct(product) {
@@ -19,13 +26,15 @@ function ProductGallery() {
    }
 
    function isFeaturedOnly() {
-      return productState.componentOptions.showFeaturedOnly
+      console.log('productState isFeaturedOnly', productState)
+
+      return productsState.componentOptions.showFeaturedOnly
    }
 
    useEffect(() => {
       galleryDispatch({
          type: 'SET_FEAT_IMAGE',
-         payload: getFeaturedImageFromProduct(productState.product)
+         payload: getFeaturedImageFromProduct(productState.payload)
       })
    }, [])
 

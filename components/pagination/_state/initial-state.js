@@ -1,7 +1,8 @@
 function getPaginationInitialState(options) {
    return {
-      componentItems: options.componentItems,
+      componentOptions: options.componentOptions,
       payload: options.payload,
+      fullPayload: options.fullPayload,
       isLoading: false,
       hasResults: false,
       queryParams: {

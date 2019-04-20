@@ -8,38 +8,44 @@ function PaginationNext() {
    const { paginationState, paginationDispatch } = useContext(PaginationContext)
 
    async function onNextPage() {
-      const collectionTitle = await fetchByCollectionTitle()
-      console.log('collectionTitle', collectionTitle)
+      // const collectionTitle = await fetchByCollectionTitle()
+      // console.log('collectionTitle', collectionTitle)
 
-      console.log('paginationState.payload', paginationState.payload)
+      // console.log('paginationState.payload', paginationState.payload)
 
-      const firstFive = await queryProducts({
-         first: 5
-      })
+      // const firstFive = await queryProducts({
+      //    first: 5
+      // })
 
-      console.log('firstFive', firstFive)
-
-      let firstFiveNext = await fetchNextPage(firstFive)
-      console.log('firstFiveNext', firstFiveNext)
-
-      let payloadNext = await fetchNextPage(paginationState.payload)
-      console.log('payloadNext', payloadNext)
+      // console.log('firstFive', firstFive)
 
       try {
-         paginationDispatch({ type: 'SET_IS_LOADING', payload: true })
+         console.log('paginationState.payload', paginationState.payload)
 
-         let newItems = await fetchNextPage(paginationState.payload)
-
-         console.log('newItems', newItems)
-
-         // setpayload(paginationState.payload.concat(newItems.model))
-         paginationDispatch({ type: 'SET_PAYLOAD', payload: paginationState.componentItems.concat(newItems.model) })
-
-         // setIsLoading(false)
-         paginationDispatch({ type: 'SET_IS_LOADING', payload: false })
-      } catch (err) {
-         console.log('newItems ERR', err)
+         let firstFiveNext = await fetchNextPage(paginationState.payload)
+         console.log('FETCHED!!!!!!!!!!!!!!!!', firstFiveNext)
+      } catch (error) {
+         console.log('FETCHED ERRRRRRRRRRR!!!!!!!!!!!!!!!!', error)
       }
+
+      // let payloadNext = await fetchNextPage(paginationState.payload)
+      // console.log('payloadNext', payloadNext)
+
+      // try {
+      //    paginationDispatch({ type: 'SET_IS_LOADING', payload: true })
+
+      //    let newItems = await fetchNextPage(paginationState.payload)
+
+      //    console.log('newItems', newItems)
+
+      //    // setpayload(paginationState.payload.concat(newItems.model))
+      //    paginationDispatch({ type: 'SET_PAYLOAD', payload: paginationState.componentItems.concat(newItems.model) })
+
+      //    // setIsLoading(false)
+      //    paginationDispatch({ type: 'SET_IS_LOADING', payload: false })
+      // } catch (err) {
+      //    console.log('newItems ERR', err)
+      // }
    }
 
    return (

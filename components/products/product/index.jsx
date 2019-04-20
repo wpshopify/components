@@ -5,25 +5,31 @@ import { ProductPricing } from './pricing'
 import { ProductDescription } from './description'
 import { ProductBuyButton } from './buy-button'
 import { ProductImages } from './images'
-import { ProductReducer } from './reducer'
-import { ProductContext } from './context'
-import { getProductInitialState } from './initial-state'
+import { ProductReducer } from './_state/reducer'
+import { ProductContext } from './_state/context'
+import { getProductInitialState } from './_state/initial-state'
 
-function Product({ options }) {
-   const [state, dispatch] = useReducer(ProductReducer, getProductInitialState(options))
-   console.log('product')
+import { ProductsContext } from '../_state/context'
+
+function Product({ payload }) {
+   const { productsState } = useContext(ProductsContext)
+
+   const [state, dispatch] = useReducer(ProductReducer, getProductInitialState(payload))
+
+   console.log('<Product /> productsState ', productsState)
+
    const isShowing = type => {
-      if (!state.excludes) {
+      if (!productsState.componentOptions.excludes) {
          console.log('NOT exlucding')
 
          return true
       }
 
-      return !state.excludes.includes(type)
+      return !productsState.componentOptions.excludes.includes(type)
    }
 
    return (
-      <div className='wps-product'>
+      <div className='wps-item'>
          <ProductContext.Provider
             value={{
                productState: state,

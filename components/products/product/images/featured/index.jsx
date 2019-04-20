@@ -1,5 +1,7 @@
 import React, { useContext, useEffect, useState, useRef } from 'react'
-import { ProductContext } from '../../context'
+import { ProductContext } from '../../_state/context'
+import { ProductsContext } from '../../../_state/context'
+
 import { ShopContext } from '../../../../shop/context'
 
 import { ProductGalleryContext } from '../gallery/context'
@@ -23,6 +25,8 @@ function destroyDrift(drift) {
 function ProductFeaturedImage() {
    const paneElement = useRef()
    const isFirstRender = useRef(true)
+
+   const { productsState } = useContext(ProductsContext)
    const { productState } = useContext(ProductContext)
    const { shopState } = useContext(ShopContext)
 
@@ -39,7 +43,7 @@ function ProductFeaturedImage() {
    }
 
    function showZoom() {
-      return productState.componentOptions.showZoom
+      return productsState.componentOptions.showZoom
    }
 
    function hasFeatImage() {

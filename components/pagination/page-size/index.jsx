@@ -3,6 +3,7 @@ import { PaginationContext } from '../_state/context'
 
 function PaginationPageSize() {
    const { paginationState, paginationDispatch } = useContext(PaginationContext)
+   console.log('paginationState ...........', paginationState)
 
    function updateQueryParams(event) {
       return {

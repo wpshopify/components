@@ -1,6 +1,6 @@
 import React, { useContext } from 'react'
 import { ShopContext } from '../../../shop/context'
-import { ProductContext } from '../context'
+import { ProductContext } from '../_state/context'
 import { usePortal } from '../../../../common/hooks'
 
 function ProductDescription() {
@@ -8,12 +8,12 @@ function ProductDescription() {
    const { productState } = useContext(ProductContext)
 
    return usePortal(
-      <div itemProp='description' className='wps-products-description' data-wps-is-ready={shopState.isShopReady ? '1' : '0'} dangerouslySetInnerHTML={{ __html: productState.product.descriptionHtml }}>
+      <div itemProp='description' className='wps-products-description' data-wps-is-ready={shopState.isShopReady ? '1' : '0'} dangerouslySetInnerHTML={{ __html: productState.payload.descriptionHtml }}>
          {/* <p>
-            Created: {new Date(productState.product.createdAt).toDateString()} at {new Date(productState.product.createdAt).toLocaleTimeString('en-US')}
+            Created: {new Date(productState.payload.createdAt).toDateString()} at {new Date(productState.payload.createdAt).toLocaleTimeString('en-US')}
          </p>
          <p>
-            Updated: {new Date(productState.product.updatedAt).toDateString()} at {new Date(productState.product.updatedAt).toLocaleTimeString('en-US')}
+            Updated: {new Date(productState.payload.updatedAt).toDateString()} at {new Date(productState.payload.updatedAt).toLocaleTimeString('en-US')}
          </p> */}
       </div>,
       productState.element

@@ -1,7 +1,7 @@
 import React, { useContext, useEffect, useState, useRef } from 'react'
 import { ProductImage } from '../image'
 import { ProductGalleryContext } from '../gallery/context'
-import { ProductContext } from '../../context'
+import { ProductContext } from '../../_state/context'
 import { ShopContext } from '../../../../shop/context'
 
 function ProductThumbnailImage({ image }) {

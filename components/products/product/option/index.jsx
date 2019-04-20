@@ -6,6 +6,7 @@ import { ProductBuyButtonContext } from '../buy-button/context'
 import { useAnime, pulse } from '../../../../common/animations'
 import { useOnClickOutside } from '../../../../common/hooks'
 import { ShopContext } from '../../../shop/context'
+import { ProductsContext } from '../../../products/_state/context'
 
 const ProductOptionContext = React.createContext()
 
@@ -19,10 +20,11 @@ function ProductOption({ option }) {
    const animePulse = useAnime(pulse)
 
    const { shopState } = useContext(ShopContext)
+   const { productsState } = useContext(ProductsContext)
    const { buyButtonState, buyButtonDispatch } = useContext(ProductBuyButtonContext)
 
    const buttonStyle = {
-      backgroundColor: buyButtonState.componentOptions.variantColor
+      backgroundColor: productsState.componentOptions.variantColor
    }
 
    function getOptionName(selectedOption, option) {

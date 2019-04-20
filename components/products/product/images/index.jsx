@@ -1,7 +1,7 @@
 import React, { useContext, useEffect, useState, useRef } from 'react'
 import { ProductFeaturedImage } from './featured'
 import { ProductGallery } from './gallery'
-import { ProductContext } from '../context'
+import { ProductContext } from '../_state/context'
 import { usePortal } from '../../../../common/hooks'
 
 function ProductImages() {

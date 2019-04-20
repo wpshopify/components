@@ -1,6 +1,8 @@
 import React, { useContext, useRef, useEffect, useState } from 'react'
 import { ProductBuyButtonContext } from '../buy-button/context'
 import { ShopContext } from '../../../shop/context'
+import { ProductsContext } from '../../../products/_state/context'
+
 import { useAnime, pulse } from '../../../../common/animations'
 import { addProductDetailsToVariant } from '../../../../common/products'
 import { findVariantFromSelectedOptions } from '@wpshopify/api'
@@ -10,10 +12,11 @@ function ProductAddButton() {
    const isFirstRender = useRef(false)
    const animePulse = useAnime(pulse)
 
+   const { productsState } = useContext(ProductsContext)
    const { buyButtonState, buyButtonDispatch } = useContext(ProductBuyButtonContext)
    const { shopState, shopDispatch } = useContext(ShopContext)
    const buttonStyle = {
-      backgroundColor: buyButtonState.componentOptions.buttonColor
+      backgroundColor: productsState.componentOptions.buttonColor
    }
 
    async function handleClick() {
@@ -77,7 +80,7 @@ function ProductAddButton() {
             disabled={buyButtonState.isAdding ? true : false}
             onClick={handleClick}
             style={buttonStyle}>
-            {buyButtonState.isAdding ? 'Adding ...' : buyButtonState.componentOptions.buttonText ? buyButtonState.componentOptions.buttonText : 'Add to cart'}
+            {buyButtonState.isAdding ? 'Adding ...' : productsState.componentOptions.buttonText ? productsState.componentOptions.buttonText : 'Add to cart'}
          </button>
       </div>
    )

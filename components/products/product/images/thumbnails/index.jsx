@@ -1,14 +1,17 @@
 import React, { useContext, useEffect, useState, useRef } from 'react'
 import { ProductThumbnailImage } from '../thumbnail'
-import { ProductContext } from '../../context'
+import { ProductContext } from '../../_state/context'
+import uuidv4 from 'uuid/v4'
 
 function ProductThumbnailImages() {
    const { productState } = useContext(ProductContext)
 
+   console.log('productState', productState)
+
    return (
       <div className='wps-thumbnails-wrapper'>
-         {productState.product.images.map(image => (
-            <ProductThumbnailImage key={image.id} image={image} />
+         {productState.payload.images.map(image => (
+            <ProductThumbnailImage key={uuidv4()} image={image} />
          ))}
       </div>
    )

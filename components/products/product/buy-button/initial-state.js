@@ -16,6 +16,8 @@ function defaultComponentOptions() {
 }
 
 function getProductBuyButtonInitialState(productState = false, props = false) {
+   console.log('getProductBuyButtonInitialState ... productState', productState)
+
    return {
       selectedOptions: {},
       availableVariants: [],
@@ -23,8 +25,7 @@ function getProductBuyButtonInitialState(productState = false, props = false) {
       missingSelections: false,
       isAdding: false,
       quantity: 1,
-      product: productState.product ? productState.product : false,
-      componentOptions: productState.componentOptions ? productState.componentOptions : defaultComponentOptions()
+      product: productState.payload ? productState.payload : false
    }
 }
 
