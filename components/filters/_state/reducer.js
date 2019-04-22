@@ -56,8 +56,6 @@ function FiltersReducer(state, action) {
       }
 
       case 'SET_FILTER_PARAMS': {
-         console.log('SET_FILTER_PARAMS action.payload', action.payload)
-
          return {
             ...state,
             filterParams: update(state.filterParams, { $merge: action.payload })

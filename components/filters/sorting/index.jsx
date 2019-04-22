@@ -22,15 +22,12 @@ function FilterSorting() {
       if (hasReverse(event.target)) {
          reverse = true
       }
-      console.log('reverse ....................................', reverse)
 
       let sortKey = event.target.value
-      console.log('sortKey b', sortKey)
+
       if (sortKey.includes('-REVERSE')) {
          sortKey = sortKey.replace('-REVERSE', '')
       }
-
-      console.log('sortKey a', sortKey)
 
       return {
          reverse: reverse,

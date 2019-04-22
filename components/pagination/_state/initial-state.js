@@ -2,15 +2,13 @@ function getPaginationInitialState(options) {
    return {
       componentOptions: options.componentOptions,
       payload: options.payload,
-      fullPayload: options.fullPayload,
+      lastPayload: [],
       isLoading: false,
+      isFirstLoad: true,
       hasResults: false,
-      queryParams: {
-         query: '*',
-         first: 10,
-         sortKey: 'TITLE',
-         reverse: false
-      }
+      hasMoreItems: true,
+      lastCursorId: options.lastCursorId,
+      queryParams: options.queryParams
    }
 }
 

@@ -6,8 +6,6 @@ import uuidv4 from 'uuid/v4'
 function ProductThumbnailImages() {
    const { productState } = useContext(ProductContext)
 
-   console.log('productState', productState)
-
    return (
       <div className='wps-thumbnails-wrapper'>
          {productState.payload.images.map(image => (

@@ -48,6 +48,9 @@ function CartLineItem({ lineItem, index }) {
    useEffect(() => {
       let lineItemFoumd = getLineItemFromState(lineItem, shopState.checkoutCache.lineItems)
 
+      console.log('lineItem', lineItem)
+      console.log('getLineItemFromState', lineItemFoumd)
+
       variantId.current = lineItemFoumd.variantId
 
       setLineItemQuantity(lineItemFoumd.quantity)
@@ -62,20 +65,9 @@ function CartLineItem({ lineItem, index }) {
    }, [cartState.cartOpen])
 
    return (
-      <div
-         className='wps-cart-lineitem row'
-         data-wps-is-updating={isUpdating}
-         data-wps-is-available={lineItem.available}
-         ref={lineItemElement}>
-         <a
-            href='https://demo.wpshop.io/products/aerodynamic-aluminum-bench/'
-            className='wps-cart-lineitem-img-link'
-            target='_blank'>
-            <div
-               className='wps-cart-lineitem-img'
-               style={{ backgroundImage: `url(${lineItem.image.src})` }}
-               data-wps-is-ready={shopState.isShopReady}
-            />
+      <div className='wps-cart-lineitem row' data-wps-is-updating={isUpdating} data-wps-is-available={lineItem.availableForSale} ref={lineItemElement}>
+         <a href='https://demo.wpshop.io/products/aerodynamic-aluminum-bench/' className='wps-cart-lineitem-img-link' target='_blank'>
+            <div className='wps-cart-lineitem-img' style={{ backgroundImage: `url(${lineItem.image.src})` }} data-wps-is-ready={shopState.isShopReady} />
          </a>
 
          <div className='wps-cart-lineitem-content'>
@@ -92,7 +84,7 @@ function CartLineItem({ lineItem, index }) {
                </div>
             </div>
 
-            {!lineItem.available ? (
+            {!lineItem.availableForSale ? (
                <ProductNotice type='warning'>
                   {' '}
                   <ProductNoticeOutOfStock />{' '}
@@ -110,10 +102,7 @@ function CartLineItem({ lineItem, index }) {
                      lineItemTotalElement={lineItemTotalElement}
                   />
 
-                  <div
-                     className='wps-cart-lineitem-price wps-cart-lineitem-price-total'
-                     data-wps-is-ready={shopState.isShopReady}
-                     ref={lineItemTotalElement}>
+                  <div className='wps-cart-lineitem-price wps-cart-lineitem-price-total' data-wps-is-ready={shopState.isShopReady} ref={lineItemTotalElement}>
                      {maybeformatPriceToCurrency(lineItemTotal)}
                   </div>
                </div>

@@ -7,7 +7,6 @@ function ProductQuantity() {
    const { buyButtonState, buyButtonDispatch } = useContext(ProductBuyButtonContext)
    const { shopState } = useContext(ShopContext)
    const { productsState } = useContext(ProductsContext)
-   console.log('<ProductQuantity /> - productsState', productsState)
 
    const minQuantity = productsState.componentOptions.minQuantity
    const maxQuantity = productsState.componentOptions.maxQuantity

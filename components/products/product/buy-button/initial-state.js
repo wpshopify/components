@@ -16,8 +16,6 @@ function defaultComponentOptions() {
 }
 
 function getProductBuyButtonInitialState(productState = false, props = false) {
-   console.log('getProductBuyButtonInitialState ... productState', productState)
-
    return {
       selectedOptions: {},
       availableVariants: [],

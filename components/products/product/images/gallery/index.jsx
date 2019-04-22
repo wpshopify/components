@@ -16,7 +16,6 @@ function ProductGallery() {
       if (!productState) {
          return false
       }
-      console.log('productState', productState.payload)
 
       return productState.payload.images.length >= 2
    }
@@ -26,8 +25,6 @@ function ProductGallery() {
    }
 
    function isFeaturedOnly() {
-      console.log('productState isFeaturedOnly', productState)
-
       return productsState.componentOptions.showFeaturedOnly
    }
 

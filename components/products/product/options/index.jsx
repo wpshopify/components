@@ -12,8 +12,6 @@ function allOptionsSelectedMatch(onlySelectedOptions, product) {
 }
 
 function onlyAvailableVariants(variants) {
-   console.log('variants', variants)
-
    return variants.filter(variant => variant.availableForSale)
 }
 
@@ -50,8 +48,6 @@ function ProductOptions() {
    const { productDispatch } = useContext(ProductContext)
    const { buyButtonState, buyButtonDispatch } = useContext(ProductBuyButtonContext)
    const options = onlyAvailableOptionsFromVariants(buyButtonState.product.variants)
-
-   console.log('buyButtonState options ::::::::::::', options)
 
    useEffect(() => {
       if (isFirstRender.current) {

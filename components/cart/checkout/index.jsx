@@ -4,9 +4,7 @@ import { ShopContext } from '../../shop/context'
 function CartCheckout() {
    const { shopState } = useContext(ShopContext)
 
-   function handleCheckout() {
-      console.log('Clicked checkout button')
-   }
+   function handleCheckout() {}
 
    return (
       <>

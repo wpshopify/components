@@ -1,9 +1,9 @@
 import React, { useContext } from 'react'
 import { PaginationContext } from '../_state/context'
+import { usePortal } from '../../../common/hooks'
 
 function PaginationPageSize() {
    const { paginationState, paginationDispatch } = useContext(PaginationContext)
-   console.log('paginationState ...........', paginationState)
 
    function updateQueryParams(event) {
       return {
@@ -12,16 +12,20 @@ function PaginationPageSize() {
    }
 
    function onChange(event) {
-      paginationDispatch({ type: 'SET_QUERY_PARAMS', payload: updateQueryParams(event) })
+      const newParams = updateQueryParams(event)
+
+      console.log('newParams', newParams)
+
+      paginationDispatch({ type: 'SET_QUERY_PARAMS', payload: newParams })
    }
 
-   return (
+   return usePortal(
       <div className='wps-component wps-component-sorting'>
          <label className='wps-sorting-heading' htmlFor='wps-sorting'>
             Page size:
          </label>
 
-         <select value={paginationState.queryParams.first} id='wps-sorting' onChange={e => onChange(e)}>
+         <select className='wps-input' value={paginationState.queryParams.first} id='wps-sorting' onChange={e => onChange(e)} disabled={paginationState.isLoading}>
             <option value='10'>10</option>
             <option value='25'>25</option>
             <option value='50' data-wps-reverse>
@@ -32,7 +36,8 @@ function PaginationPageSize() {
                250
             </option>
          </select>
-      </div>
+      </div>,
+      document.querySelector(paginationState.componentOptions.dropzonePageSize)
    )
 }
 
