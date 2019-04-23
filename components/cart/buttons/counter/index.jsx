@@ -1,5 +1,5 @@
 import React, { useContext, useState, useEffect } from 'react'
-import { ShopContext } from '../../../shop/context'
+import { ShopContext } from '../../../shop/_state/context'
 import { CartButtonContext } from '../button/context'
 
 function findTotalCartQuantities(lineItems) {
@@ -21,7 +21,7 @@ function counterStyles(cartButtonState) {
 }
 
 function CartCounter() {
-   const { shopState } = useContext(ShopContext)
+   const [shopState] = useContext(ShopContext)
    const [totalItems, setTotalItems] = useState(findTotalCartQuantities(shopState.checkoutCache.lineItems))
    const { cartButtonState } = useContext(CartButtonContext)
 

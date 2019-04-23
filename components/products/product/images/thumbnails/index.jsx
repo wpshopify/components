@@ -1,10 +1,10 @@
-import React, { useContext, useEffect, useState, useRef } from 'react'
+import React, { useContext } from 'react'
 import { ProductThumbnailImage } from '../thumbnail'
 import { ProductContext } from '../../_state/context'
 import uuidv4 from 'uuid/v4'
 
 function ProductThumbnailImages() {
-   const { productState } = useContext(ProductContext)
+   const [productState] = useContext(ProductContext)
 
    return (
       <div className='wps-thumbnails-wrapper'>

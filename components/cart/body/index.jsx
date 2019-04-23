@@ -7,7 +7,7 @@ import { CartContents } from '../contents'
 import { CartFooter } from '../footer'
 
 import { CartContext } from '../context'
-import { ShopContext } from '../../shop/context'
+import { ShopContext } from '../../shop/_state/context'
 
 import { useAnime, slideInRight, slideOutRight } from '../../../common/animations'
 
@@ -19,7 +19,7 @@ function CartBody() {
    const animeSlideOutRight = useAnime(slideOutRight)
 
    const { cartState, cartDispatch } = useContext(CartContext)
-   const { shopState, shopDispatch } = useContext(ShopContext)
+   const [shopState, shopDispatch] = useContext(ShopContext)
 
    function isCartOpen(cartState) {
       return cartState.cartOpen === true

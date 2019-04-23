@@ -1,17 +1,10 @@
-import React, { useReducer } from 'react'
+import React, { useReducer, useEffect, useRef, useState, useContext } from 'react'
 import { Product } from './product'
 import isEmpty from 'lodash/isEmpty'
 import uuidv4 from 'uuid/v4'
-import { usePortal } from '../../common/hooks'
-import { Pagination } from '../pagination'
-import { PaginationContext } from '../pagination/_state/context'
-import { PaginationReducer } from '../pagination/_state/reducer'
-import { getPaginationInitialState } from '../pagination/_state/initial-state'
 
-import { ProductsContext } from './_state/context'
-import { ProductsReducer } from './_state/reducer'
-import { getProductsInitialState } from './_state/initial-state'
-import hash from 'object-hash'
+import { ProductsProvider } from './_state/provider'
+import { PaginationItemsContext } from '../pagination/items/_state/context'
 
 /*
 
@@ -19,37 +12,37 @@ Props has the same shape as productsDefaultProps
 
 */
 function Products({ options }) {
-   const [productsState, productsDispatch] = useReducer(ProductsReducer, getProductsInitialState(options))
-   const [paginationState, paginationDispatch] = useReducer(PaginationReducer, getPaginationInitialState(options))
+   console.log('<Products>')
 
-   return usePortal(
+   const [paginationItemsState] = useContext(PaginationItemsContext)
+   const isFirstRender = useRef(true)
+
+   useEffect(
+      function() {
+         if (isFirstRender.current) {
+            isFirstRender.current = false
+            return
+         }
+
+         console.log('PAGINATION PAYLOAD IS LOADING UPDATED')
+
+         // productsDispatch({ type: 'UPDATE_PAYLOAD', payload: paginationItemsState.payload })
+      },
+      [paginationItemsState.isLoading]
+   )
+
+   return (
       <>
-         {console.log('<Products /> ........... RENDERING')}
-         {isEmpty(productsState.payload) ? (
+         {isEmpty(paginationItemsState.payload) ? (
             <span className='wps-notice wps-notice-inline wps-notice-warning'>{options.noResultsText}</span>
          ) : (
-            <ProductsContext.Provider
-               value={{
-                  productsState: productsState,
-                  productsDispatch: productsDispatch
-               }}>
-               <section className={'wps-items wps-items-' + productsState.type} data-item-is-loading={productsState.isLoading}>
-                  {productsState.payload.map(productPayload => (
-                     <Product key={uuidv4()} payload={productPayload} />
-                  ))}
-               </section>
-
-               <PaginationContext.Provider
-                  value={{
-                     paginationState: paginationState,
-                     paginationDispatch: paginationDispatch
-                  }}>
-                  <Pagination />
-               </PaginationContext.Provider>
-            </ProductsContext.Provider>
+            <ProductsProvider options={options}>
+               {paginationItemsState.payload.map(productPayload => (
+                  <Product key={uuidv4()} payload={productPayload} />
+               ))}
+            </ProductsProvider>
          )}
-      </>,
-      productsState.element
+      </>
    )
 }
 

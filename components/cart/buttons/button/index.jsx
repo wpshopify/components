@@ -1,6 +1,6 @@
 import React, { useContext, useRef, useEffect, useReducer } from 'react'
 import ReactDOM from 'react-dom'
-import { ShopContext } from '../../../shop/context'
+import { ShopContext } from '../../../shop/_state/context'
 import { CartCounter } from '../counter'
 import { CartIcon } from '../icon'
 import { CartContext } from '../../context'
@@ -12,7 +12,7 @@ import { CartButtonContext } from './context'
 import { getCartButtonInitialState } from './initial-state'
 
 function CartButton({ options }) {
-   const { shopState } = useContext(ShopContext)
+   const [shopState] = useContext(ShopContext)
    const { cartState, cartDispatch } = useContext(CartContext)
    const counterElement = useRef()
    const animeSlideInRight = useAnime(slideInRight)
@@ -39,7 +39,12 @@ function CartButton({ options }) {
                cartButtonState: state,
                cartButtonDispatch: dispatch
             }}>
-            <button role='button' ref={counterElement} className={`wps-btn-cart wps-cart-icon-${state.componentOptions.type}`} onClick={toggleCart} data-wps-is-ready={shopState.isShopReady ? '1' : '0'}>
+            <button
+               role='button'
+               ref={counterElement}
+               className={`wps-btn-cart wps-cart-icon-${state.componentOptions.type}`}
+               onClick={toggleCart}
+               data-wps-is-ready={shopState.isShopReady ? '1' : '0'}>
                <CartCounter />
                <CartIcon />
             </button>

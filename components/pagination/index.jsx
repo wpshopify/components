@@ -1,13 +1,23 @@
-import React from 'react'
-import { PaginationLoadMore } from './load-more'
-import { PaginationPageSize } from './page-size'
+import React, { useContext } from 'react'
+import { PaginationControls } from './controls'
+import { usePortal } from '../../common/hooks'
+import { PaginationItems } from './items'
+import { PaginationProvider } from './_state/provider'
+import { PaginationItemsProvider } from './items/_state/provider'
 
-function Pagination() {
-   return (
-      <>
-         <PaginationPageSize />
-         <PaginationLoadMore />
-      </>
+function Pagination({ options, children }) {
+   console.log('<Pagination>')
+
+   return usePortal(
+      <PaginationProvider options={options}>
+         <PaginationItemsProvider options={options}>
+            <section className='wps-items-wrapper'>
+               <PaginationItems>{children}</PaginationItems>
+               <PaginationControls />
+            </section>
+         </PaginationItemsProvider>
+      </PaginationProvider>,
+      options.element
    )
 }
 

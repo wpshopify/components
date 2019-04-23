@@ -1,15 +1,14 @@
-function getPaginationInitialState(options) {
+function PaginationInitialState(options) {
    return {
+      element: options.element,
       componentOptions: options.componentOptions,
       payload: options.payload,
-      lastPayload: [],
+      type: 'list',
       isLoading: false,
-      isFirstLoad: true,
       hasResults: false,
-      hasMoreItems: true,
       lastCursorId: options.lastCursorId,
       queryParams: options.queryParams
    }
 }
 
-export { getPaginationInitialState }
+export { PaginationInitialState }

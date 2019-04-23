@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react'
 import ReactDOM from 'react-dom'
 import hasIn from 'lodash/hasIn'
 
-function useOnClickOutside(ref, handler, targeOpened = false) {
+function useOnClickOutside(ref, handler, targetOpened = false) {
    function addEventListener(listener) {
       document.addEventListener('mousedown', listener)
       document.addEventListener('touchstart', listener)
@@ -43,7 +43,7 @@ function useOnClickOutside(ref, handler, targeOpened = false) {
    }
 
    useEffect(() => {
-      if (targeOpened) {
+      if (targetOpened) {
          addEventListener(eventListener)
 
          return () => {

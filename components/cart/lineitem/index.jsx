@@ -1,14 +1,12 @@
 import React, { useContext, useRef, useEffect, useState } from 'react'
 import { CartContext } from '../../cart/context'
-import { ShopContext } from '../../shop/context'
+import { ShopContext } from '../../shop/_state/context'
 
 import { CartLineItemQuantity } from './quantity'
 import { maybeformatPriceToCurrency } from '../../../common/pricing/formatting'
 import { useAnime, stagger } from '../../../common/animations'
 import { calcLineItemTotal } from '../../../common/products'
-
-import { ProductNotice } from '../../products/product/notice'
-import { ProductNoticeOutOfStock } from '../../products/product/notice/out-of-stock'
+import { Notice } from '../../notice'
 
 import find from 'lodash/find'
 
@@ -18,7 +16,7 @@ function getLineItemFromState(lineItem, lineItemsFromState) {
 
 function CartLineItem({ lineItem, index }) {
    const { cartState } = useContext(CartContext)
-   const { shopState, shopDispatch } = useContext(ShopContext)
+   const [shopState, shopDispatch] = useContext(ShopContext)
 
    const [isUpdating] = useState(false)
    const animeStagger = useAnime(stagger)
@@ -47,10 +45,8 @@ function CartLineItem({ lineItem, index }) {
 
    useEffect(() => {
       let lineItemFoumd = getLineItemFromState(lineItem, shopState.checkoutCache.lineItems)
-
       console.log('lineItem', lineItem)
-      console.log('getLineItemFromState', lineItemFoumd)
-
+      console.log('lineItemFoumd', lineItemFoumd)
       variantId.current = lineItemFoumd.variantId
 
       setLineItemQuantity(lineItemFoumd.quantity)
@@ -64,8 +60,12 @@ function CartLineItem({ lineItem, index }) {
       }
    }, [cartState.cartOpen])
 
+   function isAvailable(lineItem) {
+      return lineItem.availableForSale || lineItem.available
+   }
+
    return (
-      <div className='wps-cart-lineitem row' data-wps-is-updating={isUpdating} data-wps-is-available={lineItem.availableForSale} ref={lineItemElement}>
+      <div className='wps-cart-lineitem row' data-wps-is-updating={isUpdating} data-wps-is-available={isAvailable(lineItem)} ref={lineItemElement}>
          <a href='https://demo.wpshop.io/products/aerodynamic-aluminum-bench/' className='wps-cart-lineitem-img-link' target='_blank'>
             <div className='wps-cart-lineitem-img' style={{ backgroundImage: `url(${lineItem.image.src})` }} data-wps-is-ready={shopState.isShopReady} />
          </a>
@@ -84,11 +84,8 @@ function CartLineItem({ lineItem, index }) {
                </div>
             </div>
 
-            {!lineItem.availableForSale ? (
-               <ProductNotice type='warning'>
-                  {' '}
-                  <ProductNoticeOutOfStock />{' '}
-               </ProductNotice>
+            {!isAvailable(lineItem) ? (
+               <Notice type='warning' message='Out of stock' />
             ) : (
                <div className='wps-cart-lineitem-content-row wps-row'>
                   <CartLineItemQuantity

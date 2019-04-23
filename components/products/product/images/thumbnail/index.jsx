@@ -1,13 +1,13 @@
 import React, { useContext, useEffect, useState, useRef } from 'react'
 import { ProductImage } from '../image'
-import { ProductGalleryContext } from '../gallery/context'
+import { ProductGalleryContext } from '../gallery/_state/context'
 import { ProductContext } from '../../_state/context'
-import { ShopContext } from '../../../../shop/context'
+import { ShopContext } from '../../../../shop/_state/context'
 
 function ProductThumbnailImage({ image }) {
-   const { shopState } = useContext(ShopContext)
-   const { galleryState, galleryDispatch } = useContext(ProductGalleryContext)
-   const { productState } = useContext(ProductContext)
+   const [shopState] = useContext(ShopContext)
+   const [galleryState, galleryDispatch] = useContext(ProductGalleryContext)
+   const [productState] = useContext(ProductContext)
    const isFirstRender = useRef(true)
 
    const [isActive, setIsActive] = useState(false)

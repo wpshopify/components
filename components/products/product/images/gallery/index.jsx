@@ -1,16 +1,13 @@
-import React, { useContext, useEffect, useReducer } from 'react'
+import React, { useContext } from 'react'
 import { ProductContext } from '../../_state/context'
 import { ProductsContext } from '../../../_state/context'
 import { ProductThumbnailImages } from '../thumbnails'
 import { ProductFeaturedImage } from '../featured'
-import { ProductGalleryContext } from './context'
-import { getProductGalleryInitialState } from './initial-state'
-import { ProductGalleryReducer } from './reducer'
+import { ProductGalleryProvider } from './_state/provider.jsx'
 
 function ProductGallery() {
-   const { productsState } = useContext(ProductsContext)
-   const { productState } = useContext(ProductContext)
-   const [galleryState, galleryDispatch] = useReducer(ProductGalleryReducer, getProductGalleryInitialState())
+   const [productsState] = useContext(ProductsContext)
+   const [productState] = useContext(ProductContext)
 
    function hasManyImages() {
       if (!productState) {
@@ -20,28 +17,24 @@ function ProductGallery() {
       return productState.payload.images.length >= 2
    }
 
-   function getFeaturedImageFromProduct(product) {
-      return product.images[0]
-   }
+   // function getFeaturedImageFromProduct(product) {
+   //    return product.images[0]
+   // }
 
    function isFeaturedOnly() {
       return productsState.componentOptions.showFeaturedOnly
    }
 
-   useEffect(() => {
-      galleryDispatch({
-         type: 'SET_FEAT_IMAGE',
-         payload: getFeaturedImageFromProduct(productState.payload)
-      })
-   }, [])
+   // useEffect(() => {
+   //    galleryDispatch({
+   //       type: 'SET_FEAT_IMAGE',
+   //       payload: getFeaturedImageFromProduct(productState.payload)
+   //    })
+   // }, [])
 
    return (
       <>
-         <ProductGalleryContext.Provider
-            value={{
-               galleryState: galleryState,
-               galleryDispatch: galleryDispatch
-            }}>
+         <ProductGalleryProvider productState={productState}>
             {isFeaturedOnly() ? (
                <ProductFeaturedImage />
             ) : hasManyImages() ? (
@@ -52,7 +45,7 @@ function ProductGallery() {
             ) : (
                <ProductFeaturedImage />
             )}
-         </ProductGalleryContext.Provider>
+         </ProductGalleryProvider>
       </>
    )
 }

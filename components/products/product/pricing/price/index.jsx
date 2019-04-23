@@ -1,5 +1,6 @@
 import React, { useContext } from 'react'
-import { ShopContext } from '../../../../shop/context'
+import { ShopContext } from '../../../../shop/_state/context'
+import { ProductPricingContext } from '../_state/context'
 
 import isEmpty from 'lodash/isEmpty'
 import last from 'lodash/last'
@@ -38,12 +39,14 @@ function lastPriceCompareAt(prices) {
    return lastPrice(prices, 'compareAtPrices')
 }
 
-function ProductPrice({ range, compareAt, prices }) {
-   const { shopState } = useContext(ShopContext)
+function ProductPrice({ compareAt }) {
+   const [shopState] = useContext(ShopContext)
+
+   const [productPricingState] = useContext(ProductPricingContext)
 
    function isRegAndCompareSame() {
-      if (!range && compareAt) {
-         if (firstPriceCompareAt(prices) === firstRegPrice(prices)) {
+      if (!productPricingState.showingRange && compareAt) {
+         if (firstPriceCompareAt(productPricingState.prices) === firstRegPrice(productPricingState.prices)) {
             return true
          }
       }
@@ -61,17 +64,17 @@ function ProductPrice({ range, compareAt, prices }) {
 
    function getFirstPrice() {
       if (compareAt) {
-         return firstPriceCompareAt(prices)
+         return firstPriceCompareAt(productPricingState.prices)
       } else {
-         return firstRegPrice(prices)
+         return firstRegPrice(productPricingState.prices)
       }
    }
 
    function getLastPrice() {
       if (compareAt) {
-         return lastPriceCompareAt(prices)
+         return lastPriceCompareAt(productPricingState.prices)
       } else {
-         return lastRegPrice(prices)
+         return lastRegPrice(productPricingState.prices)
       }
    }
 
@@ -85,7 +88,11 @@ function ProductPrice({ range, compareAt, prices }) {
                className='wps-products-price wps-product-pricing wps-products-price-one'
                data-wps-is-showing-compare-at={compareAt}
                data-wps-is-ready={shopState.isShopReady ? '1' : '0'}>
-               {range ? <ProductPricingRange firstPrice={getFirstPrice()} lastPrice={getLastPrice()} isFirstAndLastSame={isFirstAndLastSame()} /> : <ProductPriceSingle price={getFirstPrice()} />}
+               {productPricingState.showingRange ? (
+                  <ProductPricingRange firstPrice={getFirstPrice()} lastPrice={getLastPrice()} isFirstAndLastSame={isFirstAndLastSame()} />
+               ) : (
+                  <ProductPriceSingle price={getFirstPrice()} />
+               )}
             </h3>
          )}
       </>

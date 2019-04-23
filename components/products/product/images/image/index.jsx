@@ -1,13 +1,12 @@
 import React, { useContext, useEffect, useRef } from 'react'
-import { ShopContext } from '../../../../shop/context'
-import { ProductGalleryContext } from '../gallery/context'
-
+import { ShopContext } from '../../../../shop/_state/context'
+import { ProductGalleryContext } from '../gallery/_state/context'
 import { addCustomSizingToImageUrl } from '../../../../../common/images'
 
 function ProductImage({ image, isFeatured }) {
    const imageRef = useRef()
-   const { shopState } = useContext(ShopContext)
-   const { galleryDispatch } = useContext(ProductGalleryContext)
+   const [shopState] = useContext(ShopContext)
+   const [galleryState, galleryDispatch] = useContext(ProductGalleryContext)
 
    const imageOptimized = addCustomSizingToImageUrl({
       src: image.src,

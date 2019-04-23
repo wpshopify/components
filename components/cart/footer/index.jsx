@@ -1,12 +1,12 @@
 import React, { useContext, useEffect, useState, useRef } from 'react'
-import { ShopContext } from '../../shop/context'
+import { ShopContext } from '../../shop/_state/context'
 import { CartContext } from '../../cart/context'
 import { maybeformatPriceToCurrency } from '../../../common/pricing/formatting'
 import { pulse, useAnime } from '../../../common/animations'
 import { CartCheckout } from '../checkout'
 
 function CartFooter() {
-   const { shopState } = useContext(ShopContext)
+   const [shopState] = useContext(ShopContext)
    const totalElement = useRef()
 
    const animate = useAnime(pulse)

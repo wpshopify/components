@@ -1,16 +1,9 @@
 import React, { useContext, useEffect, useState, useRef } from 'react'
 import { ProductContext } from '../../_state/context'
 import { ProductsContext } from '../../../_state/context'
-
-import { ShopContext } from '../../../../shop/context'
-
-import { ProductGalleryContext } from '../gallery/context'
+import { ProductGalleryContext } from '../gallery/_state/context'
 import { ProductImage } from '../image'
 import Drift from 'drift-zoom'
-
-function getFeaturedImageFromProduct(product) {
-   return product.images[0]
-}
 
 function getVariantImage(variant) {
    return variant.image
@@ -26,13 +19,11 @@ function ProductFeaturedImage() {
    const paneElement = useRef()
    const isFirstRender = useRef(true)
 
-   const { productsState } = useContext(ProductsContext)
-   const { productState } = useContext(ProductContext)
-   const { shopState } = useContext(ShopContext)
+   const [productsState] = useContext(ProductsContext)
+   const [productState] = useContext(ProductContext)
+   const [galleryState] = useContext(ProductGalleryContext)
 
-   const { galleryState } = useContext(ProductGalleryContext)
-
-   const [featImageElemnent, setFeatImageElemnent] = useState(false)
+   // const [featImageElemnent, setFeatImageElemnent] = useState(false)
    const [featImage, setFeatImage] = useState(false)
 
    function driftOptions() {
@@ -86,7 +77,7 @@ function ProductFeaturedImage() {
    return (
       <div className='wps-gallery-featured-wrapper' ref={paneElement}>
          <div className='wps-product-image-wrapper'>
-            {galleryState.featImage ? <ProductImage isFeatured={true} image={featImage} /> : <ProductImage isFeatured={true} image={galleryState.featImagePlaceholder} />}
+            {galleryState.featImage ? <ProductImage isFeatured={true} image={galleryState.featImage} /> : <ProductImage isFeatured={true} image={galleryState.featImagePlaceholder} />}
          </div>
       </div>
    )

@@ -1,11 +1,11 @@
 import React, { useContext } from 'react'
-import { ShopContext } from '../../../shop/context'
+import { ShopContext } from '../../../shop/_state/context'
 import { ProductContext } from '../_state/context'
 import { usePortal } from '../../../../common/hooks'
 
 function ProductTitle() {
-   const { shopState } = useContext(ShopContext)
-   const { productState } = useContext(ProductContext)
+   const [shopState] = useContext(ShopContext)
+   const [productState] = useContext(ProductContext)
 
    return usePortal(
       <div className='wps-component wps-component-products-title' data-wps-component-order='0'>
