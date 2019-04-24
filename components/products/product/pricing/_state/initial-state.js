@@ -1,8 +1,10 @@
-function ProductPricingInitialState(productsState) {
+import { getPrices } from '../../../../../common/pricing/data'
+
+function ProductPricingInitialState(props) {
    return {
-      prices: [],
-      showingRange: productsState.componentOptions.showingPriceRange,
-      showingCompareAt: productsState.componentOptions.showingCompareAt
+      prices: getPrices(props.productState.payload),
+      showingRange: props.productsState.componentOptions.showingPriceRange,
+      showingCompareAt: props.productsState.componentOptions.showingCompareAt
    }
 }
 

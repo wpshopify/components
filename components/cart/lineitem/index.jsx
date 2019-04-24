@@ -45,8 +45,7 @@ function CartLineItem({ lineItem, index }) {
 
    useEffect(() => {
       let lineItemFoumd = getLineItemFromState(lineItem, shopState.checkoutCache.lineItems)
-      console.log('lineItem', lineItem)
-      console.log('lineItemFoumd', lineItemFoumd)
+
       variantId.current = lineItemFoumd.variantId
 
       setLineItemQuantity(lineItemFoumd.quantity)

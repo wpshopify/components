@@ -14,47 +14,65 @@ function PaginationLoadMore() {
 
    const [paginationControlsState, paginationControlsDispatch] = useContext(PaginationControlsContext)
 
-   const isFirstRender = useRef(true)
    const [isFirstLoad, setIsFirstLoad] = useState(true)
-   const [lastPayload, setLastPayload] = useState(true)
+
    const [hasMoreItems, sethasMoreItems] = useState(true)
 
    function hasNextPage(lastPayload) {
       return last(lastPayload).hasNextPage
    }
 
+   function afterQueryParam(shopifyResponse) {
+      return {
+         after: shopifyResponse.data.products.edges[0].cursor
+      }
+   }
+
    async function onNextPage() {
+      console.log('paginationState.queryParams', paginationState.queryParams)
+
       if (isFirstLoad) {
+         console.log('.............................. FIRST LOAD')
+
          const firstQueryParams = paginationState.queryParams
          firstQueryParams.after = paginationState.lastCursorId
 
          paginationItemsDispatch({ type: 'SET_IS_LOADING', payload: true })
-         // setIsLoading(true)
+
          paginationControlsDispatch({ type: 'SET_IS_LOADING', payload: true })
-         // Calls Shopify
+
          const shopifyResponse = await graphQuery('products', firstQueryParams)
 
          setIsFirstLoad(false)
-         setLastPayload(shopifyResponse.model.products)
+
+         paginationItemsDispatch({ type: 'SET_LAST_PAYLOAD', payload: shopifyResponse.model.products })
+         console.log('shopifyResponse.data')
+
+         paginationDispatch({ type: 'SET_QUERY_PARAMS', payload: afterQueryParam(shopifyResponse) })
 
          paginationItemsDispatch({ type: 'UPDATE_PAYLOAD', payload: shopifyResponse.model.products })
          paginationItemsDispatch({ type: 'SET_IS_LOADING', payload: false })
-         // setIsLoading(false)
+
          paginationControlsDispatch({ type: 'SET_IS_LOADING', payload: false })
          if (!hasNextPage(shopifyResponse.model.products)) {
             sethasMoreItems(false)
          }
       } else {
-         paginationItemsDispatch({ type: 'SET_IS_LOADING', payload: true })
-         // setIsLoading(true)
-         paginationControlsDispatch({ type: 'SET_IS_LOADING', payload: true })
-         const nextPageOfResults = await fetchNextPage(lastPayload)
+         console.log('.............................. nottt FIRST LOAD', paginationItemsState.lastPayload)
 
-         setLastPayload(nextPageOfResults.model)
+         paginationItemsDispatch({ type: 'SET_IS_LOADING', payload: true })
+
+         paginationControlsDispatch({ type: 'SET_IS_LOADING', payload: true })
+
+         const nextPageOfResults = await fetchNextPage(paginationItemsState.lastPayload)
+
+         paginationItemsDispatch({ type: 'SET_LAST_PAYLOAD', payload: nextPageOfResults.model })
+
+         paginationDispatch({ type: 'SET_QUERY_PARAMS', payload: afterQueryParam(nextPageOfResults) })
 
          paginationItemsDispatch({ type: 'UPDATE_PAYLOAD', payload: nextPageOfResults.model })
          paginationItemsDispatch({ type: 'SET_IS_LOADING', payload: false })
-         // setIsLoading(false)
+
          paginationControlsDispatch({ type: 'SET_IS_LOADING', payload: false })
 
          if (!hasNextPage(nextPageOfResults.model)) {
@@ -62,19 +80,6 @@ function PaginationLoadMore() {
          }
       }
    }
-
-   // Used to update payload when page size changes ...
-   useEffect(
-      function() {
-         if (isFirstRender.current) {
-            isFirstRender.current = false
-            return
-         }
-
-         onNextPage()
-      },
-      [paginationState.queryParams]
-   )
 
    return usePortal(
       <>

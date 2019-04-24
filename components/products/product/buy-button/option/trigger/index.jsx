@@ -16,8 +16,6 @@ function ProductOptionTrigger() {
    const isFirstRender = useRef(true)
 
    function onClick() {
-      console.log('onClick')
-
       productOptionDispatch({ type: 'TOGGLE_DROPDOWN', payload: !productOptionState.isDropdownOpen })
    }
 

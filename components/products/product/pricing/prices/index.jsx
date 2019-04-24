@@ -9,14 +9,14 @@ function ProductPrices() {
    const [productState] = useContext(ProductContext)
 
    useEffect(() => {
-      console.log('productPricingState', productPricingState)
+      console.log('productState.payload')
 
       if (productPricingState.showingRange) {
          productPricingDispatch({ type: 'SET_PRICES', payload: getPrices(productState.payload, 'asc') })
       } else {
          productPricingDispatch({ type: 'SET_PRICES', payload: getPrices(productState.payload) })
       }
-   }, [])
+   }, [productState.payload])
 
    return productPricingState.showingCompareAt ? (
       <>

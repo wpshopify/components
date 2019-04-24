@@ -11,7 +11,7 @@ function ProductPricing() {
 
    return usePortal(
       <>
-         <ProductPricingProvider productsState={productsState}>
+         <ProductPricingProvider productsState={productsState} productState={productState}>
             <ProductPrices />
          </ProductPricingProvider>
       </>,

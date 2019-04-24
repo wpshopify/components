@@ -16,6 +16,13 @@ function PaginationItemsReducer(state, action) {
          }
       }
 
+      case 'SET_LAST_PAYLOAD': {
+         return {
+            ...state,
+            lastPayload: action.payload
+         }
+      }
+
       default: {
          return state
       }
