@@ -6,14 +6,13 @@ import { PaginationProvider } from './_state/provider'
 import { PaginationItemsProvider } from './items/_state/provider'
 
 function Pagination({ options, children }) {
-   console.log('<Pagination>')
-
    return usePortal(
       <PaginationProvider options={options}>
          <PaginationItemsProvider options={options}>
             <section className='wps-items-wrapper'>
                <PaginationItems>{children}</PaginationItems>
-               <PaginationControls />
+
+               {options.componentOptions.pagination && <PaginationControls />}
             </section>
          </PaginationItemsProvider>
       </PaginationProvider>,

@@ -7,7 +7,8 @@ function PaginationInitialState(options) {
       isLoading: false,
       hasResults: false,
       lastCursorId: options.lastCursorId,
-      queryParams: options.queryParams
+      queryParams: options.queryParams,
+      dataType: options.dataType
    }
 }
 

@@ -18,8 +18,6 @@ function Product({ payload }) {
       return !productsState.componentOptions.excludes.includes(type)
    }
 
-   console.log('<Product> Render')
-
    return (
       <div className='wps-item'>
          <ProductProvider payload={payload}>

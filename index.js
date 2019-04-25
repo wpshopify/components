@@ -10,4 +10,6 @@ export { FilterSelections } from './components/filters/selections'
 
 export { Filters } from './components/filters'
 export { Search } from './components/search'
+export { Notice } from './components/notice'
+export { Collections } from './components/collections'
 // export { FilterPagination } from './components/filters/pagination'

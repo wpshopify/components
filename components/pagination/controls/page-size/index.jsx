@@ -3,7 +3,7 @@ import { graphQuery } from '/Users/andrew/www/devil/devilbox-new/data/www/wpshop
 import { PaginationContext } from '../../_state/context'
 import { PaginationControlsContext } from '../_state/context'
 import { PaginationItemsContext } from '../../items/_state/context'
-
+import { afterQueryParam } from '../index'
 import { usePortal } from '../../../../common/hooks'
 import update from 'immutability-helper'
 
@@ -28,14 +28,6 @@ function PaginationPageSize() {
       }
    }
 
-   function afterQueryParam(shopifyResponse) {
-      console.log('shopifyResponse.data.products.edges[0].cursor', shopifyResponse.data.products.edges[0].cursor)
-
-      return {
-         after: shopifyResponse.data.products.edges[0].cursor
-      }
-   }
-
    async function onChange(event) {
       const newParams = updateQueryParams(event)
 
@@ -56,7 +48,7 @@ function PaginationPageSize() {
       // Calls Shopify
       const shopifyResponse = await graphQuery('products', updatedParams)
 
-      paginationDispatch({ type: 'SET_QUERY_PARAMS', payload: afterQueryParam(shopifyResponse) })
+      paginationDispatch({ type: 'SET_QUERY_PARAMS', payload: afterQueryParam(shopifyResponse, paginationState.dataType) })
 
       paginationItemsDispatch({ type: 'UPDATE_PAYLOAD', payload: shopifyResponse.model.products })
       paginationItemsDispatch({ type: 'SET_IS_LOADING', payload: false })
