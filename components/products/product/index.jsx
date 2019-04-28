@@ -6,26 +6,19 @@ import { ProductBuyButton } from './buy-button'
 import { ProductImages } from './images'
 import { ProductsContext } from '../_state/context'
 import { ProductProvider } from './_state/provider'
+import { isShowingComponent } from '../../../common/components'
 
 function Product({ payload }) {
    const [productsState] = useContext(ProductsContext)
 
-   const isShowing = type => {
-      if (!productsState.componentOptions.excludes) {
-         return true
-      }
-
-      return !productsState.componentOptions.excludes.includes(type)
-   }
-
    return (
       <div className='wps-item'>
          <ProductProvider payload={payload}>
-            {isShowing('images') ? <ProductImages /> : ''}
-            {isShowing('title') ? <ProductTitle /> : ''}
-            {isShowing('pricing') ? <ProductPricing /> : ''}
-            {isShowing('description') ? <ProductDescription /> : ''}
-            {isShowing('buy-button') ? <ProductBuyButton /> : ''}
+            {isShowingComponent(productsState, 'images') ? <ProductImages /> : ''}
+            {isShowingComponent(productsState, 'title') ? <ProductTitle /> : ''}
+            {isShowingComponent(productsState, 'pricing') ? <ProductPricing /> : ''}
+            {isShowingComponent(productsState, 'description') ? <ProductDescription /> : ''}
+            {isShowingComponent(productsState, 'buy-button') ? <ProductBuyButton /> : ''}
          </ProductProvider>
       </div>
    )

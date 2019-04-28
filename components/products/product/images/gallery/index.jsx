@@ -4,6 +4,7 @@ import { ProductsContext } from '../../../_state/context'
 import { ProductThumbnailImages } from '../thumbnails'
 import { ProductFeaturedImage } from '../featured'
 import { ProductGalleryProvider } from './_state/provider.jsx'
+import has from 'lodash/has'
 
 function ProductGallery() {
    const [productsState] = useContext(ProductsContext)
@@ -22,6 +23,10 @@ function ProductGallery() {
    // }
 
    function isFeaturedOnly() {
+      if (!has(productsState.componentOptions, 'showFeaturedOnly')) {
+         return false
+      }
+
       return productsState.componentOptions.showFeaturedOnly
    }
 
