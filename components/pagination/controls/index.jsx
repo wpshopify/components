@@ -4,9 +4,14 @@ import { PaginationLoadMore } from './load-more'
 import { PaginationControlsProvider } from './_state/provider'
 import isEmpty from 'lodash/isEmpty'
 import first from 'lodash/first'
+import has from 'lodash/has'
 
 function afterQueryParam(shopifyResponse, dataType) {
-   const data = shopifyResponse.data[dataType]
+   const data = false
+
+   if (has(shopifyResponse.data, dataType)) {
+      data = shopifyResponse.data[dataType]
+   }
 
    if (isEmpty(data.edges)) {
       return {

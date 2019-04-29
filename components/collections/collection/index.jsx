@@ -5,20 +5,27 @@ import { CollectionTitle } from './title'
 import { CollectionDescription } from './description'
 import { CollectionsContext } from '../_state/context'
 import { CollectionProvider } from './_state/provider'
+import { PaginationContext } from '../../pagination/_state/context'
 
 import { isShowingComponent } from '../../../common/components'
 import { Products } from '../../products'
 
 function Collection({ payload }) {
    const [collectionsState] = useContext(CollectionsContext)
+   const [paginationState] = useContext(PaginationContext)
 
    const productOptions = {
       payload: collectionsState.payload[0].products,
       componentOptions: { ...collectionsState.componentOptions.products },
-      element: false
+      element: false,
+      queryParams: {
+         first: parseInt(collectionsState.componentOptions.products.pageSize),
+         reverse: collectionsState.componentOptions.products.reverse,
+         sortKey: collectionsState.componentOptions.products.sortBy
+      },
+      originalPayload: collectionsState.payload,
+      originalQueryParams: paginationState.queryParams
    }
-
-   console.log('productOptions ::::::::::::::', productOptions)
 
    return (
       <div className='wps-item'>

@@ -8,7 +8,6 @@ import { usePortal } from '../../../../common/hooks'
 import update from 'immutability-helper'
 
 function PaginationPageSize() {
-   console.log('<PaginationPageSize>')
    const [paginationState, paginationDispatch] = useContext(PaginationContext)
    const [paginationItemsState, paginationItemsDispatch] = useContext(PaginationItemsContext)
    const [paginationControlsState, paginationControlsDispatch] = useContext(PaginationControlsContext)
@@ -32,15 +31,10 @@ function PaginationPageSize() {
       const newParams = updateQueryParams(event)
 
       setPageSize(event.target.value)
-      // console.log('onChange :: newParams', newParams)
-      // console.log('onChange :: paginationState.queryParams', paginationState.queryParams)
 
       const updatedParams = update(paginationState.queryParams, { $merge: newParams })
-      console.log('newParams', newParams)
 
       paginationDispatch({ type: 'SET_QUERY_PARAMS', payload: updatedParams })
-
-      console.log('.............. updatedParams ..............', updatedParams)
 
       paginationItemsDispatch({ type: 'SET_IS_LOADING', payload: true })
       paginationControlsDispatch({ type: 'SET_IS_LOADING', payload: true })

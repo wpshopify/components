@@ -1,4 +1,6 @@
 function PaginationInitialState(options) {
+   console.log('/////////////// PaginationInitialState options', options)
+
    return {
       element: options.element,
       componentOptions: options.componentOptions,
@@ -8,7 +10,9 @@ function PaginationInitialState(options) {
       hasResults: false,
       lastCursorId: options.lastCursorId,
       queryParams: options.queryParams,
-      dataType: options.dataType
+      dataType: options.dataType,
+      originalPayload: options.originalPayload,
+      originalQueryParams: options.originalQueryParams
    }
 }
 

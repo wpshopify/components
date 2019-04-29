@@ -18,13 +18,10 @@ function ProductVariant({ variant }) {
    const [buyButtonState, buyButtonDispatch] = useContext(ProductBuyButtonContext)
 
    function onVariantSelection() {
-      console.log('onVariantSelection')
-
       const newlySelected = createObj(productOptionState.option.name, variant.value)
 
       // setSelectedOptions(optionsUpdated);
       buyButtonDispatch({ type: 'UPDATE_SELECTED_OPTIONS', payload: newlySelected })
-      console.log('newlySelected', newlySelected)
 
       productOptionDispatch({ type: 'TOGGLE_DROPDOWN', payload: !productOptionState.isDropdownOpen })
       productOptionDispatch({ type: 'SET_IS_OPTION_SELECTED', payload: true })

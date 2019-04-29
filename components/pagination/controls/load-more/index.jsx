@@ -6,11 +6,12 @@ import { PaginationControlsContext } from '../_state/context'
 import { Notice } from '../../../notice'
 import { usePortal } from '../../../../common/hooks'
 import last from 'lodash/last'
+import has from 'lodash/has'
 import isEmpty from 'lodash/isEmpty'
+import to from 'await-to-js'
 import { afterQueryParam } from '../index'
 
 function PaginationLoadMore() {
-   console.log('<PaginationLoadMore>')
    const [paginationState, paginationDispatch] = useContext(PaginationContext)
    const [paginationItemsState, paginationItemsDispatch] = useContext(PaginationItemsContext)
 
@@ -28,35 +29,89 @@ function PaginationLoadMore() {
    }
 
    async function onNextPage() {
-      console.log('paginationState.queryParams', paginationState.queryParams)
-
-      console.log('paginationState.dataType', paginationState.dataType)
-
       if (isFirstLoad) {
          console.log('.............................. FIRST LOAD')
+         console.log('paginationState :::::::::::::::::::::', paginationState)
+         console.log('paginationItemsState :::::::::::::::::', paginationItemsState)
 
-         const firstQueryParams = paginationState.queryParams
-         firstQueryParams.after = paginationState.lastCursorId
+         // var sutff1 = paginationState.dataType;
+         // var stuff2 = false;
 
-         paginationItemsDispatch({ type: 'SET_IS_LOADING', payload: true })
+         if (!paginationState.lastCursorId) {
+            // paginationState.queryParams.first
 
-         paginationControlsDispatch({ type: 'SET_IS_LOADING', payload: true })
+            paginationItemsDispatch({ type: 'SET_IS_LOADING', payload: true })
+            paginationControlsDispatch({ type: 'SET_IS_LOADING', payload: true })
 
-         const shopifyResponse = await graphQuery(paginationState.dataType, firstQueryParams)
+            // Resend original query so that we can get a proper response
+            const [shopifyError, shopifyResponse] = await to(graphQuery('collections', paginationState.originalQueryParams, paginationState.queryParams))
 
-         setIsFirstLoad(false)
+            console.log('// shopifyResponse', shopifyResponse)
+            console.log('// shopifyError ', shopifyError)
 
-         paginationItemsDispatch({ type: 'SET_LAST_PAYLOAD', payload: shopifyResponse.model[paginationState.dataType] })
-         console.log('shopifyResponse.data')
+            const [nextPageOfResultsErrorHi, nextPageOfResults] = await to(fetchNextPage(shopifyResponse.model.collections[0].products))
 
-         paginationDispatch({ type: 'SET_QUERY_PARAMS', payload: afterQueryParam(shopifyResponse, paginationState.dataType) })
+            console.log('// nextPageOfResults', nextPageOfResults.model)
+            console.log('// nextPageOfResultsErrorHi ', nextPageOfResultsErrorHi)
 
-         paginationItemsDispatch({ type: 'UPDATE_PAYLOAD', payload: shopifyResponse.model[paginationState.dataType] })
-         paginationItemsDispatch({ type: 'SET_IS_LOADING', payload: false })
+            setIsFirstLoad(false)
 
-         paginationControlsDispatch({ type: 'SET_IS_LOADING', payload: false })
-         if (!hasNextPage(shopifyResponse.model[paginationState.dataType])) {
-            setHasMoreItems(false)
+            paginationItemsDispatch({ type: 'SET_LAST_PAYLOAD', payload: nextPageOfResults.model })
+            console.log('shopifyResponse.data')
+
+            // paginationDispatch({ type: 'SET_QUERY_PARAMS', payload: afterQueryParam(shopifyResponse, paginationState.dataType) })
+
+            paginationItemsDispatch({ type: 'UPDATE_PAYLOAD', payload: nextPageOfResults.model })
+            paginationItemsDispatch({ type: 'SET_IS_LOADING', payload: false })
+
+            paginationControlsDispatch({ type: 'SET_IS_LOADING', payload: false })
+
+            if (!hasNextPage(nextPageOfResults.model)) {
+               setHasMoreItems(false)
+            }
+         } else {
+            const firstQueryParams = paginationState.queryParams
+            firstQueryParams.after = paginationState.lastCursorId
+
+            paginationItemsDispatch({ type: 'SET_IS_LOADING', payload: true })
+
+            paginationControlsDispatch({ type: 'SET_IS_LOADING', payload: true })
+
+            // console.log('paginationState.dataType', paginationState.dataType)
+            // console.log('firstQueryParams', firstQueryParams)
+
+            if (!paginationState.dataType) {
+               console.log('//////////////////////////')
+               paginationState.dataType = 'products'
+            }
+
+            console.log('paginationItemsState.lastPayload', paginationItemsState.lastPayload)
+
+            const [shopifyError, shopifyResponse] = await to(graphQuery(paginationState.dataType, firstQueryParams))
+
+            console.log('___________________ paginationState', paginationState)
+            console.log('shopifyError', shopifyError)
+
+            if (has(shopifyResponse, 'errors')) {
+               console.log('!!!!!!!!!!! ERRORS shopifyResponse !!!!!!!!!!!', shopifyResponse)
+            } else {
+               console.log('success shopifyResponse', shopifyResponse)
+            }
+
+            setIsFirstLoad(false)
+
+            paginationItemsDispatch({ type: 'SET_LAST_PAYLOAD', payload: shopifyResponse.model[paginationState.dataType] })
+            console.log('shopifyResponse.data')
+
+            paginationDispatch({ type: 'SET_QUERY_PARAMS', payload: afterQueryParam(shopifyResponse, paginationState.dataType) })
+
+            paginationItemsDispatch({ type: 'UPDATE_PAYLOAD', payload: shopifyResponse.model[paginationState.dataType] })
+            paginationItemsDispatch({ type: 'SET_IS_LOADING', payload: false })
+
+            paginationControlsDispatch({ type: 'SET_IS_LOADING', payload: false })
+            if (!hasNextPage(shopifyResponse.model[paginationState.dataType])) {
+               setHasMoreItems(false)
+            }
          }
       } else {
          console.log('.............................. nottt FIRST LOAD', paginationItemsState.lastPayload)
@@ -65,7 +120,9 @@ function PaginationLoadMore() {
 
          paginationControlsDispatch({ type: 'SET_IS_LOADING', payload: true })
 
-         const nextPageOfResults = await fetchNextPage(paginationItemsState.lastPayload)
+         const [nextPageOfResultsError, nextPageOfResults] = await to(fetchNextPage(paginationItemsState.lastPayload))
+
+         console.log('nextPageOfResultsError', nextPageOfResultsError)
 
          paginationItemsDispatch({ type: 'SET_LAST_PAYLOAD', payload: nextPageOfResults.model })
 
