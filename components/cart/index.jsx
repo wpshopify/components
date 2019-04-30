@@ -1,25 +1,17 @@
-import React, { useReducer, useContext } from 'react'
-import { CartInitialState } from './initial-state'
-import { CartContext } from './context'
-import { CartReducer } from './reducer'
+import React from 'react'
 import { CartButtons } from './buttons'
 import { CartBody } from './body'
+import { CartProvider } from './_state/provider'
 
 function Cart({ options }) {
-   const [state, dispatch] = useReducer(CartReducer, CartInitialState(options))
-
    return (
       <>
-         <CartContext.Provider
-            value={{
-               cartState: state,
-               cartDispatch: dispatch
-            }}>
+         <CartProvider options={options}>
             <CartButtons />
             <CartBody />
-         </CartContext.Provider>
+         </CartProvider>
       </>
    )
 }
 
-export { Cart, CartBody, CartButtons }
+export { Cart }

@@ -6,7 +6,7 @@ import { CartHeader } from '../header'
 import { CartContents } from '../contents'
 import { CartFooter } from '../footer'
 
-import { CartContext } from '../context'
+import { CartContext } from '../_state/context'
 import { ShopContext } from '../../shop/_state/context'
 
 import { useAnime, slideInRight, slideOutRight } from '../../../common/animations'
@@ -18,7 +18,7 @@ function CartBody() {
    const animeSlideInRight = useAnime(slideInRight)
    const animeSlideOutRight = useAnime(slideOutRight)
 
-   const { cartState, cartDispatch } = useContext(CartContext)
+   const [cartState, cartDispatch] = useContext(CartContext)
    const [shopState, shopDispatch] = useContext(ShopContext)
 
    function isCartOpen(cartState) {

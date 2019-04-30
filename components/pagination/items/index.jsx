@@ -6,7 +6,7 @@ function PaginationItems({ children }) {
    const [paginationItemsState] = useContext(PaginationItemsContext)
 
    return (
-      <section className={'wps-items wps-items-list'} data-item-is-loading={paginationItemsState.isLoading}>
+      <section className={'wps-items wps-items-list wps-row'} data-item-is-loading={paginationItemsState.isLoading}>
          {paginationItemsState.payload.map(item => React.cloneElement(children, { payload: item, key: uuidv4() }))}
       </section>
    )

@@ -8,6 +8,7 @@ import { CollectionProvider } from './_state/provider'
 import { PaginationContext } from '../../pagination/_state/context'
 
 import { isShowingComponent } from '../../../common/components'
+import { itemWidthClass } from '../../../common/utils'
 import { Products } from '../../products'
 
 function Collection({ payload }) {
@@ -18,6 +19,9 @@ function Collection({ payload }) {
       payload: collectionsState.payload[0].products,
       componentOptions: { ...collectionsState.componentOptions.products },
       element: false,
+      dataType: 'products',
+      type: 'list',
+      noResultsText: 'Sorry from products!',
       queryParams: {
          first: parseInt(collectionsState.componentOptions.products.pageSize),
          reverse: collectionsState.componentOptions.products.reverse,
@@ -28,7 +32,7 @@ function Collection({ payload }) {
    }
 
    return (
-      <div className='wps-item'>
+      <div className={`${itemWidthClass(collectionsState.componentOptions.itemsPerRow)} wps-item`}>
          <CollectionProvider payload={payload}>
             {isShowingComponent(collectionsState, 'image') && <CollectionImage />}
             {isShowingComponent(collectionsState, 'title') && <CollectionTitle />}

@@ -7,12 +7,13 @@ import { ProductImages } from './images'
 import { ProductsContext } from '../_state/context'
 import { ProductProvider } from './_state/provider'
 import { isShowingComponent } from '../../../common/components'
+import { itemWidthClass } from '../../../common/utils'
 
 function Product({ payload }) {
    const [productsState] = useContext(ProductsContext)
 
    return (
-      <div className='wps-item'>
+      <div className={`${itemWidthClass(productsState.componentOptions.itemsPerRow)} wps-item wps-p-3`}>
          <ProductProvider payload={payload}>
             {isShowingComponent(productsState, 'images') ? <ProductImages /> : ''}
             {isShowingComponent(productsState, 'title') ? <ProductTitle /> : ''}

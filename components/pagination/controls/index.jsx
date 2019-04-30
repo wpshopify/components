@@ -7,7 +7,7 @@ import first from 'lodash/first'
 import has from 'lodash/has'
 
 function afterQueryParam(shopifyResponse, dataType) {
-   const data = false
+   var data = false
 
    if (has(shopifyResponse.data, dataType)) {
       data = shopifyResponse.data[dataType]
@@ -25,8 +25,6 @@ function afterQueryParam(shopifyResponse, dataType) {
 }
 
 function PaginationControls() {
-   console.log('<PaginationControls>')
-
    return (
       <PaginationControlsProvider>
          <section className='wps-pagination-controls'>

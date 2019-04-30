@@ -1,12 +1,9 @@
 import React from 'react'
 import { Collection } from './collection'
-
 import { Pagination } from '../pagination'
 import { CollectionsProvider } from './_state/provider'
 
 function Collections({ options }) {
-   console.log('SUP', options)
-
    return (
       <>
          <CollectionsProvider options={options}>

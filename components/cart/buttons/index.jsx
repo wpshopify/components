@@ -1,17 +1,15 @@
-import React, { useContext, useRef, useEffect } from 'react'
+import React, { useContext } from 'react'
 import { CartButton } from './button'
-import isEmpty from 'lodash/isEmpty'
-import { CartContext } from '../context'
+import { CartContext } from '../_state/context'
+import uuidv4 from 'uuid/v4'
 
 function CartButtons() {
-   const { cartState } = useContext(CartContext)
+   const [cartState] = useContext(CartContext)
 
    return (
       <>
-         {isEmpty(cartState.buttons) && ''}
-
          {cartState.buttons.map(buttonOptions => (
-            <CartButton key={buttonOptions.componentID} options={buttonOptions} />
+            <CartButton key={uuidv4()} options={buttonOptions} />
          ))}
       </>
    )

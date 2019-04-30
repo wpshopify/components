@@ -11,7 +11,7 @@ function Pagination({ options, children }) {
    return usePortal(
       <PaginationProvider options={options}>
          <PaginationItemsProvider options={options}>
-            <section className='wps-items-wrapper'>
+            <section className='wps-items-wrapper wps-container-fluid'>
                {isEmpty(options.payload) ? <Notice message={options.noResultsText} type='warning' /> : <PaginationItems>{children}</PaginationItems>}
 
                {options.componentOptions.pagination && <PaginationControls />}

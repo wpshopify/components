@@ -1,4 +1,4 @@
-function getCartButtonInitialState(options) {
+function CartButtonInitialState(options) {
    return {
       componentID: options.componentID,
       element: options.element,
@@ -7,4 +7,4 @@ function getCartButtonInitialState(options) {
    }
 }
 
-export { getCartButtonInitialState }
+export { CartButtonInitialState }

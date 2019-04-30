@@ -19,6 +19,7 @@ function PaginationLoadMore() {
 
    const [isFirstLoad, setIsFirstLoad] = useState(true)
    const [hasMoreItems, setHasMoreItems] = useState(true)
+   const [totalItemsShown, setTotalItemsShown] = useState(paginationItemsState.payload.length)
 
    function hasNextPage(lastPayload) {
       if (isEmpty(lastPayload)) {
@@ -28,115 +29,105 @@ function PaginationLoadMore() {
       return last(lastPayload).hasNextPage
    }
 
-   async function onNextPage() {
-      if (isFirstLoad) {
-         console.log('.............................. FIRST LOAD')
-         console.log('paginationState :::::::::::::::::::::', paginationState)
-         console.log('paginationItemsState :::::::::::::::::', paginationItemsState)
+   function setLoadingStates(isLoading) {
+      paginationItemsDispatch({ type: 'SET_IS_LOADING', payload: isLoading })
+      paginationControlsDispatch({ type: 'SET_IS_LOADING', payload: isLoading })
+   }
 
-         // var sutff1 = paginationState.dataType;
-         // var stuff2 = false;
+   function setPayloadStates(payload) {
+      paginationItemsDispatch({ type: 'SET_LAST_PAYLOAD', payload: payload })
+      paginationItemsDispatch({ type: 'UPDATE_PAYLOAD', payload: payload })
+   }
 
-         if (!paginationState.lastCursorId) {
-            // paginationState.queryParams.first
+   function setAfterCursorQueryParams(params) {
+      paginationDispatch({ type: 'SET_QUERY_PARAMS', payload: params })
+   }
 
-            paginationItemsDispatch({ type: 'SET_IS_LOADING', payload: true })
-            paginationControlsDispatch({ type: 'SET_IS_LOADING', payload: true })
+   function findTypeFromOriginalPayload(payload) {
+      return payload.type.name.split('Connection')[0].toLowerCase() + 's'
+   }
 
-            // Resend original query so that we can get a proper response
-            const [shopifyError, shopifyResponse] = await to(graphQuery('collections', paginationState.originalQueryParams, paginationState.queryParams))
+   function resendInitialQuery() {
+      return graphQuery(findTypeFromOriginalPayload(paginationState.originalPayload), paginationState.originalQueryParams, paginationState.queryParams)
+   }
 
-            console.log('// shopifyResponse', shopifyResponse)
-            console.log('// shopifyError ', shopifyError)
+   function limitReached(newTotal) {
+      console.log('paginationState.componentOptions.limit', paginationState.componentOptions.limit)
 
-            const [nextPageOfResultsErrorHi, nextPageOfResults] = await to(fetchNextPage(shopifyResponse.model.collections[0].products))
-
-            console.log('// nextPageOfResults', nextPageOfResults.model)
-            console.log('// nextPageOfResultsErrorHi ', nextPageOfResultsErrorHi)
-
-            setIsFirstLoad(false)
-
-            paginationItemsDispatch({ type: 'SET_LAST_PAYLOAD', payload: nextPageOfResults.model })
-            console.log('shopifyResponse.data')
-
-            // paginationDispatch({ type: 'SET_QUERY_PARAMS', payload: afterQueryParam(shopifyResponse, paginationState.dataType) })
-
-            paginationItemsDispatch({ type: 'UPDATE_PAYLOAD', payload: nextPageOfResults.model })
-            paginationItemsDispatch({ type: 'SET_IS_LOADING', payload: false })
-
-            paginationControlsDispatch({ type: 'SET_IS_LOADING', payload: false })
-
-            if (!hasNextPage(nextPageOfResults.model)) {
-               setHasMoreItems(false)
-            }
-         } else {
-            const firstQueryParams = paginationState.queryParams
-            firstQueryParams.after = paginationState.lastCursorId
-
-            paginationItemsDispatch({ type: 'SET_IS_LOADING', payload: true })
-
-            paginationControlsDispatch({ type: 'SET_IS_LOADING', payload: true })
-
-            // console.log('paginationState.dataType', paginationState.dataType)
-            // console.log('firstQueryParams', firstQueryParams)
-
-            if (!paginationState.dataType) {
-               console.log('//////////////////////////')
-               paginationState.dataType = 'products'
-            }
-
-            console.log('paginationItemsState.lastPayload', paginationItemsState.lastPayload)
-
-            const [shopifyError, shopifyResponse] = await to(graphQuery(paginationState.dataType, firstQueryParams))
-
-            console.log('___________________ paginationState', paginationState)
-            console.log('shopifyError', shopifyError)
-
-            if (has(shopifyResponse, 'errors')) {
-               console.log('!!!!!!!!!!! ERRORS shopifyResponse !!!!!!!!!!!', shopifyResponse)
-            } else {
-               console.log('success shopifyResponse', shopifyResponse)
-            }
-
-            setIsFirstLoad(false)
-
-            paginationItemsDispatch({ type: 'SET_LAST_PAYLOAD', payload: shopifyResponse.model[paginationState.dataType] })
-            console.log('shopifyResponse.data')
-
-            paginationDispatch({ type: 'SET_QUERY_PARAMS', payload: afterQueryParam(shopifyResponse, paginationState.dataType) })
-
-            paginationItemsDispatch({ type: 'UPDATE_PAYLOAD', payload: shopifyResponse.model[paginationState.dataType] })
-            paginationItemsDispatch({ type: 'SET_IS_LOADING', payload: false })
-
-            paginationControlsDispatch({ type: 'SET_IS_LOADING', payload: false })
-            if (!hasNextPage(shopifyResponse.model[paginationState.dataType])) {
-               setHasMoreItems(false)
-            }
-         }
-      } else {
-         console.log('.............................. nottt FIRST LOAD', paginationItemsState.lastPayload)
-
-         paginationItemsDispatch({ type: 'SET_IS_LOADING', payload: true })
-
-         paginationControlsDispatch({ type: 'SET_IS_LOADING', payload: true })
-
-         const [nextPageOfResultsError, nextPageOfResults] = await to(fetchNextPage(paginationItemsState.lastPayload))
-
-         console.log('nextPageOfResultsError', nextPageOfResultsError)
-
-         paginationItemsDispatch({ type: 'SET_LAST_PAYLOAD', payload: nextPageOfResults.model })
-
-         paginationDispatch({ type: 'SET_QUERY_PARAMS', payload: afterQueryParam(nextPageOfResults, paginationState.dataType) })
-
-         paginationItemsDispatch({ type: 'UPDATE_PAYLOAD', payload: nextPageOfResults.model })
-         paginationItemsDispatch({ type: 'SET_IS_LOADING', payload: false })
-
-         paginationControlsDispatch({ type: 'SET_IS_LOADING', payload: false })
-
-         if (!hasNextPage(nextPageOfResults.model)) {
-            setHasMoreItems(false)
-         }
+      if (paginationState.componentOptions.limit === 0) {
+         return false
       }
+
+      return newTotal >= paginationState.componentOptions.limit
+   }
+
+   function checkForEmptySet(results, totalShown) {
+      if (!hasNextPage(results) || limitReached(totalShown)) {
+         console.log('hasNextPage(results)', hasNextPage(results))
+
+         setHasMoreItems(false)
+      }
+   }
+
+   function getNextResults(lastResults) {
+      return new Promise(async (resolve, reject) => {
+         const [newResultsError, newResults] = await to(fetchNextPage(lastResults))
+
+         var newTotal = totalItemsShown + newResults.model.length
+
+         setTotalItemsShown(newTotal)
+         setPayloadStates(newResults.model)
+         checkForEmptySet(newResults.model, newTotal)
+
+         resolve(newResults)
+      })
+   }
+
+   function combineLastCursorWithParams() {
+      const firstQueryParams = paginationState.queryParams
+      firstQueryParams.after = paginationState.lastCursorId
+      return firstQueryParams
+   }
+
+   async function onNextPage() {
+      if (!isFirstLoad) {
+         setLoadingStates(true)
+         const [resultsError, results] = await to(getNextResults(paginationItemsState.lastPayload))
+
+         setAfterCursorQueryParams(afterQueryParam(results, paginationState.dataType))
+
+         return setLoadingStates(false)
+      }
+
+      setIsFirstLoad(false)
+
+      if (!paginationState.lastCursorId) {
+         setLoadingStates(true)
+
+         // Resend original query so that we can get a proper response
+         const [responseError, response] = await to(resendInitialQuery())
+
+         getNextResults(response.model.collections[0].products)
+
+         return setLoadingStates(false)
+      }
+
+      setLoadingStates(true)
+
+      const [resultsError, results] = await to(graphQuery(paginationState.dataType, combineLastCursorWithParams()))
+
+      // if (has(results, 'errors')) {
+      // }
+
+      var newTotal = totalItemsShown + results.model[paginationState.dataType].length
+
+      setPayloadStates(results.model[paginationState.dataType])
+
+      setAfterCursorQueryParams(afterQueryParam(results, paginationState.dataType))
+
+      setLoadingStates(false)
+
+      checkForEmptySet(results.model[paginationState.dataType], newTotal)
    }
 
    return usePortal(

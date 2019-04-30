@@ -44,4 +44,14 @@ function capitalizeFirstLetter(string) {
    return string.toLowerCase().replace(/^\w/, c => c.toUpperCase())
 }
 
-export { objectIsEmpty, createObj, removeFrom, lowercaseObjKeys, capitalizeFirstLetter }
+function itemWidthClass(perRow) {
+   if (perRow > 12) {
+      perRow = 12
+   } else if (!perRow) {
+      perRow = 1
+   }
+
+   return 'wps-w-' + perRow
+}
+
+export { objectIsEmpty, createObj, removeFrom, lowercaseObjKeys, capitalizeFirstLetter, itemWidthClass }

@@ -1,8 +1,8 @@
 import React, { useContext } from 'react'
-import { CartButtonContext } from '../button/context'
+import { CartButtonContext } from '../button/_state/context'
 
 function CartIcon() {
-   const { cartButtonState } = useContext(CartButtonContext)
+   const [cartButtonState] = useContext(CartButtonContext)
 
    return (
       <>

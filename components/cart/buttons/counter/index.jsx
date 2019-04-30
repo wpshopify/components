@@ -1,17 +1,7 @@
 import React, { useContext, useState, useEffect } from 'react'
 import { ShopContext } from '../../../shop/_state/context'
-import { CartButtonContext } from '../button/context'
-
-function findTotalCartQuantities(lineItems) {
-   return lineItems.reduce(function(accumulator, lineItem) {
-      accumulator += lineItem.quantity
-      return accumulator
-   }, 0)
-}
-
-function isTotalEmpty(total) {
-   return total === 0
-}
+import { CartButtonContext } from '../button/_state/context'
+import { findTotalCartQuantities, isTotalEmpty } from '../../../../common/cart'
 
 function counterStyles(cartButtonState) {
    return {
@@ -23,7 +13,7 @@ function counterStyles(cartButtonState) {
 function CartCounter() {
    const [shopState] = useContext(ShopContext)
    const [totalItems, setTotalItems] = useState(findTotalCartQuantities(shopState.checkoutCache.lineItems))
-   const { cartButtonState } = useContext(CartButtonContext)
+   const [cartButtonState] = useContext(CartButtonContext)
 
    useEffect(() => {
       const total = findTotalCartQuantities(shopState.checkoutCache.lineItems)
@@ -35,13 +25,9 @@ function CartCounter() {
 
    return (
       <>
-         {!isTotalEmpty(totalItems) ? (
-            <span style={counterStyles(cartButtonState)} className='wps-cart-counter'>
-               {totalItems}
-            </span>
-         ) : (
-            ''
-         )}
+         <span style={counterStyles(cartButtonState)} className='wps-cart-counter'>
+            {totalItems}
+         </span>
       </>
    )
 }

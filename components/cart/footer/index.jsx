@@ -1,6 +1,5 @@
-import React, { useContext, useEffect, useState, useRef } from 'react'
+import React, { useContext, useEffect, useRef } from 'react'
 import { ShopContext } from '../../shop/_state/context'
-import { CartContext } from '../../cart/context'
 import { maybeformatPriceToCurrency } from '../../../common/pricing/formatting'
 import { pulse, useAnime } from '../../../common/animations'
 import { CartCheckout } from '../checkout'
@@ -17,7 +16,7 @@ function CartFooter() {
 
    return (
       <section className='wps-cart-footer'>
-         <div className='wps-baseline wps-row wps-space-between'>
+         <div className='wps-baseline wps-row wps-space-between wps-m-0'>
             <p className='wps-total-prefix'>Subtotal:</p>
             <p className='wps-total-amount' ref={totalElement} data-wps-is-ready={shopState.isShopReady}>
                {maybeformatPriceToCurrency(shopState.checkoutCache.total)}

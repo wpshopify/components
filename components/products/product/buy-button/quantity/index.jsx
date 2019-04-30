@@ -19,9 +19,9 @@ function ProductQuantity() {
 
    return (
       <div className='wps-component wps-component-products-quantity' data-wps-is-component-wrapper data-wps-product-id={buyButtonState.product.id} data-wps-post-id=''>
-         <div className='wps-form-control wps-row wps-product-quantity-wrapper'>
+         <div className='wps-form-control wps-row wps-product-quantity-wrapper wps-m-0'>
             {showQuantityLabel && (
-               <div className='wps-quantity-input wps-quantity-label-wrapper' data-wps-is-ready={shopState.isShopReady ? '1' : '0'}>
+               <div className='wps-quantity-input wps-quantity-label-wrapper wps-d-flex wps-align-items-center' data-wps-is-ready={shopState.isShopReady ? '1' : '0'}>
                   <label htmlFor='wps-product-quantity'>{quantityLabel}</label>
                </div>
             )}

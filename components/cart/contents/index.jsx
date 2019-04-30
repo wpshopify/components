@@ -1,22 +1,13 @@
 import React, { useContext } from 'react'
 import { ShopContext } from '../../shop/_state/context'
 import { CartLineItems } from '../lineitems'
-import { CartNotice } from '../notice'
-import { CartNoticeEmpty } from '../notice/empty'
+import { Notice } from '../../notice'
 
 function CartContents() {
    const [shopState] = useContext(ShopContext)
 
    return (
-      <section className='wps-cart-contents'>
-         {shopState.isCartEmpty ? (
-            <CartNotice>
-               <CartNoticeEmpty />
-            </CartNotice>
-         ) : (
-            <CartLineItems lineItems={shopState.checkoutCache.variants} />
-         )}
-      </section>
+      <section className='wps-cart-contents'>{shopState.isCartEmpty ? <Notice type='info' message='Your cart is empty 🛒' /> : <CartLineItems lineItems={shopState.checkoutCache.variants} />}</section>
    )
 }
 

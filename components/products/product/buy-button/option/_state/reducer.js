@@ -15,8 +15,6 @@ function ProductOptionReducer(state, action) {
       }
 
       case 'TOGGLE_DROPDOWN': {
-         console.log('TOGGLE_DROPDOWNTOGGLE_DROPDOWNTOGGLE_DROPDOWN')
-
          return {
             ...state,
             isDropdownOpen: action.payload

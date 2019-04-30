@@ -1,5 +1,5 @@
 import React, { useContext, useRef, useEffect, useState } from 'react'
-import { CartContext } from '../../cart/context'
+import { CartContext } from '../../cart/_state/context'
 import { ShopContext } from '../../shop/_state/context'
 
 import { CartLineItemQuantity } from './quantity'
@@ -15,7 +15,7 @@ function getLineItemFromState(lineItem, lineItemsFromState) {
 }
 
 function CartLineItem({ lineItem, index }) {
-   const { cartState } = useContext(CartContext)
+   const [cartState] = useContext(CartContext)
    const [shopState, shopDispatch] = useContext(ShopContext)
 
    const [isUpdating] = useState(false)
@@ -64,42 +64,50 @@ function CartLineItem({ lineItem, index }) {
    }
 
    return (
-      <div className='wps-cart-lineitem row' data-wps-is-updating={isUpdating} data-wps-is-available={isAvailable(lineItem)} ref={lineItemElement}>
+      <div className='wps-cart-lineitem wps-mr-0 wps-ml-0 wps-row' data-wps-is-updating={isUpdating} data-wps-is-available={isAvailable(lineItem)} ref={lineItemElement}>
          <a href='https://demo.wpshop.io/products/aerodynamic-aluminum-bench/' className='wps-cart-lineitem-img-link' target='_blank'>
             <div className='wps-cart-lineitem-img' style={{ backgroundImage: `url(${lineItem.image.src})` }} data-wps-is-ready={shopState.isShopReady} />
          </a>
 
          <div className='wps-cart-lineitem-content'>
-            <div className='wps-cart-lineitem-content-row'>
-               <p className='wps-cart-lineitem-title' data-wps-is-ready={shopState.isShopReady}>
-                  <span className='wps-cart-lineitem-title-content'>{lineItem.productTitle}</span>
-                  <span className='wps-cart-lineitem-remove' onClick={removeLineItem}>
-                     Remove
-                  </span>
-               </p>
-
-               <div className='wps-cart-lineitem-variant-title' data-wps-is-ready={shopState.isShopReady}>
-                  {lineItem.title}
+            <div className='wps-cart-lineitem-title wps-col-12 wps-p-0' data-wps-is-ready={shopState.isShopReady}>
+               <div className='wps-container-fluid wps-p-0'>
+                  <div className='wps-row'>
+                     <span className='wps-cart-lineitem-title-content wps-col-9'>{lineItem.productTitle}</span>
+                     <span className='wps-cart-lineitem-remove wps-col-3' onClick={removeLineItem}>
+                        Remove
+                     </span>
+                  </div>
                </div>
+            </div>
+
+            <div className='wps-cart-lineitem-variant-title wps-badge wps-badge-pill wps-badge-dark wps-col-12' data-wps-is-ready={shopState.isShopReady}>
+               {lineItem.title}
             </div>
 
             {!isAvailable(lineItem) ? (
                <Notice type='warning' message='Out of stock' />
             ) : (
-               <div className='wps-cart-lineitem-content-row wps-row'>
-                  <CartLineItemQuantity
-                     lineItem={lineItem}
-                     variantId={variantId}
-                     lineItemQuantity={lineItemQuantity}
-                     setLineItemQuantity={setLineItemQuantity}
-                     isReady={shopState.isShopReady}
-                     isFirstRender={isFirstRender}
-                     setLineItemTotal={setLineItemTotal}
-                     lineItemTotalElement={lineItemTotalElement}
-                  />
+               <div className='wps-container-fluid wps-p-0'>
+                  <div className='wps-row'>
+                     <div className='wps-col-6'>
+                        <CartLineItemQuantity
+                           lineItem={lineItem}
+                           variantId={variantId}
+                           lineItemQuantity={lineItemQuantity}
+                           setLineItemQuantity={setLineItemQuantity}
+                           isReady={shopState.isShopReady}
+                           isFirstRender={isFirstRender}
+                           setLineItemTotal={setLineItemTotal}
+                           lineItemTotalElement={lineItemTotalElement}
+                        />
+                     </div>
 
-                  <div className='wps-cart-lineitem-price wps-cart-lineitem-price-total' data-wps-is-ready={shopState.isShopReady} ref={lineItemTotalElement}>
-                     {maybeformatPriceToCurrency(lineItemTotal)}
+                     <div className='wps-col-6'>
+                        <div className='wps-cart-lineitem-price wps-cart-lineitem-price-total' data-wps-is-ready={shopState.isShopReady} ref={lineItemTotalElement}>
+                           {maybeformatPriceToCurrency(lineItemTotal)}
+                        </div>
+                     </div>
                   </div>
                </div>
             )}

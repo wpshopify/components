@@ -5,7 +5,6 @@ import { PaginationControlsContext } from '../_state/context'
 import { PaginationItemsContext } from '../../items/_state/context'
 import { afterQueryParam } from '../index'
 import { usePortal } from '../../../../common/hooks'
-import update from 'immutability-helper'
 
 function PaginationPageSize() {
    const [paginationState, paginationDispatch] = useContext(PaginationContext)
@@ -21,34 +20,44 @@ function PaginationPageSize() {
       return paginationState.queryParams.first
    }
 
-   function updateQueryParams(event) {
+   function updatedFirstQueryParams(event) {
       return {
          first: parseInt(event.target.value)
       }
    }
 
-   async function onChange(event) {
-      const newParams = updateQueryParams(event)
+   function setLoadingStates(isLoading) {
+      paginationItemsDispatch({ type: 'SET_IS_LOADING', payload: isLoading })
+      paginationControlsDispatch({ type: 'SET_IS_LOADING', payload: isLoading })
+   }
 
+   function setPayloadStates(payload) {
+      paginationItemsDispatch({ type: 'SET_LAST_PAYLOAD', payload: payload })
+      paginationItemsDispatch({ type: 'UPDATE_PAYLOAD', payload: payload })
+   }
+
+   function setAfterCursorQueryParams(params) {
+      paginationDispatch({ type: 'SET_QUERY_PARAMS', payload: params })
+   }
+
+   async function onChange(event) {
       setPageSize(event.target.value)
 
-      const updatedParams = update(paginationState.queryParams, { $merge: newParams })
+      let updatedParams = updatedFirstQueryParams(event)
 
-      paginationDispatch({ type: 'SET_QUERY_PARAMS', payload: updatedParams })
+      setAfterCursorQueryParams(updatedParams)
 
-      paginationItemsDispatch({ type: 'SET_IS_LOADING', payload: true })
-      paginationControlsDispatch({ type: 'SET_IS_LOADING', payload: true })
+      setLoadingStates(true)
 
       // Calls Shopify
-      const shopifyResponse = await graphQuery('products', updatedParams)
+      const shopifyResponse = await graphQuery(paginationState.dataType, updatedParams)
 
-      paginationDispatch({ type: 'SET_QUERY_PARAMS', payload: afterQueryParam(shopifyResponse, paginationState.dataType) })
+      setAfterCursorQueryParams(afterQueryParam(shopifyResponse, paginationState.dataType))
 
-      paginationItemsDispatch({ type: 'UPDATE_PAYLOAD', payload: shopifyResponse.model.products })
+      setPayloadStates(shopifyResponse.model.products)
+
       paginationItemsDispatch({ type: 'SET_IS_LOADING', payload: false })
       paginationControlsDispatch({ type: 'SET_IS_LOADING', payload: false })
-
-      paginationItemsDispatch({ type: 'SET_LAST_PAYLOAD', payload: shopifyResponse.model.products })
    }
 
    return usePortal(

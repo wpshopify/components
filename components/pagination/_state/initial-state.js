@@ -1,5 +1,9 @@
 function PaginationInitialState(options) {
-   console.log('/////////////// PaginationInitialState options', options)
+   console.log('::::::::::: options.dataType', options.dataType)
+
+   if (!options.dataType) {
+      console.log('::::::::::: options ::::::::::', options)
+   }
 
    return {
       element: options.element,
