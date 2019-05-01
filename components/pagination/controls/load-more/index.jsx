@@ -1,5 +1,5 @@
 import React, { useContext, useRef, useEffect, useState } from 'react'
-import { fetchNextPage, graphQuery } from '/Users/andrew/www/devil/devilbox-new/data/www/wpshopify-api'
+import { fetchNextPage, graphQuery, formatIdsIntoQuery } from '/Users/andrew/www/devil/devilbox-new/data/www/wpshopify-api'
 import { PaginationContext } from '../../_state/context'
 import { PaginationItemsContext } from '../../items/_state/context'
 import { PaginationControlsContext } from '../_state/context'
@@ -39,7 +39,7 @@ function PaginationLoadMore() {
       paginationItemsDispatch({ type: 'UPDATE_PAYLOAD', payload: payload })
    }
 
-   function setAfterCursorQueryParams(params) {
+   function setQueryParams(params) {
       paginationDispatch({ type: 'SET_QUERY_PARAMS', payload: params })
    }
 
@@ -61,11 +61,36 @@ function PaginationLoadMore() {
       return newTotal >= paginationState.componentOptions.limit
    }
 
-   function checkForEmptySet(results, totalShown) {
+   async function checkForEmptySet(results, totalShown) {
+      // console.log('checkForEmptySet results', results)
+      console.log('idsChunks')
+      console.log('paginationItemsState', paginationItemsState)
+
       if (!hasNextPage(results) || limitReached(totalShown)) {
          console.log('hasNextPage(results)', hasNextPage(results))
+         if (paginationState.componentOptions.idsChunks) {
+            var newIds = paginationState.componentOptions.idsChunks[1]
+            console.log('newIds', newIds)
+            console.log('formatIdsIntoQuery(newIds)', formatIdsIntoQuery(newIds))
+            console.log('paginationState.queryParams', paginationState.queryParams)
 
-         setHasMoreItems(false)
+            const [resultsError, newres] = await to(
+               graphQuery(paginationState.dataType, {
+                  query: formatIdsIntoQuery(newIds),
+                  first: paginationState.queryParams.first,
+                  reverse: paginationState.queryParams.reverse,
+                  sortKey: paginationState.queryParams.sortKey
+               })
+            )
+
+            // console.log('newres ???????????????', newres)
+            setQueryParams({
+               query: formatIdsIntoQuery(newIds)
+            })
+            setPayloadStates(newres.model.products)
+         } else {
+            setHasMoreItems(false)
+         }
       }
    }
 
@@ -84,9 +109,12 @@ function PaginationLoadMore() {
    }
 
    function combineLastCursorWithParams() {
-      const firstQueryParams = paginationState.queryParams
-      firstQueryParams.after = paginationState.lastCursorId
-      return firstQueryParams
+      const queryParams = paginationState.queryParams
+      queryParams.after = paginationState.lastCursorId
+
+      console.log('queryParams', queryParams)
+
+      return queryParams
    }
 
    async function onNextPage() {
@@ -94,7 +122,7 @@ function PaginationLoadMore() {
          setLoadingStates(true)
          const [resultsError, results] = await to(getNextResults(paginationItemsState.lastPayload))
 
-         setAfterCursorQueryParams(afterQueryParam(results, paginationState.dataType))
+         setQueryParams(afterQueryParam(results, paginationState.dataType))
 
          return setLoadingStates(false)
       }
@@ -123,7 +151,7 @@ function PaginationLoadMore() {
 
       setPayloadStates(results.model[paginationState.dataType])
 
-      setAfterCursorQueryParams(afterQueryParam(results, paginationState.dataType))
+      setQueryParams(afterQueryParam(results, paginationState.dataType))
 
       setLoadingStates(false)
 

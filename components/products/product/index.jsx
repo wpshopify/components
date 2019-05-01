@@ -15,6 +15,7 @@ function Product({ payload }) {
    return (
       <div className={`${itemWidthClass(productsState.componentOptions.itemsPerRow)} wps-item wps-p-3`}>
          <ProductProvider payload={payload}>
+            {atob(payload.id)}
             {isShowingComponent(productsState, 'images') ? <ProductImages /> : ''}
             {isShowingComponent(productsState, 'title') ? <ProductTitle /> : ''}
             {isShowingComponent(productsState, 'pricing') ? <ProductPricing /> : ''}
