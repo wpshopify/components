@@ -8,7 +8,12 @@ function PaginationItemsReducer(state, action) {
             payload: update(state.payload, { $push: action.payload })
          }
       }
-
+      case 'LIMIT_PAYLOAD': {
+         return {
+            ...state,
+            payload: update(state.payload, { $set: state.payload.slice(0, action.payload) })
+         }
+      }
       case 'SET_IS_LOADING': {
          return {
             ...state,

@@ -1,10 +1,4 @@
 function PaginationInitialState(options) {
-   console.log('::::::::::: options.dataType', options.dataType)
-
-   if (!options.dataType) {
-      console.log('::::::::::: options ::::::::::', options)
-   }
-
    return {
       element: options.element,
       componentOptions: options.componentOptions,
@@ -16,7 +10,10 @@ function PaginationInitialState(options) {
       queryParams: options.queryParams,
       dataType: options.dataType,
       originalPayload: options.originalPayload,
-      originalQueryParams: options.originalQueryParams
+      originalQueryParams: options.originalQueryParams,
+      totalShown: options.payload ? options.payload.length : 0,
+      limit: options.componentOptions.limit ? parseInt(options.componentOptions.limit) : false,
+      hasMoreItems: true
    }
 }
 

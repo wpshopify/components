@@ -8,6 +8,8 @@ import isEmpty from 'lodash/isEmpty'
 import { Notice } from '../notice'
 
 function Pagination({ options, children }) {
+   console.log('<Pagination /> : ', options)
+
    return usePortal(
       <PaginationProvider options={options}>
          <PaginationItemsProvider options={options}>
