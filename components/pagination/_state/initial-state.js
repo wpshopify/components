@@ -13,7 +13,8 @@ function PaginationInitialState(options) {
       originalQueryParams: options.originalQueryParams,
       totalShown: options.payload ? options.payload.length : 0,
       limit: options.componentOptions.limit ? parseInt(options.componentOptions.limit) : false,
-      hasMoreItems: true
+      hasMoreItems: true,
+      controlsTouched: false
    }
 }
 

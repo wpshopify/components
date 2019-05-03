@@ -15,7 +15,8 @@ function typeSelectionsList(itemType, typeSelections) {
 }
 
 function FilterOptionsGroupItem({ itemValue, itemType, displayStyle }) {
-   const { filtersState, filtersDispatch } = useContext(FiltersContext)
+   const [filtersState, filtersDispatch] = useContext(FiltersContext)
+
    const [isSelected, setIsSelected] = useState(false)
    const isFirstRender = useRef(true)
 

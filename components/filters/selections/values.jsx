@@ -18,7 +18,8 @@ function typeSelectionsList(itemType, typeSelections) {
 }
 
 function FilterSelectionsValue({ selectionType, val }) {
-   const { filtersState, filtersDispatch } = useContext(FiltersContext)
+   // const { filtersState, filtersDispatch } = useContext(FiltersContext)
+   const [filtersState, filtersDispatch] = useContext(FiltersContext)
 
    function buildNewSelection() {
       return updateSelectionList({

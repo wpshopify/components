@@ -26,6 +26,10 @@ function PaginationPageSize() {
       }
    }
 
+   function setTotalItemsShown(itemsToAdd) {
+      paginationDispatch({ type: 'SET_TOTAL_SHOWN', payload: itemsToAdd })
+   }
+
    function setLoadingStates(isLoading) {
       paginationItemsDispatch({ type: 'SET_IS_LOADING', payload: isLoading })
       paginationControlsDispatch({ type: 'SET_IS_LOADING', payload: isLoading })
@@ -39,8 +43,12 @@ function PaginationPageSize() {
    function setAfterCursorQueryParams(params) {
       paginationDispatch({ type: 'SET_QUERY_PARAMS', payload: params })
    }
+   function setControlsTouched(touched) {
+      paginationDispatch({ type: 'SET_CONTROLS_TOUCHED', payload: touched })
+   }
 
    async function onChange(event) {
+      setControlsTouched(true)
       setPageSize(event.target.value)
 
       let updatedParams = updatedFirstQueryParams(event)
@@ -48,12 +56,15 @@ function PaginationPageSize() {
       setAfterCursorQueryParams(updatedParams)
 
       setLoadingStates(true)
+      console.log('updatedParams', updatedParams)
 
       // Calls Shopify
       const shopifyResponse = await graphQuery(paginationState.dataType, updatedParams)
+      console.log('shopifyResponse', shopifyResponse)
 
       setAfterCursorQueryParams(afterQueryParam(shopifyResponse, paginationState.dataType))
 
+      setTotalItemsShown(shopifyResponse.model.products.length)
       setPayloadStates(shopifyResponse.model.products)
 
       paginationItemsDispatch({ type: 'SET_IS_LOADING', payload: false })
@@ -70,13 +81,19 @@ function PaginationPageSize() {
             <option value='DEFAULT' disabled='disabled'>
                Choose a size
             </option>
-            <option value='10'>10</option>
-            <option value='25'>25</option>
-            <option value='50' data-wps-reverse>
+            <option value='10' disabled={paginationState.totalShown >= 10 || !paginationState.hasMoreItems ? 'disabled' : ''}>
+               10
+            </option>
+            <option value='25' disabled={paginationState.totalShown >= 25 || !paginationState.hasMoreItems ? 'disabled' : ''}>
+               25
+            </option>
+            <option value='50' disabled={paginationState.totalShown >= 50 || !paginationState.hasMoreItems ? 'disabled' : ''} data-wps-reverse>
                50
             </option>
-            <option value='100'>100</option>
-            <option value='250' data-wps-reverse>
+            <option value='100' disabled={paginationState.totalShown >= 100 || !paginationState.hasMoreItems ? 'disabled' : ''}>
+               100
+            </option>
+            <option value='250' disabled={paginationState.totalShown >= 250 || !paginationState.hasMoreItems ? 'disabled' : ''} data-wps-reverse>
                250
             </option>
          </select>

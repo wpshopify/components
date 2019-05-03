@@ -4,6 +4,8 @@ import { Pagination } from '../pagination'
 import { ProductsProvider } from './_state/provider'
 
 function Products({ options }) {
+   console.log('ProductsProductsProductsProducts', options)
+
    return (
       <ProductsProvider options={options}>
          <Pagination options={options}>

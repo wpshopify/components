@@ -42,6 +42,13 @@ function PaginationReducer(state, action) {
          }
       }
 
+      case 'SET_CONTROLS_TOUCHED': {
+         return {
+            ...state,
+            controlsTouched: update(state.controlsTouched, { $set: action.payload })
+         }
+      }
+
       default: {
          return state
       }

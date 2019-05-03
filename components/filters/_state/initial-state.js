@@ -1,6 +1,4 @@
-import { Products } from '../../products'
-
-function getFiltersInitialState(options = {}) {
+function FiltersInitialState(options = {}) {
    return {
       componentID: options.componentID ? options.componentID : false,
       element: options.element ? options.element : false,
@@ -24,4 +22,4 @@ function getFiltersInitialState(options = {}) {
    }
 }
 
-export { getFiltersInitialState }
+export { FiltersInitialState }

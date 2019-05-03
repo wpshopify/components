@@ -13,7 +13,8 @@ function hasReverse(select) {
 }
 
 function FilterSorting() {
-   const { filtersState, filtersDispatch } = useContext(FiltersContext)
+   const [filtersState, filtersDispatch] = useContext(FiltersContext)
+
    const [sortValue, setSortValue] = useState('TITLE')
 
    function updateFetchParams(event) {

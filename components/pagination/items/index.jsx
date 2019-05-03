@@ -1,6 +1,7 @@
 import React, { useContext, useEffect } from 'react'
 import { PaginationItemsContext } from './_state/context'
 import { PaginationContext } from '../_state/context'
+import { Notice } from '../../notice'
 import uuidv4 from 'uuid/v4'
 import isEmpty from 'lodash/isEmpty'
 import last from 'lodash/last'
@@ -48,6 +49,7 @@ function PaginationItems({ children }) {
    return (
       <section className={'wps-items wps-items-list wps-row'} data-item-is-loading={paginationItemsState.isLoading}>
          {paginationItemsState.payload.map(item => React.cloneElement(children, { payload: item, key: uuidv4() }))}
+         {paginationState.controlsTouched && !paginationState.hasMoreItems && <Notice message='No items left!' type='info' />}
       </section>
    )
 }

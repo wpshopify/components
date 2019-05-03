@@ -5,7 +5,7 @@ import { FilterOptionsGroupItem } from '../group-item'
 import isEmpty from 'lodash/isEmpty'
 
 function FilterOptionsGroup({ groupType, displayStyle }) {
-   const { filtersOptionsState } = useContext(FiltersOptionsContext)
+   const [filtersOptionsState] = useContext(FiltersOptionsContext)
 
    return (
       <Filter heading={groupType}>

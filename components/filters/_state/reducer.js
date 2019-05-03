@@ -5,7 +5,7 @@ function FiltersReducer(state, action) {
       case 'SET_IS_LOADING': {
          return {
             ...state,
-            isLoading: action.payload
+            isLoading: update(state.isLoading, { $set: action.payload })
          }
       }
 
@@ -51,7 +51,7 @@ function FiltersReducer(state, action) {
       case 'SET_PAYLOAD': {
          return {
             ...state,
-            payload: action.payload
+            payload: update(state.payload, { $set: action.payload })
          }
       }
 
@@ -65,49 +65,49 @@ function FiltersReducer(state, action) {
       case 'SET_RESULTS': {
          return {
             ...state,
-            results: action.payload
+            results: update(state.results, { $set: action.payload })
          }
       }
 
       case 'SET_HAS_RESULTS': {
          return {
             ...state,
-            hasResults: action.payload
+            hasResults: update(state.hasResults, { $set: action.payload })
          }
       }
 
       case 'SET_HAS_NEXT_PAGE': {
          return {
             ...state,
-            hasNextPage: action.payload
+            hasNextPage: update(state.hasNextPage, { $set: action.payload })
          }
       }
 
       case 'SET_HAS_PREV_PAGE': {
          return {
             ...state,
-            hasPrevPage: action.payload
+            hasPrevPage: update(state.hasPrevPage, { $set: action.payload })
          }
       }
 
       case 'SET_SELECTED_TAGS': {
          return {
             ...state,
-            selectedTags: action.payload
+            selectedTags: update(state.selectedTags, { $set: action.payload })
          }
       }
 
       case 'SET_SELECTED_TYPES': {
          return {
             ...state,
-            selectedTypes: action.payload
+            selectedTypes: update(state.selectedTypes, { $set: action.payload })
          }
       }
 
       case 'SET_SELECTED_VENDORS': {
          return {
             ...state,
-            selectedVendors: action.payload
+            selectedVendors: update(state.selectedVendors, { $set: action.payload })
          }
       }
 

@@ -5,7 +5,7 @@ import { getSelectionTypes } from '../../../common/selections'
 import isEmpty from 'lodash/isEmpty'
 
 function FilterSelectionsType({ selectionType }) {
-   const { filtersState } = useContext(FiltersContext)
+   const [filtersState] = useContext(FiltersContext)
 
    return (
       !isEmpty(filtersState.selections[selectionType]) && (
@@ -20,7 +20,8 @@ function FilterSelectionsType({ selectionType }) {
 }
 
 function FilterSelectionsTypes() {
-   const { filtersState } = useContext(FiltersContext)
+   const [filtersState] = useContext(FiltersContext)
+
    const selectionTypes = getSelectionTypes(filtersState.selections)
 
    return selectionTypes.map((selectionType, index) => <FilterSelectionsType key={index} selectionType={selectionType} />)

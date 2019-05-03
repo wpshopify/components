@@ -1,9 +1,8 @@
-import React, { useContext, useRef, useEffect, useState } from 'react'
+import React, { useContext, useEffect, useRef } from 'react'
 import { fetchNextPage, graphQuery } from '/Users/andrew/www/devil/devilbox-new/data/www/wpshopify-api'
 import { PaginationContext } from '../../_state/context'
 import { PaginationItemsContext } from '../../items/_state/context'
 import { PaginationControlsContext } from '../_state/context'
-import { Notice } from '../../../notice'
 import { usePortal } from '../../../../common/hooks'
 import to from 'await-to-js'
 import { afterQueryParam } from '../index'
@@ -14,7 +13,7 @@ function PaginationLoadMore() {
 
    const [paginationControlsState, paginationControlsDispatch] = useContext(PaginationControlsContext)
 
-   const [isFirstLoad, setIsFirstLoad] = useState(true)
+   const isFirstLoad = useRef(true)
 
    function setTotalItemsShown(itemsToAdd) {
       paginationDispatch({ type: 'SET_TOTAL_SHOWN', payload: itemsToAdd })
@@ -32,6 +31,10 @@ function PaginationLoadMore() {
 
    function setQueryParams(params) {
       paginationDispatch({ type: 'SET_QUERY_PARAMS', payload: params })
+   }
+
+   function setControlsTouched(touched) {
+      paginationDispatch({ type: 'SET_CONTROLS_TOUCHED', payload: touched })
    }
 
    function findTypeFromOriginalPayload(payload) {
@@ -61,7 +64,9 @@ function PaginationLoadMore() {
    }
 
    async function onNextPage() {
-      if (!isFirstLoad) {
+      setControlsTouched(true)
+
+      if (!isFirstLoad.current) {
          console.log('........ NOT FIRST LOAD')
          setLoadingStates(true)
          const [resultsError, results] = await to(getNextResults(paginationItemsState.lastPayload))
@@ -71,7 +76,7 @@ function PaginationLoadMore() {
          return setLoadingStates(false)
       }
 
-      setIsFirstLoad(false)
+      isFirstLoad.current = false
 
       if (!paginationState.lastCursorId) {
          console.log('........ NO LAST CURSOR ID SET')
@@ -100,12 +105,10 @@ function PaginationLoadMore() {
 
    return usePortal(
       <>
-         {paginationState.hasMoreItems ? (
+         {paginationState.hasMoreItems && (
             <button type='button' disabled={paginationControlsState.isLoading} className='wps-button wps-btn-next-page' onClick={onNextPage}>
                {paginationControlsState.isLoading ? 'Loading ...' : 'Load more'}
             </button>
-         ) : (
-            !isFirstLoad && <Notice message='No items left!' type='info' />
          )}
       </>,
       document.querySelector(paginationState.componentOptions.dropzoneLoadMore)

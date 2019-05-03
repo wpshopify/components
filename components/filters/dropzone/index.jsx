@@ -9,9 +9,10 @@ Component: SearchNotices
 
 */
 function FilterDropzone() {
-   const { filtersState } = useContext(FiltersContext)
+   const [filtersState] = useContext(FiltersContext)
    const [showData, setShowData] = useState(false)
    const isFirstRender = useRef(true)
+   console.log('FilterDropzone', filtersState)
 
    function hasNewData() {
       return filtersState.payload.length > 0
@@ -28,10 +29,14 @@ function FilterDropzone() {
                excludes: false,
                renderFromServer: false,
                selectedVariant: false,
-               componentOptions: false
+               componentOptions: {
+                  pagination: true
+               }
             }
          }),
+         queryParams: filtersState.filterParams,
          type: 'filters',
+         componentOptions: filtersState.componentOptions,
          noResultsText: filtersState.componentOptions.noResultsText
       }
    }

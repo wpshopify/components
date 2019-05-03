@@ -2,7 +2,7 @@ import React, { useContext } from 'react'
 import { FiltersContext } from '../_state/context'
 
 function FilterSelectionsClear() {
-   const { filtersDispatch } = useContext(FiltersContext)
+   const [filtersState, filtersDispatch] = useContext(FiltersContext)
 
    function clearAllSelections() {
       filtersDispatch({ type: 'CLEAR_SELECTIONS' })
