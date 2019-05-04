@@ -2,13 +2,11 @@ import React, { useContext, useState } from 'react'
 import { graphQuery } from '/Users/andrew/www/devil/devilbox-new/data/www/wpshopify-api'
 import { PaginationContext } from '../../_state/context'
 import { PaginationControlsContext } from '../_state/context'
-import { PaginationItemsContext } from '../../items/_state/context'
 import { afterQueryParam } from '../index'
 import { usePortal } from '../../../../common/hooks'
 
 function PaginationPageSize() {
    const [paginationState, paginationDispatch] = useContext(PaginationContext)
-   const [paginationItemsState, paginationItemsDispatch] = useContext(PaginationItemsContext)
    const [paginationControlsState, paginationControlsDispatch] = useContext(PaginationControlsContext)
    const [pageSize, setPageSize] = useState(defaultPageSize())
 
@@ -31,13 +29,13 @@ function PaginationPageSize() {
    }
 
    function setLoadingStates(isLoading) {
-      paginationItemsDispatch({ type: 'SET_IS_LOADING', payload: isLoading })
+      paginationDispatch({ type: 'SET_IS_LOADING', payload: isLoading })
       paginationControlsDispatch({ type: 'SET_IS_LOADING', payload: isLoading })
    }
 
    function setPayloadStates(payload) {
-      paginationItemsDispatch({ type: 'SET_LAST_PAYLOAD', payload: payload })
-      paginationItemsDispatch({ type: 'UPDATE_PAYLOAD', payload: payload })
+      paginationDispatch({ type: 'SET_LAST_PAYLOAD', payload: payload })
+      paginationDispatch({ type: 'UPDATE_PAYLOAD', payload: payload })
    }
 
    function setAfterCursorQueryParams(params) {
@@ -56,18 +54,16 @@ function PaginationPageSize() {
       setAfterCursorQueryParams(updatedParams)
 
       setLoadingStates(true)
-      console.log('updatedParams', updatedParams)
 
       // Calls Shopify
       const shopifyResponse = await graphQuery(paginationState.dataType, updatedParams)
-      console.log('shopifyResponse', shopifyResponse)
 
       setAfterCursorQueryParams(afterQueryParam(shopifyResponse, paginationState.dataType))
 
       setTotalItemsShown(shopifyResponse.model.products.length)
       setPayloadStates(shopifyResponse.model.products)
 
-      paginationItemsDispatch({ type: 'SET_IS_LOADING', payload: false })
+      paginationDispatch({ type: 'SET_IS_LOADING', payload: false })
       paginationControlsDispatch({ type: 'SET_IS_LOADING', payload: false })
    }
 

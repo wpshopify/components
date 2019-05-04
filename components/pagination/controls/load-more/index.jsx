@@ -1,7 +1,6 @@
 import React, { useContext, useEffect, useRef } from 'react'
 import { fetchNextPage, graphQuery } from '/Users/andrew/www/devil/devilbox-new/data/www/wpshopify-api'
 import { PaginationContext } from '../../_state/context'
-import { PaginationItemsContext } from '../../items/_state/context'
 import { PaginationControlsContext } from '../_state/context'
 import { usePortal } from '../../../../common/hooks'
 import to from 'await-to-js'
@@ -9,7 +8,6 @@ import { afterQueryParam } from '../index'
 
 function PaginationLoadMore() {
    const [paginationState, paginationDispatch] = useContext(PaginationContext)
-   const [paginationItemsState, paginationItemsDispatch] = useContext(PaginationItemsContext)
 
    const [paginationControlsState, paginationControlsDispatch] = useContext(PaginationControlsContext)
 
@@ -20,13 +18,13 @@ function PaginationLoadMore() {
    }
 
    function setLoadingStates(isLoading) {
-      paginationItemsDispatch({ type: 'SET_IS_LOADING', payload: isLoading })
+      paginationDispatch({ type: 'SET_IS_LOADING', payload: isLoading })
       paginationControlsDispatch({ type: 'SET_IS_LOADING', payload: isLoading })
    }
 
    function setPayloadStates(payload) {
-      paginationItemsDispatch({ type: 'SET_LAST_PAYLOAD', payload: payload })
-      paginationItemsDispatch({ type: 'UPDATE_PAYLOAD', payload: payload })
+      paginationDispatch({ type: 'SET_LAST_PAYLOAD', payload: payload })
+      paginationDispatch({ type: 'UPDATE_PAYLOAD', payload: payload })
    }
 
    function setQueryParams(params) {
@@ -42,6 +40,8 @@ function PaginationLoadMore() {
    }
 
    function resendInitialQuery() {
+      console.log('paginationState', paginationState)
+
       return graphQuery(findTypeFromOriginalPayload(paginationState.originalPayload), paginationState.originalQueryParams, paginationState.queryParams)
    }
 
@@ -67,9 +67,8 @@ function PaginationLoadMore() {
       setControlsTouched(true)
 
       if (!isFirstLoad.current) {
-         console.log('........ NOT FIRST LOAD')
          setLoadingStates(true)
-         const [resultsError, results] = await to(getNextResults(paginationItemsState.lastPayload))
+         const [resultsError, results] = await to(getNextResults(paginationState.lastPayload))
 
          setQueryParams(afterQueryParam(results, paginationState.dataType))
 
@@ -79,21 +78,26 @@ function PaginationLoadMore() {
       isFirstLoad.current = false
 
       if (!paginationState.lastCursorId) {
-         console.log('........ NO LAST CURSOR ID SET')
-
          setLoadingStates(true)
 
          // Resend original query so that we can get a proper response
          const [responseError, response] = await to(resendInitialQuery())
+         console.log('paginationState //////////////', paginationState)
+         console.log('response!!!!!!!!!!!!!', response)
 
-         const [nextError, nextResponse] = await to(getNextResults(response.model.collections[0].products))
+         if (paginationState.dataType === 'products') {
+            var newModel = response.model.products
+         } else if (paginationState.dataType === 'collections') {
+            var newModel = response.model.collections[0].products
+         }
+
+         const [nextError, nextResponse] = await to(getNextResults(newModel))
+         console.log('nextResponse', nextResponse)
 
          return setLoadingStates(false)
       }
 
       setLoadingStates(true)
-
-      console.log('........ FIRST LOAD AN LAST CURSOR ID SET', paginationItemsState.lastPayload)
 
       const [resultsError, results] = await to(graphQuery(paginationState.dataType, combineLastCursorWithParams()))
 

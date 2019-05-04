@@ -1,6 +1,6 @@
 import React, { useContext, useEffect, useRef, useState } from 'react'
+import { usePortal } from '../../../common/hooks'
 import { FiltersContext } from '../_state/context'
-import { Dropzone } from '../../dropzone'
 import { Products } from '../../products'
 
 /*
@@ -8,19 +8,22 @@ import { Products } from '../../products'
 Component: SearchNotices
 
 */
-function FilterDropzone() {
+function FilterItems() {
    const [filtersState] = useContext(FiltersContext)
    const [showData, setShowData] = useState(false)
    const isFirstRender = useRef(true)
-   console.log('FilterDropzone', filtersState)
+
+   console.log('filtersState ................ ::', filtersState)
 
    function hasNewData() {
       return filtersState.payload.length > 0
    }
 
-   function buildOptions(products) {
+   function buildOptions() {
       return {
-         products: products.map(product => {
+         payload: filtersState.payload,
+         originalPayload: filtersState.payload,
+         products: filtersState.payload.map(product => {
             return {
                product: product,
                componentID: false,
@@ -34,7 +37,9 @@ function FilterDropzone() {
                }
             }
          }),
-         queryParams: filtersState.filterParams,
+         dataType: 'products',
+         originalQueryParams: filtersState.queryParams,
+         queryParams: filtersState.queryParams,
          type: 'filters',
          componentOptions: filtersState.componentOptions,
          noResultsText: filtersState.componentOptions.noResultsText
@@ -57,13 +62,7 @@ function FilterDropzone() {
       [filtersState.payload]
    )
 
-   return (
-      showData && (
-         <Dropzone dropzone={filtersState.componentOptions.dropzonePayload}>
-            <Products options={buildOptions(filtersState.payload)} />
-         </Dropzone>
-      )
-   )
+   return usePortal(showData && <Products options={buildOptions()} />, document.querySelector(filtersState.componentOptions.dropzonePayload))
 }
 
-export { FilterDropzone }
+export { FilterItems }

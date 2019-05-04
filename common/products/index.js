@@ -1,38 +1,41 @@
-import filter from 'lodash/filter';
-import merge from 'lodash/merge';
-import head from 'lodash/head';
-import { createObj } from '../utils';
+import filter from 'lodash/filter'
+import merge from 'lodash/merge'
+import head from 'lodash/head'
+import { createObj } from '../utils'
 
 function getAvailableVariants(product) {
-
    let combinations = product.variants.map(variant => {
-      return variant.selectedOptions.map(selectableOption => createObj(selectableOption.name, selectableOption.value));
-   });
+      return variant.selectedOptions.map(selectableOption => createObj(selectableOption.name, selectableOption.value))
+   })
 
    return combinations.map(combination => {
-      return merge(...combination);
-   });
+      return merge(...combination)
+   })
+}
 
+function isAvailable(item) {
+   return item.availableForSale || item.available
+}
+
+function onlyAvailableItems(items) {
+   return items.filter(item => isAvailable)
 }
 
 function filterAvailableVariantsBySelectedOption(product, selectedOption) {
-   return filter(getAvailableVariants(product), selectedOption);
+   return filter(getAvailableVariants(product), selectedOption)
 }
 
-
 function addProductDetailsToVariant(variant, product) {
+   var variantCopy = variant
 
-   var variantCopy = variant;
+   variantCopy.productTitle = product.title
+   variantCopy.productId = product.id
 
-   variantCopy.productTitle = product.title;
-   variantCopy.productId = product.id;
-
-   return variantCopy;
-
+   return variantCopy
 }
 
 function calcLineItemTotal(price, quantity) {
-   return Number(price) * Number(quantity);
+   return Number(price) * Number(quantity)
 }
 
 function getVariantFromLineItem(checkoutVariants, lineItem) {
@@ -40,35 +43,24 @@ function getVariantFromLineItem(checkoutVariants, lineItem) {
 }
 
 function calcCheckoutTotal(checkoutState) {
-
-   var checkoutStateCopy = checkoutState;
+   var checkoutStateCopy = checkoutState
 
    return checkoutState.lineItems.reduce((accumulator, lineItem) => {
-      return calcCheckoutTotalReducer(accumulator, lineItem, checkoutStateCopy);
-   }, 0);
-
+      return calcCheckoutTotalReducer(accumulator, lineItem, checkoutStateCopy)
+   }, 0)
 }
 
-
 function calcCheckoutTotalReducer(accumulator, lineItem, checkoutState) {
-
-   var variant = getVariantFromLineItem(checkoutState.variants, lineItem);
+   var variant = getVariantFromLineItem(checkoutState.variants, lineItem)
 
    // If variant was removed from the store, these will be undefined
    if (!variant || !lineItem) {
-      return accumulator;
+      return accumulator
    }
 
-   accumulator += calcLineItemTotal(lineItem.quantity, variant.price);
+   accumulator += calcLineItemTotal(lineItem.quantity, variant.price)
 
-   return accumulator;
-
+   return accumulator
 }
 
-export {
-   getAvailableVariants,
-   filterAvailableVariantsBySelectedOption,
-   addProductDetailsToVariant,
-   calcLineItemTotal,
-   calcCheckoutTotal
-}
+export { getAvailableVariants, filterAvailableVariantsBySelectedOption, addProductDetailsToVariant, calcLineItemTotal, calcCheckoutTotal, isAvailable, onlyAvailableItems }

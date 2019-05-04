@@ -3,15 +3,16 @@ import { FiltersContext } from '../_state/context'
 import { FilterSelectionsWrapper } from './wrapper'
 import { objectIsEmpty } from '../../../common/utils'
 import { usePortal } from '../../../common/hooks'
+import { getProductsFromQuery } from '@wpshopify/api'
+import { checkHasResults, checkPrevPage, checkNextPage } from '../../../common/pagination'
 import isEmpty from 'lodash/isEmpty'
 import mapKeys from 'lodash/mapKeys'
 import compact from 'lodash/compact'
 import to from 'await-to-js'
-import { getProductsFromQuery } from '@wpshopify/api'
-import { checkHasResults, checkPrevPage, checkNextPage } from '../../../common/pagination'
 
 function FilterSelections() {
    const [filtersState, filtersDispatch] = useContext(FiltersContext)
+
    const isFirstRender = useRef(true)
 
    function joinFilteredValues(value) {
@@ -97,11 +98,11 @@ Annoying, but needs to be done to make the filter components easier to deal with
          return
       }
 
-      filtersDispatch({ type: 'SET_FILTER_PARAMS', payload: updateFetchParamsQuery() })
+      filtersDispatch({ type: 'SET_QUERY_PARAMS', payload: updateFetchParamsQuery() })
    }, [filtersState.selections])
 
    function fetchProducts() {
-      return getProductsFromQuery(filtersState.filterParams)
+      return getProductsFromQuery(filtersState.queryParams)
    }
 
    useEffect(() => {
@@ -111,7 +112,7 @@ Annoying, but needs to be done to make the filter components easier to deal with
       }
 
       loadData()
-   }, [filtersState.filterParams])
+   }, [filtersState.queryParams])
 
    function afterDataLoads(items) {
       filtersDispatch({ type: 'SET_HAS_RESULTS', payload: checkHasResults(items) })

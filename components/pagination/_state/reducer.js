@@ -8,6 +8,26 @@ function PaginationReducer(state, action) {
             payload: update(state.payload, { $push: action.payload })
          }
       }
+      case 'SET_PAYLOAD': {
+         return {
+            ...state,
+            payload: update(state.payload, { $set: action.payload })
+         }
+      }
+
+      case 'LIMIT_PAYLOAD': {
+         return {
+            ...state,
+            payload: update(state.payload, { $set: state.payload.slice(0, action.payload) })
+         }
+      }
+
+      case 'SET_LAST_PAYLOAD': {
+         return {
+            ...state,
+            lastPayload: update(state.lastPayload, { $set: action.payload })
+         }
+      }
 
       case 'SET_IS_LOADING': {
          return {
@@ -15,12 +35,7 @@ function PaginationReducer(state, action) {
             isLoading: update(state.isLoading, { $set: action.payload })
          }
       }
-      case 'SET_PAYLOAD': {
-         return {
-            ...state,
-            payload: update(state.payload, { $set: action.payload })
-         }
-      }
+
       case 'SET_QUERY_PARAMS': {
          return {
             ...state,

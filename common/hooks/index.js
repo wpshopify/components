@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useState, useContext } from 'react'
 import ReactDOM from 'react-dom'
 import hasIn from 'lodash/hasIn'
 
@@ -78,4 +78,21 @@ function usePortal(componentMarkup, containerElement) {
    return renderPortal()
 }
 
-export { useOnClickOutside, usePortal }
+function useFiltersContext(maybeContext) {
+   var filtersContext = useContext(maybeContext)
+
+   if (!filtersContext) {
+      return [
+         {
+            isLoading: false,
+            payload: false,
+            queryParams: false
+         },
+         function() {}
+      ]
+   }
+
+   return filtersContext
+}
+
+export { useOnClickOutside, usePortal, useFiltersContext }

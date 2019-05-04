@@ -6,17 +6,14 @@ import size from 'lodash/size'
 import groupBy from 'lodash/groupBy'
 import map from 'lodash/map'
 import uniqBy from 'lodash/uniqBy'
+import { onlyAvailableItems } from '../../../../../common/products'
 
 function allOptionsSelectedMatch(onlySelectedOptions, product) {
    return size(onlySelectedOptions) === product.options.length
 }
 
-function onlyAvailableVariants(variants) {
-   return variants.filter(variant => variant.availableForSale)
-}
-
-function onlyAvailableVariantsOptions(onlyAvailableVariants) {
-   return groupBy(onlyAvailableVariants.flatMap(variant => variant.selectedOptions), 'name')
+function onlyAvailableVariantsOptions(variants) {
+   return groupBy(variants.flatMap(variant => variant.selectedOptions), 'name')
 }
 
 function onlyUniqueOptionValues(optionValues) {
@@ -33,9 +30,7 @@ function formatAvailableOptions(availOptions) {
 }
 
 function onlyAvailableOptionsFromVariants(variants) {
-   const availOptions = onlyAvailableVariantsOptions(onlyAvailableVariants(variants))
-
-   return formatAvailableOptions(availOptions)
+   return formatAvailableOptions(onlyAvailableVariantsOptions(onlyAvailableItems(variants)))
 }
 
 /*
@@ -47,6 +42,7 @@ function ProductOptions() {
    const isFirstRender = useRef(true)
    const [productState, productDispatch] = useContext(ProductContext)
    const [buyButtonState, buyButtonDispatch] = useContext(ProductBuyButtonContext)
+
    const options = onlyAvailableOptionsFromVariants(buyButtonState.product.variants)
 
    useEffect(() => {

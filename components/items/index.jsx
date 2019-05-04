@@ -1,8 +1,7 @@
 import React, { useState, useRef, useEffect, useContext } from 'react'
 import { Product } from '../products/product'
-import size from 'lodash/size'
-import { LoadingContext } from '../../common/state/context'
 import { Notice } from '../notice'
+import size from 'lodash/size'
 
 function hasItems(items) {
    return size(items) !== 0 ? true : false
@@ -11,7 +10,6 @@ function hasItems(items) {
 function Items({ items }) {
    const [isActive, setIsActive] = useState(0)
    const isFirstRender = useRef(true)
-   // const { isLoading } = useContext(LoadingContext)
 
    useEffect(() => {
       if (isFirstRender.current) {

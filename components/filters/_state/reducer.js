@@ -55,10 +55,10 @@ function FiltersReducer(state, action) {
          }
       }
 
-      case 'SET_FILTER_PARAMS': {
+      case 'SET_QUERY_PARAMS': {
          return {
             ...state,
-            filterParams: update(state.filterParams, { $merge: action.payload })
+            queryParams: update(state.queryParams, { $merge: action.payload })
          }
       }
 

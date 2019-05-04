@@ -1,8 +1,7 @@
 import React, { useContext, useEffect, useRef, useState } from 'react'
 import { SearchContext } from '../../context'
-import { Dropzone } from '../../../dropzone'
-import { LoadingContext } from '../../../../common/state/context'
 import { Products } from '../../../products'
+import { usePortal } from '../../../../common/hooks'
 
 /*
 
@@ -51,13 +50,7 @@ function SearchDropzone() {
       [searchState.searchData]
    )
 
-   return (
-      showData && (
-         <Dropzone dropzone={searchState.componentOptions.dropzone}>
-            <Products options={buildOptions(searchState.searchData)} />
-         </Dropzone>
-      )
-   )
+   return usePortal(showData && <Products options={buildOptions(searchState.searchData)} />, document.querySelector(searchState.componentOptions.dropzone))
 }
 
 export { SearchDropzone }

@@ -5,7 +5,7 @@ import { ShopContext } from '../../shop/_state/context'
 import { CartLineItemQuantity } from './quantity'
 import { maybeformatPriceToCurrency } from '../../../common/pricing/formatting'
 import { useAnime, stagger } from '../../../common/animations'
-import { calcLineItemTotal } from '../../../common/products'
+import { calcLineItemTotal, isAvailable } from '../../../common/products'
 import { Notice } from '../../notice'
 
 import find from 'lodash/find'
@@ -58,10 +58,6 @@ function CartLineItem({ lineItem, index }) {
          animeStagger(lineItemElement.current, index)
       }
    }, [cartState.cartOpen])
-
-   function isAvailable(lineItem) {
-      return lineItem.availableForSale || lineItem.available
-   }
 
    return (
       <div className='wps-cart-lineitem wps-mr-0 wps-ml-0 wps-row' data-wps-is-updating={isUpdating} data-wps-is-available={isAvailable(lineItem)} ref={lineItemElement}>

@@ -39,7 +39,7 @@ function FilterSorting() {
    function onChange(event) {
       setSortValue(event.target.value)
 
-      filtersDispatch({ type: 'SET_FILTER_PARAMS', payload: updateFetchParams(event) })
+      filtersDispatch({ type: 'SET_QUERY_PARAMS', payload: updateFetchParams(event) })
    }
 
    return usePortal(
