@@ -1,14 +1,14 @@
 import React from 'react'
 import { Product } from './product'
-import { Pagination } from '../pagination'
 import { ProductsProvider } from './_state/provider'
 
 function Products({ options }) {
    return (
       <ProductsProvider options={options}>
-         <Pagination options={options}>
-            <Product />
-         </Pagination>
+         {console.log('options', options)}
+         {options.payload.map(product => (
+            <Product payload={product} />
+         ))}
       </ProductsProvider>
    )
 }

@@ -2,6 +2,7 @@ import React, { useContext, useEffect, useRef, useState } from 'react'
 import { usePortal } from '../../../common/hooks'
 import { FiltersContext } from '../_state/context'
 import { Products } from '../../products'
+import { Pagination } from '../../pagination'
 
 /*
 
@@ -62,7 +63,14 @@ function FilterItems() {
       [filtersState.payload]
    )
 
-   return usePortal(showData && <Products options={buildOptions()} />, document.querySelector(filtersState.componentOptions.dropzonePayload))
+   return usePortal(
+      showData && (
+         <Pagination>
+            <Products options={buildOptions()} />
+         </Pagination>
+      ),
+      document.querySelector(filtersState.componentOptions.dropzonePayload)
+   )
 }
 
 export { FilterItems }

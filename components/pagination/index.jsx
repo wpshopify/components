@@ -7,6 +7,8 @@ import isEmpty from 'lodash/isEmpty'
 import { Notice } from '../notice'
 
 function Pagination({ options, children }) {
+   console.log('Pagination options', options)
+
    return usePortal(
       <PaginationProvider options={options}>
          <section className='wps-items-wrapper wps-container-fluid'>
