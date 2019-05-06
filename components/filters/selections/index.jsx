@@ -1,5 +1,7 @@
 import React, { useContext, useEffect, useRef } from 'react'
 import { FiltersContext } from '../_state/context'
+import { ItemsContext } from '../../items/_state/context'
+
 import { FilterSelectionsWrapper } from './wrapper'
 import { objectIsEmpty } from '../../../common/utils'
 import { usePortal } from '../../../common/hooks'
@@ -11,9 +13,12 @@ import compact from 'lodash/compact'
 import to from 'await-to-js'
 
 function FilterSelections() {
+   const [itemsState, itemsDispatch] = useContext(ItemsContext)
    const [filtersState, filtersDispatch] = useContext(FiltersContext)
 
    const isFirstRender = useRef(true)
+
+   console.log('<FilterSelections> :: queryParams :: ', itemsState.queryParams)
 
    function joinFilteredValues(value) {
       if (isEmpty(value)) {
@@ -98,11 +103,11 @@ Annoying, but needs to be done to make the filter components easier to deal with
          return
       }
 
-      filtersDispatch({ type: 'SET_QUERY_PARAMS', payload: updateFetchParamsQuery() })
+      itemsDispatch({ type: 'SET_QUERY_PARAMS', payload: updateFetchParamsQuery() })
    }, [filtersState.selections])
 
    function fetchProducts() {
-      return getProductsFromQuery(filtersState.queryParams)
+      return getProductsFromQuery(itemsState.queryParams)
    }
 
    useEffect(() => {
@@ -112,18 +117,18 @@ Annoying, but needs to be done to make the filter components easier to deal with
       }
 
       loadData()
-   }, [filtersState.queryParams])
+   }, [itemsState.queryParams])
 
    function afterDataLoads(items) {
       filtersDispatch({ type: 'SET_HAS_RESULTS', payload: checkHasResults(items) })
       filtersDispatch({ type: 'SET_HAS_NEXT_PAGE', payload: checkNextPage(items) })
       filtersDispatch({ type: 'SET_HAS_PREV_PAGE', payload: checkPrevPage(items) })
-      filtersDispatch({ type: 'SET_PAYLOAD', payload: items })
-      filtersDispatch({ type: 'SET_IS_LOADING', payload: false })
+      itemsDispatch({ type: 'SET_PAYLOAD', payload: items })
+      itemsDispatch({ type: 'SET_IS_LOADING', payload: false })
    }
 
    function beforeDataLoads() {
-      filtersDispatch({ type: 'SET_IS_LOADING', payload: true })
+      itemsDispatch({ type: 'SET_IS_LOADING', payload: true })
    }
 
    async function loadData() {
@@ -139,7 +144,7 @@ Annoying, but needs to be done to make the filter components easier to deal with
       afterDataLoads(items)
    }
 
-   return usePortal(!objectIsEmpty(filtersState.selections) ? <FilterSelectionsWrapper /> : '', document.querySelector(filtersState.componentOptions.dropzoneSelections))
+   return usePortal(!objectIsEmpty(filtersState.selections) ? <FilterSelectionsWrapper /> : '', document.querySelector(itemsState.componentOptions.dropzoneSelections))
 }
 
 export { FilterSelections }

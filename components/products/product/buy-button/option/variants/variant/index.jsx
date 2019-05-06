@@ -6,10 +6,6 @@ import find from 'lodash/find'
 import isEmpty from 'lodash/isEmpty'
 import { createObj } from '../../../../../../../common/utils'
 
-function updateExistingSelections(selectedOptions, newSelectionObj) {
-   return update(selectedOptions, { $merge: newSelectionObj })
-}
-
 function ProductVariant({ variant }) {
    const [isSelectable, setIsSelectable] = useState(true)
    const isFirstRender = useRef(true)

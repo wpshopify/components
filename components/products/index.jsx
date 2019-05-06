@@ -1,15 +1,12 @@
 import React from 'react'
 import { Product } from './product'
-import { ProductsProvider } from './_state/provider'
+import { Pagination } from '../pagination'
 
-function Products({ options }) {
+function Products() {
    return (
-      <ProductsProvider options={options}>
-         {console.log('options', options)}
-         {options.payload.map(product => (
-            <Product payload={product} />
-         ))}
-      </ProductsProvider>
+      <Pagination>
+         <Product />
+      </Pagination>
    )
 }
 

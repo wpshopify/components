@@ -4,22 +4,22 @@ import { ProductPricing } from './pricing'
 import { ProductDescription } from './description'
 import { ProductBuyButton } from './buy-button'
 import { ProductImages } from './images'
-import { ProductsContext } from '../_state/context'
+import { ItemsContext } from '../../items/_state/context'
 import { ProductProvider } from './_state/provider'
 import { isShowingComponent } from '../../../common/components'
 import { itemWidthClass } from '../../../common/utils'
 
 function Product({ payload }) {
-   const [productsState] = useContext(ProductsContext)
+   const [itemsState] = useContext(ItemsContext)
 
    return (
-      <div className={`${itemWidthClass(productsState.componentOptions.itemsPerRow)} wps-item wps-p-3`}>
+      <div className={`${itemWidthClass(itemsState.componentOptions.itemsPerRow)} wps-item wps-p-3`}>
          <ProductProvider payload={payload}>
-            {isShowingComponent(productsState, 'images') ? <ProductImages /> : ''}
-            {isShowingComponent(productsState, 'title') ? <ProductTitle /> : ''}
-            {isShowingComponent(productsState, 'pricing') ? <ProductPricing /> : ''}
-            {isShowingComponent(productsState, 'description') ? <ProductDescription /> : ''}
-            {isShowingComponent(productsState, 'buy-button') ? <ProductBuyButton /> : ''}
+            {isShowingComponent(itemsState, 'images') ? <ProductImages /> : ''}
+            {isShowingComponent(itemsState, 'title') ? <ProductTitle /> : ''}
+            {isShowingComponent(itemsState, 'pricing') ? <ProductPricing /> : ''}
+            {isShowingComponent(itemsState, 'description') ? <ProductDescription /> : ''}
+            {isShowingComponent(itemsState, 'buy-button') ? <ProductBuyButton /> : ''}
          </ProductProvider>
       </div>
    )

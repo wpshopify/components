@@ -1,13 +1,13 @@
 import React, { useContext } from 'react'
 import { ProductContext } from '../../_state/context'
-import { ProductsContext } from '../../../_state/context'
+import { ItemsContext } from '../../../../items/_state/context'
 import { ProductThumbnailImages } from '../thumbnails'
 import { ProductFeaturedImage } from '../featured'
 import { ProductGalleryProvider } from './_state/provider.jsx'
 import has from 'lodash/has'
 
 function ProductGallery() {
-   const [productsState] = useContext(ProductsContext)
+   const [itemsState] = useContext(ItemsContext)
    const [productState] = useContext(ProductContext)
 
    function hasManyImages() {
@@ -23,11 +23,11 @@ function ProductGallery() {
    // }
 
    function isFeaturedOnly() {
-      if (!has(productsState.componentOptions, 'showFeaturedOnly')) {
+      if (!has(itemsState.componentOptions, 'showFeaturedOnly')) {
          return false
       }
 
-      return productsState.componentOptions.showFeaturedOnly
+      return itemsState.componentOptions.showFeaturedOnly
    }
 
    // useEffect(() => {

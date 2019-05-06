@@ -1,5 +1,6 @@
 import React, { useContext, useState } from 'react'
 import { FiltersContext } from '../_state/context'
+import { ItemsContext } from '../../items/_state/context'
 import { usePortal } from '../../../common/hooks'
 
 function getSelectedOption(select) {
@@ -14,6 +15,7 @@ function hasReverse(select) {
 
 function FilterSorting() {
    const [filtersState, filtersDispatch] = useContext(FiltersContext)
+   const [itemsState, itemsDispatch] = useContext(ItemsContext)
 
    const [sortValue, setSortValue] = useState('TITLE')
 
@@ -39,7 +41,7 @@ function FilterSorting() {
    function onChange(event) {
       setSortValue(event.target.value)
 
-      filtersDispatch({ type: 'SET_QUERY_PARAMS', payload: updateFetchParams(event) })
+      itemsDispatch({ type: 'SET_QUERY_PARAMS', payload: updateFetchParams(event) })
    }
 
    return usePortal(

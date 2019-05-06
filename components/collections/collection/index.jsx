@@ -27,7 +27,6 @@ function Collection({ payload }) {
          reverse: collectionsState.componentOptions.products.reverse,
          sortKey: collectionsState.componentOptions.products.sortBy
       },
-      originalPayload: collectionsState.payload,
       originalQueryParams: paginationState.queryParams
    }
 

@@ -1,60 +1,47 @@
-import React, { useState, useRef, useEffect, useContext } from 'react'
-import { Product } from '../products/product'
+import React from 'react'
+import { ItemsProvider } from './_state/provider'
 import { Notice } from '../notice'
-import size from 'lodash/size'
+import has from 'lodash/has'
 
-function hasItems(items) {
-   return size(items) !== 0 ? true : false
+function hasItems(options) {
+   return options.payload.length > 0
 }
 
-function Items({ items }) {
-   const [isActive, setIsActive] = useState(0)
-   const isFirstRender = useRef(true)
+/*
 
-   useEffect(() => {
-      if (isFirstRender.current) {
-         isFirstRender.current = false
-         return
-      }
+Handle the errors differently ...
 
-      // resetAllOtherDropzones()
-      setIsActive(1)
-   }, [items])
-
-   // function resetAllOtherDropzones() {
-   //    var elss = document.querySelectorAll('.wps-dropzone')
-
-   //    if (elss) {
-   //       elss.forEach(el => {
-   //          var osdf = el.getAttribute('data-wps-dropzone-for')
-
-   //          if (osdf !== from) {
-   //             el.setAttribute('data-wps-dropzone-is-active', '0')
-   //          } else {
-   //             el.setAttribute('data-wps-dropzone-is-active', '1')
-   //          }
-   //       })
-   //    }
-   // }
-
-   function buildOptions(item) {
-      return {
-         product: item,
-         componentID: false,
-         element: false,
-         gid: false,
-         excludes: false,
-         renderFromServer: false,
-         selectedVariant: false,
-         componentOptions: false
-      }
+*/
+function hasItemsToShow(options) {
+   if (!options) {
+      return false
    }
 
-   return (
-      <section className='wps-dropzone' data-wps-dropzone-is-active={isActive}>
-         {!hasItems(items) ? <Notice type='info' message='No results found' /> : items.map(item => <Product key={item.id} options={buildOptions(item)} />)}
-      </section>
-   )
+   if (has(options, 'errors')) {
+      return false
+   }
+
+   if (!has(options, 'payload')) {
+      return true
+   }
+
+   if (hasItems(options)) {
+      console.log('<App/> :: Payload is NOT empty, has items to show')
+      return true
+   } else {
+      console.log('<App/> :: Payload is empty, nothing to show')
+      return false
+   }
+}
+
+/*
+
+Responsible for managing state of 'payload', 'queryParams', and 'isLoading'.
+Connects sibling components together like Filters, Search and Pagination.
+
+*/
+function Items({ options, children }) {
+   return hasItemsToShow(options) ? <ItemsProvider options={options}>{children}</ItemsProvider> : <Notice message='Nada to show' type='info' />
 }
 
 export { Items }

@@ -78,21 +78,4 @@ function usePortal(componentMarkup, containerElement) {
    return renderPortal()
 }
 
-function useFiltersContext(maybeContext) {
-   var filtersContext = useContext(maybeContext)
-
-   if (!filtersContext) {
-      return [
-         {
-            isLoading: false,
-            payload: false,
-            queryParams: false
-         },
-         function() {}
-      ]
-   }
-
-   return filtersContext
-}
-
-export { useOnClickOutside, usePortal, useFiltersContext }
+export { useOnClickOutside, usePortal }

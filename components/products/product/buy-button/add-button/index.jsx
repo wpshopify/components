@@ -1,7 +1,7 @@
 import React, { useContext, useRef, useEffect, useState } from 'react'
 import { ProductBuyButtonContext } from '../_state/context'
 import { ShopContext } from '../../../../shop/_state/context'
-import { ProductsContext } from '../../../_state/context'
+import { ItemsContext } from '../../../../items/_state/context'
 
 import { useAnime, pulse } from '../../../../../common/animations'
 import { addProductDetailsToVariant } from '../../../../../common/products'
@@ -12,12 +12,12 @@ function ProductAddButton() {
    const isFirstRender = useRef(false)
    const animePulse = useAnime(pulse)
 
-   const [productsState] = useContext(ProductsContext)
+   const [itemsState] = useContext(ItemsContext)
    const [buyButtonState, buyButtonDispatch] = useContext(ProductBuyButtonContext)
    const [shopState, shopDispatch] = useContext(ShopContext)
 
    const buttonStyle = {
-      backgroundColor: productsState.componentOptions.buttonColor
+      backgroundColor: itemsState.componentOptions.buttonColor
    }
 
    async function handleClick() {
@@ -81,7 +81,7 @@ function ProductAddButton() {
             disabled={buyButtonState.isAdding ? true : false}
             onClick={handleClick}
             style={buttonStyle}>
-            {buyButtonState.isAdding ? 'Adding ...' : productsState.componentOptions.buttonText ? productsState.componentOptions.buttonText : 'Add to cart'}
+            {buyButtonState.isAdding ? 'Adding ...' : itemsState.componentOptions.buttonText ? itemsState.componentOptions.buttonText : 'Add to cart'}
          </button>
       </div>
    )

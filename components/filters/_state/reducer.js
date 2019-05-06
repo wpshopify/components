@@ -48,20 +48,6 @@ function FiltersReducer(state, action) {
          }
       }
 
-      case 'SET_PAYLOAD': {
-         return {
-            ...state,
-            payload: update(state.payload, { $set: action.payload })
-         }
-      }
-
-      case 'SET_QUERY_PARAMS': {
-         return {
-            ...state,
-            queryParams: update(state.queryParams, { $merge: action.payload })
-         }
-      }
-
       case 'SET_RESULTS': {
          return {
             ...state,

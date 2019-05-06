@@ -5,11 +5,11 @@ import { ProductAddButton } from './add-button'
 import { Notice } from '../../../notice'
 import { ProductBuyButtonProvider } from './_state/provider'
 import { ProductContext } from '../_state/context'
-import { ProductsContext } from '../../_state/context'
+import { ItemsContext } from '../../../items/_state/context'
 import { usePortal } from '../../../../common/hooks'
 
 function ProductBuyButton() {
-   const [productsState] = useContext(ProductsContext)
+   const [itemsState] = useContext(ItemsContext)
    const [productState] = useContext(ProductContext)
 
    return usePortal(
@@ -17,7 +17,7 @@ function ProductBuyButton() {
          <ProductBuyButtonProvider productState={productState}>
             {productState.payload.availableForSale ? (
                <>
-                  {!productsState.componentOptions.hideQuantity ? <ProductQuantity /> : ''}
+                  {!itemsState.componentOptions.hideQuantity ? <ProductQuantity /> : ''}
                   <ProductOptions />
                   <ProductAddButton />
                </>

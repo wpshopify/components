@@ -2,13 +2,11 @@ import React from 'react'
 import { ShopProvider } from './_state/provider'
 import { Bootstrap } from '../bootstrap'
 
-function Shop(props) {
+function Shop({ options, children }) {
    return (
-      <>
-         <ShopProvider>
-            <Bootstrap>{props.children}</Bootstrap>
-         </ShopProvider>
-      </>
+      <ShopProvider options={options}>
+         <Bootstrap>{children}</Bootstrap>
+      </ShopProvider>
    )
 }
 

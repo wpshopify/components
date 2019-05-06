@@ -1,6 +1,6 @@
 import React, { useContext, useEffect, useState, useRef } from 'react'
 import { ProductContext } from '../../_state/context'
-import { ProductsContext } from '../../../_state/context'
+import { ItemsContext } from '../../../../items/_state/context'
 import { ProductGalleryContext } from '../gallery/_state/context'
 import { ProductImage } from '../image'
 import Drift from 'drift-zoom'
@@ -19,7 +19,7 @@ function ProductFeaturedImage() {
    const paneElement = useRef()
    const isFirstRender = useRef(true)
 
-   const [productsState] = useContext(ProductsContext)
+   const [itemsState] = useContext(ItemsContext)
    const [productState] = useContext(ProductContext)
    const [galleryState] = useContext(ProductGalleryContext)
 
@@ -34,7 +34,7 @@ function ProductFeaturedImage() {
    }
 
    function showZoom() {
-      return productsState.componentOptions.showZoom
+      return itemsState.componentOptions.showZoom
    }
 
    function hasFeatImage() {

@@ -1,6 +1,6 @@
 export { Product } from './components/products/product'
 export { Products } from './components/products'
-// export { ProductTitle } from './components/products/title';
+
 export { Pagination } from './components/pagination'
 export { Cart } from './components/cart'
 
@@ -12,4 +12,4 @@ export { Filters } from './components/filters'
 export { Search } from './components/search'
 export { Notice } from './components/notice'
 export { Collections } from './components/collections'
-// export { FilterPagination } from './components/filters/pagination'
+export { Items } from './components/items'

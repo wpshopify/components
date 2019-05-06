@@ -3,12 +3,12 @@ import { ProductBuyButtonContext } from '../../_state/context'
 import { useAnime, pulse } from '../../../../../../common/animations'
 
 import { ShopContext } from '../../../../../shop/_state/context'
-import { ProductsContext } from '../../../../_state/context'
+import { ItemsContext } from '../../../../../items/_state/context'
 import { ProductOptionContext } from '../_state/context'
 
 function ProductOptionTrigger() {
    const [shopState] = useContext(ShopContext)
-   const [productsState] = useContext(ProductsContext)
+   const [itemsState] = useContext(ItemsContext)
    const [buyButtonState, buyButtonDispatch] = useContext(ProductBuyButtonContext)
    const [productOptionState, productOptionDispatch] = useContext(ProductOptionContext)
    const dropdownTrigger = useRef()
@@ -73,7 +73,7 @@ function ProductOptionTrigger() {
          data-wps-is-ready={shopState.isShopReady ? '1' : '0'}
          onClick={onClick}
          ref={dropdownTrigger}
-         style={{ backgroundColor: productsState.componentOptions.variantColor }}>
+         style={{ backgroundColor: itemsState.componentOptions.variantColor }}>
          {displayOptionName()}
       </a>
    )

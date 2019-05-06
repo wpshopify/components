@@ -1,21 +1,20 @@
 import React, { useContext, useState } from 'react'
-import { graphQuery } from '/Users/andrew/www/devil/devilbox-new/data/www/wpshopify-api'
+import { graphQuery, findLastCursorId } from '/Users/andrew/www/devil/devilbox-new/data/www/wpshopify-api'
 import { PaginationContext } from '../../_state/context'
-import { PaginationControlsContext } from '../_state/context'
-import { afterQueryParam } from '../index'
+import { ItemsContext } from '../../../items/_state/context'
 import { usePortal } from '../../../../common/hooks'
 
 function PaginationPageSize() {
    const [paginationState, paginationDispatch] = useContext(PaginationContext)
-   const [paginationControlsState, paginationControlsDispatch] = useContext(PaginationControlsContext)
+   const [itemsState, itemsDispatch] = useContext(ItemsContext)
    const [pageSize, setPageSize] = useState(defaultPageSize())
 
    function defaultPageSize() {
-      if (paginationState.queryParams.first < 10) {
+      if (itemsState.queryParams.first < 10) {
          return 'DEFAULT'
       }
 
-      return paginationState.queryParams.first
+      return itemsState.queryParams.first
    }
 
    function updatedFirstQueryParams(event) {
@@ -29,17 +28,15 @@ function PaginationPageSize() {
    }
 
    function setLoadingStates(isLoading) {
-      paginationDispatch({ type: 'SET_IS_LOADING', payload: isLoading })
-      paginationControlsDispatch({ type: 'SET_IS_LOADING', payload: isLoading })
+      itemsDispatch({ type: 'SET_IS_LOADING', payload: isLoading })
    }
 
    function setPayloadStates(payload) {
-      paginationDispatch({ type: 'SET_LAST_PAYLOAD', payload: payload })
-      paginationDispatch({ type: 'UPDATE_PAYLOAD', payload: payload })
+      itemsDispatch({ type: 'UPDATE_PAYLOAD', payload: payload })
    }
 
    function setAfterCursorQueryParams(params) {
-      paginationDispatch({ type: 'SET_QUERY_PARAMS', payload: params })
+      itemsDispatch({ type: 'SET_QUERY_PARAMS', payload: params })
    }
    function setControlsTouched(touched) {
       paginationDispatch({ type: 'SET_CONTROLS_TOUCHED', payload: touched })
@@ -56,15 +53,14 @@ function PaginationPageSize() {
       setLoadingStates(true)
 
       // Calls Shopify
-      const shopifyResponse = await graphQuery(paginationState.dataType, updatedParams)
+      const shopifyResponse = await graphQuery(itemsState.dataType, updatedParams)
 
-      setAfterCursorQueryParams(afterQueryParam(shopifyResponse, paginationState.dataType))
+      setAfterCursorQueryParams(findLastCursorId(shopifyResponse, itemsState.dataType))
 
       setTotalItemsShown(shopifyResponse.model.products.length)
       setPayloadStates(shopifyResponse.model.products)
 
-      paginationDispatch({ type: 'SET_IS_LOADING', payload: false })
-      paginationControlsDispatch({ type: 'SET_IS_LOADING', payload: false })
+      itemsDispatch({ type: 'SET_IS_LOADING', payload: false })
    }
 
    return usePortal(
@@ -73,23 +69,23 @@ function PaginationPageSize() {
             Page size:
          </label>
 
-         <select className='wps-input' value={pageSize} id='wps-sorting' onChange={e => onChange(e)} disabled={paginationControlsState.isLoading}>
+         <select className='wps-input' value={pageSize} id='wps-sorting' onChange={e => onChange(e)} disabled={itemsState.isLoading}>
             <option value='DEFAULT' disabled='disabled'>
                Choose a size
             </option>
-            <option value='10' disabled={paginationState.totalShown >= 10 || !paginationState.hasMoreItems ? 'disabled' : ''}>
+            <option value='10' disabled={itemsState.totalShown >= 10 || !itemsState.hasMoreItems ? 'disabled' : ''}>
                10
             </option>
-            <option value='25' disabled={paginationState.totalShown >= 25 || !paginationState.hasMoreItems ? 'disabled' : ''}>
+            <option value='25' disabled={itemsState.totalShown >= 25 || !itemsState.hasMoreItems ? 'disabled' : ''}>
                25
             </option>
-            <option value='50' disabled={paginationState.totalShown >= 50 || !paginationState.hasMoreItems ? 'disabled' : ''} data-wps-reverse>
+            <option value='50' disabled={itemsState.totalShown >= 50 || !itemsState.hasMoreItems ? 'disabled' : ''} data-wps-reverse>
                50
             </option>
-            <option value='100' disabled={paginationState.totalShown >= 100 || !paginationState.hasMoreItems ? 'disabled' : ''}>
+            <option value='100' disabled={itemsState.totalShown >= 100 || !itemsState.hasMoreItems ? 'disabled' : ''}>
                100
             </option>
-            <option value='250' disabled={paginationState.totalShown >= 250 || !paginationState.hasMoreItems ? 'disabled' : ''} data-wps-reverse>
+            <option value='250' disabled={itemsState.totalShown >= 250 || !itemsState.hasMoreItems ? 'disabled' : ''} data-wps-reverse>
                250
             </option>
          </select>

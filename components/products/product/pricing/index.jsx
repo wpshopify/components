@@ -1,20 +1,18 @@
 import React, { useContext } from 'react'
 import { ProductContext } from '../_state/context'
-import { ProductsContext } from '../../_state/context'
+import { ItemsContext } from '../../../items/_state/context'
 import { ProductPrices } from './prices'
 import { ProductPricingProvider } from './_state/provider'
 import { usePortal } from '../../../../common/hooks'
 
 function ProductPricing() {
+   const [itemsState] = useContext(ItemsContext)
    const [productState] = useContext(ProductContext)
-   const [productsState] = useContext(ProductsContext)
 
    return usePortal(
-      <>
-         <ProductPricingProvider productsState={productsState} productState={productState}>
-            <ProductPrices />
-         </ProductPricingProvider>
-      </>,
+      <ProductPricingProvider productsState={itemsState} productState={productState}>
+         <ProductPrices />
+      </ProductPricingProvider>,
       productState.element
    )
 }

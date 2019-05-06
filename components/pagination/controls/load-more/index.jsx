@@ -1,117 +1,132 @@
-import React, { useContext, useEffect, useRef } from 'react'
-import { fetchNextPage, graphQuery } from '/Users/andrew/www/devil/devilbox-new/data/www/wpshopify-api'
+import React, { useContext, useRef, useEffect } from 'react'
+import { fetchNextPage, graphQuery, findLastCursorId, findTypeFromPayload } from '/Users/andrew/www/devil/devilbox-new/data/www/wpshopify-api'
 import { PaginationContext } from '../../_state/context'
-import { PaginationControlsContext } from '../_state/context'
+import { ItemsContext } from '../../../items/_state/context'
 import { usePortal } from '../../../../common/hooks'
+// import { fetchNextItems } from '../../items'
 import to from 'await-to-js'
-import { afterQueryParam } from '../index'
 
-function PaginationLoadMore() {
+function PaginationLoadMore(props) {
+   const [itemsState, itemsDispatch] = useContext(ItemsContext)
    const [paginationState, paginationDispatch] = useContext(PaginationContext)
+   console.log('props', props)
 
-   const [paginationControlsState, paginationControlsDispatch] = useContext(PaginationControlsContext)
+   // const isFirstRender = useRef(true)
 
-   const isFirstLoad = useRef(true)
+   // function setTotalItemsShown(itemsToAdd) {
+   //    itemsDispatch({ type: 'SET_TOTAL_SHOWN', payload: itemsToAdd })
+   // }
 
-   function setTotalItemsShown(itemsToAdd) {
-      paginationDispatch({ type: 'SET_TOTAL_SHOWN', payload: itemsToAdd })
-   }
+   // function setLoadingStates(isLoading) {
+   //    itemsDispatch({ type: 'SET_IS_LOADING', payload: isLoading })
+   // }
 
-   function setLoadingStates(isLoading) {
-      paginationDispatch({ type: 'SET_IS_LOADING', payload: isLoading })
-      paginationControlsDispatch({ type: 'SET_IS_LOADING', payload: isLoading })
-   }
+   // function setPayloadStates(payload) {
+   //    itemsDispatch({ type: 'UPDATE_PAYLOAD', payload: payload })
+   // }
 
-   function setPayloadStates(payload) {
-      paginationDispatch({ type: 'SET_LAST_PAYLOAD', payload: payload })
-      paginationDispatch({ type: 'UPDATE_PAYLOAD', payload: payload })
-   }
+   // function setQueryParams(params) {
+   //    itemsDispatch({ type: 'SET_QUERY_PARAMS', payload: params })
+   // }
 
-   function setQueryParams(params) {
-      paginationDispatch({ type: 'SET_QUERY_PARAMS', payload: params })
-   }
+   // function setControlsTouched(touched) {
+   //    paginationDispatch({ type: 'SET_CONTROLS_TOUCHED', payload: touched })
+   // }
 
-   function setControlsTouched(touched) {
-      paginationDispatch({ type: 'SET_CONTROLS_TOUCHED', payload: touched })
-   }
+   // function resendInitialQuery() {
+   //    return graphQuery(findTypeFromPayload(itemsState.payload), itemsState.queryParams)
+   // }
 
-   function findTypeFromOriginalPayload(payload) {
-      return payload.type.name.split('Connection')[0].toLowerCase() + 's'
-   }
+   // function getNextResults(lastResults) {
+   //    return new Promise(async (resolve, reject) => {
+   //       console.log('lastResults', lastResults)
 
-   function resendInitialQuery() {
-      console.log('paginationState', paginationState)
+   //       const [newResultsError, newResults] = await to(fetchNextPage(lastResults))
 
-      return graphQuery(findTypeFromOriginalPayload(paginationState.originalPayload), paginationState.originalQueryParams, paginationState.queryParams)
-   }
+   //       // setTotalItemsShown(newResults.model.length)
+   //       // setPayloadStates(newResults.model)
 
-   function getNextResults(lastResults) {
-      return new Promise(async (resolve, reject) => {
-         const [newResultsError, newResults] = await to(fetchNextPage(lastResults))
+   //       resolve(newResults)
+   //    })
+   // }
 
-         setTotalItemsShown(newResults.model.length)
-         setPayloadStates(newResults.model)
+   function onNextPage() {
+      // console.log('<PaginationLoadMore> :: itemsState.queryParams :: ', itemsState.queryParams)
+      // console.log('<PaginationLoadMore> :: itemsState.lastCursorId :: ', itemsState.lastCursorId)
+      // console.log('::::::::: totalShown :: ', itemsState.totalShown)
+      // console.log('::::::::: limit :: ', itemsState.limit)
+      console.log('props ...', props)
 
-         resolve(newResults)
-      })
-   }
+      paginationDispatch({ type: 'SET_CONTROLS_TOUCHED', payload: true })
+      props.fetchNextItems()
+      // setControlsTouched(true)
 
-   function combineLastCursorWithParams() {
-      const queryParams = paginationState.queryParams
-      queryParams.after = paginationState.lastCursorId
+      // if (!isFirstRender.current) {
+      //    console.log('111111111111111111111111111111111')
 
-      return queryParams
-   }
+      //    setLoadingStates(true)
+      //    const [resultsError, results] = await to(getNextResults(itemsState.payload))
 
-   async function onNextPage() {
-      setControlsTouched(true)
+      //    // setQueryParams(findLastCursorId(results, itemsState.dataType))
 
-      if (!isFirstLoad.current) {
-         setLoadingStates(true)
-         const [resultsError, results] = await to(getNextResults(paginationState.lastPayload))
+      //    return setLoadingStates(false)
+      // }
 
-         setQueryParams(afterQueryParam(results, paginationState.dataType))
+      // isFirstRender.current = false
 
-         return setLoadingStates(false)
-      }
+      // // if (!itemsState.lastCursorId) {
+      // //    console.log('22222222222222222222222222222222 resending')
+      // //    setLoadingStates(true)
 
-      isFirstLoad.current = false
+      // //    // Resend original query so that we can get a proper response
+      // //    const [responseError, response] = await to(resendInitialQuery())
+      // //    console.log('paginationState //////////////', paginationState)
+      // //    console.log('response!!!!!!!!!!!!!', response)
+      // //    console.log('itemsState', itemsState)
 
-      if (!paginationState.lastCursorId) {
-         setLoadingStates(true)
+      // //    if (itemsState.dataType === 'products') {
+      // //       var newModel = response.model.products
+      // //    } else if (itemsState.dataType === 'collections') {
+      // //       var newModel = response.model.collections[0].products
+      // //    }
 
-         // Resend original query so that we can get a proper response
-         const [responseError, response] = await to(resendInitialQuery())
-         console.log('paginationState //////////////', paginationState)
-         console.log('response!!!!!!!!!!!!!', response)
+      // //    console.log('newModel', newModel)
 
-         if (paginationState.dataType === 'products') {
-            var newModel = response.model.products
-         } else if (paginationState.dataType === 'collections') {
-            var newModel = response.model.collections[0].products
-         }
+      // //    const [nextError, nextResponse] = await to(getNextResults(newModel))
+      // //    console.log('nextError', nextError)
+      // //    console.log('nextResponse', nextResponse)
 
-         const [nextError, nextResponse] = await to(getNextResults(newModel))
-         console.log('nextResponse', nextResponse)
+      // //    setQueryParams(findLastCursorId(nextResponse, itemsState.dataType))
 
-         return setLoadingStates(false)
-      }
+      // //    return setLoadingStates(false)
+      // // }
 
-      setLoadingStates(true)
+      // setQueryParams({
+      //    after: itemsState.lastCursorId
+      // })
 
-      const [resultsError, results] = await to(graphQuery(paginationState.dataType, combineLastCursorWithParams()))
+      // console.log('333333333333333333333333333333')
+      // setLoadingStates(true)
 
-      setTotalItemsShown(results.model[paginationState.dataType].length)
-      setPayloadStates(results.model[paginationState.dataType])
-      setQueryParams(afterQueryParam(results, paginationState.dataType))
-      setLoadingStates(false)
+      // // console.log('itemsState.queryParams', itemsState.queryParams)
+      // // console.log('combineLastCursorWithParams()', combineLastCursorWithParams())
+
+      // console.log('itemsState.queryParams', itemsState.queryParams)
+
+      // const [resultsError, results] = await to(graphQuery(itemsState.dataType, itemsState.queryParams))
+      // console.log('onNextPage', results)
+
+      // setTotalItemsShown(results.model[itemsState.dataType].length)
+      // setPayloadStates(results.model[itemsState.dataType])
+      // setQueryParams(findLastCursorId(results, itemsState.dataType))
+      // setLoadingStates(false)
    }
 
    return usePortal(
       <>
-         {paginationState.hasMoreItems && (
-            <button type='button' disabled={paginationControlsState.isLoading} className='wps-button wps-btn-next-page' onClick={onNextPage}>
-               {paginationControlsState.isLoading ? 'Loading ...' : 'Load more'}
+         {itemsState.hasMoreItems && (
+            <button type='button' disabled={itemsState.isLoading} className='wps-button wps-btn-next-page' onClick={() => onNextPage()}>
+               {itemsState.isLoading ? 'Loading ⌛️...' : 'Load more'}
             </button>
          )}
       </>,

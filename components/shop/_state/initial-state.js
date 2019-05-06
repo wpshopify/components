@@ -1,4 +1,4 @@
-function ShopInitialState(props = false) {
+function ShopInitialState(options = false) {
    return {
       checkout: { lineItems: [] },
       notifyingCart: false,
