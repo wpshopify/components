@@ -1,4 +1,4 @@
-import React, { useContext } from 'react'
+import React, { useContext, useEffect, useRef } from 'react'
 import { PaginationControls } from './controls'
 import { usePortal } from '../../common/hooks'
 import { PaginationItems } from './items'
@@ -9,10 +9,24 @@ import isEmpty from 'lodash/isEmpty'
 
 function Pagination({ children }) {
    const [itemsState] = useContext(ItemsContext)
+   const isFirstRender = useRef(true)
+
+   useEffect(() => {
+      if (isFirstRender.current) {
+         isFirstRender.current = false
+         return
+      }
+   })
 
    return usePortal(
       <PaginationProvider options={itemsState}>
-         {isEmpty(itemsState.payload) ? <Notice message={itemsState.noResultsText} type='info' /> : <PaginationItems>{children}</PaginationItems>}
+         {itemsState.componentOptions.skipInitialRender && isFirstRender.current ? (
+            ''
+         ) : isEmpty(itemsState.payload) && !itemsState.isLoading ? (
+            <Notice message={itemsState.noResultsText} type='info' />
+         ) : (
+            <PaginationItems>{children}</PaginationItems>
+         )}
 
          {itemsState.componentOptions.pagination && <PaginationControls />}
       </PaginationProvider>

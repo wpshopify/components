@@ -54,6 +54,7 @@ function ItemsWrapper({ children }) {
    const isFirstRender = useRef(true)
 
    async function fetchNewItems() {
+      console.log('fetchNewItems', itemsState)
       console.log('fetchNewItems', itemsState.queryParams)
 
       itemsDispatch({ type: 'SET_IS_LOADING', payload: true })
@@ -73,6 +74,8 @@ function ItemsWrapper({ children }) {
    }
 
    useEffect(() => {
+      console.log('.........useEffect.........itemsState.queryParams')
+
       if (isFirstRender.current) {
          isFirstRender.current = false
          return

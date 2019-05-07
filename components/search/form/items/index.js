@@ -9,6 +9,8 @@ function SearchItems() {
    const [searchState] = useContext(SearchContext)
    const [itemsState] = useContext(ItemsContext)
 
+   console.log('itemsState.payload', itemsState.payload)
+
    function buildOptions() {
       return {
          payload: itemsState.payload,

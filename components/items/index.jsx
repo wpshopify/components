@@ -8,12 +8,22 @@ function hasItems(options) {
    return options.payload.length > 0
 }
 
+function skippingInitialLoad(options) {
+   if (!has(options, 'skipInitialLoad')) {
+      return false
+   }
+
+   return options.skipInitialLoad
+}
+
 /*
 
 Handle the errors differently ...
 
 */
 function hasItemsToShow(options) {
+   console.log('options ...', options)
+
    if (!options) {
       return false
    }
@@ -26,7 +36,7 @@ function hasItemsToShow(options) {
       return true
    }
 
-   if (hasItems(options)) {
+   if (hasItems(options) || skippingInitialLoad(options)) {
       console.log('<App/> :: Payload is NOT empty, has items to show')
       return true
    } else {
@@ -42,6 +52,8 @@ Connects sibling components together like Filters, Search and Pagination.
 
 */
 function Items({ options, children }) {
+   console.log('options ??', options)
+
    return (
       hasItemsToShow(options) && (
          <ItemsProvider options={options}>

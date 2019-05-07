@@ -1,4 +1,4 @@
-import React, { useContext, useEffect } from 'react'
+import React, { useContext, useEffect, useRef } from 'react'
 import { queryByTitleParam } from '/Users/andrew/www/devil/devilbox-new/data/www/wpshopify-api'
 import { SearchContext } from '../_state/context'
 import { ItemsContext } from '../../items/_state/context'
@@ -11,11 +11,14 @@ import { SearchLoader } from './loader'
 function SearchForm() {
    const [itemsState, itemsDispatch] = useContext(ItemsContext)
    const [searchState, searchDispatch] = useContext(SearchContext)
+   const isFirstRender = useRef(true)
 
    useEffect(() => {
-      if (searchState.isFirstRender) {
+      if (isFirstRender.current) {
+         isFirstRender.current = false
          return
       }
+      console.log('OK, SETTING!!!!!!!!!!!!!!!!!!!!!!!!!!!!')
 
       itemsDispatch({
          type: 'SET_QUERY_PARAMS',
