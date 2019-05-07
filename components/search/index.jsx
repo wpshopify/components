@@ -1,40 +1,18 @@
-import React, { useReducer, useEffect } from 'react'
-
+import React, { useContext } from 'react'
+import { ItemsContext } from '../items/_state/context'
 import { SearchForm } from './form'
-import { SearchDropzone } from './form/dropzone'
+import { SearchItems } from './form/items'
+import { SearchProvider } from './_state/provider'
 
-import { getSearchInitialState } from './initial-state'
-import { SearchReducer } from './reducer'
-import { SearchContext } from './context'
-
-// function searchDefaultProps() {
-//    return {
-//       dropZone: false
-//    }
-// }
-
-/*
-
-Component: Search
-
-*/
-function Search({ options }) {
-   const [state, dispatch] = useReducer(SearchReducer, getSearchInitialState(options))
+function Search() {
+   const [itemsState] = useContext(ItemsContext)
 
    return (
-      <>
-         <SearchContext.Provider
-            value={{
-               searchState: state,
-               searchDispatch: dispatch
-            }}>
-            <SearchForm />
-            <SearchDropzone />
-         </SearchContext.Provider>
-      </>
+      <SearchProvider options={itemsState}>
+         <SearchForm />
+         <SearchItems />
+      </SearchProvider>
    )
 }
-
-// Search.defaultProps = searchDefaultProps()
 
 export { Search }

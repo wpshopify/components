@@ -8,6 +8,7 @@ function ItemsInitialState(options = {}) {
       limit: options.componentOptions.limit ? parseInt(options.componentOptions.limit) : false,
       lastCursorId: options.lastCursorId ? options.lastCursorId : false,
       totalShown: options.payload ? options.payload.length : 0,
+      noResultsText: options.componentOptions.noResultsText ? options.componentOptions.noResultsText : 'No items left',
       isLoading: false,
       hasMoreItems: true
    }

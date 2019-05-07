@@ -1,15 +1,10 @@
 import React, { useContext } from 'react'
-import { SearchContext } from '../../context'
+import { SearchContext } from '../../_state/context'
 
-/*
-
-Component: SearchNotices
-
-*/
 function SearchNotices({ isLoading }) {
-   const { searchState } = useContext(SearchContext)
+   const [searchState] = useContext(SearchContext)
 
-   return <div className='is-loading'>{searchState.isLoading ? 'Loading ...' : ''}</div>
+   return <div className='is-loading'>{searchState.isLoading ? 'Loading ⌛️' : ''}</div>
 }
 
 export { SearchNotices }

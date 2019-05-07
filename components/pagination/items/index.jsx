@@ -14,7 +14,7 @@ function PaginationItems({ children }) {
             {itemsState.payload.map(item => React.cloneElement(children, { payload: item, key: uuidv4() }))}
          </section>
 
-         {paginationState.controlsTouched && !itemsState.hasMoreItems && <Notice message='No items left!' type='info' />}
+         {paginationState.controlsTouched && !itemsState.hasMoreItems ? <Notice message='No items left' type='info' /> : ''}
       </section>
    )
 }

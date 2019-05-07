@@ -48,34 +48,6 @@ function FiltersReducer(state, action) {
          }
       }
 
-      case 'SET_RESULTS': {
-         return {
-            ...state,
-            results: update(state.results, { $set: action.payload })
-         }
-      }
-
-      case 'SET_HAS_RESULTS': {
-         return {
-            ...state,
-            hasResults: update(state.hasResults, { $set: action.payload })
-         }
-      }
-
-      case 'SET_HAS_NEXT_PAGE': {
-         return {
-            ...state,
-            hasNextPage: update(state.hasNextPage, { $set: action.payload })
-         }
-      }
-
-      case 'SET_HAS_PREV_PAGE': {
-         return {
-            ...state,
-            hasPrevPage: update(state.hasPrevPage, { $set: action.payload })
-         }
-      }
-
       case 'SET_SELECTED_TAGS': {
          return {
             ...state,

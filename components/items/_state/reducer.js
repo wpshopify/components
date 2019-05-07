@@ -18,6 +18,10 @@ function limitReached(state) {
    return state.totalShown >= state.limit
 }
 
+function hasMorePages(state, newItemTotal) {
+   return newItemTotal >= state.queryParams.first
+}
+
 function ItemsReducer(state, action) {
    switch (action.type) {
       case 'UPDATE_PAYLOAD': {
@@ -87,6 +91,14 @@ function ItemsReducer(state, action) {
          return {
             ...state,
             queryParams: update(state.queryParams, { $merge: action.payload })
+         }
+      }
+
+      case 'UPDATE_HAS_MORE_ITEMS': {
+         console.log('UPDATE_HAS_MORE_ITEMS', hasMorePages(state, action.payload))
+         return {
+            ...state,
+            hasMoreItems: update(state.hasMoreItems, { $set: hasMorePages(state, action.payload) })
          }
       }
 

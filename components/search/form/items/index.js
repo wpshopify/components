@@ -1,14 +1,13 @@
 import React, { useContext } from 'react'
-import { usePortal } from '../../../common/hooks'
-import { ItemsContext } from '../../items/_state/context'
-import { Products } from '../../products'
+import { SearchContext } from '../../_state/context'
+import { ItemsContext } from '../../../items/_state/context'
 
-function FilterItems() {
+import { Products } from '../../../products'
+import { usePortal } from '../../../../common/hooks'
+
+function SearchItems() {
+   const [searchState] = useContext(SearchContext)
    const [itemsState] = useContext(ItemsContext)
-
-   function hasNewData() {
-      return itemsState.payload.length > 0
-   }
 
    function buildOptions() {
       return {
@@ -29,13 +28,18 @@ function FilterItems() {
          }),
          dataType: 'products',
          originalQueryParams: itemsState.queryParams,
-         type: 'filters',
+         type: 'search',
          componentOptions: itemsState.componentOptions,
          noResultsText: itemsState.componentOptions.noResultsText
       }
    }
 
-   return usePortal(<Products options={buildOptions()} />, document.querySelector(itemsState.componentOptions.dropzonePayload))
+   return usePortal(
+      <>
+         <Products options={buildOptions()} />
+      </>,
+      document.querySelector(searchState.componentOptions.dropzonePayload)
+   )
 }
 
-export { FilterItems }
+export { SearchItems }

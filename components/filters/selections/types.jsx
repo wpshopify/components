@@ -9,8 +9,8 @@ function FilterSelectionsType({ selectionType }) {
 
    return (
       !isEmpty(filtersState.selections[selectionType]) && (
-         <div className='wps-filter-selection-type'>
-            <div className='wps-selections-group'>
+         <div className='wps-filter-selection-type wps-row wps-mb-2'>
+            <div className='wps-selections-group wps-align-items-center'>
                <span className='wps-filter-selection-type-heading'>{selectionType}: </span>
                <FilterSelectionsValues selectionType={selectionType} vals={filtersState.selections[selectionType]} />
             </div>

@@ -1,59 +1,41 @@
 import React, { useContext, useEffect } from 'react'
-import { queryProducts, fetchByTitleParams } from '@wpshopify/api'
-import { SearchContext } from '../context'
+import { queryByTitleParam } from '/Users/andrew/www/devil/devilbox-new/data/www/wpshopify-api'
+import { SearchContext } from '../_state/context'
+import { ItemsContext } from '../../items/_state/context'
 import { usePortal } from '../../../common/hooks'
 import { SearchInput } from './input'
 import { SearchButton } from './button'
 import { SearchNotices } from './notices'
+import { SearchLoader } from './loader'
 
-function fetchProducts(searchTerm) {
-   return queryProducts(fetchByTitleParams(searchTerm))
-}
-
-/*
-
-Component: SearchForm
-
-*/
 function SearchForm() {
-   const { searchState, searchDispatch } = useContext(SearchContext)
-
-   useEffect(() => {
-      searchDispatch({ type: 'SET_IS_FIRST_RENDER', payload: false })
-   }, [])
+   const [itemsState, itemsDispatch] = useContext(ItemsContext)
+   const [searchState, searchDispatch] = useContext(SearchContext)
 
    useEffect(() => {
       if (searchState.isFirstRender) {
          return
       }
 
-      getSearchResults()
+      itemsDispatch({
+         type: 'SET_QUERY_PARAMS',
+         payload: {
+            query: queryByTitleParam(searchState.searchTerm)
+         }
+      })
    }, [searchState.searchTerm])
-
-   /*
-
-   Get products on search change
-
-   */
-   async function getSearchResults() {
-      searchDispatch({ type: 'SET_IS_LOADING', payload: true })
-
-      const results = await fetchProducts(searchState.searchTerm)
-
-      searchDispatch({ type: 'SET_DROPZONE_DATA', payload: results })
-      searchDispatch({ type: 'SET_IS_LOADING', payload: false })
-   }
 
    return usePortal(
       <form role='search' className='wps-search-form'>
          <SearchNotices />
 
          <div className='wps-search-wrapper'>
+            <SearchLoader />
             <SearchInput />
             <SearchButton />
          </div>
       </form>,
-      searchState.element
+      document.querySelector(searchState.componentOptions.dropzoneForm)
    )
 }
 

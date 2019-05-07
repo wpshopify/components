@@ -10,9 +10,7 @@ function FiltersInitialState(options = {}) {
       selectedTags: [],
       selectedTypes: [],
       selectedVendors: [],
-      hasResults: false,
-      hasNextPage: true,
-      hasPrevPage: true
+      hasResults: false
    }
 }
 

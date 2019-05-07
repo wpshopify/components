@@ -1,5 +1,6 @@
 import React from 'react'
 import { ItemsProvider } from './_state/provider'
+import { ItemsWrapper } from './wrapper'
 import { Notice } from '../notice'
 import has from 'lodash/has'
 
@@ -41,7 +42,13 @@ Connects sibling components together like Filters, Search and Pagination.
 
 */
 function Items({ options, children }) {
-   return hasItemsToShow(options) ? <ItemsProvider options={options}>{children}</ItemsProvider> : <Notice message='Nada to show' type='info' />
+   return (
+      hasItemsToShow(options) && (
+         <ItemsProvider options={options}>
+            <ItemsWrapper>{children}</ItemsWrapper>
+         </ItemsProvider>
+      )
+   )
 }
 
 export { Items }

@@ -1,4 +1,4 @@
-import { findVariantFromSelectedOptions } from '@wpshopify/api'
+import { findVariantFromSelectedOptions } from '/Users/andrew/www/devil/devilbox-new/data/www/wpshopify-api'
 
 function ProductReducer(state, action) {
    switch (action.type) {

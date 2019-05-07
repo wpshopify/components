@@ -3,7 +3,7 @@ import { ShopContext } from '../shop/_state/context'
 
 import uniq from 'lodash/uniq'
 import isEmpty from 'lodash/isEmpty'
-import { buildInstances, getProductsFromIds, getCheckoutCache, getCheckoutID } from '@wpshopify/api'
+import { buildInstances, getProductsFromIds, getCheckoutCache, getCheckoutID } from '/Users/andrew/www/devil/devilbox-new/data/www/wpshopify-api'
 import to from 'await-to-js'
 
 function variantsFromCache() {

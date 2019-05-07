@@ -1,13 +1,10 @@
-function getSearchInitialState(options = {}) {
+function SearchInitialState(options = {}) {
    return {
       componentID: options.componentID ? options.componentID : false,
       element: options.element ? options.element : false,
       renderFromServer: options.componentOptions ? options.componentOptions.renderFromServer : false,
-      componentOptions: options.componentOptions ? options.componentOptions : false,
-      isLoading: false,
-      searchData: false,
-      isFirstRender: false
+      componentOptions: options.componentOptions ? options.componentOptions : false
    }
 }
 
-export { getSearchInitialState }
+export { SearchInitialState }

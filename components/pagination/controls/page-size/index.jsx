@@ -65,7 +65,7 @@ function PaginationPageSize() {
 
    return usePortal(
       <div className='wps-component wps-component-sorting'>
-         <label className='wps-sorting-heading' htmlFor='wps-sorting'>
+         <label className='wps-sorting-heading wps-mr-2' htmlFor='wps-sorting'>
             Page size:
          </label>
 
@@ -73,21 +73,11 @@ function PaginationPageSize() {
             <option value='DEFAULT' disabled='disabled'>
                Choose a size
             </option>
-            <option value='10' disabled={itemsState.totalShown >= 10 || !itemsState.hasMoreItems ? 'disabled' : ''}>
-               10
-            </option>
-            <option value='25' disabled={itemsState.totalShown >= 25 || !itemsState.hasMoreItems ? 'disabled' : ''}>
-               25
-            </option>
-            <option value='50' disabled={itemsState.totalShown >= 50 || !itemsState.hasMoreItems ? 'disabled' : ''} data-wps-reverse>
-               50
-            </option>
-            <option value='100' disabled={itemsState.totalShown >= 100 || !itemsState.hasMoreItems ? 'disabled' : ''}>
-               100
-            </option>
-            <option value='250' disabled={itemsState.totalShown >= 250 || !itemsState.hasMoreItems ? 'disabled' : ''} data-wps-reverse>
-               250
-            </option>
+            <option value='10'>10</option>
+            <option value='25'>25</option>
+            <option value='50'>50</option>
+            <option value='100'>100</option>
+            <option value='250'>250</option>
          </select>
       </div>,
       document.querySelector(paginationState.componentOptions.dropzonePageSize)

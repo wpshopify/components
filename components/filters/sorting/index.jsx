@@ -46,11 +46,11 @@ function FilterSorting() {
 
    return usePortal(
       <div className='wps-component wps-component-sorting'>
-         <label className='wps-sorting-heading' htmlFor='wps-sorting'>
+         <label className='wps-sorting-heading wps-mr-2' htmlFor='wps-sorting'>
             Sort by:
          </label>
 
-         <select value={sortValue} id='wps-sorting' onChange={e => onChange(e)}>
+         <select value={sortValue} id='wps-sorting' onChange={onChange} disabled={itemsState.isLoading}>
             <option value='DEFAULT' disabled='disabled'>
                Choose an option
             </option>

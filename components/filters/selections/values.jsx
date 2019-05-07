@@ -1,6 +1,5 @@
-import React, { useContext, useRef, useEffect } from 'react'
+import React, { useContext } from 'react'
 import { IconRemove } from '../../../common/icons/icon-remove.jsx'
-import { removeFrom } from '../../../common/utils'
 import { FiltersContext } from '../_state/context'
 import { useTransition, animated } from 'react-spring'
 import { updateSelectionList } from '../../../common/selections'
@@ -44,7 +43,7 @@ function FilterSelectionsValue({ selectionType, val }) {
    }
 
    return (
-      <span className='wps-filter-selection-value' onClick={e => onClick(val)}>
+      <span className='wps-filter-selection-value wps-mr-2' onClick={e => onClick(val)}>
          {val} <IconRemove />{' '}
       </span>
    )
@@ -54,7 +53,7 @@ function FilterSelectionsValues({ selectionType, vals }) {
    const transitions = useTransition(vals, item => item, {
       from: { transform: 'translateX(40px)' },
       enter: { transform: 'translateX(0)' },
-      leave: { display: 'none' }
+      leave: { opacity: '0' }
    })
 
    return transitions.map(({ item, props, key }) => (
