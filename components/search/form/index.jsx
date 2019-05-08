@@ -18,7 +18,6 @@ function SearchForm() {
          isFirstRender.current = false
          return
       }
-      console.log('OK, SETTING!!!!!!!!!!!!!!!!!!!!!!!!!!!!')
 
       itemsDispatch({
          type: 'SET_QUERY_PARAMS',

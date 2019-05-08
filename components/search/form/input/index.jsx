@@ -14,8 +14,6 @@ function SearchInput() {
    const isFirstRender = useRef(true)
 
    function setSearchTerm(value) {
-      console.log('setting search term ...', value)
-
       setLocalTerm(value)
    }
 
@@ -31,7 +29,6 @@ function SearchInput() {
       }
 
       searchDispatch({ type: 'SET_SEARCH_TERM', payload: debouncedSearchTerm })
-      console.log('searchState.searchTerm', searchState.searchTerm)
    }, [debouncedSearchTerm])
 
    return (

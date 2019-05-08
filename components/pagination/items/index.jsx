@@ -5,7 +5,7 @@ import { Notice } from '../../notice'
 import uuidv4 from 'uuid/v4'
 
 function PaginationItems({ children }) {
-   const [itemsState, itemsDispatch] = useContext(ItemsContext)
+   const [itemsState] = useContext(ItemsContext)
    const [paginationState] = useContext(PaginationContext)
 
    return (

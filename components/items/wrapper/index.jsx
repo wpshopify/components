@@ -2,43 +2,44 @@ import React, { useContext, useRef, useEffect } from 'react'
 import { ItemsContext } from '../_state/context'
 import { fetchNextPage, graphQuery, findTypeFromPayload } from '/Users/andrew/www/devil/devilbox-new/data/www/wpshopify-api'
 import to from 'await-to-js'
+import isEmpty from 'lodash/isEmpty'
 
 function resendInitialQuery(state) {
-   return graphQuery(findTypeFromPayload(state.payload), state.queryParams)
+   return graphQuery(state.originalParams.type, state.originalParams.queryParams, state.originalParams.connectionParams)
 }
 
 function fetchNextItems(itemsState, itemsDispatch) {
    return new Promise(async (resolve, reject) => {
-      console.log('itemsState.payload', itemsState.payload)
+      if (isEmpty(itemsState.payload)) {
+         return
+      }
+
       itemsDispatch({ type: 'SET_IS_LOADING', payload: true })
 
       const [resultsError, results] = await to(fetchNextPage(itemsState.payload))
 
-      console.log('NEXT PAGE RESULTS: ', results)
-      console.log('resultsError', resultsError)
-
       if (resultsError) {
-         const [resendInitialQueryError, resendInitialQueryResponse] = await to(resendInitialQuery(itemsState))
-         console.log('resendInitialQueryError', resendInitialQueryError)
-         console.log('resendInitialQueryResponse', resendInitialQueryResponse)
+         console.log('errror, resending original query')
 
-         var [finalResultsError, finalResults] = await to(fetchNextPage(resendInitialQueryResponse.model[itemsState.dataType]))
-         console.log('finalResults', finalResults)
-         console.log('finalResultsError', finalResultsError)
+         const [resendInitialQueryError, resendInitialQueryResponse] = await to(resendInitialQuery(itemsState))
+         console.log('resendInitialQueryResponse ::', resendInitialQueryResponse)
+
+         if (itemsState.originalParams.type === 'collections') {
+            var nextPayload = resendInitialQueryResponse.model[itemsState.originalParams.type][0].products
+         } else {
+            var nextPayload = resendInitialQueryResponse.model[itemsState.originalParams.type]
+         }
+
+         var [finalResultsError, finalResults] = await to(fetchNextPage(nextPayload))
+
+         console.log('finalResults .............................', finalResults)
 
          var nextItems = finalResults.model
          var nextItemsTotal = finalResults.model.length
-
-         console.log('resend results ...............', finalResults)
       } else {
-         console.log('initial send results ...............', results)
-
          var nextItems = results.model
          var nextItemsTotal = results.model.length
       }
-
-      console.log('final: nextItems', nextItems)
-      console.log('final: nextItemsTotal', nextItemsTotal)
 
       itemsDispatch({ type: 'SET_TOTAL_SHOWN', payload: nextItemsTotal })
       itemsDispatch({ type: 'UPDATE_PAYLOAD', payload: nextItems })
@@ -54,18 +55,12 @@ function ItemsWrapper({ children }) {
    const isFirstRender = useRef(true)
 
    async function fetchNewItems() {
-      console.log('fetchNewItems', itemsState)
-      console.log('fetchNewItems', itemsState.queryParams)
-
       itemsDispatch({ type: 'SET_IS_LOADING', payload: true })
 
       const [resultsError, results] = await to(graphQuery(itemsState.dataType, itemsState.queryParams))
 
       var newItems = results.model[itemsState.dataType]
       var newItemsTotal = newItems.length
-
-      console.log('newItemsTotal', newItemsTotal)
-      console.log('newItems', newItems)
 
       itemsDispatch({ type: 'SET_TOTAL_SHOWN', payload: newItemsTotal })
       itemsDispatch({ type: 'SET_PAYLOAD', payload: newItems })
@@ -74,8 +69,6 @@ function ItemsWrapper({ children }) {
    }
 
    useEffect(() => {
-      console.log('.........useEffect.........itemsState.queryParams')
-
       if (isFirstRender.current) {
          isFirstRender.current = false
          return

@@ -25,33 +25,22 @@ function hasMorePages(state, newItemTotal) {
 function ItemsReducer(state, action) {
    switch (action.type) {
       case 'UPDATE_PAYLOAD': {
-         if (!hasNextPage(action.payload) || limitReached(state)) {
-            console.log('UPDATE_PAYLOAD ....... limit or final page reached')
-
-            var updatedHasMoreItems = update(state.hasMoreItems, { $set: false })
-
+         var updatedHasMoreItems = true
+         if (limitReached(state)) {
             if (state.limit) {
-               console.log('HAS LIMIT HERREEE')
-               console.log('state.payload.concat(action.payload)', state.payload.concat(action.payload))
-
                var updatedPayload = update(state.payload, { $set: state.payload.concat(action.payload).slice(0, state.limit) })
-               console.log('updatedPayload', updatedPayload)
-
-               console.log('action.payload', action.payload)
             } else {
                var updatedPayload = state.payload
             }
+
+            updatedHasMoreItems = update(state.hasMoreItems, { $set: false })
          } else {
-            console.log('UPDATE_PAYLOAD ....... just updating', action.payload)
             var updatedPayload = update(state.payload, { $push: action.payload })
-            var updatedHasMoreItems = update(state.hasMoreItems, { $set: true })
+
+            if (!hasNextPage(action.payload)) {
+               updatedHasMoreItems = update(state.hasMoreItems, { $set: false })
+            }
          }
-
-         console.log('state.totalShown', state.totalShown)
-         console.log('action.payload.length', action.payload.length)
-
-         console.log('updatedHasMoreItems', updatedHasMoreItems)
-         console.log('updatedPayload', updatedPayload)
 
          return {
             ...state,
@@ -95,7 +84,6 @@ function ItemsReducer(state, action) {
       }
 
       case 'UPDATE_HAS_MORE_ITEMS': {
-         console.log('UPDATE_HAS_MORE_ITEMS', hasMorePages(state, action.payload))
          return {
             ...state,
             hasMoreItems: update(state.hasMoreItems, { $set: hasMorePages(state, action.payload) })
