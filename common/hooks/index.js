@@ -1,6 +1,7 @@
 import React, { useEffect, useState, useContext } from 'react'
 import ReactDOM from 'react-dom'
 import hasIn from 'lodash/hasIn'
+import inView from 'in-view'
 
 function useOnClickOutside(ref, handler, targetOpened = false) {
    function addEventListener(listener) {
@@ -68,14 +69,36 @@ function usePortal(componentMarkup, containerElement) {
       }
    }
 
-   useState(() => {
-      if (containerElement) {
-         containerElement.setAttribute('data-wps-is-ready', '1')
-         emptyComponentWrapper(containerElement)
-      }
-   }, [])
+   // useEffect(() => {
+   //    if (containerElement) {
+   //       containerElement.setAttribute('data-wps-is-ready', '1')
+   //       emptyComponentWrapper(containerElement)
+   //    }
+   // }, [])
 
    return renderPortal()
 }
 
-export { useOnClickOutside, usePortal }
+function useInView(selector, itemsState) {
+   const [inViewState, setInViewState] = useState(false)
+
+   useEffect(() => {
+      console.log('itemsState.componentOptions', itemsState.componentOptions)
+
+      if (itemsState.componentOptions.infiniteScroll) {
+         inView.offset(itemsState.componentOptions.infiniteScrollOffset)
+
+         inView(selector)
+            .on('enter', el => {
+               setInViewState(true)
+            })
+            .on('exit', el => {
+               setInViewState(false)
+            })
+      }
+   }, [])
+
+   return [inViewState]
+}
+
+export { useOnClickOutside, usePortal, useInView }
