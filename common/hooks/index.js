@@ -54,11 +54,9 @@ function useOnClickOutside(ref, handler, targetOpened = false) {
    }, [ref, handler])
 }
 
-function usePortal(componentMarkup, containerElement) {
+function usePortal(componentMarkup, containerElement = false) {
    function emptyComponentWrapper(element) {
-      while (element.firstChild) {
-         element.removeChild(element.firstChild)
-      }
+      element.removeChild(element.querySelector('.wps-loading-placeholder'))
    }
 
    function renderPortal() {
@@ -69,12 +67,11 @@ function usePortal(componentMarkup, containerElement) {
       }
    }
 
-   // useEffect(() => {
-   //    if (containerElement) {
-   //       containerElement.setAttribute('data-wps-is-ready', '1')
-   //       emptyComponentWrapper(containerElement)
-   //    }
-   // }, [])
+   useEffect(() => {
+      if (containerElement) {
+         emptyComponentWrapper(containerElement)
+      }
+   }, [])
 
    return renderPortal()
 }

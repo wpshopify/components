@@ -10,7 +10,7 @@ import isEmpty from 'lodash/isEmpty'
 function Pagination({ children }) {
    const [itemsState] = useContext(ItemsContext)
    const isFirstRender = useRef(true)
-
+   console.log('itemsState.element', itemsState.element)
    useEffect(() => {
       if (isFirstRender.current) {
          isFirstRender.current = false
@@ -29,7 +29,9 @@ function Pagination({ children }) {
          )}
 
          {itemsState.componentOptions.pagination && <PaginationControls />}
-      </PaginationProvider>
+      </PaginationProvider>,
+      itemsState.element,
+      true
    )
 }
 

@@ -3,6 +3,7 @@ import { ItemsProvider } from './_state/provider'
 import { ItemsWrapper } from './wrapper'
 import { Notice } from '../notice'
 import has from 'lodash/has'
+import uuidv4 from 'uuid/v4'
 
 function hasItems(options) {
    return options.payload.length > 0
@@ -43,6 +44,18 @@ function hasItemsToShow(options) {
    }
 }
 
+function hasMultipleItems(options) {
+   return options.length > 1
+}
+
+function ItemsController({ options, children }) {
+   return (
+      <ItemsProvider options={options}>
+         <ItemsWrapper>{children}</ItemsWrapper>
+      </ItemsProvider>
+   )
+}
+
 /*
 
 Responsible for managing state of 'payload', 'queryParams', and 'isLoading'.
@@ -50,13 +63,13 @@ Connects sibling components together like Filters, Search and Pagination.
 
 */
 function Items({ options, children }) {
-   return (
-      hasItemsToShow(options) && (
-         <ItemsProvider options={options}>
-            <ItemsWrapper>{children}</ItemsWrapper>
-         </ItemsProvider>
-      )
-   )
+   return hasMultipleItems(options)
+      ? options.map(option => (
+           <ItemsController key={uuidv4()} options={option}>
+              {children}
+           </ItemsController>
+        ))
+      : hasItemsToShow(options) && <ItemsController options={options}>{children}</ItemsController>
 }
 
 export { Items }
