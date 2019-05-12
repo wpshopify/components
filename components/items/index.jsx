@@ -63,13 +63,16 @@ Connects sibling components together like Filters, Search and Pagination.
 
 */
 function Items({ options, children }) {
-   return hasMultipleItems(options)
-      ? options.map(option => (
-           <ItemsController key={uuidv4()} options={option}>
-              {children}
-           </ItemsController>
-        ))
-      : hasItemsToShow(options) && <ItemsController options={options}>{children}</ItemsController>
+   console.log('options', options)
+
+   return (
+      hasItemsToShow(options) &&
+      options.map(option => (
+         <ItemsController key={uuidv4()} options={option}>
+            {children}
+         </ItemsController>
+      ))
+   )
 }
 
 export { Items }
