@@ -17,23 +17,35 @@ function PaginationLoadMore() {
    }
 
    useEffect(() => {
-      console.log('hiiiiii')
-
       if (!itemsState.componentOptions.infiniteScroll) {
-         console.log('dissaaaaabled, cleaning up')
-
          return () => (inView = false)
       }
-      console.log('inView: ', inView)
 
       if (inView) {
          onNextPage()
       }
    }, [inView])
+   console.log('LOAD MORE ::::::::::', itemsState)
+
+   function shouldShowLoadMore() {
+      console.log('itemsState.componentOptions.paginationLoadMore', itemsState.componentOptions.paginationLoadMore)
+
+      if (!itemsState.componentOptions.paginationLoadMore) {
+         return false
+      }
+      console.log('itemsState.hasMoreItems', itemsState.hasMoreItems)
+      console.log('itemsState.payload', itemsState.payload)
+
+      if (itemsState.hasMoreItems && !isEmpty(itemsState.payload)) {
+         return true
+      } else {
+         return false
+      }
+   }
 
    return usePortal(
       <>
-         {itemsState.hasMoreItems && !isEmpty(itemsState.payload) && (
+         {shouldShowLoadMore() && (
             <button type='button' disabled={itemsState.isLoading} className='wps-button wps-btn-next-page' onClick={onNextPage}>
                {itemsState.isLoading ? 'Loading ⌛️' : 'Load more'}
             </button>

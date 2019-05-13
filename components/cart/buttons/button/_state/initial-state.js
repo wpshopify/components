@@ -1,6 +1,4 @@
 function CartButtonInitialState(options) {
-   console.log('::::::::::::::: options', options)
-
    return {
       componentID: options.componentID,
       element: options.element,

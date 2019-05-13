@@ -1,23 +1,25 @@
+import update from 'immutability-helper'
+
 function ProductOptionReducer(state, action) {
    switch (action.type) {
       case 'SET_SELECTED_OPTION': {
          return {
             ...state,
-            selectedOption: action.payload
+            selectedOption: update(state.selectedOption, { $set: action.payload })
          }
       }
 
       case 'SET_IS_OPTION_SELECTED': {
          return {
             ...state,
-            isOptionSelected: action.payload
+            isOptionSelected: update(state.isOptionSelected, { $set: action.payload })
          }
       }
 
       case 'TOGGLE_DROPDOWN': {
          return {
             ...state,
-            isDropdownOpen: action.payload
+            isDropdownOpen: update(state.isDropdownOpen, { $set: action.payload })
          }
       }
 

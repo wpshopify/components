@@ -18,8 +18,7 @@ function ProductVariant({ variant }) {
 
       // setSelectedOptions(optionsUpdated);
       buyButtonDispatch({ type: 'UPDATE_SELECTED_OPTIONS', payload: newlySelected })
-
-      productOptionDispatch({ type: 'TOGGLE_DROPDOWN', payload: !productOptionState.isDropdownOpen })
+      productOptionDispatch({ type: 'TOGGLE_DROPDOWN', payload: false })
       productOptionDispatch({ type: 'SET_IS_OPTION_SELECTED', payload: true })
       productOptionDispatch({ type: 'SET_SELECTED_OPTION', payload: newlySelected })
    }

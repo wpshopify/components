@@ -64,22 +64,26 @@ function PaginationPageSize() {
    }
 
    return usePortal(
-      <div className='wps-component wps-component-sorting'>
-         <label className='wps-sorting-heading wps-mr-2' htmlFor='wps-sorting'>
-            Page size:
-         </label>
+      <>
+         {paginationState.componentOptions.paginationPageSize && (
+            <div className='wps-component wps-component-sorting'>
+               <label className='wps-sorting-heading wps-mr-2' htmlFor='wps-sorting'>
+                  Page size:
+               </label>
 
-         <select className='wps-input' value={pageSize} id='wps-sorting' onChange={e => onChange(e)} disabled={itemsState.isLoading}>
-            <option value='DEFAULT' disabled='disabled'>
-               Choose a size
-            </option>
-            <option value='10'>10</option>
-            <option value='25'>25</option>
-            <option value='50'>50</option>
-            <option value='100'>100</option>
-            <option value='250'>250</option>
-         </select>
-      </div>,
+               <select className='wps-input' value={pageSize} id='wps-sorting' onChange={e => onChange(e)} disabled={itemsState.isLoading}>
+                  <option value='DEFAULT' disabled='disabled'>
+                     Choose a size
+                  </option>
+                  <option value='10'>10</option>
+                  <option value='25'>25</option>
+                  <option value='50'>50</option>
+                  <option value='100'>100</option>
+                  <option value='250'>250</option>
+               </select>
+            </div>
+         )}
+      </>,
       document.querySelector(paginationState.componentOptions.dropzonePageSize)
    )
 }

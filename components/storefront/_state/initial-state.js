@@ -1,5 +1,4 @@
 function StorefrontInitialState(options = {}) {
-   console.log('::::::::: StorefrontInitialState options', options)
    return {
       componentID: options.componentID ? options.componentID : false,
       element: options.element ? options.element : false,

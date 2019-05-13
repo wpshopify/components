@@ -1,6 +1,4 @@
 function CollectionsInitialState(options) {
-   console.log('::::::::: CollectionsInitialState options', options)
-
    return {
       componentOptions: options.componentOptions ? options.componentOptions : false,
       payload: options.payload ? options.payload : [],

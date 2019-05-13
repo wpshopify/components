@@ -80,8 +80,6 @@ function useInView(selector, itemsState) {
    const [inViewState, setInViewState] = useState(false)
 
    useEffect(() => {
-      console.log('itemsState.componentOptions', itemsState.componentOptions)
-
       if (itemsState.componentOptions.infiniteScroll) {
          inView.offset(itemsState.componentOptions.infiniteScrollOffset)
 

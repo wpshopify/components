@@ -4,7 +4,7 @@ import { PaginationLoadMore } from './load-more'
 
 function PaginationControls({ fetchNextItems }) {
    return (
-      <section className='wps-pagination-controls'>
+      <section className='wps-pagination-controls container-fluid'>
          <PaginationPageSize />
          <PaginationLoadMore fetchNextItems={fetchNextItems} />
       </section>

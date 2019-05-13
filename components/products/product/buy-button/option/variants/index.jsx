@@ -12,7 +12,7 @@ function ProductVariants() {
    useOnClickOutside(
       productOptionState.dropdownElement,
       () => {
-         productOptionDispatch({ type: 'TOGGLE_DROPDOWN', payload: !productOptionState.isDropdownOpen })
+         productOptionDispatch({ type: 'TOGGLE_DROPDOWN', payload: false })
       },
       productOptionState.isDropdownOpen
    )

@@ -6,7 +6,6 @@ import isEmpty from 'lodash/isEmpty'
 import has from 'lodash/has'
 
 function resendInitialQuery(state) {
-   console.log('state!!!!!!!!!!!!!! ', state)
    var connectionParams = has(state.originalParams, 'connectionParams') ? state.originalParams.connectionParams : false
 
    return graphQuery(state.dataType, state.originalParams, connectionParams)
@@ -23,10 +22,7 @@ function fetchNextItems(itemsState, itemsDispatch) {
       const [resultsError, results] = await to(fetchNextPage(itemsState.payload))
 
       if (resultsError) {
-         console.log('errror, resending original query')
-
          const [resendInitialQueryError, resendInitialQueryResponse] = await to(resendInitialQuery(itemsState))
-         console.log('resendInitialQueryResponse ::', resendInitialQueryResponse)
 
          if (itemsState.dataType === 'collections') {
             var nextPayload = resendInitialQueryResponse.model[itemsState.dataType][0].products
@@ -35,8 +31,6 @@ function fetchNextItems(itemsState, itemsDispatch) {
          }
 
          var [finalResultsError, finalResults] = await to(fetchNextPage(nextPayload))
-
-         console.log('finalResults .............................', finalResults)
 
          var nextItems = finalResults.model
          var nextItemsTotal = finalResults.model.length

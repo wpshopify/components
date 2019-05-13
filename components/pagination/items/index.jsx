@@ -7,7 +7,6 @@ import uuidv4 from 'uuid/v4'
 function PaginationItems({ children }) {
    const [itemsState] = useContext(ItemsContext)
    const [paginationState] = useContext(PaginationContext)
-   console.log('PaginationItems', itemsState)
 
    function mapPayload() {
       return itemsState.payload.map(item => React.cloneElement(children, { payload: item, key: uuidv4() }))

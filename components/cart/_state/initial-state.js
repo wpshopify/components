@@ -1,6 +1,4 @@
 function CartInitialState(options) {
-   console.log('::::::::::: CartInitialState options', options)
-
    return {
       cartOpen: null,
       isUpdating: false,

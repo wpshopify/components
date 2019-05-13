@@ -22,6 +22,7 @@
       "woocommerce"
    ],
    "dependencies": {
+      "@tippy.js/react": "^2.2.0",
       "@wpshopify/api": "^0.1.10",
       "accounting": "^0.4.1",
       "animejs": "^3.0.1",

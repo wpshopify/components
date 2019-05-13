@@ -5,6 +5,7 @@ import { ProductOptionContext } from '../_state/context'
 import { ProductOptionTrigger } from '../trigger'
 import find from 'lodash/find'
 import isEmpty from 'lodash/isEmpty'
+import Tippy from '@tippy.js/react'
 
 function ProductOptionDropdown() {
    const [buyButtonState, buyButtonDispatch] = useContext(ProductBuyButtonContext)
@@ -39,9 +40,12 @@ function ProductOptionDropdown() {
 
    return (
       <div className='row'>
-         <div className='wps-btn-dropdown col col-12' data-wps-is-selected={productOptionState.isOptionSelected} ref={productOptionState.dropdownElement}>
-            <ProductOptionTrigger />
-            <ProductVariants />
+         <div className='wps-btn-dropdown' data-wps-is-selected={productOptionState.isOptionSelected} ref={productOptionState.dropdownElement}>
+            <Tippy visible={productOptionState.isDropdownOpen} animateFill={false} placement='bottom' allowHTML={true} appendTo="parent" animation="shift-away" flip={false} theme="light" interactive={true} inertia={true} delay={[0, 0]} content={<ProductVariants />}>
+               <span>
+                  <ProductOptionTrigger />
+               </span>
+            </Tippy>
          </div>
       </div>
    )
