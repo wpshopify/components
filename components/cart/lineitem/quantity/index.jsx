@@ -83,15 +83,15 @@ function CartLineItemQuantity({ lineItem, variantId, lineItemQuantity, setLineIt
    }
 
    return (
-      <div className='wps-cart-lineitem-quantity-container wps-container-fluid' data-wps-is-ready={isShopReady}>
-         <div className='wps-row'>
-            <button className='wps-quantity-decrement wps-col-3' type='button' onClick={handleDecrement}>
+      <div className='wps-cart-lineitem-quantity-container container-fluid' data-wps-is-ready={isShopReady}>
+         <div className='row'>
+            <button className='wps-quantity-decrement col-3' type='button' onClick={handleDecrement}>
                <span className='wps-quantity-icon wps-quantity-decrement-icon' />
             </button>
 
             <input className='wps-cart-lineitem-quantity' type='number' min='0' aria-label='Quantity' value={lineItemQuantity} onChange={handleQuantityChange} onBlur={handleQuantityBlur} />
 
-            <button className='wps-quantity-increment wps-col-3' type='button' onClick={handleIncrement}>
+            <button className='wps-quantity-increment col-3' type='button' onClick={handleIncrement}>
                <span className='wps-quantity-icon wps-quantity-increment-icon' />
             </button>
          </div>

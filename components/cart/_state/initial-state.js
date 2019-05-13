@@ -1,5 +1,5 @@
 function CartInitialState(options) {
-   console.log('options', options)
+   console.log('::::::::::: CartInitialState options', options)
 
    return {
       cartOpen: null,

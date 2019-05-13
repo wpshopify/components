@@ -4,7 +4,7 @@ function ItemsInitialState(options = {}) {
       element: options.componentElement,
       payload: options.componentPayload ? options.componentPayload : [],
       queryParams: options.componentQueryParams ? options.componentQueryParams : {},
-      originalParams: options.componentOriginalQueryParams ? options.componentOriginalQueryParams : false,
+      originalParams: options.componentQueryParams ? options.componentQueryParams : false,
       dataType: options.componentType ? options.componentType : 'products',
       limit: options.componentOptions.limit ? parseInt(options.componentOptions.limit) : false,
       lastCursorId: options.componentPayloadLastCursor ? options.componentPayloadLastCursor : false,

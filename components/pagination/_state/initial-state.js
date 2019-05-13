@@ -1,4 +1,5 @@
 function PaginationInitialState(options) {
+   console.log('::::::::: PaginationInitialState options', options)
    return {
       element: options.element,
       componentOptions: options.componentOptions,

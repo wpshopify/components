@@ -38,8 +38,8 @@ function ProductOptionDropdown() {
    }, [buyButtonState.selectedOptions])
 
    return (
-      <div className='wps-row'>
-         <div className='wps-btn-dropdown wps-col wps-col-12' data-wps-is-selected={productOptionState.isOptionSelected} ref={productOptionState.dropdownElement}>
+      <div className='row'>
+         <div className='wps-btn-dropdown col col-12' data-wps-is-selected={productOptionState.isOptionSelected} ref={productOptionState.dropdownElement}>
             <ProductOptionTrigger />
             <ProductVariants />
          </div>

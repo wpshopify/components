@@ -16,7 +16,7 @@ function CartFooter() {
 
    return (
       <section className='wps-cart-footer'>
-         <div className='wps-baseline wps-row wps-space-between wps-m-0'>
+         <div className='baseline row space-between m-0'>
             <p className='wps-total-prefix'>Subtotal:</p>
             <p className='wps-total-amount' ref={totalElement} data-wps-is-ready={shopState.isShopReady}>
                {maybeformatPriceToCurrency(shopState.checkoutCache.total)}

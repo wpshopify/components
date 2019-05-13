@@ -67,7 +67,7 @@ function ProductOptions() {
    }, [buyButtonState.selectedOptions])
 
    return (
-      <div className='wps-component wps-component-products-options wps-container-fluid' data-wps-is-component-wrapper>
+      <div className='wps-component wps-component-products-options container-fluid' data-wps-is-component-wrapper>
          {options.map(option => (
             <ProductOption key={option.name} option={option} />
          ))}

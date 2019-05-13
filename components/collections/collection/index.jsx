@@ -15,6 +15,7 @@ import { Products } from '../../products'
 function Collection({ payload }) {
    const [itemsState] = useContext(ItemsContext)
    const [paginationState] = useContext(PaginationContext)
+   console.log('itemsState.componentOptions <<<<<<<<<>>>>>>>>>>')
 
    const productOptions = {
       payload: itemsState.payload[0].products,

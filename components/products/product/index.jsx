@@ -11,6 +11,7 @@ import { itemWidthClass } from '../../../common/utils'
 
 function Product({ payload }) {
    const [itemsState] = useContext(ItemsContext)
+   console.log('ProductProduct itemsState.componentOptions', itemsState.componentOptions)
 
    return (
       <div className={`${itemWidthClass(itemsState.componentOptions.itemsPerRow)} wps-item wps-p-3`}>

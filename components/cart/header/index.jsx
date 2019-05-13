@@ -5,8 +5,8 @@ import { CartClose } from '../close'
 
 function CartHeader() {
    return (
-      <section className='wps-cart-header wps-container-fluid'>
-         <div className='wps-row'>
+      <section className='wps-cart-header container-fluid'>
+         <div className='row'>
             <CartTitle />
             <CartClose />
          </div>

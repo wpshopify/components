@@ -9,8 +9,8 @@ function StorefrontSelectionsType({ selectionType }) {
 
    return (
       !isEmpty(storefrontState.selections[selectionType]) && (
-         <div className='wps-filter-selection-type wps-row wps-mb-2'>
-            <div className='wps-selections-group wps-align-items-center'>
+         <div className='wps-filter-selection-type row mb-2'>
+            <div className='wps-selections-group align-items-center'>
                <span className='wps-filter-selection-type-heading'>{selectionType}: </span>
                <StorefrontSelectionsValues selectionType={selectionType} vals={storefrontState.selections[selectionType]} />
             </div>

@@ -1,4 +1,5 @@
 function SearchInitialState(options = {}) {
+   console.log('::::::::: SearchInitialState options', options)
    return {
       componentID: options.componentID ? options.componentID : false,
       element: options.element ? options.element : false,

@@ -3,9 +3,13 @@ import { ItemsContext } from '../_state/context'
 import { fetchNextPage, graphQuery, findTypeFromPayload } from '/Users/andrew/www/devil/devilbox-new/data/www/wpshopify-api'
 import to from 'await-to-js'
 import isEmpty from 'lodash/isEmpty'
+import has from 'lodash/has'
 
 function resendInitialQuery(state) {
-   return graphQuery(state.originalParams.type, state.originalParams.queryParams, state.originalParams.connectionParams)
+   console.log('state!!!!!!!!!!!!!! ', state)
+   var connectionParams = has(state.originalParams, 'connectionParams') ? state.originalParams.connectionParams : false
+
+   return graphQuery(state.dataType, state.originalParams, connectionParams)
 }
 
 function fetchNextItems(itemsState, itemsDispatch) {
@@ -24,10 +28,10 @@ function fetchNextItems(itemsState, itemsDispatch) {
          const [resendInitialQueryError, resendInitialQueryResponse] = await to(resendInitialQuery(itemsState))
          console.log('resendInitialQueryResponse ::', resendInitialQueryResponse)
 
-         if (itemsState.originalParams.type === 'collections') {
-            var nextPayload = resendInitialQueryResponse.model[itemsState.originalParams.type][0].products
+         if (itemsState.dataType === 'collections') {
+            var nextPayload = resendInitialQueryResponse.model[itemsState.dataType][0].products
          } else {
-            var nextPayload = resendInitialQueryResponse.model[itemsState.originalParams.type]
+            var nextPayload = resendInitialQueryResponse.model[itemsState.dataType]
          }
 
          var [finalResultsError, finalResults] = await to(fetchNextPage(nextPayload))
