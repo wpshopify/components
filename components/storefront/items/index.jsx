@@ -1,14 +1,12 @@
 import React, { useContext } from 'react'
 import { usePortal } from '../../../common/hooks'
 import { ItemsContext } from '../../items/_state/context'
+import { StorefrontContext } from '../_state/context'
 import { Products } from '../../products'
 
 function StorefrontItems() {
    const [itemsState] = useContext(ItemsContext)
-
-   function hasNewData() {
-      return itemsState.payload.length > 0
-   }
+   const [storefrontState] = useContext(StorefrontContext)
 
    function buildOptions() {
       return {
@@ -39,7 +37,7 @@ function StorefrontItems() {
       }
    }
 
-   return usePortal(<Products options={buildOptions()} />, document.querySelector(itemsState.componentOptions.dropzonePayload))
+   return usePortal(<Products options={buildOptions()} />, document.querySelector(storefrontState.componentOptions.dropzonePayload))
 }
 
 export { StorefrontItems }

@@ -29,9 +29,7 @@ function Pagination({ children }) {
          )}
 
          {itemsState.componentOptions.pagination && <PaginationControls />}
-      </PaginationProvider>,
-      itemsState.element,
-      true
+      </PaginationProvider>
    )
 }
 

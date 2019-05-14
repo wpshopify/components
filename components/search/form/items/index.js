@@ -39,12 +39,7 @@ function SearchItems() {
       }
    }
 
-   return usePortal(
-      <>
-         <Products options={buildOptions()} />
-      </>,
-      document.querySelector(searchState.componentOptions.dropzonePayload)
-   )
+   return usePortal(<Products options={buildOptions()} />, document.querySelector(searchState.componentOptions.dropzonePayload))
 }
 
 export { SearchItems }

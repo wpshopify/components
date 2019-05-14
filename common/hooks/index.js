@@ -56,7 +56,19 @@ function useOnClickOutside(ref, handler, targetOpened = false) {
 
 function usePortal(componentMarkup, containerElement = false) {
    function emptyComponentWrapper(element) {
-      element.removeChild(element.querySelector('.wps-loading-placeholder'))
+      if (element.hasChildNodes()) {
+         var placeholderElement = element.querySelector('.wps-loading-placeholder')
+
+         console.log('placeholderElement', placeholderElement)
+         console.log('containerElement', containerElement)
+         console.log('componentMarkup', componentMarkup)
+
+         if (placeholderElement) {
+            console.log('placeholderElement BEING REMOVED', placeholderElement)
+
+            element.removeChild(placeholderElement)
+         }
+      }
    }
 
    function renderPortal() {

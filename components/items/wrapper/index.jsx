@@ -55,9 +55,17 @@ function ItemsWrapper({ children }) {
    async function fetchNewItems() {
       itemsDispatch({ type: 'SET_IS_LOADING', payload: true })
 
-      const [resultsError, results] = await to(graphQuery(itemsState.dataType, itemsState.queryParams))
+      if (itemsState.dataType === 'storefront' || itemsState.dataType === 'search') {
+         var dataType = 'products'
+      } else {
+         var dataType = itemsState.dataType
+      }
 
-      var newItems = results.model[itemsState.dataType]
+      const [resultsError, results] = await to(graphQuery(dataType, itemsState.queryParams))
+
+      console.log('results :::::::::', results)
+
+      var newItems = results.model[dataType]
       var newItemsTotal = newItems.length
 
       itemsDispatch({ type: 'SET_TOTAL_SHOWN', payload: newItemsTotal })

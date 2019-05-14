@@ -10,6 +10,8 @@ import { StorefrontLoader } from './loader'
 function Storefront() {
    const [itemsState] = useContext(ItemsContext)
 
+   console.log('STOREFRONT ITEMS', itemsState)
+
    return (
       <StorefrontProvider options={itemsState}>
          {itemsState.componentOptions.dropzoneSelections ? <StorefrontSelections /> : ''}
