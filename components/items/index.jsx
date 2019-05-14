@@ -4,6 +4,7 @@ import { ItemsWrapper } from './wrapper'
 import { Notice } from '../notice'
 import has from 'lodash/has'
 import uuidv4 from 'uuid/v4'
+import { usePortal } from '../../common/hooks'
 
 function hasItems(options) {
    return options.payload.length > 0
@@ -49,10 +50,11 @@ function hasMultipleItems(options) {
 }
 
 function ItemsController({ options, children }) {
-   return (
+   return usePortal(
       <ItemsProvider options={options}>
          <ItemsWrapper>{children}</ItemsWrapper>
-      </ItemsProvider>
+      </ItemsProvider>,
+      options.componentElement
    )
 }
 

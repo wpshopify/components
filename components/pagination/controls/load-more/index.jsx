@@ -1,14 +1,19 @@
-import React, { useContext, useEffect } from 'react'
+import React, { useContext, useEffect, useRef } from 'react'
 import { PaginationContext } from '../../_state/context'
 import { ItemsContext } from '../../../items/_state/context'
 import { usePortal, useInView } from '../../../../common/hooks'
 import { fetchNextItems } from '../../../items/wrapper'
 import isEmpty from 'lodash/isEmpty'
+import has from 'lodash/has'
+import uniqid from 'uniqid'
 
 function PaginationLoadMore() {
    const [itemsState, itemsDispatch] = useContext(ItemsContext)
    const [paginationState, paginationDispatch] = useContext(PaginationContext)
-   const [inView] = useInView('.wps-btn-next-page', itemsState)
+   const randomClass = uniqid('wps-btn-')
+   const loadMoreButtonSelector = '.' + randomClass
+   const [inView] = useInView(loadMoreButtonSelector, itemsState)
+   const isFirstRender = useRef(true)
 
    function onNextPage() {
       paginationDispatch({ type: 'SET_CONTROLS_TOUCHED', payload: true })
@@ -25,16 +30,24 @@ function PaginationLoadMore() {
          onNextPage()
       }
    }, [inView])
-   console.log('LOAD MORE ::::::::::', itemsState)
 
    function shouldShowLoadMore() {
-      console.log('itemsState.componentOptions.paginationLoadMore', itemsState.componentOptions.paginationLoadMore)
+      if (isFirstRender.current) {
+         isFirstRender.current = false
+
+         if (has(itemsState.componentOptions, 'paginationHideInitial') && itemsState.componentOptions.paginationHideInitial) {
+            return false
+         }
+      }
+
+      // If total shown matches the limit
+      if (itemsState.totalShown === itemsState.limit) {
+         return false
+      }
 
       if (!itemsState.componentOptions.paginationLoadMore) {
          return false
       }
-      console.log('itemsState.hasMoreItems', itemsState.hasMoreItems)
-      console.log('itemsState.payload', itemsState.payload)
 
       if (itemsState.hasMoreItems && !isEmpty(itemsState.payload)) {
          return true
@@ -46,7 +59,7 @@ function PaginationLoadMore() {
    return usePortal(
       <>
          {shouldShowLoadMore() && (
-            <button type='button' disabled={itemsState.isLoading} className='wps-button wps-btn-next-page' onClick={onNextPage}>
+            <button type='button' disabled={itemsState.isLoading} className={'wps-button wps-btn-next-page ' + randomClass} onClick={onNextPage}>
                {itemsState.isLoading ? 'Loading ⌛️' : 'Load more'}
             </button>
          )}

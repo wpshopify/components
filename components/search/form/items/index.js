@@ -26,14 +26,14 @@ function SearchItems() {
                }
             }
          }),
-         dataType: 'products',
+         dataType: itemsState.componentOptions.dataType,
          originalParams: {
-            type: 'products',
+            type: itemsState.componentOptions.dataType,
             queryParams: itemsState.queryParams,
             connectionParams: false
          },
          queryParams: itemsState.queryParams,
-         type: 'search',
+         type: itemsState.componentOptions.dataType,
          componentOptions: itemsState.componentOptions,
          noResultsText: itemsState.componentOptions.noResultsText
       }

@@ -1,6 +1,6 @@
 import React, { useContext, useRef, useEffect } from 'react'
 import { ItemsContext } from '../_state/context'
-import { fetchNextPage, graphQuery, findTypeFromPayload } from '/Users/andrew/www/devil/devilbox-new/data/www/wpshopify-api'
+import { fetchNextPage, graphQuery } from '/Users/andrew/www/devil/devilbox-new/data/www/wpshopify-api'
 import to from 'await-to-js'
 import isEmpty from 'lodash/isEmpty'
 import has from 'lodash/has'
@@ -55,17 +55,9 @@ function ItemsWrapper({ children }) {
    async function fetchNewItems() {
       itemsDispatch({ type: 'SET_IS_LOADING', payload: true })
 
-      if (itemsState.dataType === 'storefront' || itemsState.dataType === 'search') {
-         var dataType = 'products'
-      } else {
-         var dataType = itemsState.dataType
-      }
+      const [resultsError, results] = await to(graphQuery(itemsState.dataType, itemsState.queryParams))
 
-      const [resultsError, results] = await to(graphQuery(dataType, itemsState.queryParams))
-
-      console.log('results :::::::::', results)
-
-      var newItems = results.model[dataType]
+      var newItems = results.model[itemsState.dataType]
       var newItemsTotal = newItems.length
 
       itemsDispatch({ type: 'SET_TOTAL_SHOWN', payload: newItemsTotal })

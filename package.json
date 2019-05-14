@@ -39,6 +39,7 @@
       "react-dom": "^16.8.6",
       "react-spring": "^8.0.20",
       "store": "^2.0.12",
+      "uniqid": "^5.0.3",
       "use-debounce": "2.0.0",
       "uuid": "^3.3.2"
    },

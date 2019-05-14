@@ -7,7 +7,16 @@ function checkHasMore(options) {
    var payloadLength = payload.length
    var limit = options.componentOptions.limit ? parseInt(options.componentOptions.limit) : false
    var pageSize = options.componentOptions.pageSize
-   var hasNextPage = payload[payloadLength - 1].hasNextPage
+   var lastItem = payload[payloadLength - 1]
+
+   console.log('lastItemlastItemlastItemlastItemlastItem', lastItem)
+
+   if (!lastItem) {
+      return false
+   }
+
+   var hasNextPage = lastItem.hasNextPage
+
    // console.log('pageSize', pageSize)
    // console.log('limit', limit)
    // console.log('payloadLength ', payloadLength)
@@ -51,7 +60,7 @@ function ItemsInitialState(options = {}) {
       payload: options.componentPayload ? options.componentPayload : [],
       queryParams: options.componentQueryParams ? options.componentQueryParams : {},
       originalParams: options.componentQueryParams ? options.componentQueryParams : false,
-      dataType: options.componentType ? options.componentType : 'products',
+      dataType: options.componentOptions.dataType ? options.componentOptions.dataType : 'products',
       limit: options.componentOptions.limit ? parseInt(options.componentOptions.limit) : false,
       lastCursorId: options.componentPayloadLastCursor ? options.componentPayloadLastCursor : false,
       totalShown: options.componentPayload ? options.componentPayload.length : 0,

@@ -16,8 +16,12 @@ function Collection({ payload }) {
    const [itemsState] = useContext(ItemsContext)
    const [paginationState] = useContext(PaginationContext)
 
+   console.log('Collection :::::: paginationState', paginationState)
+   console.log('Collection :::::: itemsState', itemsState)
+   console.log('Collection :::::: payload', payload)
+
    const productOptions = {
-      payload: itemsState.payload[0].products,
+      payload: payload.products,
       componentOptions: { ...itemsState.componentOptions.products },
       element: false,
       dataType: 'products',
@@ -38,6 +42,8 @@ function Collection({ payload }) {
          sortKey: itemsState.componentOptions.products.sortBy
       }
    }
+
+   console.log('itemsState Collection LLLLLLLLLLLLL', itemsState)
 
    return (
       <div className={`${itemWidthClass(itemsState.componentOptions.itemsPerRow)} wps-item`}>

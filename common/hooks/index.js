@@ -59,13 +59,7 @@ function usePortal(componentMarkup, containerElement = false) {
       if (element.hasChildNodes()) {
          var placeholderElement = element.querySelector('.wps-loading-placeholder')
 
-         console.log('placeholderElement', placeholderElement)
-         console.log('containerElement', containerElement)
-         console.log('componentMarkup', componentMarkup)
-
          if (placeholderElement) {
-            console.log('placeholderElement BEING REMOVED', placeholderElement)
-
             element.removeChild(placeholderElement)
          }
       }
