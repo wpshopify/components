@@ -18,35 +18,41 @@ function Collection({ payload }) {
 
    console.log('Collection :::::: paginationState', paginationState)
    console.log('Collection :::::: itemsState', itemsState)
-   console.log('Collection :::::: payload', payload)
+   console.log('straight payload', payload)
 
-   const productOptions = {
-      payload: payload.products,
-      componentOptions: { ...itemsState.componentOptions.products },
-      element: false,
-      dataType: 'products',
-      type: 'list',
-      noResultsText: 'Sorry from products!',
-      originalParams: {
-         type: 'collections',
-         queryParams: itemsState.queryParams,
-         connectionParams: {
+   const productOptions = [
+      {
+         // componentPayloadLastCursor: "eyJsYXN0X2lkIjo5MDE3ODQyMDc4NCwibGFzdF92YWx1ZSI6IkZlYXR1cmVkIn0="
+         // componentQueryParams: {first: 1, query: "title:"Featured"", reverse: false, sortKey: Enum}
+         // componentType: "collections"
+         componentPayload: payload.products,
+         componentOptions: { ...itemsState.componentOptions.products },
+         componentConnectionParams: paginationState.componentOptions.componentConnectionParams,
+         componentElement: false,
+         dataType: 'products',
+         type: 'list',
+         noResultsText: 'Sorry from products!',
+         originalParams: {
+            type: 'collections',
+            queryParams: itemsState.queryParams,
+            connectionParams: {
+               first: parseInt(itemsState.componentOptions.products.pageSize),
+               reverse: itemsState.componentOptions.products.reverse,
+               sortKey: itemsState.componentOptions.products.sortBy
+            }
+         },
+         componentQueryParams: {
             first: parseInt(itemsState.componentOptions.products.pageSize),
             reverse: itemsState.componentOptions.products.reverse,
             sortKey: itemsState.componentOptions.products.sortBy
          }
-      },
-      queryParams: {
-         first: parseInt(itemsState.componentOptions.products.pageSize),
-         reverse: itemsState.componentOptions.products.reverse,
-         sortKey: itemsState.componentOptions.products.sortBy
       }
-   }
+   ]
 
-   console.log('itemsState Collection LLLLLLLLLLLLL', itemsState)
+   console.log('productOptionsproductOptions LLLLLLLLLLLLL', productOptions)
 
    return (
-      <div className={`${itemWidthClass(itemsState.componentOptions.itemsPerRow)} wps-item`}>
+      <div className={`${itemWidthClass(itemsState.componentOptions.itemsPerRow)} wps-item p-3`}>
          <CollectionProvider payload={payload}>
             {isShowingComponent(itemsState, 'image') && <CollectionImage />}
             {isShowingComponent(itemsState, 'title') && <CollectionTitle />}

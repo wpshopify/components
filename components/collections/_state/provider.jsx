@@ -7,6 +7,7 @@ function CollectionsProvider(props) {
    const [state, dispatch] = React.useReducer(CollectionsReducer, CollectionsInitialState(props.options))
 
    const value = React.useMemo(() => [state, dispatch], [state])
+   console.log('<CollectionsProvider>')
 
    return <CollectionsContext.Provider value={value} {...props} />
 }

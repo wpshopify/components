@@ -9,7 +9,13 @@ function PaginationItems({ children }) {
    const [paginationState] = useContext(PaginationContext)
 
    function mapPayload() {
-      return itemsState.payload.map(item => React.cloneElement(children, { payload: item, key: uuidv4() }))
+      return itemsState.payload.map(item => {
+         console.log('itemitemitemitemitem', item)
+         console.log('itemitemitemitemitem paginationState', paginationState)
+         console.log('itemitemitemitemitem itemsState', itemsState)
+
+         return React.cloneElement(children, { payload: item, key: uuidv4() })
+      })
    }
    return (
       <section className={'wps-items-wrapper container-fluid'}>

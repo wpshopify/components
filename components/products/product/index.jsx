@@ -15,11 +15,11 @@ function Product({ payload }) {
    return (
       <div className={`${itemWidthClass(itemsState.componentOptions.itemsPerRow)} wps-item p-3`}>
          <ProductProvider payload={payload}>
-            {isShowingComponent(itemsState, 'images') ? <ProductImages /> : ''}
-            {isShowingComponent(itemsState, 'title') ? <ProductTitle /> : ''}
-            {isShowingComponent(itemsState, 'pricing') ? <ProductPricing /> : ''}
-            {isShowingComponent(itemsState, 'description') ? <ProductDescription /> : ''}
-            {isShowingComponent(itemsState, 'buy-button') ? <ProductBuyButton /> : ''}
+            {isShowingComponent(itemsState, 'images') && <ProductImages />}
+            {isShowingComponent(itemsState, 'title') && <ProductTitle />}
+            {isShowingComponent(itemsState, 'pricing') && <ProductPricing />}
+            {isShowingComponent(itemsState, 'description') && <ProductDescription />}
+            {isShowingComponent(itemsState, 'buy-button') && <ProductBuyButton />}
          </ProductProvider>
       </div>
    )

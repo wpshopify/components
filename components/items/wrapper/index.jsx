@@ -8,6 +8,7 @@ import has from 'lodash/has'
 function resendInitialQuery(state) {
    var connectionParams = has(state.originalParams, 'connectionParams') ? state.originalParams.connectionParams : false
 
+   console.log('graphQuery 2', state, connectionParams)
    return graphQuery(state.dataType, state.originalParams, connectionParams)
 }
 
@@ -55,6 +56,7 @@ function ItemsWrapper({ children }) {
    async function fetchNewItems() {
       itemsDispatch({ type: 'SET_IS_LOADING', payload: true })
 
+      console.log('graphQuery 3', itemsState)
       const [resultsError, results] = await to(graphQuery(itemsState.dataType, itemsState.queryParams))
 
       var newItems = results.model[itemsState.dataType]
