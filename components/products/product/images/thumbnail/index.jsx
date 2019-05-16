@@ -35,12 +35,13 @@ function ProductThumbnailImage({ image }) {
       }
 
       if (productState.selectedVariant) {
+         galleryDispatch({ type: 'SET_FEAT_IMAGE', payload: productState.selectedVariant.image })
          setIsActive(checkIsActive(productState.selectedVariant.image.src))
       }
    }, [productState.selectedVariant])
 
    return (
-      <div className='wps-component wps-component-products-images-thumbnail' onClick={handleThumbnailClick} data-wps-is-active={isActive} data-wps-is-ready={shopState.isShopReady}>
+      <div className='wps-component wps-component-products-images-thumbnail col' onClick={handleThumbnailClick} data-wps-is-active={isActive} data-wps-is-ready={shopState.isShopReady}>
          <ProductImage isFeatured={false} image={image} />
       </div>
    )

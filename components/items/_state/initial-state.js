@@ -9,17 +9,11 @@ function checkHasMore(options) {
    var pageSize = options.componentOptions.pageSize
    var lastItem = payload[payloadLength - 1]
 
-   console.log('lastItemlastItemlastItemlastItemlastItem', lastItem)
-
    if (!lastItem) {
       return false
    }
 
    var hasNextPage = lastItem.hasNextPage
-
-   // console.log('pageSize', pageSize)
-   // console.log('limit', limit)
-   // console.log('payloadLength ', payloadLength)
 
    if (!limit) {
       return hasNextPage
@@ -27,30 +21,19 @@ function checkHasMore(options) {
 
    if (pageSize === payloadLength) {
       if (pageSize === limit) {
-         // console.log('_________________ 2')
          return false
       } else if (limit < payloadLength) {
-         // console.log('_________________ 3')
          return false
       } else {
-         // console.log('_________________ 4')
          return true
       }
    } else {
       if (payloadLength > limit) {
-         // console.log('_________________ 5')
          return false
       } else {
-         // console.log('_________________ 6')
          return hasNextPage
       }
    }
-
-   // console.log('checkHasMore options', options)
-   // console.log('options.componentPayload.length', options.componentPayload.length)
-   // console.log('parseInt(options.componentOptions.limit)', parseInt(options.componentOptions.limit))
-
-   // return true
 }
 
 function ItemsInitialState(options = {}) {
@@ -59,7 +42,7 @@ function ItemsInitialState(options = {}) {
       element: options.componentElement,
       payload: options.componentPayload ? options.componentPayload : [],
       queryParams: options.componentQueryParams ? options.componentQueryParams : {},
-      originalParams: options.componentQueryParams ? options.componentQueryParams : false,
+      originalParams: options.originalParams ? options.originalParams : false,
       dataType: options.componentOptions.dataType ? options.componentOptions.dataType : 'products',
       limit: options.componentOptions.limit ? parseInt(options.componentOptions.limit) : false,
       lastCursorId: options.componentPayloadLastCursor ? options.componentPayloadLastCursor : false,

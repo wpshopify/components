@@ -1,6 +1,7 @@
-import React, { useContext } from 'react'
+import React, { useContext, useEffect, useRef, useState } from 'react'
 import { ShopContext } from '../../../../shop/_state/context'
 import { ProductPricingContext } from '../_state/context'
+import { ProductContext } from '../../_state/context'
 
 import isEmpty from 'lodash/isEmpty'
 import last from 'lodash/last'
@@ -41,8 +42,10 @@ function lastPriceCompareAt(prices) {
 
 function ProductPrice({ compareAt }) {
    const [shopState] = useContext(ShopContext)
-
+   const [productState] = useContext(ProductContext)
    const [productPricingState] = useContext(ProductPricingContext)
+   const isFirstRender = useRef(true)
+   const [regPrice, setRegPrice] = useState(getFirstPrice())
 
    function isRegAndCompareSame() {
       if (!productPricingState.showingRange && compareAt) {
@@ -78,6 +81,17 @@ function ProductPrice({ compareAt }) {
       }
    }
 
+   useEffect(() => {
+      if (isFirstRender.current) {
+         isFirstRender.current = false
+         return
+      }
+
+      if (productState.selectedVariant) {
+         setRegPrice(productState.selectedVariant.price)
+      }
+   }, [productState.selectedVariant])
+
    return (
       <>
          {!isRegAndCompareSame() && (
@@ -91,7 +105,7 @@ function ProductPrice({ compareAt }) {
                {productPricingState.showingRange ? (
                   <ProductPricingRange firstPrice={getFirstPrice()} lastPrice={getLastPrice()} isFirstAndLastSame={isFirstAndLastSame()} />
                ) : (
-                  <ProductPriceSingle price={getFirstPrice()} />
+                  <ProductPriceSingle price={regPrice} />
                )}
             </h3>
          )}

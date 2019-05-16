@@ -17,7 +17,6 @@ function Pagination({ children }) {
          return
       }
    })
-   console.log('PAGINATION!!!!!!!!!!!! itemsState', itemsState)
 
    return usePortal(
       <PaginationProvider options={itemsState}>

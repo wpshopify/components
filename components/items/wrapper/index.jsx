@@ -7,9 +7,10 @@ import has from 'lodash/has'
 
 function resendInitialQuery(state) {
    var connectionParams = has(state.originalParams, 'connectionParams') ? state.originalParams.connectionParams : false
+   var originalDataType = has(state.originalParams, 'type') ? state.originalParams.type : state.dataType
+   var originalQueryParams = state.originalParams ? state.originalParams.queryParams : state.queryParams
 
-   console.log('graphQuery 2', state, connectionParams)
-   return graphQuery(state.dataType, state.originalParams, connectionParams)
+   return graphQuery(originalDataType, originalQueryParams, connectionParams)
 }
 
 function fetchNextItems(itemsState, itemsDispatch) {
@@ -23,12 +24,12 @@ function fetchNextItems(itemsState, itemsDispatch) {
       const [resultsError, results] = await to(fetchNextPage(itemsState.payload))
 
       if (resultsError) {
-         const [resendInitialQueryError, resendInitialQueryResponse] = await to(resendInitialQuery(itemsState))
+         const [initialError, initialResponse] = await to(resendInitialQuery(itemsState))
 
-         if (itemsState.dataType === 'collections') {
-            var nextPayload = resendInitialQueryResponse.model[itemsState.dataType][0].products
+         if (itemsState.dataType === 'collections' || itemsState.originalParams.type === 'collections') {
+            var nextPayload = initialResponse.model[itemsState.originalParams.type][0].products
          } else {
-            var nextPayload = resendInitialQueryResponse.model[itemsState.dataType]
+            var nextPayload = initialResponse.model[itemsState.dataType]
          }
 
          var [finalResultsError, finalResults] = await to(fetchNextPage(nextPayload))
@@ -56,7 +57,6 @@ function ItemsWrapper({ children }) {
    async function fetchNewItems() {
       itemsDispatch({ type: 'SET_IS_LOADING', payload: true })
 
-      console.log('graphQuery 3', itemsState)
       const [resultsError, results] = await to(graphQuery(itemsState.dataType, itemsState.queryParams))
 
       var newItems = results.model[itemsState.dataType]

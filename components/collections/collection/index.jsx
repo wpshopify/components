@@ -16,15 +16,8 @@ function Collection({ payload }) {
    const [itemsState] = useContext(ItemsContext)
    const [paginationState] = useContext(PaginationContext)
 
-   console.log('Collection :::::: paginationState', paginationState)
-   console.log('Collection :::::: itemsState', itemsState)
-   console.log('straight payload', payload)
-
    const productOptions = [
       {
-         // componentPayloadLastCursor: "eyJsYXN0X2lkIjo5MDE3ODQyMDc4NCwibGFzdF92YWx1ZSI6IkZlYXR1cmVkIn0="
-         // componentQueryParams: {first: 1, query: "title:"Featured"", reverse: false, sortKey: Enum}
-         // componentType: "collections"
          componentPayload: payload.products,
          componentOptions: { ...itemsState.componentOptions.products },
          componentConnectionParams: paginationState.componentOptions.componentConnectionParams,
@@ -48,8 +41,6 @@ function Collection({ payload }) {
          }
       }
    ]
-
-   console.log('productOptionsproductOptions LLLLLLLLLLLLL', productOptions)
 
    return (
       <div className={`${itemWidthClass(itemsState.componentOptions.itemsPerRow)} wps-item p-3`}>

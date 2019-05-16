@@ -41,7 +41,8 @@ function CartButton({ options }) {
                <CartIcon />
             </button>
          </CartButtonProvider>
-      </>
+      </>,
+      options.componentElement
    )
 }
 

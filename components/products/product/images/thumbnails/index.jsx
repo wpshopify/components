@@ -7,7 +7,7 @@ function ProductThumbnailImages() {
    const [productState] = useContext(ProductContext)
 
    return (
-      <div className='wps-thumbnails-wrapper'>
+      <div className='wps-thumbnails-wrapper row'>
          {productState.payload.images.map(image => (
             <ProductThumbnailImage key={uuidv4()} image={image} />
          ))}

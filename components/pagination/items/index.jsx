@@ -10,10 +10,6 @@ function PaginationItems({ children }) {
 
    function mapPayload() {
       return itemsState.payload.map(item => {
-         console.log('itemitemitemitemitem', item)
-         console.log('itemitemitemitemitem paginationState', paginationState)
-         console.log('itemitemitemitemitem itemsState', itemsState)
-
          return React.cloneElement(children, { payload: item, key: uuidv4() })
       })
    }
