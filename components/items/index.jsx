@@ -37,10 +37,8 @@ function hasItemsToShow(options) {
    }
 
    if (hasItems(options) || skippingInitialLoad(options)) {
-      console.log('<App/> :: Payload is NOT empty, has items to show')
       return true
    } else {
-      console.log('<App/> :: Payload is empty, nothing to show')
       return false
    }
 }

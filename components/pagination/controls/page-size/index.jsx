@@ -52,8 +52,6 @@ function PaginationPageSize() {
 
       setLoadingStates(true)
 
-      console.log('graphQuery 1', itemsState)
-
       // Calls Shopify
       const shopifyResponse = await graphQuery(itemsState.dataType, updatedParams)
 

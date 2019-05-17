@@ -27,17 +27,9 @@ function ProductFeaturedImage() {
    const [featImage, setFeatImage] = useState(false)
 
    function driftOptions() {
-      console.log('paneElement.current', paneElement.current)
-
       return {
          paneContainer: paneElement.current,
-         inlinePane: false,
-         onShow: function() {
-            console.log('onShow')
-         },
-         onHide: function() {
-            console.log('onHide')
-         }
+         inlinePane: false
       }
    }
 
@@ -66,17 +58,8 @@ function ProductFeaturedImage() {
          return
       }
 
-      if (productState.payload.title === 'Aerodynamic Robot') {
-         console.log('itemsState', itemsState)
-         console.log('productState', productState)
-      }
-
       if (hasFeatImage() && showZoom()) {
-         console.log('Has zoom, initing drift ...')
-
          var drift = new Drift(galleryState.featImageElement, driftOptions())
-
-         console.log('drift', drift)
 
          return () => {
             console.log('Destroying Drift ...')
