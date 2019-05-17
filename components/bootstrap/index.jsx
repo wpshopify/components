@@ -5,6 +5,7 @@ import uniq from 'lodash/uniq'
 import isEmpty from 'lodash/isEmpty'
 import { buildInstances, getProductsFromIds, getCheckoutCache, getCheckoutID } from '/Users/andrew/www/devil/devilbox-new/data/www/wpshopify-api'
 import to from 'await-to-js'
+import CustomEvent from 'custom-event'
 
 function variantsFromCache() {
    var cache = getCheckoutCache(getCheckoutID())
@@ -30,6 +31,16 @@ async function getProductIdsFromLineItems() {
    return await getProductsFromIds(uniqueIds)
 }
 
+function addCustomEventProvider() {
+   WP_Shopify.dispatch = function(eventName, data) {
+      document.dispatchEvent(
+         new CustomEvent(eventName, {
+            detail: data
+         })
+      )
+   }
+}
+
 function Bootstrap({ children }) {
    const [shopState, shopDispatch] = useContext(ShopContext)
 
@@ -39,6 +50,8 @@ function Bootstrap({ children }) {
    
    */
    async function bootstrapShop() {
+      addCustomEventProvider()
+
       var [instancesError, instances] = await to(buildInstances())
 
       if (instancesError) {

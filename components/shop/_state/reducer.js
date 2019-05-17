@@ -272,6 +272,8 @@ function ShopReducer(state, action) {
       }
 
       case 'IS_SHOP_READY': {
+         WP_Shopify.dispatch('wpshopify-ready')
+
          return {
             ...state,
             isShopReady: true
