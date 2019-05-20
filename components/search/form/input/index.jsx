@@ -1,6 +1,8 @@
 import React, { useContext, useEffect, useState, useRef } from 'react'
 import { SearchContext } from '../../_state/context'
+import { ItemsContext } from '../../../items/_state/context'
 import { useDebounce } from 'use-debounce'
+import { Loader } from '../../../loader'
 
 /*
 
@@ -10,6 +12,7 @@ Component: SearchInput
 function SearchInput() {
    const [localTerm, setLocalTerm] = useState('')
    const [searchState, searchDispatch] = useContext(SearchContext)
+   const [itemsState, itemsDispatch] = useContext(ItemsContext)
    const [debouncedSearchTerm] = useDebounce(localTerm, 250)
    const isFirstRender = useRef(true)
 
@@ -32,7 +35,7 @@ function SearchInput() {
    }, [debouncedSearchTerm])
 
    return (
-      <>
+      <div className='wps-search-input-wrapper'>
          <input
             type='search'
             id='wps-search-input'
@@ -43,7 +46,9 @@ function SearchInput() {
             aria-label='Search store'
             onChange={e => setSearchTerm(e.target.value)}
          />
-      </>
+
+         <Loader isLoading={itemsState.isLoading} dropzone={itemsState.componentOptions.dropzoneLoader} color='#ddd' />
+      </div>
    )
 }
 

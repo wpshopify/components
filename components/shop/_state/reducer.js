@@ -1,11 +1,12 @@
+import update from 'immutability-helper'
 import { getCheckoutCache, setCheckoutCache, mergeCheckoutCacheVariants, mergeCheckoutCacheLineItems } from '/Users/andrew/www/devil/devilbox-new/data/www/wpshopify-api'
 import some from 'lodash/some'
 import flattenDepth from 'lodash/flattenDepth'
 import assign from 'lodash/assign'
 import reduce from 'lodash/reduce'
 import filter from 'lodash/filter'
-import update from 'immutability-helper'
 import find from 'lodash/find'
+import isEmpty from 'lodash/isEmpty'
 import { calcCheckoutTotal } from '../../../common/products'
 
 /*
@@ -258,9 +259,38 @@ function ShopReducer(state, action) {
 
          setCheckoutCache(state.checkout.id, updatedCheckoutCache)
 
+         WP_Shopify.dispatch('wpshopify-checkout-total', updatedCheckoutCache)
+
          return {
             ...state,
             checkoutCache: updatedCheckoutCache
+         }
+      }
+
+      case 'UPDATE_CHECKOUT_ATTRIBUTES': {
+         return {
+            ...state,
+            customAttributes: update(state.customAttributes, { $merge: [action.payload] })
+         }
+      }
+
+      case 'SET_CHECKOUT_ATTRIBUTES': {
+         if (isEmpty(action.payload)) {
+            var newCheckoutAttributes = []
+         } else {
+            var newCheckoutAttributes = [action.payload]
+         }
+
+         return {
+            ...state,
+            customAttributes: update(state.customAttributes, { $set: newCheckoutAttributes })
+         }
+      }
+
+      case 'SET_CHECKOUT_NOTE': {
+         return {
+            ...state,
+            note: update(state.note, { $set: action.payload })
          }
       }
 

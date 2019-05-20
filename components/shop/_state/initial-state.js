@@ -8,6 +8,8 @@ function ShopInitialState(options = false) {
          variants: [],
          total: 0.0
       },
+      customAttributes: [],
+      note: false,
       isCartEmpty: true,
       settings: WP_Shopify.settings
    }

@@ -3,6 +3,7 @@ import { PaginationContext } from '../../_state/context'
 import { ItemsContext } from '../../../items/_state/context'
 import { usePortal, useInView } from '../../../../common/hooks'
 import { fetchNextItems } from '../../../items/wrapper'
+import { Loader } from '../../../loader'
 import isEmpty from 'lodash/isEmpty'
 import has from 'lodash/has'
 import uniqid from 'uniqid'
@@ -59,8 +60,8 @@ function PaginationLoadMore() {
    return usePortal(
       <>
          {shouldShowLoadMore() && (
-            <button type='button' disabled={itemsState.isLoading} className={'wps-button wps-btn-next-page ' + randomClass} onClick={onNextPage}>
-               {itemsState.isLoading ? 'Loading ⌛️' : 'Load more'}
+            <button type='button' disabled={itemsState.isLoading} className={'wps-btn wps-btn-secondary wps-btn-next-page ' + randomClass} onClick={onNextPage}>
+               {itemsState.isLoading ? <Loader isLoading={itemsState.isLoading} /> : 'Load more'}
             </button>
          )}
       </>,

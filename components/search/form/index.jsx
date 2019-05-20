@@ -6,7 +6,6 @@ import { usePortal } from '../../../common/hooks'
 import { SearchInput } from './input'
 import { SearchButton } from './button'
 import { SearchNotices } from './notices'
-import { SearchLoader } from './loader'
 
 function SearchForm() {
    const [itemsState, itemsDispatch] = useContext(ItemsContext)
@@ -32,7 +31,6 @@ function SearchForm() {
          <SearchNotices />
 
          <div className='wps-search-wrapper'>
-            <SearchLoader />
             <SearchInput />
             <SearchButton />
          </div>

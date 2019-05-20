@@ -54,6 +54,18 @@ function useOnClickOutside(ref, handler, targetOpened = false) {
    }, [ref, handler])
 }
 
+function useCustomEvent(name) {
+   const [data, setData] = useState(false)
+
+   useEffect(() => {
+      document.addEventListener(name, function(event) {
+         setData(event.detail)
+      })
+   }, [])
+
+   return data
+}
+
 function usePortal(componentMarkup, containerElement = false) {
    function emptyComponentWrapper(element) {
       if (element.hasChildNodes()) {
@@ -102,4 +114,4 @@ function useInView(selector, itemsState) {
    return [inViewState]
 }
 
-export { useOnClickOutside, usePortal, useInView }
+export { useOnClickOutside, usePortal, useInView, useCustomEvent }
