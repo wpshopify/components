@@ -8,21 +8,24 @@ function ProductPrices() {
    const [productPricingState, productPricingDispatch] = useContext(ProductPricingContext)
    const [productState] = useContext(ProductContext)
 
+   console.log('productState', productState)
+   console.log('productPricingState', productPricingState)
+
    useEffect(() => {
-      if (productPricingState.showingRange) {
+      if (productPricingState.showPriceRange) {
          productPricingDispatch({ type: 'SET_PRICES', payload: getPrices(productState.payload, 'asc') })
       } else {
          productPricingDispatch({ type: 'SET_PRICES', payload: getPrices(productState.payload) })
       }
    }, [productState.payload])
 
-   return productPricingState.showingCompareAt ? (
+   return productPricingState.showCompareAt ? (
       <>
          <ProductPrice compareAt={true} />
          <ProductPrice compareAt={false} />
       </>
    ) : (
-      <ProductPrice compareAt={productPricingState.showingCompareAt} prices={productPricingState.prices} />
+      <ProductPrice compareAt={productPricingState.showCompareAt} prices={productPricingState.prices} />
    )
 }
 

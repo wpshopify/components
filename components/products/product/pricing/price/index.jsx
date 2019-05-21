@@ -48,7 +48,7 @@ function ProductPrice({ compareAt }) {
    const [regPrice, setRegPrice] = useState(getFirstPrice())
 
    function isRegAndCompareSame() {
-      if (!productPricingState.showingRange && compareAt) {
+      if (!productPricingState.showPriceRange && compareAt) {
          if (firstPriceCompareAt(productPricingState.prices) === firstRegPrice(productPricingState.prices)) {
             return true
          }
@@ -102,7 +102,7 @@ function ProductPrice({ compareAt }) {
                className='wps-products-price wps-product-pricing wps-products-price-one'
                data-wps-is-showing-compare-at={compareAt}
                data-wps-is-ready={shopState.isShopReady ? '1' : '0'}>
-               {productPricingState.showingRange ? (
+               {productPricingState.showPriceRange ? (
                   <ProductPricingRange firstPrice={getFirstPrice()} lastPrice={getLastPrice()} isFirstAndLastSame={isFirstAndLastSame()} />
                ) : (
                   <ProductPriceSingle price={regPrice} />
