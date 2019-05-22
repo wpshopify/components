@@ -21,10 +21,10 @@ function ProductThumbnailImage({ image }) {
    }
 
    useEffect(() => {
-      if (isFirstRender.current) {
-         isFirstRender.current = false
-         return
-      }
+      // if (isFirstRender.current) {
+      //    isFirstRender.current = false
+      //    return
+      // }
       setIsActive(checkIsActive(galleryState.featImage.src))
    }, [galleryState.featImage])
 
