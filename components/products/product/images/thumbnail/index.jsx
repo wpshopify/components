@@ -21,19 +21,10 @@ function ProductThumbnailImage({ image }) {
    }
 
    useEffect(() => {
-      // if (isFirstRender.current) {
-      //    isFirstRender.current = false
-      //    return
-      // }
       setIsActive(checkIsActive(galleryState.featImage.src))
    }, [galleryState.featImage])
 
    useEffect(() => {
-      if (isFirstRender.current) {
-         isFirstRender.current = false
-         return
-      }
-
       if (productState.selectedVariant) {
          galleryDispatch({ type: 'SET_FEAT_IMAGE', payload: productState.selectedVariant.image })
          setIsActive(checkIsActive(productState.selectedVariant.image.src))

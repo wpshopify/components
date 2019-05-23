@@ -8,9 +8,6 @@ function ProductPrices() {
    const [productPricingState, productPricingDispatch] = useContext(ProductPricingContext)
    const [productState] = useContext(ProductContext)
 
-   console.log('productState', productState)
-   console.log('productPricingState', productPricingState)
-
    useEffect(() => {
       if (productPricingState.showPriceRange) {
          productPricingDispatch({ type: 'SET_PRICES', payload: getPrices(productState.payload, 'asc') })
