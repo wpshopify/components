@@ -54,4 +54,18 @@ function itemWidthClass(perRow) {
    return 'wps-w-' + perRow
 }
 
-export { objectIsEmpty, createObj, removeFrom, lowercaseObjKeys, capitalizeFirstLetter, itemWidthClass }
+function findPortalElement(element, dropzone) {
+   if (dropzone) {
+      return document.querySelector(dropzone)
+   } else if (element) {
+      return element
+   } else {
+      return false
+   }
+}
+
+function convertTitleToHandle(title) {
+   return title.replace(/\s+/g, '-').toLowerCase()
+}
+
+export { objectIsEmpty, createObj, removeFrom, lowercaseObjKeys, capitalizeFirstLetter, itemWidthClass, findPortalElement, convertTitleToHandle }

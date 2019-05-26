@@ -7,6 +7,7 @@ import { ProductBuyButtonProvider } from './_state/provider'
 import { ProductContext } from '../_state/context'
 import { ItemsContext } from '../../../items/_state/context'
 import { usePortal } from '../../../../common/hooks'
+import { findPortalElement } from '../../../../common/utils'
 
 function ProductBuyButton() {
    const [itemsState] = useContext(ItemsContext)
@@ -26,7 +27,7 @@ function ProductBuyButton() {
             )}
          </ProductBuyButtonProvider>
       </div>,
-      productState.element
+      findPortalElement(productState.element, itemsState.componentOptions.dropzoneProductBuyButton)
    )
 }
 

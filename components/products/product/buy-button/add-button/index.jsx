@@ -16,8 +16,10 @@ function ProductAddButton() {
    const [buyButtonState, buyButtonDispatch] = useContext(ProductBuyButtonContext)
    const [shopState, shopDispatch] = useContext(ShopContext)
 
+   console.log('itemsState.componentOptions', itemsState.componentOptions)
+
    const buttonStyle = {
-      backgroundColor: itemsState.componentOptions.buttonColor
+      backgroundColor: itemsState.componentOptions.addToCartButtonColor
    }
 
    async function handleClick() {
@@ -81,7 +83,7 @@ function ProductAddButton() {
             disabled={buyButtonState.isAdding ? true : false}
             onClick={handleClick}
             style={buttonStyle}>
-            {buyButtonState.isAdding ? 'Adding ...' : itemsState.componentOptions.buttonText ? itemsState.componentOptions.buttonText : 'Add to cart'}
+            {buyButtonState.isAdding ? 'Adding ...' : itemsState.componentOptions.addToCartButtonText ? itemsState.componentOptions.addToCartButtonText : 'Add to cart'}
          </button>
       </div>
    )

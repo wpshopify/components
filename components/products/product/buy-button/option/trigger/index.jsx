@@ -72,7 +72,7 @@ function ProductOptionTrigger() {
          data-wps-is-ready={shopState.isShopReady ? '1' : '0'}
          onClick={onClick}
          ref={dropdownTrigger}
-         style={{ backgroundColor: itemsState.componentOptions.variantColor }}>
+         style={{ backgroundColor: itemsState.componentOptions.variantButtonColor }}>
          {displayOptionName()}
       </a>
    )

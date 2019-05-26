@@ -8,4 +8,6 @@ const isShowingComponent = (state, type) => {
    return !state.componentOptions.excludes.includes(type)
 }
 
-export { isShowingComponent }
+const onSinglePage = state => state.componentOptions.isSingular
+
+export { isShowingComponent, onSinglePage }

@@ -5,7 +5,6 @@ import { StorefrontSelections } from './selections'
 import { StorefrontOptions } from './options'
 import { StorefrontSorting } from './sorting'
 import { StorefrontItems } from './items'
-import { Loader } from '../loader'
 
 function Storefront() {
    const [itemsState] = useContext(ItemsContext)
@@ -15,7 +14,6 @@ function Storefront() {
          {itemsState.componentOptions.dropzoneSelections ? <StorefrontSelections /> : ''}
          {itemsState.componentOptions.dropzoneSorting ? <StorefrontSorting /> : ''}
          <StorefrontOptions />
-         <Loader isLoading={itemsState.isLoading} dropzone={itemsState.componentOptions.dropzoneLoader} color='#ddd' />
          <StorefrontItems />
       </StorefrontProvider>
    )

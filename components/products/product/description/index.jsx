@@ -1,11 +1,14 @@
 import React, { useContext } from 'react'
 import { ShopContext } from '../../../shop/_state/context'
 import { ProductContext } from '../_state/context'
+import { ItemsContext } from '../../../items/_state/context'
 import { usePortal } from '../../../../common/hooks'
+import { findPortalElement } from '../../../../common/utils'
 
 function ProductDescription() {
    const [shopState] = useContext(ShopContext)
    const [productState] = useContext(ProductContext)
+   const [itemsState] = useContext(ItemsContext)
 
    return usePortal(
       <div
@@ -14,7 +17,7 @@ function ProductDescription() {
          data-wps-is-ready={shopState.isShopReady ? '1' : '0'}
          dangerouslySetInnerHTML={{ __html: productState.payload.descriptionHtml }}
       />,
-      productState.element
+      findPortalElement(productState.element, itemsState.componentOptions.dropzoneProductTitle)
    )
 }
 

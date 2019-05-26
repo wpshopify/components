@@ -1,7 +1,7 @@
 import React, { useContext, useRef, useEffect, useState } from 'react'
 import { CartContext } from '../../cart/_state/context'
 import { ShopContext } from '../../shop/_state/context'
-
+import { Link } from '../../link'
 import { CartLineItemQuantity } from './quantity'
 import { maybeformatPriceToCurrency } from '../../../common/pricing/formatting'
 import { useAnime, stagger } from '../../../common/animations'
@@ -44,12 +44,12 @@ function CartLineItem({ lineItem, index }) {
    }
 
    useEffect(() => {
-      let lineItemFoumd = getLineItemFromState(lineItem, shopState.checkoutCache.lineItems)
+      let lineItemFound = getLineItemFromState(lineItem, shopState.checkoutCache.lineItems)
 
-      variantId.current = lineItemFoumd.variantId
+      variantId.current = lineItemFound.variantId
 
-      setLineItemQuantity(lineItemFoumd.quantity)
-      setLineItemTotal(calcLineItemTotal(lineItem.price, lineItemFoumd.quantity))
+      setLineItemQuantity(lineItemFound.quantity)
+      setLineItemTotal(calcLineItemTotal(lineItem.price, lineItemFound.quantity))
    }, [shopState.checkoutCache.lineItems])
 
    useEffect(() => {
@@ -61,9 +61,11 @@ function CartLineItem({ lineItem, index }) {
 
    return (
       <div className='wps-cart-lineitem mr-0 ml-0 row' data-wps-is-updating={isUpdating} data-wps-is-available={isAvailable(lineItem)} ref={lineItemElement}>
-         <a href='https://demo.wpshop.io/products/aerodynamic-aluminum-bench/' className='wps-cart-lineitem-img-link' target='_blank'>
+         <Link payload={lineItem} type='products' classNames='wps-cart-lineitem-img-link' target='_blank'>
             <div className='wps-cart-lineitem-img' style={{ backgroundImage: `url(${lineItem.image.src})` }} data-wps-is-ready={shopState.isShopReady} />
-         </a>
+         </Link>
+
+         {/* <a href={'test'} className='wps-cart-lineitem-img-link' target='_blank' /> */}
 
          <div className='wps-cart-lineitem-content'>
             <div className='wps-cart-lineitem-title col-12 p-0' data-wps-is-ready={shopState.isShopReady}>

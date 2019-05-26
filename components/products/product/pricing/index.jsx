@@ -4,6 +4,7 @@ import { ItemsContext } from '../../../items/_state/context'
 import { ProductPrices } from './prices'
 import { ProductPricingProvider } from './_state/provider'
 import { usePortal } from '../../../../common/hooks'
+import { findPortalElement } from '../../../../common/utils'
 
 function ProductPricing() {
    const [itemsState] = useContext(ItemsContext)
@@ -13,7 +14,7 @@ function ProductPricing() {
       <ProductPricingProvider productsState={itemsState} productState={productState}>
          <ProductPrices />
       </ProductPricingProvider>,
-      productState.element
+      findPortalElement(productState.element, itemsState.componentOptions.dropzoneProductPricing)
    )
 }
 
