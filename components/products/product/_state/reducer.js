@@ -1,3 +1,4 @@
+import update from 'immutability-helper';
 import { findVariantFromSelectedOptions } from '/Users/andrew/www/devil/devilbox-new/data/www/wpshopify-api'
 
 function ProductReducer(state, action) {
@@ -6,6 +7,13 @@ function ProductReducer(state, action) {
          return {
             ...state,
             selectedVariant: findVariantFromSelectedOptions(action.payload.product, action.payload.selectedOptions)
+         }
+      }
+
+      case 'SET_HAS_MANY_IMAGES': {
+         return {
+            ...state,
+            hasManyImages: update(state.hasManyImages, { $set: action.payload })
          }
       }
 

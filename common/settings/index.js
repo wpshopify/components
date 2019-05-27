@@ -55,6 +55,7 @@ function getShopifySingleLink(payload) {
 
 function getWordPressSingleLink(payload) {
    let itemHandle = ''
+   let urlBase = ''
 
    if (has(payload, 'handle')) {
       itemHandle = payload.handle
@@ -62,7 +63,15 @@ function getWordPressSingleLink(payload) {
       itemHandle = convertTitleToHandle(payload.productTitle)
    }
 
-   return WP_Shopify.settings.urlProducts + '/' + itemHandle
+   if (payload.type.name === 'Collection') {
+      // console.log('payload.type .......... Collection')
+      urlBase = WP_Shopify.settings.urlCollections
+   } else if (payload.type.name === 'Product' || payload.type.name === 'ProductVariant') {
+      // console.log('payload.type .......... Product')
+      urlBase = WP_Shopify.settings.urlProducts
+   }
+
+   return urlBase + '/' + itemHandle
 }
 
 function getItemLink(payload) {

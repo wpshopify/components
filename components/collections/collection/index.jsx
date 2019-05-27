@@ -6,18 +6,16 @@ import { CollectionDescription } from './description'
 import { ItemsContext } from '../../items/_state/context'
 import { CollectionProvider } from './_state/provider'
 import { PaginationContext } from '../../pagination/_state/context'
-
 import { isShowingComponent } from '../../../common/components'
-import { itemWidthClass } from '../../../common/utils'
+import { findPortalElement, itemWidthClass } from '../../../common/utils'
+import { usePortal } from '../../../common/hooks'
 import { Items } from '../../items'
 import { Products } from '../../products'
 
 function Collection({ payload }) {
    const [itemsState] = useContext(ItemsContext)
    const [paginationState] = useContext(PaginationContext)
-
-   console.log('payload.products', payload.products)
-
+   console.log('itemsState.componentOptions Collection', itemsState.componentOptions)
    const productOptions = [
       {
          componentPayload: payload.products,
@@ -43,7 +41,18 @@ function Collection({ payload }) {
          }
       }
    ]
-   console.log('itemsState.componentOptions', itemsState.componentOptions)
+
+   console.log('itemsState', itemsState)
+   console.log('paginationState', paginationState)
+
+   function CollectionProducts() {
+      return usePortal(
+         <Items options={productOptions}>
+            <Products />
+         </Items>,
+         findPortalElement(itemsState.element, itemsState.componentOptions.dropzoneCollectionProducts)
+      )
+   }
 
    return (
       <div className={`${itemWidthClass(itemsState.componentOptions.itemsPerRow)} wps-item p-3`}>
@@ -51,11 +60,7 @@ function Collection({ payload }) {
             {isShowingComponent(itemsState, 'image') && <CollectionImage />}
             {isShowingComponent(itemsState, 'title') && <CollectionTitle />}
             {isShowingComponent(itemsState, 'description') && <CollectionDescription />}
-            {itemsState.componentOptions.single && (
-               <Items options={productOptions}>
-                  <Products />
-               </Items>
-            )}
+            {itemsState.componentOptions.isSingular && <CollectionProducts />}
          </CollectionProvider>
       </div>
    )

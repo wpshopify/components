@@ -1,26 +1,28 @@
-import React, { useContext } from 'react'
+import React, { useContext, useEffect } from 'react'
+import has from 'lodash/has'
 import { ProductContext } from '../../_state/context'
 import { ItemsContext } from '../../../../items/_state/context'
 import { ProductThumbnailImages } from '../thumbnails'
 import { ProductFeaturedImage } from '../featured'
 import { ProductGalleryProvider } from './_state/provider.jsx'
-import has from 'lodash/has'
 
 function ProductGallery() {
    const [itemsState] = useContext(ItemsContext)
-   const [productState] = useContext(ProductContext)
+   const [productState, productDispatch] = useContext(ProductContext)
+
+   // useEffect(() => {
+   //    if (hasManyImages() ) {
+   //       productDispatch({type: 'SET_HAS_MANY_IMAGES', payload: true})
+   //    }
+   // }, [])
 
    function hasManyImages() {
       if (!productState) {
          return false
       }
 
-      return productState.payload.images.length >= 2
+      return productState.hasManyImages
    }
-
-   // function getFeaturedImageFromProduct(product) {
-   //    return product.images[0]
-   // }
 
    function isFeaturedOnly() {
       if (!has(itemsState.componentOptions, 'showFeaturedOnly')) {
@@ -29,13 +31,6 @@ function ProductGallery() {
 
       return itemsState.componentOptions.showFeaturedOnly
    }
-
-   // useEffect(() => {
-   //    galleryDispatch({
-   //       type: 'SET_FEAT_IMAGE',
-   //       payload: getFeaturedImageFromProduct(productState.payload)
-   //    })
-   // }, [])
 
    return (
       <>
