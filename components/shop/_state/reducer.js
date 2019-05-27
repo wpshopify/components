@@ -297,7 +297,14 @@ function ShopReducer(state, action) {
       case 'SET_IS_CART_EMPTY': {
          return {
             ...state,
-            isCartEmpty: action.payload
+            isCartEmpty: update(state.isCartEmpty, { $set: action.payload })
+         }
+      }
+
+      case 'SET_SHOP_INFO': {
+         return {
+            ...state,
+            info: update(state.info, { $set: action.payload })
          }
       }
 
@@ -306,7 +313,7 @@ function ShopReducer(state, action) {
 
          return {
             ...state,
-            isShopReady: true
+            isShopReady: update(state.isShopReady, { $set: true })
          }
       }
 

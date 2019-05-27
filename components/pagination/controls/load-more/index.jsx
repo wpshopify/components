@@ -34,33 +34,25 @@ function PaginationLoadMore() {
 
    function shouldShowLoadMore() {
       if (isFirstRender.current) {
-         console.log('1')
-
          isFirstRender.current = false
 
          if (has(itemsState.componentOptions, 'paginationHideInitial') && itemsState.componentOptions.paginationHideInitial) {
-            console.log('_+++++++++++++++++++++')
-
             return false
          }
       }
 
       // If total shown matches the limit
       if (itemsState.totalShown === itemsState.limit) {
-         console.log('2')
          return false
       }
 
       if (!itemsState.componentOptions.paginationLoadMore) {
-         console.log('3')
          return false
       }
 
       if (itemsState.hasMoreItems && !isEmpty(itemsState.payload)) {
-         console.log('4')
          return true
       } else {
-         console.log('5')
          return false
       }
    }

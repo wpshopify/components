@@ -23,10 +23,11 @@ function ProductFeaturedImage() {
    const [productState] = useContext(ProductContext)
    const [galleryState] = useContext(ProductGalleryContext)
 
-   // const [featImageElemnent, setFeatImageElemnent] = useState(false)
    const [featImage, setFeatImage] = useState(false)
 
    function driftOptions() {
+      console.log('paneElement.current', paneElement.current)
+
       return {
          paneContainer: paneElement.current,
          inlinePane: false
@@ -59,6 +60,7 @@ function ProductFeaturedImage() {
       }
 
       if (hasFeatImage() && showZoom()) {
+
          var drift = new Drift(galleryState.featImageElement, driftOptions())
 
          return () => {

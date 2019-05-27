@@ -10,4 +10,8 @@ function showingCurrencyCode() {
    return WP_Shopify.settings.hasCurrencyCode
 }
 
-export { showingLocalCurrency, baseCurrency, showingCurrencyCode }
+function currencyDisplayStyle() {
+   return WP_Shopify.settings.pricingCurrencyDisplayStyle
+}
+
+export { showingLocalCurrency, baseCurrency, showingCurrencyCode, currencyDisplayStyle }

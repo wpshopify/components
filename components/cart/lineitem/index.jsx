@@ -61,7 +61,7 @@ function CartLineItem({ lineItem, index }) {
 
    return (
       <div className='wps-cart-lineitem mr-0 ml-0 row' data-wps-is-updating={isUpdating} data-wps-is-available={isAvailable(lineItem)} ref={lineItemElement}>
-         <Link payload={lineItem} type='products' classNames='wps-cart-lineitem-img-link' target='_blank'>
+         <Link payload={lineItem} shop={shopState} type='products' classNames='wps-cart-lineitem-img-link' target='_blank'>
             <div className='wps-cart-lineitem-img' style={{ backgroundImage: `url(${lineItem.image.src})` }} data-wps-is-ready={shopState.isShopReady} />
          </Link>
 

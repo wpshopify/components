@@ -59,6 +59,7 @@ function Bootstrap({ children }) {
 
       shopDispatch({ type: 'SET_CHECKOUT', payload: instances.checkout })
       shopDispatch({ type: 'SET_CHECKOUT_CACHE', payload: instances.checkout })
+      shopDispatch({ type: 'SET_SHOP_INFO', payload: instances.shop })
 
       var [productsError, products] = await to(getProductIdsFromLineItems())
 

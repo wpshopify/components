@@ -15,7 +15,7 @@ import { Products } from '../../products'
 function Collection({ payload }) {
    const [itemsState] = useContext(ItemsContext)
    const [paginationState] = useContext(PaginationContext)
-   console.log('itemsState.componentOptions Collection', itemsState.componentOptions)
+
    const productOptions = [
       {
          componentPayload: payload.products,
@@ -41,9 +41,6 @@ function Collection({ payload }) {
          }
       }
    ]
-
-   console.log('itemsState', itemsState)
-   console.log('paginationState', paginationState)
 
    function CollectionProducts() {
       return usePortal(

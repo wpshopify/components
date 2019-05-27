@@ -13,6 +13,8 @@ function ProductTitle() {
    const [productState] = useContext(ProductContext)
    const [itemsState] = useContext(ItemsContext)
 
+   console.log(':::: shopState.info ::::', shopState.info)
+
    function Title() {
       return (
          <h2 itemProp='name' className='wps-products-title' data-wps-is-ready={shopState.isShopReady ? '1' : '0'}>
@@ -24,7 +26,7 @@ function ProductTitle() {
    return usePortal(
       <div className='wps-component wps-component-products-title' data-wps-component-order='0'>
          {hasSinglePage() && !onSinglePage(itemsState) ? (
-            <Link type='products' payload={productState.payload}>
+            <Link type='products' payload={productState.payload} shop={shopState}>
                <Title />
             </Link>
          ) : (

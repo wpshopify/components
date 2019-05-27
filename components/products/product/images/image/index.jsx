@@ -30,26 +30,30 @@ function ProductImage({ image, isFeatured }) {
          galleryDispatch({ type: 'SET_FEAT_IMAGE_ELEMENT', payload: imageRef.current })
       }
    }, [])
+
+
    
-   function Image() {
-      return <img ref={imageRef} itemProp='image' src={imageOptimized} className='wps-product-image' alt={image.altText} data-wps-is-ready={shopState.isShopReady ? '1' : '0'} data-zoom={image.src} />
-   }
+   // const Image = React.forwardRef((props, ref) => (
+      
+   //    ));
+   
 
    function isShowingLink() {
-      console.log('productState.hasManyImagesproductState.hasManyImages', productState.hasManyImages)
       return hasSinglePage() && !onSinglePage(itemsState) && !productState.hasManyImages
    }
 
-   return (
+   /*
+   
+   TODO: Fix duplication here. For some reason the Drift image zoom breaks if we move 
+   the image tag into a resuable component. Probably something to do with ref forwarding.
 
-      isShowingLink() ? (
-         <Link payload={productState.payload} type='products'>
-            <Image />
-         </Link>
-      ) : (
-         <Image />
-      )
-
+   */
+   return isShowingLink() ? (
+      <Link payload={productState.payload} type='products' shop={shopState}>
+         <img ref={imageRef} itemProp='image' src={imageOptimized} className='wps-product-image' alt={image.altText} data-wps-is-ready={shopState.isShopReady ? '1' : '0'} data-zoom={image.src} />
+      </Link>
+   ) : (
+      <img ref={imageRef} itemProp='image' src={imageOptimized} className='wps-product-image' alt={image.altText} data-wps-is-ready={shopState.isShopReady ? '1' : '0'} data-zoom={image.src} />
    )
 }
 

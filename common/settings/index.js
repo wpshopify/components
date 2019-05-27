@@ -43,11 +43,13 @@ function hasSinglePage() {
    return true
 }
 
-function getShopifySingleLink(payload) {
-   return 'https://shopify.com'
-
+function getShopifySingleLink(payload, shop, type) {
    if (!payload.onlineStoreUrl) {
-      false
+      if (has(shop, 'info')) {
+         return shop.info.primaryDomain.url + '/' + type + '/' + payload.handle
+      } else {
+         return '#!'
+      }
    }
 
    return payload.onlineStoreUrl
@@ -64,19 +66,17 @@ function getWordPressSingleLink(payload) {
    }
 
    if (payload.type.name === 'Collection') {
-      // console.log('payload.type .......... Collection')
       urlBase = WP_Shopify.settings.urlCollections
    } else if (payload.type.name === 'Product' || payload.type.name === 'ProductVariant') {
-      // console.log('payload.type .......... Product')
       urlBase = WP_Shopify.settings.urlProducts
    }
 
    return urlBase + '/' + itemHandle
 }
 
-function getItemLink(payload) {
+function getItemLink(payload, shop, type) {
    if (singleIsShopify()) {
-      return getShopifySingleLink(payload)
+      return getShopifySingleLink(payload, shop, type)
    } else {
       return getWordPressSingleLink(payload)
    }

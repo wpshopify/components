@@ -1,15 +1,24 @@
 import React from 'react'
-import { getItemLink } from '../../common/settings'
+import { getItemLink, singleIsShopify } from '../../common/settings'
 
-function Link({ type, payload, classNames, target, children }) {
+function Link({ type, payload, classNames = '', target, shop, children }) {
    const className = 'wps-' + type + '-link' + ' ' + classNames
 
-   if (classNames === 'wps-cart-lineitem-img-link') {
-      console.log('payload, ', payload)
+   function getTarget(target) {
+      if (target) {
+         return target
+      }
+
+      if (singleIsShopify()) {
+         return '_blank'
+      } else {
+         return '_self'
+      }
    }
+
    return (
       <>
-         <a href={getItemLink(payload)} className={className} target={target ? target : '_self'}>
+         <a href={getItemLink(payload, shop, type)} className={className} target={getTarget(target)}>
             {children}
          </a>
       </>

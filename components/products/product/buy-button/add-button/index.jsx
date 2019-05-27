@@ -16,8 +16,6 @@ function ProductAddButton() {
    const [buyButtonState, buyButtonDispatch] = useContext(ProductBuyButtonContext)
    const [shopState, shopDispatch] = useContext(ShopContext)
 
-   console.log('itemsState.componentOptions', itemsState.componentOptions)
-
    const buttonStyle = {
       backgroundColor: itemsState.componentOptions.addToCartButtonColor
    }

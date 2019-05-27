@@ -24,7 +24,7 @@ function CollectionTitle() {
    return usePortal(
       <div className='wps-component wps-component-collection-title' data-wps-component-order='0'>
          {hasSinglePage() && !onSinglePage(itemsState) ? (
-            <Link type='collections' payload={collectionState.payload}>
+            <Link type='collections' shop={shopState} payload={collectionState.payload}>
                <Title />
             </Link>
          ) : (

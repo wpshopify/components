@@ -2,7 +2,7 @@ import has from 'lodash/has'
 import { hasCurrencyCode } from '../settings'
 import { getMoneyFormat, getShop } from '../shop'
 import { getLocalCurrencyCodeCache } from './currency'
-import { showingCurrencyCode, showingLocalCurrency } from '../globals'
+import { currencyDisplayStyle, showingCurrencyCode, showingLocalCurrency } from '../globals'
 
 function formatNumber(config) {
    return new Intl.NumberFormat(config.locale, {
@@ -41,7 +41,7 @@ function formatPriceToCurrency(price) {
    return formatPrice({
       countryCode: 'USD', // getLocalCurrencyCodeCache()
       amount: price,
-      currencyDisplay: showingCurrencyCode() ? 'code' : 'symbol'
+      currencyDisplay: currencyDisplayStyle() // showingCurrencyCode() ? 'code' : 'symbol'
    })
 }
 
