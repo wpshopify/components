@@ -1,13 +1,20 @@
-import React, { useContext } from 'react'
+import React, { useContext, useRef, useEffect } from 'react'
 import { SearchContext } from '../../_state/context'
 import { ItemsContext } from '../../../items/_state/context'
-
 import { Products } from '../../../products'
 import { usePortal } from '../../../../common/hooks'
 
 function SearchItems() {
    const [searchState] = useContext(SearchContext)
    const [itemsState] = useContext(ItemsContext)
+   const initialRender = useRef(true)
+
+   useEffect(() => {
+      if (initialRender.current) {
+         initialRender.current = false
+         return
+      }
+   }, [])
 
    function buildOptions() {
       return {
@@ -39,7 +46,7 @@ function SearchItems() {
       }
    }
 
-   return usePortal(<Products options={buildOptions()} />, document.querySelector(searchState.componentOptions.dropzonePayload))
+   return usePortal(<>{!initialRender.current && <Products options={buildOptions()} />}</>, document.querySelector(searchState.componentOptions.dropzonePayload))
 }
 
 export { SearchItems }

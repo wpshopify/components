@@ -13,8 +13,6 @@ function ProductTitle() {
    const [productState] = useContext(ProductContext)
    const [itemsState] = useContext(ItemsContext)
 
-   console.log(':::: shopState.info ::::', shopState.info)
-
    function Title() {
       return (
          <h2 itemProp='name' className='wps-products-title' data-wps-is-ready={shopState.isShopReady ? '1' : '0'}>

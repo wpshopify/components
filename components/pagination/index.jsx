@@ -4,31 +4,31 @@ import { usePortal } from '../../common/hooks'
 import { PaginationItems } from './items'
 import { PaginationProvider } from './_state/provider'
 import { ItemsContext } from '../items/_state/context'
+import { ShopContext } from '../shop/_state/context'
 import { Notice } from '../notice'
 import isEmpty from 'lodash/isEmpty'
 
 function Pagination({ children }) {
+   const [shopState] = useContext(ShopContext)
    const [itemsState] = useContext(ItemsContext)
-   const isFirstRender = useRef(true)
 
-   useEffect(() => {
-      if (isFirstRender.current) {
-         isFirstRender.current = false
-         return
+   function isHidingPagination() {
+      if (shopState.settings.hidePagination) {
+         return true
       }
-   })
 
-   return usePortal(
+      if (itemsState.componentOptions.pagination) {
+         return false
+      } else {
+         return true
+      }
+   }
+
+   return (
       <PaginationProvider options={itemsState}>
-         {itemsState.componentOptions.skipInitialRender && isFirstRender.current ? (
-            ''
-         ) : isEmpty(itemsState.payload) && !itemsState.isLoading ? (
-            <Notice message={itemsState.noResultsText} type='info' />
-         ) : (
-            <PaginationItems>{children}</PaginationItems>
-         )}
+         {isEmpty(itemsState.payload) && !itemsState.isLoading ? <Notice message={itemsState.noResultsText} type='info' /> : <PaginationItems>{children}</PaginationItems>}
 
-         {itemsState.componentOptions.pagination && <PaginationControls />}
+         {!isHidingPagination() && <PaginationControls />}
       </PaginationProvider>
    )
 }

@@ -13,7 +13,7 @@ function PaginationLoadMore() {
    const [paginationState, paginationDispatch] = useContext(PaginationContext)
    const randomClass = uniqid('wps-btn-')
    const loadMoreButtonSelector = '.' + randomClass
-   const [inView] = useInView(loadMoreButtonSelector, itemsState)
+   var [inView] = useInView(loadMoreButtonSelector, itemsState)
    const isFirstRender = useRef(true)
 
    function onNextPage() {
