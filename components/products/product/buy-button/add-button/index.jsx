@@ -50,11 +50,15 @@ function ProductAddButton() {
          buyButtonDispatch({ type: 'SET_IS_ADDING_TO_CART', payload: false })
          buyButtonDispatch({ type: 'REMOVE_SELECTED_OPTIONS' })
 
-         shopDispatch({ type: 'NOTIFY_CART', payload: true })
+         shopDispatch({ type: 'OPEN_CART', payload: true })
       }
    }
 
    useEffect(() => {
+      if (!shopState.isShopReady) {
+         return
+      }
+
       if (isFirstRender.current) {
          isFirstRender.current = false
          return

@@ -1,11 +1,13 @@
 import React, { useContext } from 'react'
-import { CartContext } from '../_state/context'
+import { ShopContext } from '../../shop/_state/context'
 
 function CartClose() {
-   const [cartState, cartDispatch] = useContext(CartContext)
+   const [shopState, shopDispatch] = useContext(ShopContext)
 
    function closeCart() {
-      cartDispatch({ type: 'CLOSE_CART' })
+      console.log('<CartClose> - closeCart')
+
+      shopDispatch({ type: 'CLOSE_CART' })
    }
 
    return (

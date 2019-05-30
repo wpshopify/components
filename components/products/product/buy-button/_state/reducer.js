@@ -53,8 +53,9 @@ function ProductBuyButtonReducer(state, action) {
             quantity: action.payload
          }
 
-      default:
-         return state
+      default: {
+         throw new Error(`Unhandled action type: ${action.type} in ProductBuyButtonReducer`)
+      }
    }
 }
 

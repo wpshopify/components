@@ -11,6 +11,10 @@ function CartFooter() {
    const animate = useAnime(pulse)
 
    useEffect(() => {
+      if (!shopState.isShopReady) {
+         return
+      }
+
       animate(totalElement.current)
    }, [shopState.checkoutCache.total])
 

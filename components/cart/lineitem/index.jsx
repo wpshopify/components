@@ -4,7 +4,6 @@ import { ShopContext } from '../../shop/_state/context'
 import { Link } from '../../link'
 import { CartLineItemQuantity } from './quantity'
 import { maybeformatPriceToCurrency } from '../../../common/pricing/formatting'
-import { useAnime, stagger } from '../../../common/animations'
 import { calcLineItemTotal, isAvailable } from '../../../common/products'
 import { Notice } from '../../notice'
 
@@ -19,7 +18,6 @@ function CartLineItem({ lineItem, index }) {
    const [shopState, shopDispatch] = useContext(ShopContext)
 
    const [isUpdating] = useState(false)
-   const animeStagger = useAnime(stagger)
 
    const [lineItemQuantity, setLineItemQuantity] = useState(0)
    const [lineItemTotal, setLineItemTotal] = useState(0)
@@ -51,13 +49,6 @@ function CartLineItem({ lineItem, index }) {
       setLineItemQuantity(lineItemFound.quantity)
       setLineItemTotal(calcLineItemTotal(lineItem.price, lineItemFound.quantity))
    }, [shopState.checkoutCache.lineItems])
-
-   useEffect(() => {
-      if (cartState.cartOpen) {
-         // stagger(lineItemElement.current, index);
-         animeStagger(lineItemElement.current, index)
-      }
-   }, [cartState.cartOpen])
 
    return (
       <div className='wps-cart-lineitem mr-0 ml-0 row' data-wps-is-updating={isUpdating} data-wps-is-available={isAvailable(lineItem)} ref={lineItemElement}>

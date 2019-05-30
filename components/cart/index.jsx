@@ -12,6 +12,10 @@ function Cart({ options }) {
    const setCheckoutNote = useCustomEvent('wpshopify-set-checkout-note')
    const isFirstRender = useRef(true)
 
+   function isShowingCart() {
+      return shopState.settings.cart.cartLoaded
+   }
+
    useEffect(() => {
       if (isFirstRender.current) {
          isFirstRender.current = false
@@ -40,12 +44,12 @@ function Cart({ options }) {
    }, [setCheckoutNote])
 
    return (
-      <>
+      isShowingCart() && (
          <CartProvider options={options}>
             <CartButtons />
             <CartBody />
          </CartProvider>
-      </>
+      )
    )
 }
 

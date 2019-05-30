@@ -91,7 +91,7 @@ function ItemsReducer(state, action) {
       }
 
       default: {
-         return state
+         throw new Error(`Unhandled action type: ${action.type} in ItemsReducer`)
       }
    }
 }

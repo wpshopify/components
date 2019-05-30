@@ -1,7 +1,7 @@
 function CartButtonReducer(state, action) {
    switch (action.type) {
       default: {
-         return state
+         throw new Error(`Unhandled action type: ${action.type} in CartButtonReducer`)
       }
    }
 }

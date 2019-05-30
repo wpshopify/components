@@ -1,6 +1,5 @@
 function CartInitialState(options) {
    return {
-      cartOpen: null,
       isUpdating: false,
       isCheckingOut: false,
       buttons: options,

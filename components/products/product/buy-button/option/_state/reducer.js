@@ -24,7 +24,7 @@ function ProductOptionReducer(state, action) {
       }
 
       default: {
-         return state
+         throw new Error(`Unhandled action type: ${action.type} in ProductOptionReducer`)
       }
    }
 }

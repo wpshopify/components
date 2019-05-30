@@ -10,7 +10,7 @@ function PaginationReducer(state, action) {
       }
 
       default: {
-         return state
+         throw new Error(`Unhandled action type: ${action.type} in PaginationReducer`)
       }
    }
 }

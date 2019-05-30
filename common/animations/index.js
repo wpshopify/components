@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useState, useRef } from 'react'
 import anime from 'animejs'
 
 function pulse(element, cb = false, params = false) {
@@ -23,6 +23,8 @@ function pulse(element, cb = false, params = false) {
 }
 
 function slideInRight(element, cb = false, params = false) {
+   console.log('slideInRight ...')
+
    return anime({
       targets: element,
       translateX: ['100%', '0%'],
@@ -30,6 +32,7 @@ function slideInRight(element, cb = false, params = false) {
       easing: 'easeInOutQuad',
       complete: function() {
          if (cb && document.body.contains(element)) {
+            console.log('slideInRight complete')
             cb()
          }
       }
@@ -37,6 +40,7 @@ function slideInRight(element, cb = false, params = false) {
 }
 
 function slideOutRight(element, cb = false, params = false) {
+   console.log('slideOutRight ...')
    return anime({
       targets: element,
       translateX: ['0%', '110%'],
@@ -50,30 +54,46 @@ function slideOutRight(element, cb = false, params = false) {
    })
 }
 
-function stagger(element, cb, { index }) {
+function stagger(elements, cb = false) {
+   // return anime({
+   //    targets: elements,
+   //    translateY: ['-20px', '0px'],
+   //    delay: anime.stagger(100),
+   //    complete: function() {
+   //       if (cb && elements) {
+   //          cb()
+   //       }
+   //    }
+   // })
+
    return anime({
-      targets: element,
-      translateY: [-20, 0],
-      opacity: [0, 1],
-      delay: index * 50,
+      targets: elements,
+      translateX: ['450px', '0px'],
+      duration: 350,
+      easing: 'easeOutQuart',
+      delay: anime.stagger(100, { easing: 'linear' }),
       complete: function() {
-         if (cb && document.body.contains(element)) {
+         if (cb && elements) {
             cb()
          }
       }
    })
 }
 
-function useAnime(animeType, elementExists = true) {
+function useAnime(animeFn, elementExists = true) {
    const [currentlyAnimating, setCurrentlyAnimating] = useState(false)
 
-   function animate(element, params = false) {
+   async function animate(element, params = false) {
+      console.log('animating called ')
+
       if (currentlyAnimating) {
+         console.log('currentlyAnimating')
          return
       }
-
+      console.log('NOT currentlyAnimating')
       setCurrentlyAnimating(true)
-      animeType(element, () => setCurrentlyAnimating(false), params)
+
+      animeFn(element, () => setCurrentlyAnimating(false), params)
    }
 
    return animate

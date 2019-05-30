@@ -1,4 +1,4 @@
-import update from 'immutability-helper';
+import update from 'immutability-helper'
 
 function ProductGalleryReducer(state, action) {
    switch (action.type) {
@@ -17,7 +17,7 @@ function ProductGalleryReducer(state, action) {
       }
 
       default: {
-         return state
+         throw new Error(`Unhandled action type: ${action.type} in ProductGalleryReducer`)
       }
    }
 }

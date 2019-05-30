@@ -168,16 +168,21 @@ function ShopReducer(state, action) {
       case 'SET_CHECKOUT': {
          return {
             ...state,
-            checkout: action.payload
+            checkout: update(state.checkout, { $set: action.payload })
          }
       }
 
-      case 'NOTIFY_CART': {
+      case 'OPEN_CART':
          return {
             ...state,
-            notifyingCart: action.payload
+            cartOpen: update(state.cartOpen, { $set: true })
          }
-      }
+
+      case 'CLOSE_CART':
+         return {
+            ...state,
+            cartOpen: update(state.cartOpen, { $set: false })
+         }
 
       case 'SET_CHECKOUT_CACHE': {
          const checkoutCache = getCheckoutCache(action.payload.id)
@@ -318,7 +323,7 @@ function ShopReducer(state, action) {
       }
 
       default: {
-         return state
+         throw new Error(`Unhandled action type: ${action.type} in ShopReducer`)
       }
    }
 }

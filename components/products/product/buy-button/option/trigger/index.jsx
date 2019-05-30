@@ -24,6 +24,10 @@ function ProductOptionTrigger() {
 
    */
    useEffect(() => {
+      if (!shopState.isShopReady) {
+         return
+      }
+
       if (isFirstRender.current) {
          isFirstRender.current = false
          return

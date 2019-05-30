@@ -1,71 +1,48 @@
-import React, { useContext, useRef, useEffect, useState } from 'react'
-import { CartTitle } from '../title'
-import { CartClose } from '../close'
+import React, { useContext, useRef, useEffect } from 'react'
 import { useOnClickOutside } from '../../../common/hooks'
 import { CartHeader } from '../header'
 import { CartContents } from '../contents'
 import { CartFooter } from '../footer'
-
-import { CartContext } from '../_state/context'
 import { ShopContext } from '../../shop/_state/context'
 
-import { useAnime, slideInRight, slideOutRight } from '../../../common/animations'
+import { useAnime, slideInRight, slideOutRight, stagger } from '../../../common/animations'
 
 function CartBody() {
    const cart = useRef()
-   const isFirstRender = useRef(true)
 
    const animeSlideInRight = useAnime(slideInRight)
    const animeSlideOutRight = useAnime(slideOutRight)
+   const animeStagger = useAnime(stagger)
 
-   const [cartState, cartDispatch] = useContext(CartContext)
    const [shopState, shopDispatch] = useContext(ShopContext)
-
-   function isCartOpen(cartState) {
-      return cartState.cartOpen === true
-   }
-
-   function isCartClosed(cartState) {
-      return cartState.cartOpen === false
-   }
-
-   function toggleCart(cartElement) {
-      if (isCartOpen(cartState)) {
-         animeSlideInRight(cartElement)
-      } else if (isCartClosed(cartState)) {
-         animeSlideOutRight(cartElement)
-      }
-   }
 
    useOnClickOutside(
       cart,
       e => {
-         animeSlideOutRight(cart.current)
-         cartDispatch({ type: 'CLOSE_CART' })
+         console.log('useOnClickOutside()')
+         // animeSlideOutRight(cart.current)
+         document.querySelector('.wps-cart').classList.remove('wps-cart-is-showing')
+
+         console.log('<CartBody> - closeCart')
+         shopDispatch({ type: 'CLOSE_CART' })
       },
-      cartState.cartOpen
+      shopState.cartOpen
    )
 
    useEffect(() => {
-      if (isFirstRender.current) {
-         isFirstRender.current = false
+      if (!shopState.isShopReady) {
          return
       }
 
-      if (shopState.notifyingCart) {
-         cartDispatch({ type: 'OPEN_CART' })
-         shopDispatch({ type: 'NOTIFY_CART', payload: false })
+      if (shopState.cartOpen) {
+         // animeSlideInRight(document.querySelector('.wps-cart'))
+         document.querySelector('.wps-cart').classList.add('wps-cart-is-showing')
+         animeStagger(document.querySelectorAll('.wps-cart-lineitem'))
+      } else {
+         document.querySelector('.wps-cart').classList.remove('wps-cart-is-showing')
+         // animeSlideOutRight(document.querySelector('.wps-cart'))
       }
-   }, [shopState.notifyingCart])
-
-   useEffect(() => {
-      if (isFirstRender.current) {
-         isFirstRender.current = false
-         return
-      }
-
-      toggleCart(cart.current)
-   }, [cartState.cartOpen])
+   }, [shopState.cartOpen])
 
    return (
       <section ref={cart} className='wps-cart'>

@@ -1,4 +1,4 @@
-import update from 'immutability-helper';
+import update from 'immutability-helper'
 import { findVariantFromSelectedOptions } from '/Users/andrew/www/devil/devilbox-new/data/www/wpshopify-api'
 
 function ProductReducer(state, action) {
@@ -18,7 +18,7 @@ function ProductReducer(state, action) {
       }
 
       default: {
-         return state
+         throw new Error(`Unhandled action type: ${action.type} in ProductReducer`)
       }
    }
 }

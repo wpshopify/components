@@ -19,6 +19,10 @@ function CartCounter() {
    const element = useRef()
 
    useEffect(() => {
+      if (!shopState.isShopReady) {
+         return
+      }
+
       const total = findTotalCartQuantities(shopState.checkoutCache.lineItems)
 
       if (!isTotalEmpty(total)) {
