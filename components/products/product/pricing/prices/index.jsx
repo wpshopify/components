@@ -16,13 +16,13 @@ function ProductPrices() {
       }
    }, [productState.payload])
 
-   return productPricingState.showCompareAt ? (
+   return productPricingState.showCompareAt && !productState.selectedVariant ? (
       <>
          <ProductPrice compareAt={true} />
          <ProductPrice compareAt={false} />
       </>
    ) : (
-      <ProductPrice compareAt={productPricingState.showCompareAt} prices={productPricingState.prices} />
+      <ProductPrice compareAt={productState.selectedVariant ? false : productPricingState.showCompareAt} prices={productPricingState.prices} />
    )
 }
 

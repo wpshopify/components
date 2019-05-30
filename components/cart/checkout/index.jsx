@@ -77,9 +77,20 @@ function CartCheckout() {
       ]
    }
 
+   function buttonStyle() {
+      return {
+         backgroundColor: shopState.settings.cart.checkoutButtonColor
+      }
+   }
+
    return (
       <>
-         <button className='wps-btn wps-btn-checkout' onClick={onCheckout} data-wps-is-ready={shopState.isShopReady} disabled={cartState.isCheckingOut}>
+         <button
+            className='wps-btn wps-btn-checkout'
+            onClick={onCheckout}
+            data-wps-is-ready={shopState.isShopReady}
+            disabled={cartState.isCheckingOut || !cartState.termsAccepted}
+            style={buttonStyle()}>
             {cartState.isCheckingOut ? <Loader isLoading={cartState.isCheckingOut} /> : cartState.checkoutText}
          </button>
       </>

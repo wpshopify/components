@@ -15,10 +15,8 @@ function CartButton({ options }) {
 
    function toggleCart() {
       if (shopState.cartOpen) {
-         console.log('<CartButton> - closeCart')
          shopDispatch({ type: 'CLOSE_CART' })
       } else {
-         console.log('<CartButton> - OPEN_CART')
          shopDispatch({ type: 'OPEN_CART' })
       }
    }
@@ -29,11 +27,23 @@ function CartButton({ options }) {
       }
 
       if (options.componentOptions.type === 'fixed') {
-         console.log('HI1111')
-
          animeSlideInRight(counterElement.current)
       }
    }, [])
+
+   function getIconColor() {
+      if (options.componentOptions.componentOptions.type === 'fixed') {
+         return shopState.settings.cart.colorCartBackgroundFixed
+      }
+
+      return ''
+   }
+
+   function iconStyles() {
+      return {
+         backgroundColor: getIconColor()
+      }
+   }
 
    return usePortal(
       <>
@@ -43,7 +53,8 @@ function CartButton({ options }) {
                ref={counterElement}
                className={`wps-btn-cart wps-cart-icon-${options.componentOptions.type} ${isCartEmpty(shopState.checkoutCache.lineItems) ? 'wps-cart-is-empty' : ''}`}
                onClick={toggleCart}
-               data-wps-is-ready={shopState.isShopReady ? '1' : '0'}>
+               data-wps-is-ready={shopState.isShopReady ? '1' : '0'}
+               style={iconStyles()}>
                <CartCounter />
                <CartIcon />
             </button>

@@ -102,7 +102,7 @@ function ProductPrice({ compareAt }) {
                className='wps-products-price wps-product-pricing wps-products-price-one'
                data-wps-is-showing-compare-at={compareAt}
                data-wps-is-ready={shopState.isShopReady ? '1' : '0'}>
-               {productPricingState.showPriceRange ? (
+               {productPricingState.showPriceRange && !productState.selectedVariant ? (
                   <ProductPricingRange firstPrice={getFirstPrice()} lastPrice={getLastPrice()} isFirstAndLastSame={isFirstAndLastSame()} />
                ) : (
                   <ProductPriceSingle price={regPrice} />

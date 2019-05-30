@@ -3,13 +3,7 @@ import { ShopContext } from '../../../shop/_state/context'
 import { CartButtonContext } from '../button/_state/context'
 import { findTotalCartQuantities, isTotalEmpty } from '../../../../common/cart'
 import { useAnime, pulse } from '../../../../common/animations'
-
-function counterStyles(cartButtonState) {
-   return {
-      backgroundColor: cartButtonState.componentOptions.counter_background_color,
-      color: cartButtonState.componentOptions.counter_text_color
-   }
-}
+import has from 'lodash/has'
 
 function CartCounter() {
    const [shopState] = useContext(ShopContext)
@@ -30,6 +24,30 @@ function CartCounter() {
          animePulse(element.current)
       }
    }, [shopState.checkoutCache.lineItems])
+
+   function counterStyles() {
+      return {
+         backgroundColor: getBackgroundColor(),
+         color: getColor()
+      }
+   }
+
+   function getColor() {
+      if (cartButtonState.componentOptions.componentOptions.type === 'fixed') {
+         return shopState.settings.cart.colorCartCounterFixed
+      }
+
+      return cartButtonState.componentOptions.counter_text_color
+   }
+
+   function getBackgroundColor() {
+      if (has(cartButtonState.componentOptions, 'counterBackgroundColor')) {
+         return cartButtonState.componentOptions.counterBackgroundColor
+      }
+
+      return shopState.settings.cart.colorCounter
+   }
+   console.log('counterStyles(cartButtonState)', counterStyles(cartButtonState))
 
    return (
       <>

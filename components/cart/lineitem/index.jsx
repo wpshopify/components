@@ -92,7 +92,7 @@ function CartLineItem({ lineItem, index }) {
                         />
                      </div>
 
-                     <div className='col-6'>
+                     <div className='wps-cart-lineitem-price-total-wrapper'>
                         <div className='wps-cart-lineitem-price wps-cart-lineitem-price-total' data-wps-is-ready={shopState.isShopReady} ref={lineItemTotalElement}>
                            {maybeformatPriceToCurrency(lineItemTotal)}
                         </div>

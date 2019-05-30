@@ -3,6 +3,8 @@ import { ShopContext } from '../../shop/_state/context'
 import { maybeformatPriceToCurrency } from '../../../common/pricing/formatting'
 import { pulse, useAnime } from '../../../common/animations'
 import { CartCheckout } from '../checkout'
+import { CartNote } from '../note'
+import { CartTerms } from '../terms'
 
 function CartFooter() {
    const [shopState] = useContext(ShopContext)
@@ -20,13 +22,15 @@ function CartFooter() {
 
    return (
       <section className='wps-cart-footer'>
+         {shopState.settings.cart.enableCartNotes && <CartNote />}
+         {shopState.settings.cart.enableCartTerms && <CartTerms />}
+
          <div className='baseline row align-items-end justify-content-between m-0'>
-            <p className='wps-total-prefix col p-0'>Subtotal:</p>
+            <p className='wps-total-prefix p-0'>Subtotal:</p>
             <p className='wps-total-amount col p-0' ref={totalElement} data-wps-is-ready={shopState.isShopReady}>
                {maybeformatPriceToCurrency(shopState.checkoutCache.total)}
             </p>
          </div>
-
          <CartCheckout />
       </section>
    )

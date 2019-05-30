@@ -5,8 +5,6 @@ function CartClose() {
    const [shopState, shopDispatch] = useContext(ShopContext)
 
    function closeCart() {
-      console.log('<CartClose> - closeCart')
-
       shopDispatch({ type: 'CLOSE_CART' })
    }
 
