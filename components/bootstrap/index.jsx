@@ -53,13 +53,19 @@ function Bootstrap({ children }) {
    
    */
    async function bootstrapShop() {
-      // let globalHooks =
-      // console.log('globalHooks', globalHooks)
-
       // If running WP less < 5.0, polyfill the hooks
       if (!wp.hooks) {
          wp.hooks = createHooks()
       }
+
+      wp.hooks.doAction('before.ready')
+
+      // shopDispatch({ type: 'SET_HOOKS', payload: wp.hooks })
+
+      // wp.hooks.doAction('before.ready')
+
+      // let globalHooks =
+      // console.log('globalHooks', globalHooks)
 
       //addCustomEventProvider()
 
@@ -70,7 +76,6 @@ function Bootstrap({ children }) {
          return
       }
 
-      shopDispatch({ type: 'SET_HOOKS', payload: wp.hooks })
       shopDispatch({ type: 'SET_CHECKOUT', payload: instances.checkout })
       shopDispatch({ type: 'SET_CHECKOUT_CACHE', payload: instances.checkout })
       shopDispatch({ type: 'SET_SHOP_INFO', payload: instances.shop })
@@ -97,6 +102,7 @@ function Bootstrap({ children }) {
       }
 
       // App is ready to go
+      wp.hooks.doAction('after.ready')
       shopDispatch({ type: 'IS_SHOP_READY' })
    }
 

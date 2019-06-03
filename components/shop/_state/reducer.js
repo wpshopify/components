@@ -318,18 +318,7 @@ function ShopReducer(state, action) {
          }
       }
 
-      case 'SET_HOOKS': {
-         return {
-            ...state,
-            hooks: update(state.hooks, { $set: action.payload })
-         }
-      }
-
       case 'IS_SHOP_READY': {
-         // WP_Shopify.dispatch('c-ready')
-
-         state.hooks.doAction('on.ready')
-
          return {
             ...state,
             isShopReady: update(state.isShopReady, { $set: true })

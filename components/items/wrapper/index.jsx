@@ -1,5 +1,6 @@
 import React, { useContext, useRef, useEffect } from 'react'
 import { ItemsContext } from '../_state/context'
+import { ShopContext } from '../../shop/_state/context'
 import { fetchNextPage, graphQuery } from '/Users/andrew/www/devil/devilbox-new/data/www/wpshopify-api'
 import to from 'await-to-js'
 import isEmpty from 'lodash/isEmpty'
@@ -51,7 +52,6 @@ function fetchNextItems(itemsState, itemsDispatch) {
 
 function ItemsWrapper({ children }) {
    const [itemsState, itemsDispatch] = useContext(ItemsContext)
-
    const isFirstRender = useRef(true)
 
    async function fetchNewItems() {

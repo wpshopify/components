@@ -33,6 +33,8 @@ function CartCheckout() {
    }
 
    function checkoutRedirect(checkout) {
+      console.log('checkout', checkout)
+
       if (!WP_Shopify.settings.enableCustomCheckoutDomain || !hasManagedDomain(checkout.webUrl)) {
          return managedDomainRedirect(checkout)
       }
@@ -47,6 +49,8 @@ function CartCheckout() {
    async function onCheckout() {
       cartDispatch({ type: 'SET_IS_CHECKING_OUT', payload: true })
 
+      wp.hooks.doAction('on.checkout', shopState.checkoutCache)
+
       const [err, success] = await to(replaceLineItems(shopState.checkoutCache.lineItems))
 
       if (err) {
@@ -55,6 +59,8 @@ function CartCheckout() {
       }
 
       if (!isEmpty(shopState.customAttributes)) {
+         console.log('shopState.customAttributes', shopState.customAttributes)
+         console.log('shopState.note', shopState.note)
          const [errAttr, resp] = await to(
             updateCheckoutAttributes({
                customAttributes: shopState.customAttributes,
@@ -62,7 +68,10 @@ function CartCheckout() {
             })
          )
 
-         checkoutRedirect(resp)
+         console.log('errAttr', errAttr)
+         console.log('resp', resp)
+
+         return checkoutRedirect(resp)
       }
 
       checkoutRedirect(success)
@@ -89,7 +98,7 @@ function CartCheckout() {
             className='wps-btn wps-btn-checkout'
             onClick={onCheckout}
             data-wps-is-ready={shopState.isShopReady}
-            disabled={cartState.isCheckingOut || !cartState.termsAccepted}
+            disabled={cartState.isCheckingOut || !cartState.termsAccepted || shopState.isCartEmpty}
             style={buttonStyle()}>
             {cartState.isCheckingOut ? <Loader isLoading={cartState.isCheckingOut} /> : cartState.checkoutText}
          </button>

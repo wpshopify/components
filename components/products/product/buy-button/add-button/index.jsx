@@ -51,6 +51,8 @@ function ProductAddButton() {
          buyButtonDispatch({ type: 'REMOVE_SELECTED_OPTIONS' })
 
          shopDispatch({ type: 'OPEN_CART', payload: true })
+
+         wp.hooks.doAction('after.product.addToCart', lineItem, modVariant)
       }
    }
 
@@ -65,6 +67,7 @@ function ProductAddButton() {
       }
 
       if (buyButtonState.allOptionsSelected) {
+         wp.hooks.doAction('before.product.addToCart')
          animePulse(button.current)
       }
    }, [buyButtonState.allOptionsSelected])

@@ -1,7 +1,7 @@
 import React, { useContext, useState, useEffect, useRef } from 'react'
 import { ProductOptionContext } from '../../_state/context'
+import { ShopContext } from '../../../../../../shop/_state/context'
 import { ProductBuyButtonContext } from '../../../_state/context'
-import update from 'immutability-helper'
 import find from 'lodash/find'
 import isEmpty from 'lodash/isEmpty'
 import { createObj } from '../../../../../../../common/utils'
@@ -10,6 +10,7 @@ function ProductVariant({ variant }) {
    const [isSelectable, setIsSelectable] = useState(true)
    const isFirstRender = useRef(true)
 
+   const [shopState, shopDispatch] = useContext(ShopContext)
    const [productOptionState, productOptionDispatch] = useContext(ProductOptionContext)
    const [buyButtonState, buyButtonDispatch] = useContext(ProductBuyButtonContext)
 
@@ -21,6 +22,7 @@ function ProductVariant({ variant }) {
       productOptionDispatch({ type: 'TOGGLE_DROPDOWN', payload: false })
       productOptionDispatch({ type: 'SET_IS_OPTION_SELECTED', payload: true })
       productOptionDispatch({ type: 'SET_SELECTED_OPTION', payload: newlySelected })
+      wp.hooks.doAction('on.product.variant.selection', newlySelected, productOptionState)
    }
 
    useEffect(() => {

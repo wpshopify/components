@@ -4,7 +4,6 @@ function ShopInitialState(options = false) {
       notifyingCart: false,
       cartOpen: false,
       isShopReady: false,
-      hooks: false,
       checkoutCache: {
          lineItems: [],
          variants: [],

@@ -41,7 +41,19 @@ function ProductOptionDropdown() {
    return (
       <div className='row'>
          <div className='wps-btn-dropdown' data-wps-is-selected={productOptionState.isOptionSelected} ref={productOptionState.dropdownElement}>
-            <Tippy visible={productOptionState.isDropdownOpen} animateFill={false} placement='bottom' allowHTML={true} appendTo="parent" animation="shift-away" flip={false} theme="light" interactive={true} inertia={true} delay={[0, 0]} content={<ProductVariants />}>
+            <Tippy
+               visible={productOptionState.isDropdownOpen}
+               animateFill={false}
+               placement='bottom'
+               allowHTML={true}
+               appendTo='parent'
+               animation='shift-away'
+               flip={false}
+               theme='light'
+               interactive={true}
+               inertia={true}
+               delay={[0, 0]}
+               content={<ProductVariants />}>
                <span>
                   <ProductOptionTrigger />
                </span>
