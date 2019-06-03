@@ -1,8 +1,11 @@
-import React from 'react'
+import React, { useContext } from 'react'
 import { formatPriceToCurrency } from '../../../../../common/pricing/formatting'
+import { ShopContext } from '../../../../shop/_state/context'
 
 function ProductPriceSingle({ price }) {
-   return <span className='wps-product-individual-price'>{formatPriceToCurrency(price)}</span>
+   const [shopState] = useContext(ShopContext)
+
+   return <span className='wps-product-individual-price'>{shopState.isShopReady && formatPriceToCurrency(price, shopState.info.currencyCode)}</span>
 }
 
 export { ProductPriceSingle }

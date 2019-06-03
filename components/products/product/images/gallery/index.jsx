@@ -8,13 +8,7 @@ import { ProductGalleryProvider } from './_state/provider.jsx'
 
 function ProductGallery() {
    const [itemsState] = useContext(ItemsContext)
-   const [productState, productDispatch] = useContext(ProductContext)
-
-   // useEffect(() => {
-   //    if (hasManyImages() ) {
-   //       productDispatch({type: 'SET_HAS_MANY_IMAGES', payload: true})
-   //    }
-   // }, [])
+   const [productState] = useContext(ProductContext)
 
    function hasManyImages() {
       if (!productState) {

@@ -2,14 +2,14 @@ import React, { useEffect, useRef, useContext } from 'react'
 import { CartButtons } from './buttons'
 import { CartBody } from './body'
 import { CartProvider } from './_state/provider'
-import { useCustomEvent } from '../../common/hooks'
+import { useAction } from '../../common/hooks'
 import { ShopContext } from '../shop/_state/context'
 
 function Cart({ options }) {
    const [shopState, shopDispatch] = useContext(ShopContext)
-   const updateCheckoutAttributes = useCustomEvent('wpshopify-update-checkout-attributes')
-   const setCheckoutAttributes = useCustomEvent('wpshopify-set-checkout-attributes')
-   const setCheckoutNote = useCustomEvent('wpshopify-set-checkout-note')
+   const updateCheckoutAttributes = useAction('update.checkout.attributes')
+   const setCheckoutAttributes = useAction('set.checkout.attributes')
+   const setCheckoutNotes = useAction('set.checkout.note')
    const isFirstRender = useRef(true)
 
    function isShowingCart() {
@@ -22,6 +22,8 @@ function Cart({ options }) {
          return
       }
 
+      console.log('updateCheckoutAttributes')
+
       shopDispatch({ type: 'UPDATE_CHECKOUT_ATTRIBUTES', payload: updateCheckoutAttributes })
    }, [updateCheckoutAttributes])
 
@@ -30,7 +32,7 @@ function Cart({ options }) {
          isFirstRender.current = false
          return
       }
-
+      console.log('setCheckoutAttributes')
       shopDispatch({ type: 'SET_CHECKOUT_ATTRIBUTES', payload: setCheckoutAttributes })
    }, [setCheckoutAttributes])
 
@@ -39,9 +41,10 @@ function Cart({ options }) {
          isFirstRender.current = false
          return
       }
+      console.log('setCheckoutNotes')
 
-      shopDispatch({ type: 'SET_CHECKOUT_NOTE', payload: setCheckoutNote })
-   }, [setCheckoutNote])
+      shopDispatch({ type: 'SET_CHECKOUT_NOTE', payload: setCheckoutNotes })
+   }, [setCheckoutNotes])
 
    return (
       isShowingCart() && (

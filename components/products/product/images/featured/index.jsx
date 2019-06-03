@@ -22,8 +22,7 @@ function ProductFeaturedImage() {
    const [itemsState] = useContext(ItemsContext)
    const [productState] = useContext(ProductContext)
    const [galleryState] = useContext(ProductGalleryContext)
-
-   const [featImage, setFeatImage] = useState(false)
+   const [featImage, setFeatImage] = useState(galleryState.featImage)
 
    function driftOptions() {
       return {
@@ -37,7 +36,7 @@ function ProductFeaturedImage() {
    }
 
    function hasFeatImage() {
-      return galleryState.featImage && galleryState.featImageElement
+      return featImage && galleryState.featImageElement
    }
 
    useEffect(() => {
@@ -76,7 +75,7 @@ function ProductFeaturedImage() {
    return (
       <div className='wps-gallery-featured-wrapper' ref={paneElement}>
          <div className='wps-product-image-wrapper'>
-            {galleryState.featImage ? <ProductImage isFeatured={true} image={galleryState.featImage} /> : <ProductImage isFeatured={true} image={galleryState.featImagePlaceholder} />}
+            {featImage ? <ProductImage isFeatured={true} image={featImage} /> : <ProductImage isFeatured={true} image={galleryState.featImagePlaceholder} />}
          </div>
       </div>
    )

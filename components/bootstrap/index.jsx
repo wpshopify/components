@@ -1,5 +1,7 @@
 import React, { useEffect, useContext } from 'react'
+import { createHooks } from '@wordpress/hooks'
 import { ShopContext } from '../shop/_state/context'
+import { bootstrapLocalCurrencyRequirements } from '../../common/pricing/currency'
 import uniq from 'lodash/uniq'
 import isEmpty from 'lodash/isEmpty'
 import { buildInstances, getProductsFromIds, getCheckoutCache, getCheckoutID } from '/Users/andrew/www/devil/devilbox-new/data/www/wpshopify-api'
@@ -38,6 +40,8 @@ function addCustomEventProvider() {
          })
       )
    }
+
+   // WP_Shopify.hooks = hooks
 }
 
 function Bootstrap({ children }) {
@@ -49,19 +53,35 @@ function Bootstrap({ children }) {
    
    */
    async function bootstrapShop() {
-      addCustomEventProvider()
+      // let globalHooks =
+      // console.log('globalHooks', globalHooks)
+
+      // If running WP less < 5.0, polyfill the hooks
+      if (!wp.hooks) {
+         wp.hooks = createHooks()
+      }
+
+      //addCustomEventProvider()
 
       var [instancesError, instances] = await to(buildInstances())
 
       if (instancesError) {
+         console.log('buildInstances', instancesError)
          return
       }
 
+      shopDispatch({ type: 'SET_HOOKS', payload: wp.hooks })
       shopDispatch({ type: 'SET_CHECKOUT', payload: instances.checkout })
       shopDispatch({ type: 'SET_CHECKOUT_CACHE', payload: instances.checkout })
       shopDispatch({ type: 'SET_SHOP_INFO', payload: instances.shop })
 
       var [productsError, products] = await to(getProductIdsFromLineItems())
+      // var [currencyError, currencyResp] = await to(bootstrapLocalCurrencyRequirements())
+
+      // if (currencyError) {
+      //    console.error('currencyError!', currencyError)
+      //    return
+      // }
 
       if (productsError) {
          console.error('productsError!', productsError)

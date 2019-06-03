@@ -37,25 +37,12 @@ function formatPrice(config) {
 "price" should always be preformatted
 
 */
-function formatPriceToCurrency(price) {
+function formatPriceToCurrency(price, currencyCode) {
    return formatPrice({
-      countryCode: 'USD', // getLocalCurrencyCodeCache()
+      countryCode: currencyCode, // getLocalCurrencyCodeCache()
       amount: price,
-      currencyDisplay: currencyDisplayStyle() // showingCurrencyCode() ? 'code' : 'symbol'
+      currencyDisplay: currencyDisplayStyle()
    })
 }
 
-/*
-
-Format product price into format from Shopify
-
-*/
-function maybeformatPriceToCurrency(price) {
-   // if ( showingLocalCurrency() ) {
-   //   return formatPriceToCurrency(price);
-   // }
-
-   return formatPriceToCurrency(price)
-}
-
-export { formatPrice, formatPriceToCurrency, maybeformatPriceToCurrency }
+export { formatPrice, formatPriceToCurrency }

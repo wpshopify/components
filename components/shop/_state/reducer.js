@@ -7,6 +7,9 @@ import reduce from 'lodash/reduce'
 import filter from 'lodash/filter'
 import find from 'lodash/find'
 import isEmpty from 'lodash/isEmpty'
+import uniqWith from 'lodash/uniqWith'
+import isEqual from 'lodash/isEqual'
+import concat from 'lodash/concat'
 import { calcCheckoutTotal } from '../../../common/products'
 
 /*
@@ -264,7 +267,7 @@ function ShopReducer(state, action) {
 
          setCheckoutCache(state.checkout.id, updatedCheckoutCache)
 
-         WP_Shopify.dispatch('wpshopify-checkout-total', updatedCheckoutCache)
+         // WP_Shopify.dispatch('wpshopify-checkout-total', updatedCheckoutCache)
 
          return {
             ...state,
@@ -273,9 +276,11 @@ function ShopReducer(state, action) {
       }
 
       case 'UPDATE_CHECKOUT_ATTRIBUTES': {
+         let attributes = uniqWith(concat(state.customAttributes, [action.payload]), isEqual)
+
          return {
             ...state,
-            customAttributes: update(state.customAttributes, { $merge: [action.payload] })
+            customAttributes: update(state.customAttributes, { $set: attributes })
          }
       }
 
@@ -313,8 +318,17 @@ function ShopReducer(state, action) {
          }
       }
 
+      case 'SET_HOOKS': {
+         return {
+            ...state,
+            hooks: update(state.hooks, { $set: action.payload })
+         }
+      }
+
       case 'IS_SHOP_READY': {
-         WP_Shopify.dispatch('wpshopify-ready')
+         // WP_Shopify.dispatch('c-ready')
+
+         state.hooks.doAction('on.ready')
 
          return {
             ...state,

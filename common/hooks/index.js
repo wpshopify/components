@@ -54,13 +54,19 @@ function useOnClickOutside(ref, handler, targetOpened = false) {
    }, [ref, handler])
 }
 
-function useCustomEvent(name) {
-   const [data, setData] = useState(false)
+function useAction(hookName, defaultVal = false) {
+   const [data, setData] = useState(defaultVal)
 
    useEffect(() => {
-      document.addEventListener(name, function(event) {
-         setData(event.detail)
-      })
+      if (!wp.hooks.hasAction(hookName)) {
+         console.log('__________ does NOT have action')
+
+         wp.hooks.addAction(hookName, 'wpshopify.' + hookName, function(newData) {
+            console.log('data', data)
+            console.log('newData', newData)
+            setData(newData)
+         })
+      }
    }, [])
 
    return data
@@ -114,4 +120,4 @@ function useInView(selector, itemsState) {
    return [inViewState]
 }
 
-export { useOnClickOutside, usePortal, useInView, useCustomEvent }
+export { useOnClickOutside, usePortal, useInView, useAction }

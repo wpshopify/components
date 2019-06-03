@@ -1,6 +1,7 @@
 import React, { useContext } from 'react'
 import { CartButtonContext } from '../button/_state/context'
 import { ShopContext } from '../../../shop/_state/context'
+import { useAction } from '../../../../common/hooks'
 import has from 'lodash/has'
 
 function CartIcon() {
@@ -8,15 +9,11 @@ function CartIcon() {
    const [shopState] = useContext(ShopContext)
 
    function getIconColor() {
-      if (has(cartButtonState.componentOptions.componentOptions, 'icon_color')) {
-         return cartButtonState.componentOptions.icon_color
-      }
-
-      if (cartButtonState.componentOptions.componentOptions.type === 'fixed') {
+      if (cartButtonState.componentOptions.type === 'fixed') {
          return shopState.settings.cart.colorCartIconFixed
       }
 
-      return shopState.settings.cart.colorCartIcon
+      return cartButtonState.componentOptions.iconColor
    }
 
    function iconStyles() {

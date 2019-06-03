@@ -8,6 +8,7 @@ import last from 'lodash/last'
 
 import { ProductPricingRange } from '../range'
 import { ProductPriceSingle } from '../single'
+import { useAction } from '../../../../../common/hooks'
 
 function lastPrice(prices, type) {
    if (isEmpty(prices)) {
@@ -46,6 +47,7 @@ function ProductPrice({ compareAt }) {
    const [productPricingState] = useContext(ProductPricingContext)
    const isFirstRender = useRef(true)
    const [regPrice, setRegPrice] = useState(getFirstPrice())
+   const isShowing = useAction('show.product.pricing', true)
 
    function isRegAndCompareSame() {
       if (!productPricingState.showPriceRange && compareAt) {
@@ -94,21 +96,22 @@ function ProductPrice({ compareAt }) {
 
    return (
       <>
-         {!isRegAndCompareSame() && (
-            <h3
-               itemScope
-               itemProp='offers'
-               itemType='https://schema.org/Offer'
-               className='wps-products-price wps-product-pricing wps-products-price-one'
-               data-wps-is-showing-compare-at={compareAt}
-               data-wps-is-ready={shopState.isShopReady ? '1' : '0'}>
-               {productPricingState.showPriceRange && !productState.selectedVariant ? (
-                  <ProductPricingRange firstPrice={getFirstPrice()} lastPrice={getLastPrice()} isFirstAndLastSame={isFirstAndLastSame()} />
-               ) : (
-                  <ProductPriceSingle price={regPrice} />
-               )}
-            </h3>
-         )}
+         {!isRegAndCompareSame() &&
+            (isShowing && (
+               <h3
+                  itemScope
+                  itemProp='offers'
+                  itemType='https://schema.org/Offer'
+                  className='wps-products-price wps-product-pricing wps-products-price-one'
+                  data-wps-is-showing-compare-at={compareAt}
+                  data-wps-is-ready={shopState.isShopReady ? '1' : '0'}>
+                  {productPricingState.showPriceRange && !productState.selectedVariant ? (
+                     <ProductPricingRange firstPrice={getFirstPrice()} lastPrice={getLastPrice()} isFirstAndLastSame={isFirstAndLastSame()} />
+                  ) : (
+                     <ProductPriceSingle price={regPrice} />
+                  )}
+               </h3>
+            ))}
       </>
    )
 }

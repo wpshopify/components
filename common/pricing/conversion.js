@@ -1,7 +1,6 @@
 import money from 'money'
 import accounting from 'accounting'
 import { localCurrency } from './currency'
-import { maybeformatPriceToCurrency } from './formatting'
 import { baseCurrency, showingLocalCurrency } from '../globals'
 
 function convertAmount(amount, fromCode, toCode) {
@@ -16,10 +15,6 @@ function convertAmount(amount, fromCode, toCode) {
          .to(toCode),
       2
    )
-}
-
-function convertAndFormatPrice(price) {
-   return maybeformatPriceToCurrency(maybeConvertPriceToLocalCurrency(price))
 }
 
 function convertToLocalCurrency(amount) {

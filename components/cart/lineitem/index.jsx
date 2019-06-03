@@ -3,7 +3,7 @@ import { CartContext } from '../../cart/_state/context'
 import { ShopContext } from '../../shop/_state/context'
 import { Link } from '../../link'
 import { CartLineItemQuantity } from './quantity'
-import { maybeformatPriceToCurrency } from '../../../common/pricing/formatting'
+import { formatPriceToCurrency } from '../../../common/pricing/formatting'
 import { calcLineItemTotal, isAvailable } from '../../../common/products'
 import { Notice } from '../../notice'
 
@@ -94,7 +94,7 @@ function CartLineItem({ lineItem, index }) {
 
                      <div className='wps-cart-lineitem-price-total-wrapper'>
                         <div className='wps-cart-lineitem-price wps-cart-lineitem-price-total' data-wps-is-ready={shopState.isShopReady} ref={lineItemTotalElement}>
-                           {maybeformatPriceToCurrency(lineItemTotal)}
+                           {shopState.isShopReady && formatPriceToCurrency(lineItemTotal, shopState.info.currencyCode)}
                         </div>
                      </div>
                   </div>

@@ -6,6 +6,7 @@ import { CartButtonProvider } from './_state/provider'
 import { useAnime, slideInRight } from '../../../../common/animations'
 import { usePortal } from '../../../../common/hooks'
 import { isCartEmpty } from '../../../../common/cart'
+import { useAction } from '../../../../common/hooks'
 
 function CartButton({ options }) {
    const [shopState, shopDispatch] = useContext(ShopContext)

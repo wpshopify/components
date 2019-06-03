@@ -1,4 +1,4 @@
-import React, { useContext, useEffect, useRef } from 'react'
+import React, { useContext, useEffect, useRef, useState } from 'react'
 import { ShopContext } from '../../../../shop/_state/context'
 import { ProductContext } from '../../_state/context'
 import { ItemsContext } from '../../../../items/_state/context'
@@ -16,27 +16,27 @@ function ProductImage({ image, isFeatured }) {
    const [itemsState] = useContext(ItemsContext)
    const [productState] = useContext(ProductContext)
    const [galleryState, galleryDispatch] = useContext(ProductGalleryContext)
-
-   const imageOptimized = addCustomSizingToImageUrl({
-      src: image.src,
-      width: shopState.settings.productsImagesSizingWidth,
-      height: shopState.settings.productsImagesSizingHeight,
-      crop: shopState.settings.productsImagesSizingCrop,
-      scale: shopState.settings.productsImagesSizingScale
-   })
+   const [productImageSrc, setProductImageSrc] = useState(image.src)
 
    useEffect(() => {
+      if (shopState.settings.productsImagesSizingToggle) {
+         setProductImageSrc(
+            addCustomSizingToImageUrl({
+               src: image.src,
+               width: shopState.settings.productsImagesSizingWidth,
+               height: shopState.settings.productsImagesSizingHeight,
+               crop: shopState.settings.productsImagesSizingCrop,
+               scale: shopState.settings.productsImagesSizingScale
+            })
+         )
+      }
+
+      setProductImageSrc(image.src)
+
       if (isFeatured) {
          galleryDispatch({ type: 'SET_FEAT_IMAGE_ELEMENT', payload: imageRef.current })
       }
-   }, [])
-
-
-   
-   // const Image = React.forwardRef((props, ref) => (
-      
-   //    ));
-   
+   }, [image])
 
    function isShowingLink() {
       return hasSinglePage() && !onSinglePage(itemsState) && !productState.hasManyImages
@@ -50,10 +50,10 @@ function ProductImage({ image, isFeatured }) {
    */
    return isShowingLink() ? (
       <Link payload={productState.payload} type='products' shop={shopState}>
-         <img ref={imageRef} itemProp='image' src={imageOptimized} className='wps-product-image' alt={image.altText} data-wps-is-ready={shopState.isShopReady ? '1' : '0'} data-zoom={image.src} />
+         <img ref={imageRef} itemProp='image' src={productImageSrc} className='wps-product-image' alt={image.altText} data-wps-is-ready={shopState.isShopReady ? '1' : '0'} data-zoom={image.src} />
       </Link>
    ) : (
-      <img ref={imageRef} itemProp='image' src={imageOptimized} className='wps-product-image' alt={image.altText} data-wps-is-ready={shopState.isShopReady ? '1' : '0'} data-zoom={image.src} />
+      <img ref={imageRef} itemProp='image' src={productImageSrc} className='wps-product-image' alt={image.altText} data-wps-is-ready={shopState.isShopReady ? '1' : '0'} data-zoom={image.src} />
    )
 }
 

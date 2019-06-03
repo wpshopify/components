@@ -33,25 +33,32 @@ function CartCounter() {
    }
 
    function getColor() {
-      if (cartButtonState.componentOptions.componentOptions.type === 'fixed') {
-         return shopState.settings.cart.colorCartCounterFixed
+      if (!cartButtonState.componentOptions.counterTextColor) {
+         if (cartButtonState.componentOptions.type !== 'fixed') {
+            return '#000'
+         }
       }
 
-      return cartButtonState.componentOptions.counter_text_color
+      if (cartButtonState.componentOptions.type !== 'fixed') {
+         return cartButtonState.componentOptions.counterTextColor
+      }
+
+      return shopState.settings.cart.colorCartCounterFixed
    }
 
    function getBackgroundColor() {
-      if (has(cartButtonState.componentOptions, 'counterBackgroundColor')) {
-         return cartButtonState.componentOptions.counterBackgroundColor
+      if (!cartButtonState.componentOptions.counterBackgroundColor) {
+         if (cartButtonState.componentOptions.componentOptions.type !== 'fixed') {
+            return shopState.settings.cart.colorCounter
+         }
       }
 
-      return shopState.settings.cart.colorCounter
+      return cartButtonState.componentOptions.counterBackgroundColor
    }
-   console.log('counterStyles(cartButtonState)', counterStyles(cartButtonState))
 
    return (
       <>
-         <span style={counterStyles(cartButtonState)} className='wps-cart-counter' ref={element}>
+         <span style={counterStyles(cartButtonState)} data-wps-is-big={totalItems > 9 ? true : false} className='wps-cart-counter' ref={element}>
             {totalItems}
          </span>
       </>

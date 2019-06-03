@@ -56,7 +56,7 @@ function stagger(elements, cb = false) {
       translateX: ['450px', '0px'],
       duration: 350,
       easing: 'easeOutQuart',
-      delay: anime.stagger(100, { easing: 'linear' }),
+      delay: anime.stagger(100, { start: 100 }),
       complete: function() {
          if (cb && elements) {
             cb()

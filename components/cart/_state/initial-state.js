@@ -4,7 +4,7 @@ function CartInitialState(options) {
       isCheckingOut: false,
       termsAccepted: true,
       buttons: options,
-      title: 'Shopping cart',
+      title: wp.hooks.applyFilters('default.cart.title', 'Shopping cart'),
       checkoutText: 'Begin checkout'
    }
 }

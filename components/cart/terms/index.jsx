@@ -1,10 +1,6 @@
-import React, { useContext, useEffect, useRef, useState } from 'react'
-import { settings } from 'money'
+import React, { useContext, useEffect, useState } from 'react'
 import { ShopContext } from '../../shop/_state/context'
 import { CartContext } from '../_state/context'
-// import { maybeformatPriceToCurrency } from '../../../common/pricing/formatting'
-// import { pulse, useAnime } from '../../../common/animations'
-// import { CartCheckout } from '../checkout'
 
 function CartTerms() {
    const [shopState] = useContext(ShopContext)

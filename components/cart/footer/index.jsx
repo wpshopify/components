@@ -1,6 +1,6 @@
 import React, { useContext, useEffect, useRef } from 'react'
 import { ShopContext } from '../../shop/_state/context'
-import { maybeformatPriceToCurrency } from '../../../common/pricing/formatting'
+import { formatPriceToCurrency } from '../../../common/pricing/formatting'
 import { pulse, useAnime } from '../../../common/animations'
 import { CartCheckout } from '../checkout'
 import { CartNote } from '../note'
@@ -28,7 +28,7 @@ function CartFooter() {
          <div className='baseline row align-items-end justify-content-between m-0'>
             <p className='wps-total-prefix p-0'>Subtotal:</p>
             <p className='wps-total-amount col p-0' ref={totalElement} data-wps-is-ready={shopState.isShopReady}>
-               {maybeformatPriceToCurrency(shopState.checkoutCache.total)}
+               {shopState.isShopReady && formatPriceToCurrency(shopState.checkoutCache.total, shopState.info.currencyCode)}
             </p>
          </div>
          <CartCheckout />

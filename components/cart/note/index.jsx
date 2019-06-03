@@ -1,22 +1,8 @@
-import React, { useContext, useEffect, useRef } from 'react'
+import React, { useContext } from 'react'
 import { ShopContext } from '../../shop/_state/context'
-// import { maybeformatPriceToCurrency } from '../../../common/pricing/formatting'
-// import { pulse, useAnime } from '../../../common/animations'
-// import { CartCheckout } from '../checkout'
 
 function CartNote() {
    const [shopState] = useContext(ShopContext)
-   // const totalElement = useRef()
-
-   // const animate = useAnime(pulse)
-
-   // useEffect(() => {
-   //    if (!shopState.isShopReady) {
-   //       return
-   //    }
-
-   //    animate(totalElement.current)
-   // }, [shopState.checkoutCache.total])
 
    return (
       <section className='wps-cart-notes'>

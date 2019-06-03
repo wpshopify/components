@@ -142,8 +142,6 @@ function localCurrencyReady() {
 
 /*
 
-Get Deselected Dropdowns
-
 Both Shopify and the 'country-data' lib uses ISO 4217 for their currency code under the Shop endpoint
 
 */

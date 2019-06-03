@@ -19,11 +19,8 @@ function CartBody() {
    useOnClickOutside(
       cart,
       e => {
-         console.log('useOnClickOutside()')
          // animeSlideOutRight(cart.current)
          document.querySelector('.wps-cart').classList.remove('wps-cart-is-showing')
-
-         console.log('<CartBody> - closeCart')
          shopDispatch({ type: 'CLOSE_CART' })
       },
       shopState.cartOpen
