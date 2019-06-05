@@ -1,8 +1,7 @@
-import React, { useContext, useRef, useEffect, useState } from 'react'
+import React, { useContext, useRef, useEffect } from 'react'
 import { ProductBuyButtonContext } from '../_state/context'
 import { ShopContext } from '../../../../shop/_state/context'
 import { ItemsContext } from '../../../../items/_state/context'
-
 import { useAnime, pulse } from '../../../../../common/animations'
 import { addProductDetailsToVariant } from '../../../../../common/products'
 import { findVariantFromSelectedOptions } from '/Users/andrew/www/devil/devilbox-new/data/www/wpshopify-api'

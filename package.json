@@ -25,6 +25,7 @@
       "@tippy.js/react": "^2.2.0",
       "@wordpress/components": "^7.4.0",
       "@wordpress/hooks": "^2.3.0",
+      "@wordpress/i18n": "^3.4.0",
       "@wpshopify/api": "^0.1.10",
       "accounting": "^0.4.1",
       "animejs": "^3.0.1",
