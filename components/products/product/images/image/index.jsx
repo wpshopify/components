@@ -16,34 +16,70 @@ function ProductImage({ image, isFeatured }) {
    const [itemsState] = useContext(ItemsContext)
    const [productState] = useContext(ProductContext)
    const [galleryState, galleryDispatch] = useContext(ProductGalleryContext)
-   const [productImageSrc, setProductImageSrc] = useState(
-      addCustomSizingToImageUrl(
-         shopState.settings.productsImagesSizingToggle
-            ? {
-                 src: image.src,
-                 width: shopState.settings.productsImagesSizingWidth,
-                 height: shopState.settings.productsImagesSizingHeight,
-                 crop: shopState.settings.productsImagesSizingCrop,
-                 scale: shopState.settings.productsImagesSizingScale
-              }
-            : image.src
-      )
-   )
+   const [productImageSrc, setProductImageSrc] = useState(applyImageSizing())
+
+
+   function doFeaturedSizing() {
+      return addCustomSizingToImageUrl({
+         src: image.src,
+         width: shopState.settings.productsImagesSizingWidth,
+         height: shopState.settings.productsImagesSizingHeight,
+         crop: shopState.settings.productsImagesSizingCrop,
+         scale: shopState.settings.productsImagesSizingScale
+      })
+   }
+
+   function doThumbnailSizing() {
+      console.log('shopState.settings.productsThumbnailImagesSizingCrop', shopState.settings.productsThumbnailImagesSizingCrop);
+      
+      return addCustomSizingToImageUrl({
+         src: image.src,
+         width: shopState.settings.productsThumbnailImagesSizingWidth,
+         height: shopState.settings.productsThumbnailImagesSizingHeight,
+         crop: shopState.settings.productsThumbnailImagesSizingCrop,
+         scale: shopState.settings.productsThumbnailImagesSizingScale
+      })
+   }
+
+
+   function applyImageSizing() {
+
+      if (isFeatured) {
+         if (shopState.settings.productsImagesSizingToggle) {
+            return doFeaturedSizing()
+         }
+         return image.src;
+
+      } else {
+         if (shopState.settings.productsThumbnailImagesSizingToggle) {
+            return doThumbnailSizing()
+         }
+         return image.src;
+
+      }
+
+   }
+
+
 
    useEffect(() => {
-      if (shopState.settings.productsImagesSizingToggle) {
-         setProductImageSrc(
-            addCustomSizingToImageUrl({
-               src: image.src,
-               width: shopState.settings.productsImagesSizingWidth,
-               height: shopState.settings.productsImagesSizingHeight,
-               crop: shopState.settings.productsImagesSizingCrop,
-               scale: shopState.settings.productsImagesSizingScale
-            })
-         )
-      } else {
-         setProductImageSrc(image.src)
-      }
+      // if (shopState.settings.productsImagesSizingToggle) {
+      //    setProductImageSrc(
+      //       addCustomSizingToImageUrl({
+      //          src: image.src,
+      //          width: shopState.settings.productsImagesSizingWidth,
+      //          height: shopState.settings.productsImagesSizingHeight,
+      //          crop: shopState.settings.productsImagesSizingCrop,
+      //          scale: shopState.settings.productsImagesSizingScale
+      //       })
+      //    )
+      // } else {
+         
+      // }
+
+      // const [productImageSrc, setProductImageSrc] = useState()
+
+      setProductImageSrc(applyImageSizing())
 
       if (isFeatured) {
          galleryDispatch({ type: 'SET_FEAT_IMAGE_ELEMENT', payload: imageRef.current })

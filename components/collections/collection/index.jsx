@@ -1,5 +1,4 @@
 import React, { useContext } from 'react'
-
 import { CollectionImage } from './image'
 import { CollectionTitle } from './title'
 import { CollectionDescription } from './description'
@@ -42,6 +41,9 @@ function Collection({ payload }) {
       }
    ]
 
+   console.log('productOptions', productOptions);
+   
+
    function CollectionProducts() {
       return usePortal(
          <Items options={productOptions}>
@@ -51,13 +53,16 @@ function Collection({ payload }) {
       )
    }
 
+   console.log('itemsState.componentOptions', itemsState.componentOptions);
+   
+
    return (
       <div className={`${itemWidthClass(itemsState.componentOptions.itemsPerRow)} wps-item p-3`}>
          <CollectionProvider payload={payload}>
             {isShowingComponent(itemsState, 'image') && <CollectionImage />}
             {isShowingComponent(itemsState, 'title') && <CollectionTitle />}
             {isShowingComponent(itemsState, 'description') && <CollectionDescription />}
-            {itemsState.componentOptions.isSingular && <CollectionProducts />}
+            {itemsState.componentOptions.single && <CollectionProducts />}
          </CollectionProvider>
       </div>
    )

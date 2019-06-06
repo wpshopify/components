@@ -10,7 +10,9 @@ function CollectionImage() {
    const [shopState] = useContext(ShopContext)
    const [collectionState] = useContext(CollectionContext)
    const [itemsState] = useContext(ItemsContext)
-   const [imageSrc, setImageSrc] = useState(collectionState.payload.image.src)
+   console.log('collectionState.payload.image', collectionState.payload.image);
+   
+   const [imageSrc, setImageSrc] = useState(collectionState.payload.image ? collectionState.payload.image.src : false)
 
    useEffect(() => {
       if (!imageSrc) {
@@ -18,6 +20,7 @@ function CollectionImage() {
       }
 
       if (shopState.settings.collectionsImagesSizingToggle) {
+
          setImageSrc(
             addCustomSizingToImageUrl({
                src: collectionState.payload.image.src,
@@ -27,10 +30,12 @@ function CollectionImage() {
                scale: shopState.settings.collectionsImagesSizingScale
             })
          )
+         
       }
    }, [])
 
    return usePortal(
+      imageSrc && 
       <div className='wps-component wps-component-collection-image' data-wps-component-order='0'>
          <img
             itemProp='image'
