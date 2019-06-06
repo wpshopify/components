@@ -33,7 +33,6 @@ function CartCheckout() {
    }
 
    function checkoutRedirect(checkout) {
-      console.log('checkout', checkout)
 
       if (!WP_Shopify.settings.enableCustomCheckoutDomain || !hasManagedDomain(checkout.webUrl)) {
          return managedDomainRedirect(checkout)
@@ -59,17 +58,13 @@ function CartCheckout() {
       }
 
       if (!isEmpty(shopState.customAttributes)) {
-         console.log('shopState.customAttributes', shopState.customAttributes)
-         console.log('shopState.note', shopState.note)
+
          const [errAttr, resp] = await to(
             updateCheckoutAttributes({
                customAttributes: shopState.customAttributes,
                note: shopState.note
             })
          )
-
-         console.log('errAttr', errAttr)
-         console.log('resp', resp)
 
          return checkoutRedirect(resp)
       }

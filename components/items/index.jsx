@@ -54,6 +54,7 @@ function ItemsController({ options, children }) {
       </ItemsProvider>,
       options.componentElement
    )
+   
 }
 
 /*

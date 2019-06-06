@@ -22,8 +22,6 @@ function Cart({ options }) {
          return
       }
 
-      console.log('updateCheckoutAttributes')
-
       shopDispatch({ type: 'UPDATE_CHECKOUT_ATTRIBUTES', payload: updateCheckoutAttributes })
    }, [updateCheckoutAttributes])
 
@@ -32,7 +30,7 @@ function Cart({ options }) {
          isFirstRender.current = false
          return
       }
-      console.log('setCheckoutAttributes')
+
       shopDispatch({ type: 'SET_CHECKOUT_ATTRIBUTES', payload: setCheckoutAttributes })
    }, [setCheckoutAttributes])
 
@@ -41,7 +39,6 @@ function Cart({ options }) {
          isFirstRender.current = false
          return
       }
-      console.log('setCheckoutNotes')
 
       shopDispatch({ type: 'SET_CHECKOUT_NOTE', payload: setCheckoutNotes })
    }, [setCheckoutNotes])

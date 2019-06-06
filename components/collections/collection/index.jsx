@@ -41,9 +41,6 @@ function Collection({ payload }) {
       }
    ]
 
-   console.log('productOptions', productOptions);
-   
-
    function CollectionProducts() {
       return usePortal(
          <Items options={productOptions}>
@@ -52,9 +49,6 @@ function Collection({ payload }) {
          findPortalElement(itemsState.element, itemsState.componentOptions.dropzoneCollectionProducts)
       )
    }
-
-   console.log('itemsState.componentOptions', itemsState.componentOptions);
-   
 
    return (
       <div className={`${itemWidthClass(itemsState.componentOptions.itemsPerRow)} wps-item p-3`}>

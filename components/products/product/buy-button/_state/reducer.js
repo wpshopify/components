@@ -41,11 +41,6 @@ function ProductBuyButtonReducer(state, action) {
             })
          }
 
-      case 'SET_IS_ADDING_TO_CART':
-         return {
-            ...state,
-            isAdding: action.payload
-         }
 
       case 'UPDATE_QUANTITY':
          return {

@@ -59,11 +59,8 @@ function useAction(hookName, defaultVal = false) {
 
    useEffect(() => {
       if (!wp.hooks.hasAction(hookName)) {
-         console.log('__________ does NOT have action')
 
          wp.hooks.addAction(hookName, 'wpshopify.' + hookName, function(newData) {
-            console.log('data', data)
-            console.log('newData', newData)
             setData(newData)
          })
       }

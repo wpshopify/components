@@ -20,8 +20,8 @@ function ProductBuyButton() {
          <ProductBuyButtonProvider productState={productState}>
             {productState.payload.availableForSale ? (
                <>
-                  {!itemsState.componentOptions.hideQuantity ? <ProductQuantity /> : ''}
-                  <ProductOptions />
+                  {itemsState.componentOptions.hideQuantity && <ProductQuantity /> }
+                  {productState.hasManyVariants && <ProductOptions /> }
                   <ProductAddButton />
                </>
             ) : (

@@ -4,7 +4,6 @@ function ProductBuyButtonInitialState(productState = false) {
       availableVariants: [],
       allOptionsSelected: false,
       missingSelections: false,
-      isAdding: false,
       quantity: 1,
       product: productState.payload ? productState.payload : false
    }

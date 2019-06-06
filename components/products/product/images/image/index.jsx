@@ -30,7 +30,6 @@ function ProductImage({ image, isFeatured }) {
    }
 
    function doThumbnailSizing() {
-      console.log('shopState.settings.productsThumbnailImagesSizingCrop', shopState.settings.productsThumbnailImagesSizingCrop);
       
       return addCustomSizingToImageUrl({
          src: image.src,
@@ -60,25 +59,11 @@ function ProductImage({ image, isFeatured }) {
 
    }
 
-
+   function isShowingLink() {
+      return hasSinglePage() && !onSinglePage(itemsState) && !productState.hasManyImages
+   }
 
    useEffect(() => {
-      // if (shopState.settings.productsImagesSizingToggle) {
-      //    setProductImageSrc(
-      //       addCustomSizingToImageUrl({
-      //          src: image.src,
-      //          width: shopState.settings.productsImagesSizingWidth,
-      //          height: shopState.settings.productsImagesSizingHeight,
-      //          crop: shopState.settings.productsImagesSizingCrop,
-      //          scale: shopState.settings.productsImagesSizingScale
-      //       })
-      //    )
-      // } else {
-         
-      // }
-
-      // const [productImageSrc, setProductImageSrc] = useState()
-
       setProductImageSrc(applyImageSizing())
 
       if (isFeatured) {
@@ -86,9 +71,6 @@ function ProductImage({ image, isFeatured }) {
       }
    }, [image])
 
-   function isShowingLink() {
-      return hasSinglePage() && !onSinglePage(itemsState) && !productState.hasManyImages
-   }
 
    /*
    

@@ -10,8 +10,6 @@ function CollectionImage() {
    const [shopState] = useContext(ShopContext)
    const [collectionState] = useContext(CollectionContext)
    const [itemsState] = useContext(ItemsContext)
-   console.log('collectionState.payload.image', collectionState.payload.image);
-   
    const [imageSrc, setImageSrc] = useState(collectionState.payload.image ? collectionState.payload.image.src : false)
 
    useEffect(() => {
