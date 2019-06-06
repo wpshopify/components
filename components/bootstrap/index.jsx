@@ -60,19 +60,21 @@ function Bootstrap({ children }) {
 
       wp.hooks.doAction('before.ready')
 
-      // shopDispatch({ type: 'SET_HOOKS', payload: wp.hooks })
-
-      // wp.hooks.doAction('before.ready')
-
-      // let globalHooks =
-      // console.log('globalHooks', globalHooks)
-
-      //addCustomEventProvider()
-
       var [instancesError, instances] = await to(buildInstances())
 
+      if (instances.checkout.completedAt) {
+         var newInstances = await to(buildInstances(true))
+
+         if (newInstances[0]) {
+            console.log('newInstances errr', newInstances[0])
+            return
+         }
+
+         instances = newInstances[1]
+      }
+
       if (instancesError) {
-         console.log('buildInstances', instancesError)
+         console.log('buildInstances errr', instancesError)
          return
       }
 

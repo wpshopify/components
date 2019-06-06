@@ -16,7 +16,19 @@ function ProductImage({ image, isFeatured }) {
    const [itemsState] = useContext(ItemsContext)
    const [productState] = useContext(ProductContext)
    const [galleryState, galleryDispatch] = useContext(ProductGalleryContext)
-   const [productImageSrc, setProductImageSrc] = useState(image.src)
+   const [productImageSrc, setProductImageSrc] = useState(
+      addCustomSizingToImageUrl(
+         shopState.settings.productsImagesSizingToggle
+            ? {
+                 src: image.src,
+                 width: shopState.settings.productsImagesSizingWidth,
+                 height: shopState.settings.productsImagesSizingHeight,
+                 crop: shopState.settings.productsImagesSizingCrop,
+                 scale: shopState.settings.productsImagesSizingScale
+              }
+            : image.src
+      )
+   )
 
    useEffect(() => {
       if (shopState.settings.productsImagesSizingToggle) {
@@ -29,9 +41,9 @@ function ProductImage({ image, isFeatured }) {
                scale: shopState.settings.productsImagesSizingScale
             })
          )
+      } else {
+         setProductImageSrc(image.src)
       }
-
-      setProductImageSrc(image.src)
 
       if (isFeatured) {
          galleryDispatch({ type: 'SET_FEAT_IMAGE_ELEMENT', payload: imageRef.current })
