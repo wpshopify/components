@@ -23,7 +23,8 @@ function getUniqueProductIdsFromVariants(variants) {
 }
 
 async function getProductIdsFromLineItems() {
-   const uniqueIds = getUniqueProductIdsFromVariants(variantsFromCache())
+
+  const uniqueIds = getUniqueProductIdsFromVariants(variantsFromCache())
 
    if (isEmpty(uniqueIds)) {
       return new Promise(resolve => resolve(false))
@@ -47,6 +48,21 @@ function addCustomEventProvider() {
 function Bootstrap({ children }) {
    const [shopState, shopDispatch] = useContext(ShopContext)
 
+
+   function setReady(lineItems = false) {
+      if (lineItems) {
+         shopDispatch({ type: 'SET_LINE_ITEMS_AND_VARIANTS', payload: { products: lineItems } })
+         shopDispatch({ type: 'UPDATE_CHECKOUT_TOTAL' })
+         shopDispatch({ type: 'SET_IS_CART_EMPTY', payload: false })
+      } else {
+         shopDispatch({ type: 'SET_IS_CART_EMPTY', payload: true })
+      }
+
+      // App is ready to go
+      wp.hooks.doAction('after.ready')
+      shopDispatch({ type: 'IS_SHOP_READY' })      
+   }
+
    /*
    
    Responsible for: Bootstrapping the app
@@ -60,29 +76,59 @@ function Bootstrap({ children }) {
 
       wp.hooks.doAction('before.ready')
 
-      var [instancesError, instances] = await to(buildInstances())
+      var [instancesErrorMsg, instances] = await to(buildInstances())
+
+      if (instancesErrorMsg) {
+         // console.log('instancesErrorMsg ', instancesErrorMsg);
+         shopDispatch({ type: 'UPDATE_NOTICES', payload: {
+            type: 'error',
+            message: instancesErrorMsg
+         } })
+
+         return setReady();
+
+      }
+      
 
       if (instances.checkout.completedAt) {
-         var newInstances = await to(buildInstances(true))
+         var [newInstancesErrorMsg, newInstances] = await to(buildInstances(true))
 
-         if (newInstances[0]) {
-            console.log('newInstances errr', newInstances[0])
-            return
+         if (newInstancesErrorMsg) {
+            // console.log('instancesErrorMsg ', instancesErrorMsg);
+            shopDispatch({ type: 'UPDATE_NOTICES', payload: {
+               type: 'error',
+               message: newInstancesErrorMsg
+            } })
+
+            return setReady();
+
          }
 
-         instances = newInstances[1]
+         instances = newInstances
       }
 
-      if (instancesError) {
-         console.log('buildInstances errr', instancesError)
-         return
-      }
 
       shopDispatch({ type: 'SET_CHECKOUT', payload: instances.checkout })
       shopDispatch({ type: 'SET_CHECKOUT_CACHE', payload: instances.checkout })
       shopDispatch({ type: 'SET_SHOP_INFO', payload: instances.shop })
 
-      var [productsError, products] = await to(getProductIdsFromLineItems())
+      var [lineItemsError, lineItems] = await to(getProductIdsFromLineItems())
+
+      if (lineItemsError) {
+
+         shopDispatch(
+            { 
+               type: 'UPDATE_NOTICES', 
+               payload: {
+                  type: 'error',
+                  message: lineItemsError
+               } 
+            })
+
+         return setReady();
+
+      }
+      
       // var [currencyError, currencyResp] = await to(bootstrapLocalCurrencyRequirements())
 
       // if (currencyError) {
@@ -90,22 +136,8 @@ function Bootstrap({ children }) {
       //    return
       // }
 
-      if (productsError) {
-         console.error('productsError!', productsError)
-         return
-      }
+      setReady(lineItems);
 
-      if (products) {
-         shopDispatch({ type: 'SET_LINE_ITEMS_AND_VARIANTS', payload: { products: products } })
-         shopDispatch({ type: 'UPDATE_CHECKOUT_TOTAL' })
-         shopDispatch({ type: 'SET_IS_CART_EMPTY', payload: false })
-      } else {
-         shopDispatch({ type: 'SET_IS_CART_EMPTY', payload: true })
-      }
-
-      // App is ready to go
-      wp.hooks.doAction('after.ready')
-      shopDispatch({ type: 'IS_SHOP_READY' })
    }
 
    // Bootstrap app on mount only

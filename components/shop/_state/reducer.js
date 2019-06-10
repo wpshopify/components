@@ -325,6 +325,24 @@ function ShopReducer(state, action) {
          }
       }
 
+      case 'UPDATE_NOTICES': {
+
+         let updatedNotices = state.notices;
+
+         if (!some(state.notices, action.payload)) {
+            updatedNotices = concat(state.notices, [action.payload]);
+
+         } else {
+            updatedNotices = state.notices
+         }
+
+         return {
+            ...state,
+            notices: update(state.notices, { $set: updatedNotices })
+         }
+      }
+      
+
       default: {
          throw new Error(`Unhandled action type: ${action.type} in ShopReducer`)
       }

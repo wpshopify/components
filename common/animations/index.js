@@ -65,6 +65,23 @@ function stagger(elements, cb = false) {
    })
 }
 
+function fadeOutIn(elements, cb = false) {
+   return anime({
+      targets: elements,
+       keyframes: [
+         {opacity: 1},
+         {opacity: 0.4},
+         {opacity: 1}
+      ],
+      duration: 250,
+      complete: function() {
+         if (cb && elements) {
+            cb()
+         }
+      }
+   })
+}
+
 function useAnime(animeFn, elementExists = true) {
    const [currentlyAnimating, setCurrentlyAnimating] = useState(false)
 
@@ -81,4 +98,4 @@ function useAnime(animeFn, elementExists = true) {
    return animate
 }
 
-export { pulse, slideInRight, slideOutRight, stagger, useAnime }
+export { pulse, slideInRight, slideOutRight, stagger, useAnime, fadeOutIn }

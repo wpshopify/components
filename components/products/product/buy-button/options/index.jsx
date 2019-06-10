@@ -30,6 +30,10 @@ function formatAvailableOptions(availOptions) {
 }
 
 function onlyAvailableOptionsFromVariants(variants) {
+   
+   if (!variants.length) {
+      return false
+   }
    return formatAvailableOptions(onlyAvailableVariantsOptions(onlyAvailableItems(variants)))
 }
 
@@ -67,11 +71,13 @@ function ProductOptions() {
    }, [buyButtonState.selectedOptions])
 
    return (
-      <div className='wps-component wps-component-products-options container-fluid' data-wps-is-component-wrapper>
+      options && <div className='wps-component wps-component-products-options container-fluid' data-wps-is-component-wrapper>
          {options.map(option => (
             <ProductOption key={option.name} option={option} />
          ))}
       </div>
+      
+      
    )
 }
 

@@ -9,6 +9,7 @@ import last from 'lodash/last'
 import { ProductPricingRange } from '../range'
 import { ProductPriceSingle } from '../single'
 import { useAction } from '../../../../../common/hooks'
+import { useAnime, pulse } from '../../../../../common/animations'
 
 function lastPrice(prices, type) {
    if (isEmpty(prices)) {
@@ -46,8 +47,10 @@ function ProductPrice({ compareAt }) {
    const [productState] = useContext(ProductContext)
    const [productPricingState] = useContext(ProductPricingContext)
    const isFirstRender = useRef(true)
+   const singlePriceElement = useRef()
    const [regPrice, setRegPrice] = useState(getFirstPrice())
    const isShowing = useAction('show.product.pricing', true)
+   const animePulse = useAnime(pulse)
 
    function isRegAndCompareSame() {
       if (!productPricingState.showPriceRange && compareAt) {
@@ -91,6 +94,8 @@ function ProductPrice({ compareAt }) {
 
       if (productState.selectedVariant) {
          setRegPrice(productState.selectedVariant.price)
+         animePulse(singlePriceElement.current)
+
       }
    }, [productState.selectedVariant])
 
@@ -108,7 +113,7 @@ function ProductPrice({ compareAt }) {
                   {productPricingState.showPriceRange && !productState.selectedVariant ? (
                      <ProductPricingRange firstPrice={getFirstPrice()} lastPrice={getLastPrice()} isFirstAndLastSame={isFirstAndLastSame()} />
                   ) : (
-                     <ProductPriceSingle price={regPrice} />
+                     <ProductPriceSingle ref={singlePriceElement} price={regPrice} />
                   )}
                </h3>
             ))}

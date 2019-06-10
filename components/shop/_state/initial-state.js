@@ -9,6 +9,13 @@ function ShopInitialState(options = false) {
          variants: [],
          total: 0.0
       },
+      notices: [],
+      info: {
+         currencyCode: 'USD',
+         primaryDomain: {
+            url: ''
+         }
+      },
       customAttributes: [],
       note: false,
       isCartEmpty: true,

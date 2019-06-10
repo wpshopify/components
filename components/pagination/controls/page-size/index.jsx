@@ -3,6 +3,7 @@ import { graphQuery, findLastCursorId } from '/Users/andrew/www/devil/devilbox-n
 import { PaginationContext } from '../../_state/context'
 import { ItemsContext } from '../../../items/_state/context'
 import { usePortal } from '../../../../common/hooks'
+import to from 'await-to-js'
 
 function PaginationPageSize() {
    const [paginationState, paginationDispatch] = useContext(PaginationContext)
@@ -53,7 +54,13 @@ function PaginationPageSize() {
       setLoadingStates(true)
 
       // Calls Shopify
-      const shopifyResponse = await graphQuery(itemsState.dataType, updatedParams)
+      const [shopifyError, shopifyResponse] = await to(graphQuery(itemsState.dataType, updatedParams))
+
+      if (shopifyError) {
+         console.log('e ........ shopifyError', shopifyError)
+      } else {
+         console.log('shopifyResponse', shopifyResponse)
+      }
 
       setAfterCursorQueryParams(findLastCursorId(shopifyResponse, itemsState.dataType))
 
@@ -62,6 +69,8 @@ function PaginationPageSize() {
 
       itemsDispatch({ type: 'SET_IS_LOADING', payload: false })
    }
+
+   console.log('paginationState.componentOptions: ', paginationState.componentOptions)
 
    return usePortal(
       <>

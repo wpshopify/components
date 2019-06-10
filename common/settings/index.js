@@ -43,9 +43,13 @@ function hasSinglePage() {
    return true
 }
 
+function shopHasInfo(shop) {
+   return has(shop, 'info')
+}
+
 function getShopifySingleLink(payload, shop, type) {
    if (!payload.onlineStoreUrl) {
-      if (has(shop, 'info')) {
+      if (shopHasInfo(shop)) {
          return shop.info.primaryDomain.url + '/' + type + '/' + payload.handle
       } else {
          return '#!'
@@ -82,4 +86,4 @@ function getItemLink(payload, shop, type) {
    }
 }
 
-export { hasEnableCustomCheckoutDomain, hasCurrencyCode, hasSinglePage, getShopifySingleLink, getWordPressSingleLink, singleIsShopify, getItemLink }
+export { hasEnableCustomCheckoutDomain, hasCurrencyCode, hasSinglePage, getShopifySingleLink, getWordPressSingleLink, singleIsShopify, getItemLink, shopHasInfo }
