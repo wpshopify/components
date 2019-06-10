@@ -49,7 +49,8 @@ function ItemsInitialState(options = {}) {
       totalShown: options.componentPayload ? options.componentPayload.length : 0,
       noResultsText: options.componentOptions.noResultsText ? options.componentOptions.noResultsText : 'No items left',
       isLoading: false,
-      hasMoreItems: checkHasMore(options)
+      hasMoreItems: checkHasMore(options),
+      notices: []
    }
 }
 

@@ -27,16 +27,29 @@ function fetchNextItems(itemsState, itemsDispatch) {
       if (resultsError) {
          const [initialError, initialResponse] = await to(resendInitialQuery(itemsState))
 
-         if (itemsState.dataType === 'collections' || itemsState.originalParams.type === 'collections') {
-            var nextPayload = initialResponse.model[itemsState.originalParams.type][0].products
+         if (initialError) {
+            itemsDispatch({ type: 'UPDATE_NOTICES', payload: { type: 'error', message: initialError } })
+            itemsDispatch({ type: 'SET_IS_LOADING', payload: false })
+
+            return reject(initialError)
          } else {
-            var nextPayload = initialResponse.model[itemsState.dataType]
+            if (itemsState.dataType === 'collections' || itemsState.originalParams.type === 'collections') {
+               var nextPayload = initialResponse.model[itemsState.originalParams.type][0].products
+            } else {
+               var nextPayload = initialResponse.model[itemsState.dataType]
+            }
+
+            var [finalResultsError, finalResults] = await to(fetchNextPage(nextPayload))
+
+            if (finalResultsError) {
+               itemsDispatch({ type: 'UPDATE_NOTICES', payload: { type: 'error', message: finalResultsError } })
+               itemsDispatch({ type: 'SET_IS_LOADING', payload: false })
+               return reject(initialError)
+            } else {
+               var nextItems = finalResults.model
+               var nextItemsTotal = finalResults.model.length
+            }
          }
-
-         var [finalResultsError, finalResults] = await to(fetchNextPage(nextPayload))
-
-         var nextItems = finalResults.model
-         var nextItemsTotal = finalResults.model.length
       } else {
          var nextItems = results.model
          var nextItemsTotal = results.model.length
@@ -56,15 +69,21 @@ function ItemsWrapper({ children }) {
 
    async function fetchNewItems() {
       itemsDispatch({ type: 'SET_IS_LOADING', payload: true })
+      itemsDispatch({ type: 'UPDATE_NOTICES', payload: [] })
 
       const [resultsError, results] = await to(graphQuery(itemsState.dataType, itemsState.queryParams))
 
-      var newItems = results.model[itemsState.dataType]
-      var newItemsTotal = newItems.length
+      if (resultsError) {
+         itemsDispatch({ type: 'UPDATE_NOTICES', payload: { type: 'error', message: resultsError } })
+      } else {
+         var newItems = results.model[itemsState.dataType]
+         var newItemsTotal = newItems.length
 
-      itemsDispatch({ type: 'SET_TOTAL_SHOWN', payload: newItemsTotal })
-      itemsDispatch({ type: 'SET_PAYLOAD', payload: newItems })
-      itemsDispatch({ type: 'UPDATE_HAS_MORE_ITEMS', payload: newItemsTotal })
+         itemsDispatch({ type: 'SET_TOTAL_SHOWN', payload: newItemsTotal })
+         itemsDispatch({ type: 'SET_PAYLOAD', payload: newItems })
+         itemsDispatch({ type: 'UPDATE_HAS_MORE_ITEMS', payload: newItemsTotal })
+      }
+
       itemsDispatch({ type: 'SET_IS_LOADING', payload: false })
    }
 

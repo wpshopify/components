@@ -1,15 +1,18 @@
 import React, { useContext, useEffect, useRef } from 'react'
 import { ShopContext } from '../../shop/_state/context'
+import { CartContext } from '../_state/context'
 import { formatPriceToCurrency } from '../../../common/pricing/formatting'
 import { pulse, useAnime } from '../../../common/animations'
 import { CartCheckout } from '../checkout'
 import { CartNote } from '../note'
 import { CartTerms } from '../terms'
+import { Notices } from '../../notices'
+import isEmpty from 'lodash/isEmpty'
 
 function CartFooter() {
    const [shopState] = useContext(ShopContext)
+   const [cartState] = useContext(CartContext)
    const totalElement = useRef()
-
    const animate = useAnime(pulse)
 
    useEffect(() => {
@@ -24,6 +27,7 @@ function CartFooter() {
       <section className='wps-cart-footer'>
          {shopState.settings.cart.enableCartNotes && <CartNote />}
          {shopState.settings.cart.enableCartTerms && <CartTerms />}
+         {!isEmpty(cartState.notices) && <Notices />}
 
          <div className='baseline row align-items-end justify-content-between m-0'>
             <p className='wps-total-prefix p-0'>Subtotal:</p>

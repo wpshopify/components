@@ -11,9 +11,6 @@ function PaginationItems({ children }) {
    const [paginationState] = useContext(PaginationContext)
    const [shopState] = useContext(ShopContext)
 
-   console.log('shopState.settings.layout.alignHeight', shopState.settings.layout.alignHeight);
-   
-
    function mapPayload() {
       return itemsState.payload.map(item => {
          return React.cloneElement(children, { payload: item, key: uuidv4() })

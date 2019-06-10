@@ -7,6 +7,7 @@ import { StorefrontContext } from '../../_state/context'
 import { StorefrontFilterOptionsGroup } from '../group'
 import { StorefrontFilterOptionsHeading } from '../heading'
 import { StorefrontOptionsContext } from '../_state/context'
+import { ItemsContext } from '../../../items/_state/context'
 
 function combineFilterOptions(accumulator, currentValue) {
    return assign(accumulator, currentValue)
@@ -20,17 +21,27 @@ function getDataFromResponse(response) {
    return response.map(item => item.data)
 }
 
+function optionsErrorMessage() {
+   return '. Occurred when fetching available filter options. Please clear your browser cache and reload the page.'
+}
+
 function StorefrontOptionsWrapper() {
    const [storefrontOptionsState, storefrontOptionsDispatch] = useContext(StorefrontOptionsContext)
    const [storefrontState, storefrontDispatch] = useContext(StorefrontContext)
+   const [itemsState, itemsDispatch] = useContext(ItemsContext)
 
    async function getAllFilterOptions() {
       var [respError, respData] = await to(getFilterData())
 
-      const allFilteredData = formatFilterOptions(getDataFromResponse(respData))
+      if (respError) {
+         itemsDispatch({ type: 'UPDATE_NOTICES', payload: { type: 'error', message: respError.message + optionsErrorMessage() } })
+      } else {
+         const allFilteredData = formatFilterOptions(getDataFromResponse(respData))
+
+         storefrontOptionsDispatch({ type: 'SET_FILTER_OPTIONS', payload: allFilteredData })
+      }
 
       storefrontOptionsDispatch({ type: 'SET_IS_BOOTSTRAPPING', payload: false })
-      storefrontOptionsDispatch({ type: 'SET_FILTER_OPTIONS', payload: allFilteredData })
    }
 
    // On component initial render

@@ -21,6 +21,13 @@ function StorefrontFilterOptionsGroupItem({ itemValue, itemType, displayStyle })
    const isFirstRender = useRef(true)
 
    function buildNewSelection() {
+      if (!itemValue) {
+         // return false
+         return updateSelectionList({
+            currentList: storefrontState.selections[itemType]
+         })
+      }
+
       return updateSelectionList({
          isSelected: !isSelected,
          currentList: storefrontState.selections[itemType],
@@ -42,15 +49,17 @@ function StorefrontFilterOptionsGroupItem({ itemValue, itemType, displayStyle })
 
       const newList = buildNewSelection()
 
-      storefrontDispatch({
-         type: 'SET_SELECTIONS',
-         payload: typeSelectionsList(itemType, newList)
-      })
+      if (newList) {
+         storefrontDispatch({
+            type: 'SET_SELECTIONS',
+            payload: typeSelectionsList(itemType, newList)
+         })
 
-      storefrontDispatch({
-         type: 'SET_SELECTED_' + itemType.toUpperCase(),
-         payload: newList
-      })
+         storefrontDispatch({
+            type: 'SET_SELECTED_' + itemType.toUpperCase(),
+            payload: newList
+         })
+      }
    }
 
    return displayStyle === 'checkbox' ? (

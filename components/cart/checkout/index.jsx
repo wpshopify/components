@@ -33,7 +33,6 @@ function CartCheckout() {
    }
 
    function checkoutRedirect(checkout) {
-
       if (!WP_Shopify.settings.enableCustomCheckoutDomain || !hasManagedDomain(checkout.webUrl)) {
          return managedDomainRedirect(checkout)
       }
@@ -50,15 +49,17 @@ function CartCheckout() {
 
       wp.hooks.doAction('on.checkout', shopState.checkoutCache)
 
-      const [err, success] = await to(replaceLineItems(shopState.checkoutCache.lineItems))
+      //shopState.checkoutCache.lineItems
+      const [err, success] = await to(replaceLineItems(false))
+
+      console.log('err', err)
+      console.log('success', success)
 
       if (err) {
-         console.log('ERROR! ', err)
-         return
+         return cartDispatch({ type: 'UPDATE_NOTICES', payload: { type: 'error', message: err } })
       }
 
       if (!isEmpty(shopState.customAttributes)) {
-
          const [errAttr, resp] = await to(
             updateCheckoutAttributes({
                customAttributes: shopState.customAttributes,

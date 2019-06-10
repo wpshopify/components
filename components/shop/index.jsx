@@ -7,7 +7,7 @@ function Shop({ options, children }) {
    return (
       <ShopProvider options={options}>
          <Bootstrap>{children}</Bootstrap>
-         <GlobalNotices/>
+         <GlobalNotices />
       </ShopProvider>
    )
 }
