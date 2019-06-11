@@ -27,7 +27,7 @@ function CartFooter() {
       <section className='wps-cart-footer'>
          {shopState.settings.cart.enableCartNotes && <CartNote />}
          {shopState.settings.cart.enableCartTerms && <CartTerms />}
-         {!isEmpty(cartState.notices) && <Notices />}
+         {!isEmpty(cartState.notices) && <Notices notices={cartState.notices} noticeGroup='cart' />}
 
          <div className='baseline row align-items-end justify-content-between m-0'>
             <p className='wps-total-prefix p-0'>Subtotal:</p>

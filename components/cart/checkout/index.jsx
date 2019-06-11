@@ -45,18 +45,21 @@ function CartCheckout() {
    }
 
    async function onCheckout() {
+      cartDispatch({ type: 'UPDATE_NOTICES', payload: [] })
       cartDispatch({ type: 'SET_IS_CHECKING_OUT', payload: true })
 
       wp.hooks.doAction('on.checkout', shopState.checkoutCache)
 
-      //shopState.checkoutCache.lineItems
-      const [err, success] = await to(replaceLineItems(false))
-
-      console.log('err', err)
-      console.log('success', success)
+      const [err, success] = await to(replaceLineItems(shopState.checkoutCache.lineItems))
 
       if (err) {
+         cartDispatch({ type: 'SET_IS_CHECKING_OUT', payload: false })
          return cartDispatch({ type: 'UPDATE_NOTICES', payload: { type: 'error', message: err } })
+      }
+
+      if (isEmpty(success.lineItems)) {
+         cartDispatch({ type: 'SET_IS_CHECKING_OUT', payload: false })
+         return cartDispatch({ type: 'UPDATE_NOTICES', payload: { type: 'error', message: 'No line items exist ' } })
       }
 
       if (!isEmpty(shopState.customAttributes)) {
@@ -67,19 +70,18 @@ function CartCheckout() {
             })
          )
 
+         console.log('errAttr', errAttr)
+         console.log('resp', resp)
+
+         if (errAttr) {
+            cartDispatch({ type: 'SET_IS_CHECKING_OUT', payload: false })
+            return cartDispatch({ type: 'UPDATE_NOTICES', payload: { type: 'error', message: errAttr } })
+         }
+
          return checkoutRedirect(resp)
       }
 
       checkoutRedirect(success)
-   }
-
-   function createLineItems() {
-      return [
-         {
-            variantId: variant.id,
-            quantity: parseInt(productQuantity)
-         }
-      ]
    }
 
    function buttonStyle() {
