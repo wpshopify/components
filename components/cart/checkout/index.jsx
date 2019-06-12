@@ -62,16 +62,13 @@ function CartCheckout() {
          return cartDispatch({ type: 'UPDATE_NOTICES', payload: { type: 'error', message: 'No line items exist ' } })
       }
 
-      if (!isEmpty(shopState.customAttributes)) {
+      if (!isEmpty(shopState.customAttributes) || !isEmpty(shopState.note)) {
          const [errAttr, resp] = await to(
             updateCheckoutAttributes({
                customAttributes: shopState.customAttributes,
                note: shopState.note
             })
          )
-
-         console.log('errAttr', errAttr)
-         console.log('resp', resp)
 
          if (errAttr) {
             cartDispatch({ type: 'SET_IS_CHECKING_OUT', payload: false })

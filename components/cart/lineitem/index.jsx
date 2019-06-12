@@ -50,24 +50,22 @@ function CartLineItem({ lineItem, index }) {
       setLineItemTotal(calcLineItemTotal(lineItem.price, lineItemFound.quantity))
    }, [shopState.checkoutCache.lineItems])
 
-   
    function placeholderImageUrl() {
-      return WP_Shopify.pluginsDirURL + 'public/imgs/placeholder.png';
+      return WP_Shopify.pluginsDirURL + 'public/imgs/placeholder.png'
    }
 
    function actualImageUrl() {
-      return lineItem.image.src;
+      return lineItem.image.src
    }
 
    function lineItemImage() {
-      return lineItem.image ? {  backgroundImage: `url(${actualImageUrl()})` } : { backgroundImage: `url(${placeholderImageUrl()})` }
+      return lineItem.image ? { backgroundImage: `url(${actualImageUrl()})` } : { backgroundImage: `url(${placeholderImageUrl()})` }
    }
-
 
    return (
       <div className='wps-cart-lineitem mr-0 ml-0 row' data-wps-is-updating={isUpdating} data-wps-is-available={isAvailable(lineItem)} ref={lineItemElement}>
          <Link payload={lineItem} shop={shopState} type='products' classNames='wps-cart-lineitem-img-link' target='_blank'>
-            <div className='wps-cart-lineitem-img' style={ lineItemImage() } data-wps-is-ready={shopState.isShopReady} />
+            <div className='wps-cart-lineitem-img' style={lineItemImage()} data-wps-is-ready={shopState.isShopReady} />
          </Link>
 
          {/* <a href={'test'} className='wps-cart-lineitem-img-link' target='_blank' /> */}
@@ -93,7 +91,7 @@ function CartLineItem({ lineItem, index }) {
             ) : (
                <div className='container-fluid p-0'>
                   <div className='row'>
-                     <div className='col-6'>
+                     <div className='col-8'>
                         <CartLineItemQuantity
                            lineItem={lineItem}
                            variantId={variantId}
