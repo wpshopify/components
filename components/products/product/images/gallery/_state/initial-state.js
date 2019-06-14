@@ -1,6 +1,6 @@
 function ProductGalleryInitialState(productState) {
    return {
-      featImage: productState.payload.images[0],
+      featImage: (productState.payload && productState.payload.images) ? productState.payload.images[0] : false,
       featImageElement: false,
       featImagePlaceholder: {
          src: '',

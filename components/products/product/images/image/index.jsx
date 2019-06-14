@@ -18,7 +18,6 @@ function ProductImage({ image, isFeatured }) {
    const [galleryState, galleryDispatch] = useContext(ProductGalleryContext)
    const [productImageSrc, setProductImageSrc] = useState(applyImageSizing())
 
-
    function doFeaturedSizing() {
       return addCustomSizingToImageUrl({
          src: image.src,
@@ -30,7 +29,6 @@ function ProductImage({ image, isFeatured }) {
    }
 
    function doThumbnailSizing() {
-      
       return addCustomSizingToImageUrl({
          src: image.src,
          width: shopState.settings.productsThumbnailImagesSizingWidth,
@@ -40,23 +38,18 @@ function ProductImage({ image, isFeatured }) {
       })
    }
 
-
    function applyImageSizing() {
-
       if (isFeatured) {
          if (shopState.settings.productsImagesSizingToggle) {
             return doFeaturedSizing()
          }
-         return image.src;
-
+         return image.src
       } else {
          if (shopState.settings.productsThumbnailImagesSizingToggle) {
             return doThumbnailSizing()
          }
-         return image.src;
-
+         return image.src
       }
-
    }
 
    function isShowingLink() {
@@ -71,7 +64,7 @@ function ProductImage({ image, isFeatured }) {
       }
    }, [image])
 
-
+   
    /*
    
    TODO: Fix duplication here. For some reason the Drift image zoom breaks if we move 
@@ -79,10 +72,13 @@ function ProductImage({ image, isFeatured }) {
 
    */
    return isShowingLink() ? (
+      productImageSrc && 
       <Link payload={productState.payload} type='products' shop={shopState}>
          <img ref={imageRef} itemProp='image' src={productImageSrc} className='wps-product-image' alt={image.altText} data-wps-is-ready={shopState.isShopReady ? '1' : '0'} data-zoom={image.src} />
       </Link>
+      
    ) : (
+      productImageSrc && 
       <img ref={imageRef} itemProp='image' src={productImageSrc} className='wps-product-image' alt={image.altText} data-wps-is-ready={shopState.isShopReady ? '1' : '0'} data-zoom={image.src} />
    )
 }

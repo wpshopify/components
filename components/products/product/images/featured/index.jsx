@@ -60,10 +60,10 @@ function ProductFeaturedImage() {
          var drift = new Drift(galleryState.featImageElement, driftOptions())
 
          return () => {
-            console.log('Destroying Drift ...')
             destroyDrift(drift)
          }
       }
+      
    }, [galleryState.featImageElement])
 
    useEffect(() => {

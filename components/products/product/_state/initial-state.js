@@ -3,8 +3,8 @@ function ProductInitialState(payload) {
       payload: payload,
       element: false,
       selectedVariant: false,
-      hasManyImages: payload.images.length > 1 ? true : false,
-      hasManyVariants: payload.variants.length > 1 ? true : false      
+      hasManyImages: (payload.images && payload.images.length > 1) ? true : false,
+      hasManyVariants: (payload.variants && payload.variants.length > 1) ? true : false      
    }
 }
 
