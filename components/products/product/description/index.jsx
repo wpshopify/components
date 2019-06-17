@@ -17,7 +17,7 @@ function ProductDescription() {
          data-wps-is-ready={shopState.isShopReady ? '1' : '0'}
          dangerouslySetInnerHTML={{ __html: productState.payload.descriptionHtml }}
       />,
-      findPortalElement(productState.element, itemsState.componentOptions.dropzoneProductTitle)
+      findPortalElement(productState.element, itemsState.componentOptions.dropzoneProductDescription)
    )
 }
 

@@ -62,6 +62,10 @@ function CartLineItem({ lineItem, index }) {
       return lineItem.image ? { backgroundImage: `url(${actualImageUrl()})` } : { backgroundImage: `url(${placeholderImageUrl()})` }
    }
 
+   function hasRealVariant() {
+      return lineItem.title !== 'Default Title'
+   }
+
    return (
       <div className='wps-cart-lineitem mr-0 ml-0 row' data-wps-is-updating={isUpdating} data-wps-is-available={isAvailable(lineItem)} ref={lineItemElement}>
          <Link payload={lineItem} shop={shopState} type='products' classNames='wps-cart-lineitem-img-link' target='_blank'>
@@ -71,7 +75,7 @@ function CartLineItem({ lineItem, index }) {
          {/* <a href={'test'} className='wps-cart-lineitem-img-link' target='_blank' /> */}
 
          <div className='wps-cart-lineitem-content'>
-            <div className='wps-cart-lineitem-title col-12 p-0' data-wps-is-ready={shopState.isShopReady}>
+            <div className='wps-cart-lineitem-title col-12 p-0' data-wps-is-ready={shopState.isShopReady} data-wps-is-empty={hasRealVariant() ? 'false' : 'true'}>
                <div className='container-fluid p-0'>
                   <div className='row'>
                      <span className='wps-cart-lineitem-title-content col-9'>{lineItem.productTitle}</span>
@@ -82,9 +86,11 @@ function CartLineItem({ lineItem, index }) {
                </div>
             </div>
 
-            <div className='wps-cart-lineitem-variant-title badge badge-pill badge-dark col-12' data-wps-is-ready={shopState.isShopReady}>
-               {lineItem.title}
-            </div>
+            {hasRealVariant() && (
+               <div className='wps-cart-lineitem-variant-title badge badge-pill badge-dark col-12' data-wps-is-ready={shopState.isShopReady}>
+                  {lineItem.title}
+               </div>
+            )}
 
             {!isAvailable(lineItem) ? (
                <Notice type='warning' message='Out of stock' />
