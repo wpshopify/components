@@ -13,7 +13,7 @@ function ProductThumbnailImages() {
 
    return (
       hasImages() && (
-         <div className='wps-thumbnails-wrapper row'>
+         <div className='wps-thumbnails-wrapper'>
             {productState.payload.images.map(image => (
                <ProductThumbnailImage key={uuidv4()} image={image} />
             ))}

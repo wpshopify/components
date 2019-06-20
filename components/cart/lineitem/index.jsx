@@ -5,6 +5,7 @@ import { Link } from '../../link'
 import { CartLineItemQuantity } from './quantity'
 import { formatPriceToCurrency } from '../../../common/pricing/formatting'
 import { calcLineItemTotal, isAvailable } from '../../../common/products'
+import { addCustomSizingToImageUrl } from '../../../common/images'
 import { Notice } from '../../notice'
 
 import find from 'lodash/find'
@@ -55,7 +56,12 @@ function CartLineItem({ lineItem, index }) {
    }
 
    function actualImageUrl() {
-      return lineItem.image.src
+      return addCustomSizingToImageUrl({
+         src: lineItem.image.src,
+         width: 300,
+         height: 300,
+         crop: 'center'
+      })
    }
 
    function lineItemImage() {
