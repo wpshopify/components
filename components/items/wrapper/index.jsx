@@ -10,6 +10,7 @@ function resendInitialQuery(state) {
    var connectionParams = has(state.originalParams, 'connectionParams') ? state.originalParams.connectionParams : false
    var originalDataType = has(state.originalParams, 'type') ? state.originalParams.type : state.dataType
    var originalQueryParams = state.originalParams ? state.originalParams.queryParams : state.queryParams
+   console.log('1')
 
    return graphQuery(originalDataType, originalQueryParams, connectionParams)
 }

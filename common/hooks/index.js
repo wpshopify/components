@@ -69,49 +69,19 @@ function useAction(hookName, defaultVal = false) {
 }
 
 function usePortal(componentMarkup, containerElement = false) {
-   function emptyComponentWrapper(element) {
-      if (element.hasChildNodes()) {
-         console.log('YUP', element)
-
-         // console.log('element.children', element.children)
-
-         // var placeholderElement = element.querySelector('.wps-loading-placeholder')
-
-         // if (placeholderElement) {
-         //    element.removeChild(placeholderElement)
-         // }
-      }
-   }
-
    function renderPortal() {
       if (containerElement) {
-         console.log('HAS PORTAL CONTAINER ELEMENT', containerElement)
-
          var placeholderElement = containerElement.querySelector('.wps-loading-placeholder, .wps-server-component')
 
          if (placeholderElement) {
             containerElement.removeChild(placeholderElement)
          }
 
-         // jQuery(containerElement).empty()
-         // while (containerElement.firstChild) {
-         //    console.log('containerElement.firstChild', containerElement.firstChild)
-
-         //    containerElement.removeChild(containerElement.firstChild)
-         // }
-
          return ReactDOM.createPortal(componentMarkup, containerElement)
       } else {
-         console.log('DOES NOT HAVE PORTAL CONTAINER ELEMENT')
          return componentMarkup
       }
    }
-
-   // useEffect(() => {
-   //    if (containerElement) {
-   //       emptyComponentWrapper(containerElement)
-   //    }
-   // }, [])
 
    return renderPortal()
 }
