@@ -17,7 +17,11 @@ function CartNote() {
          isFirstRender.current = false
          return
       }
-      wp.hooks.doAction('on.checkout.note', debouncedValue)
+
+      if (wp.hooks) {
+         wp.hooks.doAction('on.checkout.note', debouncedValue)
+      }
+
       shopDispatch({ type: 'SET_CHECKOUT_NOTE', payload: debouncedValue })
    }, [debouncedValue])
 

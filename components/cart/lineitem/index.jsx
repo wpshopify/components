@@ -85,7 +85,7 @@ function CartLineItem({ lineItem, index }) {
                <div className='container-fluid p-0'>
                   <div className='row'>
                      <span className='wps-cart-lineitem-title-content col-9'>{lineItem.productTitle}</span>
-                     <span className='wps-cart-lineitem-remove col-3' onClick={removeLineItem}>
+                     <span className='wps-cart-lineitem-remove' onClick={removeLineItem}>
                         Remove
                      </span>
                   </div>

@@ -58,6 +58,10 @@ function useAction(hookName, defaultVal = false) {
    const [data, setData] = useState(defaultVal)
 
    useEffect(() => {
+      if (!wp.hooks) {
+         return
+      }
+
       if (!wp.hooks.hasAction(hookName)) {
          wp.hooks.addAction(hookName, 'wpshopify.' + hookName, function(newData) {
             setData(newData)

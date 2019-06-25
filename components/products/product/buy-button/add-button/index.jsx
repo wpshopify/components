@@ -14,7 +14,7 @@ function ProductAddButton() {
    const animePulse = useAnime(pulse)
 
    const [itemsState] = useContext(ItemsContext)
-   const [productState] = useContext(ProductContext)   
+   const [productState] = useContext(ProductContext)
    const [buyButtonState, buyButtonDispatch] = useContext(ProductBuyButtonContext)
    const [shopState, shopDispatch] = useContext(ShopContext)
 
@@ -31,14 +31,11 @@ function ProductAddButton() {
    }
 
    async function handleClick() {
-      
       // check if all options are selected
       // if some are not selected, highlight them / shake them
       if (!buyButtonState.allOptionsSelected && productState.hasManyVariants) {
          buyButtonDispatch({ type: 'SET_MISSING_SELECTIONS', payload: true })
-
       } else {
-
          if (productState.hasManyVariants) {
             var variant = findVariantFromSelections()
          } else {
@@ -65,8 +62,9 @@ function ProductAddButton() {
          buyButtonDispatch({ type: 'REMOVE_SELECTED_OPTIONS' })
 
          shopDispatch({ type: 'OPEN_CART', payload: true })
-
-         wp.hooks.doAction('after.product.addToCart', lineItem, modVariant)
+         if (wp.hooks) {
+            wp.hooks.doAction('after.product.addToCart', lineItem, modVariant)
+         }
       }
    }
 
@@ -81,7 +79,10 @@ function ProductAddButton() {
       }
 
       if (buyButtonState.allOptionsSelected) {
-         wp.hooks.doAction('before.product.addToCart')
+         if (wp.hooks) {
+            wp.hooks.doAction('before.product.addToCart')
+         }
+
          animePulse(button.current)
       }
    }, [buyButtonState.allOptionsSelected])

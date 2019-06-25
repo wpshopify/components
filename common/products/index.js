@@ -14,7 +14,15 @@ function getAvailableVariants(product) {
 }
 
 function isAvailable(item) {
-   return item.availableForSale || item.available
+   if (item.availableForSale) {
+      return true
+   }
+
+   if (item.available) {
+      return true
+   }
+
+   return false
 }
 
 function onlyAvailableItems(items) {

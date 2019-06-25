@@ -48,7 +48,9 @@ function CartCheckout() {
       cartDispatch({ type: 'UPDATE_NOTICES', payload: [] })
       cartDispatch({ type: 'SET_IS_CHECKING_OUT', payload: true })
 
-      wp.hooks.doAction('on.checkout', shopState.checkoutCache)
+      if (wp.hooks) {
+         wp.hooks.doAction('on.checkout', shopState.checkoutCache)
+      }
 
       const [err, success] = await to(replaceLineItems(shopState.checkoutCache.lineItems))
 

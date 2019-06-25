@@ -13,9 +13,14 @@ function ProductTitle() {
    const [productState] = useContext(ProductContext)
    const [itemsState] = useContext(ItemsContext)
 
+   function getTitleClass() {
+      const defaultVal = 'wps-products-title'
+      return wp.hooks ? wp.hooks.applyFilters('product.title.classes', defaultVal) : defaultVal
+   }
+
    function Title() {
       return (
-         <h2 itemProp='name' className={wp.hooks.applyFilters('product.title.classes', 'wps-products-title')} data-wps-is-ready={shopState.isShopReady ? '1' : '0'}>
+         <h2 itemProp='name' className={getTitleClass()} data-wps-is-ready={shopState.isShopReady ? '1' : '0'}>
             {productState.payload.title}
          </h2>
       )

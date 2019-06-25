@@ -22,7 +22,10 @@ function ProductVariant({ variant }) {
       productOptionDispatch({ type: 'TOGGLE_DROPDOWN', payload: false })
       productOptionDispatch({ type: 'SET_IS_OPTION_SELECTED', payload: true })
       productOptionDispatch({ type: 'SET_SELECTED_OPTION', payload: newlySelected })
-      wp.hooks.doAction('on.product.variant.selection', newlySelected, productOptionState)
+
+      if (wp.hooks) {
+         wp.hooks.doAction('on.product.variant.selection', newlySelected, productOptionState)
+      }
    }
 
    useEffect(() => {

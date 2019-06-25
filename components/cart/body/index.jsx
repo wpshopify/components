@@ -35,10 +35,16 @@ function CartBody() {
          // animeSlideInRight(document.querySelector('.wps-cart'))
          document.querySelector('.wps-cart').classList.add('wps-cart-is-showing')
          animeStagger(document.querySelectorAll('.wps-cart-lineitem'))
-         wp.hooks.doAction('on.cart.open')
+         if (wp.hooks) {
+            wp.hooks.doAction('on.cart.open')
+         }
       } else {
          document.querySelector('.wps-cart').classList.remove('wps-cart-is-showing')
-         wp.hooks.doAction('on.cart.close')
+
+         if (wp.hooks) {
+            wp.hooks.doAction('on.cart.close')
+         }
+
          // animeSlideOutRight(document.querySelector('.wps-cart'))
       }
    }, [shopState.cartOpen])

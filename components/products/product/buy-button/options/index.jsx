@@ -6,6 +6,7 @@ import size from 'lodash/size'
 import groupBy from 'lodash/groupBy'
 import map from 'lodash/map'
 import uniqBy from 'lodash/uniqBy'
+import filter from 'lodash/filter'
 import { onlyAvailableItems } from '../../../../../common/products'
 
 function allOptionsSelectedMatch(onlySelectedOptions, product) {
@@ -29,12 +30,18 @@ function formatAvailableOptions(availOptions) {
    })
 }
 
+function filterOnlyAvailableVariants(variants) {
+   return filter(variants, function(v) {
+      return v.availableForSale
+   })
+}
+
 function onlyAvailableOptionsFromVariants(variants) {
-   
    if (!variants.length) {
       return false
    }
-   return formatAvailableOptions(onlyAvailableVariantsOptions(onlyAvailableItems(variants)))
+
+   return formatAvailableOptions(onlyAvailableVariantsOptions(filterOnlyAvailableVariants(variants)))
 }
 
 /*
@@ -71,13 +78,13 @@ function ProductOptions() {
    }, [buyButtonState.selectedOptions])
 
    return (
-      options && <div className='wps-component wps-component-products-options container-fluid' data-wps-is-component-wrapper>
-         {options.map(option => (
-            <ProductOption key={option.name} option={option} />
-         ))}
-      </div>
-      
-      
+      options && (
+         <div className='wps-component wps-component-products-options container-fluid' data-wps-is-component-wrapper>
+            {options.map(option => (
+               <ProductOption key={option.name} option={option} />
+            ))}
+         </div>
+      )
    )
 }
 

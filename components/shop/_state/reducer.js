@@ -19,17 +19,19 @@ Responsible for: adding product info to the variant information
 */
 function addProductInfoToVariants(productsFromCart, checkoutCache) {
    return productsFromCart.map(product => {
-      return {
-         productInfo: {
-            productTitle: product.title,
-            productId: product.id
-         },
-         variants: flattenDepth(
-            product.variants.filter(variant => {
-               return some(checkoutCache.variants, { id: variant.id })
-            }),
-            1
-         )
+      if (product) {
+         return {
+            productInfo: {
+               productTitle: product.title,
+               productId: product.id
+            },
+            variants: flattenDepth(
+               product.variants.filter(variant => {
+                  return some(checkoutCache.variants, { id: variant.id })
+               }),
+               1
+            )
+         }
       }
    })
 }
@@ -41,10 +43,12 @@ Responsible for: only finding variants within the checkout
 */
 function onlyVariantsInCheckout(allVariantsAndProducts) {
    return allVariantsAndProducts.map(variantsAndProducts => {
-      return {
-         variants: variantsAndProducts.variants.map(variant => {
-            return assign(variant, variantsAndProducts.productInfo)
-         })
+      if (variantsAndProducts) {
+         return {
+            variants: variantsAndProducts.variants.map(variant => {
+               return assign(variant, variantsAndProducts.productInfo)
+            })
+         }
       }
    })
 }
@@ -58,7 +62,7 @@ function combineAllVariants(variants) {
    return reduce(
       variants,
       function(result, value, key) {
-         return result.concat(value.variants)
+         if (value) return result.concat(value.variants)
       },
       []
    )
@@ -86,7 +90,9 @@ removes a variant, this keeps our cache up to date
 function findLineItemsFromProducts(productsFromShopify, checkoutCache) {
    return checkoutCache.lineItems.filter(lineItem => {
       return find(productsFromShopify, function(product) {
-         return find(product.variants, { id: lineItem.variantId })
+         if (product) {
+            return find(product.variants, { id: lineItem.variantId })
+         }
       })
    })
 }
@@ -326,12 +332,10 @@ function ShopReducer(state, action) {
       }
 
       case 'UPDATE_NOTICES': {
-
-         let updatedNotices = state.notices;
+         let updatedNotices = state.notices
 
          if (!some(state.notices, action.payload)) {
-            updatedNotices = concat(state.notices, [action.payload]);
-
+            updatedNotices = concat(state.notices, [action.payload])
          } else {
             updatedNotices = state.notices
          }
@@ -341,7 +345,6 @@ function ShopReducer(state, action) {
             notices: update(state.notices, { $set: updatedNotices })
          }
       }
-      
 
       default: {
          throw new Error(`Unhandled action type: ${action.type} in ShopReducer`)

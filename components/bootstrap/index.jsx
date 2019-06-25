@@ -32,18 +32,6 @@ async function getProductIdsFromLineItems() {
    return await getProductsFromIds(uniqueIds)
 }
 
-function addCustomEventProvider() {
-   WP_Shopify.dispatch = function(eventName, data) {
-      document.dispatchEvent(
-         new CustomEvent(eventName, {
-            detail: data
-         })
-      )
-   }
-
-   // WP_Shopify.hooks = hooks
-}
-
 function Bootstrap({ children }) {
    const [shopState, shopDispatch] = useContext(ShopContext)
 
@@ -57,7 +45,10 @@ function Bootstrap({ children }) {
       }
 
       // App is ready to go
-      wp.hooks.doAction('after.ready')
+      if (wp.hooks) {
+         wp.hooks.doAction('after.ready')
+      }
+
       shopDispatch({ type: 'IS_SHOP_READY' })
    }
 
