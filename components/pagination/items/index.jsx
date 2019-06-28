@@ -12,6 +12,8 @@ function PaginationItems({ children }) {
    const [shopState] = useContext(ShopContext)
 
    function mapPayload() {
+      console.log('itemsState.payload', itemsState.payload)
+
       return itemsState.payload.map(item => {
          return React.cloneElement(children, { payload: item, key: uuidv4() })
       })
