@@ -37,11 +37,13 @@ function CartCheckout() {
          return managedDomainRedirect(checkout)
       }
 
-      customDomainRedirect(checkout)
+      // if (WP_Shopify.settings.checkoutButtonTarget === '_blank') {
 
-      if (WP_Shopify.settings.checkoutButtonTarget === '_blank') {
-         cartDispatch({ type: 'SET_IS_CHECKING_OUT', payload: false })
-      }
+      // }
+
+      cartDispatch({ type: 'SET_IS_CHECKING_OUT', payload: false })
+
+      customDomainRedirect(checkout)
    }
 
    async function onCheckout() {

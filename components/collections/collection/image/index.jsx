@@ -5,6 +5,7 @@ import { ItemsContext } from '../../../items/_state/context'
 import { usePortal } from '../../../../common/hooks'
 import { addCustomSizingToImageUrl } from '../../../../common/images'
 import { findPortalElement } from '../../../../common/utils'
+import { Link } from '../../../link'
 
 function CollectionImage() {
    const [shopState] = useContext(ShopContext)
@@ -18,7 +19,6 @@ function CollectionImage() {
       }
 
       if (shopState.settings.collectionsImagesSizingToggle) {
-
          setImageSrc(
             addCustomSizingToImageUrl({
                src: collectionState.payload.image.src,
@@ -28,21 +28,23 @@ function CollectionImage() {
                scale: shopState.settings.collectionsImagesSizingScale
             })
          )
-         
       }
    }, [])
 
    return usePortal(
-      imageSrc && 
-      <div className='wps-component wps-component-collection-image' data-wps-component-order='0'>
-         <img
-            itemProp='image'
-            src={imageSrc}
-            className='wps-product-image'
-            alt={collectionState.payload.image ? collectionState.payload.image.altText : ''}
-            data-wps-is-ready={shopState.isShopReady ? '1' : '0'}
-         />
-      </div>,
+      imageSrc && (
+         <div className='wps-component wps-component-collection-image' data-wps-component-order='0'>
+            <Link type='collections' shop={shopState} payload={collectionState.payload}>
+               <img
+                  itemProp='image'
+                  src={imageSrc}
+                  className='wps-product-image'
+                  alt={collectionState.payload.image ? collectionState.payload.image.altText : ''}
+                  data-wps-is-ready={shopState.isShopReady ? '1' : '0'}
+               />
+            </Link>
+         </div>
+      ),
       findPortalElement(collectionState.element, itemsState.componentOptions.dropzoneCollectionImage)
    )
 }

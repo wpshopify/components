@@ -7,6 +7,7 @@ import groupBy from 'lodash/groupBy'
 import map from 'lodash/map'
 import uniqBy from 'lodash/uniqBy'
 import filter from 'lodash/filter'
+import flatMap from 'lodash/flatMap'
 import { onlyAvailableItems } from '../../../../../common/products'
 
 function allOptionsSelectedMatch(onlySelectedOptions, product) {
@@ -14,7 +15,7 @@ function allOptionsSelectedMatch(onlySelectedOptions, product) {
 }
 
 function onlyAvailableVariantsOptions(variants) {
-   return groupBy(variants.flatMap(variant => variant.selectedOptions), 'name')
+   return groupBy(flatMap(variants, variant => variant.selectedOptions), 'name')
 }
 
 function onlyUniqueOptionValues(optionValues) {

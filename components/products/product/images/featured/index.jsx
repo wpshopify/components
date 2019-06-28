@@ -27,7 +27,7 @@ function ProductFeaturedImage() {
    function driftOptions() {
       return {
          paneContainer: paneElement.current,
-         inlinePane: false
+         inlineOffsetX: -80
       }
    }
 
@@ -63,7 +63,6 @@ function ProductFeaturedImage() {
             destroyDrift(drift)
          }
       }
-      
    }, [galleryState.featImageElement])
 
    useEffect(() => {
