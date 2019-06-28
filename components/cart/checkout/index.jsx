@@ -24,24 +24,30 @@ function CartCheckout() {
       return shopState.info.primaryDomain.url + extractCheckoutURL(webUrl)
    }
 
+   function checkoutWindowTarget() {
+      if (shopState.isMobile) {
+         return '_self'
+      }
+
+      if (WP_Shopify.settings.checkoutButtonTarget === '_blank') {
+         cartDispatch({ type: 'SET_IS_CHECKING_OUT', payload: false })
+      }
+
+      return WP_Shopify.settings.checkoutButtonTarget
+   }
+
    function managedDomainRedirect(checkout) {
-      window.open(checkout.webUrl, WP_Shopify.settings.checkoutButtonTarget)
+      window.open(checkout.webUrl, checkoutWindowTarget())
    }
 
    function customDomainRedirect(checkout) {
-      window.open(checkoutUrlWithCustomDomain(checkout.webUrl), WP_Shopify.settings.checkoutButtonTarget)
+      window.open(checkoutUrlWithCustomDomain(checkout.webUrl), checkoutWindowTarget())
    }
 
    function checkoutRedirect(checkout) {
       if (!WP_Shopify.settings.enableCustomCheckoutDomain || !hasManagedDomain(checkout.webUrl)) {
          return managedDomainRedirect(checkout)
       }
-
-      // if (WP_Shopify.settings.checkoutButtonTarget === '_blank') {
-
-      // }
-
-      cartDispatch({ type: 'SET_IS_CHECKING_OUT', payload: false })
 
       customDomainRedirect(checkout)
    }

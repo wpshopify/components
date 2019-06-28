@@ -2,7 +2,6 @@ import React, { useContext } from 'react'
 import { PaginationContext } from '../_state/context'
 import { ItemsContext } from '../../items/_state/context'
 import { ShopContext } from '../../shop/_state/context'
-
 import { Notice } from '../../notice'
 import uuidv4 from 'uuid/v4'
 
@@ -12,8 +11,6 @@ function PaginationItems({ children }) {
    const [shopState] = useContext(ShopContext)
 
    function mapPayload() {
-      console.log('itemsState.payload', itemsState.payload)
-
       return itemsState.payload.map(item => {
          return React.cloneElement(children, { payload: item, key: uuidv4() })
       })

@@ -19,6 +19,7 @@ function ShopInitialState(options = false) {
       customAttributes: [],
       note: false,
       isCartEmpty: true,
+      isMobile: WP_Shopify.misc.is_mobile,
       settings: WP_Shopify.settings
    }
 }

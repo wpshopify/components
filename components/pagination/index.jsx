@@ -33,8 +33,6 @@ function Pagination({ children }) {
       return false
    }
 
-   console.log('......... itemsState', itemsState)
-
    return (
       <PaginationProvider options={itemsState}>
          {!isEmpty(itemsState.notices) && <Notices notices={itemsState.notices} dropzone={document.querySelector(itemsState.componentOptions.dropzoneNotices)} noticeGroup='storefront' />}
