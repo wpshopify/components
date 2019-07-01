@@ -10,6 +10,7 @@ import { Link } from '../../../../link'
 import { hasSinglePage } from '../../../../../common/settings'
 import { onSinglePage } from '../../../../../common/components'
 
+
 function ProductImage({ image, isFeatured }) {
    const imageRef = useRef()
    const [shopState] = useContext(ShopContext)
@@ -74,13 +75,22 @@ function ProductImage({ image, isFeatured }) {
    return isShowingLink() ? (
       productImageSrc && 
       <Link payload={productState.payload} type='products' shop={shopState}>
-         <img ref={imageRef} itemProp='image' src={productImageSrc} className='wps-product-image' alt={image.altText} data-wps-is-ready={shopState.isShopReady ? '1' : '0'} data-zoom={image.src} />
+         <Img imageRef={imageRef} image={image} productImageSrc={productImageSrc} shopState={shopState} />
       </Link>
       
    ) : (
       productImageSrc && 
-      <img ref={imageRef} itemProp='image' src={productImageSrc} className='wps-product-image' alt={image.altText} data-wps-is-ready={shopState.isShopReady ? '1' : '0'} data-zoom={image.src} />
+      <Img imageRef={imageRef} image={image} productImageSrc={productImageSrc} shopState={shopState} />
    )
 }
+
+function Img(props) {
+   return (
+      <>
+         <img ref={props.imageRef} itemProp='image' src={props.productImageSrc} className='wps-product-image' alt={props.image.altText} data-wps-is-ready={props.shopState.isShopReady ? '1' : '0'} data-zoom={props.image.src} />
+      </>
+   )
+}
+
 
 export { ProductImage }

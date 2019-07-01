@@ -34,8 +34,6 @@ function ProductFeaturedImage() {
    }
 
    function showZoom() {
-      console.log('itemsState.componentOptions.showZoom', itemsState.componentOptions.showZoom)
-      console.log('shopState.settings.productsImagesShowZoom', shopState.settings.productsImagesShowZoom)
       if (itemsState.componentOptions.showZoom) {
          return true
       }
@@ -48,6 +46,7 @@ function ProductFeaturedImage() {
    }
 
    useEffect(() => {
+      console.log('galleryState.featImage')
       if (isFirstRender.current) {
          isFirstRender.current = false
          return
@@ -59,6 +58,7 @@ function ProductFeaturedImage() {
    }, [galleryState.featImage])
 
    useEffect(() => {
+      console.log('galleryState.featImageElement')
       if (isFirstRender.current) {
          isFirstRender.current = false
          return
@@ -74,6 +74,8 @@ function ProductFeaturedImage() {
    }, [galleryState.featImageElement])
 
    useEffect(() => {
+      console.log('productState.selectedVariant')
+
       if (productState.selectedVariant) {
          setFeatImage(getVariantImage(productState.selectedVariant))
       }
