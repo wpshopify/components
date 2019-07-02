@@ -13,13 +13,11 @@ function CartBody() {
    const animeSlideInRight = useAnime(slideInRight)
    const animeSlideOutRight = useAnime(slideOutRight)
    const animeStagger = useAnime(stagger)
-
    const [shopState, shopDispatch] = useContext(ShopContext)
 
    useOnClickOutside(
       cart,
       e => {
-         // animeSlideOutRight(cart.current)
          document.querySelector('.wps-cart').classList.remove('wps-cart-is-showing')
          shopDispatch({ type: 'CLOSE_CART' })
       },
@@ -27,11 +25,13 @@ function CartBody() {
    )
 
    useEffect(() => {
+
       if (!shopState.isShopReady) {
          return
       }
 
       if (shopState.cartOpen) {
+
          // animeSlideInRight(document.querySelector('.wps-cart'))
          document.querySelector('.wps-cart').classList.add('wps-cart-is-showing')
          animeStagger(document.querySelectorAll('.wps-cart-lineitem'))
@@ -39,14 +39,15 @@ function CartBody() {
             wp.hooks.doAction('on.cart.open')
          }
       } else {
+         
          document.querySelector('.wps-cart').classList.remove('wps-cart-is-showing')
 
          if (wp.hooks) {
             wp.hooks.doAction('on.cart.close')
          }
 
-         // animeSlideOutRight(document.querySelector('.wps-cart'))
       }
+
    }, [shopState.cartOpen])
 
    return (

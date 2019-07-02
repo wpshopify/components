@@ -64,10 +64,9 @@ function Bootstrap({ children }) {
       }
 
       wp.hooks.doAction('before.ready')
-      console.log('instance before')
 
       var [instancesErrorMsg, instances] = await to(buildInstances())
-      console.log('instance after', instances)
+
       if (instancesErrorMsg) {
          shopDispatch({
             type: 'UPDATE_NOTICES',
@@ -102,9 +101,7 @@ function Bootstrap({ children }) {
       shopDispatch({ type: 'SET_CHECKOUT_CACHE', payload: instances.checkout })
       shopDispatch({ type: 'SET_SHOP_INFO', payload: instances.shop })
 
-      console.log('lineitems before')
       var [lineItemsError, lineItems] = await to(getProductIdsFromLineItems())
-      console.log('lineitems after', lineItems)
 
       if (lineItemsError) {
          shopDispatch({
@@ -125,7 +122,6 @@ function Bootstrap({ children }) {
       //    return
       // }
 
-      console.log('Bootstrap ready, no errors!')
       setReady(lineItems)
    }
 

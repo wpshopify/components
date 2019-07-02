@@ -46,7 +46,7 @@ function ProductFeaturedImage() {
    }
 
    useEffect(() => {
-      console.log('galleryState.featImage')
+
       if (isFirstRender.current) {
          isFirstRender.current = false
          return
@@ -58,7 +58,7 @@ function ProductFeaturedImage() {
    }, [galleryState.featImage])
 
    useEffect(() => {
-      console.log('galleryState.featImageElement')
+
       if (isFirstRender.current) {
          isFirstRender.current = false
          return
@@ -74,7 +74,6 @@ function ProductFeaturedImage() {
    }, [galleryState.featImageElement])
 
    useEffect(() => {
-      console.log('productState.selectedVariant')
 
       if (productState.selectedVariant) {
          setFeatImage(getVariantImage(productState.selectedVariant))

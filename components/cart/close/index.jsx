@@ -1,6 +1,7 @@
 import React, { useContext } from 'react'
 import { ShopContext } from '../../shop/_state/context'
 
+
 function CartClose() {
    const [shopState, shopDispatch] = useContext(ShopContext)
 

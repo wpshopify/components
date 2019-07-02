@@ -61,7 +61,8 @@ function ProductAddButton() {
          buyButtonDispatch({ type: 'SET_ALL_SELECTED_OPTIONS', payload: false })
          buyButtonDispatch({ type: 'REMOVE_SELECTED_OPTIONS' })
 
-         shopDispatch({ type: 'OPEN_CART', payload: true })
+         shopDispatch({ type: 'OPEN_CART' })
+         
          if (wp.hooks) {
             wp.hooks.doAction('after.product.addToCart', lineItem, modVariant)
          }
