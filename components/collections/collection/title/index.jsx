@@ -8,14 +8,14 @@ import { findPortalElement } from '../../../../common/utils'
 import { hasSinglePage } from '../../../../common/settings'
 import { onSinglePage } from '../../../../common/components'
 
-function CollectionTitle() {
-   const [shopState] = useContext(ShopContext)
+function CollectionTitle({ isShopReady, shopInfo }) {
+   // const [shopState] = useContext(ShopContext)
    const [collectionState] = useContext(CollectionContext)
    const [itemsState] = useContext(ItemsContext)
 
    function Title() {
       return (
-         <h2 itemProp='name' className='wps-collection-title' data-wps-is-ready={shopState.isShopReady ? '1' : '0'}>
+         <h2 itemProp='name' className='wps-collection-title' data-wps-is-ready={isShopReady ? '1' : '0'}>
             {collectionState.payload.title}
          </h2>
       )
@@ -24,7 +24,7 @@ function CollectionTitle() {
    return usePortal(
       <div className='wps-component wps-component-collection-title' data-wps-component-order='0'>
          {hasSinglePage() && !onSinglePage(itemsState) ? (
-            <Link type='collections' shop={shopState} payload={collectionState.payload}>
+            <Link type='collections' shopInfo={shopInfo} payload={collectionState.payload}>
                <Title />
             </Link>
          ) : (

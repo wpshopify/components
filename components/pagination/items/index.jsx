@@ -1,14 +1,12 @@
-import React, { useContext } from 'react'
+import React, { useContext, useEffect } from 'react'
 import { PaginationContext } from '../_state/context'
 import { ItemsContext } from '../../items/_state/context'
-import { ShopContext } from '../../shop/_state/context'
 import { Notice } from '../../notice'
 import uuidv4 from 'uuid/v4'
 
-function PaginationItems({ children }) {
+function PaginationItems({ children, alignHeight }) {
    const [itemsState] = useContext(ItemsContext)
    const [paginationState] = useContext(PaginationContext)
-   const [shopState] = useContext(ShopContext)
 
    function mapPayload() {
       return itemsState.payload.map(item => {
@@ -18,7 +16,7 @@ function PaginationItems({ children }) {
 
    return (
       <section className={'wps-items-wrapper container-fluid'}>
-         <section className='wps-items wps-items-list row' data-item-is-loading={itemsState.isLoading} data-is-align-height={shopState.settings.layout.alignHeight}>
+         <section className='wps-items wps-items-list row' data-item-is-loading={itemsState.isLoading} data-is-align-height={alignHeight}>
             {mapPayload()}
          </section>
 

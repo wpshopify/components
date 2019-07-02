@@ -8,13 +8,13 @@ function ProductPrices() {
    const [productPricingState, productPricingDispatch] = useContext(ProductPricingContext)
    const [productState] = useContext(ProductContext)
 
-   useEffect(() => {
-      if (productPricingState.showPriceRange) {
-         productPricingDispatch({ type: 'SET_PRICES', payload: getPrices(productState.payload, 'asc') })
-      } else {
-         productPricingDispatch({ type: 'SET_PRICES', payload: getPrices(productState.payload) })
-      }
-   }, [productState.payload])
+   // useEffect(() => {
+   //    if (productPricingState.showPriceRange) {
+   //       productPricingDispatch({ type: 'SET_PRICES', payload: getPrices(productState.payload, 'asc') })
+   //    } else {
+   //       productPricingDispatch({ type: 'SET_PRICES', payload: getPrices(productState.payload) })
+   //    }
+   // }, [productState.payload])
 
    return productPricingState.showCompareAt && !productState.selectedVariant ? (
       <>

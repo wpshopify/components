@@ -15,11 +15,12 @@ function getLineItemFromState(lineItem, lineItemsFromState) {
 }
 
 function CartLineItem({ lineItem, index }) {
+   console.log('<CartLineItem>')
+
    const [cartState] = useContext(CartContext)
    const [shopState, shopDispatch] = useContext(ShopContext)
 
    const [isUpdating] = useState(false)
-
    const [lineItemQuantity, setLineItemQuantity] = useState(0)
    const [lineItemTotal, setLineItemTotal] = useState(0)
 
@@ -45,11 +46,13 @@ function CartLineItem({ lineItem, index }) {
    useEffect(() => {
       let lineItemFound = getLineItemFromState(lineItem, shopState.checkoutCache.lineItems)
 
-      variantId.current = lineItemFound.variantId
+      if (lineItemFound) {
+         variantId.current = lineItemFound.variantId
 
-      setLineItemQuantity(lineItemFound.quantity)
-      setLineItemTotal(calcLineItemTotal(lineItem.price, lineItemFound.quantity))
-   }, [shopState.checkoutCache.lineItems])
+         setLineItemQuantity(lineItemFound.quantity)
+         setLineItemTotal(calcLineItemTotal(lineItem.price, lineItemFound.quantity))
+      }
+   }, [])
 
    function placeholderImageUrl() {
       return WP_Shopify.pluginsDirURL + 'public/imgs/placeholder.png'

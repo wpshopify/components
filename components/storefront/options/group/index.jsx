@@ -5,11 +5,11 @@ import { StorefrontOptionsContext } from '../_state/context'
 import { StorefrontFilterOptionsGroupItem } from '../group-item'
 import isEmpty from 'lodash/isEmpty'
 
-function StorefrontFilterOptionsGroup({ groupType, displayStyle }) {
+function StorefrontFilterOptionsGroup({ groupType, displayStyle, heading }) {
    const [storefrontOptionsState] = useContext(StorefrontOptionsContext)
 
    return (
-      <StorefrontFilter heading={groupType}>
+      <StorefrontFilter heading={heading}>
          <div className='wps-filter-content'>
             {storefrontOptionsState.isBootstrapping ? (
                <p data-wps-is-ready='0'>Loading {groupType} ...</p>

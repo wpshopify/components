@@ -5,18 +5,12 @@ import { CollectionContext } from '../_state/context'
 import { usePortal } from '../../../../common/hooks'
 import { findPortalElement } from '../../../../common/utils'
 
-function CollectionDescription() {
-   const [shopState] = useContext(ShopContext)
+function CollectionDescription({ isShopReady }) {
    const [collectionState] = useContext(CollectionContext)
    const [itemsState] = useContext(ItemsContext)
 
    return usePortal(
-      <div
-         itemProp='description'
-         className='wps-collections-description'
-         data-wps-is-ready={shopState.isShopReady ? '1' : '0'}
-         dangerouslySetInnerHTML={{ __html: collectionState.payload.descriptionHtml }}
-      />,
+      <div itemProp='description' className='wps-collections-description' data-wps-is-ready={isShopReady ? '1' : '0'} dangerouslySetInnerHTML={{ __html: collectionState.payload.descriptionHtml }} />,
       findPortalElement(collectionState.element, itemsState.componentOptions.dropzoneCollectionDescription)
    )
 }

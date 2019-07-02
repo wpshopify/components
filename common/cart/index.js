@@ -13,4 +13,6 @@ function isCartEmpty(lineitems) {
    return isTotalEmpty(findTotalCartQuantities(lineitems))
 }
 
+function isCartOpen() {}
+
 export { findTotalCartQuantities, isTotalEmpty, isCartEmpty }

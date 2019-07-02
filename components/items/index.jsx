@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import { ItemsProvider } from './_state/provider'
 import { ItemsWrapper } from './wrapper'
 import { Notice } from '../notice'
@@ -54,7 +54,6 @@ function ItemsController({ options, children }) {
       </ItemsProvider>,
       options.componentElement
    )
-   
 }
 
 /*

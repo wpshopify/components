@@ -49,13 +49,25 @@ function StorefrontOptionsWrapper() {
       getAllFilterOptions()
    }, [])
 
+   function getTagsHeading() {
+      return wp.hooks ? wp.hooks.applyFilters('default.storefront.tags.heading', 'Tags') : 'Tags'
+   }
+
+   function getVendorsHeading() {
+      return wp.hooks ? wp.hooks.applyFilters('default.storefront.vendors.heading', 'Vendors') : 'Vendors'
+   }
+
+   function getTypesHeading() {
+      return wp.hooks ? wp.hooks.applyFilters('default.storefront.types.heading', 'Types') : 'Types'
+   }
+
    return usePortal(
       <>
          {storefrontState.componentOptions.showOptionsHeading ? <StorefrontFilterOptionsHeading /> : ''}
          <aside className='wps-storefront'>
-            {storefrontState.componentOptions.showTags ? <StorefrontFilterOptionsGroup groupType='tags' /> : ''}
-            {storefrontState.componentOptions.showVendors ? <StorefrontFilterOptionsGroup groupType='vendors' displayStyle='checkbox' /> : ''}
-            {storefrontState.componentOptions.showTypes ? <StorefrontFilterOptionsGroup groupType='types' displayStyle='checkbox' /> : ''}
+            {storefrontState.componentOptions.showTags ? <StorefrontFilterOptionsGroup heading={getTagsHeading()} groupType='tags' /> : ''}
+            {storefrontState.componentOptions.showVendors ? <StorefrontFilterOptionsGroup heading={getVendorsHeading()} groupType='vendors' displayStyle='checkbox' /> : ''}
+            {storefrontState.componentOptions.showTypes ? <StorefrontFilterOptionsGroup heading={getTypesHeading()} groupType='types' displayStyle='checkbox' /> : ''}
          </aside>
       </>,
       document.querySelector(storefrontState.componentOptions.dropzoneOptions)

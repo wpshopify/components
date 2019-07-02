@@ -25,13 +25,11 @@ function CartBody() {
    )
 
    useEffect(() => {
-
       if (!shopState.isShopReady) {
          return
       }
 
       if (shopState.cartOpen) {
-
          // animeSlideInRight(document.querySelector('.wps-cart'))
          document.querySelector('.wps-cart').classList.add('wps-cart-is-showing')
          animeStagger(document.querySelectorAll('.wps-cart-lineitem'))
@@ -39,21 +37,18 @@ function CartBody() {
             wp.hooks.doAction('on.cart.open')
          }
       } else {
-         
          document.querySelector('.wps-cart').classList.remove('wps-cart-is-showing')
 
          if (wp.hooks) {
             wp.hooks.doAction('on.cart.close')
          }
-
       }
-
    }, [shopState.cartOpen])
 
    return (
       <section ref={cart} className='wps-cart'>
          <CartHeader />
-         <CartContents />
+         <CartContents isCartEmpty={shopState.isCartEmpty} checkoutCache={shopState.checkoutCache} />
          <CartFooter />
       </section>
    )

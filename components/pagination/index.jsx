@@ -9,12 +9,12 @@ import { Notice } from '../notices/notice'
 import { Notices } from '../notices'
 import isEmpty from 'lodash/isEmpty'
 
-function Pagination({ children }) {
-   const [shopState] = useContext(ShopContext)
+function Pagination({ children, shopSettings }) {
+   // const [shopState] = useContext(ShopContext)
    const [itemsState] = useContext(ItemsContext)
-
+   console.log('<Pagination>')
    function isHidingPagination() {
-      if (shopState.settings.hidePagination) {
+      if (shopSettings.hidePagination) {
          return true
       }
 
@@ -37,7 +37,7 @@ function Pagination({ children }) {
       <PaginationProvider options={itemsState}>
          {!isEmpty(itemsState.notices) && <Notices notices={itemsState.notices} dropzone={document.querySelector(itemsState.componentOptions.dropzoneNotices)} noticeGroup='storefront' />}
 
-         {showNotices() ? <Notice message={itemsState.noResultsText} type='info' /> : <PaginationItems>{children}</PaginationItems>}
+         {showNotices() ? <Notice message={itemsState.noResultsText} type='info' /> : <PaginationItems alignHeight={shopSettings.layout.alignHeight}>{children}</PaginationItems>}
 
          {!isHidingPagination() && <PaginationControls />}
       </PaginationProvider>

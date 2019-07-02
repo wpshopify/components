@@ -47,10 +47,10 @@ function shopHasInfo(shop) {
    return has(shop, 'info')
 }
 
-function getShopifySingleLink(payload, shop, type) {
+function getShopifySingleLink(payload, shopInfo, type) {
    if (!payload.onlineStoreUrl) {
-      if (shopHasInfo(shop)) {
-         return shop.info.primaryDomain.url + '/' + type + '/' + payload.handle
+      if (shopInfo) {
+         return shopInfo.primaryDomain.url + '/' + type + '/' + payload.handle
       } else {
          return '#!'
       }
@@ -78,9 +78,9 @@ function getWordPressSingleLink(payload) {
    return urlBase + '/' + itemHandle
 }
 
-function getItemLink(payload, shop, type) {
+function getItemLink(payload, shopInfo, type) {
    if (singleIsShopify()) {
-      return getShopifySingleLink(payload, shop, type)
+      return getShopifySingleLink(payload, shopInfo, type)
    } else {
       return getWordPressSingleLink(payload)
    }

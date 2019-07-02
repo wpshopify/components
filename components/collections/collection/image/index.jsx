@@ -7,8 +7,7 @@ import { addCustomSizingToImageUrl } from '../../../../common/images'
 import { findPortalElement } from '../../../../common/utils'
 import { Link } from '../../../link'
 
-function CollectionImage() {
-   const [shopState] = useContext(ShopContext)
+function CollectionImage({ isShopReady, shopSettings, shopInfo }) {
    const [collectionState] = useContext(CollectionContext)
    const [itemsState] = useContext(ItemsContext)
    const [imageSrc, setImageSrc] = useState(collectionState.payload.image ? collectionState.payload.image.src : false)
@@ -18,14 +17,14 @@ function CollectionImage() {
          return
       }
 
-      if (shopState.settings.collectionsImagesSizingToggle) {
+      if (shopSettings.collectionsImagesSizingToggle) {
          setImageSrc(
             addCustomSizingToImageUrl({
                src: collectionState.payload.image.src,
-               width: shopState.settings.collectionsImagesSizingWidth,
-               height: shopState.settings.collectionsImagesSizingHeight,
-               crop: shopState.settings.collectionsImagesSizingCrop,
-               scale: shopState.settings.collectionsImagesSizingScale
+               width: shopSettings.collectionsImagesSizingWidth,
+               height: shopSettings.collectionsImagesSizingHeight,
+               crop: shopSettings.collectionsImagesSizingCrop,
+               scale: shopSettings.collectionsImagesSizingScale
             })
          )
       }
@@ -34,13 +33,13 @@ function CollectionImage() {
    return usePortal(
       imageSrc && (
          <div className='wps-component wps-component-collection-image' data-wps-component-order='0'>
-            <Link type='collections' shop={shopState} payload={collectionState.payload}>
+            <Link type='collections' shopInfo={shopInfo} payload={collectionState.payload}>
                <img
                   itemProp='image'
                   src={imageSrc}
                   className='wps-product-image'
                   alt={collectionState.payload.image ? collectionState.payload.image.altText : ''}
-                  data-wps-is-ready={shopState.isShopReady ? '1' : '0'}
+                  data-wps-is-ready={isShopReady ? '1' : '0'}
                />
             </Link>
          </div>

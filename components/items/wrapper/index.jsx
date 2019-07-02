@@ -7,9 +7,9 @@ import isEmpty from 'lodash/isEmpty'
 import has from 'lodash/has'
 
 function resendInitialQuery(state) {
-   var connectionParams = has(state.originalParams, 'connectionParams') ? state.originalParams.connectionParams : false
    var originalDataType = has(state.originalParams, 'type') ? state.originalParams.type : state.dataType
    var originalQueryParams = state.originalParams ? state.originalParams.queryParams : state.queryParams
+   var connectionParams = has(state.originalParams, 'connectionParams') ? state.originalParams.connectionParams : false
 
    return graphQuery(originalDataType, originalQueryParams, connectionParams)
 }
@@ -34,7 +34,11 @@ function fetchNextItems(itemsState, itemsDispatch) {
             return reject(initialError)
          } else {
             if (itemsState.dataType === 'collections' || itemsState.originalParams.type === 'collections') {
-               var nextPayload = initialResponse.model[itemsState.originalParams.type][0].products
+               if (!itemsState.originalParams) {
+                  var nextPayload = initialResponse.model[itemsState.dataType]
+               } else {
+                  var nextPayload = initialResponse.model[itemsState.originalParams.type][0].products
+               }
             } else {
                var nextPayload = initialResponse.model[itemsState.dataType]
             }

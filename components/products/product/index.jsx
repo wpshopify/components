@@ -1,4 +1,4 @@
-import React, { useContext } from 'react'
+import React, { useContext, useEffect } from 'react'
 import { ProductTitle } from './title'
 import { ProductPricing } from './pricing'
 import { ProductDescription } from './description'

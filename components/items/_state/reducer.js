@@ -27,30 +27,36 @@ function hasMorePages(state, newItemTotal) {
 function ItemsReducer(state, action) {
    switch (action.type) {
       case 'UPDATE_PAYLOAD': {
+         console.log('1')
+
          if (!action.payload) {
+            console.log('2')
             return {
                ...state
             }
          }
-
+         console.log('3')
          var updatedHasMoreItems = true
 
          if (limitReached(state)) {
+            console.log('4')
             if (state.limit) {
                var updatedPayload = update(state.payload, { $set: state.payload.concat(action.payload).slice(0, state.limit) })
             } else {
                var updatedPayload = state.payload
             }
-
+            console.log('5')
             updatedHasMoreItems = update(state.hasMoreItems, { $set: false })
          } else {
+            console.log('6')
             var updatedPayload = update(state.payload, { $push: action.payload })
 
             if (!hasNextPage(action.payload)) {
                updatedHasMoreItems = update(state.hasMoreItems, { $set: false })
             }
          }
-
+         console.log('7', updatedPayload)
+         console.log('7', updatedHasMoreItems)
          return {
             ...state,
             payload: updatedPayload,
