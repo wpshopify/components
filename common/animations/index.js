@@ -69,6 +69,17 @@ function slideOutRight(element, cb = false, currentlyAnimating) {
    })
 }
 
+function animeStagger(elements, completeFn = false) {
+   return anime({
+      targets: elements,
+      translateX: ['450px', '0px'],
+      duration: 350,
+      easing: 'easeOutQuart',
+      delay: anime.stagger(100, { start: 150 }),
+      complete: completeFn
+   })
+}
+
 function stagger(elements, cb = false, currentlyAnimating) {
    if (currentlyAnimating) {
       return
@@ -76,18 +87,24 @@ function stagger(elements, cb = false, currentlyAnimating) {
 
    cb(true)
 
-   return anime({
-      targets: elements,
-      translateX: ['450px', '0px'],
-      duration: 350,
-      easing: 'easeOutQuart',
-      delay: anime.stagger(100, { start: 150 }),
-      complete: function() {
-         if (cb && elements) {
-            cb(false)
-         }
+   animeStagger(elements, function() {
+      if (cb && elements) {
+         cb(false)
       }
    })
+
+   // return anime({
+   //    targets: elements,
+   //    translateX: ['450px', '0px'],
+   //    duration: 350,
+   //    easing: 'easeOutQuart',
+   //    delay: anime.stagger(100, { start: 150 }),
+   //    complete: function() {
+   //       if (cb && elements) {
+   //          cb(false)
+   //       }
+   //    }
+   // })
 }
 
 function fadeOutIn(elements, cb = false, currentlyAnimating) {
@@ -127,4 +144,4 @@ function useAnime(animeFn, elementExists = true) {
    return animate
 }
 
-export { pulse, slideInRight, slideOutRight, stagger, useAnime, fadeOutIn }
+export { pulse, slideInRight, slideOutRight, stagger, useAnime, fadeOutIn, animeStagger }

@@ -9,12 +9,16 @@ function ProductVariants() {
    const [buyButtonState, buyButtonDispatch] = useContext(ProductBuyButtonContext)
    const [productOptionState, productOptionDispatch] = useContext(ProductOptionContext)
 
+   function isDropdownOpen() {
+      return productOptionState.isDropdownOpen
+   }
+
    useOnClickOutside(
       productOptionState.dropdownElement,
       () => {
          productOptionDispatch({ type: 'TOGGLE_DROPDOWN', payload: false })
       },
-      productOptionState.isDropdownOpen
+      isDropdownOpen
    )
 
    useEffect(() => {

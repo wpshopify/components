@@ -19,7 +19,7 @@ function CartFooter() {
          {shopState.settings.cart.enableCartTerms && <CartTerms />}
          {!isEmpty(cartState.notices) && <Notices notices={cartState.notices} noticeGroup='cart' />}
 
-         <CartFooterTotal isShopReady={shopState.isShopReady} currencyCode={shopState.info.currencyCode} totalElement={totalElement} total={shopState.checkoutCache.total} />
+         <CartFooterTotal isShopReady={shopState.isShopReady} currencyCode={shopState.info.currencyCode} totalElement={totalElement} total={cartState.checkoutCache.total} />
 
          <CartCheckout />
       </section>

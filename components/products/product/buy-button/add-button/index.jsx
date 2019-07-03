@@ -4,6 +4,7 @@ import { ShopContext } from '../../../../shop/_state/context'
 import { ItemsContext } from '../../../../items/_state/context'
 import { ProductContext } from '../../_state/context'
 
+import { toggleCart } from '../../../../../common/cart'
 import { useAnime, pulse } from '../../../../../common/animations'
 import { addProductDetailsToVariant } from '../../../../../common/products'
 import { findVariantFromSelectedOptions } from '/Users/andrew/www/devil/devilbox-new/data/www/wpshopify-api'
@@ -30,7 +31,9 @@ function ProductAddButton() {
       return buyButtonState.product.variants[0]
    }
 
-   async function handleClick() {
+   async function handleClick(e) {
+      e.preventDefault()
+
       // check if all options are selected
       // if some are not selected, highlight them / shake them
       if (!buyButtonState.allOptionsSelected && productState.hasManyVariants) {
@@ -55,14 +58,13 @@ function ProductAddButton() {
          })
 
          shopDispatch({ type: 'UPDATE_CHECKOUT_TOTAL' })
-
-         shopDispatch({ type: 'SET_IS_CART_EMPTY', payload: false })
+         // shopDispatch({ type: 'SET_IS_CART_EMPTY', payload: false })
 
          buyButtonDispatch({ type: 'SET_ALL_SELECTED_OPTIONS', payload: false })
          buyButtonDispatch({ type: 'REMOVE_SELECTED_OPTIONS' })
 
-         shopDispatch({ type: 'OPEN_CART' })
-         
+         toggleCart(true)
+
          if (wp.hooks) {
             wp.hooks.doAction('after.product.addToCart', lineItem, modVariant)
          }
@@ -96,7 +98,6 @@ function ProductAddButton() {
             itemProp='potentialAction'
             itemScope
             itemType='https://schema.org/BuyAction'
-            href='#!'
             className='wps-btn wps-btn-secondary wps-add-to-cart'
             title={buyButtonState.product.title}
             data-wps-is-ready={shopState.isShopReady ? '1' : '0'}

@@ -1,5 +1,5 @@
 import React, { useContext } from 'react'
-import { ShopContext } from '../../../shop/_state/context'
+import { CartContext } from '../../_state/context'
 import find from 'lodash/find'
 import { calcLineItemTotal } from '../../../../common/products'
 import { useAnime, pulse } from '../../../../common/animations'
@@ -14,14 +14,14 @@ function getLineItemFromState(lineItem, lineItemsFromState) {
 }
 
 function CartLineItemQuantity({ lineItem, variantId, lineItemQuantity, setLineItemQuantity, isShopReady, isFirstRender, setLineItemTotal, lineItemTotalElement }) {
-   const [shopState, shopDispatch] = useContext(ShopContext)
+   const [cartState, cartDispatch] = useContext(CartContext)
    const animePulse = useAnime(pulse)
 
    function changeQuantity(newQuantity) {
-      let lineItemFoumd = getLineItemFromState(lineItem, shopState.checkoutCache.lineItems)
+      let lineItemFound = getLineItemFromState(lineItem, cartState.checkoutCache.lineItems)
 
-      if (lineItemFoumd && isFirstRender.current) {
-         variantId.current = lineItemFoumd.variantId
+      if (lineItemFound && isFirstRender.current) {
+         variantId.current = lineItemFound.variantId
       }
 
       animePulse(lineItemTotalElement.current)
@@ -30,10 +30,10 @@ function CartLineItemQuantity({ lineItem, variantId, lineItemQuantity, setLineIt
       setLineItemTotal(calcLineItemTotal(newQuantity, lineItem.price))
 
       if (isRemovingLineItem(newQuantity)) {
-         shopDispatch({ type: 'REMOVE_LINE_ITEM', payload: variantId.current })
+         cartDispatch({ type: 'REMOVE_LINE_ITEM', payload: variantId.current })
       }
 
-      shopDispatch({
+      cartDispatch({
          type: 'UPDATE_LINE_ITEM_QUANTITY',
          payload: {
             variantId: variantId.current,
@@ -41,7 +41,7 @@ function CartLineItemQuantity({ lineItem, variantId, lineItemQuantity, setLineIt
          }
       })
 
-      shopDispatch({ type: 'UPDATE_CHECKOUT_TOTAL' })
+      cartDispatch({ type: 'UPDATE_CHECKOUT_TOTAL' })
    }
 
    function handleQuantityChange(e) {
@@ -50,10 +50,10 @@ function CartLineItemQuantity({ lineItem, variantId, lineItemQuantity, setLineIt
 
    function handleQuantityBlur(e) {
       if (isRemovingLineItem(e.target.value)) {
-         shopDispatch({ type: 'REMOVE_LINE_ITEM', payload: variantId.current })
+         cartDispatch({ type: 'REMOVE_LINE_ITEM', payload: variantId.current })
       }
 
-      shopDispatch({
+      cartDispatch({
          type: 'UPDATE_LINE_ITEM_QUANTITY',
          payload: {
             variantId: variantId.current,
@@ -61,7 +61,7 @@ function CartLineItemQuantity({ lineItem, variantId, lineItemQuantity, setLineIt
          }
       })
 
-      shopDispatch({ type: 'UPDATE_CHECKOUT_TOTAL' })
+      cartDispatch({ type: 'UPDATE_CHECKOUT_TOTAL' })
    }
 
    /*

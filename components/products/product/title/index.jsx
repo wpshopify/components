@@ -8,6 +8,14 @@ import { Link } from '../../../link'
 import { hasSinglePage } from '../../../../common/settings'
 import { onSinglePage } from '../../../../common/components'
 
+function Title(props) {
+   return (
+      <h2 itemProp='name' className={props.classList} data-wps-is-ready={props.isShopReady}>
+         {props.title}
+      </h2>
+   )
+}
+
 function ProductTitle() {
    const [shopState] = useContext(ShopContext)
    const [productState] = useContext(ProductContext)
@@ -18,19 +26,11 @@ function ProductTitle() {
       return wp.hooks ? wp.hooks.applyFilters('product.title.classes', defaultVal) : defaultVal
    }
 
-   function Title() {
-      return (
-         <h2 itemProp='name' className={getTitleClass()} data-wps-is-ready={shopState.isShopReady ? '1' : '0'}>
-            {productState.payload.title}
-         </h2>
-      )
-   }
-
    return usePortal(
       <div className='wps-component wps-component-products-title' data-wps-component-order='0'>
          {hasSinglePage() && !onSinglePage(itemsState) ? (
             <Link type='products' payload={productState.payload} shop={shopState}>
-               <Title />
+               <Title title={productState.payload.title} classList={getTitleClass()} isShopReady={shopState.isShopReady ? '1' : '0'} />
             </Link>
          ) : (
             <Title />

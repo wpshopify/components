@@ -39,9 +39,6 @@ function Bootstrap({ children }) {
       if (lineItems) {
          shopDispatch({ type: 'SET_LINE_ITEMS_AND_VARIANTS', payload: { products: lineItems } })
          shopDispatch({ type: 'UPDATE_CHECKOUT_TOTAL' })
-         shopDispatch({ type: 'SET_IS_CART_EMPTY', payload: false })
-      } else {
-         shopDispatch({ type: 'SET_IS_CART_EMPTY', payload: true })
       }
 
       // App is ready to go

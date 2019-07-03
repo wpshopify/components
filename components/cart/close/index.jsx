@@ -1,16 +1,17 @@
 import React, { useContext } from 'react'
-import { ShopContext } from '../../shop/_state/context'
-
+import { CartContext } from '../_state/context'
+import { toggleCart } from '../../../common/cart'
 
 function CartClose() {
-   const [shopState, shopDispatch] = useContext(ShopContext)
+   const [cartState, cartDispatch] = useContext(CartContext)
 
-   function closeCart() {
-      shopDispatch({ type: 'CLOSE_CART' })
+   function onClose(e) {
+      // cartDispatch({ type: 'TOGGLE', payload: false })
+      toggleCart(false)
    }
 
    return (
-      <button className='wps-btn-close wps-modal-close-trigger' title='Close Cart' onClick={closeCart}>
+      <button className='wps-btn-close wps-modal-close-trigger' title='Close Cart' onClick={onClose}>
          <span className='wps-modal-close-trigger'>×</span>
       </button>
    )

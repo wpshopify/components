@@ -1,13 +1,16 @@
 import React, { useContext, useState, useEffect, useRef } from 'react'
 import { ShopContext } from '../../../shop/_state/context'
+import { CartContext } from '../../_state/context'
+
 import { CartButtonContext } from '../button/_state/context'
 import { findTotalCartQuantities, isTotalEmpty } from '../../../../common/cart'
 import { useAnime, pulse } from '../../../../common/animations'
 import has from 'lodash/has'
 
 function CartCounter() {
+   const [cartState] = useContext(CartContext)
    const [shopState] = useContext(ShopContext)
-   const [totalItems, setTotalItems] = useState(findTotalCartQuantities(shopState.checkoutCache.lineItems))
+   const [totalItems, setTotalItems] = useState(findTotalCartQuantities(cartState.checkoutCache.lineItems))
    const [cartButtonState] = useContext(CartButtonContext)
    const animePulse = useAnime(pulse)
    const element = useRef()
@@ -17,13 +20,13 @@ function CartCounter() {
          return
       }
 
-      const total = findTotalCartQuantities(shopState.checkoutCache.lineItems)
+      const total = findTotalCartQuantities(cartState.checkoutCache.lineItems)
 
       if (!isTotalEmpty(total)) {
          setTotalItems(total)
          animePulse(element.current)
       }
-   }, [shopState.checkoutCache.lineItems])
+   }, [cartState.checkoutCache.lineItems])
 
    function counterStyles() {
       return {

@@ -1,4 +1,4 @@
-import React, { useContext, useEffect } from 'react'
+import React, { useContext, useEffect, useRef } from 'react'
 import { CollectionImage } from './image'
 import { CollectionTitle } from './title'
 import { CollectionDescription } from './description'
@@ -11,6 +11,18 @@ import { itemWidthClass } from '../../../common/utils'
 function Collection({ payload, isShopReady, shopInfo, shopSettings }) {
    const [itemsState] = useContext(ItemsContext)
    console.log('<Collection>')
+   // const isFirstRender = useRef(true)
+
+   // useEffect(() => {
+   //    console.log('Collection isFirstRender', isFirstRender)
+
+   //    if (isFirstRender.current) {
+   //       console.log('Collection INITIAL RENDER')
+   //       isFirstRender.current = false
+   //    } else {
+   //       console.log('Collection ADDITIONAL RENDER')
+   //    }
+   // }, [])
 
    return (
       <div className={`${itemWidthClass(itemsState.componentOptions.itemsPerRow)} wps-item p-3`}>

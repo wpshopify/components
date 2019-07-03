@@ -1,54 +1,57 @@
 import React, { useContext, useRef, useEffect } from 'react'
-import { useOnClickOutside } from '../../../common/hooks'
 import { CartHeader } from '../header'
 import { CartContents } from '../contents'
 import { CartFooter } from '../footer'
-import { ShopContext } from '../../shop/_state/context'
-
-import { useAnime, slideInRight, slideOutRight, stagger } from '../../../common/animations'
+import { CartContext } from '../_state/context'
+import { useAction } from '../../../common/hooks'
 
 function CartBody() {
+   const [cartState, cartDispatch] = useContext(CartContext)
    const cart = useRef()
-
-   const animeSlideInRight = useAnime(slideInRight)
-   const animeSlideOutRight = useAnime(slideOutRight)
-   const animeStagger = useAnime(stagger)
-   const [shopState, shopDispatch] = useContext(ShopContext)
-
-   useOnClickOutside(
-      cart,
-      e => {
-         document.querySelector('.wps-cart').classList.remove('wps-cart-is-showing')
-         shopDispatch({ type: 'CLOSE_CART' })
-      },
-      shopState.cartOpen
-   )
+   const isFirstRender = useRef(true)
+   const updateCheckoutAttributes = useAction('update.checkout.attributes')
+   const setCheckoutAttributes = useAction('set.checkout.attributes')
+   const setCheckoutNotes = useAction('set.checkout.note')
 
    useEffect(() => {
-      if (!shopState.isShopReady) {
+      /*
+      
+      Need to toggle flag here dpeending on LS line items 
+      */
+      // cartDispatch({ type: 'SET_IS_CART_EMPTY', payload: true })
+   }, [])
+
+   useEffect(() => {
+      if (isFirstRender.current) {
+         isFirstRender.current = false
          return
       }
 
-      if (shopState.cartOpen) {
-         // animeSlideInRight(document.querySelector('.wps-cart'))
-         document.querySelector('.wps-cart').classList.add('wps-cart-is-showing')
-         animeStagger(document.querySelectorAll('.wps-cart-lineitem'))
-         if (wp.hooks) {
-            wp.hooks.doAction('on.cart.open')
-         }
-      } else {
-         document.querySelector('.wps-cart').classList.remove('wps-cart-is-showing')
+      cartDispatch({ type: 'UPDATE_CHECKOUT_ATTRIBUTES', payload: updateCheckoutAttributes })
+   }, [updateCheckoutAttributes])
 
-         if (wp.hooks) {
-            wp.hooks.doAction('on.cart.close')
-         }
+   useEffect(() => {
+      if (isFirstRender.current) {
+         isFirstRender.current = false
+         return
       }
-   }, [shopState.cartOpen])
+
+      cartDispatch({ type: 'SET_CHECKOUT_ATTRIBUTES', payload: setCheckoutAttributes })
+   }, [setCheckoutAttributes])
+
+   useEffect(() => {
+      if (isFirstRender.current) {
+         isFirstRender.current = false
+         return
+      }
+
+      cartDispatch({ type: 'SET_CHECKOUT_NOTE', payload: setCheckoutNotes })
+   }, [setCheckoutNotes])
 
    return (
       <section ref={cart} className='wps-cart'>
          <CartHeader />
-         <CartContents isCartEmpty={shopState.isCartEmpty} checkoutCache={shopState.checkoutCache} />
+         <CartContents isCartEmpty={cartState.isCartEmpty} checkoutCache={cartState.checkoutCache} />
          <CartFooter />
       </section>
    )

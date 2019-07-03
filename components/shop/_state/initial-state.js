@@ -1,8 +1,6 @@
 function ShopInitialState(options = false) {
    return {
       checkout: { lineItems: [] },
-      notifyingCart: false,
-      cartOpen: false,
       isShopReady: false,
       checkoutCache: {
          lineItems: [],

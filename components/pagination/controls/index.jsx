@@ -2,11 +2,11 @@ import React from 'react'
 import { PaginationPageSize } from './page-size'
 import { PaginationLoadMore } from './load-more'
 
-function PaginationControls({ fetchNextItems }) {
+function PaginationControls({ miscDispatch }) {
    return (
       <section className='wps-pagination-controls container-fluid'>
          <PaginationPageSize />
-         <PaginationLoadMore fetchNextItems={fetchNextItems} />
+         <PaginationLoadMore miscDispatch={miscDispatch} />
       </section>
    )
 }

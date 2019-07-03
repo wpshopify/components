@@ -47,10 +47,10 @@ function hasMultipleItems(options) {
    return options.length > 1
 }
 
-function ItemsController({ options, children }) {
+function ItemsController({ options, children, miscDispatch }) {
    return usePortal(
       <ItemsProvider options={options}>
-         <ItemsWrapper>{children}</ItemsWrapper>
+         <ItemsWrapper miscDispatch={miscDispatch}>{children}</ItemsWrapper>
       </ItemsProvider>,
       options.componentElement
    )
@@ -62,11 +62,11 @@ Responsible for managing state of 'payload', 'queryParams', and 'isLoading'.
 Connects sibling components together like Filters, Search and Pagination.
 
 */
-function Items({ options, children }) {
+function Items({ options, children, miscDispatch }) {
    return (
       hasItemsToShow(options) &&
       options.map(option => (
-         <ItemsController key={uuidv4()} options={option}>
+         <ItemsController key={uuidv4()} options={option} miscDispatch={miscDispatch}>
             {children}
          </ItemsController>
       ))

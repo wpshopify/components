@@ -2,16 +2,13 @@ import React, { useContext } from 'react'
 import { ProductBuyButtonContext } from '../_state/context'
 import { ShopContext } from '../../../../shop/_state/context'
 import { ItemsContext } from '../../../../items/_state/context'
+import { ProductQuantityLabel } from './label'
+import { ProductQuantityInput } from './input'
 
 function ProductQuantity() {
    const [buyButtonState, buyButtonDispatch] = useContext(ProductBuyButtonContext)
    const [shopState] = useContext(ShopContext)
    const [itemsState] = useContext(ItemsContext)
-
-   const minQuantity = itemsState.componentOptions.minQuantity
-   const maxQuantity = itemsState.componentOptions.maxQuantity
-   const showQuantityLabel = itemsState.componentOptions.showQuantityLabel
-   const quantityLabel = itemsState.componentOptions.quantityLabelText
 
    function handleQuantityChange(e) {
       buyButtonDispatch({ type: 'UPDATE_QUANTITY', payload: Number(e.target.value) })
@@ -20,23 +17,14 @@ function ProductQuantity() {
    return (
       <div className='wps-component wps-component-products-quantity' data-wps-is-component-wrapper data-wps-product-id={buyButtonState.product.id} data-wps-post-id=''>
          <div className='wps-form-control row wps-product-quantity-wrapper m-0'>
-            {showQuantityLabel && (
-               <div className='wps-quantity-input wps-quantity-label-wrapper d-flex align-items-center' data-wps-is-ready={shopState.isShopReady ? '1' : '0'}>
-                  <label htmlFor='wps-product-quantity'>{quantityLabel}</label>
-               </div>
-            )}
+            <ProductQuantityLabel showQuantityLabel={itemsState.componentOptions.showQuantityLabel} isShopReady={shopState.isShopReady} label={itemsState.componentOptions.quantityLabelText} />
 
-            <div className='wps-quantity-input wps-quantity-input-wrapper' data-wps-is-ready={shopState.isShopReady ? '1' : '0'}>
-               <input
-                  type='number'
-                  name='wps-product-quantity'
-                  className='wps-product-quantity wps-form-input'
-                  defaultValue={minQuantity}
-                  onChange={handleQuantityChange}
-                  min={minQuantity}
-                  max={maxQuantity ? maxQuantity : undefined}
-               />
-            </div>
+            <ProductQuantityInput
+               minQuantity={itemsState.componentOptions.minQuantity}
+               maxQuantity={itemsState.componentOptions.maxQuantity}
+               handleQuantityChange={handleQuantityChange}
+               isShopReady={shopState.isShopReady}
+            />
          </div>
       </div>
    )

@@ -9,7 +9,7 @@ import { Notice } from '../notices/notice'
 import { Notices } from '../notices'
 import isEmpty from 'lodash/isEmpty'
 
-function Pagination({ children, shopSettings }) {
+function Pagination({ children, shopSettings, miscDispatch }) {
    // const [shopState] = useContext(ShopContext)
    const [itemsState] = useContext(ItemsContext)
    console.log('<Pagination>')
@@ -39,7 +39,7 @@ function Pagination({ children, shopSettings }) {
 
          {showNotices() ? <Notice message={itemsState.noResultsText} type='info' /> : <PaginationItems alignHeight={shopSettings.layout.alignHeight}>{children}</PaginationItems>}
 
-         {!isHidingPagination() && <PaginationControls />}
+         {!isHidingPagination() && <PaginationControls miscDispatch={miscDispatch} />}
       </PaginationProvider>
    )
 }

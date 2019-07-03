@@ -44,7 +44,7 @@ function CartLineItem({ lineItem, index }) {
    }
 
    useEffect(() => {
-      let lineItemFound = getLineItemFromState(lineItem, shopState.checkoutCache.lineItems)
+      let lineItemFound = getLineItemFromState(lineItem, cartState.checkoutCache.lineItems)
 
       if (lineItemFound) {
          variantId.current = lineItemFound.variantId

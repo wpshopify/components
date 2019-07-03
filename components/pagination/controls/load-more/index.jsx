@@ -8,7 +8,7 @@ import isEmpty from 'lodash/isEmpty'
 import has from 'lodash/has'
 import uniqid from 'uniqid'
 
-function PaginationLoadMore() {
+function PaginationLoadMore({ miscDispatch }) {
    const [itemsState, itemsDispatch] = useContext(ItemsContext)
    const [paginationState, paginationDispatch] = useContext(PaginationContext)
    const randomClass = uniqid('wps-btn-')
@@ -18,8 +18,9 @@ function PaginationLoadMore() {
 
    function onNextPage() {
       paginationDispatch({ type: 'SET_CONTROLS_TOUCHED', payload: true })
+      console.log('onNextPage')
 
-      fetchNextItems(itemsState, itemsDispatch)
+      fetchNextItems(itemsState, itemsDispatch, miscDispatch)
    }
 
    useEffect(() => {

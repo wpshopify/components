@@ -14,6 +14,8 @@ function CollectionTitle({ isShopReady, shopInfo }) {
    const [itemsState] = useContext(ItemsContext)
 
    function Title() {
+      console.log('itemsState ::::::::::: ')
+
       return (
          <h2 itemProp='name' className='wps-collection-title' data-wps-is-ready={isShopReady ? '1' : '0'}>
             {collectionState.payload.title}
@@ -23,7 +25,7 @@ function CollectionTitle({ isShopReady, shopInfo }) {
 
    return usePortal(
       <div className='wps-component wps-component-collection-title' data-wps-component-order='0'>
-         {hasSinglePage() && !onSinglePage(itemsState) ? (
+         {hasSinglePage() && !onSinglePage(itemsState) && !itemsState.componentOptions.single ? (
             <Link type='collections' shopInfo={shopInfo} payload={collectionState.payload}>
                <Title />
             </Link>

@@ -57,10 +57,10 @@ function CartCheckout() {
       cartDispatch({ type: 'SET_IS_CHECKING_OUT', payload: true })
 
       if (wp.hooks) {
-         wp.hooks.doAction('on.checkout', shopState.checkoutCache)
+         wp.hooks.doAction('on.checkout', cartState.checkoutCache)
       }
 
-      const [err, success] = await to(replaceLineItems(shopState.checkoutCache.lineItems))
+      const [err, success] = await to(replaceLineItems(cartState.checkoutCache.lineItems))
 
       if (err) {
          cartDispatch({ type: 'SET_IS_CHECKING_OUT', payload: false })
@@ -72,11 +72,11 @@ function CartCheckout() {
          return cartDispatch({ type: 'UPDATE_NOTICES', payload: { type: 'error', message: 'No line items exist ' } })
       }
 
-      if (!isEmpty(shopState.customAttributes) || !isEmpty(shopState.note)) {
+      if (!isEmpty(cartState.customAttributes) || !isEmpty(cartState.note)) {
          const [errAttr, resp] = await to(
             updateCheckoutAttributes({
-               customAttributes: shopState.customAttributes,
-               note: shopState.note
+               customAttributes: cartState.customAttributes,
+               note: cartState.note
             })
          )
 
@@ -103,7 +103,7 @@ function CartCheckout() {
             className='wps-btn wps-btn-checkout'
             onClick={onCheckout}
             data-wps-is-ready={shopState.isShopReady}
-            disabled={cartState.isCheckingOut || !cartState.termsAccepted || shopState.isCartEmpty}
+            disabled={cartState.isCheckingOut || !cartState.termsAccepted || cartState.isCartEmpty}
             style={buttonStyle()}>
             {cartState.isCheckingOut ? <Loader isLoading={cartState.isCheckingOut} /> : cartState.checkoutText}
          </button>
