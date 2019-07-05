@@ -14,9 +14,7 @@ function resendInitialQuery(state) {
    return graphQuery(originalDataType, originalQueryParams, connectionParams)
 }
 
-function fetchNextItems(itemsState, itemsDispatch, miscDispatch) {
-   console.log('fetchNextItems 1 ', miscDispatch)
-
+function fetchNextItems(itemsState, itemsDispatch, miscDispatch = false) {
    return new Promise(async (resolve, reject) => {
       if (isEmpty(itemsState.payload)) {
          return
@@ -65,9 +63,9 @@ function fetchNextItems(itemsState, itemsDispatch, miscDispatch) {
       itemsDispatch({ type: 'UPDATE_PAYLOAD', payload: nextItems })
       itemsDispatch({ type: 'SET_IS_LOADING', payload: false })
 
-      console.log('fetchNextItems 2 ', nextItems)
-
-      miscDispatch(nextItems)
+      if (miscDispatch) {
+         miscDispatch(nextItems)
+      }
 
       resolve(results)
    })
@@ -77,9 +75,7 @@ function ItemsWrapper({ children, miscDispatch }) {
    const [itemsState, itemsDispatch] = useContext(ItemsContext)
    const isFirstRender = useRef(true)
 
-   async function fetchNewItems(miscDispatch) {
-      console.log('fetchNewItems')
-
+   async function fetchNewItems(miscDispatch = false) {
       itemsDispatch({ type: 'SET_IS_LOADING', payload: true })
       itemsDispatch({ type: 'UPDATE_NOTICES', payload: [] })
 
@@ -94,7 +90,6 @@ function ItemsWrapper({ children, miscDispatch }) {
          itemsDispatch({ type: 'SET_TOTAL_SHOWN', payload: newItemsTotal })
          itemsDispatch({ type: 'SET_PAYLOAD', payload: newItems })
          itemsDispatch({ type: 'UPDATE_HAS_MORE_ITEMS', payload: newItemsTotal })
-         console.log('miscDispatch', miscDispatch)
 
          if (miscDispatch) {
             miscDispatch(newItems)

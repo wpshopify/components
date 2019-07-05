@@ -14,8 +14,6 @@ function CollectionTitle({ isShopReady, shopInfo }) {
    const [itemsState] = useContext(ItemsContext)
 
    function Title() {
-      console.log('itemsState ::::::::::: ')
-
       return (
          <h2 itemProp='name' className='wps-collection-title' data-wps-is-ready={isShopReady ? '1' : '0'}>
             {collectionState.payload.title}

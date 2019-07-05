@@ -3,15 +3,11 @@ import update from 'immutability-helper'
 function CollectionReducer(state, action) {
    switch (action.type) {
       case 'UPDATE_PRODUCTS': {
-         console.log('1')
-
          if (!action.payload) {
-            console.log('2')
             return {
                ...state
             }
          }
-         console.log('3')
 
          // if (limitReached(state)) {
          //    console.log('4')
@@ -27,17 +23,10 @@ function CollectionReducer(state, action) {
          // }
 
          var updatedPayload = update(state.productOptions[0].componentPayload, { $push: action.payload })
-         console.log('7 1 .............', updatedPayload)
-
-         console.log('7 2 .............', state.productOptions)
 
          var okoko = update(state.productOptions[0].componentPayload, { $set: updatedPayload })
 
-         console.log('okoko', okoko)
-
          state.productOptions[0].componentPayload = updatedPayload
-
-         console.log('state.productOptions', state.productOptions)
 
          return {
             ...state,

@@ -4,7 +4,6 @@ import hasIn from 'lodash/hasIn'
 import inView from 'in-view'
 
 function useOnClickOutside(ref, handler, targetOpened = false) {
-   console.log('useOnClickOutside 1')
    function addEventListener(listener) {
       document.addEventListener('mousedown', listener)
       document.addEventListener('touchstart', listener)

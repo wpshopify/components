@@ -10,9 +10,8 @@ import { Notices } from '../notices'
 import isEmpty from 'lodash/isEmpty'
 
 function Pagination({ children, shopSettings, miscDispatch }) {
-   // const [shopState] = useContext(ShopContext)
    const [itemsState] = useContext(ItemsContext)
-   console.log('<Pagination>')
+
    function isHidingPagination() {
       if (shopSettings.hidePagination) {
          return true

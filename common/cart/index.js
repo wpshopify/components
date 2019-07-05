@@ -73,7 +73,9 @@ function toggleCart(opening) {
    } else {
       openCart()
 
-      animateCartLineItems()
+      setTimeout(function() {
+         animateCartLineItems()
+      }, 0)
 
       document.addEventListener('mousedown', listener)
       document.addEventListener('touchstart', listener)

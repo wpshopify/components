@@ -16,7 +16,7 @@ function CartCounter() {
    const element = useRef()
 
    useEffect(() => {
-      if (!shopState.isShopReady) {
+      if (!cartState.isReady) {
          return
       }
 

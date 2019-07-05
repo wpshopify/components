@@ -18,7 +18,6 @@ function PaginationLoadMore({ miscDispatch }) {
 
    function onNextPage() {
       paginationDispatch({ type: 'SET_CONTROLS_TOUCHED', payload: true })
-      console.log('onNextPage')
 
       fetchNextItems(itemsState, itemsDispatch, miscDispatch)
    }

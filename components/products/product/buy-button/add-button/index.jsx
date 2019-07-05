@@ -4,7 +4,6 @@ import { ShopContext } from '../../../../shop/_state/context'
 import { ItemsContext } from '../../../../items/_state/context'
 import { ProductContext } from '../../_state/context'
 
-import { toggleCart } from '../../../../../common/cart'
 import { useAnime, pulse } from '../../../../../common/animations'
 import { addProductDetailsToVariant } from '../../../../../common/products'
 import { findVariantFromSelectedOptions } from '/Users/andrew/www/devil/devilbox-new/data/www/wpshopify-api'
@@ -15,7 +14,7 @@ function ProductAddButton() {
    const animePulse = useAnime(pulse)
 
    const [itemsState] = useContext(ItemsContext)
-   const [productState] = useContext(ProductContext)
+   const [productState, productDispatch] = useContext(ProductContext)
    const [buyButtonState, buyButtonDispatch] = useContext(ProductBuyButtonContext)
    const [shopState, shopDispatch] = useContext(ShopContext)
 
@@ -44,26 +43,22 @@ function ProductAddButton() {
          } else {
             var variant = findSingleVariantFromPayload()
          }
+
          // const variant = findVariantFromSelectedOptions(buyButtonState.product, buyButtonState.selectedOptions)
          const lineItem = { variantId: variant.id, quantity: buyButtonState.quantity }
          const modVariant = addProductDetailsToVariant(variant, buyButtonState.product)
 
-         shopDispatch({
-            type: 'UPDATE_LINE_ITEMS_AND_VARIANTS',
-            payload: {
-               checkoutID: shopState.checkout.id,
+         if (wp.hooks) {
+            wp.hooks.doAction('product.addToCart', {
+               checkoutId: shopState.checkoutId,
                lineItems: [lineItem],
                variants: [modVariant]
-            }
-         })
-
-         shopDispatch({ type: 'UPDATE_CHECKOUT_TOTAL' })
-         // shopDispatch({ type: 'SET_IS_CART_EMPTY', payload: false })
+            })
+         }
 
          buyButtonDispatch({ type: 'SET_ALL_SELECTED_OPTIONS', payload: false })
          buyButtonDispatch({ type: 'REMOVE_SELECTED_OPTIONS' })
-
-         toggleCart(true)
+         productDispatch({ type: 'SET_ADDED_VARIANT', payload: modVariant })
 
          if (wp.hooks) {
             wp.hooks.doAction('after.product.addToCart', lineItem, modVariant)

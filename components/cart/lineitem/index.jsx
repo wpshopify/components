@@ -15,10 +15,8 @@ function getLineItemFromState(lineItem, lineItemsFromState) {
 }
 
 function CartLineItem({ lineItem, index }) {
-   console.log('<CartLineItem>')
-
-   const [cartState] = useContext(CartContext)
-   const [shopState, shopDispatch] = useContext(ShopContext)
+   const [cartState, cartDispatch] = useContext(CartContext)
+   const [shopState] = useContext(ShopContext)
 
    const [isUpdating] = useState(false)
    const [lineItemQuantity, setLineItemQuantity] = useState(0)
@@ -30,17 +28,24 @@ function CartLineItem({ lineItem, index }) {
    const lineItemTotalElement = useRef()
 
    function removeLineItem(e) {
-      shopDispatch({ type: 'REMOVE_LINE_ITEM', payload: variantId.current })
-
-      shopDispatch({
-         type: 'UPDATE_LINE_ITEM_QUANTITY',
+      cartDispatch({
+         type: 'REMOVE_LINE_ITEM',
          payload: {
-            variantId: variantId.current,
-            lineItemNewQuantity: 0
+            lineItem: variantId.current,
+            checkoutId: shopState.checkoutId
          }
       })
 
-      shopDispatch({ type: 'UPDATE_CHECKOUT_TOTAL' })
+      cartDispatch({
+         type: 'UPDATE_LINE_ITEM_QUANTITY',
+         payload: {
+            lineItem: {
+               variantId: variantId.current,
+               lineItemNewQuantity: 0
+            },
+            checkoutId: shopState.checkoutId
+         }
+      })
    }
 
    useEffect(() => {
@@ -52,7 +57,7 @@ function CartLineItem({ lineItem, index }) {
          setLineItemQuantity(lineItemFound.quantity)
          setLineItemTotal(calcLineItemTotal(lineItem.price, lineItemFound.quantity))
       }
-   }, [])
+   }, [cartState.checkoutCache.lineItems])
 
    function placeholderImageUrl() {
       return WP_Shopify.pluginsDirURL + 'public/imgs/placeholder.png'
@@ -78,13 +83,11 @@ function CartLineItem({ lineItem, index }) {
    return (
       <div className='wps-cart-lineitem mr-0 ml-0 row' data-wps-is-updating={isUpdating} data-wps-is-available={isAvailable(lineItem)} ref={lineItemElement}>
          <Link payload={lineItem} shop={shopState} type='products' classNames='wps-cart-lineitem-img-link' target='_blank'>
-            <div className='wps-cart-lineitem-img' style={lineItemImage()} data-wps-is-ready={shopState.isShopReady} />
+            <div className='wps-cart-lineitem-img' style={lineItemImage()} data-wps-is-ready={cartState.isReady} />
          </Link>
 
-         {/* <a href={'test'} className='wps-cart-lineitem-img-link' target='_blank' /> */}
-
          <div className='wps-cart-lineitem-content'>
-            <div className='wps-cart-lineitem-title col-12 p-0' data-wps-is-ready={shopState.isShopReady} data-wps-is-empty={hasRealVariant() ? 'false' : 'true'}>
+            <div className='wps-cart-lineitem-title col-12 p-0' data-wps-is-ready={cartState.isReady} data-wps-is-empty={hasRealVariant() ? 'false' : 'true'}>
                <div className='container-fluid p-0'>
                   <div className='row'>
                      <span className='wps-cart-lineitem-title-content col-9'>{lineItem.productTitle}</span>
@@ -96,7 +99,7 @@ function CartLineItem({ lineItem, index }) {
             </div>
 
             {hasRealVariant() && (
-               <div className='wps-cart-lineitem-variant-title badge badge-pill badge-dark col-12' data-wps-is-ready={shopState.isShopReady}>
+               <div className='wps-cart-lineitem-variant-title badge badge-pill badge-dark col-12' data-wps-is-ready={cartState.isReady}>
                   {lineItem.title}
                </div>
             )}
@@ -112,7 +115,7 @@ function CartLineItem({ lineItem, index }) {
                            variantId={variantId}
                            lineItemQuantity={lineItemQuantity}
                            setLineItemQuantity={setLineItemQuantity}
-                           isReady={shopState.isShopReady}
+                           isReady={cartState.isReady}
                            isFirstRender={isFirstRender}
                            setLineItemTotal={setLineItemTotal}
                            lineItemTotalElement={lineItemTotalElement}
@@ -120,8 +123,8 @@ function CartLineItem({ lineItem, index }) {
                      </div>
 
                      <div className='wps-cart-lineitem-price-total-wrapper'>
-                        <div className='wps-cart-lineitem-price wps-cart-lineitem-price-total' data-wps-is-ready={shopState.isShopReady} ref={lineItemTotalElement}>
-                           {shopState.isShopReady && formatPriceToCurrency(lineItemTotal, shopState.info.currencyCode)}
+                        <div className='wps-cart-lineitem-price wps-cart-lineitem-price-total' data-wps-is-ready={cartState.isReady} ref={lineItemTotalElement}>
+                           {cartState.isReady && formatPriceToCurrency(lineItemTotal, shopState.info.currencyCode)}
                         </div>
                      </div>
                   </div>

@@ -6,6 +6,7 @@ function CartInitialState(options) {
       termsAccepted: true,
       isCartEmpty: true,
       buttons: options,
+      isReady: false,
       notices: [],
       checkoutCache: {
          lineItems: [],

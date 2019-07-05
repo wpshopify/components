@@ -102,7 +102,7 @@ function CartCheckout() {
          <button
             className='wps-btn wps-btn-checkout'
             onClick={onCheckout}
-            data-wps-is-ready={shopState.isShopReady}
+            data-wps-is-ready={cartState.isReady}
             disabled={cartState.isCheckingOut || !cartState.termsAccepted || cartState.isCartEmpty}
             style={buttonStyle()}>
             {cartState.isCheckingOut ? <Loader isLoading={cartState.isCheckingOut} /> : cartState.checkoutText}

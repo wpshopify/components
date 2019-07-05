@@ -17,6 +17,13 @@ function ProductReducer(state, action) {
          }
       }
 
+      case 'SET_ADDED_VARIANT': {
+         return {
+            ...state,
+            addedToCart: update(state.addedToCart, { $set: { variant: action.payload, at: new Date() } })
+         }
+      }
+
       default: {
          throw new Error(`Unhandled action type: ${action.type} in ProductReducer`)
       }

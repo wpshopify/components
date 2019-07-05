@@ -6,7 +6,6 @@ import { Products } from '../../../products'
 import { CollectionContext } from '../_state/context'
 import { ItemsContext } from '../../../items/_state/context'
 import { PaginationContext } from '../../../pagination/_state/context'
-import update from 'immutability-helper'
 
 function CollectionProducts() {
    const [collectionState, collectionDispatch] = useContext(CollectionContext)
@@ -14,30 +13,18 @@ function CollectionProducts() {
    const [paginationState, paginationDispatch] = useContext(PaginationContext)
    const isFirstRender = useRef(true)
 
-   // console.log('collectionState productOptions', productOptions)
-
    function updateCollectionProducts(payload) {
-      // console.log('sup! ', payload)
-      // console.log('collectionState.products', collectionState.products)
-      // console.log('productOptions', productOptions)
-      // productOptions[0].componentPayload = update(productOptions[0].componentPayload, { $push: payload })
-      // console.log('!!!!!!!!!!!!!!!!!!!!!!!! ', productOptions[0].componentPayload)
-      console.log('UPDATING PRODUCT OPTIONS ==========')
+      console.log('updateCollectionProducts ========== ', payload)
 
       collectionDispatch({ type: 'UPDATE_PRODUCTS', payload: payload })
    }
 
    useEffect(() => {
-      console.log('isFirstRender', isFirstRender)
-
       if (isFirstRender.current) {
-         console.log('INITIALLY SETTING PRODUCT OPTIONS ==========', collectionState.productOptions)
          isFirstRender.current = false
       } else {
-         console.log('NOT SETTING PRODUCT OPTIONS ==========')
          return
       }
-      // console.log('Updated the collection products', collectionState.products)
 
       collectionDispatch({
          type: 'SET_PRODUCT_OPTIONS',

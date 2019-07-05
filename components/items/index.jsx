@@ -43,10 +43,6 @@ function hasItemsToShow(options) {
    }
 }
 
-function hasMultipleItems(options) {
-   return options.length > 1
-}
-
 function ItemsController({ options, children, miscDispatch }) {
    return usePortal(
       <ItemsProvider options={options}>
