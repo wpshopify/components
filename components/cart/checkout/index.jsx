@@ -26,6 +26,7 @@ function CartCheckout() {
 
    function checkoutWindowTarget() {
       if (shopState.isMobile) {
+         cartDispatch({ type: 'SET_IS_CHECKING_OUT', payload: false })
          return '_self'
       }
 
