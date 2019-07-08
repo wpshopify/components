@@ -5,11 +5,14 @@ import { ProductContext } from '../../_state/context'
 
 import isEmpty from 'lodash/isEmpty'
 import last from 'lodash/last'
+import min from 'lodash/min'
+import max from 'lodash/max'
 
 import { ProductPricingRange } from '../range'
 import { ProductPriceSingle } from '../single'
 import { useAction } from '../../../../../common/hooks'
 import { useAnime, pulse } from '../../../../../common/animations'
+
 
 function lastPrice(prices, type) {
    if (isEmpty(prices)) {
@@ -52,8 +55,12 @@ function ProductPrice({ compareAt }) {
    const isShowing = useAction('show.product.pricing', true)
    const animePulse = useAnime(pulse)
 
+   function showingRange() {
+      return productPricingState.showPriceRange
+   }
+
    function isRegAndCompareSame() {
-      if (!productPricingState.showPriceRange && compareAt) {
+      if (!showingRange() && compareAt) {
          if (firstPriceCompareAt(productPricingState.prices) === firstRegPrice(productPricingState.prices)) {
             return true
          }
@@ -72,17 +79,45 @@ function ProductPrice({ compareAt }) {
 
    function getFirstPrice() {
       if (compareAt) {
-         return firstPriceCompareAt(productPricingState.prices)
+
+         if (showingRange()) {
+            return min(productPricingState.prices.compareAtPrices)   
+
+         } else {
+            return firstPriceCompareAt(productPricingState.prices)
+         }
+         
       } else {
-         return firstRegPrice(productPricingState.prices)
+
+         if (showingRange()) {
+            return min(productPricingState.prices.regPrices)
+            
+         } else {
+            return firstRegPrice(productPricingState.prices)
+         }
+         
       }
    }
 
    function getLastPrice() {
       if (compareAt) {
-         return lastPriceCompareAt(productPricingState.prices)
+
+         if (showingRange()) {
+            return max(productPricingState.prices.compareAtPrices)
+
+         } else {
+            return lastPriceCompareAt(productPricingState.prices)
+         }
+         
       } else {
-         return lastRegPrice(productPricingState.prices)
+
+         if (showingRange()) {
+            return max(productPricingState.prices.regPrices)
+
+         } else {
+            return lastRegPrice(productPricingState.prices)
+         }
+         
       }
    }
 
@@ -110,7 +145,7 @@ function ProductPrice({ compareAt }) {
                   className='wps-products-price wps-product-pricing wps-products-price-one'
                   data-wps-is-showing-compare-at={compareAt}
                   data-wps-is-ready={shopState.isShopReady ? '1' : '0'}>
-                  {productPricingState.showPriceRange && !productState.selectedVariant ? (
+                  {showingRange() && !productState.selectedVariant ? (
                      <ProductPricingRange firstPrice={getFirstPrice()} lastPrice={getLastPrice()} isFirstAndLastSame={isFirstAndLastSame()} />
                   ) : (
                      <ProductPriceSingle ref={singlePriceElement} price={regPrice} />

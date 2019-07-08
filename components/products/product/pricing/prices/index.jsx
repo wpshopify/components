@@ -9,8 +9,8 @@ function ProductPrices() {
 
    return productPricingState.showCompareAt && !productState.selectedVariant ? (
       <>
-         <ProductPrice compareAt={true} />
-         <ProductPrice compareAt={false} />
+         <ProductPrice compareAt={true} prices={productPricingState.prices} />
+         <ProductPrice compareAt={false} prices={productPricingState.prices} />
       </>
    ) : (
       <ProductPrice compareAt={productState.selectedVariant ? false : productPricingState.showCompareAt} prices={productPricingState.prices} />

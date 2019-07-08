@@ -33,7 +33,7 @@ function ProductTitle() {
                <Title title={productState.payload.title} classList={getTitleClass()} isShopReady={shopState.isShopReady ? '1' : '0'} />
             </Link>
          ) : (
-            <Title />
+            <Title title={productState.payload.title} classList={getTitleClass()} isShopReady={shopState.isShopReady ? '1' : '0'} />
          )}
       </div>,
       findPortalElement(productState.element, itemsState.componentOptions.dropzoneProductTitle)

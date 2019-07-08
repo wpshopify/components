@@ -43,6 +43,18 @@ function Bootstrap({ children }) {
 
          return setReady()
       }
+console.log('instancesinstancesinstances', instances)
+      if (!instances.checkout) {
+         shopDispatch({
+            type: 'UPDATE_NOTICES',
+            payload: {
+               type: 'error',
+               message: "No checkout instance available"
+            }
+         })
+
+         return setReady()
+      }
 
       if (instances.checkout.completedAt) {
          var [newInstancesErrorMsg, newInstances] = await to(buildInstances(true))
