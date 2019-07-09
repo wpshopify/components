@@ -81,6 +81,7 @@ function ProductPrice({ compareAt }) {
       if (compareAt) {
 
          if (showingRange()) {
+            console.log('productPricingState.prices', productPricingState.prices)
             return min(productPricingState.prices.compareAtPrices)   
 
          } else {

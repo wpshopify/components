@@ -4,6 +4,7 @@ import { ItemsContext } from '../../../../items/_state/context'
 import { ShopContext } from '../../../../shop/_state/context'
 import { ProductGalleryContext } from '../gallery/_state/context'
 import { ProductImage } from '../image'
+import isNull from 'lodash/isNull'
 import Drift from 'drift-zoom'
 
 function getVariantImage(variant) {
@@ -34,11 +35,11 @@ function ProductFeaturedImage() {
    }
 
    function showZoom() {
-      if (itemsState.componentOptions.showZoom) {
-         return true
+      if (isNull(itemsState.componentOptions.showZoom)) {
+         return shopState.settings.productsImagesShowZoom
       }
 
-      return shopState.settings.productsImagesShowZoom
+      return itemsState.componentOptions.showZoom
    }
 
    function hasFeatImage() {
@@ -46,7 +47,6 @@ function ProductFeaturedImage() {
    }
 
    useEffect(() => {
-
       if (isFirstRender.current) {
          isFirstRender.current = false
          return
@@ -58,7 +58,6 @@ function ProductFeaturedImage() {
    }, [galleryState.featImage])
 
    useEffect(() => {
-
       if (isFirstRender.current) {
          isFirstRender.current = false
          return
@@ -74,7 +73,6 @@ function ProductFeaturedImage() {
    }, [galleryState.featImageElement])
 
    useEffect(() => {
-
       if (productState.selectedVariant) {
          setFeatImage(getVariantImage(productState.selectedVariant))
       }

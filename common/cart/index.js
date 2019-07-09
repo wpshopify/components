@@ -20,18 +20,20 @@ function isCartOpen() {
 }
 
 function openCart() {
-   document.querySelector('.wps-cart').classList.add('wps-cart-is-showing')
+   let cartElement = document.querySelector('.wps-cart')
+   cartElement.classList.add('wps-cart-is-showing')
 
    if (wp.hooks) {
-      wp.hooks.doAction('on.cart.open')
+      wp.hooks.doAction('on.cart.open', cartElement)
    }
 }
 
 function closeCart() {
-   document.querySelector('.wps-cart').classList.remove('wps-cart-is-showing')
+   let cartElement = document.querySelector('.wps-cart')
+   cartElement.classList.remove('wps-cart-is-showing')
 
    if (wp.hooks) {
-      wp.hooks.doAction('on.cart.close')
+      wp.hooks.doAction('on.cart.close', cartElement)
    }
 }
 

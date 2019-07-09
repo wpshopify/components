@@ -11,7 +11,7 @@ function Bootstrap({ children }) {
    function setReady() {
       // App is ready to go
       if (wp.hooks) {
-         wp.hooks.doAction('after.ready')
+         wp.hooks.doAction('after.ready', shopState)
       }
 
       shopDispatch({ type: 'IS_SHOP_READY' })
@@ -25,10 +25,12 @@ function Bootstrap({ children }) {
    async function bootstrapShop() {
       // If running WP less < 5.0, polyfill the hooks
       if (!wp.hooks) {
+         console.log('NO HOOKS EXIST')
+
          wp.hooks = createHooks()
       }
 
-      wp.hooks.doAction('before.ready')
+      wp.hooks.doAction('before.ready', shopState)
 
       var [instancesErrorMsg, instances] = await to(buildInstances())
 
@@ -43,13 +45,13 @@ function Bootstrap({ children }) {
 
          return setReady()
       }
-console.log('instancesinstancesinstances', instances)
+      console.log('instancesinstancesinstances', instances)
       if (!instances.checkout) {
          shopDispatch({
             type: 'UPDATE_NOTICES',
             payload: {
                type: 'error',
-               message: "No checkout instance available"
+               message: 'No checkout instance available'
             }
          })
 

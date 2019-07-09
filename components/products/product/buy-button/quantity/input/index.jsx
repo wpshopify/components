@@ -11,11 +11,6 @@ function ProductQuantityInput({ minQuantity, maxQuantity, isShopReady }) {
 
    useEffect(
       function() {
-         if (isFirstRender.current) {
-            isFirstRender.current = false
-            return
-         }
-
          handleQuantityChange()
       },
       [productState.addedToCart]

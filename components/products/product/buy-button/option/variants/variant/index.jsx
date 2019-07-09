@@ -15,16 +15,16 @@ function ProductVariant({ variant }) {
    const [buyButtonState, buyButtonDispatch] = useContext(ProductBuyButtonContext)
 
    function onVariantSelection() {
-      const newlySelected = createObj(productOptionState.option.name, variant.value)
+      const selectedVariant = createObj(productOptionState.option.name, variant.value)
 
       // setSelectedOptions(optionsUpdated);
-      buyButtonDispatch({ type: 'UPDATE_SELECTED_OPTIONS', payload: newlySelected })
+      buyButtonDispatch({ type: 'UPDATE_SELECTED_OPTIONS', payload: selectedVariant })
       productOptionDispatch({ type: 'TOGGLE_DROPDOWN', payload: false })
       productOptionDispatch({ type: 'SET_IS_OPTION_SELECTED', payload: true })
-      productOptionDispatch({ type: 'SET_SELECTED_OPTION', payload: newlySelected })
+      productOptionDispatch({ type: 'SET_SELECTED_OPTION', payload: selectedVariant })
 
       if (wp.hooks) {
-         wp.hooks.doAction('on.product.variant.selection', newlySelected, productOptionState)
+         wp.hooks.doAction('on.product.variant.selection', selectedVariant, productOptionState)
       }
    }
 

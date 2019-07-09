@@ -2,6 +2,7 @@ import React, { useEffect, useState, useContext } from 'react'
 import ReactDOM from 'react-dom'
 import hasIn from 'lodash/hasIn'
 import inView from 'in-view'
+import { createHooks } from '@wordpress/hooks'
 
 function useOnClickOutside(ref, handler, targetOpened = false) {
    function addEventListener(listener) {
@@ -59,7 +60,10 @@ function useAction(hookName, defaultVal = false) {
 
    useEffect(() => {
       if (!wp.hooks) {
-         return
+         // return
+         console.log('yuppppppppppppppppppppppppp')
+
+         wp.hooks = createHooks()
       }
 
       if (!wp.hooks.hasAction(hookName)) {

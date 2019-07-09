@@ -46,22 +46,26 @@ function ProductAddButton() {
 
          // const variant = findVariantFromSelectedOptions(buyButtonState.product, buyButtonState.selectedOptions)
          const lineItem = { variantId: variant.id, quantity: buyButtonState.quantity }
-         const modVariant = addProductDetailsToVariant(variant, buyButtonState.product)
+         const productVariant = addProductDetailsToVariant(variant, buyButtonState.product)
 
          if (wp.hooks) {
+            console.log('11111111111111111111111111111111111')
+
             wp.hooks.doAction('product.addToCart', {
                checkoutId: shopState.checkoutId,
                lineItems: [lineItem],
-               variants: [modVariant]
+               variants: [productVariant]
             })
+         } else {
+            console.log('222222222222222222222222222222222222')
          }
 
          buyButtonDispatch({ type: 'SET_ALL_SELECTED_OPTIONS', payload: false })
          buyButtonDispatch({ type: 'REMOVE_SELECTED_OPTIONS' })
-         productDispatch({ type: 'SET_ADDED_VARIANT', payload: modVariant })
+         productDispatch({ type: 'SET_ADDED_VARIANT', payload: productVariant })
 
          if (wp.hooks) {
-            wp.hooks.doAction('after.product.addToCart', lineItem, modVariant)
+            wp.hooks.doAction('on.product.addToCart', lineItem, productVariant)
          }
       }
    }
@@ -78,7 +82,7 @@ function ProductAddButton() {
 
       if (buyButtonState.allOptionsSelected) {
          if (wp.hooks) {
-            wp.hooks.doAction('before.product.addToCart')
+            wp.hooks.doAction('before.product.addToCart', buyButtonState)
          }
 
          animePulse(button.current)

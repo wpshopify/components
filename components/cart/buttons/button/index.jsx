@@ -48,7 +48,8 @@ function CartButton({ options }) {
                onClick={onClick}
                data-wps-is-ready={cartState.isReady ? '1' : '0'}
                style={iconStyles()}>
-               <CartCounter />
+               {options.componentOptions.showCounter && <CartCounter />}
+
                <CartIcon />
             </button>
          </CartButtonProvider>

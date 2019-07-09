@@ -14,13 +14,15 @@ function PaginationItems({ children, alignHeight }) {
       })
    }
 
+   console.log('itemsState ::::: ', itemsState)
+
    return (
       <section className={'wps-items-wrapper container-fluid'}>
          <section className='wps-items wps-items-list row' data-item-is-loading={itemsState.isLoading} data-is-align-height={alignHeight}>
             {mapPayload()}
          </section>
 
-         {paginationState.controlsTouched && !itemsState.hasMoreItems ? <Notice message='No items left' type='info' /> : ''}
+         {paginationState.controlsTouched && !itemsState.hasMoreItems ? <Notice message={itemsState.noResultsText} type='info' /> : ''}
       </section>
    )
 }

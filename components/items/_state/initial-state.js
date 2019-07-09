@@ -37,6 +37,8 @@ function checkHasMore(options) {
 }
 
 function ItemsInitialState(options = {}) {
+   console.log('options.componentOptions.noResultsText >>>>>>> ', options.componentOptions.noResultsText)
+
    return {
       componentOptions: options.componentOptions,
       element: options.componentElement,
