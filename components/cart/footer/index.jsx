@@ -26,4 +26,4 @@ function CartFooter() {
    )
 }
 
-export { CartFooter }
+export default CartFooter

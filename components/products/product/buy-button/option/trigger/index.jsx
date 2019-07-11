@@ -86,4 +86,4 @@ function ProductOptionTrigger() {
    )
 }
 
-export { ProductOptionTrigger }
+export default ProductOptionTrigger

@@ -17,4 +17,4 @@ function CartHeader() {
    )
 }
 
-export { CartHeader }
+export default CartHeader

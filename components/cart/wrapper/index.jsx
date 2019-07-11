@@ -1,14 +1,19 @@
 import React, { useContext, useRef, useEffect } from 'react'
-import { CartHeader } from '../header'
-import { CartContents } from '../contents'
-import { CartFooter } from '../footer'
-import { CartButtons } from '../buttons'
+// import { CartHeader } from '../header'
+// import { CartContents } from '../contents'
+// import { CartFooter } from '../footer'
+// import { CartButtons } from '../buttons'
 import { CartContext } from '../_state/context'
 import { ShopContext } from '../../shop/_state/context'
 import { useAction } from '../../../common/hooks'
 import isEmpty from 'lodash/isEmpty'
 import { getProductIdsFromLineItems } from '/Users/andrew/www/devil/devilbox-new/data/www/wpshopify-api'
 import to from 'await-to-js'
+
+const CartHeader = React.lazy(() => import('../header'))
+const CartContents = React.lazy(() => import('../contents'))
+const CartFooter = React.lazy(() => import('../footer'))
+const CartButtons = React.lazy(() => import('../buttons'))
 
 function CartWrapper() {
    const [cartState, cartDispatch] = useContext(CartContext)
@@ -115,4 +120,4 @@ function CartWrapper() {
    )
 }
 
-export { CartWrapper }
+export default CartWrapper

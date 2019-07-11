@@ -2,10 +2,13 @@ import React, { useContext, useEffect, useRef } from 'react'
 import { ProductVariants } from '../variants'
 import { ProductBuyButtonContext } from '../../_state/context'
 import { ProductOptionContext } from '../_state/context'
-import { ProductOptionTrigger } from '../trigger'
+// import { ProductOptionTrigger } from '../trigger'
+
 import find from 'lodash/find'
 import isEmpty from 'lodash/isEmpty'
 import Tippy from '@tippy.js/react'
+
+const ProductOptionTrigger = React.lazy(() => import('../trigger'))
 
 function ProductOptionDropdown() {
    const [buyButtonState, buyButtonDispatch] = useContext(ProductBuyButtonContext)
@@ -63,4 +66,4 @@ function ProductOptionDropdown() {
    )
 }
 
-export { ProductOptionDropdown }
+export default ProductOptionDropdown

@@ -169,6 +169,7 @@ function CartReducer(state, action) {
          toggleCart(action.payload)
 
          return {
+            isCartOpen: action.payload,
             ...state
          }
 

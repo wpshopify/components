@@ -19,4 +19,4 @@ function ProductImages() {
    )
 }
 
-export { ProductImages }
+export default ProductImages

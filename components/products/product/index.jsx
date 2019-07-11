@@ -1,13 +1,14 @@
-import React, { useContext, useEffect } from 'react'
-import { ProductTitle } from './title'
-import { ProductPricing } from './pricing'
-import { ProductDescription } from './description'
-import { ProductBuyButton } from './buy-button'
-import { ProductImages } from './images'
+import React, { useContext } from 'react'
 import { ItemsContext } from '../../items/_state/context'
 import { ProductProvider } from './_state/provider'
 import { isShowingComponent } from '../../../common/components'
 import { itemWidthClass } from '../../../common/utils'
+
+const ProductTitle = React.lazy(() => import('./title'))
+const ProductPricing = React.lazy(() => import('./pricing'))
+const ProductDescription = React.lazy(() => import('./description'))
+const ProductBuyButton = React.lazy(() => import('./buy-button'))
+const ProductImages = React.lazy(() => import('./images'))
 
 function Product({ payload }) {
    const [itemsState] = useContext(ItemsContext)

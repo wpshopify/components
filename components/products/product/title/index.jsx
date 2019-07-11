@@ -40,4 +40,4 @@ function ProductTitle() {
    )
 }
 
-export { ProductTitle }
+export default ProductTitle

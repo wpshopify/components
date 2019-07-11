@@ -33,4 +33,4 @@ function ProductBuyButton() {
    )
 }
 
-export { ProductBuyButton }
+export default ProductBuyButton

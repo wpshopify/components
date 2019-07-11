@@ -1,6 +1,6 @@
-import React, { useState, useEffect, useContext, useRef } from 'react'
+import React, { useRef } from 'react'
 import { ProductOptionProvider } from './_state/provider.jsx'
-import { ProductOptionDropdown } from './dropdown'
+const ProductOptionDropdown = React.lazy(() => import('./dropdown'))
 
 function ProductOption({ option }) {
    const dropdownElement = useRef()

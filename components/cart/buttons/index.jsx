@@ -15,4 +15,4 @@ function CartButtons() {
    )
 }
 
-export { CartButtons }
+export default CartButtons
