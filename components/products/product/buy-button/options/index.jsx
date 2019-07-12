@@ -73,6 +73,10 @@ function ProductOptions() {
                selectedOptions: buyButtonState.selectedOptions
             }
          })
+
+         if (wp.hooks) {
+            wp.hooks.doAction('before.product.addToCart', buyButtonState)
+         }
       } else {
          buyButtonDispatch({ type: 'SET_ALL_SELECTED_OPTIONS', payload: false })
       }

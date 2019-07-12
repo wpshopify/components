@@ -71,6 +71,8 @@ function ProductAddButton() {
    }
 
    useEffect(() => {
+      console.log('buyButtonState.allOptionsSelected')
+
       if (!shopState.isShopReady) {
          return
       }
@@ -81,10 +83,6 @@ function ProductAddButton() {
       }
 
       if (buyButtonState.allOptionsSelected) {
-         if (wp.hooks) {
-            wp.hooks.doAction('before.product.addToCart', buyButtonState)
-         }
-
          animePulse(button.current)
       }
    }, [buyButtonState.allOptionsSelected])

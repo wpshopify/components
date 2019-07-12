@@ -4,11 +4,13 @@ import { ShopContext } from '../../../../shop/_state/context'
 
 const ProductPriceSingle = React.forwardRef((props, ref) => {
    const [shopState] = useContext(ShopContext)
-console.log('props .......', props)
+
    return (
-      props.price && <span ref={ref} className='wps-product-individual-price'>
-         {shopState.isShopReady && formatPriceToCurrency(props.price, shopState.info.currencyCode)}
-      </span>
+      props.price && (
+         <span ref={ref} className='wps-product-individual-price'>
+            {shopState.isShopReady && formatPriceToCurrency(props.price, shopState.info.currencyCode)}
+         </span>
+      )
    )
 })
 

@@ -11,7 +11,7 @@ function Bootstrap({ children }) {
    function setReady() {
       // App is ready to go
       if (wp.hooks) {
-         wp.hooks.doAction('after.ready', shopState)
+         wp.hooks.doAction('after.ready', shopState.settings)
       }
 
       shopDispatch({ type: 'IS_SHOP_READY' })
@@ -30,7 +30,7 @@ function Bootstrap({ children }) {
          wp.hooks = createHooks()
       }
 
-      wp.hooks.doAction('before.ready', shopState)
+      wp.hooks.doAction('before.ready', shopState.settings)
 
       var [instancesErrorMsg, instances] = await to(buildInstances())
 
