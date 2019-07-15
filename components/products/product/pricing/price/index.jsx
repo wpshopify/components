@@ -13,7 +13,6 @@ import { ProductPriceSingle } from '../single'
 import { useAction } from '../../../../../common/hooks'
 import { useAnime, pulse } from '../../../../../common/animations'
 
-
 function lastPrice(prices, type) {
    if (isEmpty(prices)) {
       return 0
@@ -79,46 +78,33 @@ function ProductPrice({ compareAt }) {
 
    function getFirstPrice() {
       if (compareAt) {
-
          if (showingRange()) {
-            console.log('productPricingState.prices', productPricingState.prices)
-            return min(productPricingState.prices.compareAtPrices)   
-
+            return min(productPricingState.prices.compareAtPrices)
          } else {
             return firstPriceCompareAt(productPricingState.prices)
          }
-         
       } else {
-
          if (showingRange()) {
             return min(productPricingState.prices.regPrices)
-            
          } else {
             return firstRegPrice(productPricingState.prices)
          }
-         
       }
    }
 
    function getLastPrice() {
       if (compareAt) {
-
          if (showingRange()) {
             return max(productPricingState.prices.compareAtPrices)
-
          } else {
             return lastPriceCompareAt(productPricingState.prices)
          }
-         
       } else {
-
          if (showingRange()) {
             return max(productPricingState.prices.regPrices)
-
          } else {
             return lastRegPrice(productPricingState.prices)
          }
-         
       }
    }
 
@@ -131,7 +117,6 @@ function ProductPrice({ compareAt }) {
       if (productState.selectedVariant) {
          setRegPrice(productState.selectedVariant.price)
          animePulse(singlePriceElement.current)
-
       }
    }, [productState.selectedVariant])
 

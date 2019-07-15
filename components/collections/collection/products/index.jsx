@@ -14,8 +14,6 @@ function CollectionProducts() {
    const isFirstRender = useRef(true)
 
    function updateCollectionProducts(payload) {
-      console.log('updateCollectionProducts ========== ', payload)
-
       collectionDispatch({ type: 'UPDATE_PRODUCTS', payload: payload })
    }
 

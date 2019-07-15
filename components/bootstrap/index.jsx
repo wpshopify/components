@@ -25,8 +25,6 @@ function Bootstrap({ children }) {
    async function bootstrapShop() {
       // If running WP less < 5.0, polyfill the hooks
       if (!wp.hooks) {
-         console.log('NO HOOKS EXIST')
-
          wp.hooks = createHooks()
       }
 
@@ -45,8 +43,8 @@ function Bootstrap({ children }) {
 
          return setReady()
       }
-      console.log('instancesinstancesinstances', instances)
-      if (!instances.checkout) {
+
+      if (!instances || !instances.checkout) {
          shopDispatch({
             type: 'UPDATE_NOTICES',
             payload: {
@@ -67,6 +65,18 @@ function Bootstrap({ children }) {
                payload: {
                   type: 'error',
                   message: newInstancesErrorMsg
+               }
+            })
+
+            return setReady()
+         }
+
+         if (!newInstances) {
+            shopDispatch({
+               type: 'UPDATE_NOTICES',
+               payload: {
+                  type: 'error',
+                  message: 'No store checkout or client instances were found.'
                }
             })
 

@@ -49,15 +49,11 @@ function ProductAddButton() {
          const productVariant = addProductDetailsToVariant(variant, buyButtonState.product)
 
          if (wp.hooks) {
-            console.log('11111111111111111111111111111111111')
-
             wp.hooks.doAction('product.addToCart', {
                checkoutId: shopState.checkoutId,
                lineItems: [lineItem],
                variants: [productVariant]
             })
-         } else {
-            console.log('222222222222222222222222222222222222')
          }
 
          buyButtonDispatch({ type: 'SET_ALL_SELECTED_OPTIONS', payload: false })
@@ -71,8 +67,6 @@ function ProductAddButton() {
    }
 
    useEffect(() => {
-      console.log('buyButtonState.allOptionsSelected')
-
       if (!shopState.isShopReady) {
          return
       }

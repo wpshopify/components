@@ -60,9 +60,6 @@ function useAction(hookName, defaultVal = false) {
 
    useEffect(() => {
       if (!wp.hooks) {
-         // return
-         console.log('yuppppppppppppppppppppppppp')
-
          wp.hooks = createHooks()
       }
 
