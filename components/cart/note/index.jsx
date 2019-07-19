@@ -21,8 +21,9 @@ function CartNote() {
       if (wp.hooks) {
          wp.hooks.doAction('on.checkout.note', debouncedValue)
       }
-
+      /* @if NODE_ENV='pro' */
       shopDispatch({ type: 'SET_CHECKOUT_NOTE', payload: debouncedValue })
+      /* @endif */
    }, [debouncedValue])
 
    return (

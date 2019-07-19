@@ -19,7 +19,8 @@ function ShopInitialState(options = false) {
       note: false,
       isCartEmpty: true,
       isMobile: WP_Shopify.misc.is_mobile,
-      settings: WP_Shopify.settings
+      settings: WP_Shopify.settings,
+      hooksCompatible: false
    }
 }
 

@@ -73,6 +73,7 @@ function CartCheckout() {
          return cartDispatch({ type: 'UPDATE_NOTICES', payload: { type: 'error', message: 'No line items exist ' } })
       }
 
+      /* @if NODE_ENV='pro' */
       if (!isEmpty(cartState.customAttributes) || !isEmpty(cartState.note)) {
          const [errAttr, resp] = await to(
             updateCheckoutAttributes({
@@ -88,6 +89,7 @@ function CartCheckout() {
 
          return checkoutRedirect(resp)
       }
+      /* @endif */
 
       checkoutRedirect(success)
    }

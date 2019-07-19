@@ -19,7 +19,9 @@ function CartTerms() {
 
    function onChange(e) {
       setIsChecked(!isChecked)
+      /* @if NODE_ENV='pro' */
       cartDispatch({ type: 'SET_TERMS_ACCEPTED', payload: !isChecked })
+      /* @endif */
    }
 
    return (

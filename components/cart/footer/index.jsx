@@ -17,10 +17,9 @@ function CartFooter() {
       <section className='wps-cart-footer'>
          {shopState.settings.cart.enableCartNotes && <CartNote />}
          {shopState.settings.cart.enableCartTerms && <CartTerms />}
+
          {!isEmpty(cartState.notices) && <Notices notices={cartState.notices} noticeGroup='cart' />}
-
          <CartFooterTotal isReady={cartState.isReady} currencyCode={shopState.info.currencyCode} totalElement={totalElement} />
-
          <CartCheckout />
       </section>
    )

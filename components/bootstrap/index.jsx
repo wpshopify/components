@@ -24,11 +24,11 @@ function Bootstrap({ children }) {
    */
    async function bootstrapShop() {
       // If running WP less < 5.0, polyfill the hooks
-      if (!wp.hooks) {
+      if (wp.hooks) {
+         wp.hooks.doAction('before.ready', shopState.settings)
+      } else {
          wp.hooks = createHooks()
       }
-
-      wp.hooks.doAction('before.ready', shopState.settings)
 
       var [instancesErrorMsg, instances] = await to(buildInstances())
 

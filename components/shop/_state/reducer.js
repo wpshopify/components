@@ -16,7 +16,12 @@ function ShopReducer(state, action) {
             info: update(state.info, { $set: action.payload })
          }
       }
-
+      case 'SET_HOOKS_COMPATIBLE': {
+         return {
+            ...state,
+            hooksCompatible: update(state.hooksCompatible, { $set: action.payload })
+         }
+      }
       case 'IS_SHOP_READY': {
          return {
             ...state,
