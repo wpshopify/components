@@ -15,8 +15,8 @@ function CartInitialState(options) {
       },
       customAttributes: [],
       note: false,
-      title: wp.hooks ? wp.hooks.applyFilters('default.cart.title', 'Shopping cart') : 'Shopping cart',
-      checkoutText: wp.hooks ? wp.hooks.applyFilters('default.cart.checkout.text', 'Begin checkout') : 'Begin checkout'
+      title: typeof wp !== 'undefined' && wp.hooks ? wp.hooks.applyFilters('default.cart.title', 'Shopping cart') : 'Shopping cart',
+      checkoutText: typeof wp !== 'undefined' && wp.hooks ? wp.hooks.applyFilters('default.cart.checkout.text', 'Begin checkout') : 'Begin checkout'
    }
 }
 

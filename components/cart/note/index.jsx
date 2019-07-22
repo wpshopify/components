@@ -18,7 +18,7 @@ function CartNote() {
          return
       }
 
-      if (wp.hooks) {
+      if (typeof wp !== 'undefined' && wp.hooks) {
          wp.hooks.doAction('on.checkout.note', debouncedValue)
       }
       /* @if NODE_ENV='pro' */

@@ -50,15 +50,15 @@ function StorefrontOptionsWrapper() {
    }, [])
 
    function getTagsHeading() {
-      return wp.hooks ? wp.hooks.applyFilters('default.storefront.tags.heading', 'Tags') : 'Tags'
+      return typeof wp !== 'undefined' && wp.hooks ? wp.hooks.applyFilters('default.storefront.tags.heading', 'Tags') : 'Tags'
    }
 
    function getVendorsHeading() {
-      return wp.hooks ? wp.hooks.applyFilters('default.storefront.vendors.heading', 'Vendors') : 'Vendors'
+      return typeof wp !== 'undefined' && wp.hooks ? wp.hooks.applyFilters('default.storefront.vendors.heading', 'Vendors') : 'Vendors'
    }
 
    function getTypesHeading() {
-      return wp.hooks ? wp.hooks.applyFilters('default.storefront.types.heading', 'Types') : 'Types'
+      return typeof wp !== 'undefined' && wp.hooks ? wp.hooks.applyFilters('default.storefront.types.heading', 'Types') : 'Types'
    }
 
    return usePortal(

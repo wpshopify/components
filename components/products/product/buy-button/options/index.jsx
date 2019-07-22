@@ -74,7 +74,7 @@ function ProductOptions() {
             }
          })
 
-         if (wp.hooks) {
+         if (typeof wp !== 'undefined' && wp.hooks) {
             wp.hooks.doAction('before.product.addToCart', buyButtonState)
          }
       } else {

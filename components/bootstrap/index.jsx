@@ -10,7 +10,7 @@ function Bootstrap({ children }) {
 
    function setReady() {
       // App is ready to go
-      if (wp.hooks) {
+      if (typeof wp !== 'undefined' && wp.hooks) {
          wp.hooks.doAction('after.ready', shopState.settings)
       }
 
@@ -24,10 +24,15 @@ function Bootstrap({ children }) {
    */
    async function bootstrapShop() {
       // If running WP less < 5.0, polyfill the hooks
-      if (wp.hooks) {
+      if (typeof wp !== 'undefined' && wp.hooks) {
          wp.hooks.doAction('before.ready', shopState.settings)
       } else {
-         wp.hooks = createHooks()
+         if (typeof wp === 'undefined') {
+            window.wp = {}
+            wp.hooks = createHooks()
+         } else {
+            wp.hooks = createHooks()
+         }
       }
 
       var [instancesErrorMsg, instances] = await to(buildInstances())

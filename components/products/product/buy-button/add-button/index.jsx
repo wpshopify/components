@@ -48,7 +48,7 @@ function ProductAddButton() {
          const lineItem = { variantId: variant.id, quantity: buyButtonState.quantity }
          const productVariant = addProductDetailsToVariant(variant, buyButtonState.product)
 
-         if (wp.hooks) {
+         if (typeof wp !== 'undefined' && wp.hooks) {
             wp.hooks.doAction('product.addToCart', {
                checkoutId: shopState.checkoutId,
                lineItems: [lineItem],
@@ -60,7 +60,7 @@ function ProductAddButton() {
          buyButtonDispatch({ type: 'REMOVE_SELECTED_OPTIONS' })
          productDispatch({ type: 'SET_ADDED_VARIANT', payload: productVariant })
 
-         if (wp.hooks) {
+         if (typeof wp !== 'undefined' && wp.hooks) {
             wp.hooks.doAction('on.product.addToCart', lineItem, productVariant)
          }
       }

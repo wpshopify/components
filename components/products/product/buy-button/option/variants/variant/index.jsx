@@ -23,7 +23,7 @@ function ProductVariant({ variant }) {
       productOptionDispatch({ type: 'SET_IS_OPTION_SELECTED', payload: true })
       productOptionDispatch({ type: 'SET_SELECTED_OPTION', payload: selectedVariant })
 
-      if (wp.hooks) {
+      if (typeof wp !== 'undefined' && wp.hooks) {
          wp.hooks.doAction('on.product.variant.selection', selectedVariant, productOptionState)
       }
    }

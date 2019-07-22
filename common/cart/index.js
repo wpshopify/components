@@ -23,7 +23,7 @@ function openCart() {
    let cartElement = document.querySelector('.wps-cart')
    cartElement.classList.add('wps-cart-is-showing')
 
-   if (wp.hooks) {
+   if (typeof wp !== 'undefined' && wp.hooks) {
       wp.hooks.doAction('on.cart.open', cartElement)
    }
 }
@@ -32,7 +32,7 @@ function closeCart() {
    let cartElement = document.querySelector('.wps-cart')
    cartElement.classList.remove('wps-cart-is-showing')
 
-   if (wp.hooks) {
+   if (typeof wp !== 'undefined' && wp.hooks) {
       wp.hooks.doAction('on.cart.close', cartElement)
    }
 }

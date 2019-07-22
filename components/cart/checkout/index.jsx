@@ -57,7 +57,7 @@ function CartCheckout() {
       cartDispatch({ type: 'UPDATE_NOTICES', payload: [] })
       cartDispatch({ type: 'SET_IS_CHECKING_OUT', payload: true })
 
-      if (wp.hooks) {
+      if (typeof wp !== 'undefined' && wp.hooks) {
          wp.hooks.doAction('on.checkout', cartState.checkoutCache)
       }
 

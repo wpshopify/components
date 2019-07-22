@@ -23,7 +23,7 @@ function ProductTitle() {
 
    function getTitleClass() {
       const defaultVal = 'wps-products-title'
-      return wp.hooks ? wp.hooks.applyFilters('product.title.class', defaultVal) : defaultVal
+      return typeof wp !== 'undefined' && wp.hooks ? wp.hooks.applyFilters('product.title.class', defaultVal) : defaultVal
    }
 
    return usePortal(
