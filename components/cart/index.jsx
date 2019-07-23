@@ -3,7 +3,7 @@ import { CartProvider } from './_state/provider'
 import { ShopContext } from '../shop/_state/context'
 // import { CartWrapper } from './wrapper'
 
-const CartWrapper = React.lazy(() => import('./wrapper'))
+const CartWrapper = React.lazy(() => import(/* webpackChunkName: 'CartWrapper' */ './wrapper'))
 
 function Cart({ options }) {
    const [shopState, shopDispatch] = useContext(ShopContext)

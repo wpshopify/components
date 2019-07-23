@@ -10,10 +10,10 @@ import isEmpty from 'lodash/isEmpty'
 import { getProductIdsFromLineItems } from '/Users/andrew/www/devil/devilbox-new/data/www/wpshopify-api'
 import to from 'await-to-js'
 
-const CartHeader = React.lazy(() => import('../header'))
-const CartContents = React.lazy(() => import('../contents'))
-const CartFooter = React.lazy(() => import('../footer'))
-const CartButtons = React.lazy(() => import('../buttons'))
+const CartHeader = React.lazy(() => import(/* webpackChunkName: 'CartHeader' */ '../header'))
+const CartContents = React.lazy(() => import(/* webpackChunkName: 'CartContents' */ '../contents'))
+const CartFooter = React.lazy(() => import(/* webpackChunkName: 'CartFooter' */ '../footer'))
+const CartButtons = React.lazy(() => import(/* webpackChunkName: 'CartButtons' */ '../buttons'))
 
 function CartWrapper() {
    const [cartState, cartDispatch] = useContext(CartContext)

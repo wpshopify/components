@@ -21,9 +21,10 @@ function CartNote() {
       if (typeof wp !== 'undefined' && wp.hooks) {
          wp.hooks.doAction('on.checkout.note', debouncedValue)
       }
-      /* @if NODE_ENV='pro' */
-      shopDispatch({ type: 'SET_CHECKOUT_NOTE', payload: debouncedValue })
-      /* @endif */
+
+      if (WP_Shopify.misc.isPro) {
+         shopDispatch({ type: 'SET_CHECKOUT_NOTE', payload: debouncedValue })
+      }
    }, [debouncedValue])
 
    return (

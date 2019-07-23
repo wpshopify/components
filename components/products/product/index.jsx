@@ -4,11 +4,11 @@ import { ProductProvider } from './_state/provider'
 import { isShowingComponent } from '../../../common/components'
 import { itemWidthClass } from '../../../common/utils'
 
-const ProductTitle = React.lazy(() => import('./title'))
-const ProductPricing = React.lazy(() => import('./pricing'))
-const ProductDescription = React.lazy(() => import('./description'))
-const ProductBuyButton = React.lazy(() => import('./buy-button'))
-const ProductImages = React.lazy(() => import('./images'))
+const ProductTitle = React.lazy(() => import(/* webpackChunkName: 'ProductTitle' */ './title'))
+const ProductPricing = React.lazy(() => import(/* webpackChunkName: 'ProductPricing' */ './pricing'))
+const ProductDescription = React.lazy(() => import(/* webpackChunkName: 'ProductDescription' */ './description'))
+const ProductBuyButton = React.lazy(() => import(/* webpackChunkName: 'ProductBuyButton' */ './buy-button'))
+const ProductImages = React.lazy(() => import(/* webpackChunkName: 'ProductImages' */ './images'))
 
 function Product({ payload }) {
    const [itemsState] = useContext(ItemsContext)

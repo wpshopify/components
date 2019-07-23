@@ -73,8 +73,7 @@ function CartCheckout() {
          return cartDispatch({ type: 'UPDATE_NOTICES', payload: { type: 'error', message: 'No line items exist ' } })
       }
 
-      /* @if NODE_ENV='pro' */
-      if (!isEmpty(cartState.customAttributes) || !isEmpty(cartState.note)) {
+      if ((WP_Shopify.misc.isPro && !isEmpty(cartState.customAttributes)) || !isEmpty(cartState.note)) {
          const [errAttr, resp] = await to(
             updateCheckoutAttributes({
                customAttributes: cartState.customAttributes,
@@ -89,7 +88,6 @@ function CartCheckout() {
 
          return checkoutRedirect(resp)
       }
-      /* @endif */
 
       checkoutRedirect(success)
    }

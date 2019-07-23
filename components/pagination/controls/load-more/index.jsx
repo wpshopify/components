@@ -22,8 +22,10 @@ function PaginationLoadMore({ miscDispatch }) {
       fetchNextItems(itemsState, itemsDispatch, miscDispatch)
    }
 
-   /* @if NODE_ENV='pro' */
    useEffect(() => {
+      if (!WP_Shopify.misc.isPro) {
+         return
+      }
       if (!itemsState.componentOptions.infiniteScroll) {
          return () => (inView = false)
       }
@@ -32,7 +34,6 @@ function PaginationLoadMore({ miscDispatch }) {
          onNextPage()
       }
    }, [inView])
-   /* @endif */
 
    function shouldShowLoadMore() {
       if (isFirstRender.current) {

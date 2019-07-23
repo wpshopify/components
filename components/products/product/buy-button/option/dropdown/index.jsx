@@ -8,7 +8,7 @@ import find from 'lodash/find'
 import isEmpty from 'lodash/isEmpty'
 import Tippy from '@tippy.js/react'
 
-const ProductOptionTrigger = React.lazy(() => import('../trigger'))
+const ProductOptionTrigger = React.lazy(() => import(/* webpackChunkName: 'ProductOptionTrigger' */ '../trigger'))
 
 function ProductOptionDropdown() {
    const [buyButtonState, buyButtonDispatch] = useContext(ProductBuyButtonContext)

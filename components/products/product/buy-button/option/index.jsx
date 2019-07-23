@@ -1,6 +1,6 @@
 import React, { useRef } from 'react'
 import { ProductOptionProvider } from './_state/provider.jsx'
-const ProductOptionDropdown = React.lazy(() => import('./dropdown'))
+const ProductOptionDropdown = React.lazy(() => import(/* webpackChunkName: 'ProductOptionDropdown' */ './dropdown'))
 
 function ProductOption({ option }) {
    const dropdownElement = useRef()
