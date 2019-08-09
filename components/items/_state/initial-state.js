@@ -50,7 +50,8 @@ function ItemsInitialState(options = {}) {
       noResultsText: options.componentOptions.noResultsText ? options.componentOptions.noResultsText : 'No items left',
       isLoading: false,
       hasMoreItems: checkHasMore(options),
-      notices: []
+      notices: [],
+      lastQuery: options.componentQueryParams ? options.componentQueryParams.query : false
    }
 }
 

@@ -2,37 +2,21 @@ import React, { useContext } from 'react'
 import { IconRemove } from '../../../common/icons/icon-remove.jsx'
 import { StorefrontContext } from '../_state/context'
 import { useTransition, animated } from 'react-spring'
-import { updateSelectionList } from '../../../common/selections'
+import { updateSelectionList, createSelectionsOfType, buildNewSelection } from '../../../common/selections'
 
 function inSelection(selectionsArray, valToSearchFor) {
    return selectionsArray.find(element => element === valToSearchFor)
 }
 
-function typeSelectionsList(itemType, typeSelections) {
-   const temp = {}
-
-   temp[itemType] = typeSelections
-
-   return temp
-}
-
 function StorefrontSelectionsValue({ selectionType, val }) {
    const [storefrontState, storefrontDispatch] = useContext(StorefrontContext)
 
-   function buildNewSelection() {
-      return updateSelectionList({
-         isSelected: false,
-         currentList: storefrontState.selections[selectionType],
-         selectedValue: val
-      })
-   }
-
    function onClick(val) {
-      const newList = buildNewSelection()
+      const newList = buildNewSelection(val, selectionType, true, storefrontState.selections)
 
       storefrontDispatch({
          type: 'SET_SELECTIONS',
-         payload: typeSelectionsList(selectionType, newList)
+         payload: createSelectionsOfType(selectionType, newList)
       })
 
       storefrontDispatch({

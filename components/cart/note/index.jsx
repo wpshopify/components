@@ -1,8 +1,10 @@
 import React, { useContext, useState, useEffect, useRef } from 'react'
 import { ShopContext } from '../../shop/_state/context'
+import { CartContext } from '../_state/context'
 import { useDebounce } from 'use-debounce'
 
 function CartNote() {
+   const [cartState, cartDispatch] = useContext(CartContext)
    const [shopState, shopDispatch] = useContext(ShopContext)
    const [noteValue, setNoteValue] = useState('')
    const [debouncedValue] = useDebounce(noteValue, 250)
@@ -23,7 +25,7 @@ function CartNote() {
       }
 
       if (WP_Shopify.misc.isPro) {
-         shopDispatch({ type: 'SET_CHECKOUT_NOTE', payload: debouncedValue })
+         cartDispatch({ type: 'SET_CHECKOUT_NOTE', payload: debouncedValue })
       }
    }, [debouncedValue])
 

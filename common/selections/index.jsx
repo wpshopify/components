@@ -1,70 +1,41 @@
-import { useState } from 'react';
+import { useState } from 'react'
 
-import union from 'lodash/union';
-import without from 'lodash/without';
-import difference from 'lodash/difference';
-import isEmpty from 'lodash/isEmpty';
-import hasIn from 'lodash/hasIn';
-import { objectIsEmpty } from '../utils';
-
+import union from 'lodash/union'
+import without from 'lodash/without'
+import difference from 'lodash/difference'
+import isEmpty from 'lodash/isEmpty'
+import hasIn from 'lodash/hasIn'
+import { objectIsEmpty } from '../utils'
 
 function updateSelectionList(params) {
-
    if (!params.isSelected) {
-      return without(params.currentList, params.selectedValue);
+      return without(params.currentList, params.selectedValue)
    }
 
-   return union([params.selectedValue], params.currentList);
-
+   return union([params.selectedValue], params.currentList)
 }
 
-
 function isSelectionsOfTypeEmpty(selections, type) {
-   return !selections[type];
+   return !selections[type]
 }
 
 function findDeselectedValue(localSelectedState, globalSelectionsTypeList) {
-   return difference(localSelectedState, globalSelectionsTypeList);
+   return difference(localSelectedState, globalSelectionsTypeList)
 }
 
 function foundDeselectedValue(removedValue, localValue) {
-   return removedValue[0] === localValue;
+   return removedValue[0] === localValue
 }
-
-
 
 function getSelectionTypes(selections) {
-
-   var filterTypes = Object.keys(selections);
+   var filterTypes = Object.keys(selections)
 
    if (isEmpty(filterTypes) || objectIsEmpty(selections)) {
-      return [];
+      return []
    }
 
-   return filterTypes;
-
+   return filterTypes
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 /*
 
@@ -72,33 +43,41 @@ When selections are removed ...
 
 */
 function isCurrentlySelected(selections, valueSelected, type) {
-
-   var selected = false;
+   var selected = false
 
    if (isEmpty(selections)) {
-      selected = false;
-
+      selected = false
    } else {
-
       if (!hasIn(selections, type)) {
-         selected = false;
-
+         selected = false
       } else if (selections[type].find(value => valueSelected === value)) {
-         selected = true;
+         selected = true
       }
-
    }
 
    return selected
-
 }
 
+function createSelectionsOfType(itemType, typeSelections) {
+   const temp = {}
 
-export {
-   updateSelectionList,
-   isSelectionsOfTypeEmpty,
-   findDeselectedValue,
-   foundDeselectedValue,
-   isCurrentlySelected,
-   getSelectionTypes
+   temp[itemType] = typeSelections
+
+   return temp
 }
+
+function buildNewSelection(itemValue, itemType, isSelected, existingSelections) {
+   if (!itemValue) {
+      return updateSelectionList({
+         currentList: existingSelections[itemType]
+      })
+   }
+
+   return updateSelectionList({
+      isSelected: !isSelected,
+      currentList: existingSelections[itemType],
+      selectedValue: itemValue
+   })
+}
+
+export { updateSelectionList, isSelectionsOfTypeEmpty, findDeselectedValue, foundDeselectedValue, isCurrentlySelected, getSelectionTypes, createSelectionsOfType, buildNewSelection }

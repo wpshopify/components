@@ -10,7 +10,6 @@ import { Link } from '../../../../link'
 import { hasSinglePage } from '../../../../../common/settings'
 import { onSinglePage } from '../../../../../common/components'
 
-
 function ProductImage({ image, isFeatured }) {
    const imageRef = useRef()
    const [shopState] = useContext(ShopContext)
@@ -54,7 +53,7 @@ function ProductImage({ image, isFeatured }) {
    }
 
    function isShowingLink() {
-      return hasSinglePage() && !onSinglePage(itemsState) && !productState.hasManyImages
+      return hasSinglePage() && !onSinglePage(itemsState) && isFeatured
    }
 
    useEffect(() => {
@@ -65,32 +64,35 @@ function ProductImage({ image, isFeatured }) {
       }
    }, [image])
 
-   
    /*
    
    TODO: Fix duplication here. For some reason the Drift image zoom breaks if we move 
    the image tag into a resuable component. Probably something to do with ref forwarding.
 
    */
-   return isShowingLink() ? (
-      productImageSrc && 
-      <Link payload={productState.payload} type='products' shop={shopState}>
-         <Img imageRef={imageRef} image={image} productImageSrc={productImageSrc} shopState={shopState} />
-      </Link>
-      
-   ) : (
-      productImageSrc && 
-      <Img imageRef={imageRef} image={image} productImageSrc={productImageSrc} shopState={shopState} />
-   )
+   return isShowingLink()
+      ? productImageSrc && (
+           <Link payload={productState.payload} type='products' shop={shopState}>
+              <Img imageRef={imageRef} image={image} productImageSrc={productImageSrc} shopState={shopState} />
+           </Link>
+        )
+      : productImageSrc && <Img imageRef={imageRef} image={image} productImageSrc={productImageSrc} shopState={shopState} />
 }
 
 function Img(props) {
    return (
       <>
-         <img ref={props.imageRef} itemProp='image' src={props.productImageSrc} className='wps-product-image' alt={props.image.altText} data-wps-is-ready={props.shopState.isShopReady ? '1' : '0'} data-zoom={props.image.src} />
+         <img
+            ref={props.imageRef}
+            itemProp='image'
+            src={props.productImageSrc}
+            className='wps-product-image'
+            alt={props.image.altText}
+            data-wps-is-ready={props.shopState.isShopReady ? '1' : '0'}
+            data-zoom={props.image.src}
+         />
       </>
    )
 }
-
 
 export { ProductImage }

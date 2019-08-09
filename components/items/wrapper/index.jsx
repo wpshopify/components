@@ -23,9 +23,11 @@ function fetchNextItems(itemsState, itemsDispatch, miscDispatch = false) {
       itemsDispatch({ type: 'SET_IS_LOADING', payload: true })
 
       const [resultsError, results] = await to(fetchNextPage(itemsState.payload))
+      console.log('fetchNextPage results', results)
 
       if (resultsError) {
          const [initialError, initialResponse] = await to(resendInitialQuery(itemsState))
+         console.log('resendInitialQuery', initialResponse)
 
          if (initialError) {
             itemsDispatch({ type: 'UPDATE_NOTICES', payload: { type: 'error', message: initialError } })
@@ -100,12 +102,23 @@ function ItemsWrapper({ children, miscDispatch }) {
    }
 
    useEffect(() => {
+      console.log('1111111111 itemsState.queryParams 00000000')
       if (isFirstRender.current) {
+         console.log('1111111111 itemsState.queryParams FIRST')
          isFirstRender.current = false
          return
       }
 
-      fetchNewItems(miscDispatch)
+      console.log('itemsState.lastQuery', itemsState.lastQuery)
+      console.log('itemsState.queryParams.query', itemsState.queryParams.query)
+
+      if (itemsState.lastQuery !== itemsState.queryParams.query) {
+         console.log('THEY DONT EQUAL, FETCHING NEW API REQUEST')
+
+         fetchNewItems(miscDispatch)
+      } else {
+         console.log("THEY'RE EQUAL")
+      }
    }, [itemsState.queryParams])
 
    return <>{children}</>

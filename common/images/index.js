@@ -174,12 +174,13 @@ function addCustomScaleToImageUrl(settings, imageUrl) {
 function isPlaceholder(src) {
    return src.includes('cdn.shopify.com/s/files/1/0533/2089/files/placeholder')
 }
+
 /*
 
 $settings is an array with this structure:
 
 [
-   'src'			=> 'https://cdn.shopify.com/s/files/1/1405/0664.jpg',
+   'src'			=> 'https://domain.com/s/files/1/1405/0664.jpg',
    'width'		=> 300
    'height'	=> 0
    'crop'		=> 'none'

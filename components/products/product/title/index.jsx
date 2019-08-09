@@ -8,13 +8,8 @@ import { Link } from '../../../link'
 import { hasSinglePage } from '../../../../common/settings'
 import { onSinglePage } from '../../../../common/components'
 
-function Title(props) {
-   return (
-      <h2 itemProp='name' className={props.classList} data-wps-is-ready={props.isShopReady}>
-         {props.title}
-      </h2>
-   )
-}
+/** @jsx jsx */
+import { jsx } from '@emotion/core'
 
 function ProductTitle() {
    const [shopState] = useContext(ShopContext)
@@ -37,6 +32,14 @@ function ProductTitle() {
          )}
       </div>,
       findPortalElement(productState.element, itemsState.componentOptions.dropzoneProductTitle)
+   )
+}
+
+function Title(props) {
+   return (
+      <h2 itemProp='name' className={props.classList} data-wps-is-ready={props.isShopReady} css={{ color: '#111' }}>
+         {props.title}
+      </h2>
    )
 }
 

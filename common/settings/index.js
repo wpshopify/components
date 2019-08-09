@@ -31,16 +31,20 @@ function isSyncingPosts() {
    return WP_Shopify.settings.isSyncingPosts
 }
 
+function isDisablingDefaultPages() {
+   return WP_Shopify.settings.disableDefaultPages
+}
+
 function hasSinglePage() {
-   if (isLiteSync()) {
-      return false
+   if (singleIsShopify()) {
+      return true
    }
 
-   if (!singleIsShopify() && !isSyncingPosts()) {
-      return false
+   if (!isDisablingDefaultPages() && isSyncingPosts()) {
+      return true
    }
 
-   return true
+   return false
 }
 
 function shopHasInfo(shop) {

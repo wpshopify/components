@@ -48,6 +48,7 @@ function StorefrontReducer(state, action) {
          }
       }
 
+      // Is called dynamically
       case 'SET_SELECTED_TAGS': {
          return {
             ...state,
@@ -55,6 +56,7 @@ function StorefrontReducer(state, action) {
          }
       }
 
+      // Is called dynamically
       case 'SET_SELECTED_TYPES': {
          return {
             ...state,
@@ -62,6 +64,7 @@ function StorefrontReducer(state, action) {
          }
       }
 
+      // Is called dynamically
       case 'SET_SELECTED_VENDORS': {
          return {
             ...state,

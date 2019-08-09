@@ -1,7 +1,6 @@
 import React, { useEffect, useContext } from 'react'
 import { createHooks } from '@wordpress/hooks'
 import { ShopContext } from '../shop/_state/context'
-import { bootstrapLocalCurrencyRequirements } from '../../common/pricing/currency'
 import { buildInstances } from '/Users/andrew/www/devil/devilbox-new/data/www/wpshopify-api'
 import to from 'await-to-js'
 
@@ -93,13 +92,6 @@ function Bootstrap({ children }) {
 
       shopDispatch({ type: 'SET_CHECKOUT_ID', payload: instances.checkout.id })
       shopDispatch({ type: 'SET_SHOP_INFO', payload: instances.shop })
-
-      // var [currencyError, currencyResp] = await to(bootstrapLocalCurrencyRequirements())
-
-      // if (currencyError) {
-      //    console.error('currencyError!', currencyError)
-      //    return
-      // }
 
       setReady()
    }

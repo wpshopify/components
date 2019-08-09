@@ -1,4 +1,4 @@
-import geolocator from 'geolocator'
+// import geolocator from 'geolocator'
 import codes from 'country-data'
 import money from 'money'
 import to from 'await-to-js'

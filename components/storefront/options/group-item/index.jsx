@@ -1,18 +1,7 @@
 import React, { useContext, useRef, useState, useEffect } from 'react'
 import { StorefrontContext } from '../../_state/context'
-import { updateSelectionList, isCurrentlySelected } from '../../../../common/selections'
-
-function capitalizeFirstLetter(string) {
-   return string.toLowerCase().replace(/^\w/, c => c.toUpperCase())
-}
-
-function typeSelectionsList(itemType, typeSelections) {
-   const temp = {}
-
-   temp[itemType] = typeSelections
-
-   return temp
-}
+import { updateSelectionList, isCurrentlySelected, createSelectionsOfType, buildNewSelection } from '../../../../common/selections'
+import { capitalizeFirstLetter } from '../../../../common/utils'
 
 function StorefrontFilterOptionsGroupItem({ itemValue, itemType, displayStyle }) {
    const [storefrontState, storefrontDispatch] = useContext(StorefrontContext)
@@ -20,39 +9,19 @@ function StorefrontFilterOptionsGroupItem({ itemValue, itemType, displayStyle })
    const [isSelected, setIsSelected] = useState(false)
    const isFirstRender = useRef(true)
 
-   function buildNewSelection() {
-      if (!itemValue) {
-         // return false
-         return updateSelectionList({
-            currentList: storefrontState.selections[itemType]
-         })
-      }
-
-      return updateSelectionList({
-         isSelected: !isSelected,
-         currentList: storefrontState.selections[itemType],
-         selectedValue: itemValue
-      })
-   }
-
    useEffect(() => {
-      if (isFirstRender.current) {
-         isFirstRender.current = false
-         return
-      }
-
       setIsSelected(isCurrentlySelected(storefrontState.selections, itemValue, itemType))
    }, [storefrontState['selected' + capitalizeFirstLetter(itemType)]])
 
    function onClick() {
       setIsSelected(!isSelected)
 
-      const newList = buildNewSelection()
+      const newList = buildNewSelection(itemValue, itemType, isSelected, storefrontState.selections)
 
       if (newList) {
          storefrontDispatch({
             type: 'SET_SELECTIONS',
-            payload: typeSelectionsList(itemType, newList)
+            payload: createSelectionsOfType(itemType, newList)
          })
 
          storefrontDispatch({
