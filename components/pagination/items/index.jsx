@@ -1,4 +1,4 @@
-import React, { useContext, useEffect } from 'react'
+import React, { useContext, useEffect, useRef } from 'react'
 import { PaginationContext } from '../_state/context'
 import { ItemsContext } from '../../items/_state/context'
 import { Notice } from '../../notice'
@@ -17,6 +17,9 @@ function PaginationItems({ children, alignHeight }) {
    return (
       <section className={'wps-items-wrapper container-fluid'}>
          <section className='wps-items wps-items-list row' data-item-is-loading={itemsState.isLoading} data-is-align-height={alignHeight}>
+            {/* <Masonry breakpointCols={3} className='my-masonry-grid' columnClassName='my-masonry-grid_column'>
+               
+            </Masonry> */}
             {mapPayload()}
          </section>
 

@@ -80,6 +80,18 @@ function animeStagger(elements, completeFn = false) {
    })
 }
 
+function animeStaggerFadeIn(elements, completeFn = false) {
+   return anime({
+      targets: elements,
+      opacity: [0, 1],
+      scale: [0.6, 1],
+      duration: 350,
+      easing: 'easeOutQuart',
+      delay: anime.stagger(100, { start: 150 }),
+      complete: completeFn
+   })
+}
+
 function stagger(elements, cb = false, currentlyAnimating) {
    if (currentlyAnimating) {
       return
@@ -144,4 +156,4 @@ function useAnime(animeFn, elementExists = true) {
    return animate
 }
 
-export { pulse, slideInRight, slideOutRight, stagger, useAnime, fadeOutIn, animeStagger }
+export { pulse, slideInRight, slideOutRight, stagger, useAnime, fadeOutIn, animeStagger, animeStaggerFadeIn }

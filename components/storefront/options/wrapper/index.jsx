@@ -1,6 +1,8 @@
 import React, { useContext, useEffect } from 'react'
 import to from 'await-to-js'
 import assign from 'lodash/assign'
+import mapValues from 'lodash/mapValues'
+import map from 'lodash/map'
 import { usePortal } from '../../../../common/hooks'
 import { getFilterData } from '/Users/andrew/www/devil/devilbox-new/data/www/wpshopify-api'
 import { StorefrontContext } from '../../_state/context'
@@ -21,6 +23,12 @@ function getDataFromResponse(response) {
    return response.map(item => item.data)
 }
 
+function lowercaseFilterOptions(allFilteredData) {
+   return mapValues(allFilteredData, value => {
+      return map(value, val => val.toLowerCase())
+   })
+}
+
 function optionsErrorMessage() {
    return '. Occurred when fetching available filter options. Please clear your browser cache and reload the page.'
 }
@@ -38,7 +46,7 @@ function StorefrontOptionsWrapper() {
       } else {
          const allFilteredData = formatFilterOptions(getDataFromResponse(respData))
 
-         storefrontOptionsDispatch({ type: 'SET_FILTER_OPTIONS', payload: allFilteredData })
+         storefrontOptionsDispatch({ type: 'SET_FILTER_OPTIONS', payload: lowercaseFilterOptions(allFilteredData) })
       }
 
       storefrontOptionsDispatch({ type: 'SET_IS_BOOTSTRAPPING', payload: false })

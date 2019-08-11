@@ -69,9 +69,6 @@ function StorefrontSelections() {
                return
             }
 
-            console.log('itemsState.componentOptions.connective', itemsState.componentOptions.connective)
-            console.log('itemsState.componentOptions.connective.toUpperCase()')
-
             return selections[filterType].map(function(value, i, arr) {
                if (arr.length - 1 !== i) {
                   var connective = ' ' + itemsState.componentOptions.connective.toUpperCase()
@@ -91,10 +88,11 @@ function StorefrontSelections() {
       }
 
       const normalizedSelects = normalizeKeysForShopifyQuery(selections)
-      console.log('normalizedSelects', normalizedSelects)
 
       let newQuery = stringifyFilterTypes(combineFilterTypes(normalizedSelects, Object.keys(normalizedSelects)))
+
       console.log('newQuery', newQuery)
+
       if (newQuery === '') {
          newQuery = '*'
       }
@@ -120,7 +118,7 @@ function StorefrontSelections() {
                key = key + 's'
             }
 
-            return (result[key] = map(commaToArray(value), val => capitalizeFirstLetter(val)))
+            return (result[key] = map(commaToArray(value), val => val.toLowerCase()))
          },
          {}
       )
@@ -152,9 +150,16 @@ function StorefrontSelections() {
          return
       }
 
-      // console.log('updateFetchParamsQuery()', updateFetchParamsQuery())
-      // console.log('storefrontState', storefrontState)
-      // console.log('itemsState', itemsState)
+      console.log('itemsState.lastQuery', itemsState.lastQuery)
+      console.log('itemsState.queryParams.query', itemsState.queryParams.query)
+
+      // if (itemsState.lastQuery !== itemsState.queryParams.query) {
+      //    console.log('...... THEY DONT EQUAL, FETCHING NEW API REQUEST')
+
+      //    itemsDispatch({ type: 'SET_QUERY_PARAMS', payload: updateFetchParamsQuery() })
+      // } else {
+      //    console.log("...... THEY'RE EQUAL")
+      // }
 
       itemsDispatch({ type: 'SET_QUERY_PARAMS', payload: updateFetchParamsQuery() })
    }, [storefrontState.selections])

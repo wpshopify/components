@@ -1,12 +1,31 @@
-import React, { useContext } from 'react'
+import React, { useContext, useEffect } from 'react'
 import { usePortal } from '../../../common/hooks'
 import { ItemsContext } from '../../items/_state/context'
+import { ShopContext } from '../../shop/_state/context'
 import { StorefrontContext } from '../_state/context'
 import { Products } from '../../products'
+import Masonry from 'react-masonry-css'
+import mixitup from 'mixitup'
+import { animeStaggerFadeIn } from '../../../common/animations'
 
 function StorefrontItems() {
+   const [shopState] = useContext(ShopContext)
    const [itemsState] = useContext(ItemsContext)
    const [storefrontState] = useContext(StorefrontContext)
+
+   useEffect(
+      function() {
+         if (itemsState.isLoading) {
+            return
+         }
+
+         console.log('!!!!!!!!!!!!!!!!!!!!!  ', itemsState)
+         console.log('!!!!!!!!!!!!!!!!!!!!! storefrontState', storefrontState)
+
+         animeStaggerFadeIn(document.querySelectorAll('.wps-items .wps-item'))
+      },
+      [shopState.isShopReady, itemsState.isLoading]
+   )
 
    function buildOptions() {
       return {

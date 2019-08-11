@@ -76,7 +76,7 @@ function buildNewSelection(itemValue, itemType, isSelected, existingSelections) 
    return updateSelectionList({
       isSelected: !isSelected,
       currentList: existingSelections[itemType],
-      selectedValue: itemValue
+      selectedValue: itemValue.toLowerCase()
    })
 }
 

@@ -99,6 +99,16 @@ function ItemsReducer(state, action) {
          }
       }
 
+      case 'UPDATE_PAYLOAD_CACHE': {
+         console.log('UPDATE_PAYLOAD_CACHE :: state.payloadCache', state.payloadCache)
+         console.log('UPDATE_PAYLOAD_CACHE :: action.payload', action.payload)
+
+         return {
+            ...state,
+            payloadCache: update(state.payloadCache, { $merge: action.payload })
+         }
+      }
+
       case 'UPDATE_NOTICES': {
          let updatedNotices = state.notices
 

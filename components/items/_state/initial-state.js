@@ -1,3 +1,5 @@
+import { hashQueryParams } from '../../../common/utils'
+
 function checkHasMore(options) {
    if (!options.componentPayload || !options.componentOptions.pageSize || !options.componentOptions.pagination) {
       return false
@@ -36,6 +38,17 @@ function checkHasMore(options) {
    }
 }
 
+function hashInitialPayloadCache(queryParams, payload) {
+   let initalPayloadCache = {}
+
+   if (payload) {
+      var hashId = hashQueryParams(queryParams)
+      initalPayloadCache[hashId] = payload
+   }
+
+   return initalPayloadCache
+}
+
 function ItemsInitialState(options = {}) {
    return {
       componentOptions: options.componentOptions,
@@ -51,7 +64,8 @@ function ItemsInitialState(options = {}) {
       isLoading: false,
       hasMoreItems: checkHasMore(options),
       notices: [],
-      lastQuery: options.componentQueryParams ? options.componentQueryParams.query : false
+      lastQuery: options.componentQueryParams ? options.componentQueryParams.query : false,
+      payloadCache: hashInitialPayloadCache(options.componentQueryParams, options.componentPayload)
    }
 }
 

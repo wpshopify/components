@@ -1,6 +1,7 @@
 import React, { useContext, useRef, useEffect } from 'react'
 import { ItemsContext } from '../_state/context'
 import { ShopContext } from '../../shop/_state/context'
+import { hashQueryParams } from '../../../common/utils'
 import { fetchNextPage, graphQuery } from '/Users/andrew/www/devil/devilbox-new/data/www/wpshopify-api'
 import to from 'await-to-js'
 import isEmpty from 'lodash/isEmpty'
@@ -50,6 +51,7 @@ function fetchNextItems(itemsState, itemsDispatch, miscDispatch = false) {
             if (finalResultsError) {
                itemsDispatch({ type: 'UPDATE_NOTICES', payload: { type: 'error', message: finalResultsError } })
                itemsDispatch({ type: 'SET_IS_LOADING', payload: false })
+
                return reject(initialError)
             } else {
                var nextItems = finalResults.model
@@ -60,6 +62,8 @@ function fetchNextItems(itemsState, itemsDispatch, miscDispatch = false) {
          var nextItems = results.model
          var nextItemsTotal = results.model.length
       }
+
+      console.log('nextItems', nextItems)
 
       itemsDispatch({ type: 'SET_TOTAL_SHOWN', payload: nextItemsTotal })
       itemsDispatch({ type: 'UPDATE_PAYLOAD', payload: nextItems })
@@ -78,47 +82,60 @@ function ItemsWrapper({ children, miscDispatch }) {
    const isFirstRender = useRef(true)
 
    async function fetchNewItems(miscDispatch = false) {
-      itemsDispatch({ type: 'SET_IS_LOADING', payload: true })
-      itemsDispatch({ type: 'UPDATE_NOTICES', payload: [] })
+      var hashCacheId = hashQueryParams(itemsState.queryParams)
 
-      const [resultsError, results] = await to(graphQuery(itemsState.dataType, itemsState.queryParams))
-
-      if (resultsError) {
-         itemsDispatch({ type: 'UPDATE_NOTICES', payload: { type: 'error', message: resultsError } })
-      } else {
-         var newItems = results.model[itemsState.dataType]
-         var newItemsTotal = newItems.length
-
-         itemsDispatch({ type: 'SET_TOTAL_SHOWN', payload: newItemsTotal })
-         itemsDispatch({ type: 'SET_PAYLOAD', payload: newItems })
-         itemsDispatch({ type: 'UPDATE_HAS_MORE_ITEMS', payload: newItemsTotal })
+      if (has(itemsState.payloadCache, hashCacheId)) {
+         itemsDispatch({ type: 'SET_TOTAL_SHOWN', payload: itemsState.payloadCache[hashCacheId].length })
+         itemsDispatch({ type: 'SET_PAYLOAD', payload: itemsState.payloadCache[hashCacheId] })
+         itemsDispatch({ type: 'UPDATE_HAS_MORE_ITEMS', payload: itemsState.payloadCache[hashCacheId].length })
 
          if (miscDispatch) {
-            miscDispatch(newItems)
+            console.log('hasCachedPayload 2')
+            miscDispatch(itemsState.payloadCache)
          }
-      }
+      } else {
+         console.log('hasCachedPayload 3')
 
-      itemsDispatch({ type: 'SET_IS_LOADING', payload: false })
+         itemsDispatch({ type: 'SET_IS_LOADING', payload: true })
+         itemsDispatch({ type: 'UPDATE_NOTICES', payload: [] })
+
+         const [resultsError, results] = await to(graphQuery(itemsState.dataType, itemsState.queryParams))
+
+         if (resultsError) {
+            itemsDispatch({ type: 'UPDATE_NOTICES', payload: { type: 'error', message: resultsError } })
+         } else {
+            var newItems = results.model[itemsState.dataType]
+            var newItemsTotal = newItems.length
+
+            console.log('newItems.length', newItems.length)
+
+            itemsDispatch({ type: 'SET_TOTAL_SHOWN', payload: newItemsTotal })
+            itemsDispatch({ type: 'SET_PAYLOAD', payload: newItems })
+            itemsDispatch({ type: 'UPDATE_HAS_MORE_ITEMS', payload: newItemsTotal })
+
+            if (newItems.length) {
+               let newPayloadCacheAddition = {}
+               newPayloadCacheAddition[hashCacheId] = newItems
+
+               itemsDispatch({ type: 'UPDATE_PAYLOAD_CACHE', payload: newPayloadCacheAddition })
+            }
+
+            if (miscDispatch) {
+               miscDispatch(newItems)
+            }
+         }
+
+         itemsDispatch({ type: 'SET_IS_LOADING', payload: false })
+      }
    }
 
    useEffect(() => {
-      console.log('1111111111 itemsState.queryParams 00000000')
       if (isFirstRender.current) {
-         console.log('1111111111 itemsState.queryParams FIRST')
          isFirstRender.current = false
          return
       }
 
-      console.log('itemsState.lastQuery', itemsState.lastQuery)
-      console.log('itemsState.queryParams.query', itemsState.queryParams.query)
-
-      if (itemsState.lastQuery !== itemsState.queryParams.query) {
-         console.log('THEY DONT EQUAL, FETCHING NEW API REQUEST')
-
-         fetchNewItems(miscDispatch)
-      } else {
-         console.log("THEY'RE EQUAL")
-      }
+      fetchNewItems(miscDispatch)
    }, [itemsState.queryParams])
 
    return <>{children}</>

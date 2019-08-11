@@ -2,6 +2,8 @@ import isEmpty from 'lodash/isEmpty'
 import forOwn from 'lodash/forOwn'
 import without from 'lodash/without'
 import mapKeys from 'lodash/mapKeys'
+import isString from 'lodash/isString'
+import md5 from 'js-md5'
 
 function removeFrom(array, valueToRemove) {
    return without(array, valueToRemove)
@@ -68,4 +70,18 @@ function convertTitleToHandle(title) {
    return title.replace(/\s+/g, '-').toLowerCase()
 }
 
-export { objectIsEmpty, createObj, removeFrom, lowercaseObjKeys, capitalizeFirstLetter, itemWidthClass, findPortalElement, convertTitleToHandle }
+function createStringFromQueryParams(queryParams) {
+   if (isString(queryParams.sortKey)) {
+      var sortKey = queryParams.sortKey
+   } else {
+      var sortKey = queryParams.sortKey.key
+   }
+
+   return queryParams.first + queryParams.query + queryParams.reverse + sortKey
+}
+
+function hashQueryParams(queryParams) {
+   return md5(createStringFromQueryParams(queryParams))
+}
+
+export { objectIsEmpty, createObj, removeFrom, lowercaseObjKeys, capitalizeFirstLetter, itemWidthClass, findPortalElement, convertTitleToHandle, hashQueryParams }
