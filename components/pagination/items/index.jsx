@@ -1,25 +1,33 @@
-import React, { useContext, useEffect, useRef } from 'react'
+import React, { useContext } from 'react'
 import { PaginationContext } from '../_state/context'
 import { ItemsContext } from '../../items/_state/context'
 import { Notice } from '../../notice'
 import uuidv4 from 'uuid/v4'
+// import Masonry from 'react-masonry-css'
 
 function PaginationItems({ children, alignHeight }) {
    const [itemsState] = useContext(ItemsContext)
    const [paginationState] = useContext(PaginationContext)
 
+   function isFirstItem(i, lastPageIndex) {
+      return i === lastPageIndex
+   }
+
    function mapPayload() {
-      return itemsState.payload.map(item => {
-         return React.cloneElement(children, { payload: item, key: uuidv4() })
+      var lastPageIndex = itemsState.payload.length - itemsState.queryParams.first
+
+      return itemsState.payload.map((item, i) => {
+         return React.cloneElement(children, { payload: item, key: uuidv4(), isFirstItem: isFirstItem(i, lastPageIndex) })
       })
    }
 
    return (
       <section className={'wps-items-wrapper container-fluid'}>
          <section className='wps-items wps-items-list row' data-item-is-loading={itemsState.isLoading} data-is-align-height={alignHeight}>
-            {/* <Masonry breakpointCols={3} className='my-masonry-grid' columnClassName='my-masonry-grid_column'>
+            {/* <Masonry className='my-masonry-grid' columnClassName='my-masonry-grid_column'>
                
             </Masonry> */}
+
             {mapPayload()}
          </section>
 

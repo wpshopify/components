@@ -19,10 +19,7 @@ function StorefrontItems() {
             return
          }
 
-         console.log('!!!!!!!!!!!!!!!!!!!!!  ', itemsState)
-         console.log('!!!!!!!!!!!!!!!!!!!!! storefrontState', storefrontState)
-
-         animeStaggerFadeIn(document.querySelectorAll('.wps-items .wps-item'))
+         animeStaggerFadeIn(document.querySelectorAll('.wps-item[data-is-first-item="true"], .wps-item[data-is-first-item="true"] ~ div'))
       },
       [shopState.isShopReady, itemsState.isLoading]
    )

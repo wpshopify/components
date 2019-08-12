@@ -24,6 +24,13 @@ function ProductReducer(state, action) {
          }
       }
 
+      case 'TOGGLE_DROPDOWN': {
+         return {
+            ...state,
+            isDropdownOpen: update(state.isDropdownOpen, { $set: action.payload })
+         }
+      }
+
       default: {
          throw new Error(`Unhandled action type: ${action.type} in ProductReducer`)
       }

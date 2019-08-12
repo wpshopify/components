@@ -1,6 +1,7 @@
 import React, { useContext, useEffect, useRef } from 'react'
 import { ProductVariants } from '../variants'
 import { ProductBuyButtonContext } from '../../_state/context'
+import { ProductContext } from '../../../_state/context'
 import { ProductOptionContext } from '../_state/context'
 // import { ProductOptionTrigger } from '../trigger'
 
@@ -13,6 +14,8 @@ const ProductOptionTrigger = React.lazy(() => import(/* webpackChunkName: 'Produ
 function ProductOptionDropdown() {
    const [buyButtonState, buyButtonDispatch] = useContext(ProductBuyButtonContext)
    const [productOptionState, productOptionDispatch] = useContext(ProductOptionContext)
+   const [productState] = useContext(ProductContext)
+
    const isFirstRender = useRef(true)
 
    // When buyButtonState.availableVariants changes ...

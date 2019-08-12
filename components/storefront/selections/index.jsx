@@ -91,8 +91,6 @@ function StorefrontSelections() {
 
       let newQuery = stringifyFilterTypes(combineFilterTypes(normalizedSelects, Object.keys(normalizedSelects)))
 
-      console.log('newQuery', newQuery)
-
       if (newQuery === '') {
          newQuery = '*'
       }
@@ -101,8 +99,6 @@ function StorefrontSelections() {
    }
 
    function updateFetchParamsQuery() {
-      console.log('updateFetchParamsQuery', storefrontState.selections)
-
       return {
          query: buildQueryStringFromSelections(storefrontState.selections)
       }
@@ -141,25 +137,12 @@ function StorefrontSelections() {
    }
 
    useEffect(() => {
-      console.log('HITTING THISs', isFirstRender.current)
-
       if (isFirstRender.current) {
          setInitialSelections()
 
          isFirstRender.current = false
          return
       }
-
-      console.log('itemsState.lastQuery', itemsState.lastQuery)
-      console.log('itemsState.queryParams.query', itemsState.queryParams.query)
-
-      // if (itemsState.lastQuery !== itemsState.queryParams.query) {
-      //    console.log('...... THEY DONT EQUAL, FETCHING NEW API REQUEST')
-
-      //    itemsDispatch({ type: 'SET_QUERY_PARAMS', payload: updateFetchParamsQuery() })
-      // } else {
-      //    console.log("...... THEY'RE EQUAL")
-      // }
 
       itemsDispatch({ type: 'SET_QUERY_PARAMS', payload: updateFetchParamsQuery() })
    }, [storefrontState.selections])

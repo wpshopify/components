@@ -4,12 +4,14 @@ import { useAnime, pulse } from '../../../../../../common/animations'
 import { ShopContext } from '../../../../../shop/_state/context'
 import { ItemsContext } from '../../../../../items/_state/context'
 import { ProductOptionContext } from '../_state/context'
+import { ProductContext } from '../../../_state/context'
 
 function ProductOptionTrigger() {
    const [shopState] = useContext(ShopContext)
    const [itemsState] = useContext(ItemsContext)
    const [buyButtonState, buyButtonDispatch] = useContext(ProductBuyButtonContext)
    const [productOptionState, productOptionDispatch] = useContext(ProductOptionContext)
+   const [productState, productDispatch] = useContext(ProductContext)
    const dropdownTrigger = useRef()
    const animePulse = useAnime(pulse)
    const isFirstRender = useRef(true)
@@ -20,6 +22,7 @@ function ProductOptionTrigger() {
       }
 
       productOptionDispatch({ type: 'TOGGLE_DROPDOWN', payload: !productOptionState.isDropdownOpen })
+      productDispatch({ type: 'TOGGLE_DROPDOWN', payload: !productState.isDropdownOpen })
    }
 
    /*

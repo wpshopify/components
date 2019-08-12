@@ -24,11 +24,9 @@ function fetchNextItems(itemsState, itemsDispatch, miscDispatch = false) {
       itemsDispatch({ type: 'SET_IS_LOADING', payload: true })
 
       const [resultsError, results] = await to(fetchNextPage(itemsState.payload))
-      console.log('fetchNextPage results', results)
 
       if (resultsError) {
          const [initialError, initialResponse] = await to(resendInitialQuery(itemsState))
-         console.log('resendInitialQuery', initialResponse)
 
          if (initialError) {
             itemsDispatch({ type: 'UPDATE_NOTICES', payload: { type: 'error', message: initialError } })
@@ -63,8 +61,6 @@ function fetchNextItems(itemsState, itemsDispatch, miscDispatch = false) {
          var nextItemsTotal = results.model.length
       }
 
-      console.log('nextItems', nextItems)
-
       itemsDispatch({ type: 'SET_TOTAL_SHOWN', payload: nextItemsTotal })
       itemsDispatch({ type: 'UPDATE_PAYLOAD', payload: nextItems })
       itemsDispatch({ type: 'SET_IS_LOADING', payload: false })
@@ -90,12 +86,9 @@ function ItemsWrapper({ children, miscDispatch }) {
          itemsDispatch({ type: 'UPDATE_HAS_MORE_ITEMS', payload: itemsState.payloadCache[hashCacheId].length })
 
          if (miscDispatch) {
-            console.log('hasCachedPayload 2')
             miscDispatch(itemsState.payloadCache)
          }
       } else {
-         console.log('hasCachedPayload 3')
-
          itemsDispatch({ type: 'SET_IS_LOADING', payload: true })
          itemsDispatch({ type: 'UPDATE_NOTICES', payload: [] })
 
@@ -106,8 +99,6 @@ function ItemsWrapper({ children, miscDispatch }) {
          } else {
             var newItems = results.model[itemsState.dataType]
             var newItemsTotal = newItems.length
-
-            console.log('newItems.length', newItems.length)
 
             itemsDispatch({ type: 'SET_TOTAL_SHOWN', payload: newItemsTotal })
             itemsDispatch({ type: 'SET_PAYLOAD', payload: newItems })
