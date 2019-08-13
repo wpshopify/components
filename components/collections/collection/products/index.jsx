@@ -29,7 +29,7 @@ function CollectionProducts() {
          payload: [
             {
                componentPayload: collectionState.productOptions[0] ? collectionState.productOptions[0].componentPayload : collectionState.products,
-               componentOptions: { ...itemsState.componentOptions.products },
+               componentOptions: itemsState.componentOptions.products,
                componentConnectionParams: paginationState.componentOptions.componentConnectionParams,
                componentElement: false,
                dataType: 'products',

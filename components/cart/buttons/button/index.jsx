@@ -15,7 +15,7 @@ function CartButton({ options }) {
    const animeSlideInRight = useAnime(slideInRight)
 
    useEffect(() => {
-      if (options.componentOptions.type === 'fixed') {
+      if (options.componentOptions.type === 'fixed' && shopState.settings.cart.showFixedCartIcon) {
          animeSlideInRight(counterElement.current)
       }
    }, [])
