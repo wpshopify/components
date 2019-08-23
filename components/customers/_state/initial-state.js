@@ -4,7 +4,8 @@ function CustomersInitialState(options) {
       notices: [],
       user: options.user,
       dropzones: options.dropzones,
-      payload: false
+      customer: false,
+      isAccountPage: options.isAccountPage
    }
 }
 

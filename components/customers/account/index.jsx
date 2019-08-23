@@ -10,27 +10,10 @@ import { CustomersContext } from '../_state/context'
 import { Orders } from './orders'
 import { AccountDetails } from './details'
 
-function CustomerName({ customer }) {
-   console.log('customer', customer)
-
-   return (
-      <h2 className='customer-name'>
-         {customer.firstName} {customer.lastName}
-      </h2>
-   )
-}
-
-function CustomerEmail({ customer }) {
-   return <p className='customer-email'>{customer.email}</p>
-}
-
-function CustomerPhone({ customer }) {
-   return <p className='customer-phone'>{customer.phone}</p>
-}
-
 function CustomersAccount() {
    const [customerState, customerDispatch] = useContext(CustomersContext)
-   const [customer, setCustomer] = useState(false)
+
+   console.log('customerState', customerState)
 
    async function getCustomerInfo() {
       const [errorCust, respCust] = await to(getCustomer(customerState.user.id))
@@ -39,7 +22,7 @@ function CustomersAccount() {
       console.log('respCust', respCust)
 
       if (!errorCust) {
-         customerDispatch({ type: 'SET_CUSTOMER', payload: respCust.data.customer })
+         customerDispatch({ type: 'SET_CUSTOMER', customer: respCust.data.customer })
       }
    }
 
@@ -48,18 +31,18 @@ function CustomersAccount() {
    }, [])
 
    const styles = {
-      display: 'flex'
+      display: 'flex',
+      justifyContent: 'space-between'
    }
 
    return (
       <>
-         <div css={styles}>
-            <Orders />
-            <AccountDetails />
-         </div>
-         {/* <CustomerName customer={customer} />
-         <CustomerEmail customer={customer} />
-         <CustomerPhone customer={customer} /> */}
+         {customerState.isAccountPage && (
+            <div css={styles}>
+               <Orders />
+               <AccountDetails />
+            </div>
+         )}
       </>
    )
 }

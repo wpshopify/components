@@ -5,7 +5,7 @@ function CustomersReducer(state, action) {
       case 'SET_CUSTOMER': {
          return {
             ...state,
-            payload: update(state.payload, { $set: action.payload })
+            customer: update(state.customer, { $set: action.customer })
          }
       }
 
