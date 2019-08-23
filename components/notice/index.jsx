@@ -1,7 +1,7 @@
 import React from 'react'
 
 function Notice(props) {
-   return <p className={'wps-notice wps-notice-' + props.type}>{props.message}</p>
+   return props.message && <p className={'wps-notice wps-notice-' + props.type} dangerouslySetInnerHTML={{ __html: props.message }} />
 }
 
 export { Notice }

@@ -6,6 +6,7 @@ import { StorefrontSelectionsWrapper } from './wrapper'
 import { objectIsEmpty, capitalizeFirstLetter } from '../../../common/utils'
 import { usePortal } from '../../../common/hooks'
 import { filterObj, commaToArray, buildQuery } from '/Users/andrew/www/devil/devilbox-new/data/www/wpshopify-api'
+import isArray from 'lodash/isArray'
 import isEmpty from 'lodash/isEmpty'
 import mapKeys from 'lodash/mapKeys'
 import compact from 'lodash/compact'
@@ -114,7 +115,15 @@ function StorefrontSelections() {
                key = key + 's'
             }
 
-            return (result[key] = map(commaToArray(value), val => val.toLowerCase()))
+            console.log('value', value)
+            console.log('key', key)
+            console.log('result', result)
+
+            if (isArray(value)) {
+               return (result[key] = map(value, val => val.toLowerCase()))
+            } else {
+               return (result[key] = [value.toLowerCase()])
+            }
          },
          {}
       )

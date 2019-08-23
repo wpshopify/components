@@ -73,7 +73,7 @@ function useAction(hookName, defaultVal = false) {
    return data
 }
 
-function usePortal(componentMarkup, containerElement = false) {
+function usePortal(componentMarkup, containerElement = false, skipEmptyRender = false) {
    function renderPortal() {
       if (containerElement) {
          var placeholderElement = containerElement.querySelector('.wps-loading-placeholder, .wps-server-component')
@@ -84,7 +84,7 @@ function usePortal(componentMarkup, containerElement = false) {
 
          return ReactDOM.createPortal(componentMarkup, containerElement)
       } else {
-         return componentMarkup
+         if (!skipEmptyRender) return componentMarkup
       }
    }
 
