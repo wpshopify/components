@@ -6,7 +6,7 @@ import { ProductContext } from '../../../../_state/context'
 
 import find from 'lodash/find'
 import isEmpty from 'lodash/isEmpty'
-import { createObj } from '../../../../../../../common/utils'
+import { createObj, hasHooks } from '../../../../../../../common/utils'
 
 function ProductVariant({ variant }) {
    const [isSelectable, setIsSelectable] = useState(true)
@@ -27,9 +27,7 @@ function ProductVariant({ variant }) {
       productOptionDispatch({ type: 'SET_IS_OPTION_SELECTED', payload: true })
       productOptionDispatch({ type: 'SET_SELECTED_OPTION', payload: selectedVariant })
 
-      if (typeof wp !== 'undefined' && wp.hooks) {
-         wp.hooks.doAction('on.product.variant.selection', selectedVariant, productOptionState)
-      }
+      hasHooks() && wp.hooks.doAction('on.product.variant.selection', selectedVariant, productOptionState)
    }
 
    useEffect(() => {

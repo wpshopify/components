@@ -2,6 +2,7 @@ import React, { useContext, useState, useEffect, useRef } from 'react'
 import { ShopContext } from '../../shop/_state/context'
 import { CartContext } from '../_state/context'
 import { useDebounce } from 'use-debounce'
+import { hasHooks } from '../../../common/utils'
 
 function CartNote() {
    const [cartState, cartDispatch] = useContext(CartContext)
@@ -20,9 +21,7 @@ function CartNote() {
          return
       }
 
-      if (typeof wp !== 'undefined' && wp.hooks) {
-         wp.hooks.doAction('on.checkout.note', debouncedValue)
-      }
+      hasHooks() && wp.hooks.doAction('on.checkout.note', debouncedValue)
 
       if (WP_Shopify.misc.isPro) {
          cartDispatch({ type: 'SET_CHECKOUT_NOTE', payload: debouncedValue })

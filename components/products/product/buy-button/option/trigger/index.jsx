@@ -1,6 +1,7 @@
 import React, { useEffect, useContext, useRef } from 'react'
 import { ProductBuyButtonContext } from '../../_state/context'
 import { useAnime, pulse } from '../../../../../../common/animations'
+import { hasHooks } from '../../../../../../common/utils'
 import { ShopContext } from '../../../../../shop/_state/context'
 import { ItemsContext } from '../../../../../items/_state/context'
 import { ProductOptionContext } from '../_state/context'
@@ -17,9 +18,7 @@ function ProductOptionTrigger() {
    const isFirstRender = useRef(true)
 
    function onClick() {
-      if (typeof wp !== 'undefined' && wp.hooks) {
-         wp.hooks.doAction('before.product.variantDropdown.toggle', productOptionState)
-      }
+      hasHooks() && wp.hooks.doAction('before.product.variantDropdown.toggle', productOptionState)
 
       productOptionDispatch({ type: 'TOGGLE_DROPDOWN', payload: !productOptionState.isDropdownOpen })
       productDispatch({ type: 'TOGGLE_DROPDOWN', payload: !productState.isDropdownOpen })

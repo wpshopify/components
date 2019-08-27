@@ -115,10 +115,6 @@ function StorefrontSelections() {
                key = key + 's'
             }
 
-            console.log('value', value)
-            console.log('key', key)
-            console.log('result', result)
-
             if (isArray(value)) {
                return (result[key] = map(value, val => val.toLowerCase()))
             } else {

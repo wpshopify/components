@@ -5,7 +5,11 @@ function CustomersInitialState(options) {
       user: options.user,
       dropzones: options.dropzones,
       customer: false,
-      isAccountPage: options.isAccountPage
+      isAccountPage: options.isAccountPage,
+      onInnerPage: false,
+      selectedOrderDetails: false,
+      defaultAddress: false,
+      selectedAddress: false
    }
 }
 

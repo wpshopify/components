@@ -9,6 +9,7 @@ import uniqBy from 'lodash/uniqBy'
 import filter from 'lodash/filter'
 import flatMap from 'lodash/flatMap'
 import { onlyAvailableItems } from '../../../../../common/products'
+import { hasHooks } from '../../../../../common/utils'
 
 function allOptionsSelectedMatch(onlySelectedOptions, product) {
    return size(onlySelectedOptions) === product.options.length
@@ -74,9 +75,7 @@ function ProductOptions() {
             }
          })
 
-         if (typeof wp !== 'undefined' && wp.hooks) {
-            wp.hooks.doAction('before.product.addToCart', buyButtonState)
-         }
+         hasHooks() && wp.hooks.doAction('before.product.addToCart', buyButtonState)
       } else {
          buyButtonDispatch({ type: 'SET_ALL_SELECTED_OPTIONS', payload: false })
       }

@@ -1,6 +1,7 @@
 import React, { useEffect, useContext } from 'react'
 import { createHooks } from '@wordpress/hooks'
 import { ShopContext } from '../shop/_state/context'
+import { hasHooks } from '../../common/utils'
 import { buildInstances } from '/Users/andrew/www/devil/devilbox-new/data/www/wpshopify-api'
 import to from 'await-to-js'
 
@@ -9,9 +10,7 @@ function Bootstrap({ children }) {
 
    function setReady() {
       // App is ready to go
-      if (typeof wp !== 'undefined' && wp.hooks) {
-         wp.hooks.doAction('after.ready', shopState.settings)
-      }
+      hasHooks() && wp.hooks.doAction('after.ready', shopState.settings)
 
       shopDispatch({ type: 'IS_SHOP_READY' })
    }
@@ -23,7 +22,7 @@ function Bootstrap({ children }) {
    */
    async function bootstrapShop() {
       // If running WP less < 5.0, polyfill the hooks
-      if (typeof wp !== 'undefined' && wp.hooks) {
+      if (hasHooks()) {
          wp.hooks.doAction('before.ready', shopState.settings)
       } else {
          if (typeof wp === 'undefined') {

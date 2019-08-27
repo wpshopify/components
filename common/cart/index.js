@@ -1,4 +1,5 @@
 import { animeStagger } from '../animations'
+import { hasHooks } from '../utils'
 
 function findTotalCartQuantities(lineItems) {
    return lineItems.reduce(function(accumulator, lineItem) {
@@ -23,18 +24,14 @@ function openCart() {
    let cartElement = document.querySelector('.wps-cart')
    cartElement.classList.add('wps-cart-is-showing')
 
-   if (typeof wp !== 'undefined' && wp.hooks) {
-      wp.hooks.doAction('on.cart.open', cartElement)
-   }
+   hasHooks() && wp.hooks.doAction('on.cart.open', cartElement)
 }
 
 function closeCart() {
    let cartElement = document.querySelector('.wps-cart')
    cartElement.classList.remove('wps-cart-is-showing')
 
-   if (typeof wp !== 'undefined' && wp.hooks) {
-      wp.hooks.doAction('on.cart.close', cartElement)
-   }
+   hasHooks() && wp.hooks.doAction('on.cart.close', cartElement)
 }
 
 function animateCartLineItems() {

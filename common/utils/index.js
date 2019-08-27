@@ -5,6 +5,9 @@ import mapKeys from 'lodash/mapKeys'
 import isString from 'lodash/isString'
 import md5 from 'js-md5'
 
+import React from 'react'
+import ReactDOM from 'react-dom'
+
 function removeFrom(array, valueToRemove) {
    return without(array, valueToRemove)
 }
@@ -84,4 +87,20 @@ function hashQueryParams(queryParams) {
    return md5(createStringFromQueryParams(queryParams))
 }
 
-export { objectIsEmpty, createObj, removeFrom, lowercaseObjKeys, capitalizeFirstLetter, itemWidthClass, findPortalElement, convertTitleToHandle, hashQueryParams }
+function hasHooks() {
+   return typeof wp !== 'undefined' && wp.hooks
+}
+
+function FilterHook({ name, defaultVal, args, isReady }) {
+   if (!defaultVal) {
+      defaultVal = false
+   }
+
+   if (!args) {
+      args = []
+   }
+
+   return hasHooks() && wp.hooks.hasFilter(name) && <div data-wps-is-ready={isReady} dangerouslySetInnerHTML={{ __html: wp.hooks.applyFilters(name, defaultVal, ...args) }} />
+}
+
+export { objectIsEmpty, createObj, removeFrom, lowercaseObjKeys, capitalizeFirstLetter, itemWidthClass, findPortalElement, convertTitleToHandle, hashQueryParams, hasHooks, FilterHook }

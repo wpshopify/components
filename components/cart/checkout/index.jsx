@@ -2,6 +2,7 @@ import React, { useContext } from 'react'
 import { ShopContext } from '../../shop/_state/context'
 import { CartContext } from '../_state/context'
 import { Loader } from '../../loader'
+import { hasHooks, FilterHook } from '../../../common/utils'
 import { replaceLineItems, updateCheckoutAttributes } from '/Users/andrew/www/devil/devilbox-new/data/www/wpshopify-api'
 import isEmpty from 'lodash/isEmpty'
 import to from 'await-to-js'
@@ -55,9 +56,7 @@ function CartCheckout() {
       cartDispatch({ type: 'UPDATE_NOTICES', payload: [] })
       cartDispatch({ type: 'SET_IS_CHECKING_OUT', payload: true })
 
-      if (typeof wp !== 'undefined' && wp.hooks) {
-         wp.hooks.doAction('on.checkout', cartState.checkoutCache)
-      }
+      hasHooks() && wp.hooks.doAction('on.checkout', cartState.checkoutCache)
 
       const [err, success] = await to(replaceLineItems(cartState.checkoutCache.lineItems))
 
@@ -98,16 +97,25 @@ function CartCheckout() {
 
    return (
       <>
-         {wp.hooks.hasFilter('cart.checkout.before') && <div dangerouslySetInnerHTML={{ __html: wp.hooks.applyFilters('cart.checkout.before', '') }} />}
-         <button
-            className='wps-btn wps-btn-checkout'
-            onClick={onCheckout}
-            data-wps-is-ready={cartState.isReady}
-            disabled={cartState.isCheckingOut || !cartState.termsAccepted || cartState.isCartEmpty}
-            style={buttonStyle()}>
-            {cartState.isCheckingOut ? <Loader isLoading={cartState.isCheckingOut} /> : cartState.checkoutText}
-         </button>
+         <FilterHook name='cart.checkout.before' args={[cartState]} />
+
+         <CartCheckoutButton cartState={cartState} onCheckout={onCheckout} buttonStyle={buttonStyle} />
+
+         <FilterHook name='cart.checkout.after' args={[cartState]} />
       </>
+   )
+}
+
+function CartCheckoutButton({ cartState, buttonStyle, onCheckout }) {
+   return (
+      <button
+         className='wps-btn wps-btn-checkout'
+         onClick={onCheckout}
+         data-wps-is-ready={cartState.isReady}
+         disabled={cartState.isCheckingOut || !cartState.termsAccepted || cartState.isCartEmpty}
+         style={buttonStyle()}>
+         {cartState.isCheckingOut ? <Loader isLoading={cartState.isCheckingOut} /> : cartState.checkoutText}
+      </button>
    )
 }
 
