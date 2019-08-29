@@ -16,10 +16,10 @@ function AddressFormEdit() {
       <section css={stylesSlideIn}>
          <AccountReturn path='/account/addresses' text='Return to Addresses' onInner={true} />
 
-         <h2>Currently Editting Address:</h2>
+         <h2>Currently Editing Address:</h2>
 
          {customerState.selectedAddress && <AccountDetailsAddress address={customerState.selectedAddress} />}
-         <AddressForm />
+         <AddressForm address={customerState.selectedAddress} />
       </section>
    )
 }
