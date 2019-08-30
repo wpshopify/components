@@ -9,18 +9,18 @@ import { stylesSlideIn } from '../../../_styles'
 /** @jsx jsx */
 import { jsx, css } from '@emotion/core'
 
-function AddressFormEdit() {
+function AddressFormAdd() {
    const [customerState, customerDispatch] = useContext(CustomersContext)
 
    return (
       <section css={stylesSlideIn}>
          <AccountReturn path='/account/addresses' text='Return to Addresses' onInner={true} />
 
-         <h2>Currently Editing Address:</h2>
+         <h2>Add New Address:</h2>
 
-         <AddressForm type='edit' address={customerState.selectedAddress} />
+         <AddressForm type='add' />
       </section>
    )
 }
 
-export { AddressFormEdit }
+export { AddressFormAdd }

@@ -4,7 +4,7 @@ import { CustomersContext } from '../../../_state/context'
 import uuidv4 from 'uuid/v4'
 import { AccountDetailsAddress } from './address'
 import to from 'await-to-js'
-import { updateCustomerAddress } from '/Users/andrew/www/devil/devilbox-new/data/www/wpshopify-api'
+import { updateCustomerAddress, addCustomerAddress } from '/Users/andrew/www/devil/devilbox-new/data/www/wpshopify-api'
 import { Form } from '../../../../forms'
 import { Input } from '../../../../forms/input'
 import isEmpty from 'lodash/isEmpty'
@@ -12,14 +12,10 @@ import isEmpty from 'lodash/isEmpty'
 /** @jsx jsx */
 import { jsx, css } from '@emotion/core'
 
-function AddressForm({ address }) {
+function AddressForm({ address, type }) {
    const [customerState, customerDispatch] = useContext(CustomersContext)
    const [hasChanged, setHasChangedState] = useState(false)
-
-   const [noticeState, setNoticeState] = useState({
-      message: '',
-      type: ''
-   })
+   const [noticeState, setNoticeState] = useState(false)
 
    const [formState, setFormState] = useState({
       firstName: '',
@@ -40,27 +36,33 @@ function AddressForm({ address }) {
          ...formState
       }
 
-      newState[name] = event.target.value
+      if (name === 'setDefault') {
+         var newVal = event.target.checked
+      } else {
+         var newVal = event.target.value
+      }
+
+      newState[name] = newVal
 
       setFormState(newState)
    }
 
    useEffect(() => {
-      if (!address) {
-         return
-      }
+      // if (!address) {
+      //    return
+      // }
 
       setFormState({
-         firstName: address.firstName || '',
-         lastName: address.lastName || '',
-         company: address.company || '',
-         address1: address.address1 || '',
-         address2: address.address2 || '',
-         zip: address.zip || '',
-         phone: address.phone || '',
-         province: address.province || '',
-         country: address.country || '',
-         city: address.city || '',
+         firstName: address && address.firstName ? address.firstName : '',
+         lastName: address && address.lastName ? address.lastName : '',
+         company: address && address.company ? address.company : '',
+         address1: address && address.address1 ? address.address1 : '',
+         address2: address && address.address2 ? address.address2 : '',
+         zip: address && address.zip ? address.zip : '',
+         phone: address && address.phone ? address.phone : '',
+         province: address && address.province ? address.province : '',
+         country: address && address.country ? address.country : '',
+         city: address && address.city ? address.city : '',
          setDefault: false
       })
    }, [])
@@ -69,11 +71,13 @@ function AddressForm({ address }) {
       return customerState.defaultAddress.address1 === customerState.selectedAddress.address1
    }
 
-   const stylesSetDefault = css`
+   const cssWrapper = css`
       display: flex;
+      flex-direction: row-reverse;
+      justify-content: flex-end;
    `
 
-   const stylesSetDefaultInput = css`
+   const cssInput = css`
       && {
          width: auto;
          position: relative;
@@ -83,9 +87,6 @@ function AddressForm({ address }) {
    `
 
    async function updateAddress() {
-      console.log('formState', formState)
-      console.log('customerState')
-
       const [addressUpdateError, addressUpdateSuccess] = await to(
          updateCustomerAddress({
             address: formState,
@@ -95,7 +96,6 @@ function AddressForm({ address }) {
 
       console.log('addressUpdateError', addressUpdateError)
       console.log('addressUpdateSuccess', addressUpdateSuccess)
-      setHasChangedState(true)
 
       if (addressUpdateSuccess.data.type === 'error') {
          setNoticeState({
@@ -103,24 +103,79 @@ function AddressForm({ address }) {
             type: addressUpdateSuccess.data.type
          })
 
-         // emailRef.current.focus()
-
          return
       }
 
       if (addressUpdateError) {
-         console.log('UPDATE ADDRESS ERROR', addressUpdateError)
+         console.error('UPDATE ADDRESS ERROR', addressUpdateError)
          return
       }
 
       if (isEmpty(addressUpdateSuccess.data)) {
-         console.log('UPDATE ADDRESS ERROR :: NO ADDRESS FOUND', addressUpdateSuccess)
+         console.error('UPDATE ADDRESS ERROR :: NO ADDRESS FOUND', addressUpdateSuccess)
          return
       }
 
-      console.log('UPDATE ADDRESS SUCCESS! :: ', addressUpdateSuccess.data.customerAddressUpdate)
+      console.log('addressUpdateSuccess.data:', addressUpdateSuccess.data)
+
+      customerDispatch({
+         type: 'UPDATE_CUSTOMER_ADDRESS',
+         payload: {
+            oldAddressId: customerState.selectedAddress.id,
+            newAddress: addressUpdateSuccess.data.updateAddress.customerAddressUpdate.customerAddress
+         }
+      })
+
+      if (addressUpdateSuccess.data.updateDefaultAddress) {
+         customerDispatch({ type: 'SET_DEFAULT_ADDRESS', payload: addressUpdateSuccess.data.updateDefaultAddress.customerDefaultAddressUpdate.customer })
+      }
+
       setNoticeState({
          message: 'Successfully updated address',
+         type: 'success'
+      })
+   }
+
+   async function addAddress() {
+      const [addError, addSuccess] = await to(
+         addCustomerAddress({
+            address: formState
+         })
+      )
+
+      console.log('addError', addError)
+      console.log('addSuccess', addSuccess)
+
+      if (addSuccess.data.type === 'error') {
+         setNoticeState({
+            message: addSuccess.data.message,
+            type: addSuccess.data.type
+         })
+
+         return
+      }
+
+      if (addError) {
+         console.error('ADD ADDRESS ERROR', addError)
+         return
+      }
+
+      if (isEmpty(addSuccess.data)) {
+         console.error('ADD ADDRESS ERROR :: NO ADDRESS FOUND', addSuccess)
+         return
+      }
+
+      customerDispatch({
+         type: 'ADD_CUSTOMER_ADDRESS',
+         payload: addSuccess.data.addAddress.customerAddressCreate.customerAddress
+      })
+
+      if (addSuccess.data.addDefaultAddress) {
+         customerDispatch({ type: 'SET_DEFAULT_ADDRESS', payload: addSuccess.data.addDefaultAddress.customerDefaultAddressUpdate.customer })
+      }
+
+      setNoticeState({
+         message: 'Successfully added address',
          type: 'success'
       })
    }
@@ -128,110 +183,47 @@ function AddressForm({ address }) {
    function onSubmit(e) {
       e.preventDefault()
 
-      updateAddress()
+      if (type === 'edit') {
+         updateAddress()
+      }
+
+      if (type === 'add') {
+         addAddress()
+      }
    }
 
    return (
       <Form onSubmit={onSubmit} noticeState={noticeState} submitText='Update Address' hasChanged={hasChanged} formType='update-address'>
-         <div className='wpshopify-input-wrapper'>
-            <label htmlFor='wpshopify-input-email'>First Name:</label>
-            <input
-               type='text'
-               id='wpshopify-input-email'
-               placeholder='First Name'
-               onChange={e => onChange('firstName', e)}
-               className='wpshopify-input wpshopify-input-first'
-               value={formState.firstName}
-            />
-         </div>
-         <div className='wpshopify-input-wrapper'>
-            <label htmlFor='wpshopify-input-last'>Last Name:</label>
-            <input type='text' id='wpshopify-input-last' placeholder='Last Name' onChange={e => onChange('lastName', e)} className='wpshopify-input wpshopify-input-last' value={formState.lastName} />
-         </div>
-         <div className='wpshopify-input-wrapper'>
-            <label htmlFor='wpshopify-input-company'>Company:</label>
-            <input
-               type='text'
-               placeholder='Company name'
-               id='wpshopify-input-company'
-               onChange={e => onChange('company', e)}
-               className='wpshopify-input wpshopify-input-company'
-               value={formState.company}
-            />
-         </div>
+         <Input label='First Name:' type='text' name='first' placeholder='First Name' value={formState.firstName} onChange={e => onChange('firstName', e)} />
 
-         <div className='wpshopify-input-wrapper'>
-            <label htmlFor='wpshopify-input-address1'>Address 1:</label>
-            <input
-               type='text'
-               placeholder='Address 1'
-               id='wpshopify-input-address1'
-               onChange={e => onChange('address1', e)}
-               className='wpshopify-input wpshopify-input-address1'
-               value={formState.address1}
-            />
-         </div>
-         <div className='wpshopify-input-wrapper'>
-            <label htmlFor='wpshopify-input-address2'>Address 2:</label>
-            <input
-               type='text'
-               placeholder='Address 2'
-               id='wpshopify-input-address2'
-               onChange={e => onChange('address2', e)}
-               className='wpshopify-input wpshopify-input-address2'
-               value={formState.address2}
-            />
-         </div>
-         <div className='wpshopify-input-wrapper'>
-            <label htmlFor='wpshopify-input-city'>City:</label>
-            <input required type='text' placeholder='Address 2' id='wpshopify-input-city' onChange={e => onChange('city', e)} className='wpshopify-input wpshopify-input-city' value={formState.city} />
-         </div>
-         <div className='wpshopify-input-wrapper'>
-            <label htmlFor='wpshopify-input-country'>Country:</label>
-            <input
-               type='text'
-               placeholder='Country'
-               id='wpshopify-input-country'
-               onChange={e => onChange('country', e)}
-               className='wpshopify-input wpshopify-input-country'
-               value={formState.country}
-            />
-         </div>
+         <Input label='Last Name:' type='text' name='last' placeholder='Last Name' value={formState.lastName} onChange={e => onChange('lastName', e)} />
 
-         <div className='wpshopify-input-wrapper'>
-            <label htmlFor='wpshopify-input-province'>State / Province:</label>
-            <input
-               type='text'
-               placeholder='Province'
-               id='wpshopify-input-province'
-               onChange={e => onChange('province', e)}
-               className='wpshopify-input wpshopify-input-province'
-               value={formState.province}
-            />
-         </div>
+         <Input label='Company:' type='text' name='company' placeholder='Company Name' value={formState.company} onChange={e => onChange('company', e)} />
 
-         <div className='wpshopify-input-wrapper'>
-            <label htmlFor='wpshopify-input-postal'>Postal/Zip Code:</label>
-            <input type='text' placeholder='Postal' id='wpshopify-input-postal' onChange={e => onChange('zip', e)} className='wpshopify-input wpshopify-input-postal' value={formState.postal} />
-         </div>
+         <Input label='Address 1:' type='text' name='address1' placeholder='Address 1' value={formState.address1} onChange={e => onChange('address1', e)} />
 
-         <div className='wpshopify-input-wrapper'>
-            <label htmlFor='wpshopify-input-phone'>Phone:</label>
-            <input required type='text' placeholder='Phone' id='wpshopify-input-phone' onChange={e => onChange('phone', e)} className='wpshopify-input wpshopify-input-phone' value={formState.phone} />
-         </div>
+         <Input label='Address 2:' type='text' name='address2' placeholder='Address 2' value={formState.address2} onChange={e => onChange('address2', e)} />
+
+         <Input label='City:' type='text' name='city' placeholder='City' value={formState.city} onChange={e => onChange('city', e)} />
+
+         <Input label='State/Province:' type='text' name='province' placeholder='State/Province' value={formState.province} onChange={e => onChange('province', e)} />
+
+         <Input label='Country:' type='text' name='country' placeholder='Country' value={formState.country} onChange={e => onChange('country', e)} />
+
+         <Input label='Postal/Zip:' type='text' name='zip' placeholder='Postal/Zip' value={formState.zip} onChange={e => onChange('zip', e)} />
+
+         <Input label='Phone:' type='text' name='phone' placeholder='Phone' value={formState.phone} onChange={e => onChange('phone', e)} />
 
          {!isDefaultAddress() && (
-            <div className='wpshopify-input-wrapper' css={stylesSetDefault}>
-               <input
-                  type='checkbox'
-                  id='wpshopify-input-set-default'
-                  css={stylesSetDefaultInput}
-                  onChange={e => onChange('setDefault', e)}
-                  className='wpshopify-input wpshopify-input-set-default'
-                  value={formState.setDefault}
-               />
-               <label htmlFor='wpshopify-input-set-default'>Set as default address</label>
-            </div>
+            <Input
+               label='Set as default address'
+               type='checkbox'
+               name='set-default'
+               value={formState.setDefault}
+               onChange={e => onChange('setDefault', e)}
+               cssWrapper={cssWrapper}
+               cssInput={cssInput}
+            />
          )}
       </Form>
    )

@@ -1,13 +1,12 @@
-import React, { useState, useEffect, useRef, useContext } from 'react'
+import React from 'react'
 import ReactDOM from 'react-dom'
 import { Notice } from '../notice'
-import { usePortal } from '../../common/hooks'
 import { renderToString } from 'react-dom/server'
 
 function Form({ children, onSubmit, noticeState, submitText, hasChanged, beforeSubmitButton, afterSubmitButton, formType }) {
    return (
-      <form id='wpshopify-component-customers-${formType}' onSubmit={onSubmit}>
-         {hasChanged && <Notice message={noticeState.message} type={noticeState.type} />}
+      <form id={`wpshopify-component-customers-${formType}`} className="wpshopify-account-form" onSubmit={onSubmit}>
+         {noticeState && <Notice message={noticeState.message} type={noticeState.type} />}
 
          {children}
 

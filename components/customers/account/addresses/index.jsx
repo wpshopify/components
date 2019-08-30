@@ -30,7 +30,7 @@ function Addresses() {
 
    useEffect(() => {
       customersDispatch({ type: 'SET_SELECTED_ADDRESS', payload: false })
-   }, [])
+   }, [customerState.customer.addresses])
 
    return (
       <section css={stylesSlideIn}>
@@ -52,6 +52,10 @@ function Addresses() {
                </div>
             </div>
          )}
+
+         <A href='/account/addresses/add' className='wps-btn wps-btn-secondary wpshopify-btn-auto-width'>
+            Add new address
+         </A>
       </section>
    )
 }

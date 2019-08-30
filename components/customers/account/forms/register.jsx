@@ -6,6 +6,8 @@ import isEmpty from 'lodash/isEmpty'
 import { Notice } from '../../../notice'
 import { usePortal } from '../../../../common/hooks'
 import { CustomersContext } from '../../_state/context'
+import { Form } from '../../../forms'
+import { Input } from '../../../forms/input'
 
 function CustomerFormRegister() {
    const [customersState, customersDispatch] = useContext(CustomersContext)
@@ -18,10 +20,7 @@ function CustomerFormRegister() {
       password: ''
    })
 
-   const [noticeState, setNoticeState] = useState({
-      message: '',
-      type: ''
-   })
+   const [noticeState, setNoticeState] = useState(false)
 
    const [hasChanged, setHasChangedState] = useState(false)
 
@@ -123,40 +122,15 @@ function RegisterForm({ onSubmit, noticeState, formState, onEmailChange, onUsern
    return (
       element &&
       usePortal(
-         <form id='wpshopify-component-customers-login' onSubmit={onSubmit}>
-            {hasChanged && <Notice message={noticeState.message} type={noticeState.type} />}
+         <Form onSubmit={onSubmit} noticeState={noticeState} submitText='Create your account' formType="register">
 
-            <div className='wpshopify-input-wrapper'>
-               <label htmlFor='wpshopify-input-email'>Email:</label>
-               <input required type='email' placeholder='Email' onChange={onEmailChange} className='wpshopify-input wpshopify-input-email' value={formState.email} ref={emailRef} />
-            </div>
+            <Input label='Email:' type='email' name='email' isRequired={true} placeholder='Email' value={formState.email} onChange={onEmailChange} />
 
-            <div className='wpshopify-input-wrapper'>
-               <label htmlFor='wpshopify-input-username'>Username (optional)</label>
-               <input type='text' placeholder='Username' value={formState.username} onChange={onUsernameChange} className='wpshopify-input wpshopify-input-username' />
-            </div>
+            <Input label='Username (optional):' type='text' name='username' placeholder='Username' value={formState.username} onChange={onUsernameChange} />
 
-            <div className='wpshopify-input-wrapper'>
-               <label htmlFor='wpshopify-input-password'>Password:</label>
-               <input
-                  required
-                  type='password'
-                  placeholder='Password'
-                  value={formState.password}
-                  onChange={onPasswordChange}
-                  className='wpshopify-input wpshopify-input-password'
-                  id='wpshopify-input-password'
-               />
-            </div>
+            <Input label='Password:' type='password' name='password' isRequired={true} placeholder='Password' value={formState.password} onChange={onPasswordChange} />
 
-            <div className='wpshopify-buttons-wrapper'>
-               <button type='submit' className='wps-btn wps-btn-secondary wpshopify-btn-auto-width'>
-                  Create your account
-               </button>
-            </div>
-
-            <input type='hidden' className='wpshopify-input wpshopify-input-nonce' />
-         </form>,
+         </Form>,
          element
       )
    )

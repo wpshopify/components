@@ -21,10 +21,7 @@ function CustomerFormLogin() {
       password: ''
    })
 
-   const [noticeState, setNoticeState] = useState({
-      message: '',
-      type: ''
-   })
+   const [noticeState, setNoticeState] = useState(false)
 
    const [hasChanged, setHasChangedState] = useState(false)
 
@@ -87,13 +84,16 @@ function CustomerFormLogin() {
       console.log('formState', formState)
    }
 
-   return usePortal(
-      <Form dropzoneElement={element} onSubmit={onSubmit} noticeState={noticeState} submitText='Login' hasChanged={hasChanged} afterSubmitButton={LoginActions} formType='login'>
-         <Input label='Email or username:' type='email' name='email' isRequired={true} placeholder='Email or username' value={formState.email} onChange={onEmailChange} />
+   return (
+      element && 
+      usePortal(
+         <Form dropzoneElement={element} onSubmit={onSubmit} noticeState={noticeState} submitText='Login' hasChanged={hasChanged} afterSubmitButton={LoginActions} formType='login'>
+            <Input label='Email or username:' type='email' name='email' isRequired={true} placeholder='Email or username' value={formState.email} onChange={onEmailChange} />
 
-         <Input label='Password:' type='password' name='password' isRequired={true} placeholder='Password' value={formState.password} onChange={onPasswordChange} />
-      </Form>,
-      element
+            <Input label='Password:' type='password' name='password' isRequired={true} placeholder='Password' value={formState.password} onChange={onPasswordChange} />
+         </Form>,
+         element
+      )
    )
 }
 

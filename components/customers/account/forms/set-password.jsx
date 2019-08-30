@@ -6,6 +6,8 @@ import isEmpty from 'lodash/isEmpty'
 import { Notice } from '../../../notice'
 import { usePortal } from '../../../../common/hooks'
 import { CustomersContext } from '../../_state/context'
+import { Form } from '../../../forms'
+import { Input } from '../../../forms/input'
 
 function ResetForm({ noticeState, formState, onPasswordChange, onConfirmPasswordChange, onSubmit, customersState }) {
    const element = document.querySelector(customersState.dropzones.formSetPassword)
@@ -13,27 +15,13 @@ function ResetForm({ noticeState, formState, onPasswordChange, onConfirmPassword
    return (
       element &&
       usePortal(
-         <form id='wpshopify-component-customers-reset-password' onSubmit={onSubmit} autoComplete='on'>
-            {noticeState.message && <div className='wpshopify-form-notice' data-notice-type={noticeState.type} dangerouslySetInnerHTML={{ __html: noticeState.message }} />}
+         <Form onSubmit={onSubmit} noticeState={noticeState} submitText='Set new password' formType="reset-password">
 
-            <div className='wpshopify-input-wrapper'>
-               <label htmlFor='wpshopify-input-password'>New Password:</label>
-               <FormInputPassword handler={onPasswordChange} value={formState.password} />
-            </div>
+            <Input label='New Password:' type='password' name='password' isRequired={true} value={formState.password} onChange={onPasswordChange} />
 
-            <div className='wpshopify-input-wrapper'>
-               <label htmlFor='wpshopify-input-confirm-password'>Confirm New Password:</label>
-               <FormInputPasswordConfirm handler={onConfirmPasswordChange} value={formState.confirmPassword} />
-            </div>
+            <Input label='Confirm New Password:' type='password' name='confirm-password' isRequired={true} value={formState.confirmPassword} onChange={onConfirmPasswordChange} />
 
-            <div className='wpshopify-buttons-wrapper'>
-               <button type='submit' className='wps-btn wps-btn-secondary wpshopify-btn-auto-width'>
-                  Set new password
-               </button>
-            </div>
-
-            <input type='hidden' className='wpshopify-input wpshopify-input-nonce' />
-         </form>,
+         </Form>,
          element
       )
    )
@@ -50,24 +38,6 @@ function LoginLink({ noticeState }) {
    )
 }
 
-function FormInputPassword({ handler, value }) {
-   return <input required type='password' placeholder='New Password' onChange={handler} className='wpshopify-input wpshopify-input-password' value={value} />
-}
-
-function FormInputPasswordConfirm({ handler, value }) {
-   return (
-      <input
-         required
-         type='password'
-         placeholder='Confirm New Password'
-         onChange={handler}
-         className='wpshopify-input wpshopify-input-confirm-password'
-         value={value}
-         id='wpshopify-input-confirm-password'
-      />
-   )
-}
-
 function CustomerFormSetPassword() {
    const [customersState, customersDispatch] = useContext(CustomersContext)
 
@@ -78,10 +48,7 @@ function CustomerFormSetPassword() {
       resetToken: ''
    })
 
-   const [noticeState, setNoticeState] = useState({
-      message: '',
-      type: ''
-   })
+   const [noticeState, setNoticeState] = useState(false)
 
    const [hasChanged, setHasChangedState] = useState(false)
 

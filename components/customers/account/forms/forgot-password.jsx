@@ -4,6 +4,8 @@ import { resetPasswordCustomer } from '/Users/andrew/www/devil/devilbox-new/data
 import to from 'await-to-js'
 import { usePortal } from '../../../../common/hooks'
 import { CustomersContext } from '../../_state/context'
+import { Form } from '../../../forms'
+import { Input } from '../../../forms/input'
 
 function CustomerFormForgotPassword() {
    const [customersState, customersDispatch] = useContext(CustomersContext)
@@ -13,18 +15,12 @@ function CustomerFormForgotPassword() {
       email: ''
    })
 
-   const [noticeState, setNoticeState] = useState({
-      message: '',
-      type: ''
-   })
+   const [noticeState, setNoticeState] = useState(false)
 
    const [hasChanged, setHasChangedState] = useState(false)
 
    async function resetPassword() {
       const [resetError, resetSuccess] = await to(resetPasswordCustomer(formState))
-
-      console.log('resetError', resetError)
-      console.log('resetSuccess', resetSuccess)
 
       if (resetSuccess.data.type === 'error') {
          setNoticeState({
@@ -65,22 +61,11 @@ function CustomerFormForgotPassword() {
    return (
       element &&
       usePortal(
-         <form id='wpshopify-component-customers-forgot-password' onSubmit={onSubmit} autoComplete='on'>
-            {hasChanged && <Notice message={noticeState.message} type={noticeState.type} />}
+         <Form onSubmit={onSubmit} noticeState={noticeState} submitText='Reset Password' formType="forgot-password">
 
-            <div className='wpshopify-input-wrapper'>
-               <label htmlFor='wpshopify-input-email'>Email or username:</label>
-               <input required type='email' placeholder='Email or username' onChange={onEmailChange} className='wpshopify-input wpshopify-input-email' value={formState.email} />
-            </div>
+            <Input label='Email or username:' type='email' name='email' isRequired={true} placeholder='Email or username' value={formState.email} onChange={onEmailChange} />
 
-            <div className='wpshopify-buttons-wrapper'>
-               <button type='submit' className='wps-btn wps-btn-secondary wpshopify-btn-auto-width'>
-                  Reset password
-               </button>
-            </div>
-
-            <input type='hidden' className='wpshopify-input wpshopify-input-nonce' />
-         </form>,
+         </Form>,
          element
       )
    )

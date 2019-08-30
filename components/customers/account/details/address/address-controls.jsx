@@ -31,8 +31,6 @@ function AccountAddressControls({ address }) {
    `
 
    function onEdit() {
-      console.log('onEdit', address)
-
       customerDispatch({ type: 'SET_SELECTED_ADDRESS', payload: address })
    }
 

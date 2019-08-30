@@ -18,7 +18,14 @@ function AccountDetailsAddress({ address }) {
    `
 
    const stylesAddress = css`
-      margin-bottom: 1em;
+      margin-bottom: 1.4em;
+      border-bottom: 1px solid #ddd;
+      padding-bottom: 1.4em;
+
+      &:last-of-type {
+         border-bottom: 0;
+         padding-bottom: 0;
+      }
    `
 
    return (

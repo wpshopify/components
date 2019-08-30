@@ -32,6 +32,8 @@ function AccountWrapper() {
 
    async function getCustomerInfo() {
       if (!customerState.customer) {
+         console.log('getCustomerInfo FETCHING', customerState)
+
          const [errorCust, respCust] = await to(getCustomer(customerState.user.id))
 
          console.log('errorCust', errorCust)
@@ -41,13 +43,17 @@ function AccountWrapper() {
             customerDispatch({ type: 'SET_CUSTOMER', payload: respCust.data.customer })
             customerDispatch({ type: 'SET_DEFAULT_ADDRESS', payload: respCust.data.customer })
          }
+      } else {
+         console.log('getCustomerInfo NOT FETCHING', customerState)
       }
    }
 
    useEffect(() => {
+      console.log('M A Y B E customerState.customer changed')
+
       getCustomerInfo()
       customerDispatch({ type: 'SET_INNER_PAGE', payload: false })
-   }, [])
+   }, [customerState.customer])
 
    return (
       <>
