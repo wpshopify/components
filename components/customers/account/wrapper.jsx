@@ -14,6 +14,8 @@ function findDefaultAddress(addressLookup, addresses) {
       return o.node.address1 === addressLookup
    })
 
+   console.log('found', found)
+
    if (found) {
       return found.node
    }

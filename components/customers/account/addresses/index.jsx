@@ -9,6 +9,8 @@ import { A } from 'hookrouter'
 import { AccountDetailsDefaultAddress } from '../details/address/default-address'
 import { AccountDetailsAddresses } from '../details/address/addresses'
 import { AccountReturn } from '../return'
+import { AddressesProvider } from './_state/provider'
+import { AddressesHeader } from './header'
 
 /** @jsx jsx */
 import { jsx, css } from '@emotion/core'
@@ -33,30 +35,30 @@ function Addresses() {
    }, [customerState.customer.addresses])
 
    return (
-      <section css={stylesSlideIn}>
-         <AccountReturn path='/account/' text='Return to Account Details' onInner={false} />
+      <AddressesProvider>
+         <section css={stylesSlideIn}>
+            <AddressesHeader />
 
-         <h2>Your Addresses</h2>
+            {customerState.customer.addresses && (
+               <div css={stylesWrap}>
+                  <div css={stylesInner}>
+                     <h3>Default Address</h3>
+                     <AccountDetailsDefaultAddress />
+                  </div>
 
-         {customerState.customer.addresses && (
-            <div css={stylesWrap}>
-               <div css={stylesInner}>
-                  <h3>Default Address</h3>
-                  <AccountDetailsDefaultAddress />
+                  <div css={stylesInner}>
+                     <h3>Other Addresses</h3>
+
+                     <AccountDetailsAddresses addresses={withoutDefault(customerState.customer.addresses.edges, customerState.defaultAddress.address1)} />
+                  </div>
                </div>
+            )}
 
-               <div css={stylesInner}>
-                  <h3>Other Addresses</h3>
-
-                  <AccountDetailsAddresses addresses={withoutDefault(customerState.customer.addresses.edges, customerState.defaultAddress.address1)} />
-               </div>
-            </div>
-         )}
-
-         <A href='/account/addresses/add' className='wps-btn wps-btn-secondary wpshopify-btn-auto-width'>
-            Add new address
-         </A>
-      </section>
+            <A href='/account/addresses/add' className='wps-btn wps-btn-secondary wpshopify-btn-auto-width'>
+               Add new address
+            </A>
+         </section>
+      </AddressesProvider>
    )
 }
 

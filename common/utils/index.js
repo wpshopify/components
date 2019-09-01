@@ -7,6 +7,7 @@ import md5 from 'js-md5'
 
 import React from 'react'
 import ReactDOM from 'react-dom'
+import { format, formatDistance, subDays } from 'date-fns'
 
 function removeFrom(array, valueToRemove) {
    return without(array, valueToRemove)
@@ -103,4 +104,8 @@ function FilterHook({ name, defaultVal, args, isReady }) {
    return hasHooks() && wp.hooks.hasFilter(name) && <div data-wps-is-ready={isReady} dangerouslySetInnerHTML={{ __html: wp.hooks.applyFilters(name, defaultVal, ...args) }} />
 }
 
-export { objectIsEmpty, createObj, removeFrom, lowercaseObjKeys, capitalizeFirstLetter, itemWidthClass, findPortalElement, convertTitleToHandle, hashQueryParams, hasHooks, FilterHook }
+function prettyDate(rawDate, formatting) {
+   return format(new Date(rawDate), formatting)
+}
+
+export { objectIsEmpty, createObj, removeFrom, lowercaseObjKeys, capitalizeFirstLetter, itemWidthClass, findPortalElement, convertTitleToHandle, hashQueryParams, hasHooks, FilterHook, prettyDate }

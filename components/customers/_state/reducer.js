@@ -11,7 +11,11 @@ function findDefaultAddress(addressLookup, addresses) {
       return found.node
    }
 
-   return false
+   if (!addresses) {
+      return false
+   }
+   var lastIndex = addresses.edges.length - 1
+   return addresses.edges[lastIndex].node
 }
 
 function CustomersReducer(state, action) {
@@ -31,12 +35,7 @@ function CustomersReducer(state, action) {
       }
 
       case 'ADD_CUSTOMER_ADDRESS': {
-         console.log('action.payload', action.payload)
-         console.log('state.customer', state.customer)
-
          var newAddressesArray = update(state.customer.addresses.edges, { $push: [{ node: action.payload }] })
-
-         console.log('newAddressesArray', newAddressesArray)
 
          return {
             ...state,
@@ -77,13 +76,35 @@ function CustomersReducer(state, action) {
          }
       }
 
+      case 'DELETE_CUSTOMER_ADDRESS': {
+         var newCustomer = update(state.customer, {
+            $apply: customer => {
+               var okasfdoksa = customer.addresses.edges.filter(function(address) {
+                  return address.node.id !== action.payload
+               })
+
+               customer.addresses = {
+                  edges: okasfdoksa
+               }
+
+               return customer
+            }
+         })
+
+         return {
+            ...state,
+            customer: newCustomer,
+            defaultAddress: update(state.defaultAddress, { $set: findDefaultAddress(state.defaultAddress.address1, newCustomer.addresses) })
+         }
+      }
+
       case 'SET_DEFAULT_ADDRESS': {
          if (!action.payload) {
             return {
                ...state
             }
          }
-         console.log('SET_DEFAULT_ADDRESSSET_DEFAULT_ADDRESSSET_DEFAULT_ADDRESSSET_DEFAULT_ADDRESS')
+
          return {
             ...state,
             defaultAddress: update(state.defaultAddress, { $set: findDefaultAddress(action.payload.defaultAddress.address1, action.payload.addresses) })

@@ -1,14 +1,17 @@
 import React, { useState, useEffect, useContext } from 'react'
 import ReactDOM from 'react-dom'
-import uuidv4 from 'uuid/v4'
 import { A } from 'hookrouter'
 import { CustomersContext } from '../../../_state/context'
+import { AddressesContext } from '../../addresses/_state/context'
+import { deleteCustomerAddress } from '/Users/andrew/www/devil/devilbox-new/data/www/wpshopify-api'
+import to from 'await-to-js'
 
 /** @jsx jsx */
 import { jsx, css } from '@emotion/core'
 
 function AccountAddressControls({ address }) {
    const [customerState, customerDispatch] = useContext(CustomersContext)
+   const [addressesState, addressesDispatch] = useContext(AddressesContext)
 
    const stylesAddressLine = css`
       && {
@@ -34,8 +37,41 @@ function AccountAddressControls({ address }) {
       customerDispatch({ type: 'SET_SELECTED_ADDRESS', payload: address })
    }
 
+   async function deleteAddress() {
+      const [error, success] = await to(
+         deleteCustomerAddress({
+            addressId: address.id
+         })
+      )
+
+      if (success.data.type === 'error') {
+         setNoticeState({
+            message: success.data.message,
+            type: success.data.type
+         })
+
+         return
+      }
+
+      console.log('error', error)
+      console.log('success', success)
+      console.log('address', address)
+
+      addressesDispatch({
+         type: 'SET_NOTICES',
+         payload: {
+            message: 'Successfully deleted address',
+            type: 'success'
+         }
+      })
+
+      customerDispatch({ type: 'DELETE_CUSTOMER_ADDRESS', payload: address.id })
+   }
+
    function onDelete() {
-      console.log('onDelete')
+      if (window.confirm('Do you really want to delete this address?')) {
+         deleteAddress()
+      }
    }
 
    return (

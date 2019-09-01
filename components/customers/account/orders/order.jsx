@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useContext } from 'react'
 import ReactDOM from 'react-dom'
 import { formatPriceToCurrency } from '../../../../common/pricing/formatting'
+import { prettyDate } from '../../../../common/utils'
 import { ShopContext } from '../../../shop/_state/context'
 import { CustomersContext } from '../../_state/context'
 import isEmpty from 'lodash/isEmpty'
@@ -13,9 +14,6 @@ import { jsx, css } from '@emotion/core'
 function Order({ order }) {
    const [shopState] = useContext(ShopContext)
    const [customersState, customerDispatch] = useContext(CustomersContext)
-
-   var options = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' }
-   var datestring = new Date(order.node.processedAt)
 
    const stylesthtd = {
       textAlign: 'left',
@@ -53,7 +51,7 @@ function Order({ order }) {
                {order.node.name}
             </A>
          </td>
-         <td css={stylesthtd}>{datestring.toLocaleDateString('en-US', options)}</td>
+         <td css={stylesthtd}>{prettyDate(order.node.processedAt, 'MMMM dd, yyyy')}</td>
          <td css={[stylesthtd, tableTdLink]}>
             <a href={order.node.statusUrl} target='_blank' css={sfsdfsd}>
                Check status
