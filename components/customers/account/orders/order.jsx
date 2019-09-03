@@ -1,12 +1,13 @@
-import React, { useState, useEffect, useContext } from 'react'
-import ReactDOM from 'react-dom'
+import React, { useContext } from 'react'
 import { formatPriceToCurrency } from '../../../../common/pricing/formatting'
 import { prettyDate } from '../../../../common/utils'
 import { ShopContext } from '../../../shop/_state/context'
 import { CustomersContext } from '../../_state/context'
 import isEmpty from 'lodash/isEmpty'
-import { OrderDetails } from './details'
 import { A } from 'hookrouter'
+import { Td } from '../../../tables/body/td'
+import { FulfillmentStatus } from '../details/fulfillment-status'
+import { OrderStatus } from '../details/order-status'
 
 /** @jsx jsx */
 import { jsx, css } from '@emotion/core'
@@ -29,7 +30,7 @@ function Order({ order }) {
       }
    }
 
-   const sfsdfsd = css`
+   const cellLinkStyles = css`
       padding: 1em;
       width: 100%;
       display: block;
@@ -40,25 +41,27 @@ function Order({ order }) {
    `
 
    function onClick() {
+      console.log('order.node', order.node)
+
       customerDispatch({ type: 'SET_INNER_PAGE', payload: true })
       customerDispatch({ type: 'SET_SELECTED_ORDER_DETAILS', payload: order.node })
    }
 
    return (
       <tr>
-         <td css={[stylesthtd, tableTdLink]}>
-            <A href='/account/order' onClick={onClick} css={sfsdfsd}>
+         <Td extraCSS={tableTdLink}>
+            <A href='/account/order' onClick={onClick} css={cellLinkStyles}>
                {order.node.name}
             </A>
-         </td>
-         <td css={stylesthtd}>{prettyDate(order.node.processedAt, 'MMMM dd, yyyy')}</td>
-         <td css={[stylesthtd, tableTdLink]}>
-            <a href={order.node.statusUrl} target='_blank' css={sfsdfsd}>
-               Check status
-            </a>
-         </td>
-         <td css={stylesthtd}>{isEmpty(order.node.successfulFulfillments) ? 'Unfulfilled' : 'Fulfilled'}</td>
-         <td css={stylesthtd}>{formatPriceToCurrency(order.node.totalPriceV2.amount, shopState.info.currencyCode)}</td>
+         </Td>
+         <Td>{prettyDate(order.node.processedAt, 'MMMM dd, yyyy')}</Td>
+         <Td extraCSS={tableTdLink}>
+            <OrderStatus order={order.node} extraCSS={cellLinkStyles} />
+         </Td>
+         <Td>
+            <FulfillmentStatus order={order.node} />
+         </Td>
+         <Td>{formatPriceToCurrency(order.node.totalPriceV2.amount, shopState.info.currencyCode)}</Td>
       </tr>
    )
 }

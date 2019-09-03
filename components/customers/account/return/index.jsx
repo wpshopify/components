@@ -1,10 +1,6 @@
-import React, { useState, useEffect, useContext } from 'react'
-import ReactDOM from 'react-dom'
-import { formatPriceToCurrency } from '../../../../common/pricing/formatting'
+import React, { useContext } from 'react'
 import { CustomersContext } from '../../_state/context'
-import isEmpty from 'lodash/isEmpty'
 import { A } from 'hookrouter'
-import { stylesSlideIn } from '../../_styles'
 
 /** @jsx jsx */
 import { jsx, css } from '@emotion/core'

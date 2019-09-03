@@ -1,16 +1,10 @@
-import React, { useState, useEffect, useContext } from 'react'
-import ReactDOM from 'react-dom'
+import React from 'react'
 import uuidv4 from 'uuid/v4'
-import { CustomersContext } from '../../../_state/context'
-import { AccountAddressControls } from './address-controls'
 
 /** @jsx jsx */
 import { jsx, css } from '@emotion/core'
 
 function AccountDetailsAddress({ address }) {
-   const [customerState] = useContext(CustomersContext)
-   const [editingAddress, setEditingAddress] = useState(false)
-
    const stylesAddressLine = css`
       && {
          margin: 0;
@@ -37,8 +31,6 @@ function AccountDetailsAddress({ address }) {
                   {line}
                </p>
             ))}
-
-         {customerState.onInnerPage && <AccountAddressControls address={address} />}
       </div>
    )
 }

@@ -99,15 +99,27 @@ function CustomersReducer(state, action) {
       }
 
       case 'SET_DEFAULT_ADDRESS': {
+         console.log('1 .............................. ', action.payload)
+
          if (!action.payload) {
             return {
                ...state
             }
          }
 
+         var foundDefaultAddress = findDefaultAddress(action.payload.defaultAddress.address1, action.payload.addresses)
+
+         console.log('foundDefaultAddress', foundDefaultAddress)
+
+         console.log('OLD foundDefaultAddress', state.defaultAddress)
+
+         var updatedDefaultAddress = update(state.defaultAddress, { $set: foundDefaultAddress })
+
+         console.log('2 .............................. ', updatedDefaultAddress)
+
          return {
             ...state,
-            defaultAddress: update(state.defaultAddress, { $set: findDefaultAddress(action.payload.defaultAddress.address1, action.payload.addresses) })
+            defaultAddress: updatedDefaultAddress
          }
       }
 

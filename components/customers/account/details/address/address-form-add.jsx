@@ -1,7 +1,5 @@
-import React, { useState, useEffect, useContext } from 'react'
-import ReactDOM from 'react-dom'
+import React, { useContext } from 'react'
 import { AddressForm } from './address-form'
-import { AccountDetailsAddress } from './address'
 import { AccountReturn } from '../../return'
 import { CustomersContext } from '../../../_state/context'
 import { stylesSlideIn } from '../../../_styles'

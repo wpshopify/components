@@ -8,6 +8,7 @@ import uuidv4 from 'uuid/v4'
 import { A } from 'hookrouter'
 import { AccountDetailsDefaultAddress } from '../details/address/default-address'
 import { AccountDetailsAddresses } from '../details/address/addresses'
+import { AccountAddressControls } from '../details/address/address-controls'
 import { AccountReturn } from '../return'
 import { AddressesProvider } from './_state/provider'
 import { AddressesHeader } from './header'
@@ -24,6 +25,7 @@ function Addresses() {
 
    const stylesWrap = css`
       display: flex;
+      margin-bottom: 2em;
    `
 
    const stylesInner = css`
@@ -44,6 +46,7 @@ function Addresses() {
                   <div css={stylesInner}>
                      <h3>Default Address</h3>
                      <AccountDetailsDefaultAddress />
+                     <AccountAddressControls address={customerState.defaultAddress} />
                   </div>
 
                   <div css={stylesInner}>

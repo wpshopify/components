@@ -1,5 +1,4 @@
-import React, { useState, useEffect, useContext } from 'react'
-import ReactDOM from 'react-dom'
+import React, { useContext } from 'react'
 import { A } from 'hookrouter'
 import { CustomersContext } from '../../../_state/context'
 import { AddressesContext } from '../../addresses/_state/context'

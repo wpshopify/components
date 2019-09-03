@@ -33,39 +33,43 @@ function AccountWrapper() {
    }
 
    async function getCustomerInfo() {
-      if (!customerState.customer) {
-         console.log('getCustomerInfo FETCHING', customerState)
-
-         const [errorCust, respCust] = await to(getCustomer(customerState.user.id))
-
-         console.log('errorCust', errorCust)
-         console.log('respCust', respCust)
-
-         if (!errorCust) {
-            customerDispatch({ type: 'SET_CUSTOMER', payload: respCust.data.customer })
-            customerDispatch({ type: 'SET_DEFAULT_ADDRESS', payload: respCust.data.customer })
-         }
-      } else {
-         console.log('getCustomerInfo NOT FETCHING', customerState)
+      console.log('getCustomerInfo 1')
+      if (customerState.customer) {
+         return
       }
+
+      console.log('getCustomerInfo 2')
+      console.log('getCustomerInfo FETCHING', customerState)
+
+      const [errorCust, respCust] = await to(getCustomer(customerState.user.id))
+      console.log('getCustomerInfo 3')
+      console.log('errorCust', errorCust)
+      console.log('respCust', respCust)
+
+      if (!errorCust) {
+         console.log('getCustomerInfo 4')
+         customerDispatch({ type: 'SET_CUSTOMER', payload: respCust.data.customer })
+         console.log('getCustomerInfo 5')
+         customerDispatch({ type: 'SET_DEFAULT_ADDRESS', payload: respCust.data.customer })
+         console.log('getCustomerInfo 6')
+      }
+
+      // customerDispatch({ type: 'SET_INNER_PAGE', payload: false })
    }
 
    useEffect(() => {
       console.log('M A Y B E customerState.customer changed')
 
       getCustomerInfo()
-      customerDispatch({ type: 'SET_INNER_PAGE', payload: false })
    }, [customerState.customer])
 
    return (
-      <>
-         {customerState.isAccountPage && (
-            <div css={styles}>
-               <Orders />
-               <AccountDetails />
-            </div>
-         )}
-      </>
+      customerState.isAccountPage && (
+         <div css={styles}>
+            <Orders />
+            <AccountDetails />
+         </div>
+      )
    )
 }
 

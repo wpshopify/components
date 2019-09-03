@@ -127,6 +127,8 @@ function AddressForm({ address, type }) {
       })
 
       if (addressUpdateSuccess.data.updateDefaultAddress) {
+         console.log('addressUpdateSuccess.data.updateDefaultAddress.customerDefaultAddressUpdate.customer', addressUpdateSuccess.data.updateDefaultAddress.customerDefaultAddressUpdate.customer)
+
          customerDispatch({ type: 'SET_DEFAULT_ADDRESS', payload: addressUpdateSuccess.data.updateDefaultAddress.customerDefaultAddressUpdate.customer })
       }
 
@@ -171,6 +173,8 @@ function AddressForm({ address, type }) {
       })
 
       if (addSuccess.data.addDefaultAddress) {
+         console.log('addSuccess.data.addDefaultAddress.customerDefaultAddressUpdate.customer', addSuccess.data.addDefaultAddress.customerDefaultAddressUpdate.customer)
+
          customerDispatch({ type: 'SET_DEFAULT_ADDRESS', payload: addSuccess.data.addDefaultAddress.customerDefaultAddressUpdate.customer })
       }
 
