@@ -41,8 +41,6 @@ function Order({ order }) {
    `
 
    function onClick() {
-      console.log('order.node', order.node)
-
       customerDispatch({ type: 'SET_INNER_PAGE', payload: true })
       customerDispatch({ type: 'SET_SELECTED_ORDER_DETAILS', payload: order.node })
    }
@@ -50,7 +48,7 @@ function Order({ order }) {
    return (
       <tr>
          <Td extraCSS={tableTdLink}>
-            <A href='/account/order' onClick={onClick} css={cellLinkStyles}>
+            <A href={'/' + shopState.settings.customers.accountPageAccount + '/order'} onClick={onClick} css={cellLinkStyles}>
                {order.node.name}
             </A>
          </Td>

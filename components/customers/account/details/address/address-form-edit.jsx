@@ -10,11 +10,11 @@ import { stylesSlideIn } from '../../../_styles'
 import { jsx, css } from '@emotion/core'
 
 function AddressFormEdit() {
-   const [customerState, customerDispatch] = useContext(CustomersContext)
+   const [customerState] = useContext(CustomersContext)
 
    return (
       <section css={stylesSlideIn}>
-         <AccountReturn path='/account/addresses' text='Return to Addresses' onInner={true} />
+         <AccountReturn path='/addresses' text='Return to Addresses' onInner={true} />
 
          <h2>Currently Editing Address:</h2>
 

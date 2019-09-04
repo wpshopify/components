@@ -1,5 +1,6 @@
 import React, { useState, useEffect, useRef, useContext } from 'react'
 import ReactDOM from 'react-dom'
+import { ShopContext } from '../../../shop/_state/context'
 import { CustomersContext } from '../../_state/context'
 import { loginCustomer } from '/Users/andrew/www/devil/devilbox-new/data/www/wpshopify-api'
 import to from 'await-to-js'
@@ -11,6 +12,7 @@ import { Input } from '../../../forms/input'
 
 function CustomerFormLogin() {
    const [customersState, customersDispatch] = useContext(CustomersContext)
+   const [shopState] = useContext(ShopContext)
 
    const element = document.querySelector(customersState.dropzones.formLogin)
 
@@ -26,12 +28,7 @@ function CustomerFormLogin() {
    const [hasChanged, setHasChangedState] = useState(false)
 
    async function login() {
-      console.log('formState', formState)
-
       const [loginError, loginSuccess] = await to(loginCustomer(formState))
-
-      console.log('loginError', loginError)
-      console.log('loginSuccess', loginSuccess)
 
       if (loginSuccess.data.type === 'error') {
          setNoticeState({
@@ -52,20 +49,18 @@ function CustomerFormLogin() {
       }
 
       if (loginError) {
-         console.log('LOGIN ERROR', loginError)
+         console.error('LOGIN ERROR', loginError)
          return
       }
 
       if (isEmpty(loginSuccess.data)) {
-         console.log('LOGIN ERROR :: NO CUSTOMER FOUND', loginSuccess)
          return
       }
 
-      window.location.replace('/account')
+      window.location.replace('/' + shopState.settings.customers.accountPageAccount)
    }
 
    function onSubmit(e) {
-      console.log('Form submitted with state: ', formState)
       e.preventDefault()
 
       login()
@@ -73,19 +68,14 @@ function CustomerFormLogin() {
 
    function onEmailChange(event) {
       setFormState({ ...formState, email: event.target.value })
-      console.log('email', event.target.value)
-
-      console.log('formState', formState)
    }
 
    function onPasswordChange(event) {
       setFormState({ ...formState, password: event.target.value })
-      console.log('password', event.target.value)
-      console.log('formState', formState)
    }
 
    return (
-      element && 
+      element &&
       usePortal(
          <Form dropzoneElement={element} onSubmit={onSubmit} noticeState={noticeState} submitText='Login' hasChanged={hasChanged} afterSubmitButton={LoginActions} formType='login'>
             <Input label='Email or username:' type='email' name='email' isRequired={true} placeholder='Email or username' value={formState.email} onChange={onEmailChange} />

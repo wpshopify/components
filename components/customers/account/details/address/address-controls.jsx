@@ -1,5 +1,6 @@
 import React, { useContext } from 'react'
 import { A } from 'hookrouter'
+import { ShopContext } from '../../../../shop/_state/context'
 import { CustomersContext } from '../../../_state/context'
 import { AddressesContext } from '../../addresses/_state/context'
 import { deleteCustomerAddress } from '/Users/andrew/www/devil/devilbox-new/data/www/wpshopify-api'
@@ -9,6 +10,7 @@ import to from 'await-to-js'
 import { jsx, css } from '@emotion/core'
 
 function AccountAddressControls({ address }) {
+   const [shopState] = useContext(ShopContext)
    const [customerState, customerDispatch] = useContext(CustomersContext)
    const [addressesState, addressesDispatch] = useContext(AddressesContext)
 
@@ -52,10 +54,6 @@ function AccountAddressControls({ address }) {
          return
       }
 
-      console.log('error', error)
-      console.log('success', success)
-      console.log('address', address)
-
       addressesDispatch({
          type: 'SET_NOTICES',
          payload: {
@@ -76,7 +74,7 @@ function AccountAddressControls({ address }) {
    return (
       !customerState.selectedAddress && (
          <div className='wps-account-address-controls' css={stylesControlWrapper}>
-            <A href='/account/addresses/edit' onClick={onEdit} css={stylesControl}>
+            <A href={'/' + shopState.settings.customers.accountPageAccount + '/addresses/edit'} onClick={onEdit} css={stylesControl}>
                Edit
             </A>
             <a href='#!' onClick={onDelete} css={stylesControl}>

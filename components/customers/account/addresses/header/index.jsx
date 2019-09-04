@@ -9,7 +9,7 @@ function AddressesHeader() {
 
    return (
       <header>
-         <AccountReturn path='/account/' text='Return to Account Details' onInner={false} />
+         <AccountReturn text='Return to Account Details' onInner={false} />
          <h2>Your Addresses</h2>
 
          {addressesState.notices && <Notice message={addressesState.notices.message} type={addressesState.notices.type} />}

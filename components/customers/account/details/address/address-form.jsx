@@ -94,9 +94,6 @@ function AddressForm({ address, type }) {
          })
       )
 
-      console.log('addressUpdateError', addressUpdateError)
-      console.log('addressUpdateSuccess', addressUpdateSuccess)
-
       if (addressUpdateSuccess.data.type === 'error') {
          setNoticeState({
             message: addressUpdateSuccess.data.message,
@@ -116,8 +113,6 @@ function AddressForm({ address, type }) {
          return
       }
 
-      console.log('addressUpdateSuccess.data:', addressUpdateSuccess.data)
-
       customerDispatch({
          type: 'UPDATE_CUSTOMER_ADDRESS',
          payload: {
@@ -127,8 +122,6 @@ function AddressForm({ address, type }) {
       })
 
       if (addressUpdateSuccess.data.updateDefaultAddress) {
-         console.log('addressUpdateSuccess.data.updateDefaultAddress.customerDefaultAddressUpdate.customer', addressUpdateSuccess.data.updateDefaultAddress.customerDefaultAddressUpdate.customer)
-
          customerDispatch({ type: 'SET_DEFAULT_ADDRESS', payload: addressUpdateSuccess.data.updateDefaultAddress.customerDefaultAddressUpdate.customer })
       }
 
@@ -144,9 +137,6 @@ function AddressForm({ address, type }) {
             address: formState
          })
       )
-
-      console.log('addError', addError)
-      console.log('addSuccess', addSuccess)
 
       if (addSuccess.data.type === 'error') {
          setNoticeState({
@@ -173,8 +163,6 @@ function AddressForm({ address, type }) {
       })
 
       if (addSuccess.data.addDefaultAddress) {
-         console.log('addSuccess.data.addDefaultAddress.customerDefaultAddressUpdate.customer', addSuccess.data.addDefaultAddress.customerDefaultAddressUpdate.customer)
-
          customerDispatch({ type: 'SET_DEFAULT_ADDRESS', payload: addSuccess.data.addDefaultAddress.customerDefaultAddressUpdate.customer })
       }
 

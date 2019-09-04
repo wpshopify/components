@@ -39,7 +39,6 @@ function CustomerFormForgotPassword() {
    }
 
    function onSubmit(e) {
-      console.log('Form submitted with state: ', formState)
       e.preventDefault()
 
       resetPassword()
@@ -47,24 +46,17 @@ function CustomerFormForgotPassword() {
 
    function onEmailChange(event) {
       setFormState({ ...formState, email: event.target.value })
-      console.log('email', event.target.value)
-
-      console.log('formState', formState)
    }
 
    function onPasswordChange(event) {
       setFormState({ ...formState, password: event.target.value })
-      console.log('password', event.target.value)
-      console.log('formState', formState)
    }
 
    return (
       element &&
       usePortal(
-         <Form onSubmit={onSubmit} noticeState={noticeState} submitText='Reset Password' formType="forgot-password">
-
+         <Form onSubmit={onSubmit} noticeState={noticeState} submitText='Reset Password' formType='forgot-password'>
             <Input label='Email or username:' type='email' name='email' isRequired={true} placeholder='Email or username' value={formState.email} onChange={onEmailChange} />
-
          </Form>,
          element
       )

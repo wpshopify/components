@@ -1,5 +1,6 @@
 import React, { useState, useEffect, useContext } from 'react'
 import ReactDOM from 'react-dom'
+import { ShopContext } from '../../../shop/_state/context'
 import { CustomersContext } from '../../_state/context'
 import { stylesSlideIn } from '../../_styles'
 import { useAnime, pulse } from '../../../../common/animations'
@@ -12,6 +13,7 @@ import { AccountDetailsDefaultAddress } from './address/default-address'
 import { jsx, css } from '@emotion/core'
 
 function AccountDetails() {
+   const [shopState] = useContext(ShopContext)
    const [customerState, customerDispatch] = useContext(CustomersContext)
 
    const stylesDetails = css`
@@ -54,7 +56,7 @@ function AccountDetails() {
 
                <AccountDetailsDefaultAddress />
 
-               <A href='/account/addresses' onClick={onClick} className='wps-view-addresses' css={stylesViewAddresses}>
+               <A href={'/' + shopState.settings.customers.accountPageAccount + '/addresses'} onClick={onClick} className='wps-view-addresses' css={stylesViewAddresses}>
                   View all addresses ({customerState.customer.addresses.edges.length})
                </A>
             </div>

@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useContext } from 'react'
 import ReactDOM from 'react-dom'
 import { CustomersContext } from '../../_state/context'
+import { ShopContext } from '../../../shop/_state/context'
 import { stylesSlideIn } from '../../_styles'
 import { useAnime, pulse } from '../../../../common/animations'
 import find from 'lodash/find'
@@ -22,6 +23,7 @@ function withoutDefault(addresses, lookup) {
 
 function Addresses() {
    const [customerState, customersDispatch] = useContext(CustomersContext)
+   const [shopState] = useContext(ShopContext)
 
    const stylesWrap = css`
       display: flex;
@@ -57,7 +59,7 @@ function Addresses() {
                </div>
             )}
 
-            <A href='/account/addresses/add' className='wps-btn wps-btn-secondary wpshopify-btn-auto-width'>
+            <A href={'/' + shopState.settings.customers.accountPageAccount + '/addresses/add'} className='wps-btn wps-btn-secondary wpshopify-btn-auto-width'>
                Add new address
             </A>
          </section>

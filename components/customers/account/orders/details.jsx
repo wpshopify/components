@@ -49,7 +49,7 @@ function OrderDetails() {
 
    return (
       <section css={stylesSlideIn}>
-         <AccountReturn path='/account/' text='Return to Account Details' onInner={false} />
+         <AccountReturn text='Return to Account Details' onInner={false} />
 
          <div css={row}>
             <div css={tableStyles}>

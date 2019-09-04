@@ -9,7 +9,6 @@ import { Td } from '../../../tables/body/td'
 
 function OrderDetailsRow({ lineItem }) {
    const [shopState] = useContext(ShopContext)
-   console.log('vlineItemlineItemlineItemlineItemlineItemlineItem', lineItem)
 
    const sdfasdf = css`
       display: flex;

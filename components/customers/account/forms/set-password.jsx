@@ -15,12 +15,10 @@ function ResetForm({ noticeState, formState, onPasswordChange, onConfirmPassword
    return (
       element &&
       usePortal(
-         <Form onSubmit={onSubmit} noticeState={noticeState} submitText='Set new password' formType="reset-password">
-
+         <Form onSubmit={onSubmit} noticeState={noticeState} submitText='Set new password' formType='reset-password'>
             <Input label='New Password:' type='password' name='password' isRequired={true} value={formState.password} onChange={onPasswordChange} />
 
             <Input label='Confirm New Password:' type='password' name='confirm-password' isRequired={true} value={formState.confirmPassword} onChange={onConfirmPasswordChange} />
-
          </Form>,
          element
       )
@@ -77,12 +75,7 @@ function CustomerFormSetPassword() {
    }, [])
 
    async function resetPassword() {
-      console.log('formState', formState)
-
       const [resetError, resetSuccess] = await to(setPasswordCustomer(formState))
-
-      console.log('resetError', resetError)
-      console.log('resetSuccess', resetSuccess)
 
       if (!resetSuccess && resetError) {
          setNoticeState({ message: 'Error: ' + resetError.message + '. Error code: ' + resetError.statusCode, type: 'error' })
@@ -96,9 +89,6 @@ function CustomerFormSetPassword() {
 
          return
       }
-
-      // console.log('resetSuccess', resetSuccess.data.customerReset.customerUserErrors)
-      // customerReset.customer.displayName
 
       if (resetSuccess.data.type === 'error') {
          setNoticeState({ message: 'Error: ' + resetSuccess.data.message, type: 'error' })
@@ -147,12 +137,10 @@ function CustomerFormSetPassword() {
    }
 
    function onPasswordChange(event) {
-      console.log('event.target.value ', event.target.value)
       setFormState({ ...formState, password: event.target.value })
    }
 
    function onConfirmPasswordChange(event) {
-      console.log('event.target.value ', event.target.value)
       setFormState({ ...formState, confirmPassword: event.target.value })
    }
 

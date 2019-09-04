@@ -6,10 +6,12 @@ import isEmpty from 'lodash/isEmpty'
 import { Notice } from '../../../notice'
 import { usePortal } from '../../../../common/hooks'
 import { CustomersContext } from '../../_state/context'
+import { ShopContext } from '../../../shop/_state/context'
 import { Form } from '../../../forms'
 import { Input } from '../../../forms/input'
 
 function CustomerFormRegister() {
+   const [shopState] = useContext(ShopContext)
    const [customersState, customersDispatch] = useContext(CustomersContext)
 
    const emailRef = useRef()
@@ -27,9 +29,6 @@ function CustomerFormRegister() {
    async function register() {
       const [registerError, registerSuccess] = await to(registerCustomer(formState))
 
-      console.log('registerError', registerError)
-      console.log('registerSuccess', registerSuccess)
-
       if (registerSuccess.data.type === 'error') {
          setNoticeState({
             message: registerSuccess.data.message,
@@ -44,12 +43,11 @@ function CustomerFormRegister() {
       }
 
       if (registerError) {
-         console.log('LOGIN ERROR', registerError)
+         console.error('LOGIN ERROR', registerError)
          return
       }
 
       if (isEmpty(registerSuccess.data)) {
-         console.log('LOGIN ERROR :: NO CUSTOMER FOUND', registerSuccess)
          return
       }
 
@@ -62,7 +60,6 @@ function CustomerFormRegister() {
    }
 
    function onSubmit(e) {
-      console.log('Form submitted with state: ', formState)
       e.preventDefault()
 
       register()
@@ -70,22 +67,14 @@ function CustomerFormRegister() {
 
    function onEmailChange(event) {
       setFormState({ ...formState, email: event.target.value })
-      console.log('email', event.target.value)
-
-      console.log('formState', formState)
    }
 
    function onUsernameChange(event) {
       setFormState({ ...formState, username: event.target.value })
-      console.log('username', event.target.value)
-
-      console.log('formState', formState)
    }
 
    function onPasswordChange(event) {
       setFormState({ ...formState, password: event.target.value })
-      console.log('password', event.target.value)
-      console.log('formState', formState)
    }
 
    return hasChanged ? (
@@ -109,7 +98,7 @@ function LoginLink({ noticeState }) {
    return (
       <>
          <Notice message={noticeState.message} type={noticeState.type} />
-         <a href='/account' className='wps-btn wps-btn-secondary wpshopify-btn-auto-width'>
+         <a href={'/' + shopState.settings.customers.accountPageAccount} className='wps-btn wps-btn-secondary wpshopify-btn-auto-width'>
             Login to your account
          </a>
       </>
@@ -122,14 +111,12 @@ function RegisterForm({ onSubmit, noticeState, formState, onEmailChange, onUsern
    return (
       element &&
       usePortal(
-         <Form onSubmit={onSubmit} noticeState={noticeState} submitText='Create your account' formType="register">
-
+         <Form onSubmit={onSubmit} noticeState={noticeState} submitText='Create your account' formType='register'>
             <Input label='Email:' type='email' name='email' isRequired={true} placeholder='Email' value={formState.email} onChange={onEmailChange} />
 
             <Input label='Username (optional):' type='text' name='username' placeholder='Username' value={formState.username} onChange={onUsernameChange} />
 
             <Input label='Password:' type='password' name='password' isRequired={true} placeholder='Password' value={formState.password} onChange={onPasswordChange} />
-
          </Form>,
          element
       )

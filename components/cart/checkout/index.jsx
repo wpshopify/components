@@ -29,11 +29,11 @@ function CartCheckout() {
          return '_self'
       }
 
-      if (WP_Shopify.settings.checkoutButtonTarget === '_blank') {
+      if (shopState.settings.checkoutButtonTarget === '_blank') {
          cartDispatch({ type: 'SET_IS_CHECKING_OUT', payload: false })
       }
 
-      return WP_Shopify.settings.checkoutButtonTarget
+      return shopState.settings.checkoutButtonTarget
    }
 
    function managedDomainRedirect(checkout) {
@@ -45,7 +45,7 @@ function CartCheckout() {
    }
 
    function checkoutRedirect(checkout) {
-      if (!WP_Shopify.settings.enableCustomCheckoutDomain || !hasManagedDomain(checkout.webUrl)) {
+      if (!shopState.settings.enableCustomCheckoutDomain || !hasManagedDomain(checkout.webUrl)) {
          return managedDomainRedirect(checkout)
       }
 
