@@ -37,7 +37,7 @@ function CustomerFormRegister() {
 
          setFormState({ username: '', email: '', password: '' })
 
-         emailRef.current.focus()
+         // emailRef.current.focus()
 
          return
       }
@@ -51,12 +51,14 @@ function CustomerFormRegister() {
          return
       }
 
-      setHasChangedState(true)
-      setFormState({ username: '', email: '', password: '' })
       setNoticeState({
          message: 'Your account has been created! Login.',
          type: 'success'
       })
+
+      setHasChangedState(true)
+
+      setFormState({ username: '', email: '', password: '' })
    }
 
    function onSubmit(e) {
@@ -78,7 +80,7 @@ function CustomerFormRegister() {
    }
 
    return hasChanged ? (
-      <LoginLink noticeState={noticeState} />
+      <LoginLink noticeState={noticeState} shopState={shopState} />
    ) : (
       <RegisterForm
          onSubmit={onSubmit}
@@ -94,11 +96,11 @@ function CustomerFormRegister() {
    )
 }
 
-function LoginLink({ noticeState }) {
+function LoginLink({ noticeState, shopState }) {
    return (
       <>
          <Notice message={noticeState.message} type={noticeState.type} />
-         <a href={'/' + shopState.settings.customers.accountPageAccount} className='wps-btn wps-btn-secondary wpshopify-btn-auto-width'>
+         <a href={'/' + shopState.settings.customers.accountPageLogin} className='wps-btn wps-btn-secondary wpshopify-btn-auto-width'>
             Login to your account
          </a>
       </>

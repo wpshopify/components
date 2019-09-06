@@ -2,19 +2,22 @@ import React from 'react'
 import ReactDOM from 'react-dom'
 import { Notice } from '../notice'
 import { renderToString } from 'react-dom/server'
+import { Loader } from '../loader'
 
-function Form({ children, onSubmit, noticeState, submitText, hasChanged, beforeSubmitButton, afterSubmitButton, formType }) {
+function Form({ children, onSubmit, noticeState, submitText, hasChanged, beforeSubmitButton, afterSubmitButton, formType, isSubmitting }) {
    return (
-      <form id={`wpshopify-component-customers-${formType}`} className="wpshopify-account-form" onSubmit={onSubmit}>
+      <form id={`wpshopify-component-customers-${formType}`} className='wpshopify-account-form' onSubmit={onSubmit}>
          {noticeState && <Notice message={noticeState.message} type={noticeState.type} />}
 
          {children}
 
          {beforeSubmitButton && <div dangerouslySetInnerHTML={{ __html: renderToString(beforeSubmitButton()) }} />}
 
-         <button type='submit' className='wps-btn wps-btn-secondary wpshopify-btn-auto-width'>
+         <button disabled={isSubmitting} type='submit' className='wps-btn wps-btn-secondary wpshopify-btn-auto-width'>
             {submitText}
          </button>
+
+         {isSubmitting && <Loader isLoading={isSubmitting} />}
 
          {afterSubmitButton && <div dangerouslySetInnerHTML={{ __html: renderToString(afterSubmitButton()) }} />}
 

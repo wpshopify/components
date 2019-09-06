@@ -1,5 +1,4 @@
 import React, { useContext } from 'react'
-import ReactDOM from 'react-dom'
 import { AccountWrapper } from './wrapper'
 import { Addresses } from './addresses'
 import { AddressFormEdit } from './details/address/address-form-edit'

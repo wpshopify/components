@@ -87,7 +87,6 @@
       "mini-css-extract-plugin": "^0.8.0",
       "progress-bar-webpack-plugin": "^1.12.1",
       "react-testing-library": "^8.0.1",
-      "terser-webpack-plugin": "^1.4.1",
       "webpack": "^4.39.2",
       "webpack-bundle-analyzer": "^3.4.1",
       "webpack-cli": "^3.3.7"

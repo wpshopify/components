@@ -15,32 +15,36 @@ function Bootstrap({ children }) {
       shopDispatch({ type: 'IS_SHOP_READY' })
    }
 
-   /*
-   
-   Responsible for: Bootstrapping the app
-   
-   */
    async function bootstrapShop() {
+      console.log('📦 React Bootstrap 1 :: hasHooks() ', hasHooks())
+
       // If running WP less < 5.0, polyfill the hooks
       if (hasHooks()) {
          wp.hooks.doAction('before.ready', shopState.settings)
       } else {
+         console.log('📦 React Bootstrap 2 :: wp ', wp)
+
          if (typeof wp === 'undefined') {
             window.wp = {}
             wp.hooks = createHooks()
          } else {
             wp.hooks = createHooks()
          }
+
+         console.log('📦 React Bootstrap 3 :: wp ', wp)
       }
 
-      var [instancesErrorMsg, instances] = await to(buildInstances())
+      var [errorInstances, instances] = await to(buildInstances())
 
-      if (instancesErrorMsg) {
+      console.log('📦 React Bootstrap 4 :: errorInstances ', errorInstances)
+      console.log('📦 React Bootstrap 4 :: instances ', instances)
+
+      if (errorInstances) {
          shopDispatch({
             type: 'UPDATE_NOTICES',
             payload: {
                type: 'error',
-               message: instancesErrorMsg
+               message: errorInstances
             }
          })
 
@@ -60,14 +64,19 @@ function Bootstrap({ children }) {
       }
 
       if (instances.checkout.completedAt) {
-         var [newInstancesErrorMsg, newInstances] = await to(buildInstances(true))
+         console.log('📦 React Bootstrap 5 :: instances.checkout.completedAt ', instances.checkout.completedAt)
 
-         if (newInstancesErrorMsg) {
+         var [buildInstancesError, newInstances] = await to(buildInstances(true))
+
+         console.log('📦 React Bootstrap 5 :: buildInstancesError ', buildInstancesError)
+         console.log('📦 React Bootstrap 5 :: newInstances ', newInstances)
+
+         if (buildInstancesError) {
             shopDispatch({
                type: 'UPDATE_NOTICES',
                payload: {
                   type: 'error',
-                  message: newInstancesErrorMsg
+                  message: buildInstancesError
                }
             })
 
@@ -91,6 +100,9 @@ function Bootstrap({ children }) {
 
       shopDispatch({ type: 'SET_CHECKOUT_ID', payload: instances.checkout.id })
       shopDispatch({ type: 'SET_SHOP_INFO', payload: instances.shop })
+
+      console.log('📦 React Bootstrap 6 :: instances.checkout ', instances.checkout)
+      console.log('📦 React Bootstrap 6 :: instances.shop ', instances.shop)
 
       setReady()
    }

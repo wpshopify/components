@@ -99,7 +99,7 @@ function CustomersReducer(state, action) {
       }
 
       case 'SET_DEFAULT_ADDRESS': {
-         if (!action.payload) {
+         if (!action.payload || !action.payload.defaultAddress) {
             return {
                ...state
             }

@@ -6,6 +6,7 @@ import isEmpty from 'lodash/isEmpty'
 import { Notice } from '../../../notice'
 import { usePortal } from '../../../../common/hooks'
 import { CustomersContext } from '../../_state/context'
+import { ShopContext } from '../../../shop/_state/context'
 import { Form } from '../../../forms'
 import { Input } from '../../../forms/input'
 
@@ -25,11 +26,11 @@ function ResetForm({ noticeState, formState, onPasswordChange, onConfirmPassword
    )
 }
 
-function LoginLink({ noticeState }) {
+function LoginLink({ noticeState, shopState }) {
    return (
       <>
          <Notice message={noticeState.message} type={noticeState.type} />
-         <a href='/login' className='wps-btn wps-btn-secondary wpshopify-btn-auto-width'>
+         <a href={'/' + shopState.settings.customers.accountPageLogin} className='wps-btn wps-btn-secondary wpshopify-btn-auto-width'>
             Login
          </a>
       </>
@@ -38,6 +39,7 @@ function LoginLink({ noticeState }) {
 
 function CustomerFormSetPassword() {
    const [customersState, customersDispatch] = useContext(CustomersContext)
+   const [shopState] = useContext(ShopContext)
 
    const [formState, setFormState] = useState({
       password: '',
@@ -145,7 +147,7 @@ function CustomerFormSetPassword() {
    }
 
    return hasChanged ? (
-      <LoginLink noticeState={noticeState} />
+      <LoginLink noticeState={noticeState} shopState={shopState} />
    ) : (
       <ResetForm
          onSubmit={onSubmit}

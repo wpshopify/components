@@ -10,7 +10,7 @@ import { Input } from '../../../forms/input'
 function CustomerFormForgotPassword() {
    const [customersState, customersDispatch] = useContext(CustomersContext)
    const element = document.querySelector(customersState.dropzones.formForgotPassword)
-
+   const [isSubmitting, setIsSubmitting] = useState(false)
    const [formState, setFormState] = useState({
       email: ''
    })
@@ -20,7 +20,11 @@ function CustomerFormForgotPassword() {
    const [hasChanged, setHasChangedState] = useState(false)
 
    async function resetPassword() {
+      setIsSubmitting(true)
+
       const [resetError, resetSuccess] = await to(resetPasswordCustomer(formState))
+
+      setIsSubmitting(false)
 
       if (resetSuccess.data.type === 'error') {
          setNoticeState({
@@ -55,7 +59,7 @@ function CustomerFormForgotPassword() {
    return (
       element &&
       usePortal(
-         <Form onSubmit={onSubmit} noticeState={noticeState} submitText='Reset Password' formType='forgot-password'>
+         <Form onSubmit={onSubmit} noticeState={noticeState} submitText='Reset Password' formType='forgot-password' isSubmitting={isSubmitting}>
             <Input label='Email or username:' type='email' name='email' isRequired={true} placeholder='Email or username' value={formState.email} onChange={onEmailChange} />
          </Form>,
          element
