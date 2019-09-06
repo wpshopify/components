@@ -2,7 +2,7 @@
    "name": "@wpshopify/components",
    "version": "0.2.3",
    "description": "Front-end component library for WP Shopify",
-   "module": "dist/index.js",
+   "module": "index.js",
    "scripts": {
       "build": "webpack --config webpack.config.babel.js",
       "tests-unit": "jest --watch --detectOpenHandles -c='tests/unit/jest.config.unit.json'"
