@@ -1,4 +1,4 @@
-(window.wpshopify=window.wpshopify||[]).push([[14],{320:function(t,e,n){"use strict";(function(t){for(
+(window.wpshopifyComponents=window.wpshopifyComponents||[]).push([[14],{320:function(t,e,n){"use strict";(function(t){for(
 /**!
  * @fileOverview Kickass library to create and place poppers near their reference elements.
  * @version 1.15.0

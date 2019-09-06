@@ -4,19 +4,17 @@ import ProgressBarPlugin from 'progress-bar-webpack-plugin'
 
 const config = {
    mode: 'production',
-   cache: false,
    externals: ['@wpshopify/api', 'lodash', 'react', 'react-dom'],
-   // IMPORTANT: This entry will override an entry set within webpack stream
    entry: {
       index: './index'
    },
    output: {
-      filename: '[name].min.js',
+      filename: '[name].js',
       path: path.resolve(__dirname, 'dist'),
-      chunkFilename: '[name].min.js',
-      jsonpFunction: 'wpshopify',
-      library: 'wpshopify',
-      libraryTarget: 'commonjs2'
+      // chunkFilename: '[name].js',
+      jsonpFunction: 'wpshopifyComponents',
+      library: 'wpshopifyComponents',
+      libraryTarget: 'umd'
    },
    resolve: {
       extensions: ['.js', '.jsx'],
@@ -25,7 +23,7 @@ const config = {
          'lodash-es': 'lodash'
       }
    },
-   plugins: [new webpack.optimize.ModuleConcatenationPlugin(), new ProgressBarPlugin()],
+   plugins: [new ProgressBarPlugin()],
    module: {
       rules: [
          {
