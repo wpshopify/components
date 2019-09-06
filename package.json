@@ -1,6 +1,6 @@
 {
    "name": "@wpshopify/components",
-   "version": "0.2.2",
+   "version": "0.2.3",
    "description": "Front-end component library for WP Shopify",
    "module": "dist/index.js",
    "scripts": {
