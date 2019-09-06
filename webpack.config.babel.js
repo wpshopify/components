@@ -3,7 +3,7 @@ import path from 'path'
 import ProgressBarPlugin from 'progress-bar-webpack-plugin'
 
 const config = {
-   mode: 'production',
+   mode: 'development',
    externals: ['@wpshopify/api', 'lodash', 'react', 'react-dom'],
    entry: {
       index: './index'
