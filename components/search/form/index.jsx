@@ -1,5 +1,5 @@
 import React, { useContext, useEffect, useRef } from 'react'
-import { queryBuilder } from '/Users/andrew/www/devil/devilbox-new/data/www/wpshopify-api'
+import { queryBuilder } from '@wpshopify/api'
 import { SearchContext } from '../_state/context'
 import { ItemsContext } from '../../items/_state/context'
 import { ShopContext } from '../../shop/_state/context'

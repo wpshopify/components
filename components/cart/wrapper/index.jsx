@@ -7,7 +7,7 @@ import { CartContext } from '../_state/context'
 import { ShopContext } from '../../shop/_state/context'
 import { useAction } from '../../../common/hooks'
 import isEmpty from 'lodash/isEmpty'
-import { getProductIdsFromLineItems } from '/Users/andrew/www/devil/devilbox-new/data/www/wpshopify-api'
+import { getProductIdsFromLineItems } from '@wpshopify/api'
 import to from 'await-to-js'
 
 const CartHeader = React.lazy(() => import(/* webpackChunkName: 'CartHeader' */ '../header'))

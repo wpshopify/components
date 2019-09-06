@@ -6,7 +6,7 @@ import { ProductContext } from '../../_state/context'
 import { hasHooks } from '../../../../../common/utils'
 import { useAnime, pulse } from '../../../../../common/animations'
 import { addProductDetailsToVariant } from '../../../../../common/products'
-import { findVariantFromSelectedOptions } from '/Users/andrew/www/devil/devilbox-new/data/www/wpshopify-api'
+import { findVariantFromSelectedOptions } from '@wpshopify/api'
 
 function ProductAddButton() {
    const button = useRef()

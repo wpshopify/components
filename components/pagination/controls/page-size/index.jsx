@@ -1,5 +1,5 @@
 import React, { useContext, useState } from 'react'
-import { graphQuery, findLastCursorId } from '/Users/andrew/www/devil/devilbox-new/data/www/wpshopify-api'
+import { graphQuery, findLastCursorId } from '@wpshopify/api'
 import { PaginationContext } from '../../_state/context'
 import { ItemsContext } from '../../../items/_state/context'
 import { usePortal } from '../../../../common/hooks'

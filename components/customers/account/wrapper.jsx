@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useContext } from 'react'
 import ReactDOM from 'react-dom'
-import { getCustomer } from '/Users/andrew/www/devil/devilbox-new/data/www/wpshopify-api'
+import { getCustomer } from '@wpshopify/api'
 import to from 'await-to-js'
 
 /** @jsx jsx */
