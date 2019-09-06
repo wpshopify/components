@@ -3,9 +3,8 @@ import path from 'path'
 import ProgressBarPlugin from 'progress-bar-webpack-plugin'
 
 const config = {
-   watch: true,
-   mode: 'development',
-   cache: true,
+   mode: 'production',
+   cache: false,
    externals: ['@wpshopify/api', 'lodash', 'react', 'react-dom'],
    // IMPORTANT: This entry will override an entry set within webpack stream
    entry: {
@@ -17,7 +16,7 @@ const config = {
       chunkFilename: '[name].min.js',
       jsonpFunction: 'wpshopify',
       library: 'wpshopify',
-      libraryTarget: 'umd'
+      libraryTarget: 'commonjs2'
    },
    resolve: {
       extensions: ['.js', '.jsx'],
@@ -26,7 +25,7 @@ const config = {
          'lodash-es': 'lodash'
       }
    },
-   plugins: [new webpack.optimize.ModuleConcatenationPlugin(), new webpack.IgnorePlugin(/^\.\/locale$/, /moment$/), new ProgressBarPlugin()],
+   plugins: [new webpack.optimize.ModuleConcatenationPlugin(), new ProgressBarPlugin()],
    module: {
       rules: [
          {

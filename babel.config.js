@@ -5,7 +5,8 @@ module.exports = api => {
          [
             '@babel/preset-env',
             {
-               useBuiltIns: 'usage'
+               useBuiltIns: 'usage',
+               corejs: '3.0.0'
             }
          ],
          '@babel/preset-react'
@@ -17,6 +18,12 @@ module.exports = api => {
          '@babel/plugin-syntax-import-meta',
          '@babel/plugin-proposal-class-properties',
          '@babel/plugin-proposal-json-strings',
+         [
+            '@babel/plugin-transform-react-jsx',
+            {
+               pragmaFrag: 'React.Fragment'
+            }
+         ],
          'transform-react-remove-prop-types',
          'lodash',
          [
