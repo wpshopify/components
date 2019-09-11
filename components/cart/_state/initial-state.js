@@ -1,4 +1,4 @@
-import { hasHooks } from '../../../common/utils'
+import { hasHooks, _t } from '../../../common/utils'
 
 function CartInitialState(options) {
    return {
@@ -17,8 +17,8 @@ function CartInitialState(options) {
       },
       customAttributes: [],
       note: false,
-      title: hasHooks() ? wp.hooks.applyFilters('default.cart.title', 'Shopping cart') : 'Shopping cart',
-      checkoutText: hasHooks() ? wp.hooks.applyFilters('default.cart.checkout.text', 'Begin checkout') : 'Begin checkout'
+      title: hasHooks() ? wp.hooks.applyFilters('default.cart.title', _t('Shopping cart')) : _t('Shopping cart'),
+      checkoutText: hasHooks() ? wp.hooks.applyFilters('default.cart.checkout.text', _t('Begin checkout')) : _t('Begin checkout')
    }
 }
 

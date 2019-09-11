@@ -3,7 +3,7 @@ import { ShopContext } from '../../shop/_state/context'
 import { CartContext } from '../_state/context'
 import { Loader } from '../../loader'
 import { hasHooks, FilterHook } from '../../../common/utils'
-import { replaceLineItems, updateCheckoutAttributes } from '@wpshopify/api'
+import { replaceLineItems, updateCheckoutAttributes } from '/Users/andrew/www/devil/devilbox-new/data/www/wpshopify-api'
 import isEmpty from 'lodash/isEmpty'
 import to from 'await-to-js'
 

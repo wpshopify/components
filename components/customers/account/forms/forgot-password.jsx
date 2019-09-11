@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useContext } from 'react'
 import ReactDOM from 'react-dom'
-import { resetPasswordCustomer } from '@wpshopify/api'
+import { resetPasswordCustomer } from '/Users/andrew/www/devil/devilbox-new/data/www/wpshopify-api'
 import to from 'await-to-js'
 import { usePortal } from '../../../../common/hooks'
 import { CustomersContext } from '../../_state/context'

@@ -4,7 +4,7 @@ import { ItemsContext } from '../../../items/_state/context'
 import { CollectionContext } from '../_state/context'
 import { Link } from '../../../link'
 import { usePortal } from '../../../../common/hooks'
-import { findPortalElement } from '../../../../common/utils'
+import { findPortalElement, _t } from '../../../../common/utils'
 import { hasSinglePage } from '../../../../common/settings'
 import { onSinglePage } from '../../../../common/components'
 

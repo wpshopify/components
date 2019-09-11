@@ -28,10 +28,14 @@ function CartNote() {
       }
    }, [debouncedValue])
 
+   function getNotesLabel() {
+      return hasHooks() ? wp.hooks.applyFilters('default.cart.notes.label', 'Notes:') : 'Notes:'
+   }
+
    return (
       <section className='wps-cart-notes'>
          <label value='Checkout notes' htmlFor='wps-input-notes'>
-            Notes:
+            {getNotesLabel()}
          </label>
          <textarea placeholder={shopState.settings.cart.cartNotesPlaceholder} id='wps-input-notes' className='wps-input wps-input-textarea' onChange={onChange} />
       </section>

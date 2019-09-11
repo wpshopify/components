@@ -75,6 +75,7 @@ function getWordPressSingleLink(payload) {
 
    if (payload.type.name === 'Collection') {
       urlBase = WP_Shopify.settings.urlCollections
+      
    } else if (payload.type.name === 'Product' || payload.type.name === 'ProductVariant') {
       urlBase = WP_Shopify.settings.urlProducts
    }

@@ -20,12 +20,12 @@
       "woocommerce"
    ],
    "dependencies": {
+      "/Users/andrew/www/devil/devilbox-new/data/www/wpshopify-api": "^0.2.1",
       "@emotion/core": "^10.0.17",
       "@tippy.js/react": "^2.2.3",
       "@wordpress/components": "^8.2.0",
       "@wordpress/hooks": "^2.6.0",
       "@wordpress/i18n": "^3.6.0",
-      "@wpshopify/api": "^0.2.1",
       "accounting": "^0.4.1",
       "animejs": "^3.1.0",
       "await-to-js": "^2.1.1",

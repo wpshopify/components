@@ -8,6 +8,8 @@ import md5 from 'js-md5'
 import React from 'react'
 import ReactDOM from 'react-dom'
 import { format, formatDistance, subDays } from 'date-fns'
+import { __ } from '@wordpress/i18n'
+import { textDomain } from '../globals'
 
 function removeFrom(array, valueToRemove) {
    return without(array, valueToRemove)
@@ -108,4 +110,8 @@ function prettyDate(rawDate, formatting) {
    return format(new Date(rawDate), formatting)
 }
 
-export { objectIsEmpty, createObj, removeFrom, lowercaseObjKeys, capitalizeFirstLetter, itemWidthClass, findPortalElement, convertTitleToHandle, hashQueryParams, hasHooks, FilterHook, prettyDate }
+function _t(string) {
+   return __(string, textDomain)
+}
+
+export { objectIsEmpty, createObj, removeFrom, lowercaseObjKeys, capitalizeFirstLetter, itemWidthClass, findPortalElement, convertTitleToHandle, hashQueryParams, hasHooks, FilterHook, prettyDate, _t }

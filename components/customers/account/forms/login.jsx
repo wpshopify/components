@@ -2,7 +2,7 @@ import React, { useState, useEffect, useRef, useContext } from 'react'
 import ReactDOM from 'react-dom'
 import { ShopContext } from '../../../shop/_state/context'
 import { CustomersContext } from '../../_state/context'
-import { loginCustomer } from '@wpshopify/api'
+import { loginCustomer } from '/Users/andrew/www/devil/devilbox-new/data/www/wpshopify-api'
 import to from 'await-to-js'
 import isEmpty from 'lodash/isEmpty'
 import { Notice } from '../../../notice'
@@ -47,6 +47,9 @@ function CustomerFormLogin() {
 
          return
       }
+
+      console.log('loginSuccess :::::::: ', loginSuccess)
+      console.log('loginError :::::::: ', loginError)
 
       if (loginError) {
          console.error('LOGIN ERROR', loginError)

@@ -1,6 +1,6 @@
 import React, { useState, useRef, useContext } from 'react'
 import ReactDOM from 'react-dom'
-import { registerCustomer } from '@wpshopify/api'
+import { registerCustomer } from '/Users/andrew/www/devil/devilbox-new/data/www/wpshopify-api'
 import to from 'await-to-js'
 import isEmpty from 'lodash/isEmpty'
 import { Notice } from '../../../notice'

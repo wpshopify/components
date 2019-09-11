@@ -14,4 +14,8 @@ function currencyDisplayStyle() {
    return WP_Shopify.settings.pricingCurrencyDisplayStyle
 }
 
-export { showingLocalCurrency, baseCurrency, showingCurrencyCode, currencyDisplayStyle }
+function textDomain() {
+   return WP_Shopify.settings.textdomain
+}
+
+export { showingLocalCurrency, baseCurrency, showingCurrencyCode, currencyDisplayStyle, textDomain }

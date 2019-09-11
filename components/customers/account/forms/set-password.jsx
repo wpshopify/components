@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useContext } from 'react'
 import ReactDOM from 'react-dom'
-import { setPasswordCustomer } from '@wpshopify/api'
+import { setPasswordCustomer } from '/Users/andrew/www/devil/devilbox-new/data/www/wpshopify-api'
 import to from 'await-to-js'
 import isEmpty from 'lodash/isEmpty'
 import { Notice } from '../../../notice'

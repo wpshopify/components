@@ -4,7 +4,7 @@ import ProgressBarPlugin from 'progress-bar-webpack-plugin'
 
 const config = {
    mode: 'development',
-   externals: ['@wpshopify/api', 'lodash', 'react', 'react-dom'],
+   externals: ['/Users/andrew/www/devil/devilbox-new/data/www/wpshopify-api', 'lodash', 'react', 'react-dom'],
    entry: {
       index: './index'
    },

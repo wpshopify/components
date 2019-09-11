@@ -3,7 +3,7 @@ import { A } from 'hookrouter'
 import { ShopContext } from '../../../../shop/_state/context'
 import { CustomersContext } from '../../../_state/context'
 import { AddressesContext } from '../../addresses/_state/context'
-import { deleteCustomerAddress } from '@wpshopify/api'
+import { deleteCustomerAddress } from '/Users/andrew/www/devil/devilbox-new/data/www/wpshopify-api'
 import to from 'await-to-js'
 
 /** @jsx jsx */

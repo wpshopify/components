@@ -29,6 +29,7 @@ function Pagination({ children, shopSettings, miscDispatch }) {
 
       return false
    }
+   console.log('itemsState', itemsState)
 
    return (
       <PaginationProvider options={itemsState}>
