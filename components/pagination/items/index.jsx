@@ -20,7 +20,6 @@ function PaginationItems({ children, alignHeight }) {
          return React.cloneElement(children, { payload: item, key: uuidv4(), isFirstItem: isFirstItem(i, lastPageIndex) })
       })
    }
-   console.log('itemsState.payload', itemsState.payload)
 
    return (
       <section className={'wps-items-wrapper container-fluid'}>

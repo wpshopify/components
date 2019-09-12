@@ -48,9 +48,6 @@ function CustomerFormLogin() {
          return
       }
 
-      console.log('loginSuccess :::::::: ', loginSuccess)
-      console.log('loginError :::::::: ', loginError)
-
       if (loginError) {
          console.error('LOGIN ERROR', loginError)
          return
