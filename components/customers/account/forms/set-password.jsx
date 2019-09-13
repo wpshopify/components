@@ -10,16 +10,16 @@ import { ShopContext } from '../../../shop/_state/context'
 import { Form } from '../../../forms'
 import { Input } from '../../../forms/input'
 
-function ResetForm({ noticeState, formState, onPasswordChange, onConfirmPasswordChange, onSubmit, customersState }) {
+function ResetForm({ noticeState, formState, onPasswordChange, onConfirmPasswordChange, onSubmit, customersState, isSubmitting }) {
    const element = document.querySelector(customersState.dropzones.formSetPassword)
 
    return (
       element &&
       usePortal(
-         <Form onSubmit={onSubmit} noticeState={noticeState} submitText='Set new password' formType='reset-password'>
-            <Input label='New Password:' type='password' name='password' isRequired={true} value={formState.password} onChange={onPasswordChange} />
+         <Form onSubmit={onSubmit} noticeState={noticeState} submitText='Set new password' formType='reset-password' isSubmitting={isSubmitting}>
+            <Input label='New Password:' type='password' name='password' isRequired={true} value={formState.password} onChange={onPasswordChange} isSubmitting={isSubmitting} />
 
-            <Input label='Confirm New Password:' type='password' name='confirm-password' isRequired={true} value={formState.confirmPassword} onChange={onConfirmPasswordChange} />
+            <Input label='Confirm New Password:' type='password' name='confirm-password' isRequired={true} value={formState.confirmPassword} onChange={onConfirmPasswordChange} isSubmitting={isSubmitting} />
          </Form>,
          element
       )
@@ -40,7 +40,7 @@ function LoginLink({ noticeState, shopState }) {
 function CustomerFormSetPassword() {
    const [customersState, customersDispatch] = useContext(CustomersContext)
    const [shopState] = useContext(ShopContext)
-
+   const [isSubmitting, setIsSubmitting] = useState(false)
    const [formState, setFormState] = useState({
       password: '',
       confirmPassword: '',
@@ -77,7 +77,12 @@ function CustomerFormSetPassword() {
    }, [])
 
    async function resetPassword() {
+
+      setIsSubmitting(true)
+
       const [resetError, resetSuccess] = await to(setPasswordCustomer(formState))
+
+      setIsSubmitting(false)
 
       if (!resetSuccess && resetError) {
          setNoticeState({ message: 'Error: ' + resetError.message + '. Error code: ' + resetError.statusCode, type: 'error' })
@@ -156,6 +161,7 @@ function CustomerFormSetPassword() {
          onPasswordChange={onPasswordChange}
          onConfirmPasswordChange={onConfirmPasswordChange}
          customersState={customersState}
+         isSubmitting={isSubmitting}
       />
    )
 }

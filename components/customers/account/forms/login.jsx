@@ -13,6 +13,7 @@ import { Input } from '../../../forms/input'
 function CustomerFormLogin() {
    const [customersState, customersDispatch] = useContext(CustomersContext)
    const [shopState] = useContext(ShopContext)
+   const [isSubmitting, setIsSubmitting] = useState(false)
 
    const element = document.querySelector(customersState.dropzones.formLogin)
 
@@ -28,7 +29,11 @@ function CustomerFormLogin() {
    const [hasChanged, setHasChangedState] = useState(false)
 
    async function login() {
+      setIsSubmitting(true)
+
       const [loginError, loginSuccess] = await to(loginCustomer(formState))
+
+      setIsSubmitting(false)
 
       if (loginSuccess.data.type === 'error') {
          setNoticeState({
@@ -77,10 +82,27 @@ function CustomerFormLogin() {
    return (
       element &&
       usePortal(
-         <Form dropzoneElement={element} onSubmit={onSubmit} noticeState={noticeState} submitText='Login' hasChanged={hasChanged} afterSubmitButton={LoginActions} formType='login'>
-            <Input label='Email or username:' type='email' name='email' isRequired={true} placeholder='Email or username' value={formState.email} onChange={onEmailChange} />
+         <Form
+            dropzoneElement={element}
+            onSubmit={onSubmit}
+            noticeState={noticeState}
+            submitText='Login'
+            hasChanged={hasChanged}
+            afterSubmitButton={LoginActions}
+            formType='login'
+            isSubmitting={isSubmitting}>
+            <Input
+               label='Email or username:'
+               type='email'
+               name='email'
+               isRequired={true}
+               placeholder='Email or username'
+               value={formState.email}
+               onChange={onEmailChange}
+               isSubmitting={isSubmitting}
+            />
 
-            <Input label='Password:' type='password' name='password' isRequired={true} placeholder='Password' value={formState.password} onChange={onPasswordChange} />
+            <Input label='Password:' type='password' name='password' isRequired={true} placeholder='Password' value={formState.password} onChange={onPasswordChange} isSubmitting={isSubmitting} />
          </Form>,
          element
       )
@@ -90,13 +112,15 @@ function CustomerFormLogin() {
 function LoginActions() {
    return (
       <div className='wpshopify-buttons-wrapper'>
+         <div>
+            <strong>Username:</strong> yame@rev-mail.net <strong>Password:</strong> qp05ofilterZ!@
+         </div>
          <p className='wpshopify-login-create'>
             <span>Need an account? </span>
             <a href='/register' className='wpshopify-login-secondary-link'>
                Join now
             </a>
          </p>
-
          <p className='wpshopify-login-forgot'>
             <a href='/forgot-password' className='wpshopify-login-secondary-link'>
                Forgot password?

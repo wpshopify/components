@@ -13,7 +13,7 @@ import { Input } from '../../../forms/input'
 function CustomerFormRegister() {
    const [shopState] = useContext(ShopContext)
    const [customersState, customersDispatch] = useContext(CustomersContext)
-
+   const [isSubmitting, setIsSubmitting] = useState(false)
    const emailRef = useRef()
 
    const [formState, setFormState] = useState({
@@ -27,7 +27,11 @@ function CustomerFormRegister() {
    const [hasChanged, setHasChangedState] = useState(false)
 
    async function register() {
+      setIsSubmitting(true)
+
       const [registerError, registerSuccess] = await to(registerCustomer(formState))
+
+      setIsSubmitting(false)
 
       if (registerSuccess.data.type === 'error') {
          setNoticeState({
@@ -52,7 +56,7 @@ function CustomerFormRegister() {
       }
 
       setNoticeState({
-         message: 'Your account has been created! Login.',
+         message: 'Successfully created account! <a href="/' + shopState.settings.customers.accountPageLogin + '">Login</a>.',
          type: 'success'
       })
 
@@ -92,6 +96,7 @@ function CustomerFormRegister() {
          emailRef={emailRef}
          hasChanged={hasChanged}
          customersState={customersState}
+         isSubmitting={isSubmitting}
       />
    )
 }
@@ -100,6 +105,7 @@ function LoginLink({ noticeState, shopState }) {
    return (
       <>
          <Notice message={noticeState.message} type={noticeState.type} />
+
          <a href={'/' + shopState.settings.customers.accountPageLogin} className='wps-btn wps-btn-secondary wpshopify-btn-auto-width'>
             Login to your account
          </a>
@@ -107,18 +113,18 @@ function LoginLink({ noticeState, shopState }) {
    )
 }
 
-function RegisterForm({ onSubmit, noticeState, formState, onEmailChange, onUsernameChange, onPasswordChange, emailRef, hasChanged, customersState }) {
+function RegisterForm({ onSubmit, noticeState, formState, onEmailChange, onUsernameChange, onPasswordChange, emailRef, hasChanged, customersState, isSubmitting }) {
    const element = document.querySelector(customersState.dropzones.formRegister)
 
    return (
       element &&
       usePortal(
-         <Form onSubmit={onSubmit} noticeState={noticeState} submitText='Create your account' formType='register'>
-            <Input label='Email:' type='email' name='email' isRequired={true} placeholder='Email' value={formState.email} onChange={onEmailChange} />
+         <Form onSubmit={onSubmit} noticeState={noticeState} submitText='Create your account' formType='register' isSubmitting={isSubmitting}>
+            <Input label='Email:' type='email' name='email' isRequired={true} placeholder='Email' value={formState.email} onChange={onEmailChange} isSubmitting={isSubmitting} />
 
-            <Input label='Username (optional):' type='text' name='username' placeholder='Username' value={formState.username} onChange={onUsernameChange} />
+            <Input label='Username (optional):' type='text' name='username' placeholder='Username' value={formState.username} onChange={onUsernameChange} isSubmitting={isSubmitting} />
 
-            <Input label='Password:' type='password' name='password' isRequired={true} placeholder='Password' value={formState.password} onChange={onPasswordChange} />
+            <Input label='Password:' type='password' name='password' isRequired={true} placeholder='Password' value={formState.password} onChange={onPasswordChange} isSubmitting={isSubmitting} />
          </Form>,
          element
       )

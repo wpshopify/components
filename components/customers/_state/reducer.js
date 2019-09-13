@@ -20,6 +20,14 @@ function findDefaultAddress(addressLookup, addresses) {
 
 function CustomersReducer(state, action) {
    switch (action.type) {
+      
+      case 'SET_IS_REDY': {
+         return {
+            ...state,
+            isReady: update(state.isReady, { $set: action.payload })
+         }
+      }
+
       case 'SET_CUSTOMER': {
          return {
             ...state,

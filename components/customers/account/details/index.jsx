@@ -8,6 +8,7 @@ import find from 'lodash/find'
 import uuidv4 from 'uuid/v4'
 import { A } from 'hookrouter'
 import { AccountDetailsDefaultAddress } from './address/default-address'
+import { Facebook } from 'react-content-loader'
 
 /** @jsx jsx */
 import { jsx, css } from '@emotion/core'
@@ -46,7 +47,7 @@ function AccountDetails() {
       <section css={[stylesDetails, stylesSlideIn]}>
          <h2>Account Details</h2>
 
-         {customerState.customer && (
+         {customerState.isReady ? (
             <div className='wps-account-inner'>
                <h3 className='customer-name' css={stylesName}>
                   {customerState.customer.firstName} {customerState.customer.lastName}
@@ -60,6 +61,8 @@ function AccountDetails() {
                   View all addresses ({customerState.customer.addresses.edges.length})
                </A>
             </div>
+         ) : (
+            <Facebook />
          )}
       </section>
    )

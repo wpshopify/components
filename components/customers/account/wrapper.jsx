@@ -35,12 +35,18 @@ function AccountWrapper() {
          return
       }
 
+      console.log('Loading customer data from wp user id: ', customerState.user.id)
+
       const [errorCust, respCust] = await to(getCustomer(customerState.user.id))
+
+      console.log('Finished loading customer data: ', respCust)
 
       if (!errorCust) {
          customerDispatch({ type: 'SET_CUSTOMER', payload: respCust.data.customer })
          customerDispatch({ type: 'SET_DEFAULT_ADDRESS', payload: respCust.data.customer })
       }
+
+      customerDispatch({ type: 'SET_IS_REDY', payload: true })
 
       // customerDispatch({ type: 'SET_INNER_PAGE', payload: false })
    }

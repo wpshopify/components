@@ -14,14 +14,14 @@ function CustomerFormForgotPassword() {
    const [formState, setFormState] = useState({
       email: ''
    })
-
+   
    const [noticeState, setNoticeState] = useState(false)
 
    const [hasChanged, setHasChangedState] = useState(false)
 
    async function resetPassword() {
       setIsSubmitting(true)
-
+      
       const [resetError, resetSuccess] = await to(resetPasswordCustomer(formState))
 
       setIsSubmitting(false)
@@ -60,7 +60,7 @@ function CustomerFormForgotPassword() {
       element &&
       usePortal(
          <Form onSubmit={onSubmit} noticeState={noticeState} submitText='Reset Password' formType='forgot-password' isSubmitting={isSubmitting}>
-            <Input label='Email or username:' type='email' name='email' isRequired={true} placeholder='Email or username' value={formState.email} onChange={onEmailChange} />
+            <Input label='Email or username:' type='email' name='email' isRequired={true} placeholder='Email or username' value={formState.email} onChange={onEmailChange} isSubmitting={isSubmitting} />
          </Form>,
          element
       )

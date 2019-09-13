@@ -14,10 +14,8 @@ function Form({ children, onSubmit, noticeState, submitText, hasChanged, beforeS
          {beforeSubmitButton && <div dangerouslySetInnerHTML={{ __html: renderToString(beforeSubmitButton()) }} />}
 
          <button disabled={isSubmitting} type='submit' className='wps-btn wps-btn-secondary wpshopify-btn-auto-width'>
-            {submitText}
+            {isSubmitting ? <Loader isLoading={isSubmitting} /> : submitText}
          </button>
-
-         {isSubmitting && <Loader isLoading={isSubmitting} />}
 
          {afterSubmitButton && <div dangerouslySetInnerHTML={{ __html: renderToString(afterSubmitButton()) }} />}
 

@@ -16,6 +16,7 @@ function AddressForm({ address, type }) {
    const [customerState, customerDispatch] = useContext(CustomersContext)
    const [hasChanged, setHasChangedState] = useState(false)
    const [noticeState, setNoticeState] = useState(false)
+   const [isSubmitting, setIsSubmitting] = useState(false)
 
    const [formState, setFormState] = useState({
       firstName: '',
@@ -87,12 +88,16 @@ function AddressForm({ address, type }) {
    `
 
    async function updateAddress() {
+      setIsSubmitting(true)
+
       const [addressUpdateError, addressUpdateSuccess] = await to(
          updateCustomerAddress({
             address: formState,
             addressId: customerState.selectedAddress.id
          })
       )
+
+      setIsSubmitting(false)
 
       if (addressUpdateSuccess.data.type === 'error') {
          setNoticeState({
@@ -185,26 +190,26 @@ function AddressForm({ address, type }) {
    }
 
    return (
-      <Form onSubmit={onSubmit} noticeState={noticeState} submitText='Update Address' hasChanged={hasChanged} formType='update-address'>
-         <Input label='First Name:' type='text' name='first' placeholder='First Name' value={formState.firstName} onChange={e => onChange('firstName', e)} />
+      <Form onSubmit={onSubmit} noticeState={noticeState} submitText='Update Address' hasChanged={hasChanged} formType='update-address' isSubmitting={isSubmitting}>
+         <Input label='First Name:' type='text' name='first' placeholder='First Name' value={formState.firstName} onChange={e => onChange('firstName', e)} isSubmitting={isSubmitting} />
 
-         <Input label='Last Name:' type='text' name='last' placeholder='Last Name' value={formState.lastName} onChange={e => onChange('lastName', e)} />
+         <Input label='Last Name:' type='text' name='last' placeholder='Last Name' value={formState.lastName} onChange={e => onChange('lastName', e)} isSubmitting={isSubmitting} />
 
-         <Input label='Company:' type='text' name='company' placeholder='Company Name' value={formState.company} onChange={e => onChange('company', e)} />
+         <Input label='Company:' type='text' name='company' placeholder='Company Name' value={formState.company} onChange={e => onChange('company', e)} isSubmitting={isSubmitting} />
 
-         <Input label='Address 1:' type='text' name='address1' placeholder='Address 1' value={formState.address1} onChange={e => onChange('address1', e)} />
+         <Input label='Address 1:' type='text' name='address1' placeholder='Address 1' value={formState.address1} onChange={e => onChange('address1', e)} isSubmitting={isSubmitting} />
 
-         <Input label='Address 2:' type='text' name='address2' placeholder='Address 2' value={formState.address2} onChange={e => onChange('address2', e)} />
+         <Input label='Address 2:' type='text' name='address2' placeholder='Address 2' value={formState.address2} onChange={e => onChange('address2', e)} isSubmitting={isSubmitting} />
 
-         <Input label='City:' type='text' name='city' placeholder='City' value={formState.city} onChange={e => onChange('city', e)} />
+         <Input label='City:' type='text' name='city' placeholder='City' value={formState.city} onChange={e => onChange('city', e)} isSubmitting={isSubmitting} />
 
-         <Input label='State/Province:' type='text' name='province' placeholder='State/Province' value={formState.province} onChange={e => onChange('province', e)} />
+         <Input label='State/Province:' type='text' name='province' placeholder='State/Province' value={formState.province} onChange={e => onChange('province', e)} isSubmitting={isSubmitting} />
 
-         <Input label='Country:' type='text' name='country' placeholder='Country' value={formState.country} onChange={e => onChange('country', e)} />
+         <Input label='Country:' type='text' name='country' placeholder='Country' value={formState.country} onChange={e => onChange('country', e)} isSubmitting={isSubmitting} />
 
-         <Input label='Postal/Zip:' type='text' name='zip' placeholder='Postal/Zip' value={formState.zip} onChange={e => onChange('zip', e)} />
+         <Input label='Postal/Zip:' type='text' name='zip' placeholder='Postal/Zip' value={formState.zip} onChange={e => onChange('zip', e)} isSubmitting={isSubmitting} />
 
-         <Input label='Phone:' type='text' name='phone' placeholder='Phone' value={formState.phone} onChange={e => onChange('phone', e)} />
+         <Input label='Phone:' type='text' name='phone' placeholder='Phone' value={formState.phone} onChange={e => onChange('phone', e)} isSubmitting={isSubmitting} />
 
          {!isDefaultAddress() && (
             <Input
@@ -215,6 +220,7 @@ function AddressForm({ address, type }) {
                onChange={e => onChange('setDefault', e)}
                cssWrapper={cssWrapper}
                cssInput={cssInput}
+               isSubmitting={isSubmitting}
             />
          )}
       </Form>
