@@ -13,14 +13,15 @@ function BlockEditor() {
    `
 
    const loaderCSS = css`
-      max-width: 800px;
+      max-width: 900px;
       width: 100%;
       position: relative;
       top: -100px;
+      z-index: -1;
    `
 
    return (
-      <section css={editorCSS}>
+      <section css={editorCSS} id='block-editor'>
          <div css={loaderCSS}>
             <SkeletonLoader />
          </div>

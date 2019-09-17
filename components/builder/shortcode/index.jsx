@@ -1,15 +1,15 @@
-import React, { useContext, useRef } from 'react'
-import copy from 'copy-to-clipboard'
+import React, { useContext, useRef, useState } from 'react'
 import { BuilderContext } from '../_state/context'
-import { Button } from '@wordpress/components'
+import { ClipboardButton } from '@wordpress/components'
+import { withState } from '@wordpress/compose'
 
 /** @jsx jsx */
 import { jsx, css } from '@emotion/core'
 
 function Shortcode() {
    const [builderState, builderDispatch] = useContext(BuilderContext)
-
    const inputRef = useRef()
+   const [hasCopied, setHasCopied] = useState(false)
 
    var shortcodeCSS = css`
       width: 100%;
@@ -29,6 +29,7 @@ function Shortcode() {
       border-right: none;
       border-left: none;
       outline: none;
+      font-weight: bold;
    `
 
    var labelCSS = css`
@@ -68,16 +69,40 @@ function Shortcode() {
             top: 2px;
             left: -20px;
          }
+
+         .components-button {
+         }
+      }
+   `
+
+   var newButtonCSS = css`
+      && {
+         font-size: 2em;
+         padding: 1.3em 2em;
+         text-align: center;
+         line-height: 0px;
+         width: 300px;
+         display: flex;
+         justify-content: center;
+         height: 100%;
       }
    `
 
    function copyToClipboard() {
-      copy(builderState.shortcode)
       inputRef.current.select()
    }
 
    function onFocus(event) {
       event.target.select()
+   }
+
+   function onCopy() {
+      setHasCopied(true)
+      copyToClipboard()
+   }
+
+   function onFinishCopy() {
+      setHasCopied(false)
    }
 
    return (
@@ -86,9 +111,10 @@ function Shortcode() {
             Shortcode created:
          </label>
          <input readOnly type='text' id='shortcode' ref={inputRef} value='[wps_products]' css={inputCSS} onFocus={onFocus} />
-         <button css={buttonCSS} onClick={copyToClipboard}>
-            <i className='fas fa-copy'></i> Copy shortcode
-         </button>
+
+         <ClipboardButton css={newButtonCSS} isPrimary text={builderState.shortcode} onCopy={onCopy} onFinishCopy={onFinishCopy}>
+            {hasCopied ? 'Copied!' : 'Copy Shortcode'}
+         </ClipboardButton>
       </div>
    )
 }

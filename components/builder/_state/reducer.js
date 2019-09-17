@@ -16,6 +16,15 @@ function BuilderReducer(state, action) {
          }
       }
 
+      case 'UPDATE_SETTING':
+         const newSettings = {
+            ...state
+         }
+
+         newSettings.settings[action.payload.key] = update(state[action.payload.key], { $set: action.payload.value })
+
+         return newSettings
+
       default: {
          throw new Error(`Unhandled action type: ${action.type} in BuilderReducer`)
       }
