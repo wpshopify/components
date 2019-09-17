@@ -33,9 +33,9 @@ function CustomerFormLogin() {
 
       const [loginError, loginSuccess] = await to(loginCustomer(formState))
 
-      setIsSubmitting(false)
-
       if (loginSuccess.data.type === 'error') {
+         setIsSubmitting(false)
+
          setNoticeState({
             message: loginSuccess.data.message,
             type: loginSuccess.data.type
@@ -54,6 +54,8 @@ function CustomerFormLogin() {
       }
 
       if (loginError) {
+         setIsSubmitting(false)
+
          console.error('LOGIN ERROR', loginError)
          return
       }

@@ -24,7 +24,7 @@ function Orders() {
    }
 
    function hasOrders() {
-      if (isEmpty(customerState.customer.orders) || isEmpty(customerState.customer.orders.edges)) {
+      if (isEmpty(customerState.customer) || isEmpty(customerState.customer.orders) || isEmpty(customerState.customer.orders.edges)) {
          return false
       }
 

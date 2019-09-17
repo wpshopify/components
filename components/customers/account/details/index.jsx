@@ -42,6 +42,7 @@ function AccountDetails() {
    function onClick() {
       customerDispatch({ type: 'SET_INNER_PAGE', payload: true })
    }
+   console.log('customerState.customer', customerState.customer)
 
    return (
       <section css={[stylesDetails, stylesSlideIn]}>
