@@ -37,8 +37,6 @@ function Orders() {
       }
    }, [])
 
-   console.log('customerState.customer.orders hasOrders() ', hasOrders())
-
    return (
       <section css={stylesOrders}>
          <h2>Order History</h2>

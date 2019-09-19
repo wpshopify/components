@@ -37,8 +37,6 @@ function AccountWrapper() {
          return
       }
 
-      console.log('Loading customer data from wp user id: ', customerState.user.id)
-
       const [errorCust, respCust] = await to(getCustomer(customerState.user.id))
 
       if (isWordPressError(respCust)) {
@@ -50,7 +48,6 @@ function AccountWrapper() {
             }
          })
       }
-      console.log('Finished loading customer data: ', respCust)
 
       if (!errorCust) {
          customerDispatch({ type: 'SET_CUSTOMER', payload: respCust.data.customer })

@@ -29,7 +29,6 @@ function Shortcode() {
       border-right: none;
       border-left: none;
       outline: none;
-      font-weight: bold;
    `
 
    var labelCSS = css`

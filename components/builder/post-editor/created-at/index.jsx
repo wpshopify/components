@@ -4,11 +4,11 @@ import { BuilderContext } from '../../_state/context'
 
 function CreatedAt() {
    const [builderState, builderDispatch] = useContext(BuilderContext)
-   const [val, setVal] = useState(builderState.settings.created_at)
+   const [val, setVal] = useState(builderState.settings.createdAt)
 
    function onChange(newVal) {
       setVal(newVal)
-      builderDispatch({ type: 'UPDATE_SETTING', payload: { key: 'created_at', value: newVal } })
+      builderDispatch({ type: 'UPDATE_SETTING', payload: { key: 'createdAt', value: newVal } })
    }
 
    return <TextControl label='Created At' value={val} help='Match product created at' onChange={onChange} />

@@ -4,7 +4,7 @@ import { BuilderContext } from '../../_state/context'
 
 function SortBy() {
    const [builderState, builderDispatch] = useContext(BuilderContext)
-   const [val, setVal] = useState(builderState.settings.sort_by)
+   const [val, setVal] = useState(builderState.settings.sortBy)
 
    const options = [
       { label: 'Title', value: 'title' },
@@ -19,7 +19,7 @@ function SortBy() {
 
    function onChange(newVal) {
       setVal(newVal)
-      builderDispatch({ type: 'UPDATE_SETTING', payload: { key: 'sort_by', value: newVal } })
+      builderDispatch({ type: 'UPDATE_SETTING', payload: { key: 'sortBy', value: newVal } })
    }
 
    return <SelectControl label='Sort by' value={val} options={options} onChange={onChange} />

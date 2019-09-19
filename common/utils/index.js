@@ -77,13 +77,23 @@ function convertTitleToHandle(title) {
 }
 
 function createStringFromQueryParams(queryParams) {
-   if (isString(queryParams.sortKey)) {
-      var sortKey = queryParams.sortKey
+   if (!queryParams.sortKey) {
+      var sortKey = ''
    } else {
-      var sortKey = queryParams.sortKey.key
+      if (isString(queryParams.sortKey)) {
+         var sortKey = queryParams.sortKey
+      } else {
+         var sortKey = queryParams.sortKey.key
+      }
    }
 
-   return queryParams.first + queryParams.query + queryParams.reverse + sortKey
+   if (!queryParams.reverse) {
+      var reverse = ''
+   } else {
+      var reverse = queryParams.reverse
+   }
+
+   return queryParams.first + queryParams.query + reverse + sortKey
 }
 
 function hashQueryParams(queryParams) {

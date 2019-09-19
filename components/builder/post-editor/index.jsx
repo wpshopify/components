@@ -7,20 +7,19 @@ import { Panel, PanelBody } from '@wordpress/components'
 import { Title } from './title'
 import { Tag } from './tag'
 import { Vendor } from './vendor'
-import { ProductType } from './product_type'
-import { ProductId } from './product_id'
-import { CreatedAt } from './created_at'
-import { UpdatedAt } from './updated_at'
-import { AvailableForSale } from './available_for_sale'
+import { ProductType } from './product-type'
+import { ProductId } from './product-id'
+import { CreatedAt } from './created-at'
+import { UpdatedAt } from './updated-at'
+import { AvailableForSale } from './available-for-sale'
 import { Connective } from './connective'
-import { SortBy } from './sort_by'
+import { SortBy } from './sort-by'
 import { Reverse } from './reverse'
 import { Pagination } from './pagination'
-import { PageSize } from './page_size'
+import { PageSize } from './page-size'
 import { Limit } from './limit'
-import { ItemsPerRow } from './items_per_row'
+import { ItemsPerRow } from './items-per-row'
 import { Excludes } from './excludes'
-import { DropzoneLoadMore } from './dropzone_load_more'
 import { StorefrontAccessToken } from './storefront-access-token'
 import { MyShopifyDomain } from './my-shopify-domain'
 
@@ -28,7 +27,10 @@ function PostEditor() {
    const editorCSS = css`
       width: 300px;
       border-top: 0;
-      height: calc(100vh - 170px);
+      padding-bottom: 100px;
+      height: calc(100vh - 85px);
+      position: fixed;
+      top: 0;
    `
 
    return (
@@ -63,10 +65,6 @@ function PostEditor() {
 
          <PanelBody title='Colors' initialOpen={false}>
             Colors
-         </PanelBody>
-
-         <PanelBody title='Dropzones' initialOpen={false}>
-            <DropzoneLoadMore />
          </PanelBody>
 
          <PanelBody title='Advanced' initialOpen={false}>

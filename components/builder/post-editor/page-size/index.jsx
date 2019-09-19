@@ -4,11 +4,11 @@ import { BuilderContext } from '../../_state/context'
 
 function PageSize() {
    const [builderState, builderDispatch] = useContext(BuilderContext)
-   const [val, setVal] = useState(builderState.settings.page_size)
+   const [val, setVal] = useState(builderState.settings.pageSize)
 
    function onChange(newVal) {
       setVal(newVal)
-      builderDispatch({ type: 'UPDATE_SETTING', payload: { key: 'page_size', value: newVal } })
+      builderDispatch({ type: 'UPDATE_SETTING', payload: { key: 'pageSize', value: newVal } })
    }
 
    return <RangeControl disabled={!builderState.settings.pagination} label='Page size' value={val} onChange={onChange} min={1} max={250} />

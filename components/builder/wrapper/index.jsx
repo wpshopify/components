@@ -1,4 +1,5 @@
-import React, { useEffect } from 'react'
+import React, { useEffect, useContext } from 'react'
+import { BuilderContext } from '../_state/context'
 
 /** @jsx jsx */
 import { jsx, css } from '@emotion/core'
@@ -10,6 +11,8 @@ import to from 'await-to-js'
 import { graphQuery } from '/Users/andrew/www/devil/devilbox-new/data/www/wpshopify-api'
 
 function BuilderWrapper() {
+   const [builderState, builderDispatch] = useContext(BuilderContext)
+
    const mainEditorCSS = css`
       display: flex;
       justify-content: space-between;
@@ -25,8 +28,12 @@ function BuilderWrapper() {
          })
       )
 
+      builderDispatch({ type: 'SET_IS_READY', payload: true })
+      builderDispatch({ type: 'SET_PAYLOAD', payload: results.model.products })
+
       console.log('error', error)
       console.log('results', results)
+      console.log('SHORTCODE BUILDER IS READY')
    }
 
    useEffect(() => {
