@@ -20,6 +20,7 @@ function BlockEditor() {
       align-items: center;
       padding-right: 300px;
       padding-top: 200px;
+      padding-bottom: 20em;
    `
 
    const loaderCSS = css`
@@ -27,7 +28,7 @@ function BlockEditor() {
       width: 100%;
       position: relative;
       top: -100px;
-      z-index: -1;
+      z-index: 99;
    `
 
    return (

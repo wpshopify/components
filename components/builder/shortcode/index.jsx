@@ -16,7 +16,7 @@ function Shortcode() {
       position: fixed;
       bottom: 0;
       display: flex;
-      z-index: 2;
+      z-index: 999;
       background: bisque;
    `
 

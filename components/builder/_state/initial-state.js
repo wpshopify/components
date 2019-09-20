@@ -68,13 +68,7 @@ function BuilderInitialState(options) {
          pageSize: 9,
          limit: false,
          itemsPerRow: 3,
-         excludes: {
-            title: false,
-            description: false,
-            images: false,
-            pricing: false,
-            buyButton: false
-         },
+         excludes: [],
          dropzoneLoadMore: false,
          addToCartButtonColor: '#14273b',
          variantButtonColor: '',
