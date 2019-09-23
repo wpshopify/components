@@ -1,6 +1,7 @@
 function BuilderInitialState(options) {
    return {
       isReady: false,
+      isLoading: false,
       notices: [],
       shortcode: '[wps_products]',
       defaultSettings: WP_Shopify.settings,
@@ -24,6 +25,8 @@ function BuilderInitialState(options) {
                sortBy: 'title',
                reverse: false,
                pagination: true,
+               paginationLoadMore: true,
+               paginationHideInitial: false,
                pageSize: 9,
                limit: false,
                itemsPerRow: 3,
@@ -43,7 +46,9 @@ function BuilderInitialState(options) {
                showZoom: false,
                noResultsText: 'No products found',
                infiniteScroll: false,
-               infiniteScrollOffset: 100
+               infiniteScrollOffset: 100,
+               titleColor: false,
+               titleSize: false
             },
             componentPayload: [],
             componentPayloadLastCursor: false,
@@ -52,19 +57,21 @@ function BuilderInitialState(options) {
          }
       ],
       settings: {
-         title: '',
-         tag: '',
-         vendor: '',
-         productType: '',
-         availableForSale: 'any',
-         productId: '',
-         createdAt: '',
-         updatedAt: '',
+         title: [],
+         tag: [],
+         vendor: [],
+         productType: [],
+         availableForSale: true,
+         productId: [],
+         createdAt: [],
+         updatedAt: [],
          connective: 'AND',
          limit: false,
          sortBy: 'title',
          reverse: false,
          pagination: true,
+         paginationLoadMore: true,
+         paginationHideInitial: false,
          pageSize: 9,
          limit: false,
          itemsPerRow: 3,
@@ -84,7 +91,9 @@ function BuilderInitialState(options) {
          showZoom: false,
          noResultsText: 'No products found',
          infiniteScroll: false,
-         infiniteScrollOffset: 100
+         infiniteScrollOffset: 100,
+         titleColor: false,
+         titleSize: false
       }
    }
 }

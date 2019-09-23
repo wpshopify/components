@@ -16,7 +16,6 @@ function Excludes() {
    }
 
    function onChange(isChecked, type) {
-      console.log('isChecked', isChecked)
 
       if (isChecked && inState(excludesState, type)) {
          return
@@ -25,19 +24,14 @@ function Excludes() {
       if (isChecked) {
          setExcludesState(excludesState.concat([type]))
       } else {
-         console.log('type', type)
-         console.log('without excludesState', excludesState)
 
          var asfokasod = without(excludesState, type)
-
-         console.log('v', asfokasod)
 
          setExcludesState(asfokasod)
       }
    }
 
    useEffect(() => {
-      console.log('excludesState', excludesState)
       builderDispatch({ type: 'UPDATE_SETTING', payload: { key: 'excludes', value: excludesState } })
    }, [excludesState])
 

@@ -1,17 +1,22 @@
 import React, { useContext, useState } from 'react'
-import { ToggleControl } from '@wordpress/components'
+import { BaseControl, ColorPalette } from '@wordpress/components'
 import { BuilderContext } from '../../_state/context'
+import {defaultColors} from '../../_common'
 
 function DescriptionColor() {
    const [builderState, builderDispatch] = useContext(BuilderContext)
-   const [val, setVal] = useState(builderState.settings.descriptionColor)
+   const [color, setColor] = useState(builderState.settings.descriptionColor)
 
-   function onChange(newVal) {
-      setVal(newVal)
-      builderDispatch({ type: 'UPDATE_SETTING', payload: { key: 'descriptionColor', value: newVal } })
+   function onChange(newColor) {
+      setColor(newColor)
+      builderDispatch({ type: 'UPDATE_SETTING', payload: { key: 'descriptionColor', value: newColor } })
    }
 
-   return 'Color'
+   return (
+      <BaseControl label='Description Color:'>
+         <ColorPalette colors={defaultColors()} value={color} onChange={onChange} />
+      </BaseControl>
+   )
 }
 
 export { DescriptionColor }

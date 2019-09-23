@@ -5,7 +5,14 @@ function BuilderReducer(state, action) {
       case 'SET_IS_READY': {
          return {
             ...state,
-            isReady: update(state.isShopReady, { $set: true })
+            isReady: update(state.isShopReady, { $set: action.payload })
+         }
+      }
+
+      case 'SET_IS_LOADING': {
+         return {
+            ...state,
+            isLoading: update(state.isLoading, { $set: action.payload })
          }
       }
 
@@ -26,8 +33,6 @@ function BuilderReducer(state, action) {
          newProductOptions.componentOptions = update(state.productOptions[0].componentOptions, { $set: newProductOptions.componentOptions })
 
          newSettings[action.payload.key] = update(state[action.payload.key], { $set: action.payload.value })
-         console.log('newProductOptions', newProductOptions)
-         console.log('newSettings', newSettings)
 
          return {
             ...state,

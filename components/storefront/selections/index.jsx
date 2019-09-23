@@ -8,6 +8,7 @@ import { usePortal } from '../../../common/hooks'
 import { filterObj, commaToArray, buildQuery } from '/Users/andrew/www/devil/devilbox-new/data/www/wpshopify-api'
 import isArray from 'lodash/isArray'
 import isEmpty from 'lodash/isEmpty'
+import isString from 'lodash/isString'
 import mapKeys from 'lodash/mapKeys'
 import compact from 'lodash/compact'
 import forOwn from 'lodash/forOwn'
@@ -20,88 +21,9 @@ function StorefrontSelections() {
 
    const isFirstRender = useRef(true)
 
-   function joinFilteredValues(value) {
-      if (isEmpty(value)) {
-         return ''
-      }
-
-      return value.join(' ')
-   }
-
-   function stringifyFilterTypes(filterTypes) {
-      if (!filterTypes) {
-         return ''
-      }
-
-      var joinedTypes = filterTypes.map(joinFilteredValues)
-
-      if (isEmpty(joinedTypes)) {
-         return ''
-      }
-
-      return joinedTypes.join(' ')
-   }
-
-   /*
-
-   Annoying, but needs to be done to make the filter components easier to deal with
-
-   */
-   function normalizeKeysForShopifyQuery(selections) {
-      return mapKeys(selections, function(value, key) {
-         if (key === 'tags') {
-            return 'tag'
-         }
-
-         if (key === 'vendors') {
-            return 'vendor'
-         }
-
-         if (key === 'types') {
-            return 'product_type'
-         }
-      })
-   }
-
-   function combineFilterTypes(selections, filterTypes) {
-      return compact(
-         filterTypes.map((filterType, index) => {
-            if (isEmpty(selections[filterType])) {
-               return
-            }
-
-            return selections[filterType].map(function(value, i, arr) {
-               if (arr.length - 1 !== i) {
-                  var connective = ' ' + itemsState.componentOptions.connective.toUpperCase()
-               } else {
-                  var connective = ''
-               }
-
-               return filterType + ':' + '"' + value + '"' + connective
-            })
-         })
-      )
-   }
-
-   function buildQueryStringFromSelections(selections) {
-      if (isEmpty(selections)) {
-         return '*'
-      }
-
-      const normalizedSelects = normalizeKeysForShopifyQuery(selections)
-
-      let newQuery = stringifyFilterTypes(combineFilterTypes(normalizedSelects, Object.keys(normalizedSelects)))
-
-      if (newQuery === '') {
-         newQuery = '*'
-      }
-
-      return newQuery
-   }
-
    function updateFetchParamsQuery() {
       return {
-         query: buildQueryStringFromSelections(storefrontState.selections)
+         query: buildQueryStringFromSelections(storefrontState.selections, itemsState.componentOptions.connective)
       }
    }
 
@@ -155,4 +77,97 @@ function StorefrontSelections() {
    return usePortal(!objectIsEmpty(storefrontState.selections) ? <StorefrontSelectionsWrapper /> : '', document.querySelector(itemsState.componentOptions.dropzoneSelections))
 }
 
-export { StorefrontSelections }
+function buildQueryStringFromSelections(selections, connective) {
+   if (isEmpty(selections)) {
+      return '*'
+   }
+
+   const normalizedSelects = normalizeKeysForShopifyQuery(selections)
+
+   let newQuery = stringifyFilterTypes(combineFilterTypes(normalizedSelects, Object.keys(normalizedSelects), connective))
+
+   if (newQuery === '') {
+      newQuery = '*'
+   }
+
+   return newQuery
+}
+
+/*
+
+Annoying, but needs to be done to make the filter components easier to deal with
+
+*/
+function normalizeKeysForShopifyQuery(selections) {
+   return mapKeys(selections, function(value, key) {
+      if (key === 'tags') {
+         return 'tag'
+      }
+
+      if (key === 'vendors') {
+         return 'vendor'
+      }
+
+      if (key === 'types') {
+         return 'product_type'
+      }
+
+      if (key === 'titles') {
+         return 'title'
+      }
+
+      return key
+   })
+}
+
+function stringifyFilterTypes(filterTypes) {
+   if (!filterTypes) {
+      return ''
+   }
+
+   var joinedTypes = filterTypes.map(joinFilteredValues)
+
+   if (isEmpty(joinedTypes)) {
+      return ''
+   }
+
+   return joinedTypes.join(' ')
+}
+
+function combineFilterTypes(selections, filterTypes, connectiveValue) {
+   return compact(
+      filterTypes.map((filterType, index) => {
+         if (isEmpty(selections[filterType])) {
+            return
+         }
+
+         if (isString(selections[filterType])) {
+            return filterType + ':' + '"' + selections[filterType] + '"'
+         } else {
+            return selections[filterType].map(function(value, i, arr) {
+               if (arr.length - 1 !== i) {
+                  var connective = ' ' + connectiveValue.toUpperCase()
+               } else {
+                  var connective = ''
+               }
+
+               return filterType + ':' + '"' + value + '"' + connective
+            })
+         }
+      })
+   )
+}
+
+function joinFilteredValues(value) {
+   if (isEmpty(value)) {
+      return ''
+   }
+
+   if (isString(value)) {
+      return value
+   }
+
+   return value.join(' ')
+}
+
+export { StorefrontSelections, buildQueryStringFromSelections }

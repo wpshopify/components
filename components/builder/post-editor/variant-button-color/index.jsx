@@ -1,17 +1,22 @@
 import React, { useContext, useState } from 'react'
-import { TextControl } from '@wordpress/components'
+import { BaseControl, ColorPalette } from '@wordpress/components'
 import { BuilderContext } from '../../_state/context'
+import { defaultColors } from '../../_common'
 
 function VariantButtonColor() {
    const [builderState, builderDispatch] = useContext(BuilderContext)
-   const [val, setVal] = useState(builderState.settings.variantButtonColor)
+   const [color, setColor] = useState(builderState.settings.variantButtonColor)
 
-   function onChange(newVal) {
-      setVal(newVal)
-      builderDispatch({ type: 'UPDATE_SETTING', payload: { key: 'variantButtonColor', value: newVal } })
+   function onChange(newColor) {
+      setColor(newColor)
+      builderDispatch({ type: 'UPDATE_SETTING', payload: { key: 'variantButtonColor', value: newColor } })
    }
 
-   return <TextControl label='Variant button color' value={val} onChange={onChange} />
+   return (
+      <BaseControl label='Variant button color:' className="color-variants">
+         <ColorPalette colors={defaultColors()} value={color} onChange={onChange} />
+      </BaseControl>
+   )
 }
 
 export { VariantButtonColor }

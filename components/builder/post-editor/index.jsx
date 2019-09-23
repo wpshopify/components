@@ -44,6 +44,9 @@ import { TitleSize } from './title-size'
 import { TitleColor } from './title-color'
 import { DescriptionSize } from './description-size'
 import { DescriptionColor } from './description-color'
+import { DescriptionLength } from './description-length'
+
+import { AlignHeight } from './align-height'
 
 function PostEditor() {
    const editorCSS = css`
@@ -57,14 +60,11 @@ function PostEditor() {
 
    return (
       <Panel header='Shortcode Settings' css={editorCSS} className='edit-post-sidebar'>
-         <PanelBody title='Show products by' initialOpen={false}>
+         <PanelBody title='Filtering' initialOpen={false}>
             <Title />
             <Tag />
             <Vendor />
             <ProductType />
-            <ProductId />
-            <CreatedAt />
-            <UpdatedAt />
             <AvailableForSale />
             <Connective />
          </PanelBody>
@@ -86,6 +86,7 @@ function PostEditor() {
          <PanelBody title='Layout' initialOpen={false}>
             <ItemsPerRow />
             <Excludes />
+            <AlignHeight />
          </PanelBody>
 
          <PanelBody title='Title' initialOpen={false}>
@@ -96,6 +97,7 @@ function PostEditor() {
          <PanelBody title='Description' initialOpen={false}>
             <DescriptionSize />
             <DescriptionColor />
+            <DescriptionLength />
          </PanelBody>
 
          <PanelBody title='Pricing' initialOpen={false}>

@@ -4,8 +4,6 @@ import { Bootstrap } from '../bootstrap'
 import { GlobalNotices } from './notices'
 
 function Shop({ options, children }) {
-   console.log('Rendering <Shop> ....')
-
    return (
       <ShopProvider options={options}>
          <Bootstrap>{children}</Bootstrap>

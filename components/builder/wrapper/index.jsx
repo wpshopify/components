@@ -8,7 +8,7 @@ import { BlockEditor } from '../block-editor'
 import { PostEditor } from '../post-editor'
 import { Shortcode } from '../shortcode'
 import to from 'await-to-js'
-import { graphQuery } from '/Users/andrew/www/devil/devilbox-new/data/www/wpshopify-api'
+import { fetchNewItems } from '../_common'
 
 function BuilderWrapper() {
    const [builderState, builderDispatch] = useContext(BuilderContext)
@@ -19,26 +19,16 @@ function BuilderWrapper() {
    `
 
    async function fetchProducts() {
-      const [error, results] = await to(
-         graphQuery('products', {
-            first: 9,
-            query: '*',
-            reverse: false,
-            sortKey: 'TITLE'
-         })
-      )
+      const [error, results] = await to(fetchNewItems('products', builderState))
 
+      builderDispatch({ type: 'SET_IS_LOADING', payload: false })
       builderDispatch({ type: 'SET_IS_READY', payload: true })
       builderDispatch({ type: 'SET_PAYLOAD', payload: results.model.products })
-
-      console.log('error', error)
-      console.log('results', results)
-      console.log('SHORTCODE BUILDER IS READY')
    }
 
    useEffect(() => {
       fetchProducts()
-   }, [])
+   }, [builderState.settings.title, builderState.settings.tag, builderState.settings.vendor, builderState.settings.productType])
 
    return (
       <>

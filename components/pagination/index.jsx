@@ -30,11 +30,23 @@ function Pagination({ children, shopSettings, miscDispatch }) {
       return false
    }
 
+   function isAlignHeight() {
+      if (itemsState.componentOptions.alignHeight) {
+         return true
+      }
+
+      if (shopSettings.layout.alignHeight) {
+         return true
+      }
+
+      return false
+   }
+
    return (
       <PaginationProvider options={itemsState}>
          {!isEmpty(itemsState.notices) && <Notices notices={itemsState.notices} dropzone={document.querySelector(itemsState.componentOptions.dropzoneNotices)} noticeGroup='storefront' />}
 
-         {showNotices() ? <Notice message={itemsState.noResultsText} type='info' /> : <PaginationItems alignHeight={shopSettings.layout.alignHeight}>{children}</PaginationItems>}
+         {showNotices() ? <Notice message={itemsState.noResultsText} type='info' /> : <PaginationItems alignHeight={isAlignHeight()}>{children}</PaginationItems>}
 
          {!isHidingPagination() && <PaginationControls miscDispatch={miscDispatch} />}
       </PaginationProvider>

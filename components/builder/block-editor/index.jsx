@@ -33,7 +33,7 @@ function BlockEditor() {
 
    return (
       <section css={editorCSS} id='block-editor'>
-         <div css={loaderCSS} id='block-editor-inner'>
+         <div css={loaderCSS} id='block-editor-inner' data-is-loading={builderState.isLoading}>
             {!builderState.isReady ? (
                <SkeletonLoader />
             ) : (

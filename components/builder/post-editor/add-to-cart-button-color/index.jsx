@@ -1,17 +1,22 @@
 import React, { useContext, useState } from 'react'
-import { TextControl } from '@wordpress/components'
+import { BaseControl, ColorPalette } from '@wordpress/components'
 import { BuilderContext } from '../../_state/context'
+import { defaultColors } from '../../_common'
 
 function AddToCartButtonColor() {
    const [builderState, builderDispatch] = useContext(BuilderContext)
-   const [val, setVal] = useState(builderState.settings.addToCartButtonColor)
+   const [color, setColor] = useState(builderState.settings.addToCartButtonColor)
 
-   function onChange(newVal) {
-      setVal(newVal)
-      builderDispatch({ type: 'UPDATE_SETTING', payload: { key: 'addToCartButtonColor', value: newVal } })
+   function onChange(newColor) {
+      setColor(newColor)
+      builderDispatch({ type: 'UPDATE_SETTING', payload: { key: 'addToCartButtonColor', value: newColor } })
    }
 
-   return <TextControl label='Add to cart button color' value={val} onChange={onChange} />
+   return (
+      <BaseControl label='Add to cart color:'>
+         <ColorPalette colors={defaultColors()} value={color} onChange={onChange} />
+      </BaseControl>
+   )
 }
 
 export { AddToCartButtonColor }

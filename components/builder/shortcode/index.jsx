@@ -2,6 +2,7 @@ import React, { useContext, useRef, useState } from 'react'
 import { BuilderContext } from '../_state/context'
 import { ClipboardButton } from '@wordpress/components'
 import { withState } from '@wordpress/compose'
+import { Loader } from '../../loader'
 
 /** @jsx jsx */
 import { jsx, css } from '@emotion/core'
@@ -110,10 +111,16 @@ function Shortcode() {
             Shortcode created:
          </label>
          <input readOnly type='text' id='shortcode' ref={inputRef} value='[wps_products]' css={inputCSS} onFocus={onFocus} />
+         {
+            builderState.isLoading ? (
+               <Loader />
+            ) : (
+               <ClipboardButton css={newButtonCSS} isPrimary text={builderState.shortcode} onCopy={onCopy} onFinishCopy={onFinishCopy}>
+                  {hasCopied ? 'Copied!' : 'Copy Shortcode'}
+               </ClipboardButton>
+            )
+         }
 
-         <ClipboardButton css={newButtonCSS} isPrimary text={builderState.shortcode} onCopy={onCopy} onFinishCopy={onFinishCopy}>
-            {hasCopied ? 'Copied!' : 'Copy Shortcode'}
-         </ClipboardButton>
       </div>
    )
 }
