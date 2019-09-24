@@ -24,6 +24,7 @@ function CartWrapper() {
    const setCheckoutAttributes = useAction('set.checkout.attributes')
    const setCheckoutNotes = useAction('set.checkout.note')
    const lineItems = useAction('product.addToCart')
+   const openCart = useAction('cart.toggle')
 
    async function cartBootstrap() {
       if (!shopState.checkoutId) {
@@ -91,6 +92,12 @@ function CartWrapper() {
 
       cartDispatch({ type: 'SET_CHECKOUT_NOTE', payload: setCheckoutNotes })
    }, [setCheckoutNotes])
+
+   useEffect(() => {
+      if (openCart) {
+         cartDispatch({ type: 'TOGGLE_CART', payload: true })
+      }
+   }, [openCart])
 
    useEffect(() => {
       if (isFirstRender.current) {

@@ -14,6 +14,7 @@ import compact from 'lodash/compact'
 import forOwn from 'lodash/forOwn'
 import transform from 'lodash/transform'
 import map from 'lodash/map'
+import has from 'lodash/has'
 
 function StorefrontSelections() {
    const [itemsState, itemsDispatch] = useContext(ItemsContext)
@@ -88,6 +89,10 @@ function buildQueryStringFromSelections(selections, connective) {
 
    if (newQuery === '') {
       newQuery = '*'
+   }
+
+   if (has(selections, 'available_for_sale') && !selections.available_for_sale) {
+      newQuery += ' available_for_sale:false'
    }
 
    return newQuery

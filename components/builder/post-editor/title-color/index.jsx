@@ -1,7 +1,7 @@
 import React, { useContext, useState } from 'react'
 import { BaseControl, ColorPalette } from '@wordpress/components'
 import { BuilderContext } from '../../_state/context'
-import {defaultColors} from '../../_common'
+import { defaultColors } from '../../_common'
 
 function TitleColor() {
    const [builderState, builderDispatch] = useContext(BuilderContext)

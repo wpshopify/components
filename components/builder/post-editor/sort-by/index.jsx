@@ -19,6 +19,7 @@ function SortBy() {
 
    function onChange(newVal) {
       setVal(newVal)
+      builderDispatch({ type: 'SET_IS_LOADING', payload: true })
       builderDispatch({ type: 'UPDATE_SETTING', payload: { key: 'sortBy', value: newVal } })
    }
 

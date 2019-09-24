@@ -23,7 +23,7 @@ function Shortcode() {
 
    var inputCSS = css`
       padding: 1em 1.4em;
-      font-size: 2em;
+      font-size: 1.7em;
       flex: 1;
       border-top: 1px solid #e2e4e7;
       font-family: monospace;
@@ -110,17 +110,14 @@ function Shortcode() {
          <label htmlFor='shortcode' css={labelCSS}>
             Shortcode created:
          </label>
-         <input readOnly type='text' id='shortcode' ref={inputRef} value='[wps_products]' css={inputCSS} onFocus={onFocus} />
-         {
-            builderState.isLoading ? (
-               <Loader />
-            ) : (
-               <ClipboardButton css={newButtonCSS} isPrimary text={builderState.shortcode} onCopy={onCopy} onFinishCopy={onFinishCopy}>
-                  {hasCopied ? 'Copied!' : 'Copy Shortcode'}
-               </ClipboardButton>
-            )
-         }
-
+         <input readOnly type='text' id='shortcode' ref={inputRef} value={builderState.shortcode} css={inputCSS} onFocus={onFocus} />
+         {builderState.isLoading ? (
+            <Loader />
+         ) : (
+            <ClipboardButton css={newButtonCSS} isPrimary text={builderState.shortcode} onCopy={onCopy} onFinishCopy={onFinishCopy}>
+               {hasCopied ? 'Copied!' : 'Copy Shortcode'}
+            </ClipboardButton>
+         )}
       </div>
    )
 }

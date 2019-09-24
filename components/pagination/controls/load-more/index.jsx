@@ -43,7 +43,6 @@ function PaginationLoadMore({ miscDispatch }) {
             return false
          }
       }
-      console.log('itemsState.limit', itemsState.limit)
 
       // If total shown matches the limit
       if (itemsState.totalShown === itemsState.limit) {
