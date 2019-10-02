@@ -5,7 +5,6 @@ import { ItemsContext } from '../../../../items/_state/context'
 import { ProductContext } from '../../_state/context'
 import { hasHooks } from '../../../../../common/utils'
 import { useAnime, pulse } from '../../../../../common/animations'
-import { addProductDetailsToVariant } from '../../../../../common/products'
 import { findVariantFromSelectedOptions } from '/Users/andrew/www/devil/devilbox-new/data/www/wpshopify-api'
 
 function ProductAddButton() {
@@ -28,6 +27,23 @@ function ProductAddButton() {
 
    function findSingleVariantFromPayload() {
       return buyButtonState.product.variants[0]
+   }
+
+   function buildAddToCartParams(lineItems, variants) {
+      return {
+         checkoutId: shopState.checkoutId,
+         lineItems: lineItems,
+         variants: variants
+      }
+   }
+
+   function buildLineItemParams(variant, quantity) {
+      return [
+         {
+            variantId: variant.id,
+            quantity: quantity
+         }
+      ]
    }
 
    async function handleClick(e) {
@@ -54,22 +70,15 @@ function ProductAddButton() {
             return
          }
 
-         // const variant = findVariantFromSelectedOptions(buyButtonState.product, buyButtonState.selectedOptions)
-         const lineItem = { variantId: variant.id, quantity: buyButtonState.quantity }
-         const productVariant = addProductDetailsToVariant(variant, buyButtonState.product)
+         const lineItems = buildLineItemParams(variant, buyButtonState.quantity)
 
-         hasHooks() &&
-            wp.hooks.doAction('product.addToCart', {
-               checkoutId: shopState.checkoutId,
-               lineItems: [lineItem],
-               variants: [productVariant]
-            })
+         hasHooks() && wp.hooks.doAction('product.addToCart', buildAddToCartParams(lineItems, [variant]))
 
          buyButtonDispatch({ type: 'SET_ALL_SELECTED_OPTIONS', payload: false })
          buyButtonDispatch({ type: 'REMOVE_SELECTED_OPTIONS' })
-         productDispatch({ type: 'SET_ADDED_VARIANT', payload: productVariant })
+         productDispatch({ type: 'SET_ADDED_VARIANT', payload: variant })
 
-         hasHooks() && wp.hooks.doAction('on.product.addToCart', lineItem, productVariant)
+         hasHooks() && wp.hooks.doAction('on.product.addToCart', lineItems, variant)
       }
    }
 

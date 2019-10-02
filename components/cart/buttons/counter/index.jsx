@@ -6,7 +6,7 @@ import { findTotalCartQuantities, isTotalEmpty } from '../../../../common/cart'
 import { useAnime, pulse } from '../../../../common/animations'
 
 function CartCounter() {
-   const [cartState] = useContext(CartContext)
+   const [cartState, cartDispatch] = useContext(CartContext)
    const [shopState] = useContext(ShopContext)
    const [totalItems, setTotalItems] = useState(findTotalCartQuantities(cartState.checkoutCache.lineItems))
    const [cartButtonState] = useContext(CartButtonContext)

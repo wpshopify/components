@@ -5,7 +5,6 @@ import concat from 'lodash/concat'
 import { toggleCart } from '../../../common/cart'
 import { getCheckoutCache, setCheckoutCache, mergeCheckoutCacheVariants, mergeCheckoutCacheLineItems } from '/Users/andrew/www/devil/devilbox-new/data/www/wpshopify-api'
 import flattenDepth from 'lodash/flattenDepth'
-import assign from 'lodash/assign'
 import reduce from 'lodash/reduce'
 import filter from 'lodash/filter'
 import find from 'lodash/find'
@@ -14,25 +13,27 @@ import isEqual from 'lodash/isEqual'
 
 import { calcCheckoutTotal } from '../../../common/products'
 
+function productVariantExistsInCheckoutCache(checkoutCacheVariants, variant) {
+   return some(checkoutCacheVariants, { id: variant.id })
+}
+
+function onlyVariantsInCheckoutCache(checkoutCacheVariants, variants) {
+   return variants.filter(variant => productVariantExistsInCheckoutCache(checkoutCacheVariants, variant))
+}
+
 /*
 
 Responsible for: adding product info to the variant information
 
 */
-function addProductInfoToVariants(productsFromCart, checkoutCache) {
-   return productsFromCart.map(product => {
+function addProductInfoToVariants(productsFromShopify, checkoutCache) {
+   return productsFromShopify.map(product => {
       if (product) {
+         var variants = flattenDepth(onlyVariantsInCheckoutCache(checkoutCache.variants, product.variants), 1)
+
          return {
-            productInfo: {
-               productTitle: product.title,
-               productId: product.id
-            },
-            variants: flattenDepth(
-               product.variants.filter(variant => {
-                  return some(checkoutCache.variants, { id: variant.id })
-               }),
-               1
-            )
+            product: product,
+            variants: variants
          }
       }
    })
@@ -48,7 +49,10 @@ function onlyVariantsInCheckout(allVariantsAndProducts) {
       if (variantsAndProducts) {
          return {
             variants: variantsAndProducts.variants.map(variant => {
-               return assign(variant, variantsAndProducts.productInfo)
+               variant.product = {}
+               variant.product.title = variantsAndProducts.product.title
+               variant.product.id = variantsAndProducts.product.id
+               return variant
             })
          }
       }
@@ -77,6 +81,7 @@ Responsible for: finding variants from product ids
 */
 function findVariantsFromProductIds(productsFromShopify, checkoutCache) {
    var productInfoAndVariants = addProductInfoToVariants(productsFromShopify, checkoutCache)
+
    var variantsMulti = onlyVariantsInCheckout(productInfoAndVariants)
    var variantsCombined = combineAllVariants(variantsMulti)
 
@@ -128,6 +133,9 @@ function updateLineItemQuantity(state, payload) {
 /*
 
 Responsible for: updating the checkout cache
+
+lineItems: What we pass to the Shopify API during checkout 
+variants: What we use to display the correct data within the cart 
 
 */
 function updateLineItemsAndVariants(checkoutCache, payload) {
@@ -330,6 +338,13 @@ function CartReducer(state, action) {
          return {
             ...state,
             note: update(state.note, { $set: action.payload })
+         }
+      }
+
+      case 'SET_TOTAL_LINE_ITEMS': {
+         return {
+            ...state,
+            totalLineItems: update(state.totalLineItems, { $set: action.payload })
          }
       }
 

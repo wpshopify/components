@@ -1,4 +1,4 @@
-import { hashQueryParams } from '../../../common/utils'
+import { hashQueryParams, hasHooks } from '../../../common/utils'
 
 function checkHasMore(options) {
    if (!options.componentPayload || !options.componentOptions.pageSize || !options.componentOptions.pagination) {
@@ -50,7 +50,7 @@ function hashInitialPayloadCache(queryParams, payload) {
 }
 
 function ItemsInitialState(options = {}) {
-   return {
+   var itemsState = {
       componentOptions: options.componentOptions,
       element: options.componentElement,
       payload: options.componentPayload ? options.componentPayload : [],
@@ -67,6 +67,10 @@ function ItemsInitialState(options = {}) {
       lastQuery: options.componentQueryParams ? options.componentQueryParams.query : false,
       payloadCache: hashInitialPayloadCache(options.componentQueryParams, options.componentPayload)
    }
+
+   hasHooks() ? wp.hooks.doAction('items.init', itemsState) : ''
+
+   return itemsState
 }
 
 export { ItemsInitialState }

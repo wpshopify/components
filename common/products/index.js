@@ -33,15 +33,6 @@ function filterAvailableVariantsBySelectedOption(product, selectedOption) {
    return filter(getAvailableVariants(product), selectedOption)
 }
 
-function addProductDetailsToVariant(variant, product) {
-   var variantCopy = variant
-
-   variantCopy.productTitle = product.title
-   variantCopy.productId = product.id
-
-   return variantCopy
-}
-
 function calcLineItemTotal(price, quantity) {
    return Number(price) * Number(quantity)
 }
@@ -71,4 +62,4 @@ function calcCheckoutTotalReducer(accumulator, lineItem, checkoutState) {
    return accumulator
 }
 
-export { getAvailableVariants, filterAvailableVariantsBySelectedOption, addProductDetailsToVariant, calcLineItemTotal, calcCheckoutTotal, isAvailable, onlyAvailableItems }
+export { getAvailableVariants, filterAvailableVariantsBySelectedOption, calcLineItemTotal, calcCheckoutTotal, isAvailable, onlyAvailableItems }

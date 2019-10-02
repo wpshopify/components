@@ -15,6 +15,7 @@ function CartInitialState(options) {
          variants: [],
          total: 0.0
       },
+      totalLineItems: 0,
       customAttributes: [],
       note: false,
       title: hasHooks() ? wp.hooks.applyFilters('default.cart.title', _t('Shopping cart')) : _t('Shopping cart'),

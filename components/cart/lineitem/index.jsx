@@ -90,7 +90,7 @@ function CartLineItem({ lineItem, index }) {
             <div className='wps-cart-lineitem-title col-12 p-0' data-wps-is-ready={cartState.isReady} data-wps-is-empty={hasRealVariant() ? 'false' : 'true'}>
                <div className='container-fluid p-0'>
                   <div className='row'>
-                     <span className='wps-cart-lineitem-title-content col-9'>{lineItem.productTitle}</span>
+                     <span className='wps-cart-lineitem-title-content col-9'>{lineItem.product.title}</span>
                      <span className='wps-cart-lineitem-remove' onClick={removeLineItem}>
                         Remove
                      </span>
