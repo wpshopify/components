@@ -27,6 +27,10 @@ Responsible for: adding product info to the variant information
 
 */
 function addProductInfoToVariants(productsFromShopify, checkoutCache) {
+   if (!productsFromShopify) {
+      return []
+   }
+
    return productsFromShopify.map(product => {
       if (product) {
          var variants = flattenDepth(onlyVariantsInCheckoutCache(checkoutCache.variants, product.variants), 1)
@@ -173,24 +177,26 @@ function removeLineItemsAndVariants(checkoutCache, payload) {
 
 function CartReducer(state, action) {
    switch (action.type) {
-      case 'TOGGLE_CART':
+      case 'TOGGLE_CART': {
          toggleCart(action.payload)
 
          return {
             isCartOpen: action.payload,
             ...state
          }
-
-      case 'SET_IS_CHECKING_OUT':
+      }
+      case 'SET_IS_CHECKING_OUT': {
          return {
             ...state,
             isCheckingOut: update(state.isCheckingOut, { $set: action.payload })
          }
-      case 'SET_TERMS_ACCEPTED':
+      }
+      case 'SET_TERMS_ACCEPTED': {
          return {
             ...state,
             termsAccepted: update(state.termsAccepted, { $set: action.payload })
          }
+      }
       case 'UPDATE_NOTICES': {
          let updatedNotices = state.notices
 
