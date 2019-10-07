@@ -86,7 +86,7 @@ function ProductAddButton() {
       if (!shopState.isShopReady) {
          return
       }
-
+      console.log('shopState.settings', shopState.settings)
       if (isFirstRender.current) {
          isFirstRender.current = false
          return

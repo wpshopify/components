@@ -74,8 +74,7 @@ function ProductOptionTrigger() {
    }
 
    return (
-      <a
-         href='#!'
+      <button
          className='wps-btn wps-icon wps-icon-dropdown wps-modal-trigger'
          data-option=''
          data-option-id=''
@@ -84,7 +83,7 @@ function ProductOptionTrigger() {
          ref={dropdownTrigger}
          style={{ backgroundColor: itemsState.componentOptions.variantButtonColor }}>
          {displayOptionName()}
-      </a>
+      </button>
    )
 }
 

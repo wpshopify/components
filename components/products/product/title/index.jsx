@@ -37,7 +37,7 @@ function ProductTitle() {
       <div className='wps-component wps-component-products-title' data-wps-component-order='0'>
          {hasSinglePage() && !onSinglePage(itemsState) ? (
             <Link type='products' payload={productState.payload} shop={shopState}>
-               <Title styles={[fontSize, fontColor]} title={productState.payload.title} classList={getTitleClass()} isShopReady={shopState.isShopReady ? '1' : '0'} />
+               <Title styles={[fontSize, fontColor]} title={productState.payload.title} classList={getTitleClass()} isShopReady={shopState.isShopReady ? '1' : '0'} product={productState.payload} />
             </Link>
          ) : (
             <Title styles={[fontSize, fontColor]} title={productState.payload.title} classList={getTitleClass()} isShopReady={shopState.isShopReady ? '1' : '0'} product={productState.payload} />
@@ -48,6 +48,8 @@ function ProductTitle() {
 }
 
 function Title(props) {
+   console.log('props', props)
+
    return (
       <>
          <FilterHook name='product.title.before' args={[props.product]} isReady={props.isShopReady} />
