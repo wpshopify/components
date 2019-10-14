@@ -2,6 +2,7 @@ import React, { useContext, useState, useEffect, useRef } from 'react'
 import { ShopContext } from '../../../shop/_state/context'
 import { CartContext } from '../../_state/context'
 import { CartButtonContext } from '../button/_state/context'
+import { Loader } from '../../../loader'
 import { findTotalCartQuantities, isTotalEmpty } from '../../../../common/cart'
 import { useAnime, pulse } from '../../../../common/animations'
 
@@ -14,7 +15,7 @@ function CartCounter() {
    const element = useRef()
 
    useEffect(() => {
-      if (!cartState.isReady) {
+      if (!shopState.isCartReady) {
          return
       }
 
@@ -60,7 +61,7 @@ function CartCounter() {
    return (
       <>
          <span style={counterStyles(cartButtonState)} data-wps-is-big={totalItems > 9 ? true : false} className='wps-cart-counter' ref={element}>
-            {totalItems}
+            {!shopState.isCartReady ? <Loader isLoading={true} /> : totalItems}
          </span>
       </>
    )

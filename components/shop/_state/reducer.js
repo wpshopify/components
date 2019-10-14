@@ -29,6 +29,13 @@ function ShopReducer(state, action) {
          }
       }
 
+      case 'IS_CART_READY': {
+         return {
+            ...state,
+            isCartReady: update(state.isCartReady, { $set: true })
+         }
+      }
+
       case 'UPDATE_NOTICES': {
          let updatedNotices = state.notices
 

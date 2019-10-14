@@ -99,19 +99,19 @@ function CartCheckout() {
       <>
          <FilterHook name='cart.checkout.before' args={[cartState]} />
 
-         <CartCheckoutButton cartState={cartState} onCheckout={onCheckout} buttonStyle={buttonStyle} />
+         <CartCheckoutButton cartState={cartState} onCheckout={onCheckout} buttonStyle={buttonStyle} shopState={shopState} />
 
          <FilterHook name='cart.checkout.after' args={[cartState]} />
       </>
    )
 }
 
-function CartCheckoutButton({ cartState, buttonStyle, onCheckout }) {
+function CartCheckoutButton({ cartState, buttonStyle, onCheckout, shopState }) {
    return (
       <button
          className='wps-btn wps-btn-checkout'
          onClick={onCheckout}
-         data-wps-is-ready={cartState.isReady}
+         data-wps-is-ready={shopState.isCartReady}
          disabled={cartState.isCheckingOut || !cartState.termsAccepted || cartState.isCartEmpty}
          style={buttonStyle()}>
          {cartState.isCheckingOut ? <Loader isLoading={cartState.isCheckingOut} /> : cartState.checkoutText}

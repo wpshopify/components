@@ -1,8 +1,4 @@
 import React, { useContext, useRef, useEffect } from 'react'
-// import { CartHeader } from '../header'
-// import { CartContents } from '../contents'
-// import { CartFooter } from '../footer'
-// import { CartButtons } from '../buttons'
 import { CartContext } from '../_state/context'
 import { ShopContext } from '../../shop/_state/context'
 import { useAction } from '../../../common/hooks'
@@ -71,7 +67,7 @@ function CartWrapper() {
 
    useEffect(() => {
       cartDispatch({ type: 'SET_TOTAL_LINE_ITEMS', payload: findTotalCartQuantities(cartState.checkoutCache.lineItems) })
-   }, [cartState.isReady, cartState.checkoutCache.lineItems])
+   }, [shopState.isCartReady, cartState.checkoutCache.lineItems])
 
    useEffect(() => {
       hasHooks() && wp.hooks.doAction('on.checkout.update', cartState)

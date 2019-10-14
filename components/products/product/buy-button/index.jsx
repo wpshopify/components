@@ -16,7 +16,7 @@ function ProductBuyButton() {
    const [productState] = useContext(ProductContext)
 
    return usePortal(
-      <div className='wps-buy-button-wrapper' data-wps-is-ready={shopState.isShopReady ? '1' : '0'} data-wps-component-order='0'>
+      <div className='wps-buy-button-wrapper' data-wps-is-ready={shopState.isCartReady ? '1' : '0'} data-wps-component-order='0'>
          <ProductBuyButtonProvider productState={productState}>
             {productState.payload.availableForSale ? (
                <>

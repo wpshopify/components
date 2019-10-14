@@ -12,13 +12,23 @@ function CartButton({ options }) {
    const [shopState] = useContext(ShopContext)
    const [cartState, cartDispatch] = useContext(CartContext)
    const counterElement = useRef()
+   const isFirstRender = useRef(true)
+   const isInView = useRef(false)
    const animeSlideInRight = useAnime(slideInRight)
 
    useEffect(() => {
+      // if (isFirstRender.current) {
+      //    isFirstRender.current = false
+      //    return
+      // }
+      // console.log('wewwe?')
+
       if (options.componentOptions.type === 'fixed' && shopState.settings.cart.showFixedCartIcon) {
          animeSlideInRight(counterElement.current)
+         // isInView.current = true
+         // console.log('hi')
       }
-   }, [])
+   }, [shopState.isShopReady])
 
    function getIconColor() {
       if (options.componentOptions.componentOptions.type === 'fixed') {
@@ -42,11 +52,11 @@ function CartButton({ options }) {
       <>
          <CartButtonProvider options={options}>
             <button
+               data-is-cart-ready={shopState.isCartReady ? '1' : '0'}
                role='button'
                ref={counterElement}
                className={`wps-btn-cart wps-cart-icon-${options.componentOptions.type} ${isCartEmpty(cartState.checkoutCache.lineItems) ? 'wps-cart-is-empty' : ''}`}
                onClick={onClick}
-               data-wps-is-ready={cartState.isReady ? '1' : '0'}
                style={iconStyles()}>
                {options.componentOptions.showCounter && <CartCounter />}
 

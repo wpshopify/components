@@ -48,8 +48,6 @@ function ProductTitle() {
 }
 
 function Title(props) {
-   console.log('props', props)
-
    return (
       <>
          <FilterHook name='product.title.before' args={[props.product]} isReady={props.isShopReady} />
