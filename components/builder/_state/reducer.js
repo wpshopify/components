@@ -5,7 +5,8 @@ function BuilderReducer(state, action) {
       case 'SET_IS_READY': {
          return {
             ...state,
-            isReady: update(state.isShopReady, { $set: action.payload })
+            isReady: update(state.isReady, { $set: action.payload }),
+            isShopReady: update(state.isShopReady, { $set: action.payload })
          }
       }
 

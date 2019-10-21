@@ -1,6 +1,7 @@
-import React, { useContext, useEffect } from 'react'
+import React, { useContext, useEffect, useState, useRef } from 'react'
 import has from 'lodash/has'
 import { ProductContext } from '../../_state/context'
+import { ProductGalleryContext } from './_state/context'
 import { ItemsContext } from '../../../../items/_state/context'
 import { ProductThumbnailImages } from '../thumbnails'
 import { ProductFeaturedImage } from '../featured'
@@ -9,6 +10,9 @@ import { ProductGalleryProvider } from './_state/provider.jsx'
 function ProductGallery() {
    const [itemsState] = useContext(ItemsContext)
    const [productState] = useContext(ProductContext)
+   const [galleryState, galleryDispatch] = useContext(ProductGalleryContext)
+   const isFirstRender = useRef(true)
+   const product = productState.payload
 
    function hasManyImages() {
       if (!productState) {
@@ -26,20 +30,29 @@ function ProductGallery() {
       return itemsState.componentOptions.showFeaturedOnly
    }
 
+   useEffect(() => {
+      if (isFirstRender.current) {
+         isFirstRender.current = false
+         return
+      }
+
+      if (productState.selectedVariant) {
+         galleryDispatch({ type: 'SET_FEAT_IMAGE', payload: productState.selectedVariant.image })
+      }
+   }, [productState.selectedVariant])
+
    return (
       <>
-         <ProductGalleryProvider productState={productState}>
-            {isFeaturedOnly() ? (
+         {isFeaturedOnly() ? (
+            <ProductFeaturedImage />
+         ) : hasManyImages() ? (
+            <>
                <ProductFeaturedImage />
-            ) : hasManyImages() ? (
-               <>
-                  <ProductFeaturedImage />
-                  <ProductThumbnailImages />
-               </>
-            ) : (
-               <ProductFeaturedImage />
-            )}
-         </ProductGalleryProvider>
+               <ProductThumbnailImages product={product} />
+            </>
+         ) : (
+            <ProductFeaturedImage />
+         )}
       </>
    )
 }

@@ -222,10 +222,10 @@ function CartReducer(state, action) {
          }
       }
 
-      case 'SET_IS_CART_READY': {
+      case 'IS_CART_INTERACTIVE': {
          return {
             ...state,
-            isReady: update(state.isReady, { $set: action.payload })
+            isCartInteractive: update(state.isCartEmpty, { $set: action.payload })
          }
       }
 

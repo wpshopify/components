@@ -17,7 +17,7 @@ function CartFooterTotal({ isReady, totalElement, currencyCode }) {
    return (
       <div className='baseline row align-items-end justify-content-between m-0'>
          <p className='wps-total-prefix p-0'>Subtotal:</p>
-         <p className='wps-total-amount col p-0' ref={totalElement} data-wps-is-ready={isReady}>
+         <p className='wps-total-amount col p-0' ref={totalElement} data-wps-is-ready={isReady ? '1' : '0'}>
             {isReady && formatPriceToCurrency(cartState.total, currencyCode)}
          </p>
       </div>

@@ -27,6 +27,19 @@ function CartCounter() {
       }
    }, [cartState.checkoutCache.lineItems])
 
+   useEffect(() => {
+      if (!shopState.isCartReady) {
+         return
+      }
+
+      const total = findTotalCartQuantities(cartState.checkoutCache.lineItems)
+
+      if (!isTotalEmpty(total)) {
+         setTotalItems(total)
+         animePulse(element.current)
+      }
+   }, [shopState.isCartReady])
+
    function counterStyles() {
       return {
          backgroundColor: getBackgroundColor(),

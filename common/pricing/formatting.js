@@ -2,14 +2,39 @@ import has from 'lodash/has'
 import { hasCurrencyCode } from '../settings'
 import { getMoneyFormat, getShop } from '../shop'
 import { getLocalCurrencyCodeCache } from './currency'
-import { currencyDisplayStyle, showingCurrencyCode, showingLocalCurrency } from '../globals'
+import { currencyDisplayStyle, showingCurrencyCode, showingLocalCurrency, hideDecimals, hideDecimalsOnlyZeros } from '../globals'
+
+function hasDecimal(num) {
+   return num % 1 != 0
+}
+
+function maybeHideDecimals(config, amount) {
+   
+   if (!hideDecimals()) {
+      return config
+   }
+
+   if (hideDecimalsOnlyZeros()) {
+      if (!hasDecimal(amount)) {
+         config.minimumFractionDigits = 0;
+         config.maximumFractionDigits = 0;
+      }
+   } else if(hideDecimalsOnlyZeros()) {
+      config.minimumFractionDigits = 0;
+      config.maximumFractionDigits = 0;
+   }
+
+   return config;
+   
+}
 
 function formatNumber(config) {
-   return new Intl.NumberFormat(config.locale, {
+
+   return new Intl.NumberFormat(config.locale, maybeHideDecimals({
       style: 'currency',
       currency: config.countryCode,
       currencyDisplay: config.currencyDisplay
-   }).format(config.amount)
+   }, config.amount)).format(config.amount)
 }
 
 /*

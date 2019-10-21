@@ -1,5 +1,3 @@
-import { hasHooks } from '../../../../common/utils'
-
 function ProductInitialState(payload) {
    return {
       payload: payload,

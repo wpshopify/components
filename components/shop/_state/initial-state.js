@@ -2,7 +2,8 @@ function ShopInitialState(options = false) {
    return {
       checkout: { lineItems: [] },
       checkoutId: false,
-      isShopReady: false,
+      isShopReady: options.isShopReady ? true : false,
+      isCartReady: options.isCartReady ? true : false,
       checkoutCache: {
          lineItems: [],
          variants: [],

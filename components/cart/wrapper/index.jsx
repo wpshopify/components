@@ -1,4 +1,4 @@
-import React, { useContext, useRef, useEffect } from 'react'
+import React, { useContext, useRef, useEffect, useState } from 'react'
 import { CartContext } from '../_state/context'
 import { ShopContext } from '../../shop/_state/context'
 import { useAction } from '../../../common/hooks'
@@ -23,7 +23,7 @@ function CartWrapper() {
    const setCheckoutNotes = useAction('set.checkout.note')
    const lineItemsAdded = useAction('product.addToCart')
    const openCart = useAction('cart.toggle')
-   // const manualLineItems = useAction('checkout.add.lineItems')
+   const [isCartInView, setIsCartInView] = useState(false)
 
    async function cartBootstrap() {
       if (!shopState.checkoutId) {
@@ -58,18 +58,33 @@ function CartWrapper() {
          cartDispatch({ type: 'SET_IS_CART_EMPTY', payload: false })
       }
 
-      cartDispatch({ type: 'SET_IS_CART_READY', payload: true })
+      shopDispatch({ type: 'IS_CART_READY', payload: true })
    }
 
    useEffect(() => {
+      if (isFirstRender.current) {
+         isFirstRender.current = false
+         return
+      }
+
       cartBootstrap()
    }, [shopState.checkoutId])
 
    useEffect(() => {
+      if (isFirstRender.current) {
+         isFirstRender.current = false
+         return
+      }
+
       cartDispatch({ type: 'SET_TOTAL_LINE_ITEMS', payload: findTotalCartQuantities(cartState.checkoutCache.lineItems) })
    }, [shopState.isCartReady, cartState.checkoutCache.lineItems])
 
    useEffect(() => {
+      if (isFirstRender.current) {
+         isFirstRender.current = false
+         return
+      }
+
       hasHooks() && wp.hooks.doAction('on.checkout.update', cartState)
    }, [cartState.totalLineItems])
 
@@ -101,6 +116,11 @@ function CartWrapper() {
    }, [setCheckoutNotes])
 
    useEffect(() => {
+      if (isFirstRender.current) {
+         isFirstRender.current = false
+         return
+      }
+
       if (openCart) {
          cartDispatch({ type: 'TOGGLE_CART', payload: true })
       }
@@ -126,9 +146,9 @@ function CartWrapper() {
 
    return (
       <section ref={cart} className='wps-cart'>
-         <CartButtons />
+         <CartButtons buttons={cartState.buttons} />
          <CartHeader />
-         <CartContents isCartEmpty={cartState.isCartEmpty} checkoutCache={cartState.checkoutCache} />
+         <CartContents isCartReady={shopState.isCartEmpty} isCartEmpty={cartState.isCartEmpty} checkoutCache={cartState.checkoutCache} />
          <CartFooter />
       </section>
    )

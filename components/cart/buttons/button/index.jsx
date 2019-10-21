@@ -1,4 +1,4 @@
-import React, { useContext, useRef, useEffect } from 'react'
+import React, { useContext, useRef, useEffect, useState } from 'react'
 import { ShopContext } from '../../../shop/_state/context'
 import { CartContext } from '../../_state/context'
 import { CartCounter } from '../counter'
@@ -13,20 +13,15 @@ function CartButton({ options }) {
    const [cartState, cartDispatch] = useContext(CartContext)
    const counterElement = useRef()
    const isFirstRender = useRef(true)
-   const isInView = useRef(false)
    const animeSlideInRight = useAnime(slideInRight)
 
    useEffect(() => {
-      // if (isFirstRender.current) {
-      //    isFirstRender.current = false
-      //    return
-      // }
-      // console.log('wewwe?')
+      if (!shopState.isShopReady) {
+         return
+      }
 
       if (options.componentOptions.type === 'fixed' && shopState.settings.cart.showFixedCartIcon) {
          animeSlideInRight(counterElement.current)
-         // isInView.current = true
-         // console.log('hi')
       }
    }, [shopState.isShopReady])
 

@@ -18,4 +18,16 @@ function textDomain() {
    return WP_Shopify.settings.textdomain
 }
 
-export { showingLocalCurrency, baseCurrency, showingCurrencyCode, currencyDisplayStyle, textDomain }
+function hideDecimals() {
+   return WP_Shopify.settings.pricing.hideDecimals
+}
+
+function hideDecimalsAll() {
+   return WP_Shopify.settings.pricing.hideDecimalsAll
+}
+
+function hideDecimalsOnlyZeros() {
+   return WP_Shopify.settings.pricing.hideDecimalsOnlyZeros
+}
+
+export { showingLocalCurrency, baseCurrency, showingCurrencyCode, currencyDisplayStyle, textDomain, hideDecimals, hideDecimalsAll, hideDecimalsOnlyZeros }

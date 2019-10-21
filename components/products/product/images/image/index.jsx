@@ -9,6 +9,7 @@ import { addCustomSizingToImageUrl } from '../../../../../common/images'
 import { Link } from '../../../../link'
 import { hasSinglePage } from '../../../../../common/settings'
 import { onSinglePage } from '../../../../../common/components'
+import { SimpleImg } from 'react-simple-img'
 
 function ProductImage({ image, isFeatured }) {
    const imageRef = useRef()
@@ -43,6 +44,7 @@ function ProductImage({ image, isFeatured }) {
          if (shopState.settings.productsImagesSizingToggle) {
             return doFeaturedSizing()
          }
+
          return image.src
       } else {
          if (shopState.settings.productsThumbnailImagesSizingToggle) {
@@ -86,7 +88,7 @@ function Img(props) {
             ref={props.imageRef}
             itemProp='image'
             src={props.productImageSrc}
-            className='wps-product-image'
+            className='wps-product-image lazyload'
             alt={props.image.altText}
             data-wps-is-ready={props.shopState.isShopReady ? '1' : '0'}
             data-zoom={props.image.src}
@@ -94,5 +96,7 @@ function Img(props) {
       </>
    )
 }
+
+ProductImage = React.memo(ProductImage)
 
 export { ProductImage }

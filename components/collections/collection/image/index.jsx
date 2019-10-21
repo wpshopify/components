@@ -37,7 +37,7 @@ function CollectionImage({ isShopReady, shopSettings, shopInfo }) {
                <img
                   itemProp='image'
                   src={imageSrc}
-                  className='wps-product-image'
+                  className='wps-product-image lazyload'
                   alt={collectionState.payload.image ? collectionState.payload.image.altText : ''}
                   data-wps-is-ready={isShopReady ? '1' : '0'}
                />

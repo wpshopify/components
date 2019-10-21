@@ -1,25 +1,23 @@
 import React, { useContext } from 'react'
 import { ProductThumbnailImage } from '../thumbnail'
-import { ProductContext } from '../../_state/context'
+import { ProductGalleryContext } from '../gallery/_state/context'
 import uuidv4 from 'uuid/v4'
 import isEmpty from 'lodash/isEmpty'
 
-function ProductThumbnailImages() {
-   const [productState] = useContext(ProductContext)
-
+const ProductThumbnailImages = React.memo(function ProductThumbnailImages({ product }) {
    function hasImages() {
-      return productState.payload && !isEmpty(productState.payload.images)
+      return product && !isEmpty(product.images)
    }
 
    return (
       hasImages() && (
          <div className='wps-thumbnails-wrapper'>
-            {productState.payload.images.map(image => (
+            {product.images.map(image => (
                <ProductThumbnailImage key={uuidv4()} image={image} />
             ))}
          </div>
       )
    )
-}
+})
 
 export { ProductThumbnailImages }

@@ -1,5 +1,5 @@
 import React, { useContext } from 'react'
-import { ProductGallery } from './gallery'
+import { ProductGalleryWrapper } from './gallery/wrapper'
 import { ProductContext } from '../_state/context'
 import { ItemsContext } from '../../../items/_state/context'
 import { usePortal } from '../../../../common/hooks'
@@ -12,7 +12,7 @@ function ProductImages() {
    return usePortal(
       <>
          <div className='wps-component wps-component-products-images' data-wps-component-order='0'>
-            <ProductGallery />
+            <ProductGalleryWrapper productState={productState} />
          </div>
       </>,
       findPortalElement(productState.element, itemsState.componentOptions.dropzoneProductGallery)

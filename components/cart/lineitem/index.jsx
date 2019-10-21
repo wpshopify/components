@@ -83,11 +83,11 @@ function CartLineItem({ lineItem, index }) {
    return (
       <div className='wps-cart-lineitem mr-0 ml-0 row' data-wps-is-updating={isUpdating} data-wps-is-available={isAvailable(lineItem)} ref={lineItemElement}>
          <Link payload={lineItem} shop={shopState} type='products' classNames='wps-cart-lineitem-img-link' target='_blank'>
-            <div className='wps-cart-lineitem-img' style={lineItemImage()} data-wps-is-ready={shopState.isCartReady} />
+            <div className='wps-cart-lineitem-img' style={lineItemImage()} data-wps-is-ready={shopState.isCartReady ? '1' : '0'} />
          </Link>
 
          <div className='wps-cart-lineitem-content'>
-            <div className='wps-cart-lineitem-title col-12 p-0' data-wps-is-ready={shopState.isCartReady} data-wps-is-empty={hasRealVariant() ? 'false' : 'true'}>
+            <div className='wps-cart-lineitem-title col-12 p-0' data-wps-is-ready={shopState.isCartReady ? '1' : '0'} data-wps-is-empty={hasRealVariant() ? 'false' : 'true'}>
                <div className='container-fluid p-0'>
                   <div className='row'>
                      <span className='wps-cart-lineitem-title-content col-9'>{lineItem.product.title}</span>
@@ -123,7 +123,7 @@ function CartLineItem({ lineItem, index }) {
                      </div>
 
                      <div className='wps-cart-lineitem-price-total-wrapper'>
-                        <div className='wps-cart-lineitem-price wps-cart-lineitem-price-total' data-wps-is-ready={shopState.isCartReady} ref={lineItemTotalElement}>
+                        <div className='wps-cart-lineitem-price wps-cart-lineitem-price-total' data-wps-is-ready={shopState.isCartReady ? '1' : '0'} ref={lineItemTotalElement}>
                            {shopState.isCartReady && formatPriceToCurrency(lineItemTotal, shopState.info.currencyCode)}
                         </div>
                      </div>

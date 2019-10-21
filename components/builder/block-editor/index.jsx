@@ -34,11 +34,11 @@ function BlockEditor() {
    return (
       <section css={editorCSS} id='block-editor'>
          <div css={loaderCSS} id='block-editor-inner' data-is-loading={builderState.isLoading}>
-            {!builderState.isReady ? (
+            {!builderState.isShopReady ? (
                <SkeletonLoader />
             ) : (
                <Suspense fallback=''>
-                  <Shop>
+                  <Shop options={{ isCartReady: true }}>
                      <Items options={builderState.productOptions}>
                         <Products />
                      </Items>

@@ -7,8 +7,8 @@ function CartInitialState(options) {
       isCartOpen: false,
       termsAccepted: true,
       isCartEmpty: true,
+      isCartInteractive: false,
       buttons: options,
-      isReady: false,
       notices: [],
       checkoutCache: {
          lineItems: [],

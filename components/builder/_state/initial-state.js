@@ -32,7 +32,7 @@ function BuilderInitialState(options) {
       quantityLabelText: 'Quantity',
       showFeaturedOnly: false,
       showZoom: false,
-      noResultsText: 'No products found',
+      noResultsText: 'No products left to show',
       infiniteScroll: false,
       infiniteScrollOffset: 100,
       titleColor: false,
@@ -72,7 +72,7 @@ function BuilderInitialState(options) {
       quantityLabelText: 'Quantity',
       showFeaturedOnly: false,
       showZoom: false,
-      noResultsText: 'No products found',
+      noResultsText: 'No products left to show',
       infiniteScroll: false,
       infiniteScrollOffset: 100,
       titleColor: false,
@@ -81,6 +81,7 @@ function BuilderInitialState(options) {
 
    return {
       isReady: false,
+      isShopReady: false,
       isLoading: false,
       notices: [],
       defaultShortcode: '[wps_products]',

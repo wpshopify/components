@@ -25,7 +25,7 @@ function CartIcon() {
    return (
       <>
          {cartButtonState.componentOptions.icon ? (
-            <img src={cartButtonState.componentOptions.icon} className='wps-icon wps-icon-cart' />
+            <img src={cartButtonState.componentOptions.icon} className='wps-icon wps-icon-cart lazyload' />
          ) : (
             <svg xmlns='http://www.w3.org/2000/svg' className='wps-icon wps-icon-cart' viewBox='0 0 25 25' enableBackground='new 0 0 25 25'>
                <g style={iconStyles()}>
