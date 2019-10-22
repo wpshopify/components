@@ -34,7 +34,7 @@ function CollectionProducts() {
                componentElement: false,
                dataType: 'products',
                type: 'list',
-               noResultsText: 'Sorry from products!',
+               noResultsText: 'No products left to show',
                originalParams: {
                   type: 'collections',
                   queryParams: itemsState.queryParams,

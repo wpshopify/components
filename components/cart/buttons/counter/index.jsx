@@ -63,7 +63,7 @@ function CartCounter() {
 
    function getBackgroundColor() {
       if (!cartButtonState.componentOptions.counterBackgroundColor) {
-         if (cartButtonState.componentOptions.componentOptions.type !== 'fixed') {
+         if (cartButtonState.componentOptions.type !== 'fixed') {
             return shopState.settings.cart.colorCounter
          }
       }
