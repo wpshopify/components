@@ -75,8 +75,6 @@ function useAction(hookName, defaultVal = false) {
 
 function usePortal(componentMarkup, containerElement = false, skipEmptyRender = false) {
    function renderPortal() {
-      console.log('containerElement', containerElement);
-      
       if (containerElement) {
          var placeholderElement = containerElement.querySelector('.wps-loading-placeholder, .wps-server-component')
 

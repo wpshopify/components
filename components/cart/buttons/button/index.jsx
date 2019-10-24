@@ -26,8 +26,6 @@ function CartButton({ options }) {
    }, [shopState.isShopReady])
 
    function getIconColor() {
-      console.log('options', options)
-
       if (options.componentOptions.type === 'fixed') {
          return shopState.settings.cart.colorCartBackgroundFixed
       }
