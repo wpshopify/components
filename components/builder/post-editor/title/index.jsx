@@ -21,7 +21,6 @@ function Title() {
 
    function onChange(newVal) {
       setVal(newVal)
-      builderDispatch({ type: 'SET_IS_LOADING', payload: true })
    }
 
    return <TextControl label='Title' value={val} help='Match product titles' onChange={onChange} />

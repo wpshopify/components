@@ -1,11 +1,14 @@
-import React, { useContext, useState } from 'react'
+import React, { useContext, useState, useEffect, useRef } from 'react'
 import { FontSizePicker, BaseControl } from '@wordpress/components'
 import { BuilderContext } from '../../_state/context'
 import { __ } from '@wordpress/i18n'
+import { useDebounce } from 'use-debounce'
 
 function TitleSize() {
    const [builderState, builderDispatch] = useContext(BuilderContext)
    const [val, setVal] = useState(18)
+   const [debouncedValue] = useDebounce(val, 10)
+   const isFirstRender = useRef(true);
 
    const fontSizes = [
       {
@@ -25,6 +28,22 @@ function TitleSize() {
       }
    ]
 
+   function onChange(newFontSize) {
+      setVal(newFontSize)
+      
+   }
+
+   useEffect(() => {
+
+      if (isFirstRender.current) {
+         isFirstRender.current = false
+         return
+      }
+
+      builderDispatch({ type: 'UPDATE_SETTING', payload: { key: 'titleSize', value: val + 'px' } })
+
+   }, [debouncedValue])
+
    return (
       <BaseControl>
          <FontSizePicker
@@ -32,10 +51,7 @@ function TitleSize() {
             value={val}
             fallbackFontSize={18}
             withSlider={true}
-            onChange={newFontSize => {
-               setVal(newFontSize)
-               builderDispatch({ type: 'UPDATE_SETTING', payload: { key: 'titleSize', value: newFontSize + 'px' } })
-            }}
+            onChange={onChange}
          />
       </BaseControl>
    )

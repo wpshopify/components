@@ -1,17 +1,52 @@
-import React, { useContext, useState } from 'react'
+import React, { useContext, useState, useEffect, useRef } from 'react'
 import { TextControl } from '@wordpress/components'
 import { BuilderContext } from '../../_state/context'
+import { useDebounce } from 'use-debounce'
 
 function MyShopifyDomain() {
    const [builderState, builderDispatch] = useContext(BuilderContext)
-   const [val, setVal] = useState('')
+   const [val, setVal] = useState(getCachedValue())
+   const [debouncedValue] = useDebounce(val, 250)
+   const isFirstRender = useRef(true)
+
+   function getCachedValue() {
+      var creds = JSON.parse(sessionStorage.getItem('wps-storefront-creds'))
+
+      if (!creds) {
+         return ''
+      }
+
+      return creds.domain
+   }
+
+   useEffect(() => {
+      if (isFirstRender.current) {
+         isFirstRender.current = false
+         return
+      }
+
+      builderDispatch({ type: 'UPDATE_SETTING', payload: { key: 'myShopifyDomain', value: debouncedValue } })
+   }, [debouncedValue])
+
+   useEffect(() => {
+      if (isFirstRender.current) {
+         isFirstRender.current = false
+         return
+      }
+
+      if (!builderState.settings.myShopifyDomain) {
+         setVal('')
+      } else {
+         setVal(builderState.settings.myShopifyDomain)
+      }
+      
+   }, [builderState.hasCustomConnection])
 
    function onChange(newVal) {
       setVal(newVal)
-      // builderDispatch({ type: 'UPDATE_SETTING', payload: { key: 'title', value: newVal } })
    }
 
-   return <TextControl label='Shopify Domain' help='Example: store.myshopify.com' value={val} onChange={onChange} />
+   return <TextControl placeholder='store.myshopify.com' label='Shopify Domain' value={val} onChange={onChange} disabled={builderState.hasCustomConnection} />
 }
 
 export { MyShopifyDomain }

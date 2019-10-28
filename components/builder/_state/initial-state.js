@@ -36,7 +36,9 @@ function BuilderInitialState(options) {
       infiniteScroll: false,
       infiniteScrollOffset: 100,
       titleColor: false,
-      titleSize: false
+      titleSize: false,
+      myShopifyDomain: false,
+      storefrontAccessToken: false
    }
 
    var defaultSettingsCopy = {
@@ -76,15 +78,19 @@ function BuilderInitialState(options) {
       infiniteScroll: false,
       infiniteScrollOffset: 100,
       titleColor: false,
-      titleSize: false
+      titleSize: false,
+      myShopifyDomain: false,
+      storefrontAccessToken: false
    }
 
    return {
       isReady: false,
       isShopReady: false,
       isLoading: false,
+      hasCustomConnection: false,
       notices: [],
       defaultShortcode: '[wps_products]',
+      defaultCreds: WP_Shopify.storefront,
       shortcode: '[wps_products]',
       defaultSettings: defaultSettingsCopy,
       payload: false,

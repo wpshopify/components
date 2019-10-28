@@ -23,6 +23,7 @@ import { ItemsPerRow } from './items-per-row'
 import { Excludes } from './excludes'
 import { StorefrontAccessToken } from './storefront-access-token'
 import { MyShopifyDomain } from './my-shopify-domain'
+import { UpdateCredentialsButton } from './update-credentials'
 import { InfiniteScroll } from './infinite-scroll'
 import { InfiniteScrollOffset } from './infinite-scroll-offset'
 
@@ -53,7 +54,7 @@ function PostEditor() {
       width: 300px;
       border-top: 0;
       padding-bottom: 100px;
-      height: calc(100vh - 85px);
+      height: calc(100vh - 60px);
       position: fixed;
       top: 0;
    `
@@ -121,9 +122,10 @@ function PostEditor() {
             <MaxQuantity />
          </PanelBody>
 
-         <PanelBody title='Advanced' initialOpen={false}>
+         <PanelBody title='Shopify Store' initialOpen={false}>
             <StorefrontAccessToken />
             <MyShopifyDomain />
+            <UpdateCredentialsButton />
          </PanelBody>
       </Panel>
    )

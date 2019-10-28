@@ -21,7 +21,6 @@ function Tag() {
 
    function onChange(newVal) {
       setVal(newVal)
-      builderDispatch({ type: 'SET_IS_LOADING', payload: true })
    }
 
    return <TextControl label='Tag' value={val} help='Match product tags' onChange={onChange} />

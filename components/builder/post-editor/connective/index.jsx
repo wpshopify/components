@@ -8,7 +8,6 @@ function Connective() {
 
    function onChange(newVal) {
       setVal(newVal)
-      builderDispatch({ type: 'SET_IS_LOADING', payload: true })
       builderDispatch({ type: 'UPDATE_SETTING', payload: { key: 'connective', value: newVal } })
    }
 

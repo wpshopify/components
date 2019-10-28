@@ -15,6 +15,15 @@ function resendInitialQuery(state) {
    return graphQuery(originalDataType, originalQueryParams, connectionParams)
 }
 
+function hasNextPageQueryAndPath(payload) {
+   if (!payload || isEmpty(payload)) {
+      return false
+   }
+
+   // Checks if the latest item in the payload has the nextPageQueryAndPath method
+   return has(payload[payload.length - 1], 'nextPageQueryAndPath')
+}
+
 function fetchNextItems(itemsState, itemsDispatch, miscDispatch = false) {
    return new Promise(async (resolve, reject) => {
       if (isEmpty(itemsState.payload)) {
@@ -23,7 +32,27 @@ function fetchNextItems(itemsState, itemsDispatch, miscDispatch = false) {
 
       itemsDispatch({ type: 'SET_IS_LOADING', payload: true })
 
-      const [resultsError, results] = await to(fetchNextPage(itemsState.payload))
+      /*
+      
+      This check is needed because of our caching system. The "next page" of products is fetched 
+      using the payload of the last page. This is using the built in Shopify buy SDK method fetchNextPage.
+
+      This Shopify function calls the method hasNextPageQueryAndPath on the last payload item.
+      
+      Since our caching system strips all functions from the payload, we loose the ability to call these built in functions.
+
+      So before loading more, we need to check whether this method exists on the last item in our payload. If it does, we can simply proceed. If not, we need to refetch the initial query first. 
+
+      */
+      if (!hasNextPageQueryAndPath(itemsState.payload)) {
+         const [resendInitialError, resendInitialResp] = await to(resendInitialQuery(itemsState))
+
+         var productsExisting = resendInitialResp.model.products
+      } else {
+         var productsExisting = itemsState.payload
+      }
+
+      const [resultsError, results] = await to(fetchNextPage(productsExisting))
 
       if (resultsError) {
          const [initialError, initialResponse] = await to(resendInitialQuery(itemsState))

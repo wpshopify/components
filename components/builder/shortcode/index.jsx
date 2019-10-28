@@ -77,7 +77,7 @@ function Shortcode() {
 
    var newButtonCSS = css`
       && {
-         font-size: 2em;
+         font-size: 1.6em;
          padding: 1.3em 2em;
          text-align: center;
          line-height: 0px;

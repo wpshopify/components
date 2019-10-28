@@ -1,4 +1,4 @@
-import React, { useContext } from 'react'
+import React, { useContext, useRef } from 'react'
 import { ShopContext } from '../../shop/_state/context'
 import { CartContext } from '../_state/context'
 import { Loader } from '../../loader'
@@ -10,6 +10,7 @@ import to from 'await-to-js'
 function CartCheckout() {
    const [shopState] = useContext(ShopContext)
    const [cartState, cartDispatch] = useContext(CartContext)
+   const checkoutButton = useRef()
 
    function hasManagedDomain(url) {
       return url.includes('myshopify.com')
@@ -37,10 +38,14 @@ function CartCheckout() {
    }
 
    function managedDomainRedirect(checkout) {
+      console.log('checkoutButton customDomainRedirect', checkoutButton)
+
       window.open(checkout.webUrl, checkoutWindowTarget())
    }
 
    function customDomainRedirect(checkout) {
+      console.log('checkoutButton customDomainRedirect', checkoutButton)
+
       window.open(checkoutUrlWithCustomDomain(checkout.webUrl), checkoutWindowTarget())
    }
 
@@ -99,16 +104,17 @@ function CartCheckout() {
       <>
          <FilterHook name='cart.checkout.before' args={[cartState]} />
 
-         <CartCheckoutButton cartState={cartState} onCheckout={onCheckout} buttonStyle={buttonStyle} shopState={shopState} />
+         <CartCheckoutButton cartState={cartState} onCheckout={onCheckout} buttonStyle={buttonStyle} shopState={shopState} buttonRef={checkoutButton} />
 
          <FilterHook name='cart.checkout.after' args={[cartState]} />
       </>
    )
 }
 
-function CartCheckoutButton({ cartState, buttonStyle, onCheckout, shopState }) {
+function CartCheckoutButton({ cartState, buttonStyle, onCheckout, shopState, buttonRef }) {
    return (
       <button
+         ref={buttonRef}
          className='wps-btn wps-btn-checkout'
          onClick={onCheckout}
          data-wps-is-ready={shopState.isCartReady ? '1' : '0'}

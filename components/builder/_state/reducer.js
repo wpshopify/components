@@ -1,4 +1,7 @@
 import update from 'immutability-helper'
+import isEmpty from 'lodash/isEmpty'
+import some from 'lodash/some'
+import concat from 'lodash/concat'
 
 function BuilderReducer(state, action) {
    switch (action.type) {
@@ -21,6 +24,37 @@ function BuilderReducer(state, action) {
          return {
             ...state,
             shortcode: update(state.shortcodeValue, { $set: action.payload })
+         }
+      }
+
+      case 'SET_CUSTOM_CONNECTION': {
+         return {
+            ...state,
+            hasCustomConnection: update(state.hasCustomConnection, { $set: action.payload })
+         }
+      }
+
+      case 'RESET_SETTINGS': {
+         return {
+            ...state,
+            defaultSettings: update(state.defaultSettings, { $set: state.defaultSettings })
+         }
+      }
+
+      case 'UPDATE_NOTICES': {
+         let updatedNotices = state.notices
+
+         if (!isEmpty(action.payload)) {
+            if (!some(state.notices, action.payload)) {
+               updatedNotices = concat(state.notices, [action.payload])
+            } else {
+               updatedNotices = state.notices
+            }
+         }
+
+         return {
+            ...state,
+            notices: update(state.notices, { $set: updatedNotices })
          }
       }
 
