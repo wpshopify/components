@@ -6,7 +6,7 @@ import { useDebounce } from 'use-debounce'
 function MyShopifyDomain() {
    const [builderState, builderDispatch] = useContext(BuilderContext)
    const [val, setVal] = useState(getCachedValue())
-   const [debouncedValue] = useDebounce(val, 250)
+   const [debouncedValue] = useDebounce(val, 50)
    const isFirstRender = useRef(true)
 
    function getCachedValue() {

@@ -1,8 +1,8 @@
-import React from 'react'
+import React, { useContext } from 'react'
 
 /** @jsx jsx */
 import { jsx, css } from '@emotion/core'
-import { Panel, PanelBody } from '@wordpress/components'
+import { Panel, PanelBody, Notice } from '@wordpress/components'
 
 import { Title } from './title'
 import { Tag } from './tag'
@@ -49,7 +49,12 @@ import { DescriptionLength } from './description-length'
 
 import { AlignHeight } from './align-height'
 
+import { BuilderContext } from '../_state/context'
+
 function PostEditor() {
+   const [builderState, builderDispatch] = useContext(BuilderContext)
+   console.log('builderState', builderState)
+
    const editorCSS = css`
       width: 300px;
       border-top: 0;
@@ -122,7 +127,20 @@ function PostEditor() {
             <MaxQuantity />
          </PanelBody>
 
-         <PanelBody title='Shopify Store' initialOpen={false}>
+         <PanelBody title='Store Settings' initialOpen={true}>
+            {!builderState.hasCustomConnection && (
+               <Notice
+                  status='Informational'
+                  onRemove={function(stuff) {
+                     console.log('stuff', stuff)
+                  }}
+                  isDismissible={false}>
+                  Add your Shopify API tokens to see your own products.&nbsp;
+                  <a href='https://docs.wpshop.io/#/getting-started/syncing' target='_blank'>
+                     Learn where to find these.
+                  </a>
+               </Notice>
+            )}
             <StorefrontAccessToken />
             <MyShopifyDomain />
             <UpdateCredentialsButton />

@@ -28,6 +28,7 @@
       "@wordpress/element": "^2.7.0",
       "@wordpress/hooks": "^2.6.0",
       "@wordpress/i18n": "^3.6.0",
+      "@wordpress/nux": "^3.7.2",
       "@wordpress/rich-text": "^3.6.0",
       "accounting": "^0.4.1",
       "animejs": "^3.1.0",

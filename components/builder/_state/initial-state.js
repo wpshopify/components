@@ -38,7 +38,10 @@ function BuilderInitialState(options) {
       titleColor: false,
       titleSize: false,
       myShopifyDomain: false,
-      storefrontAccessToken: false
+      storefrontAccessToken: false,
+      descriptionSize: false,
+      descriptionColor: false,
+      descriptionLength: false
    }
 
    var defaultSettingsCopy = {
@@ -80,7 +83,10 @@ function BuilderInitialState(options) {
       titleColor: false,
       titleSize: false,
       myShopifyDomain: false,
-      storefrontAccessToken: false
+      storefrontAccessToken: false,
+      descriptionSize: false,
+      descriptionColor: false,
+      descriptionLength: false
    }
 
    return {

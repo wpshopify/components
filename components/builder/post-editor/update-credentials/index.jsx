@@ -28,11 +28,7 @@ function UpdateCredentialsButton() {
    }
 
    function onClick() {
-      
       if (hasValidCreds()) {
-
-         console.log('builderState.hasCustomConnection', builderState.hasCustomConnection)
-         
          if (builderState.hasCustomConnection) {
             console.log(1)
             sessionStorage.removeItem('wps-storefront-creds')
@@ -40,9 +36,7 @@ function UpdateCredentialsButton() {
             builderDispatch({ type: 'UPDATE_SETTING', payload: { key: 'storefrontAccessToken', value: false } })
             builderDispatch({ type: 'SET_CUSTOM_CONNECTION', payload: false })
             WP_Shopify.storefront = builderState.defaultCreds
-
          } else {
-console.log(2)
             var newCreds = {
                domain: builderState.settings.myShopifyDomain,
                storefrontAccessToken: builderState.settings.storefrontAccessToken
@@ -52,17 +46,15 @@ console.log(2)
             sessionStorage.setItem('wps-storefront-creds', JSON.stringify(newCreds))
 
             builderDispatch({ type: 'SET_CUSTOM_CONNECTION', payload: true })
-
          }
 
          builderDispatch({ type: 'RESET_SETTINGS' })
-
       }
    }
 
    return (
       <Button isDefault onClick={onClick} disabled={!hasValidCreds()}>
-         {builderState.hasCustomConnection ? 'Remove Shopify store' : 'Add Shopify store'}
+         {builderState.hasCustomConnection ? 'Remove connected Shopify store' : 'Load Shopify store'}
       </Button>
    )
 }
