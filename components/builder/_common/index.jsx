@@ -46,14 +46,14 @@ function buildQueryFromSelections(builderState) {
 function fetchNewItems(type, builderState) {
    const queryString = buildQueryFromSelections(builderState)
 
-   var stuff = {
-      first: builderState.settings.pageSize,
+   var options = {
+      first: builderState.settings.limit ? builderState.settings.limit : builderState.settings.pageSize,
       query: queryString,
       reverse: builderState.settings.reverse,
       sortKey: builderState.settings.sortBy
    }
 
-   return graphQuery(type, stuff)
+   return graphQuery(type, options)
 }
 
 export { defaultColors, fetchNewItems, removeEmptyValues, buildQueryFromSelections }

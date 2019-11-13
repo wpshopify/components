@@ -33,7 +33,7 @@ function CollectionImage({ isShopReady, shopSettings, shopInfo }) {
    return usePortal(
       imageSrc && (
          <div className='wps-component wps-component-collection-image' data-wps-component-order='0'>
-            <Link type='collections' shopInfo={shopInfo} payload={collectionState.payload}>
+            <Link type='collections' shopInfo={shopInfo} payload={collectionState.payload} linkTo={itemsState.componentOptions.linkTo}>
                <img
                   itemProp='image'
                   src={imageSrc}

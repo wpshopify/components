@@ -19,7 +19,15 @@ function ResetForm({ noticeState, formState, onPasswordChange, onConfirmPassword
          <Form onSubmit={onSubmit} noticeState={noticeState} submitText='Set new password' formType='reset-password' isSubmitting={isSubmitting}>
             <Input label='New Password:' type='password' name='password' isRequired={true} value={formState.password} onChange={onPasswordChange} isSubmitting={isSubmitting} />
 
-            <Input label='Confirm New Password:' type='password' name='confirm-password' isRequired={true} value={formState.confirmPassword} onChange={onConfirmPasswordChange} isSubmitting={isSubmitting} />
+            <Input
+               label='Confirm New Password:'
+               type='password'
+               name='confirm-password'
+               isRequired={true}
+               value={formState.confirmPassword}
+               onChange={onConfirmPasswordChange}
+               isSubmitting={isSubmitting}
+            />
          </Form>,
          element
       )
@@ -77,7 +85,6 @@ function CustomerFormSetPassword() {
    }, [])
 
    async function resetPassword() {
-
       setIsSubmitting(true)
 
       const [resetError, resetSuccess] = await to(setPasswordCustomer(formState))

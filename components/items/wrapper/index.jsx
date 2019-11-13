@@ -154,6 +154,7 @@ function ItemsWrapper({ children, miscDispatch }) {
          isFirstRender.current = false
          return
       }
+      console.log('boom boom')
 
       fetchNewItems(miscDispatch)
    }, [itemsState.queryParams])

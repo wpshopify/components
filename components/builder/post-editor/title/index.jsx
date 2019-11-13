@@ -23,7 +23,7 @@ function Title() {
       setVal(newVal)
    }
 
-   return <TextControl label='Title' value={val} help='Match product titles' onChange={onChange} />
+   return <TextControl label='Title' value={val} help='Must match product titles exactly' onChange={onChange} />
 }
 
 export { Title }

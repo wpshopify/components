@@ -5,16 +5,14 @@ import { defaultColors } from '../../_common'
 
 function TitleColor() {
    const [builderState, builderDispatch] = useContext(BuilderContext)
-   const [color, setColor] = useState(builderState.settings.titleColor)
 
    function onChange(newColor) {
-      setColor(newColor)
       builderDispatch({ type: 'UPDATE_SETTING', payload: { key: 'titleColor', value: newColor } })
    }
 
    return (
       <BaseControl label='Title Color:'>
-         <ColorPalette colors={defaultColors()} value={color} onChange={onChange} />
+         <ColorPalette colors={defaultColors()} value={builderState.settings.titleColor} onChange={onChange} />
       </BaseControl>
    )
 }

@@ -1,4 +1,4 @@
-import React, { useEffect, useContext } from 'react'
+import React, { useEffect, useContext, useRef } from 'react'
 import { BuilderContext } from '../_state/context'
 import { ShopContext } from '../../shop/_state/context'
 
@@ -18,12 +18,12 @@ import without from 'lodash/without'
 import pull from 'lodash/pull'
 
 function withoutBadValues(values) {
-   return without(values, undefined, false, null);
+   return without(values, undefined, false, null)
 }
 
 function BuilderWrapper() {
    const [builderState, builderDispatch] = useContext(BuilderContext)
-   // const [shopState, shopDispatch] = useContext(ShopContext)
+   const isFirstRender = useRef(true)
 
    const mainEditorCSS = css`
       display: flex;
@@ -31,19 +31,14 @@ function BuilderWrapper() {
    `
 
    async function fetchProducts() {
-      console.log('fetchProducts', builderState)
-
       builderDispatch({ type: 'SET_IS_LOADING', payload: true })
 
       const [error, results] = await to(fetchNewItems('products', builderState))
 
-      
       builderDispatch({ type: 'SET_IS_LOADING', payload: false })
       builderDispatch({ type: 'SET_IS_READY', payload: true })
 
       if (error) {
-         console.log('errorerrorerror', error)
-
          builderDispatch({
             type: 'UPDATE_NOTICES',
             payload: {
@@ -51,12 +46,9 @@ function BuilderWrapper() {
                message: error
             }
          })
-
       } else {
-         console.log('results.model', results.model)
-         builderDispatch({ type: 'SET_PAYLOAD', payload: results.model.products })   
+         builderDispatch({ type: 'SET_PAYLOAD', payload: results.model.products })
       }
-      
    }
 
    useEffect(() => {
@@ -71,6 +63,7 @@ function BuilderWrapper() {
       builderState.settings.reverse,
       builderState.settings.sortBy,
       builderState.settings.pageSize,
+      builderState.settings.limit,
       builderState.hasCustomConnection
    ])
 
@@ -83,33 +76,34 @@ function BuilderWrapper() {
    }
 
    function getTouchedSettings() {
-      return reduce(builderState.defaultSettings, (result, value, key) => (isEqual(value, builderState.settings[key]) ? result : result.concat(key)), [])
+      return reduce(
+         builderState.defaultSettings,
+         (result, value, key) => {
+            return isEqual(value, builderState.settings[key]) ? result : result.concat(key)
+         },
+         []
+      )
    }
 
    function removeCredsFromTouched(touchedSettings) {
-      return pull(touchedSettings, 'myShopifyDomain', 'storefrontAccessToken');
+      return pull(touchedSettings, 'myShopifyDomain', 'storefrontAccessToken')
    }
 
    function buildFinalShortcodeString(validAttributes) {
       if (isEmpty(validAttributes)) {
-         return '[wps_products]';
+         return '[wps_products]'
       }
 
       return '[wps_products ' + validAttributes.join(' ') + ']'
-
    }
 
    function buildArrayOfAttributeStrings(touchedSettingsFinal) {
       return touchedSettingsFinal.map(key => {
-
          var val = builderState.settings[key]
 
-         console.log('val', val)
-
          if (!isArray(val)) {
-            
-            if (val === undefined || val === false || val === null || val === '') {
-               return;
+            if (val === undefined || val === 'undefinedpx' || val === null || val === '') {
+               return
             }
 
             return camelToSnake(key) + '="' + val + '"'
@@ -119,11 +113,11 @@ function BuilderWrapper() {
          var okString = camelToSnake(key) + '="' + mappped + '"'
 
          return okString
-      });
+      })
    }
 
    useEffect(() => {
-      var credsCachedMaybe = JSON.parse(sessionStorage.getItem('wps-storefront-creds'));
+      var credsCachedMaybe = JSON.parse(localStorage.getItem('wps-storefront-creds'))
 
       if (credsCachedMaybe) {
          builderDispatch({ type: 'UPDATE_SETTING', payload: { key: 'storefrontAccessToken', value: credsCachedMaybe.storefrontAccessToken } })
@@ -133,29 +127,28 @@ function BuilderWrapper() {
    }, [])
 
    useEffect(() => {
+      if (isFirstRender.current) {
+         isFirstRender.current = false
+         return
+      }
 
       let touchedSettings = getTouchedSettings()
-      let touchedSettingsFinal = removeCredsFromTouched(touchedSettings)
 
-      console.log('touchedSettingsFinal', touchedSettingsFinal)
+      let touchedSettingsFinal = removeCredsFromTouched(touchedSettings)
 
       if (isEmpty(touchedSettingsFinal)) {
          builderDispatch({ type: 'SET_SHORTCODE', payload: builderState.defaultShortcode })
          return
       }
 
-      var asodkas = buildArrayOfAttributeStrings(touchedSettingsFinal);
-console.log('asodkas', asodkas)
+      var asodkas = buildArrayOfAttributeStrings(touchedSettingsFinal)
 
-      var validAttributes = withoutBadValues(asodkas);
+      var validAttributes = withoutBadValues(asodkas)
 
-      console.log('validAttributes', validAttributes)
+      var finalShortcode = buildFinalShortcodeString(validAttributes)
 
-      var finalShortcode = buildFinalShortcodeString(validAttributes);
-      console.log('finalShortcode', finalShortcode)
       builderDispatch({ type: 'SET_SHORTCODE', payload: finalShortcode })
-
-   }, [builderState.productOptions])
+   }, [builderState.productOptions, builderState.settings])
 
    return (
       <>

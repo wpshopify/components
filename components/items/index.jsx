@@ -59,6 +59,8 @@ Connects sibling components together like Filters, Search and Pagination.
 
 */
 function Items({ options, children, miscDispatch }) {
+   console.log('<Items>')
+
    return (
       hasItemsToShow(options) &&
       options.map(option => (

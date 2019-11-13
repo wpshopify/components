@@ -53,7 +53,6 @@ import { BuilderContext } from '../_state/context'
 
 function PostEditor() {
    const [builderState, builderDispatch] = useContext(BuilderContext)
-   console.log('builderState', builderState)
 
    const editorCSS = css`
       width: 300px;
@@ -66,6 +65,20 @@ function PostEditor() {
 
    return (
       <Panel header='Shortcode Settings' css={editorCSS} className='edit-post-sidebar'>
+         <PanelBody title='Store Settings' initialOpen={true}>
+            {!builderState.hasCustomConnection && (
+               <Notice status='Informational' isDismissible={false}>
+                  Add your Shopify API tokens to load your own products.&nbsp;
+                  <a href='https://docs.wpshop.io/#/getting-started/syncing' target='_blank'>
+                     Learn where to find these.
+                  </a>
+               </Notice>
+            )}
+            <StorefrontAccessToken />
+            <MyShopifyDomain />
+            <UpdateCredentialsButton />
+         </PanelBody>
+
          <PanelBody title='Filtering' initialOpen={false}>
             <Title />
             <Tag />
@@ -125,25 +138,6 @@ function PostEditor() {
             <QuantityLabelText />
             <MinQuantity />
             <MaxQuantity />
-         </PanelBody>
-
-         <PanelBody title='Store Settings' initialOpen={true}>
-            {!builderState.hasCustomConnection && (
-               <Notice
-                  status='Informational'
-                  onRemove={function(stuff) {
-                     console.log('stuff', stuff)
-                  }}
-                  isDismissible={false}>
-                  Add your Shopify API tokens to see your own products.&nbsp;
-                  <a href='https://docs.wpshop.io/#/getting-started/syncing' target='_blank'>
-                     Learn where to find these.
-                  </a>
-               </Notice>
-            )}
-            <StorefrontAccessToken />
-            <MyShopifyDomain />
-            <UpdateCredentialsButton />
          </PanelBody>
       </Panel>
    )

@@ -55,7 +55,7 @@ function ProductImage({ image, isFeatured }) {
    }
 
    function isShowingLink() {
-      return hasSinglePage() && !onSinglePage(itemsState) && isFeatured
+      return itemsState.componentOptions.linkTo || (hasSinglePage() && !onSinglePage(itemsState) && isFeatured)
    }
 
    useEffect(() => {
@@ -74,7 +74,7 @@ function ProductImage({ image, isFeatured }) {
    */
    return isShowingLink()
       ? productImageSrc && (
-           <Link payload={productState.payload} type='products' shop={shopState}>
+           <Link payload={productState.payload} type='products' shop={shopState} linkTo={itemsState.componentOptions.linkTo}>
               <Img imageRef={imageRef} image={image} productImageSrc={productImageSrc} shopState={shopState} />
            </Link>
         )

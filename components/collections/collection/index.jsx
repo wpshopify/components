@@ -8,8 +8,8 @@ import { CollectionProvider } from './_state/provider'
 import { isShowingComponent } from '../../../common/components'
 import { itemWidthClass } from '../../../common/utils'
 
-function Collection({ payload, isShopReady, shopInfo, shopSettings }) {
-   const [itemsState] = useContext(ItemsContext)
+const Collection = React.memo(function Collection({ itemsState, payload, isShopReady, shopInfo, shopSettings }) {
+   console.log('<Collection>')
 
    return (
       <div className={`${itemWidthClass(itemsState.componentOptions.itemsPerRow)} wps-item p-3`}>
@@ -21,6 +21,6 @@ function Collection({ payload, isShopReady, shopInfo, shopSettings }) {
          </CollectionProvider>
       </div>
    )
-}
+})
 
 export { Collection }

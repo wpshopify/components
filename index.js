@@ -8,5 +8,6 @@ export { Search } from './components/search'
 export { Notice } from './components/notices/notice'
 export { Collections } from './components/collections'
 export { Items } from './components/items'
-export { Customers } from './components/customers'
 export { ShortcodeBuilder } from './components/builder'
+
+// export { Customers } from './components/customers'

@@ -21,24 +21,9 @@ function CartCounter() {
 
       const total = findTotalCartQuantities(cartState.checkoutCache.lineItems)
 
-      if (!isTotalEmpty(total)) {
-         setTotalItems(total)
-         animePulse(element.current)
-      }
-   }, [cartState.checkoutCache.lineItems])
-
-   useEffect(() => {
-      if (!shopState.isCartReady) {
-         return
-      }
-
-      const total = findTotalCartQuantities(cartState.checkoutCache.lineItems)
-
-      if (!isTotalEmpty(total)) {
-         setTotalItems(total)
-         animePulse(element.current)
-      }
-   }, [shopState.isCartReady])
+      setTotalItems(total)
+      animePulse(element.current)
+   }, [shopState.isCartReady, cartState.totalLineItems])
 
    function counterStyles() {
       return {

@@ -5,7 +5,7 @@ import { BuilderContext } from '../../_state/context'
 function Limit() {
    const [builderState, builderDispatch] = useContext(BuilderContext)
    const [limitToggle, setLimitToggle] = useState(false)
-   const [val, setVal] = useState(builderState.settings.limit)
+   const [val, setVal] = useState(builderState.settings.limit ? builderState.settings.limit : false)
 
    function onChange() {
       setLimitToggle(!limitToggle)
@@ -13,7 +13,7 @@ function Limit() {
 
    function onLimitChange(newVal) {
       setVal(newVal)
-      builderDispatch({ type: 'UPDATE_SETTING', payload: { key: 'limit', value: newVal } })
+      builderDispatch({ type: 'UPDATE_SETTING', payload: { key: 'limit', value: parseInt(newVal) } })
    }
 
    return (

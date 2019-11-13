@@ -12,6 +12,17 @@ function CartCheckout() {
    const [cartState, cartDispatch] = useContext(CartContext)
    const checkoutButton = useRef()
 
+   function hasGaLoaded() {
+      return window.ga !== undefined
+   }
+
+   function decorateCheckoutUrl(link) {
+      var tracker = ga.getAll()[0]
+      var linker = new window.gaplugins.Linker(tracker)
+
+      return linker.decorate(link)
+   }
+
    function hasManagedDomain(url) {
       return url.includes('myshopify.com')
    }
@@ -38,15 +49,27 @@ function CartCheckout() {
    }
 
    function managedDomainRedirect(checkout) {
-      console.log('checkoutButton customDomainRedirect', checkoutButton)
+      if (hasGaLoaded()) {
+         var checkoutUrl = decorateCheckoutUrl(checkout.webUrl)
+      } else {
+         var checkoutUrl = checkout.webUrl
+      }
 
-      window.open(checkout.webUrl, checkoutWindowTarget())
+      redirect(checkoutUrl)
    }
 
    function customDomainRedirect(checkout) {
-      console.log('checkoutButton customDomainRedirect', checkoutButton)
+      if (hasGaLoaded()) {
+         var checkoutUrl = decorateCheckoutUrl(checkoutUrlWithCustomDomain(checkout.webUrl))
+      } else {
+         var checkoutUrl = checkoutUrlWithCustomDomain(checkout.webUrl)
+      }
 
-      window.open(checkoutUrlWithCustomDomain(checkout.webUrl), checkoutWindowTarget())
+      redirect(checkoutUrl)
+   }
+
+   function redirect(checkoutUrl) {
+      window.open(checkoutUrl, checkoutWindowTarget())
    }
 
    function checkoutRedirect(checkout) {

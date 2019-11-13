@@ -18,7 +18,12 @@ function CollectionProducts() {
    }
 
    useEffect(() => {
+      console.log('sup 1')
+
+      console.log('collectionState.productOptions', collectionState.productOptions)
+
       if (isFirstRender.current) {
+         console.log('sup 2')
          isFirstRender.current = false
       } else {
          return

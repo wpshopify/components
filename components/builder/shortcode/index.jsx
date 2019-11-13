@@ -1,6 +1,6 @@
 import React, { useContext, useRef, useState } from 'react'
 import { BuilderContext } from '../_state/context'
-import { ClipboardButton } from '@wordpress/components'
+import { ClipboardButton, Button } from '@wordpress/components'
 import { withState } from '@wordpress/compose'
 import { Loader } from '../../loader'
 
@@ -88,6 +88,12 @@ function Shortcode() {
       }
    `
 
+   var resetButtonCSS = css`
+      position: absolute;
+      top: -50px;
+      left: 20px;
+   `
+
    function copyToClipboard() {
       inputRef.current.select()
    }
@@ -105,8 +111,30 @@ function Shortcode() {
       setHasCopied(false)
    }
 
+   function hasSelectedOptions() {
+      if (builderState.hasCustomConnection) {
+         return true
+      }
+
+      return builderState.defaultShortcode !== builderState.shortcode
+   }
+
+   function onReset() {
+      if (hasSelectedOptions()) {
+         builderDispatch({ type: 'RESET_SETTINGS' })
+
+         localStorage.removeItem('wps-cached-settings')
+      }
+   }
+
    return (
       <div css={shortcodeCSS}>
+         {hasSelectedOptions() && (
+            <Button isDefault={true} isDefault={true} onClick={onReset} css={resetButtonCSS}>
+               Reset Settings
+            </Button>
+         )}
+
          <label htmlFor='shortcode' css={labelCSS}>
             Shortcode created:
          </label>

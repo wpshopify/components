@@ -8,7 +8,7 @@ function TitleSize() {
    const [builderState, builderDispatch] = useContext(BuilderContext)
    const [val, setVal] = useState(18)
    const [debouncedValue] = useDebounce(val, 10)
-   const isFirstRender = useRef(true);
+   const isFirstRender = useRef(true)
 
    const fontSizes = [
       {
@@ -30,29 +30,20 @@ function TitleSize() {
 
    function onChange(newFontSize) {
       setVal(newFontSize)
-      
    }
 
    useEffect(() => {
-
       if (isFirstRender.current) {
          isFirstRender.current = false
          return
       }
 
       builderDispatch({ type: 'UPDATE_SETTING', payload: { key: 'titleSize', value: val + 'px' } })
-
    }, [debouncedValue])
 
    return (
       <BaseControl>
-         <FontSizePicker
-            fontSizes={fontSizes}
-            value={val}
-            fallbackFontSize={18}
-            withSlider={true}
-            onChange={onChange}
-         />
+         <FontSizePicker fontSizes={fontSizes} value={val} fallbackFontSize={18} withSlider={true} onChange={onChange} />
       </BaseControl>
    )
 }

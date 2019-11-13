@@ -216,6 +216,12 @@ function CartReducer(state, action) {
          }
       }
       case 'SET_IS_CART_EMPTY': {
+         // if (action.payload) {
+         //    document.body.classList.add('wps-cart-is-empty')
+         // } else {
+         //    document.body.classList.remove('wps-cart-is-empty')
+         // }
+
          return {
             ...state,
             isCartEmpty: update(state.isCartEmpty, { $set: action.payload })
@@ -284,6 +290,8 @@ function CartReducer(state, action) {
          const newCheckoutCache = update(state.checkoutCache, {
             $apply: checkoutCache => removeLineItemsAndVariants(checkoutCache, action.payload.lineItem)
          })
+
+         console.log('newCheckoutCache', newCheckoutCache)
 
          setCheckoutCache(action.payload.checkoutId, newCheckoutCache)
 

@@ -2,6 +2,8 @@ import update from 'immutability-helper'
 import isEmpty from 'lodash/isEmpty'
 import some from 'lodash/some'
 import concat from 'lodash/concat'
+import assign from 'lodash/assign'
+import { BuilderInitialState, getDefaultSettings, getDefaultProductOptions, getSettings } from './initial-state'
 
 function BuilderReducer(state, action) {
    switch (action.type) {
@@ -35,9 +37,13 @@ function BuilderReducer(state, action) {
       }
 
       case 'RESET_SETTINGS': {
+         localStorage.removeItem('wps-cached-settings')
+
          return {
             ...state,
-            defaultSettings: update(state.defaultSettings, { $set: state.defaultSettings })
+            defaultSettings: getDefaultSettings(),
+            productOptions: getDefaultProductOptions(state.payload),
+            settings: getSettings()
          }
       }
 
@@ -61,13 +67,15 @@ function BuilderReducer(state, action) {
       case 'UPDATE_SETTING':
          const newSettings = state.settings
 
+         newSettings[action.payload.key] = update(state[action.payload.key], { $set: action.payload.value })
+
          var newProductOptions = state.productOptions[0]
 
-         newProductOptions.componentOptions[action.payload.key] = action.payload.value
+         // newProductOptions.componentOptions[action.payload.key] = action.payload.value
 
-         newProductOptions.componentOptions = update(state.productOptions[0].componentOptions, { $set: newProductOptions.componentOptions })
+         newProductOptions.componentOptions = update(state.productOptions[0].componentOptions, { $set: newSettings })
 
-         newSettings[action.payload.key] = update(state[action.payload.key], { $set: action.payload.value })
+         localStorage.setItem('wps-cached-settings', JSON.stringify(newSettings))
 
          return {
             ...state,

@@ -35,8 +35,8 @@ function ProductTitle() {
 
    return usePortal(
       <div className='wps-component wps-component-products-title' data-wps-component-order='0'>
-         {hasSinglePage() && !onSinglePage(itemsState) ? (
-            <Link type='products' payload={productState.payload} shop={shopState}>
+         {itemsState.componentOptions.linkTo || (hasSinglePage() && !onSinglePage(itemsState)) ? (
+            <Link type='products' payload={productState.payload} shop={shopState} linkTo={itemsState.componentOptions.linkTo}>
                <Title styles={[fontSize, fontColor]} title={productState.payload.title} classList={getTitleClass()} isShopReady={shopState.isShopReady ? '1' : '0'} product={productState.payload} />
             </Link>
          ) : (

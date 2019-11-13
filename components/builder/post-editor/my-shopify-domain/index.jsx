@@ -10,7 +10,7 @@ function MyShopifyDomain() {
    const isFirstRender = useRef(true)
 
    function getCachedValue() {
-      var creds = JSON.parse(sessionStorage.getItem('wps-storefront-creds'))
+      var creds = JSON.parse(localStorage.getItem('wps-storefront-creds'))
 
       if (!creds) {
          return ''
@@ -39,7 +39,6 @@ function MyShopifyDomain() {
       } else {
          setVal(builderState.settings.myShopifyDomain)
       }
-      
    }, [builderState.hasCustomConnection])
 
    function onChange(newVal) {

@@ -10,7 +10,7 @@ function StorefrontAccessToken() {
    const isFirstRender = useRef(true)
 
    function getCachedValue() {
-      var creds = JSON.parse(sessionStorage.getItem('wps-storefront-creds'))
+      var creds = JSON.parse(localStorage.getItem('wps-storefront-creds'))
 
       if (!creds) {
          return ''
@@ -39,7 +39,6 @@ function StorefrontAccessToken() {
       } else {
          setVal(builderState.settings.storefrontAccessToken)
       }
-
    }, [builderState.hasCustomConnection])
 
    function onChange(newVal) {

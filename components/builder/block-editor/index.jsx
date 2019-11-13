@@ -13,7 +13,7 @@ import isEmpty from 'lodash/isEmpty'
 
 function BlockEditor() {
    const [builderState, builderDispatch] = useContext(BuilderContext)
-   
+
    const editorCSS = css`
       flex: 1;
       max-width: 100%;
@@ -36,26 +36,19 @@ function BlockEditor() {
    return (
       <section css={editorCSS} id='block-editor'>
          <div css={loaderCSS} id='block-editor-inner' data-is-loading={builderState.isLoading}>
-            {
-               !isEmpty(builderState.notices) ? (
-                  builderState.notices.map(notice => <Notice message={notice.message} type={notice.type} key={uuidv4()} /> )
-               ) : (
-
-                  !builderState.isShopReady ? (
-                     <SkeletonLoader />
-                  ) : (
-                     <Suspense fallback=''>
-                        <Shop options={{ isCartReady: true }}>
-                           <Items options={builderState.productOptions}>
-                              <Products />
-                           </Items>
-                        </Shop>
-                     </Suspense>
-                  )
-
-               )
-            }
-            
+            {!isEmpty(builderState.notices) ? (
+               builderState.notices.map(notice => <Notice message={notice.message} type={notice.type} key={uuidv4()} />)
+            ) : !builderState.isShopReady ? (
+               <SkeletonLoader />
+            ) : (
+               <Suspense fallback=''>
+                  <Shop options={{ isCartReady: true }}>
+                     <Items options={builderState.productOptions}>
+                        <Products />
+                     </Items>
+                  </Shop>
+               </Suspense>
+            )}
          </div>
       </section>
    )

@@ -75,7 +75,6 @@ function getWordPressSingleLink(payload) {
 
    if (payload.type.name === 'Collection') {
       urlBase = WP_Shopify.settings.urlCollections
-      
    } else if (payload.type.name === 'Product' || payload.type.name === 'ProductVariant') {
       urlBase = WP_Shopify.settings.urlProducts
    }
@@ -83,7 +82,16 @@ function getWordPressSingleLink(payload) {
    return urlBase + '/' + itemHandle
 }
 
-function getItemLink(payload, shopInfo, type) {
+function getItemLink(payload, shopInfo, type, linkTo) {
+   // Manual links
+   if (linkTo === 'shopify') {
+      return getShopifySingleLink(payload, shopInfo, type)
+   }
+
+   if (linkTo === 'single') {
+      return getWordPressSingleLink(payload)
+   }
+
    if (singleIsShopify()) {
       return getShopifySingleLink(payload, shopInfo, type)
    } else {

@@ -3,7 +3,7 @@ import { CartContext } from '../_state/context'
 import { ShopContext } from '../../shop/_state/context'
 import { useAction } from '../../../common/hooks'
 import { hasHooks } from '../../../common/utils'
-import { findTotalCartQuantities } from '../../../common/cart'
+import { isCartEmpty, findTotalCartQuantities } from '../../../common/cart'
 import isEmpty from 'lodash/isEmpty'
 import { getProductsFromLineItems } from '/Users/andrew/www/devil/devilbox-new/data/www/wpshopify-api'
 import to from 'await-to-js'
@@ -52,7 +52,9 @@ function CartWrapper() {
          }
       })
 
-      if (isEmpty(products)) {
+      var isCartEmpty = isEmpty(products)
+
+      if (isCartEmpty) {
          cartDispatch({ type: 'SET_IS_CART_EMPTY', payload: true })
       } else {
          cartDispatch({ type: 'SET_IS_CART_EMPTY', payload: false })

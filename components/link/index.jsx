@@ -1,7 +1,7 @@
 import React from 'react'
 import { getItemLink, singleIsShopify } from '../../common/settings'
 
-function Link({ type, payload, classNames = '', target, shopInfo, children }) {
+function Link({ type, payload, classNames = '', target, shopInfo, children, linkTo }) {
    const className = 'wps-' + type + '-link' + ' ' + classNames
 
    function getTarget(target) {
@@ -18,7 +18,7 @@ function Link({ type, payload, classNames = '', target, shopInfo, children }) {
 
    return (
       <>
-         <a href={getItemLink(payload, shopInfo, type)} className={className} target={getTarget(target)}>
+         <a href={getItemLink(payload, shopInfo, type, linkTo)} className={className} target={getTarget(target)}>
             {children}
          </a>
       </>

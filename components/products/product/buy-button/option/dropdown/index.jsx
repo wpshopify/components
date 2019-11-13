@@ -3,7 +3,6 @@ import { ProductVariants } from '../variants'
 import { ProductBuyButtonContext } from '../../_state/context'
 import { ProductContext } from '../../../_state/context'
 import { ProductOptionContext } from '../_state/context'
-// import { ProductOptionTrigger } from '../trigger'
 
 import find from 'lodash/find'
 import isEmpty from 'lodash/isEmpty'

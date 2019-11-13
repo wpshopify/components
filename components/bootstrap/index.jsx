@@ -20,6 +20,9 @@ function Bootstrap({ children }) {
       hasHooks() && wp.hooks.doAction('after.cart.ready', shopState.settings)
 
       if (instances) {
+         console.log('shopState.info :: ', shopState.info)
+         console.log('instances.shop :: ', instances.shop)
+
          shopDispatch({ type: 'SET_CHECKOUT_ID', payload: instances.checkout.id })
          shopDispatch({ type: 'SET_SHOP_INFO', payload: instances.shop })
       }
