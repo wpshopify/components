@@ -1,4 +1,5 @@
-import React, { useContext } from "react"
+import React, { useContext, useEffect, useState } from "react"
+import { BuilderContext } from "../_state/context"
 
 /** @jsx jsx */
 import { jsx, css } from "@emotion/core"
@@ -26,7 +27,6 @@ import { MyShopifyDomain } from "./my-shopify-domain"
 import { UpdateCredentialsButton } from "./update-credentials"
 import { InfiniteScroll } from "./infinite-scroll"
 import { InfiniteScrollOffset } from "./infinite-scroll-offset"
-
 import { AddToCartButtonColor } from "./add-to-cart-button-color"
 import { AddToCartButtonText } from "./add-to-cart-button-text"
 import { VariantButtonColor } from "./variant-button-color"
@@ -35,21 +35,16 @@ import { ShowQuantityLabel } from "./show-quantity-label"
 import { QuantityLabelText } from "./quantity-label-text"
 import { MinQuantity } from "./min-quantity"
 import { MaxQuantity } from "./max-quantity"
-
 import { ShowPriceRange } from "./show-price-range"
 import { ShowCompareAt } from "./show-compare-at"
 import { ShowFeaturedOnly } from "./show-featured-only"
 import { ShowZoom } from "./show-zoom"
-
 import { TitleSize } from "./title-size"
 import { TitleColor } from "./title-color"
 import { DescriptionSize } from "./description-size"
 import { DescriptionColor } from "./description-color"
 import { DescriptionLength } from "./description-length"
-
 import { AlignHeight } from "./align-height"
-
-import { BuilderContext } from "../_state/context"
 
 function PostEditor() {
   const [builderState, builderDispatch] = useContext(BuilderContext)
