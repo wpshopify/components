@@ -1,17 +1,24 @@
-import React, { useContext, useState } from 'react'
-import { ToggleControl } from '@wordpress/components'
-import { BuilderContext } from '../../_state/context'
+import React, { useContext, useState } from "react"
+import { ToggleControl } from "@wordpress/components"
+import { BuilderContext } from "../../_state/context"
 
 function ShowZoom() {
-   const [builderState, builderDispatch] = useContext(BuilderContext)
-   const [val, setVal] = useState(builderState.settings.showZoom)
+  const [builderState, builderDispatch] = useContext(BuilderContext)
 
-   function onChange(newVal) {
-      setVal(newVal)
-      builderDispatch({ type: 'UPDATE_SETTING', payload: { key: 'showZoom', value: newVal } })
-   }
+  function onChange(newVal) {
+    builderDispatch({
+      type: "UPDATE_SETTING",
+      payload: { key: "showZoom", value: newVal }
+    })
+  }
 
-   return <ToggleControl label='Show zoom' checked={val} onChange={onChange} />
+  return (
+    <ToggleControl
+      label="Show zoom"
+      checked={builderState.settings.showZoom}
+      onChange={onChange}
+    />
+  )
 }
 
 export { ShowZoom }

@@ -27,8 +27,6 @@ function SearchForm() {
       value: searchState.searchTerm
     })
 
-    console.log("hi", hi)
-
     itemsDispatch({
       type: "SET_QUERY_PARAMS",
       payload: {

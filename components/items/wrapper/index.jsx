@@ -196,7 +196,6 @@ function ItemsWrapper({ children, miscDispatch }) {
       isFirstRender.current = false
       return
     }
-    console.log("itemsState.queryParams", itemsState.queryParams)
 
     fetchNewItems(miscDispatch)
   }, [itemsState.queryParams])

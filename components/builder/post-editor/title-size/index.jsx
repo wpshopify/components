@@ -6,8 +6,8 @@ import { useDebounce } from "use-debounce"
 
 function TitleSize() {
   const [builderState, builderDispatch] = useContext(BuilderContext)
-  const [val, setVal] = useState(getDefaultVal())
-  const [debouncedValue] = useDebounce(val, 10)
+  const [localVal, setLocalVal] = useState(getDefaultVal())
+  const [debouncedValue] = useDebounce(localVal, 10)
   const isFirstRender = useRef(true)
 
   const fontSizes = [
@@ -39,7 +39,7 @@ function TitleSize() {
   }
 
   function onChange(newFontSize) {
-    setVal(newFontSize)
+    setLocalVal(newFontSize)
   }
 
   useEffect(() => {
@@ -56,6 +56,10 @@ function TitleSize() {
       }
     })
   }, [debouncedValue])
+
+  useEffect(() => {
+    setLocalVal(getDefaultVal())
+  }, [builderState.settings.titleSize])
 
   return (
     <BaseControl>

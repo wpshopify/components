@@ -45,7 +45,7 @@ function getDefaultSettings() {
     titleSize: "22px",
     myShopifyDomain: false,
     storefrontAccessToken: false,
-    descriptionSize: false,
+    descriptionSize: "16px",
     descriptionColor: false,
     descriptionLength: false,
     alignHeight: false

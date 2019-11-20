@@ -1,17 +1,24 @@
-import React, { useContext, useState } from 'react'
-import { ToggleControl } from '@wordpress/components'
-import { BuilderContext } from '../../_state/context'
+import React, { useContext } from "react"
+import { ToggleControl } from "@wordpress/components"
+import { BuilderContext } from "../../_state/context"
 
 function AlignHeight() {
-   const [builderState, builderDispatch] = useContext(BuilderContext)
-   const [val, setVal] = useState(builderState.settings.alignHeight)
+  const [builderState, builderDispatch] = useContext(BuilderContext)
 
-   function onChange(isChecked) {
-      setVal(isChecked)
-      builderDispatch({ type: 'UPDATE_SETTING', payload: { key: 'alignHeight', value: isChecked } })
-   }
+  function onChange(isChecked) {
+    builderDispatch({
+      type: "UPDATE_SETTING",
+      payload: { key: "alignHeight", value: isChecked }
+    })
+  }
 
-   return <ToggleControl label='Align height?' checked={val} onChange={isChecked => onChange(isChecked)} />
+  return (
+    <ToggleControl
+      label="Align height?"
+      checked={builderState.settings.alignHeight}
+      onChange={onChange}
+    />
+  )
 }
 
 export { AlignHeight }

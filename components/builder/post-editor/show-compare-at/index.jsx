@@ -1,17 +1,24 @@
-import React, { useContext, useState } from 'react'
-import { ToggleControl } from '@wordpress/components'
-import { BuilderContext } from '../../_state/context'
+import React, { useContext, useState } from "react"
+import { ToggleControl } from "@wordpress/components"
+import { BuilderContext } from "../../_state/context"
 
 function ShowCompareAt() {
-   const [builderState, builderDispatch] = useContext(BuilderContext)
-   const [val, setVal] = useState(builderState.settings.showCompareAt)
+  const [builderState, builderDispatch] = useContext(BuilderContext)
 
-   function onChange(newVal) {
-      setVal(newVal)
-      builderDispatch({ type: 'UPDATE_SETTING', payload: { key: 'showCompareAt', value: newVal } })
-   }
+  function onChange(newVal) {
+    builderDispatch({
+      type: "UPDATE_SETTING",
+      payload: { key: "showCompareAt", value: newVal }
+    })
+  }
 
-   return <ToggleControl label='Show compare at' checked={val} onChange={onChange} />
+  return (
+    <ToggleControl
+      label="Show compare at"
+      checked={builderState.settings.showCompareAt}
+      onChange={onChange}
+    />
+  )
 }
 
 export { ShowCompareAt }

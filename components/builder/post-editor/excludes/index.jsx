@@ -38,6 +38,10 @@ function Excludes() {
     })
   }, [excludesState])
 
+  useEffect(() => {
+    setExcludesState(builderState.settings.excludes)
+  }, [builderState.settings.excludes])
+
   function Title() {
     return (
       <CheckboxControl

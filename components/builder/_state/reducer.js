@@ -94,7 +94,6 @@ function BuilderReducer(state, action) {
       )
 
       localStorage.setItem("wps-cached-settings", JSON.stringify(newSettings))
-      console.log("builderDispatch UPDATE_SETTING", newSettings)
 
       return {
         ...state,

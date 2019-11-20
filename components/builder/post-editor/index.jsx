@@ -69,7 +69,7 @@ function PostEditor() {
       <PanelBody title="Store Settings" initialOpen={true}>
         {!builderState.hasCustomConnection && (
           <Notice status="Informational" isDismissible={false}>
-            Add your Shopify API tokens to load your own products.&nbsp;
+            See your own products by adding your Shopify API keys.&nbsp;
             <a
               href="https://docs.wpshop.io/#/getting-started/syncing"
               target="_blank"

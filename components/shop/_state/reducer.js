@@ -1,60 +1,76 @@
-import update from 'immutability-helper'
-import some from 'lodash/some'
-import concat from 'lodash/concat'
+import update from "immutability-helper"
+import some from "lodash/some"
+import concat from "lodash/concat"
+import { hasHooks } from "../../../common/utils"
 
 function ShopReducer(state, action) {
-   switch (action.type) {
-      case 'SET_CHECKOUT_ID': {
-         return {
-            ...state,
-            checkoutId: update(state.checkoutId, { $set: action.payload })
-         }
+  switch (action.type) {
+    case "SET_CHECKOUT_ID": {
+      return {
+        ...state,
+        checkoutId: update(state.checkoutId, { $set: action.payload })
       }
-      case 'SET_SHOP_INFO': {
-         return {
-            ...state,
-            info: update(state.info, { $set: action.payload })
-         }
+    }
+    case "SET_SHOP_INFO": {
+      return {
+        ...state,
+        info: update(state.info, { $set: action.payload })
       }
-      case 'SET_HOOKS_COMPATIBLE': {
-         return {
-            ...state,
-            hooksCompatible: update(state.hooksCompatible, { $set: action.payload })
-         }
+    }
+    case "SET_HOOKS_COMPATIBLE": {
+      return {
+        ...state,
+        hooksCompatible: update(state.hooksCompatible, { $set: action.payload })
       }
-      case 'IS_SHOP_READY': {
-         return {
-            ...state,
-            isShopReady: update(state.isShopReady, { $set: true })
-         }
-      }
-
-      case 'IS_CART_READY': {
-         return {
-            ...state,
-            isCartReady: update(state.isCartReady, { $set: true })
-         }
+    }
+    case "IS_SHOP_READY": {
+      const newState = {
+        ...state,
+        isShopReady: update(state.isShopReady, {
+          $set: true
+        })
       }
 
-      case 'UPDATE_NOTICES': {
-         let updatedNotices = state.notices
+      // App is ready to go
+      hasHooks() && wp.hooks.doAction("after.ready", newState.settings) // legacy
+      hasHooks() && wp.hooks.doAction("after.shop.ready", newState)
 
-         if (!some(state.notices, action.payload)) {
-            updatedNotices = concat(state.notices, [action.payload])
-         } else {
-            updatedNotices = state.notices
-         }
+      return newState
+    }
 
-         return {
-            ...state,
-            notices: update(state.notices, { $set: updatedNotices })
-         }
+    case "IS_CART_READY": {
+      const newState = {
+        ...state,
+        isCartReady: update(state.isCartReady, {
+          $set: true
+        })
       }
 
-      default: {
-         throw new Error(`Unhandled action type: ${action.type} in ShopReducer`)
+      // Cart is ready to go
+      hasHooks() && wp.hooks.doAction("after.cart.ready", newState)
+
+      return newState
+    }
+
+    case "UPDATE_NOTICES": {
+      let updatedNotices = state.notices
+
+      if (!some(state.notices, action.payload)) {
+        updatedNotices = concat(state.notices, [action.payload])
+      } else {
+        updatedNotices = state.notices
       }
-   }
+
+      return {
+        ...state,
+        notices: update(state.notices, { $set: updatedNotices })
+      }
+    }
+
+    default: {
+      throw new Error(`Unhandled action type: ${action.type} in ShopReducer`)
+    }
+  }
 }
 
 export { ShopReducer }

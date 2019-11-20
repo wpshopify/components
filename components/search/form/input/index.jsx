@@ -12,13 +12,11 @@ Component: SearchInput
 function SearchInput() {
   const [localTerm, setLocalTerm] = useState("")
   const [searchState, searchDispatch] = useContext(SearchContext)
-  const [itemsState, itemsDispatch] = useContext(ItemsContext)
+  const [itemsState] = useContext(ItemsContext)
   const [debouncedSearchTerm] = useDebounce(localTerm, 250)
   const isFirstRender = useRef(true)
 
   function setSearchTerm(value) {
-    console.log("setSearchTerm :: ", value)
-
     setLocalTerm(value)
   }
 
@@ -32,8 +30,6 @@ function SearchInput() {
       isFirstRender.current = false
       return
     }
-
-    console.log("debouncedSearchTerm :: ", debouncedSearchTerm)
 
     searchDispatch({ type: "SET_SEARCH_TERM", payload: debouncedSearchTerm })
   }, [debouncedSearchTerm])

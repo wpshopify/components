@@ -155,8 +155,6 @@ function BuilderWrapper() {
     let touchedSettingsFinal = removeCredsFromTouched(touchedSettings)
 
     if (isEmpty(touchedSettingsFinal)) {
-      console.log("R E S E T????????")
-
       builderDispatch({
         type: "SET_SHORTCODE",
         payload: builderState.defaultShortcode

@@ -1,17 +1,46 @@
-import React, { useContext, useState } from 'react'
-import { RangeControl } from '@wordpress/components'
-import { BuilderContext } from '../../_state/context'
+import React, { useContext, useState, useRef, useEffect } from "react"
+import { RangeControl } from "@wordpress/components"
+import { BuilderContext } from "../../_state/context"
+import { useDebounce } from "use-debounce"
 
 function DescriptionLength() {
-   const [builderState, builderDispatch] = useContext(BuilderContext)
-   const [val, setVal] = useState(builderState.settings.descriptionLength)
+  const [builderState, builderDispatch] = useContext(BuilderContext)
+  const [localVal, setLocalVal] = useState(
+    builderState.settings.descriptionLength
+  )
+  const [debouncedValue] = useDebounce(localVal, 10)
+  const isFirstRender = useRef(true)
 
-   function onChange(newVal) {
-      setVal(newVal)
-      builderDispatch({ type: 'UPDATE_SETTING', payload: { key: 'descriptionLength', value: newVal } })
-   }
+  function onChange(newVal) {
+    setLocalVal(newVal)
+  }
 
-   return <RangeControl label='Description Length' value={val} onChange={val => onChange(val)} min={1} max={200} />
+  useEffect(() => {
+    if (isFirstRender.current) {
+      isFirstRender.current = false
+      return
+    }
+
+    builderDispatch({
+      type: "UPDATE_SETTING",
+      payload: { key: "descriptionLength", value: debouncedValue }
+    })
+  }, [debouncedValue])
+
+  useEffect(() => {
+    setLocalVal(builderState.settings.descriptionLength)
+  }, [builderState.settings.descriptionLength])
+
+  return (
+    <RangeControl
+      label="Description Length"
+      help=" Limits the number of characters"
+      value={localVal}
+      onChange={onChange}
+      min={1}
+      max={200}
+    />
+  )
 }
 
 export { DescriptionLength }

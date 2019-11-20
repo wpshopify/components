@@ -1,21 +1,20 @@
-import React, { useEffect } from 'react'
-import { ItemsProvider } from './_state/provider'
-import { ItemsWrapper } from './wrapper'
-import { Notice } from '../notice'
-import has from 'lodash/has'
-import uuidv4 from 'uuid/v4'
-import { usePortal } from '../../common/hooks'
+import React from "react"
+import { ItemsProvider } from "./_state/provider"
+import { ItemsWrapper } from "./wrapper"
+import has from "lodash/has"
+import uuidv4 from "uuid/v4"
+import { usePortal } from "../../common/hooks"
 
 function hasItems(options) {
-   return options.payload.length > 0
+  return options.payload.length > 0
 }
 
 function skippingInitialLoad(options) {
-   if (!has(options, 'skipInitialLoad')) {
-      return false
-   }
+  if (!has(options, "skipInitialLoad")) {
+    return false
+  }
 
-   return options.skipInitialLoad
+  return options.skipInitialLoad
 }
 
 /*
@@ -24,32 +23,32 @@ Handle the errors differently ...
 
 */
 function hasItemsToShow(options) {
-   if (!options) {
-      return false
-   }
+  if (!options) {
+    return false
+  }
 
-   if (has(options, 'errors')) {
-      return false
-   }
+  if (has(options, "errors")) {
+    return false
+  }
 
-   if (!has(options, 'payload')) {
-      return true
-   }
+  if (!has(options, "payload")) {
+    return true
+  }
 
-   if (hasItems(options) || skippingInitialLoad(options)) {
-      return true
-   } else {
-      return false
-   }
+  if (hasItems(options) || skippingInitialLoad(options)) {
+    return true
+  } else {
+    return false
+  }
 }
 
 function ItemsController({ options, children, miscDispatch }) {
-   return usePortal(
-      <ItemsProvider options={options}>
-         <ItemsWrapper miscDispatch={miscDispatch}>{children}</ItemsWrapper>
-      </ItemsProvider>,
-      options.componentElement
-   )
+  return usePortal(
+    <ItemsProvider options={options}>
+      <ItemsWrapper miscDispatch={miscDispatch}>{children}</ItemsWrapper>
+    </ItemsProvider>,
+    options.componentElement
+  )
 }
 
 /*
@@ -59,16 +58,18 @@ Connects sibling components together like Filters, Search and Pagination.
 
 */
 function Items({ options, children, miscDispatch }) {
-   console.log('<Items>')
-
-   return (
-      hasItemsToShow(options) &&
-      options.map(option => (
-         <ItemsController key={uuidv4()} options={option} miscDispatch={miscDispatch}>
-            {children}
-         </ItemsController>
-      ))
-   )
+  return (
+    hasItemsToShow(options) &&
+    options.map(option => (
+      <ItemsController
+        key={uuidv4()}
+        options={option}
+        miscDispatch={miscDispatch}
+      >
+        {children}
+      </ItemsController>
+    ))
+  )
 }
 
 export { Items }
