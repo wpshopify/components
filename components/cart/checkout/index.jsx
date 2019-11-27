@@ -3,6 +3,8 @@ import { ShopContext } from "../../shop/_state/context"
 import { CartContext } from "../_state/context"
 import { Loader } from "../../loader"
 import { hasHooks, FilterHook } from "../../../common/utils"
+import { hasCustomCheckoutAttributes } from "../../../common/checkout"
+
 import {
   replaceLineItems,
   updateCheckoutAttributes
@@ -10,83 +12,85 @@ import {
 import isEmpty from "lodash/isEmpty"
 import to from "await-to-js"
 
+function checkoutRedirect(checkout, shopState) {
+  var target = checkoutWindowTarget(shopState)
+
+  if (
+    !shopState.settings.enableCustomCheckoutDomain ||
+    !hasManagedDomain(checkout.webUrl)
+  ) {
+    return managedDomainRedirect(checkout, target)
+  }
+
+  customDomainRedirect(checkout, shopState, target)
+}
+
+function hasManagedDomain(url) {
+  return url.includes("myshopify.com")
+}
+
+function managedDomainRedirect(checkout, target) {
+  if (hasGaLoaded()) {
+    var checkoutUrl = decorateCheckoutUrl(checkout.webUrl)
+  } else {
+    var checkoutUrl = checkout.webUrl
+  }
+
+  redirect(checkoutUrl, target)
+}
+
+function hasGaLoaded() {
+  return window.ga !== undefined
+}
+
+function decorateCheckoutUrl(link) {
+  var tracker = ga.getAll()[0]
+  var linker = new window.gaplugins.Linker(tracker)
+
+  return linker.decorate(link)
+}
+
+function redirect(checkoutUrl, target) {
+  window.open(checkoutUrl, target)
+}
+
+function customDomainRedirect(checkout, shopState, target) {
+  if (hasGaLoaded()) {
+    var checkoutUrl = decorateCheckoutUrl(
+      checkoutUrlWithCustomDomain(shopState, checkout.webUrl)
+    )
+  } else {
+    var checkoutUrl = checkoutUrlWithCustomDomain(shopState, checkout.webUrl)
+  }
+
+  redirect(checkoutUrl, target)
+}
+
+function checkoutUrlWithCustomDomain(shopState, webUrl) {
+  return shopState.info.primaryDomain.url + extractCheckoutURL(webUrl)
+}
+
+function checkoutWindowTarget(shopState) {
+  if (shopState.isMobile) {
+    // cartDispatch({ type: "SET_IS_CHECKING_OUT", payload: false })
+    return "_self"
+  }
+
+  //   if (shopState.settings.checkoutButtonTarget === "_blank") {
+  //     // cartDispatch({ type: "SET_IS_CHECKING_OUT", payload: false })
+  //   }
+
+  return shopState.settings.checkoutButtonTarget
+}
+
+function extractCheckoutURL(webUrl) {
+  return webUrl.split("myshopify.com")[1]
+}
+
 function CartCheckout() {
   const [shopState] = useContext(ShopContext)
   const [cartState, cartDispatch] = useContext(CartContext)
   const checkoutButton = useRef()
-
-  function hasGaLoaded() {
-    return window.ga !== undefined
-  }
-
-  function decorateCheckoutUrl(link) {
-    var tracker = ga.getAll()[0]
-    var linker = new window.gaplugins.Linker(tracker)
-
-    return linker.decorate(link)
-  }
-
-  function hasManagedDomain(url) {
-    return url.includes("myshopify.com")
-  }
-
-  function extractCheckoutURL(webUrl) {
-    return webUrl.split("myshopify.com")[1]
-  }
-
-  function checkoutUrlWithCustomDomain(webUrl) {
-    return shopState.info.primaryDomain.url + extractCheckoutURL(webUrl)
-  }
-
-  function checkoutWindowTarget() {
-    if (shopState.isMobile) {
-      cartDispatch({ type: "SET_IS_CHECKING_OUT", payload: false })
-      return "_self"
-    }
-
-    if (shopState.settings.checkoutButtonTarget === "_blank") {
-      cartDispatch({ type: "SET_IS_CHECKING_OUT", payload: false })
-    }
-
-    return shopState.settings.checkoutButtonTarget
-  }
-
-  function managedDomainRedirect(checkout) {
-    if (hasGaLoaded()) {
-      var checkoutUrl = decorateCheckoutUrl(checkout.webUrl)
-    } else {
-      var checkoutUrl = checkout.webUrl
-    }
-
-    redirect(checkoutUrl)
-  }
-
-  function customDomainRedirect(checkout) {
-    if (hasGaLoaded()) {
-      var checkoutUrl = decorateCheckoutUrl(
-        checkoutUrlWithCustomDomain(checkout.webUrl)
-      )
-    } else {
-      var checkoutUrl = checkoutUrlWithCustomDomain(checkout.webUrl)
-    }
-
-    redirect(checkoutUrl)
-  }
-
-  function redirect(checkoutUrl) {
-    window.open(checkoutUrl, checkoutWindowTarget())
-  }
-
-  function checkoutRedirect(checkout) {
-    if (
-      !shopState.settings.enableCustomCheckoutDomain ||
-      !hasManagedDomain(checkout.webUrl)
-    ) {
-      return managedDomainRedirect(checkout)
-    }
-
-    customDomainRedirect(checkout)
-  }
 
   async function onCheckout() {
     cartDispatch({ type: "UPDATE_NOTICES", payload: [] })
@@ -94,19 +98,19 @@ function CartCheckout() {
 
     hasHooks() && wp.hooks.doAction("on.checkout", cartState.checkoutCache)
 
-    const [err, success] = await to(
+    const [checkoutWithLineitemsError, checkoutWithLineitems] = await to(
       replaceLineItems(cartState.checkoutCache.lineItems)
     )
 
-    if (err) {
+    if (checkoutWithLineitemsError) {
       cartDispatch({ type: "SET_IS_CHECKING_OUT", payload: false })
       return cartDispatch({
         type: "UPDATE_NOTICES",
-        payload: { type: "error", message: err }
+        payload: { type: "error", message: checkoutWithLineitemsError }
       })
     }
 
-    if (isEmpty(success.lineItems)) {
+    if (isEmpty(checkoutWithLineitems.lineItems)) {
       cartDispatch({ type: "SET_IS_CHECKING_OUT", payload: false })
       return cartDispatch({
         type: "UPDATE_NOTICES",
@@ -114,29 +118,26 @@ function CartCheckout() {
       })
     }
 
-    if (
-      (WP_Shopify.misc.isPro && !isEmpty(cartState.customAttributes)) ||
-      !isEmpty(cartState.note)
-    ) {
-      const [errAttr, resp] = await to(
+    if (hasCustomCheckoutAttributes(cartState)) {
+      const [checkoutWithAttrsError, checkoutWithAttrs] = await to(
         updateCheckoutAttributes({
           customAttributes: cartState.customAttributes,
           note: cartState.note
         })
       )
 
-      if (errAttr) {
+      if (checkoutWithAttrsError) {
         cartDispatch({ type: "SET_IS_CHECKING_OUT", payload: false })
         return cartDispatch({
           type: "UPDATE_NOTICES",
-          payload: { type: "error", message: errAttr }
+          payload: { type: "error", message: checkoutWithAttrsError }
         })
       }
 
-      return checkoutRedirect(resp)
+      return checkoutRedirect(checkoutWithAttrs, shopState)
     }
 
-    checkoutRedirect(success)
+    checkoutRedirect(checkoutWithLineitems, shopState)
   }
 
   function buttonStyle() {
@@ -191,4 +192,4 @@ function CartCheckoutButton({
   )
 }
 
-export { CartCheckout }
+export { CartCheckout, checkoutRedirect }
