@@ -35,6 +35,7 @@ function CartWrapper() {
 
   async function cartBootstrap() {
     if (!shopState.checkoutId) {
+      shopDispatch({ type: "IS_CART_READY", payload: true })
       return
     }
 
