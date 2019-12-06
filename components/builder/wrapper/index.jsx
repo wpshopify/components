@@ -32,11 +32,8 @@ function BuilderWrapper() {
 
   async function fetchProducts() {
     builderDispatch({ type: "SET_IS_LOADING", payload: true })
-    console.log("fetchProducts", builderState)
 
     const [error, results] = await to(fetchNewItems("products", builderState))
-    console.log("wee error", error)
-    console.log("wee results", results)
 
     builderDispatch({ type: "SET_IS_LOADING", payload: false })
     builderDispatch({ type: "SET_IS_READY", payload: true })
@@ -50,8 +47,6 @@ function BuilderWrapper() {
         }
       })
     } else {
-      console.log("results.model.products", results.model.products)
-
       builderDispatch({ type: "SET_PAYLOAD", payload: results.model.products })
       builderDispatch({ type: "SET_NOTICES", payload: [] })
     }

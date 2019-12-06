@@ -35,6 +35,14 @@ function CartWrapper() {
 
   async function cartBootstrap() {
     if (!shopState.checkoutId) {
+      shopDispatch({
+        type: "UPDATE_NOTICES",
+        payload: {
+          type: "error",
+          message: "No checkout found"
+        }
+      })
+
       shopDispatch({ type: "IS_CART_READY", payload: true })
       return
     }
@@ -169,16 +177,18 @@ function CartWrapper() {
   }, [lineItemsAdded])
 
   return (
-    <section ref={cart} className="wps-cart">
-      <CartButtons buttons={cartState.buttons} />
-      <CartHeader />
-      <CartContents
-        isCartReady={shopState.isCartEmpty}
-        isCartEmpty={cartState.isCartEmpty}
-        checkoutCache={cartState.checkoutCache}
-      />
-      <CartFooter />
-    </section>
+    shopState.settings.cart.cartLoaded && (
+      <section ref={cart} className="wps-cart">
+        <CartButtons buttons={cartState.buttons} />
+        <CartHeader />
+        <CartContents
+          isCartReady={shopState.isCartEmpty}
+          isCartEmpty={cartState.isCartEmpty}
+          checkoutCache={cartState.checkoutCache}
+        />
+        <CartFooter />
+      </section>
+    )
   )
 }
 

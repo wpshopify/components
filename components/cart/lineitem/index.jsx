@@ -11,6 +11,7 @@ import { Notice } from "../../notice"
 /** @jsx jsx */
 import { jsx, css } from "@emotion/core"
 import find from "lodash/find"
+import { hasHooks } from "../../../common/utils"
 
 function getLineItemFromState(lineItem, lineItemsFromState) {
   return find(lineItemsFromState, { variantId: lineItem.id })
@@ -89,6 +90,19 @@ function CartLineItem({ lineItem, index }) {
     return lineItem.title !== "Default Title"
   }
 
+  const manualLink = hasHooks()
+    ? wp.hooks.applyFilters("cart.lineItems.link", false, lineItem, cartState)
+    : false
+
+  const disableLink = hasHooks()
+    ? wp.hooks.applyFilters(
+        "cart.lineItems.disableLink",
+        false,
+        lineItem,
+        cartState
+      )
+    : false
+
   return (
     <div
       className="wps-cart-lineitem mr-0 ml-0 row"
@@ -102,6 +116,8 @@ function CartLineItem({ lineItem, index }) {
         type="products"
         classNames="wps-cart-lineitem-img-link"
         target="_blank"
+        manualLink={manualLink}
+        disableLink={disableLink}
       >
         <div
           className="wps-cart-lineitem-img"

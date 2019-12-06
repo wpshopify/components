@@ -36,6 +36,7 @@ function Bootstrap({ children }) {
 
     buildInstances().then(
       async instances => {
+        // If no checkout was found ...
         if (!instances || !instances.checkout) {
           shopDispatch({
             type: "UPDATE_NOTICES",
@@ -48,6 +49,7 @@ function Bootstrap({ children }) {
           return setShopAndCheckoutId()
         }
 
+        // If checkout was completed ...
         if (instances.checkout.completedAt) {
           var [buildInstancesError, newInstances] = await to(
             buildInstances(true)
@@ -77,9 +79,11 @@ function Bootstrap({ children }) {
             return setShopAndCheckoutId()
           }
 
+          // Responsible for creating the new checkout instance
           instances = newInstances
         }
 
+        // Else just build like normal
         setShopAndCheckoutId(instances)
       },
       error => {

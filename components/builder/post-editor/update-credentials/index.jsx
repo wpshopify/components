@@ -37,8 +37,6 @@ function UpdateCredentialsButton() {
 
   function onClick() {
     if (hasCredentials) {
-      console.log("1111", builderState.defaultCreds)
-
       localStorage.removeItem("wps-storefront-creds")
       builderDispatch({
         type: "UPDATE_SETTING",
@@ -53,13 +51,10 @@ function UpdateCredentialsButton() {
 
       setHasCredentials(false)
     } else {
-      console.log("2222")
       var newCreds = {
         domain: builderState.settings.myShopifyDomain,
         storefrontAccessToken: builderState.settings.storefrontAccessToken
       }
-
-      console.log("newCreds", newCreds)
 
       WP_Shopify.storefront = newCreds
       localStorage.setItem("wps-storefront-creds", JSON.stringify(newCreds))

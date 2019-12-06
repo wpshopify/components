@@ -63,8 +63,6 @@ function BuilderReducer(state, action) {
     case "UPDATE_NOTICES": {
       let updatedNotices = state.notices
 
-      console.log("action.payload", action.payload)
-
       if (!isEmpty(action.payload)) {
         if (!some(state.notices, action.payload)) {
           updatedNotices = concat(state.notices, [action.payload])
@@ -72,8 +70,6 @@ function BuilderReducer(state, action) {
           updatedNotices = state.notices
         }
       }
-
-      console.log("updatedNotices", updatedNotices)
 
       return {
         ...state,
