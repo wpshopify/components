@@ -97,10 +97,43 @@ function ProductAddButton() {
       const lineItems = buildLineItemParams(variant, buyButtonState.quantity)
 
       if (isDirectCheckout) {
-         
-         setIsCheckingOut(true)
-         shopDispatch({ type: "SET_DIRECT_CHECKOUT_OCCURING", payload: true })
+        setIsCheckingOut(true)
 
+        const client = buildClient()
+        const [err, checkout] = await to(createUniqueCheckout(client))
+
+        if (err) {
+          setIsCheckingOut(false)
+          buyButtonDispatch({
+            type: "SET_ALL_SELECTED_OPTIONS",
+            payload: false
+          })
+          buyButtonDispatch({ type: "REMOVE_SELECTED_OPTIONS" })
+
+          return setHasNotice({
+            message: err,
+            type: "error"
+          })
+        }
+
+        const [error, respNewCheckout] = await to(
+          addLineItemsAPI(client, checkout, lineItems)
+        )
+
+        if (error) {
+          setIsCheckingOut(false)
+          buyButtonDispatch({
+            type: "SET_ALL_SELECTED_OPTIONS",
+            payload: false
+          })
+          buyButtonDispatch({ type: "REMOVE_SELECTED_OPTIONS" })
+          return setHasNotice({
+            message: error,
+            type: "error"
+          })
+        }
+
+        checkoutRedirect(respNewCheckout, shopState)
       } else {
         hasHooks() &&
           wp.hooks.doAction(
