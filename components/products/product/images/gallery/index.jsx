@@ -38,7 +38,13 @@ function ProductGallery() {
 
       if (productState.selectedVariant) {
          galleryDispatch({ type: 'SET_FEAT_IMAGE', payload: productState.selectedVariant.image })
+
+      } else {
+
+         galleryDispatch({ type: 'SET_FEAT_IMAGE', payload: productState.payload && productState.payload.images ? productState.payload.images[0] : false })
+         
       }
+
    }, [productState.selectedVariant])
 
    return (

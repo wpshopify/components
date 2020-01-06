@@ -7,12 +7,13 @@ import { hasCustomCheckoutAttributes } from "../../../common/checkout"
 
 import {
   replaceLineItems,
-  updateCheckoutAttributes
+  updateCheckoutAttributes,
+  addDiscount
 } from "/Users/andrew/www/devil/devilbox-new/data/www/wpshopify-api"
 import isEmpty from "lodash/isEmpty"
 import to from "await-to-js"
 
-function checkoutRedirect(checkout, shopState) {
+function checkoutRedirectOnly(checkout, shopState) {
   var target = checkoutWindowTarget(shopState)
 
   if (
@@ -23,6 +24,39 @@ function checkoutRedirect(checkout, shopState) {
   }
 
   customDomainRedirect(checkout, shopState, target)
+}
+
+function hasDiscount(checkout, shopState) {
+  /* @if NODE_ENV='pro' */
+  var hasCustomDiscount =
+    hasHooks() &&
+    wp.hooks.applyFilters("set.checkout.discount", false, checkout)
+
+  if (hasCustomDiscount) {
+    return hasCustomDiscount
+  }
+  /* @endif */
+
+  return shopState.discountCode
+}
+
+function checkoutRedirect(checkout, shopState) {
+  const discountCode = hasDiscount(checkout, shopState)
+
+  hasHooks() && wp.hooks.doAction("before.checkout.redirect", checkout, shopState)
+
+  if (discountCode) {
+    addDiscount(discountCode, checkout).then(
+      value => {
+        checkoutRedirectOnly(value, shopState)
+      },
+      reason => {
+        console.error("addDiscount error", reason) // Error!
+      }
+    )
+  } else {
+    checkoutRedirectOnly(checkout, shopState)
+  }
 }
 
 function hasManagedDomain(url) {
@@ -98,8 +132,16 @@ function CartCheckout() {
 
     hasHooks() && wp.hooks.doAction("on.checkout", cartState.checkoutCache)
 
+    var lineItems = hasHooks()
+      ? wp.hooks.applyFilters(
+          "before.checkout.lineItems",
+          cartState.checkoutCache.lineItems,
+          cartState
+        )
+      : cartState.checkoutCache.lineItems
+
     const [checkoutWithLineitemsError, checkoutWithLineitems] = await to(
-      replaceLineItems(cartState.checkoutCache.lineItems)
+      replaceLineItems(lineItems)
     )
 
     if (checkoutWithLineitemsError) {
@@ -118,11 +160,11 @@ function CartCheckout() {
       })
     }
 
-    if (hasCustomCheckoutAttributes(cartState)) {
+    if (hasCustomCheckoutAttributes(shopState)) {
       const [checkoutWithAttrsError, checkoutWithAttrs] = await to(
         updateCheckoutAttributes({
-          customAttributes: cartState.customAttributes,
-          note: cartState.note
+          customAttributes: shopState.customAttributes,
+          note: shopState.note
         })
       )
 

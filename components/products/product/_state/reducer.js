@@ -4,6 +4,14 @@ import { findVariantFromSelectedOptions } from '/Users/andrew/www/devil/devilbox
 function ProductReducer(state, action) {
    switch (action.type) {
       case 'SET_SELECTED_VARIANT': {
+
+         if (!action.payload) {
+            return {
+               ...state,
+               selectedVariant: false
+            }
+         }
+
          return {
             ...state,
             selectedVariant: findVariantFromSelectedOptions(action.payload.product, action.payload.selectedOptions)

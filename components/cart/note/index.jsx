@@ -22,7 +22,7 @@ function CartNote() {
     }
 
     if (WP_Shopify.misc.isPro) {
-      cartDispatch({ type: "SET_CHECKOUT_NOTE", payload: debouncedValue })
+      shopDispatch({ type: "SET_CHECKOUT_NOTE", payload: debouncedValue })
     }
   }, [debouncedValue])
 

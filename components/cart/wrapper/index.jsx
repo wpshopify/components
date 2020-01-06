@@ -117,7 +117,7 @@ function CartWrapper() {
       return
     }
 
-    cartDispatch({
+    shopDispatch({
       type: "UPDATE_CHECKOUT_ATTRIBUTES",
       payload: updateCheckoutAttributes
     })
@@ -129,7 +129,7 @@ function CartWrapper() {
       return
     }
 
-    cartDispatch({
+    shopDispatch({
       type: "SET_CHECKOUT_ATTRIBUTES",
       payload: setCheckoutAttributes
     })
@@ -141,7 +141,7 @@ function CartWrapper() {
       return
     }
 
-    cartDispatch({ type: "SET_CHECKOUT_NOTE", payload: setCheckoutNotes })
+    shopDispatch({ type: "SET_CHECKOUT_NOTE", payload: setCheckoutNotes })
   }, [setCheckoutNotes])
 
   useEffect(() => {
@@ -175,6 +175,16 @@ function CartWrapper() {
       cartDispatch({ type: "SET_IS_CART_EMPTY", payload: false })
     }
   }, [lineItemsAdded])
+
+
+  useEffect(() => {
+
+   if (isFirstRender.current) {
+      isFirstRender.current = false
+      return
+   }
+
+  }, [shopState.isDirctCheckoutOccuring])
 
   return (
     shopState.settings.cart.cartLoaded && (

@@ -1,6 +1,9 @@
 import update from "immutability-helper"
 import some from "lodash/some"
 import concat from "lodash/concat"
+import uniqWith from "lodash/uniqWith"
+import isEqual from "lodash/isEqual"
+import isEmpty from "lodash/isEmpty"
 import { hasHooks } from "../../../common/utils"
 
 function ShopReducer(state, action) {
@@ -64,6 +67,58 @@ function ShopReducer(state, action) {
       return {
         ...state,
         notices: update(state.notices, { $set: updatedNotices })
+      }
+    }
+
+    case "SET_CHECKOUT_DISCOUNT_CODE": {
+      return {
+        ...state,
+        discountCode: update(state.discountCode, { $set: action.payload })
+      }
+    }
+
+    case "UPDATE_CHECKOUT_ATTRIBUTES": {
+      let attributes = uniqWith(
+        concat(state.customAttributes, [action.payload]),
+        isEqual
+      )
+
+      return {
+        ...state,
+        customAttributes: update(state.customAttributes, { $set: attributes })
+      }
+    }
+
+    case "SET_CHECKOUT_ATTRIBUTES": {
+       
+      if (isEmpty(action.payload)) {
+        var newCheckoutAttributes = []
+      } else {
+        var newCheckoutAttributes = [action.payload]
+      }
+
+      return {
+        ...state,
+        customAttributes: update(state.customAttributes, {
+          $set: newCheckoutAttributes
+        })
+      }
+    }
+
+    case "SET_CHECKOUT_NOTE": {
+      hasHooks() && wp.hooks.doAction("on.checkout.note", action.payload)
+
+      return {
+        ...state,
+        note: update(state.note, { $set: action.payload })
+      }
+    }
+
+    case "SET_DIRECT_CHECKOUT_OCCURING": {
+
+      return {
+        ...state,
+        isDirctCheckoutOccuring: update(state.isDirctCheckoutOccuring, { $set: action.payload })
       }
     }
 

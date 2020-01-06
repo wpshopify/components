@@ -8,7 +8,8 @@ import { ProductContext } from "../_state/context"
 import { ItemsContext } from "../../../items/_state/context"
 import { ShopContext } from "../../../shop/_state/context"
 import { usePortal } from "../../../../common/hooks"
-import { findPortalElement } from "../../../../common/utils"
+import { findPortalElement, FilterHook } from "../../../../common/utils"
+
 
 function ProductBuyButton() {
   const [shopState] = useContext(ShopContext)
@@ -21,6 +22,9 @@ function ProductBuyButton() {
       data-wps-is-ready={shopState.isCartReady ? "1" : "0"}
       data-wps-component-order="0"
     >
+
+      <FilterHook name="product.buyButton.before" args={[productState]} isReady={shopState.isShopReady} />
+
       <ProductBuyButtonProvider productState={productState}>
         {productState.payload.availableForSale ? (
           <>
@@ -33,6 +37,9 @@ function ProductBuyButton() {
           <Notice type="warning" message="Out of stock" />
         )}
       </ProductBuyButtonProvider>
+
+      <FilterHook name="product.buyButton.after" args={[productState]} isReady={shopState.isShopReady} />
+      
     </div>,
     findPortalElement(
       productState.element,

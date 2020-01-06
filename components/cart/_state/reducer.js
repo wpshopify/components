@@ -356,42 +356,6 @@ function CartReducer(state, action) {
       }
     }
 
-    case "UPDATE_CHECKOUT_ATTRIBUTES": {
-      let attributes = uniqWith(
-        concat(state.customAttributes, [action.payload]),
-        isEqual
-      )
-
-      return {
-        ...state,
-        customAttributes: update(state.customAttributes, { $set: attributes })
-      }
-    }
-
-    case "SET_CHECKOUT_ATTRIBUTES": {
-      if (isEmpty(action.payload)) {
-        var newCheckoutAttributes = []
-      } else {
-        var newCheckoutAttributes = [action.payload]
-      }
-
-      return {
-        ...state,
-        customAttributes: update(state.customAttributes, {
-          $set: newCheckoutAttributes
-        })
-      }
-    }
-
-    case "SET_CHECKOUT_NOTE": {
-      hasHooks() && wp.hooks.doAction("on.checkout.note", action.payload)
-
-      return {
-        ...state,
-        note: update(state.note, { $set: action.payload })
-      }
-    }
-
     case "SET_TOTAL_LINE_ITEMS": {
       return {
         ...state,

@@ -15,7 +15,8 @@ import {
   buildClient,
   findVariantFromSelectedOptions,
   createUniqueCheckout,
-  addLineItemsAPI
+  addLineItemsAPI,
+  updateCheckoutAttributes
 } from "/Users/andrew/www/devil/devilbox-new/data/www/wpshopify-api"
 import to from "await-to-js"
 
@@ -96,26 +97,10 @@ function ProductAddButton() {
       const lineItems = buildLineItemParams(variant, buyButtonState.quantity)
 
       if (isDirectCheckout) {
-        setIsCheckingOut(true)
-        var [checkoutError, checkout] = await to(createUniqueCheckout())
+         
+         setIsCheckingOut(true)
+         shopDispatch({ type: "SET_DIRECT_CHECKOUT_OCCURING", payload: true })
 
-        if (checkoutError) {
-          setIsCheckingOut(false)
-          setHasNotice({ type: "error", message: checkoutError })
-          return
-        }
-
-        var [checkoutWithLineitemsError, checkoutWithLineitems] = await to(
-          addLineItemsAPI(buildClient(), checkout, lineItems)
-        )
-
-        if (checkoutWithLineitemsError) {
-          setIsCheckingOut(false)
-          setHasNotice({ type: "error", message: checkoutWithLineitemsError })
-          return
-        }
-
-        return checkoutRedirect(checkoutWithLineitems, shopState)
       } else {
         hasHooks() &&
           wp.hooks.doAction(
@@ -129,6 +114,7 @@ function ProductAddButton() {
         })
         buyButtonDispatch({ type: "REMOVE_SELECTED_OPTIONS" })
         productDispatch({ type: "SET_ADDED_VARIANT", payload: variant })
+        productDispatch({ type: "SET_SELECTED_VARIANT", payload: false })
 
         hasHooks() &&
           wp.hooks.doAction("on.product.addToCart", lineItems, variant)
