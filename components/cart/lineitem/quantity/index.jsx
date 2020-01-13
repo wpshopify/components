@@ -6,6 +6,7 @@ import find from "lodash/find"
 import { calcLineItemTotal } from "../../../../common/products"
 import { useAnime, pulse } from "../../../../common/animations"
 import { containerFluidCSS } from "../../../../common/css"
+import { hasHooks } from "../../../../common/utils"
 
 /** @jsx jsx */
 import { jsx, css } from "@emotion/core"
@@ -32,6 +33,10 @@ function CartLineItemQuantity({
   const [shopState] = useContext(ShopContext)
   const [cartState, cartDispatch] = useContext(CartContext)
   const animePulse = useAnime(pulse)
+
+  const maxQuantity = hasHooks()
+    ? wp.hooks.applyFilters("cart.maxQuantity", false)
+    : false
 
   function changeQuantity(newQuantity) {
     let lineItemFound = getLineItemFromState(
@@ -71,7 +76,11 @@ function CartLineItemQuantity({
   }
 
   function handleQuantityChange(e) {
-    setLineItemQuantity(e.target.value)
+    if (maxQuantity && e.target.value >= maxQuantity) {
+      setLineItemQuantity(maxQuantity)
+    } else {
+      setLineItemQuantity(e.target.value)
+    }
   }
 
   function handleQuantityBlur(e) {
@@ -112,7 +121,11 @@ function CartLineItemQuantity({
 
    */
   function handleIncrement() {
-    changeQuantity(lineItemQuantity + 1)
+    if (maxQuantity && lineItemQuantity >= maxQuantity) {
+      changeQuantity(maxQuantity)
+    } else {
+      changeQuantity(lineItemQuantity + 1)
+    }
   }
 
   return (
@@ -134,6 +147,7 @@ function CartLineItemQuantity({
           className="wps-cart-lineitem-quantity"
           type="number"
           min="0"
+          max="8"
           aria-label="Quantity"
           value={lineItemQuantity}
           onChange={handleQuantityChange}

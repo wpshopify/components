@@ -43,7 +43,8 @@ function hasDiscount(checkout, shopState) {
 function checkoutRedirect(checkout, shopState) {
   const discountCode = hasDiscount(checkout, shopState)
 
-  hasHooks() && wp.hooks.doAction("before.checkout.redirect", checkout, shopState)
+  hasHooks() &&
+    wp.hooks.doAction("before.checkout.redirect", checkout, shopState)
 
   if (discountCode) {
     addDiscount(discountCode, checkout).then(
@@ -193,7 +194,6 @@ function CartCheckout() {
       <FilterHook name="cart.checkout.before" args={[cartState]} />
 
       <CartCheckoutButton
-        cartState={cartState}
         onCheckout={onCheckout}
         buttonStyle={buttonStyle}
         shopState={shopState}
@@ -205,13 +205,9 @@ function CartCheckout() {
   )
 }
 
-function CartCheckoutButton({
-  cartState,
-  buttonStyle,
-  onCheckout,
-  shopState,
-  buttonRef
-}) {
+function CartCheckoutButton({ buttonStyle, onCheckout, shopState, buttonRef }) {
+  const [cartState, cartDispatch] = useContext(CartContext)
+
   return (
     <button
       ref={buttonRef}
