@@ -1,28 +1,30 @@
-import React, { useEffect, useContext, useRef } from "react"
-import { BuilderContext } from "../_state/context"
-import { ShopContext } from "../../shop/_state/context"
+// import React, { useEffect, useContext, useRef } from 'react'
+// import { BuilderContext } from '../_state/context'
+// import { ShopContext } from '../../shop/_state/context'
+// import { PostEditor } from '../post-editor'
+// import { Shortcode } from '../shortcode'
 
 /** @jsx jsx */
-import { jsx, css } from "@emotion/core"
+import { jsx, css } from '@emotion/core'
+import { BlockEditor } from '../block-editor'
+import { fetchNewItems } from '../_common'
 
-import { BlockEditor } from "../block-editor"
-import { PostEditor } from "../post-editor"
-import { Shortcode } from "../shortcode"
-import to from "await-to-js"
-import { fetchNewItems } from "../_common"
-import reduce from "lodash/reduce"
-import isEqual from "lodash/isEqual"
-import isArray from "lodash/isArray"
-import isEmpty from "lodash/isEmpty"
-import without from "lodash/without"
-import pull from "lodash/pull"
+import to from 'await-to-js'
+import reduce from 'lodash/reduce'
+import isEqual from 'lodash/isEqual'
+import isArray from 'lodash/isArray'
+import isEmpty from 'lodash/isEmpty'
+import without from 'lodash/without'
+import pull from 'lodash/pull'
 
 function withoutBadValues(values) {
   return without(values, undefined, false, null)
 }
 
-function BuilderWrapper() {
-  const [builderState, builderDispatch] = useContext(BuilderContext)
+const { useEffect, useRef } = wp.element
+
+function BuilderWrapper({ builderState, builderDispatch }) {
+  //   const [builderState, builderDispatch] = useContext(BuilderContext)
   const isFirstRender = useRef(true)
 
   const mainEditorCSS = css`
@@ -31,24 +33,24 @@ function BuilderWrapper() {
   `
 
   async function fetchProducts() {
-    builderDispatch({ type: "SET_IS_LOADING", payload: true })
+    builderDispatch({ type: 'SET_IS_LOADING', payload: true })
 
-    const [error, results] = await to(fetchNewItems("products", builderState))
+    const [error, results] = await to(fetchNewItems('products', builderState))
 
-    builderDispatch({ type: "SET_IS_LOADING", payload: false })
-    builderDispatch({ type: "SET_IS_READY", payload: true })
+    builderDispatch({ type: 'SET_IS_LOADING', payload: false })
+    builderDispatch({ type: 'SET_IS_READY', payload: true })
 
     if (error) {
       builderDispatch({
-        type: "UPDATE_NOTICES",
+        type: 'UPDATE_NOTICES',
         payload: {
-          type: "error",
+          type: 'error',
           message: error
         }
       })
     } else {
-      builderDispatch({ type: "SET_PAYLOAD", payload: results.model.products })
-      builderDispatch({ type: "SET_NOTICES", payload: [] })
+      builderDispatch({ type: 'SET_PAYLOAD', payload: results.model.products })
+      builderDispatch({ type: 'SET_NOTICES', payload: [] })
     }
   }
 
@@ -71,7 +73,7 @@ function BuilderWrapper() {
   function camelToSnake(string) {
     return string
       .replace(/[\w]([A-Z])/g, function(m) {
-        return m[0] + "_" + m[1]
+        return m[0] + '_' + m[1]
       })
       .toLowerCase()
   }
@@ -80,24 +82,22 @@ function BuilderWrapper() {
     return reduce(
       builderState.defaultSettings,
       (result, value, key) => {
-        return isEqual(value, builderState.settings[key])
-          ? result
-          : result.concat(key)
+        return isEqual(value, builderState.settings[key]) ? result : result.concat(key)
       },
       []
     )
   }
 
   function removeCredsFromTouched(touchedSettings) {
-    return pull(touchedSettings, "myShopifyDomain", "storefrontAccessToken")
+    return pull(touchedSettings, 'myShopifyDomain', 'storefrontAccessToken')
   }
 
   function buildFinalShortcodeString(validAttributes) {
     if (isEmpty(validAttributes)) {
-      return "[wps_products]"
+      return '[wps_products]'
     }
 
-    return "[wps_products " + validAttributes.join(" ") + "]"
+    return '[wps_products ' + validAttributes.join(' ') + ']'
   }
 
   function buildArrayOfAttributeStrings(touchedSettingsFinal) {
@@ -105,19 +105,14 @@ function BuilderWrapper() {
       var val = builderState.settings[key]
 
       if (!isArray(val)) {
-        if (
-          val === undefined ||
-          val === "undefinedpx" ||
-          val === null ||
-          val === ""
-        ) {
+        if (val === undefined || val === 'undefinedpx' || val === null || val === '') {
           return
         }
 
         return camelToSnake(key) + '="' + val + '"'
       }
 
-      var mappped = val.join(", ")
+      var mappped = val.join(', ')
       var okString = camelToSnake(key) + '="' + mappped + '"'
 
       return okString
@@ -125,23 +120,21 @@ function BuilderWrapper() {
   }
 
   useEffect(() => {
-    var credsCachedMaybe = JSON.parse(
-      localStorage.getItem("wps-storefront-creds")
-    )
+    var credsCachedMaybe = JSON.parse(localStorage.getItem('wps-storefront-creds'))
 
     if (credsCachedMaybe) {
       builderDispatch({
-        type: "UPDATE_SETTING",
+        type: 'UPDATE_SETTING',
         payload: {
-          key: "storefrontAccessToken",
+          key: 'storefrontAccessToken',
           value: credsCachedMaybe.storefrontAccessToken
         }
       })
       builderDispatch({
-        type: "UPDATE_SETTING",
-        payload: { key: "myShopifyDomain", value: credsCachedMaybe.domain }
+        type: 'UPDATE_SETTING',
+        payload: { key: 'myShopifyDomain', value: credsCachedMaybe.domain }
       })
-      builderDispatch({ type: "SET_CUSTOM_CONNECTION", payload: true })
+      builderDispatch({ type: 'SET_CUSTOM_CONNECTION', payload: true })
     }
   }, [])
 
@@ -157,7 +150,7 @@ function BuilderWrapper() {
 
     if (isEmpty(touchedSettingsFinal)) {
       builderDispatch({
-        type: "SET_SHORTCODE",
+        type: 'SET_SHORTCODE',
         payload: builderState.defaultShortcode
       })
       return
@@ -169,13 +162,13 @@ function BuilderWrapper() {
 
     var finalShortcode = buildFinalShortcodeString(validAttributes)
 
-    builderDispatch({ type: "SET_SHORTCODE", payload: finalShortcode })
+    builderDispatch({ type: 'SET_SHORTCODE', payload: finalShortcode })
   }, [builderState.productOptions, builderState.settings])
 
   return (
     <>
       <section css={mainEditorCSS}>
-        <BlockEditor />
+        <BlockEditor builderState={builderState} builderDispatch={builderDispatch} />
         <PostEditor />
       </section>
 

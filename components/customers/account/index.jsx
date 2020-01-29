@@ -11,12 +11,12 @@ function CustomersAccount() {
    const [shopState] = useContext(ShopContext)
 
    const routes = {
-      ['/' + shopState.settings.customers.accountPageAccount]: () => <AccountWrapper />,
-      ['/' + shopState.settings.customers.accountPageAccount + '/']: () => <AccountWrapper />,
-      ['/' + shopState.settings.customers.accountPageAccount + '/order']: () => <OrderDetails />,
-      ['/' + shopState.settings.customers.accountPageAccount + '/addresses']: () => <Addresses />,
-      ['/' + shopState.settings.customers.accountPageAccount + '/addresses/edit']: () => <AddressFormEdit />,
-      ['/' + shopState.settings.customers.accountPageAccount + '/addresses/add']: () => <AddressFormAdd />
+      ['/' + shopState.settings.general.accountPageAccount]: () => <AccountWrapper />,
+      ['/' + shopState.settings.general.accountPageAccount + '/']: () => <AccountWrapper />,
+      ['/' + shopState.settings.general.accountPageAccount + '/order']: () => <OrderDetails />,
+      ['/' + shopState.settings.general.accountPageAccount + '/addresses']: () => <Addresses />,
+      ['/' + shopState.settings.general.accountPageAccount + '/addresses/edit']: () => <AddressFormEdit />,
+      ['/' + shopState.settings.general.accountPageAccount + '/addresses/add']: () => <AddressFormAdd />
    }
 
    const routeResult = useRoutes(routes)

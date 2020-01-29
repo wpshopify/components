@@ -36,7 +36,7 @@ function ProductAddButton() {
 
   const isDirectCheckout =
     itemsState.componentOptions.directCheckout ||
-    shopState.settings.checkout.directCheckout
+    shopState.settings.general.directCheckout
 
   const buttonStyle = {
     backgroundColor: itemsState.componentOptions.addToCartButtonColor

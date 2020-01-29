@@ -56,7 +56,7 @@ function CustomerFormRegister() {
       }
 
       setNoticeState({
-         message: 'Successfully created account! <a href="/' + shopState.settings.customers.accountPageLogin + '">Login</a>.',
+         message: 'Successfully created account! <a href="/' + shopState.settings.general.accountPageLogin + '">Login</a>.',
          type: 'success'
       })
 
@@ -106,7 +106,7 @@ function LoginLink({ noticeState, shopState }) {
       <>
          <Notice message={noticeState.message} type={noticeState.type} />
 
-         <a href={'/' + shopState.settings.customers.accountPageLogin} className='wps-btn wps-btn-secondary wpshopify-btn-auto-width'>
+         <a href={'/' + shopState.settings.general.accountPageLogin} className='wps-btn wps-btn-secondary wpshopify-btn-auto-width'>
             Login to your account
          </a>
       </>

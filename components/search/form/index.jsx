@@ -23,7 +23,7 @@ function SearchForm() {
 
     var hi = queryBuilder({
       filter: itemsState.componentOptions.sortBy,
-      phrase: shopState.settings.searchExactMatch,
+      phrase: shopState.settings.general.searchExactMatch,
       value: searchState.searchTerm
     })
 

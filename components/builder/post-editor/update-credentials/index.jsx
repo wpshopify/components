@@ -1,13 +1,13 @@
-import React, { useContext, useState, useEffect } from "react"
-import { Button } from "@wordpress/components"
-import { BuilderContext } from "../../_state/context"
+import React, { useContext, useState, useEffect } from 'react'
+import { Button } from '@wordpress/components'
+import { BuilderContext } from '../../_state/context'
 
 function UpdateCredentialsButton() {
   const [builderState, builderDispatch] = useContext(BuilderContext)
   const [hasCredentials, setHasCredentials] = useState(hasValidCreds())
 
   function hasCachedCredentials() {
-    var existingCreds = localStorage.getItem("wps-storefront-creds")
+    var existingCreds = localStorage.getItem('wps-storefront-creds')
 
     if (existingCreds) {
       return true
@@ -21,10 +21,7 @@ function UpdateCredentialsButton() {
       return true
     }
 
-    if (
-      !builderState.settings.myShopifyDomain ||
-      !builderState.settings.storefrontAccessToken
-    ) {
+    if (!builderState.settings.myShopifyDomain || !builderState.settings.storefrontAccessToken) {
       return false
     }
 
@@ -37,17 +34,17 @@ function UpdateCredentialsButton() {
 
   function onClick() {
     if (hasCredentials) {
-      localStorage.removeItem("wps-storefront-creds")
+      localStorage.removeItem('wps-storefront-creds')
       builderDispatch({
-        type: "UPDATE_SETTING",
-        payload: { key: "myShopifyDomain", value: false }
+        type: 'UPDATE_SETTING',
+        payload: { key: 'myShopifyDomain', value: false }
       })
       builderDispatch({
-        type: "UPDATE_SETTING",
-        payload: { key: "storefrontAccessToken", value: false }
+        type: 'UPDATE_SETTING',
+        payload: { key: 'storefrontAccessToken', value: false }
       })
-      builderDispatch({ type: "SET_CUSTOM_CONNECTION", payload: false })
-      WP_Shopify.storefront = builderState.defaultCreds
+      builderDispatch({ type: 'SET_CUSTOM_CONNECTION', payload: false })
+      wpshopify.settings.connection.storefront = builderState.defaultCreds
 
       setHasCredentials(false)
     } else {
@@ -56,17 +53,17 @@ function UpdateCredentialsButton() {
         storefrontAccessToken: builderState.settings.storefrontAccessToken
       }
 
-      WP_Shopify.storefront = newCreds
-      localStorage.setItem("wps-storefront-creds", JSON.stringify(newCreds))
+      wpshopify.settings.connection.storefront = newCreds
+      localStorage.setItem('wps-storefront-creds', JSON.stringify(newCreds))
 
-      builderDispatch({ type: "SET_CUSTOM_CONNECTION", payload: true })
+      builderDispatch({ type: 'SET_CUSTOM_CONNECTION', payload: true })
       setHasCredentials(true)
     }
   }
 
   return (
     <Button isDefault onClick={onClick} disabled={!hasValidCreds()}>
-      {hasCredentials ? "Remove connected Shopify store" : "Load Shopify store"}
+      {hasCredentials ? 'Remove connected Shopify store' : 'Load Shopify store'}
     </Button>
   )
 }

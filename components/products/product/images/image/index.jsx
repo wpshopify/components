@@ -22,32 +22,32 @@ function ProductImage({ image, isFeatured }) {
    function doFeaturedSizing() {
       return addCustomSizingToImageUrl({
          src: image.src,
-         width: shopState.settings.productsImagesSizingWidth,
-         height: shopState.settings.productsImagesSizingHeight,
-         crop: shopState.settings.productsImagesSizingCrop,
-         scale: shopState.settings.productsImagesSizingScale
+         width: shopState.settings.general.productsImagesSizingWidth,
+         height: shopState.settings.general.productsImagesSizingHeight,
+         crop: shopState.settings.general.productsImagesSizingCrop,
+         scale: shopState.settings.general.productsImagesSizingScale
       })
    }
 
    function doThumbnailSizing() {
       return addCustomSizingToImageUrl({
          src: image.src,
-         width: shopState.settings.productsThumbnailImagesSizingWidth,
-         height: shopState.settings.productsThumbnailImagesSizingHeight,
-         crop: shopState.settings.productsThumbnailImagesSizingCrop,
-         scale: shopState.settings.productsThumbnailImagesSizingScale
+         width: shopState.settings.general.productsThumbnailImagesSizingWidth,
+         height: shopState.settings.general.productsThumbnailImagesSizingHeight,
+         crop: shopState.settings.general.productsThumbnailImagesSizingCrop,
+         scale: shopState.settings.general.productsThumbnailImagesSizingScale
       })
    }
 
    function applyImageSizing() {
       if (isFeatured) {
-         if (shopState.settings.productsImagesSizingToggle) {
+         if (shopState.settings.general.productsImagesSizingToggle) {
             return doFeaturedSizing()
          }
 
          return image.src
       } else {
-         if (shopState.settings.productsThumbnailImagesSizingToggle) {
+         if (shopState.settings.general.productsThumbnailImagesSizingToggle) {
             return doThumbnailSizing()
          }
          return image.src

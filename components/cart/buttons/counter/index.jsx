@@ -7,62 +7,68 @@ import { findTotalCartQuantities, isTotalEmpty } from '../../../../common/cart'
 import { useAnime, pulse } from '../../../../common/animations'
 
 function CartCounter() {
-   const [cartState, cartDispatch] = useContext(CartContext)
-   const [shopState] = useContext(ShopContext)
-   const [totalItems, setTotalItems] = useState(findTotalCartQuantities(cartState.checkoutCache.lineItems))
-   const [cartButtonState] = useContext(CartButtonContext)
-   const animePulse = useAnime(pulse)
-   const element = useRef()
+  const [cartState, cartDispatch] = useContext(CartContext)
+  const [shopState] = useContext(ShopContext)
+  const [totalItems, setTotalItems] = useState(
+    findTotalCartQuantities(cartState.checkoutCache.lineItems)
+  )
+  const [cartButtonState] = useContext(CartButtonContext)
+  const animePulse = useAnime(pulse)
+  const element = useRef()
 
-   useEffect(() => {
-      if (!shopState.isCartReady) {
-         return
-      }
+  useEffect(() => {
+    if (!shopState.isCartReady) {
+      return
+    }
 
-      const total = findTotalCartQuantities(cartState.checkoutCache.lineItems)
+    const total = findTotalCartQuantities(cartState.checkoutCache.lineItems)
 
-      setTotalItems(total)
-      animePulse(element.current)
-   }, [shopState.isCartReady, cartState.totalLineItems])
+    setTotalItems(total)
+    animePulse(element.current)
+  }, [shopState.isCartReady, cartState.totalLineItems])
 
-   function counterStyles() {
-      return {
-         backgroundColor: getBackgroundColor(),
-         color: getColor()
-      }
-   }
+  function counterStyles() {
+    return {
+      backgroundColor: getBackgroundColor(),
+      color: getColor()
+    }
+  }
 
-   function getColor() {
-      if (!cartButtonState.componentOptions.counterTextColor) {
-         if (cartButtonState.componentOptions.type !== 'fixed') {
-            return '#000'
-         }
-      }
-
+  function getColor() {
+    if (!cartButtonState.componentOptions.counterTextColor) {
       if (cartButtonState.componentOptions.type !== 'fixed') {
-         return cartButtonState.componentOptions.counterTextColor
+        return '#000'
       }
+    }
 
-      return shopState.settings.cart.colorCartCounterFixed
-   }
+    if (cartButtonState.componentOptions.type !== 'fixed') {
+      return cartButtonState.componentOptions.counterTextColor
+    }
 
-   function getBackgroundColor() {
-      if (!cartButtonState.componentOptions.counterBackgroundColor) {
-         if (cartButtonState.componentOptions.type !== 'fixed') {
-            return shopState.settings.cart.colorCounter
-         }
+    return shopState.settings.general.cartCounterFixedColor
+  }
+
+  function getBackgroundColor() {
+    if (!cartButtonState.componentOptions.counterBackgroundColor) {
+      if (cartButtonState.componentOptions.type !== 'fixed') {
+        return shopState.settings.general.cartCounterColor
       }
+    }
 
-      return cartButtonState.componentOptions.counterBackgroundColor
-   }
+    return cartButtonState.componentOptions.counterBackgroundColor
+  }
 
-   return (
-      <>
-         <span style={counterStyles(cartButtonState)} data-wps-is-big={totalItems > 9 ? true : false} className='wps-cart-counter' ref={element}>
-            {!shopState.isCartReady ? <Loader isLoading={true} /> : totalItems}
-         </span>
-      </>
-   )
+  return (
+    <>
+      <span
+        style={counterStyles(cartButtonState)}
+        data-wps-is-big={totalItems > 9 ? true : false}
+        className='wps-cart-counter'
+        ref={element}>
+        {!shopState.isCartReady ? <Loader isLoading={true} /> : totalItems}
+      </span>
+    </>
+  )
 }
 
 export { CartCounter }

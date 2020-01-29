@@ -1,7 +1,7 @@
-import isEmpty from "lodash/isEmpty"
+import isEmpty from 'lodash/isEmpty'
 
 function hasCustomCheckoutAttributes(shopState) {
-  if (!WP_Shopify.misc.isPro) {
+  if (!wpshopify.misc.isPro) {
     return false
   }
 

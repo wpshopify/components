@@ -59,7 +59,7 @@ function Addresses() {
                </div>
             )}
 
-            <A href={'/' + shopState.settings.customers.accountPageAccount + '/addresses/add'} className='wps-btn wps-btn-secondary wpshopify-btn-auto-width'>
+            <A href={'/' + shopState.settings.general.accountPageAccount + '/addresses/add'} className='wps-btn wps-btn-secondary wpshopify-btn-auto-width'>
                Add new address
             </A>
          </section>

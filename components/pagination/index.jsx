@@ -8,49 +8,62 @@ import { Notices } from '../notices'
 import isEmpty from 'lodash/isEmpty'
 
 function Pagination({ children, shopSettings, miscDispatch }) {
-   const [itemsState] = useContext(ItemsContext)
+  const [itemsState] = useContext(ItemsContext)
 
-   function isHidingPagination() {
-      if (shopSettings.hidePagination) {
-         return true
-      }
+  function isHidingPagination() {
+    if (shopSettings.hidePagination) {
+      return true
+    }
 
-      if (itemsState.componentOptions.pagination) {
-         return false
-      } else {
-         return true
-      }
-   }
-
-   function showNotices() {
-      if (isEmpty(itemsState.payload) && !itemsState.isLoading) {
-         return true
-      }
-
+    if (itemsState.componentOptions.pagination) {
       return false
-   }
+    } else {
+      return true
+    }
+  }
 
-   function isAlignHeight() {
-      if (itemsState.componentOptions.alignHeight) {
-         return true
-      }
+  function showNotices() {
+    if (isEmpty(itemsState.payload) && !itemsState.isLoading) {
+      return true
+    }
 
-      if (shopSettings.layout.alignHeight) {
-         return true
-      }
+    return false
+  }
 
-      return false
-   }
+  function isAlignHeight() {
+    console.log('itemsState.componentOptions', itemsState.componentOptions)
 
-   return (
-      <PaginationProvider options={itemsState}>
-         {!isEmpty(itemsState.notices) && <Notices notices={itemsState.notices} dropzone={document.querySelector(itemsState.componentOptions.dropzoneNotices)} noticeGroup='storefront' />}
+    if (itemsState.componentOptions.alignHeight) {
+      return true
+    }
+    console.log('shopSettings', shopSettings)
 
-         {showNotices() ? <Notice message={itemsState.noResultsText} type='info' /> : <PaginationItems alignHeight={isAlignHeight()}>{children}</PaginationItems>}
+    if (shopSettings.general.alignHeight) {
+      return true
+    }
 
-         {!isHidingPagination() && <PaginationControls miscDispatch={miscDispatch} />}
-      </PaginationProvider>
-   )
+    return false
+  }
+
+  return (
+    <PaginationProvider options={itemsState}>
+      {!isEmpty(itemsState.notices) && (
+        <Notices
+          notices={itemsState.notices}
+          dropzone={document.querySelector(itemsState.componentOptions.dropzoneNotices)}
+          noticeGroup='storefront'
+        />
+      )}
+
+      {showNotices() ? (
+        <Notice message={itemsState.noResultsText} type='info' />
+      ) : (
+        <PaginationItems alignHeight={isAlignHeight()}>{children}</PaginationItems>
+      )}
+
+      {!isHidingPagination() && <PaginationControls miscDispatch={miscDispatch} />}
+    </PaginationProvider>
+  )
 }
 
 export { Pagination }

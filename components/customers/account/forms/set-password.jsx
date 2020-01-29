@@ -38,7 +38,7 @@ function LoginLink({ noticeState, shopState }) {
    return (
       <>
          <Notice message={noticeState.message} type={noticeState.type} />
-         <a href={'/' + shopState.settings.customers.accountPageLogin} className='wps-btn wps-btn-secondary wpshopify-btn-auto-width'>
+         <a href={'/' + shopState.settings.general.accountPageLogin} className='wps-btn wps-btn-secondary wpshopify-btn-auto-width'>
             Login
          </a>
       </>

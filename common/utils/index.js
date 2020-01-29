@@ -3,6 +3,8 @@ import forOwn from "lodash/forOwn"
 import without from "lodash/without"
 import mapKeys from "lodash/mapKeys"
 import isString from "lodash/isString"
+import isObject from "lodash/isObject"
+import isArray from "lodash/isArray"
 import md5 from "js-md5"
 
 import React from "react"
@@ -130,6 +132,35 @@ function _t(string) {
   return __(string, textDomain)
 }
 
+
+
+function toCamel(s) {
+  return s.replace(/([-_][a-z])/gi, $1 => {
+    return $1
+      .toUpperCase()
+      .replace("-", "")
+      .replace("_", "")
+  })
+}
+
+function underscoreToCamel(o) {
+  if (isArray(o)) {
+    return o
+  }
+
+  if (isObject(o)) {
+    const n = {}
+
+    Object.keys(o).forEach(k => {
+      n[toCamel(k)] = underscoreToCamel(o[k])
+    })
+
+    return n
+  }
+
+  return o
+}
+
 export {
   objectIsEmpty,
   createObj,
@@ -143,5 +174,6 @@ export {
   hasHooks,
   FilterHook,
   prettyDate,
-  _t
+  _t,
+  underscoreToCamel
 }

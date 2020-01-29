@@ -1,32 +1,32 @@
-import update from "immutability-helper"
-import some from "lodash/some"
-import concat from "lodash/concat"
-import uniqWith from "lodash/uniqWith"
-import isEqual from "lodash/isEqual"
-import isEmpty from "lodash/isEmpty"
-import { hasHooks } from "../../../common/utils"
+import update from 'immutability-helper'
+import some from 'lodash/some'
+import concat from 'lodash/concat'
+import uniqWith from 'lodash/uniqWith'
+import isEqual from 'lodash/isEqual'
+import isEmpty from 'lodash/isEmpty'
+import { hasHooks } from '../../../common/utils'
 
 function ShopReducer(state, action) {
   switch (action.type) {
-    case "SET_CHECKOUT_ID": {
+    case 'SET_CHECKOUT_ID': {
       return {
         ...state,
         checkoutId: update(state.checkoutId, { $set: action.payload })
       }
     }
-    case "SET_SHOP_INFO": {
+    case 'SET_SHOP_INFO': {
       return {
         ...state,
         info: update(state.info, { $set: action.payload })
       }
     }
-    case "SET_HOOKS_COMPATIBLE": {
+    case 'SET_HOOKS_COMPATIBLE': {
       return {
         ...state,
         hooksCompatible: update(state.hooksCompatible, { $set: action.payload })
       }
     }
-    case "IS_SHOP_READY": {
+    case 'IS_SHOP_READY': {
       const newState = {
         ...state,
         isShopReady: update(state.isShopReady, {
@@ -35,13 +35,12 @@ function ShopReducer(state, action) {
       }
 
       // App is ready to go
-      hasHooks() && wp.hooks.doAction("after.ready", newState.settings) // legacy
-      hasHooks() && wp.hooks.doAction("after.shop.ready", newState)
+      hasHooks() && wp.hooks.doAction('after.shop.ready', newState)
 
       return newState
     }
 
-    case "IS_CART_READY": {
+    case 'IS_CART_READY': {
       const newState = {
         ...state,
         isCartReady: update(state.isCartReady, {
@@ -50,12 +49,12 @@ function ShopReducer(state, action) {
       }
 
       // Cart is ready to go
-      hasHooks() && wp.hooks.doAction("after.cart.ready", newState)
+      hasHooks() && wp.hooks.doAction('after.cart.ready', newState)
 
       return newState
     }
 
-    case "UPDATE_NOTICES": {
+    case 'UPDATE_NOTICES': {
       let updatedNotices = state.notices
 
       if (!some(state.notices, action.payload)) {
@@ -70,18 +69,15 @@ function ShopReducer(state, action) {
       }
     }
 
-    case "SET_CHECKOUT_DISCOUNT_CODE": {
+    case 'SET_CHECKOUT_DISCOUNT_CODE': {
       return {
         ...state,
         discountCode: update(state.discountCode, { $set: action.payload })
       }
     }
 
-    case "UPDATE_CHECKOUT_ATTRIBUTES": {
-      let attributes = uniqWith(
-        concat(state.customAttributes, [action.payload]),
-        isEqual
-      )
+    case 'UPDATE_CHECKOUT_ATTRIBUTES': {
+      let attributes = uniqWith(concat(state.customAttributes, [action.payload]), isEqual)
 
       return {
         ...state,
@@ -89,8 +85,7 @@ function ShopReducer(state, action) {
       }
     }
 
-    case "SET_CHECKOUT_ATTRIBUTES": {
-       
+    case 'SET_CHECKOUT_ATTRIBUTES': {
       if (isEmpty(action.payload)) {
         var newCheckoutAttributes = []
       } else {
@@ -105,8 +100,8 @@ function ShopReducer(state, action) {
       }
     }
 
-    case "SET_CHECKOUT_NOTE": {
-      hasHooks() && wp.hooks.doAction("on.checkout.note", action.payload)
+    case 'SET_CHECKOUT_NOTE': {
+      hasHooks() && wp.hooks.doAction('on.checkout.note', action.payload)
 
       return {
         ...state,
@@ -114,8 +109,7 @@ function ShopReducer(state, action) {
       }
     }
 
-    case "SET_DIRECT_CHECKOUT_OCCURING": {
-
+    case 'SET_DIRECT_CHECKOUT_OCCURING': {
       return {
         ...state,
         isDirctCheckoutOccuring: update(state.isDirctCheckoutOccuring, { $set: action.payload })

@@ -1,36 +1,45 @@
-import React, { useContext, useRef } from "react"
-import { ShopContext } from "../../shop/_state/context"
-import { CartContext } from "../_state/context"
-import { Loader } from "../../loader"
-import { hasHooks, FilterHook } from "../../../common/utils"
-import { hasCustomCheckoutAttributes } from "../../../common/checkout"
+import React, { useContext, useRef } from 'react'
+import { ShopContext } from '../../shop/_state/context'
+import { CartContext } from '../_state/context'
+import { Loader } from '../../loader'
+import { hasHooks, FilterHook } from '../../../common/utils'
+import { hasCustomCheckoutAttributes } from '../../../common/checkout'
 
 import {
   replaceLineItems,
   updateCheckoutAttributes,
   addDiscount
-} from "/Users/andrew/www/devil/devilbox-new/data/www/wpshopify-api"
-import isEmpty from "lodash/isEmpty"
-import to from "await-to-js"
+} from '/Users/andrew/www/devil/devilbox-new/data/www/wpshopify-api'
+import isEmpty from 'lodash/isEmpty'
+import to from 'await-to-js'
+
+function hasCustomDomain(shopState, checkout) {
+  if (!shopState.settings.general.enableCustomCheckoutDomain) {
+    return false
+  }
+
+  // If URL contains myshopify.com
+  if (hasManagedDomain(checkout.webUrl)) {
+    return false
+  }
+
+  return true
+}
 
 function checkoutRedirectOnly(checkout, shopState) {
   var target = checkoutWindowTarget(shopState)
 
-  if (
-    !shopState.settings.enableCustomCheckoutDomain ||
-    !hasManagedDomain(checkout.webUrl)
-  ) {
-    return managedDomainRedirect(checkout, target)
+  if (hasCustomDomain(shopState, checkout)) {
+    customDomainRedirect(checkout, shopState, target)
   }
 
-  customDomainRedirect(checkout, shopState, target)
+  return managedDomainRedirect(checkout, target)
 }
 
 function hasDiscount(checkout, shopState) {
   /* @if NODE_ENV='pro' */
   var hasCustomDiscount =
-    hasHooks() &&
-    wp.hooks.applyFilters("set.checkout.discount", false, checkout)
+    hasHooks() && wp.hooks.applyFilters('set.checkout.discount', false, checkout)
 
   if (hasCustomDiscount) {
     return hasCustomDiscount
@@ -43,8 +52,7 @@ function hasDiscount(checkout, shopState) {
 function checkoutRedirect(checkout, shopState) {
   const discountCode = hasDiscount(checkout, shopState)
 
-  hasHooks() &&
-    wp.hooks.doAction("before.checkout.redirect", checkout, shopState)
+  hasHooks() && wp.hooks.doAction('before.checkout.redirect', checkout, shopState)
 
   if (discountCode) {
     addDiscount(discountCode, checkout).then(
@@ -52,7 +60,7 @@ function checkoutRedirect(checkout, shopState) {
         checkoutRedirectOnly(value, shopState)
       },
       reason => {
-        console.error("addDiscount error", reason) // Error!
+        console.error('addDiscount error', reason) // Error!
       }
     )
   } else {
@@ -61,7 +69,7 @@ function checkoutRedirect(checkout, shopState) {
 }
 
 function hasManagedDomain(url) {
-  return url.includes("myshopify.com")
+  return url.includes('myshopify.com')
 }
 
 function managedDomainRedirect(checkout, target) {
@@ -79,6 +87,10 @@ function hasGaLoaded() {
 }
 
 function decorateCheckoutUrl(link) {
+  if (!window.gaplugins || !window.gaplugins.Linker) {
+    return link
+  }
+
   var tracker = ga.getAll()[0]
   var linker = new window.gaplugins.Linker(tracker)
 
@@ -91,9 +103,7 @@ function redirect(checkoutUrl, target) {
 
 function customDomainRedirect(checkout, shopState, target) {
   if (hasGaLoaded()) {
-    var checkoutUrl = decorateCheckoutUrl(
-      checkoutUrlWithCustomDomain(shopState, checkout.webUrl)
-    )
+    var checkoutUrl = decorateCheckoutUrl(checkoutUrlWithCustomDomain(shopState, checkout.webUrl))
   } else {
     var checkoutUrl = checkoutUrlWithCustomDomain(shopState, checkout.webUrl)
   }
@@ -108,18 +118,14 @@ function checkoutUrlWithCustomDomain(shopState, webUrl) {
 function checkoutWindowTarget(shopState) {
   if (shopState.isMobile) {
     // cartDispatch({ type: "SET_IS_CHECKING_OUT", payload: false })
-    return "_self"
+    return '_self'
   }
 
-  //   if (shopState.settings.checkoutButtonTarget === "_blank") {
-  //     // cartDispatch({ type: "SET_IS_CHECKING_OUT", payload: false })
-  //   }
-
-  return shopState.settings.checkoutButtonTarget
+  return shopState.settings.general.checkoutButtonTarget
 }
 
 function extractCheckoutURL(webUrl) {
-  return webUrl.split("myshopify.com")[1]
+  return webUrl.split('myshopify.com')[1]
 }
 
 function CartCheckout() {
@@ -128,14 +134,14 @@ function CartCheckout() {
   const checkoutButton = useRef()
 
   async function onCheckout() {
-    cartDispatch({ type: "UPDATE_NOTICES", payload: [] })
-    cartDispatch({ type: "SET_IS_CHECKING_OUT", payload: true })
+    cartDispatch({ type: 'UPDATE_NOTICES', payload: [] })
+    cartDispatch({ type: 'SET_IS_CHECKING_OUT', payload: true })
 
-    hasHooks() && wp.hooks.doAction("on.checkout", cartState.checkoutCache)
+    hasHooks() && wp.hooks.doAction('on.checkout', cartState.checkoutCache)
 
     var lineItems = hasHooks()
       ? wp.hooks.applyFilters(
-          "before.checkout.lineItems",
+          'before.checkout.lineItems',
           cartState.checkoutCache.lineItems,
           cartState
         )
@@ -146,18 +152,18 @@ function CartCheckout() {
     )
 
     if (checkoutWithLineitemsError) {
-      cartDispatch({ type: "SET_IS_CHECKING_OUT", payload: false })
+      cartDispatch({ type: 'SET_IS_CHECKING_OUT', payload: false })
       return cartDispatch({
-        type: "UPDATE_NOTICES",
-        payload: { type: "error", message: checkoutWithLineitemsError }
+        type: 'UPDATE_NOTICES',
+        payload: { type: 'error', message: checkoutWithLineitemsError }
       })
     }
 
     if (isEmpty(checkoutWithLineitems.lineItems)) {
-      cartDispatch({ type: "SET_IS_CHECKING_OUT", payload: false })
+      cartDispatch({ type: 'SET_IS_CHECKING_OUT', payload: false })
       return cartDispatch({
-        type: "UPDATE_NOTICES",
-        payload: { type: "error", message: "No line items exist " }
+        type: 'UPDATE_NOTICES',
+        payload: { type: 'error', message: 'No line items exist ' }
       })
     }
 
@@ -170,10 +176,10 @@ function CartCheckout() {
       )
 
       if (checkoutWithAttrsError) {
-        cartDispatch({ type: "SET_IS_CHECKING_OUT", payload: false })
+        cartDispatch({ type: 'SET_IS_CHECKING_OUT', payload: false })
         return cartDispatch({
-          type: "UPDATE_NOTICES",
-          payload: { type: "error", message: checkoutWithAttrsError }
+          type: 'UPDATE_NOTICES',
+          payload: { type: 'error', message: checkoutWithAttrsError }
         })
       }
 
@@ -185,13 +191,13 @@ function CartCheckout() {
 
   function buttonStyle() {
     return {
-      backgroundColor: shopState.settings.cart.checkoutButtonColor
+      backgroundColor: shopState.settings.general.checkoutColor
     }
   }
 
   return (
     <>
-      <FilterHook name="cart.checkout.before" args={[cartState]} />
+      <FilterHook name='cart.checkout.before' args={[cartState]} />
 
       <CartCheckoutButton
         onCheckout={onCheckout}
@@ -200,7 +206,7 @@ function CartCheckout() {
         buttonRef={checkoutButton}
       />
 
-      <FilterHook name="cart.checkout.after" args={[cartState]} />
+      <FilterHook name='cart.checkout.after' args={[cartState]} />
     </>
   )
 }
@@ -211,16 +217,11 @@ function CartCheckoutButton({ buttonStyle, onCheckout, shopState, buttonRef }) {
   return (
     <button
       ref={buttonRef}
-      className="wps-btn wps-btn-checkout"
+      className='wps-btn wps-btn-checkout'
       onClick={onCheckout}
-      data-wps-is-ready={shopState.isCartReady ? "1" : "0"}
-      disabled={
-        cartState.isCheckingOut ||
-        !cartState.termsAccepted ||
-        cartState.isCartEmpty
-      }
-      style={buttonStyle()}
-    >
+      data-wps-is-ready={shopState.isCartReady ? '1' : '0'}
+      disabled={cartState.isCheckingOut || !cartState.termsAccepted || cartState.isCartEmpty}
+      style={buttonStyle()}>
       {cartState.isCheckingOut ? (
         <Loader isLoading={cartState.isCheckingOut} />
       ) : (

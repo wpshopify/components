@@ -1,23 +1,23 @@
 function shopActive() {
-   if (!WP_Shopify.shop) {
-      return false
-   } else {
-      return true
-   }
+  if (!wpshopify.shop) {
+    return false
+  } else {
+    return true
+  }
 }
 
 function getShop() {
-   return WP_Shopify.shop
+  return wpshopify.shop
 }
 
 function setShop(shop) {
-   if (!shopActive()) {
-      WP_Shopify.shop = shop
-   }
+  if (!shopActive()) {
+    wpshopify.shop = shop
+  }
 }
 
 function getMoneyFormat(shop) {
-   return shop.moneyFormat
+  return shop.moneyFormat
 }
 
 export { getMoneyFormat, getShop, setShop }

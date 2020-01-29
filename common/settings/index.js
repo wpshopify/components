@@ -1,5 +1,5 @@
-import has from "lodash/has"
-import { convertTitleToHandle } from "../utils"
+import has from 'lodash/has'
+import { convertTitleToHandle } from '../utils'
 
 /*
 
@@ -7,32 +7,23 @@ hasEnableCustomCheckoutDomain
 
 */
 function hasEnableCustomCheckoutDomain() {
-  return WP_Shopify.settings.enableCustomCheckoutDomain
-}
-
-/*
-
-hasCurrencyCode
-
-*/
-function hasCurrencyCode() {
-  return WP_Shopify.settings.hasCurrencyCode
+  return wpshopify.settings.general.enableCustomCheckoutDomain
 }
 
 function singleIsShopify() {
-  return WP_Shopify.settings.itemsLinkToShopify
+  return wpshopify.settings.general.productsLinkToShopify
 }
 
 function isLiteSync() {
-  return WP_Shopify.settings.isLiteSync
+  return wpshopify.settings.general.isLiteSync
 }
 
 function isSyncingPosts() {
-  return WP_Shopify.settings.isSyncingPosts
+  return wpshopify.settings.general.isSyncingPosts
 }
 
 function isDisablingDefaultPages() {
-  return WP_Shopify.settings.disableDefaultPages
+  return wpshopify.settings.general.disableDefaultPages
 }
 
 function hasSinglePage() {
@@ -48,15 +39,15 @@ function hasSinglePage() {
 }
 
 function shopHasInfo(shop) {
-  return has(shop, "info")
+  return has(shop, 'info')
 }
 
 function getShopifySingleLink(payload, shopInfo, type) {
   if (!payload.onlineStoreUrl) {
     if (shopInfo) {
-      return shopInfo.primaryDomain.url + "/" + type + "/" + payload.handle
+      return shopInfo.primaryDomain.url + '/' + type + '/' + payload.handle
     } else {
-      return "#!"
+      return '#!'
     }
   }
 
@@ -64,34 +55,31 @@ function getShopifySingleLink(payload, shopInfo, type) {
 }
 
 function getWordPressSingleLink(payload) {
-  let itemHandle = ""
-  let urlBase = ""
+  let itemHandle = ''
+  let urlBase = ''
 
-  if (has(payload, "handle")) {
+  if (has(payload, 'handle')) {
     itemHandle = payload.handle
-  } else if (has(payload, "productTitle")) {
+  } else if (has(payload, 'productTitle')) {
     itemHandle = convertTitleToHandle(payload.productTitle)
   }
 
-  if (payload.type.name === "Collection") {
-    urlBase = WP_Shopify.settings.urlCollections
-  } else if (
-    payload.type.name === "Product" ||
-    payload.type.name === "ProductVariant"
-  ) {
-    urlBase = WP_Shopify.settings.urlProducts
+  if (payload.type.name === 'Collection') {
+    urlBase = wpshopify.settings.general.urlCollections
+  } else if (payload.type.name === 'Product' || payload.type.name === 'ProductVariant') {
+    urlBase = wpshopify.settings.general.urlProducts
   }
 
-  return urlBase + "/" + itemHandle
+  return urlBase + '/' + itemHandle
 }
 
 function getItemLink(payload, shopInfo, type, linkTo) {
   // Manual links
-  if (linkTo === "shopify") {
+  if (linkTo === 'shopify') {
     return getShopifySingleLink(payload, shopInfo, type)
   }
 
-  if (linkTo === "single") {
+  if (linkTo === 'single') {
     return getWordPressSingleLink(payload)
   }
 
@@ -104,7 +92,6 @@ function getItemLink(payload, shopInfo, type, linkTo) {
 
 export {
   hasEnableCustomCheckoutDomain,
-  hasCurrencyCode,
   hasSinglePage,
   getShopifySingleLink,
   getWordPressSingleLink,

@@ -1,17 +1,17 @@
-import React, { useContext, useRef, useEffect, useState } from "react"
-import { CartContext } from "../../cart/_state/context"
-import { ShopContext } from "../../shop/_state/context"
-import { Link } from "../../link"
-import { CartLineItemQuantity } from "./quantity"
-import { formatPriceToCurrency } from "../../../common/pricing/formatting"
-import { calcLineItemTotal, isAvailable } from "../../../common/products"
-import { addCustomSizingToImageUrl } from "../../../common/images"
-import { containerFluidCSS } from "../../../common/css"
-import { Notice } from "../../notice"
+import React, { useContext, useRef, useEffect, useState } from 'react'
+import { CartContext } from '../../cart/_state/context'
+import { ShopContext } from '../../shop/_state/context'
+import { Link } from '../../link'
+import { CartLineItemQuantity } from './quantity'
+import { formatPriceToCurrency } from '../../../common/pricing/formatting'
+import { calcLineItemTotal, isAvailable } from '../../../common/products'
+import { addCustomSizingToImageUrl } from '../../../common/images'
+import { containerFluidCSS } from '../../../common/css'
+import { Notice } from '../../notice'
 /** @jsx jsx */
-import { jsx, css } from "@emotion/core"
-import find from "lodash/find"
-import { hasHooks } from "../../../common/utils"
+import { jsx, css } from '@emotion/core'
+import find from 'lodash/find'
+import { hasHooks } from '../../../common/utils'
 
 function getLineItemFromState(lineItem, lineItemsFromState) {
   return find(lineItemsFromState, { variantId: lineItem.id })
@@ -32,7 +32,7 @@ function CartLineItem({ lineItem, index }) {
 
   function removeLineItem(e) {
     cartDispatch({
-      type: "REMOVE_LINE_ITEM",
+      type: 'REMOVE_LINE_ITEM',
       payload: {
         lineItem: variantId.current,
         checkoutId: shopState.checkoutId
@@ -40,7 +40,7 @@ function CartLineItem({ lineItem, index }) {
     })
 
     cartDispatch({
-      type: "UPDATE_LINE_ITEM_QUANTITY",
+      type: 'UPDATE_LINE_ITEM_QUANTITY',
       payload: {
         lineItem: {
           variantId: variantId.current,
@@ -52,23 +52,18 @@ function CartLineItem({ lineItem, index }) {
   }
 
   useEffect(() => {
-    let lineItemFound = getLineItemFromState(
-      lineItem,
-      cartState.checkoutCache.lineItems
-    )
+    let lineItemFound = getLineItemFromState(lineItem, cartState.checkoutCache.lineItems)
 
     if (lineItemFound) {
       variantId.current = lineItemFound.variantId
 
       setLineItemQuantity(lineItemFound.quantity)
-      setLineItemTotal(
-        calcLineItemTotal(lineItem.price, lineItemFound.quantity)
-      )
+      setLineItemTotal(calcLineItemTotal(lineItem.price, lineItemFound.quantity))
     }
   }, [cartState.checkoutCache.lineItems])
 
   function placeholderImageUrl() {
-    return WP_Shopify.pluginsDirURL + "public/imgs/placeholder.png"
+    return wpshopify.misc.pluginsDirURL + 'public/imgs/placeholder.png'
   }
 
   function actualImageUrl() {
@@ -76,7 +71,7 @@ function CartLineItem({ lineItem, index }) {
       src: lineItem.image.src,
       width: 300,
       height: 300,
-      crop: "center"
+      crop: 'center'
     })
   }
 
@@ -87,60 +82,49 @@ function CartLineItem({ lineItem, index }) {
   }
 
   function hasRealVariant() {
-    return lineItem.title !== "Default Title"
+    return lineItem.title !== 'Default Title'
   }
 
   const manualLink = hasHooks()
-    ? wp.hooks.applyFilters("cart.lineItems.link", false, lineItem, cartState)
+    ? wp.hooks.applyFilters('cart.lineItems.link', false, lineItem, cartState)
     : false
 
   const disableLink = hasHooks()
-    ? wp.hooks.applyFilters(
-        "cart.lineItems.disableLink",
-        false,
-        lineItem,
-        cartState
-      )
+    ? wp.hooks.applyFilters('cart.lineItems.disableLink', false, lineItem, cartState)
     : false
 
   return (
     <div
-      className="wps-cart-lineitem mr-0 ml-0 row"
+      className='wps-cart-lineitem mr-0 ml-0 row'
       data-wps-is-updating={isUpdating}
       data-wps-is-available={isAvailable(lineItem)}
-      ref={lineItemElement}
-    >
+      ref={lineItemElement}>
       <Link
         payload={lineItem}
         shop={shopState}
-        type="products"
-        classNames="wps-cart-lineitem-img-link"
-        target="_blank"
+        type='products'
+        classNames='wps-cart-lineitem-img-link'
+        target='_blank'
         manualLink={manualLink}
-        disableLink={disableLink}
-      >
+        disableLink={disableLink}>
         <div
-          className="wps-cart-lineitem-img"
+          className='wps-cart-lineitem-img'
           style={lineItemImage()}
-          data-wps-is-ready={shopState.isCartReady ? "1" : "0"}
+          data-wps-is-ready={shopState.isCartReady ? '1' : '0'}
         />
       </Link>
 
-      <div className="wps-cart-lineitem-content">
+      <div className='wps-cart-lineitem-content'>
         <div
-          className="wps-cart-lineitem-title col-12 p-0"
-          data-wps-is-ready={shopState.isCartReady ? "1" : "0"}
-          data-wps-is-empty={hasRealVariant() ? "false" : "true"}
-        >
-          <div className="p-0" css={containerFluidCSS}>
-            <div className="row">
-              <span className="wps-cart-lineitem-title-content col-9">
+          className='wps-cart-lineitem-title col-12 p-0'
+          data-wps-is-ready={shopState.isCartReady ? '1' : '0'}
+          data-wps-is-empty={hasRealVariant() ? 'false' : 'true'}>
+          <div className='p-0' css={containerFluidCSS}>
+            <div className='row'>
+              <span className='wps-cart-lineitem-title-content col-9'>
                 {lineItem.product.title}
               </span>
-              <span
-                className="wps-cart-lineitem-remove"
-                onClick={removeLineItem}
-              >
+              <span className='wps-cart-lineitem-remove' onClick={removeLineItem}>
                 Remove
               </span>
             </div>
@@ -149,19 +133,18 @@ function CartLineItem({ lineItem, index }) {
 
         {hasRealVariant() && (
           <div
-            className="wps-cart-lineitem-variant-title badge badge-pill badge-dark col-12"
-            data-wps-is-ready={shopState.isCartReady}
-          >
+            className='wps-cart-lineitem-variant-title badge badge-pill badge-dark col-12'
+            data-wps-is-ready={shopState.isCartReady}>
             {lineItem.title}
           </div>
         )}
 
         {!isAvailable(lineItem) ? (
-          <Notice type="warning" message="Out of stock" />
+          <Notice type='warning' message='Out of stock' />
         ) : (
-          <div className="p-0" css={containerFluidCSS}>
-            <div className="row">
-              <div className="col-8">
+          <div className='p-0' css={containerFluidCSS}>
+            <div className='row'>
+              <div className='col-8'>
                 <CartLineItemQuantity
                   lineItem={lineItem}
                   variantId={variantId}
@@ -174,17 +157,13 @@ function CartLineItem({ lineItem, index }) {
                 />
               </div>
 
-              <div className="wps-cart-lineitem-price-total-wrapper">
+              <div className='wps-cart-lineitem-price-total-wrapper'>
                 <div
-                  className="wps-cart-lineitem-price wps-cart-lineitem-price-total"
-                  data-wps-is-ready={shopState.isCartReady ? "1" : "0"}
-                  ref={lineItemTotalElement}
-                >
+                  className='wps-cart-lineitem-price wps-cart-lineitem-price-total'
+                  data-wps-is-ready={shopState.isCartReady ? '1' : '0'}
+                  ref={lineItemTotalElement}>
                   {shopState.isCartReady &&
-                    formatPriceToCurrency(
-                      lineItemTotal,
-                      shopState.info.currencyCode
-                    )}
+                    formatPriceToCurrency(lineItemTotal, shopState.info.currencyCode)}
                 </div>
               </div>
             </div>

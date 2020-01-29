@@ -64,7 +64,7 @@ function CustomerFormLogin() {
          return
       }
 
-      window.location.replace('/' + shopState.settings.customers.accountPageAccount)
+      window.location.replace('/' + shopState.settings.general.accountPageAccount)
    }
 
    function onSubmit(e) {

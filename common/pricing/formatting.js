@@ -1,15 +1,5 @@
-import has from "lodash/has"
-import { hasCurrencyCode } from "../settings"
-import { getMoneyFormat, getShop } from "../shop"
-import { getLocalCurrencyCodeCache } from "./currency"
-import { maybeConvertPriceToLocalCurrency } from "./conversion"
-import {
-  currencyDisplayStyle,
-  showingCurrencyCode,
-  showingLocalCurrency,
-  hideDecimals,
-  hideDecimalsOnlyZeros
-} from "../globals"
+import has from 'lodash/has'
+import { currencyDisplayStyle, hideDecimals, hideDecimalsOnlyZeros } from '../globals'
 
 function hasDecimal(num) {
   return num % 1 != 0
@@ -38,7 +28,7 @@ function formatNumber(config) {
     config.locale,
     maybeHideDecimals(
       {
-        style: "currency",
+        style: 'currency',
         currency: config.countryCode,
         currencyDisplay: config.currencyDisplay
       },
@@ -60,7 +50,7 @@ Config: {
 */
 function formatPrice(config) {
   // Uses the browser locale by default
-  if (!has(config, "locale")) {
+  if (!has(config, 'locale')) {
     config.locale = false
   }
 

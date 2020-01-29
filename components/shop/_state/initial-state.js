@@ -1,3 +1,5 @@
+import { underscoreToCamel } from "../../../common/utils"
+
 function ShopInitialState(options = false) {
   return {
     checkout: { lineItems: [] },
@@ -11,17 +13,17 @@ function ShopInitialState(options = false) {
     },
     notices: [],
     info: {
-      currencyCode: "USD",
+      currencyCode: 'USD',
       primaryDomain: {
-        url: ""
+        url: ''
       }
     },
     isDirctCheckoutOccuring: false,
     isCartEmpty: true,
-    isMobile: WP_Shopify.misc.is_mobile,
-    settings: WP_Shopify.settings,
+    isMobile: wpshopify.misc.isMobile,
     hooksCompatible: false,
-    discountCode: false
+    discountCode: false,
+    settings: underscoreToCamel(wpshopify.settings)
   }
 }
 

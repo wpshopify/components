@@ -48,7 +48,7 @@ function Order({ order }) {
    return (
       <tr>
          <Td extraCSS={tableTdLink}>
-            <A href={'/' + shopState.settings.customers.accountPageAccount + '/order'} onClick={onClick} css={cellLinkStyles}>
+            <A href={'/' + shopState.settings.general.accountPageAccount + '/order'} onClick={onClick} css={cellLinkStyles}>
                {order.node.name}
             </A>
          </Td>

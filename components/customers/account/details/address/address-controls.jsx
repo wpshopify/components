@@ -74,7 +74,7 @@ function AccountAddressControls({ address }) {
    return (
       !customerState.selectedAddress && (
          <div className='wps-account-address-controls' css={stylesControlWrapper}>
-            <A href={'/' + shopState.settings.customers.accountPageAccount + '/addresses/edit'} onClick={onEdit} css={stylesControl}>
+            <A href={'/' + shopState.settings.general.accountPageAccount + '/addresses/edit'} onClick={onEdit} css={stylesControl}>
                Edit
             </A>
             <a href='#!' onClick={onDelete} css={stylesControl}>

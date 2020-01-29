@@ -9,58 +9,60 @@ import { usePortal } from '../../../../common/hooks'
 import { isCartEmpty } from '../../../../common/cart'
 
 function CartButton({ options }) {
-   const [shopState] = useContext(ShopContext)
-   const [cartState, cartDispatch] = useContext(CartContext)
-   const counterElement = useRef()
-   const isFirstRender = useRef(true)
-   const animeSlideInRight = useAnime(slideInRight)
+  const [shopState] = useContext(ShopContext)
+  const [cartState, cartDispatch] = useContext(CartContext)
+  const counterElement = useRef()
+  const isFirstRender = useRef(true)
+  const animeSlideInRight = useAnime(slideInRight)
 
-   useEffect(() => {
-      if (!shopState.isShopReady) {
-         return
-      }
+  useEffect(() => {
+    if (!shopState.isShopReady) {
+      return
+    }
 
-      if (options.componentOptions.type === 'fixed' && shopState.settings.cart.showFixedCartIcon) {
-         animeSlideInRight(counterElement.current)
-      }
-   }, [shopState.isShopReady])
+    if (options.componentOptions.type === 'fixed' && shopState.settings.general.showFixedCartTab) {
+      animeSlideInRight(counterElement.current)
+    }
+  }, [shopState.isShopReady])
 
-   function getIconColor() {
-      if (options.componentOptions.type === 'fixed') {
-         return shopState.settings.cart.colorCartBackgroundFixed
-      }
+  function getIconColor() {
+    if (options.componentOptions.type === 'fixed') {
+      return shopState.settings.general.cartFixedBackgroundColor
+    }
 
-      return ''
-   }
+    return ''
+  }
 
-   function iconStyles() {
-      return {
-         backgroundColor: getIconColor()
-      }
-   }
+  function iconStyles() {
+    return {
+      backgroundColor: getIconColor()
+    }
+  }
 
-   function onClick() {
-      cartDispatch({ type: 'TOGGLE_CART', payload: true })
-   }
+  function onClick() {
+    cartDispatch({ type: 'TOGGLE_CART', payload: true })
+  }
 
-   return usePortal(
-      <>
-         <CartButtonProvider options={options}>
-            <button
-               data-is-cart-ready={shopState.isCartReady ? '1' : '0'}
-               role='button'
-               ref={counterElement}
-               className={`wps-btn-cart wps-cart-icon-${options.componentOptions.type} ${isCartEmpty(cartState.checkoutCache.lineItems) ? 'wps-cart-is-empty' : ''}`}
-               onClick={onClick}
-               style={iconStyles()}>
-               {options.componentOptions.showCounter && <CartCounter />}
+  return usePortal(
+    <>
+      <CartButtonProvider options={options}>
+        <button
+          data-is-cart-ready={shopState.isCartReady ? '1' : '0'}
+          role='button'
+          ref={counterElement}
+          className={`wps-btn-cart wps-cart-icon-${options.componentOptions.type} ${
+            isCartEmpty(cartState.checkoutCache.lineItems) ? 'wps-cart-is-empty' : ''
+          }`}
+          onClick={onClick}
+          style={iconStyles()}>
+          {options.componentOptions.showCounter && <CartCounter />}
 
-               <CartIcon />
-            </button>
-         </CartButtonProvider>
-      </>,
-      options.componentElement
-   )
+          <CartIcon />
+        </button>
+      </CartButtonProvider>
+    </>,
+    options.componentElement
+  )
 }
 
 export { CartButton }

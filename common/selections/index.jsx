@@ -5,36 +5,37 @@ import without from 'lodash/without'
 import difference from 'lodash/difference'
 import isEmpty from 'lodash/isEmpty'
 import hasIn from 'lodash/hasIn'
+import isString from 'lodash/isString'
 import { objectIsEmpty } from '../utils'
 
 function updateSelectionList(params) {
-   if (!params.isSelected) {
-      return without(params.currentList, params.selectedValue)
-   }
+  if (!params.isSelected) {
+    return without(params.currentList, params.selectedValue)
+  }
 
-   return union([params.selectedValue], params.currentList)
+  return union([params.selectedValue], params.currentList)
 }
 
 function isSelectionsOfTypeEmpty(selections, type) {
-   return !selections[type]
+  return !selections[type]
 }
 
 function findDeselectedValue(localSelectedState, globalSelectionsTypeList) {
-   return difference(localSelectedState, globalSelectionsTypeList)
+  return difference(localSelectedState, globalSelectionsTypeList)
 }
 
 function foundDeselectedValue(removedValue, localValue) {
-   return removedValue[0] === localValue
+  return removedValue[0] === localValue
 }
 
 function getSelectionTypes(selections) {
-   var filterTypes = Object.keys(selections)
+  var filterTypes = Object.keys(selections)
 
-   if (isEmpty(filterTypes) || objectIsEmpty(selections)) {
-      return []
-   }
+  if (isEmpty(filterTypes) || objectIsEmpty(selections)) {
+    return []
+  }
 
-   return filterTypes
+  return filterTypes
 }
 
 /*
@@ -43,41 +44,58 @@ When selections are removed ...
 
 */
 function isCurrentlySelected(selections, valueSelected, type) {
-   var selected = false
+  var selected = false
 
-   if (isEmpty(selections)) {
+  if (isEmpty(selections)) {
+    selected = false
+  } else {
+    if (!hasIn(selections, type)) {
       selected = false
-   } else {
-      if (!hasIn(selections, type)) {
-         selected = false
-      } else if (selections[type].find(value => valueSelected === value)) {
-         selected = true
-      }
-   }
+    } else if (selections[type].find(value => valueSelected === value)) {
+      selected = true
+    }
+  }
 
-   return selected
+  return selected
 }
 
 function createSelectionsOfType(itemType, typeSelections) {
-   const temp = {}
+  const temp = {}
 
-   temp[itemType] = typeSelections
+  temp[itemType] = typeSelections
 
-   return temp
+  return temp
 }
 
 function buildNewSelection(itemValue, itemType, isSelected, existingSelections) {
-   if (!itemValue) {
-      return updateSelectionList({
-         currentList: existingSelections[itemType]
-      })
-   }
+  if (!itemValue) {
+    return updateSelectionList({
+      currentList: existingSelections[itemType]
+    })
+  }
+  console.log('itemValue', itemValue)
+  console.log('itemType', itemType)
 
-   return updateSelectionList({
-      isSelected: !isSelected,
-      currentList: existingSelections[itemType],
-      selectedValue: itemValue.toLowerCase()
-   })
+  if (isString(itemValue)) {
+    var newSelectedVal = itemValue.toLowerCase()
+  } else {
+    var newSelectedVal = itemValue
+  }
+
+  return updateSelectionList({
+    isSelected: !isSelected,
+    currentList: existingSelections[itemType],
+    selectedValue: newSelectedVal
+  })
 }
 
-export { updateSelectionList, isSelectionsOfTypeEmpty, findDeselectedValue, foundDeselectedValue, isCurrentlySelected, getSelectionTypes, createSelectionsOfType, buildNewSelection }
+export {
+  updateSelectionList,
+  isSelectionsOfTypeEmpty,
+  findDeselectedValue,
+  foundDeselectedValue,
+  isCurrentlySelected,
+  getSelectionTypes,
+  createSelectionsOfType,
+  buildNewSelection
+}

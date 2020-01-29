@@ -57,7 +57,7 @@ function AccountDetails() {
 
                <AccountDetailsDefaultAddress />
 
-               <A href={'/' + shopState.settings.customers.accountPageAccount + '/addresses'} onClick={onClick} className='wps-view-addresses' css={stylesViewAddresses}>
+               <A href={'/' + shopState.settings.general.accountPageAccount + '/addresses'} onClick={onClick} className='wps-view-addresses' css={stylesViewAddresses}>
                   View all addresses ({customerState.customer.addresses.edges.length})
                </A>
             </div>

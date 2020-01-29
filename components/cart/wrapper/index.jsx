@@ -187,7 +187,7 @@ function CartWrapper() {
   }, [shopState.isDirctCheckoutOccuring])
 
   return (
-    shopState.settings.cart.cartLoaded && (
+    shopState.settings.general.cartLoaded && (
       <section ref={cart} className="wps-cart">
         <CartButtons buttons={cartState.buttons} />
         <CartHeader />

@@ -15,7 +15,7 @@ function AccountReturn({ path = '', text, onInner }) {
    }
 
    return (
-      <A href={'/' + shopState.settings.customers.accountPageAccount + path} onClick={onClick}>
+      <A href={'/' + shopState.settings.general.accountPageAccount + path} onClick={onClick}>
          {text}
       </A>
    )

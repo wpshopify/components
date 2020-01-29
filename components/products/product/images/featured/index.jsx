@@ -36,7 +36,7 @@ function ProductFeaturedImage() {
 
    function showZoom() {
       if (isNull(itemsState.componentOptions.showZoom)) {
-         return shopState.settings.productsImagesShowZoom
+         return shopState.settings.general.productsImagesShowZoom
       }
 
       return itemsState.componentOptions.showZoom

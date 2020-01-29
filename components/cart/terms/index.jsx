@@ -1,8 +1,8 @@
-import React, { useContext, useEffect, useState } from "react"
-import { ShopContext } from "../../shop/_state/context"
-import { CartContext } from "../_state/context"
+import React, { useContext, useEffect, useState } from 'react'
+import { ShopContext } from '../../shop/_state/context'
+import { CartContext } from '../_state/context'
 /** @jsx jsx */
-import { jsx, css } from "@emotion/core"
+import { jsx, css } from '@emotion/core'
 
 function CartTerms() {
   const [shopState] = useContext(ShopContext)
@@ -10,20 +10,20 @@ function CartTerms() {
   const [isChecked, setIsChecked] = useState(false)
 
   useEffect(() => {
-    cartDispatch({ type: "SET_TERMS_ACCEPTED", payload: false })
+    cartDispatch({ type: 'SET_TERMS_ACCEPTED', payload: false })
   }, [])
 
   function termsLabel() {
     return {
-      __html: shopState.settings.cart.cartTermsContent
+      __html: shopState.settings.general.cartTermsContent
     }
   }
 
   function onChange(e) {
     setIsChecked(!isChecked)
 
-    if (WP_Shopify.misc.isPro) {
-      cartDispatch({ type: "SET_TERMS_ACCEPTED", payload: !isChecked })
+    if (wpshopify.misc.isPro) {
+      cartDispatch({ type: 'SET_TERMS_ACCEPTED', payload: !isChecked })
     }
   }
 
@@ -36,19 +36,19 @@ function CartTerms() {
   `
 
   return (
-    <section className="wps-cart-terms" css={containerCSS}>
-      <div className="wps-input-row row">
+    <section className='wps-cart-terms' css={containerCSS}>
+      <div className='wps-input-row row'>
         <input
           onChange={onChange}
-          id="wps-input-terms"
+          id='wps-input-terms'
           defaultChecked={isChecked}
-          type="checkbox"
-          className="wps-input wps-input-checkbox"
+          type='checkbox'
+          className='wps-input wps-input-checkbox'
         />
         <label
           dangerouslySetInnerHTML={termsLabel()}
-          htmlFor="wps-input-terms"
-          className="col-11 wps-input-label wps-input-terms"
+          htmlFor='wps-input-terms'
+          className='col-11 wps-input-label wps-input-terms'
         />
       </div>
     </section>

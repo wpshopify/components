@@ -10,4 +10,9 @@ export { Collections } from './components/collections'
 export { Items } from './components/items'
 export { ShortcodeBuilder } from './components/builder'
 
+export { BuilderWrapper } from './components/builder/wrapper'
+
+export { underscoreToCamel } from './common/utils'
+
+
 // export { Customers } from './components/customers'

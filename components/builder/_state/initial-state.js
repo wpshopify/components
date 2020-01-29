@@ -1,8 +1,8 @@
-import isEmpty from "lodash/isEmpty"
-import clone from "lodash/clone"
+import isEmpty from 'lodash/isEmpty'
+import clone from 'lodash/clone'
 
 function getCachedSettings() {
-  return JSON.parse(localStorage.getItem("wps-cached-settings"))
+  return JSON.parse(localStorage.getItem('wps-cached-settings'))
 }
 
 function getDefaultSettings() {
@@ -15,9 +15,9 @@ function getDefaultSettings() {
     productId: [],
     createdAt: [],
     updatedAt: [],
-    connective: "AND",
+    connective: 'AND',
     limit: false,
-    sortBy: "title",
+    sortBy: 'title',
     reverse: false,
     pagination: true,
     paginationLoadMore: true,
@@ -26,26 +26,26 @@ function getDefaultSettings() {
     itemsPerRow: 3,
     excludes: [],
     dropzoneLoadMore: false,
-    addToCartButtonColor: "#14273b",
-    variantButtonColor: "",
-    addToCartButtonText: "Add to cart",
+    addToCartButtonColor: '#14273b',
+    variantButtonColor: '',
+    addToCartButtonText: 'Add to cart',
     hideQuantity: false,
     showQuantityLabel: true,
     minQuantity: 1,
     maxQuantity: false,
     showPriceRange: true,
     showCompareAt: false,
-    quantityLabelText: "Quantity",
+    quantityLabelText: 'Quantity',
     showFeaturedOnly: false,
     showZoom: false,
-    noResultsText: "No products left to show",
+    noResultsText: 'No products left to show',
     infiniteScroll: false,
     infiniteScrollOffset: 100,
     titleColor: false,
-    titleSize: "22px",
+    titleSize: '22px',
     myShopifyDomain: false,
     storefrontAccessToken: false,
-    descriptionSize: "16px",
+    descriptionSize: '16px',
     descriptionColor: false,
     descriptionLength: false,
     alignHeight: false
@@ -53,15 +53,15 @@ function getDefaultSettings() {
 }
 
 function getBlockEditorElement() {
-  return document.getElementById("block-editor-inner")
+  return document.getElementById('block-editor-inner')
 }
 
 function defaultComponentConnectionParams() {
-  return { first: 9, query: "*" }
+  return { first: 9, query: '*' }
 }
 
 function defaultComponentType() {
-  return "products"
+  return 'products'
 }
 
 function getDefaultProductOptions(payload = false) {
@@ -108,21 +108,16 @@ function BuilderInitialState(options) {
     hasCustomConnection: false,
     notices: [],
     payload: false,
-    defaultShortcode: "[wps_products]",
+    defaultShortcode: '[wps_products]',
     defaultComponentConnectionParams: defaultComponentConnectionParams(),
-    defaultCreds: WP_Shopify.storefront,
+    defaultCreds: wpshopify.settings.connection.storefront,
     defaultComponentType: defaultComponentType(),
     defaultEditorElement: getBlockEditorElement(),
-    shortcode: "[wps_products]",
+    shortcode: '[wps_products]',
     defaultSettings: getDefaultSettings(),
     productOptions: getDefaultProductOptions(),
     settings: getSettings()
   }
 }
 
-export {
-  BuilderInitialState,
-  getDefaultSettings,
-  getDefaultProductOptions,
-  getSettings
-}
+export { BuilderInitialState, getDefaultSettings, getDefaultProductOptions, getSettings }
