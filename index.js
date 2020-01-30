@@ -14,5 +14,6 @@ export { BuilderWrapper } from './components/builder/wrapper'
 
 export { underscoreToCamel } from './common/utils'
 
+export { RootElement } from './components/root'
 
 // export { Customers } from './components/customers'
