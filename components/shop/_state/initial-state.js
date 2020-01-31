@@ -1,4 +1,4 @@
-import { underscoreToCamel } from "../../../common/utils"
+import { underscoreToCamel } from '../../../common/utils'
 
 function ShopInitialState(options = false) {
   return {
@@ -18,7 +18,7 @@ function ShopInitialState(options = false) {
         url: ''
       }
     },
-    isDirctCheckoutOccuring: false,
+    isDirectCheckoutOccurring: false,
     isCartEmpty: true,
     isMobile: wpshopify.misc.isMobile,
     hooksCompatible: false,

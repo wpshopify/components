@@ -1,17 +1,17 @@
-import isEmpty from "lodash/isEmpty"
-import forOwn from "lodash/forOwn"
-import without from "lodash/without"
-import mapKeys from "lodash/mapKeys"
-import isString from "lodash/isString"
-import isObject from "lodash/isObject"
-import isArray from "lodash/isArray"
-import md5 from "js-md5"
+import isEmpty from 'lodash/isEmpty'
+import forOwn from 'lodash/forOwn'
+import without from 'lodash/without'
+import mapKeys from 'lodash/mapKeys'
+import isString from 'lodash/isString'
+import isObject from 'lodash/isObject'
+import isArray from 'lodash/isArray'
+import md5 from 'js-md5'
 
-import React from "react"
-import ReactDOM from "react-dom"
-import { format, formatDistance, subDays } from "date-fns"
-import { __ } from "@wordpress/i18n"
-import { textDomain } from "../globals"
+import React from 'react'
+import ReactDOM from 'react-dom'
+import { format, formatDistance, subDays } from 'date-fns'
+import { __ } from '@wordpress/i18n'
+import { textDomain } from '../globals'
 
 function removeFrom(array, valueToRemove) {
   return without(array, valueToRemove)
@@ -61,7 +61,7 @@ function itemWidthClass(perRow) {
     perRow = 1
   }
 
-  return "wps-w-" + perRow
+  return 'wps-w-' + perRow
 }
 
 function findPortalElement(element, dropzone) {
@@ -75,12 +75,12 @@ function findPortalElement(element, dropzone) {
 }
 
 function convertTitleToHandle(title) {
-  return title.replace(/\s+/g, "-").toLowerCase()
+  return title.replace(/\s+/g, '-').toLowerCase()
 }
 
 function createStringFromQueryParams(queryParams) {
   if (!queryParams.sortKey) {
-    var sortKey = ""
+    var sortKey = ''
   } else {
     if (isString(queryParams.sortKey)) {
       var sortKey = queryParams.sortKey
@@ -90,7 +90,7 @@ function createStringFromQueryParams(queryParams) {
   }
 
   if (!queryParams.reverse) {
-    var reverse = ""
+    var reverse = ''
   } else {
     var reverse = queryParams.reverse
   }
@@ -103,7 +103,7 @@ function hashQueryParams(queryParams) {
 }
 
 function hasHooks() {
-  return typeof wp !== "undefined" && wp.hooks
+  return typeof wp !== 'undefined' && wp.hooks
 }
 
 function FilterHook({ name, defaultVal = false, args, isReady }) {
@@ -132,14 +132,12 @@ function _t(string) {
   return __(string, textDomain)
 }
 
-
-
 function toCamel(s) {
   return s.replace(/([-_][a-z])/gi, $1 => {
     return $1
       .toUpperCase()
-      .replace("-", "")
-      .replace("_", "")
+      .replace('-', '')
+      .replace('_', '')
   })
 }
 
@@ -161,6 +159,10 @@ function underscoreToCamel(o) {
   return o
 }
 
+function decodeComponentOptions(componentOptions) {
+  return underscoreToCamel(JSON.parse(atob(componentOptions)))
+}
+
 export {
   objectIsEmpty,
   createObj,
@@ -175,5 +177,6 @@ export {
   FilterHook,
   prettyDate,
   _t,
-  underscoreToCamel
+  underscoreToCamel,
+  decodeComponentOptions
 }

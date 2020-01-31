@@ -1,76 +1,97 @@
-import { hashQueryParams, hasHooks } from '../../../common/utils'
+import { hashQueryParams, hasHooks, underscoreToCamel } from '../../../common/utils'
 
-function checkHasMore(options) {
-   if (!options.componentPayload || !options.componentOptions.pageSize || !options.componentOptions.pagination) {
+function checkHasMore(component) {
+  if (
+    !component.componentPayload ||
+    !component.componentOptions.pageSize ||
+    !component.componentOptions.pagination
+  ) {
+    return false
+  }
+
+  var payload = component.componentPayload
+  var payloadLength = payload.length
+  var limit = component.componentOptions.limit ? parseInt(component.componentOptions.limit) : false
+  var pageSize = component.componentOptions.pageSize
+  var lastItem = payload[payloadLength - 1]
+
+  if (!lastItem) {
+    return false
+  }
+
+  var hasNextPage = lastItem.hasNextPage
+
+  if (!limit) {
+    return hasNextPage
+  }
+
+  if (pageSize === payloadLength) {
+    if (pageSize === limit) {
       return false
-   }
-
-   var payload = options.componentPayload
-   var payloadLength = payload.length
-   var limit = options.componentOptions.limit ? parseInt(options.componentOptions.limit) : false
-   var pageSize = options.componentOptions.pageSize
-   var lastItem = payload[payloadLength - 1]
-
-   if (!lastItem) {
+    } else if (limit < payloadLength) {
       return false
-   }
-
-   var hasNextPage = lastItem.hasNextPage
-
-   if (!limit) {
+    } else {
+      return true
+    }
+  } else {
+    if (payloadLength > limit) {
+      return false
+    } else {
       return hasNextPage
-   }
-
-   if (pageSize === payloadLength) {
-      if (pageSize === limit) {
-         return false
-      } else if (limit < payloadLength) {
-         return false
-      } else {
-         return true
-      }
-   } else {
-      if (payloadLength > limit) {
-         return false
-      } else {
-         return hasNextPage
-      }
-   }
+    }
+  }
 }
 
 function hashInitialPayloadCache(queryParams, payload) {
-   let initalPayloadCache = {}
+  let initalPayloadCache = {}
 
-   if (payload) {
-      var hashId = hashQueryParams(queryParams)
-      initalPayloadCache[hashId] = payload
-   }
+  if (payload) {
+    var hashId = hashQueryParams(queryParams)
+    initalPayloadCache[hashId] = payload
+  }
 
-   return initalPayloadCache
+  return initalPayloadCache
 }
 
-function ItemsInitialState(options = {}) {
-   var itemsState = {
-      componentOptions: options.componentOptions,
-      element: options.componentElement,
-      payload: options.componentPayload ? options.componentPayload : [],
-      queryParams: options.componentQueryParams ? options.componentQueryParams : {},
-      originalParams: options.originalParams ? options.originalParams : false,
-      dataType: options.componentOptions.dataType ? options.componentOptions.dataType : 'products',
-      limit: options.componentOptions.limit ? parseInt(options.componentOptions.limit) : false,
-      lastCursorId: options.componentPayloadLastCursor ? options.componentPayloadLastCursor : false,
-      totalShown: options.componentPayload ? options.componentPayload.length : 0,
-      noResultsText: options.componentOptions.noResultsText ? options.componentOptions.noResultsText : 'No items left',
-      isLoading: false,
-      hasMoreItems: checkHasMore(options),
-      notices: [],
-      lastQuery: options.componentQueryParams ? options.componentQueryParams.query : false,
-      payloadCache: hashInitialPayloadCache(options.componentQueryParams, options.componentPayload)
-   }
+function ItemsInitialState({ component, miscDispatch }) {
+  var itemsState = {
+    componentOptions: component.componentOptions,
+    element: component.componentElement,
+    payload: [],
+    queryParams: {
+      query: component.componentOptions.query,
+      sortKey: component.componentOptions.sortBy,
+      reverse: component.componentOptions.reverse,
+      first: component.componentOptions.pageSize
+    },
+    originalParams: {
+      type: component.componentType,
+      queryParams: {
+        query: component.componentOptions.query,
+        sortKey: component.componentOptions.sortBy,
+        reverse: component.componentOptions.reverse,
+        first: component.componentOptions.pageSize
+      },
+      connectionParams: false
+    },
+    dataType: component.componentType,
+    limit: component.componentOptions.limit ? parseInt(component.componentOptions.limit) : false,
+    lastCursorId: false,
+    totalShown: 0,
+    noResultsText: component.componentOptions.noResultsText
+      ? component.componentOptions.noResultsText
+      : 'No items left',
+    isLoading: false,
+    hasMoreItems: checkHasMore(component),
+    notices: [],
+    lastQuery: component.componentOptions.query ? component.componentOptions.query : false,
+    payloadCache: {},
+    miscDispatch: miscDispatch ? miscDispatch : false
+  }
 
-   hasHooks() ? wp.hooks.doAction('items.init', itemsState) : ''
+  hasHooks() ? wp.hooks.doAction('items.init', itemsState) : ''
 
-   return itemsState
+  return itemsState
 }
 
 export { ItemsInitialState }

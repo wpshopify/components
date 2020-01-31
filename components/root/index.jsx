@@ -1,9 +1,9 @@
 function RootElement({ componentId, loadingMsg, componentType = 'products' }) {
   return (
     <div
-      wpshopify-component
-      wpshopify-component-type={componentType}
-      wpshopify-component-id={componentId}>
+      data-wpshopify-component
+      data-wpshopify-component-type={componentType}
+      data-wpshopify-component-id={componentId}>
       {loadingMsg}
     </div>
   )

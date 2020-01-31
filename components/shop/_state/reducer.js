@@ -112,7 +112,7 @@ function ShopReducer(state, action) {
     case 'SET_DIRECT_CHECKOUT_OCCURING': {
       return {
         ...state,
-        isDirctCheckoutOccuring: update(state.isDirctCheckoutOccuring, { $set: action.payload })
+        isDirectCheckoutOccurring: update(state.isDirectCheckoutOccurring, { $set: action.payload })
       }
     }
 

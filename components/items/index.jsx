@@ -1,16 +1,15 @@
-import React from "react"
-import { ItemsProvider } from "./_state/provider"
-import { ItemsWrapper } from "./wrapper"
-import has from "lodash/has"
-import uuidv4 from "uuid/v4"
-import { usePortal } from "../../common/hooks"
+import React from 'react'
+import { ItemsProvider } from './_state/provider'
+import { Item } from './item'
+import has from 'lodash/has'
+import { usePortal } from '../../common/hooks'
 
 function hasItems(options) {
   return options.payload.length > 0
 }
 
 function skippingInitialLoad(options) {
-  if (!has(options, "skipInitialLoad")) {
+  if (!has(options, 'skipInitialLoad')) {
     return false
   }
 
@@ -27,11 +26,11 @@ function hasItemsToShow(options) {
     return false
   }
 
-  if (has(options, "errors")) {
+  if (has(options, 'errors')) {
     return false
   }
 
-  if (!has(options, "payload")) {
+  if (!has(options, 'payload')) {
     return true
   }
 
@@ -42,33 +41,28 @@ function hasItemsToShow(options) {
   }
 }
 
-function ItemsController({ options, children, miscDispatch }) {
-  return usePortal(
-    <ItemsProvider options={options}>
-      <ItemsWrapper miscDispatch={miscDispatch}>{children}</ItemsWrapper>
-    </ItemsProvider>,
-    options.componentElement
-  )
-}
-
 /*
 
 Responsible for managing state of 'payload', 'queryParams', and 'isLoading'.
 Connects sibling components together like Filters, Search and Pagination.
 
+options, children, miscDispatch
+
+<Items> - Represents a ground of one or more products -- an "instance" use by either a shortcode or Render API 
+<Item> - Represents one or more products
+
 */
-function Items({ options, children, miscDispatch }) {
+function Items(props) {
   return (
-    hasItemsToShow(options) &&
-    options.map(option => (
-      <ItemsController
-        key={uuidv4()}
-        options={option}
-        miscDispatch={miscDispatch}
-      >
-        {children}
-      </ItemsController>
-    ))
+    props.options &&
+    props.options.map(component => {
+      return usePortal(
+        <ItemsProvider component={component} miscDispatch={props.miscDispatch}>
+          <Item>{props.children}</Item>
+        </ItemsProvider>,
+        component.componentElement
+      )
+    })
   )
 }
 

@@ -1,49 +1,41 @@
-import React, { useContext, useRef, useEffect, useState } from "react"
-import { CartContext } from "../_state/context"
-import { ShopContext } from "../../shop/_state/context"
-import { useAction } from "../../../common/hooks"
-import { hasHooks } from "../../../common/utils"
-import { isCartEmpty, findTotalCartQuantities } from "../../../common/cart"
-import isEmpty from "lodash/isEmpty"
-import { getProductsFromLineItems } from "/Users/andrew/www/devil/devilbox-new/data/www/wpshopify-api"
-import to from "await-to-js"
+import React, { useContext, useRef, useEffect, useState } from 'react'
+import { CartContext } from '../_state/context'
+import { ShopContext } from '../../shop/_state/context'
+import { useAction } from '../../../common/hooks'
+import { hasHooks } from '../../../common/utils'
+import { isCartEmpty, findTotalCartQuantities } from '../../../common/cart'
+import isEmpty from 'lodash/isEmpty'
+import { getProductsFromLineItems } from '/Users/andrew/www/devil/devilbox-new/data/www/wpshopify-api'
+import to from 'await-to-js'
 
-const CartHeader = React.lazy(() =>
-  import(/* webpackChunkName: 'CartHeader' */ "../header")
-)
-const CartContents = React.lazy(() =>
-  import(/* webpackChunkName: 'CartContents' */ "../contents")
-)
-const CartFooter = React.lazy(() =>
-  import(/* webpackChunkName: 'CartFooter' */ "../footer")
-)
-const CartButtons = React.lazy(() =>
-  import(/* webpackChunkName: 'CartButtons' */ "../buttons")
-)
+const CartHeader = React.lazy(() => import(/* webpackChunkName: 'CartHeader' */ '../header'))
+const CartContents = React.lazy(() => import(/* webpackChunkName: 'CartContents' */ '../contents'))
+const CartFooter = React.lazy(() => import(/* webpackChunkName: 'CartFooter' */ '../footer'))
+const CartButtons = React.lazy(() => import(/* webpackChunkName: 'CartButtons' */ '../buttons'))
 
 function CartWrapper() {
   const [cartState, cartDispatch] = useContext(CartContext)
   const [shopState, shopDispatch] = useContext(ShopContext)
   const cart = useRef()
   const isFirstRender = useRef(true)
-  const updateCheckoutAttributes = useAction("update.checkout.attributes")
-  const setCheckoutAttributes = useAction("set.checkout.attributes")
-  const setCheckoutNotes = useAction("set.checkout.note")
-  const lineItemsAdded = useAction("product.addToCart")
-  const openCart = useAction("cart.toggle")
+  const updateCheckoutAttributes = useAction('update.checkout.attributes')
+  const setCheckoutAttributes = useAction('set.checkout.attributes')
+  const setCheckoutNotes = useAction('set.checkout.note')
+  const lineItemsAdded = useAction('product.addToCart')
+  const openCart = useAction('cart.toggle')
   const [isCartInView, setIsCartInView] = useState(false)
 
   async function cartBootstrap() {
     if (!shopState.checkoutId) {
       shopDispatch({
-        type: "UPDATE_NOTICES",
+        type: 'UPDATE_NOTICES',
         payload: {
-          type: "error",
-          message: "No checkout found"
+          type: 'error',
+          message: 'No checkout found'
         }
       })
 
-      shopDispatch({ type: "IS_CART_READY", payload: true })
+      shopDispatch({ type: 'IS_CART_READY', payload: true })
       return
     }
 
@@ -51,21 +43,21 @@ function CartWrapper() {
 
     if (productsError) {
       shopDispatch({
-        type: "UPDATE_NOTICES",
+        type: 'UPDATE_NOTICES',
         payload: {
-          type: "error",
+          type: 'error',
           message: productsError
         }
       })
     }
 
     cartDispatch({
-      type: "SET_CHECKOUT_CACHE",
+      type: 'SET_CHECKOUT_CACHE',
       payload: { checkoutId: shopState.checkoutId }
     })
 
     cartDispatch({
-      type: "SET_LINE_ITEMS_AND_VARIANTS",
+      type: 'SET_LINE_ITEMS_AND_VARIANTS',
       payload: {
         lineItems: { products: products },
         checkoutId: shopState.checkoutId
@@ -73,12 +65,12 @@ function CartWrapper() {
     })
 
     if (isEmpty(products)) {
-      cartDispatch({ type: "SET_IS_CART_EMPTY", payload: true })
+      cartDispatch({ type: 'SET_IS_CART_EMPTY', payload: true })
     } else {
-      cartDispatch({ type: "SET_IS_CART_EMPTY", payload: false })
+      cartDispatch({ type: 'SET_IS_CART_EMPTY', payload: false })
     }
 
-    shopDispatch({ type: "IS_CART_READY", payload: true })
+    shopDispatch({ type: 'IS_CART_READY', payload: true })
   }
 
   useEffect(() => {
@@ -97,7 +89,7 @@ function CartWrapper() {
     }
 
     cartDispatch({
-      type: "SET_TOTAL_LINE_ITEMS",
+      type: 'SET_TOTAL_LINE_ITEMS',
       payload: findTotalCartQuantities(cartState.checkoutCache.lineItems)
     })
   }, [shopState.isCartReady, cartState.checkoutCache.lineItems])
@@ -108,7 +100,7 @@ function CartWrapper() {
       return
     }
 
-    hasHooks() && wp.hooks.doAction("on.checkout.update", cartState)
+    hasHooks() && wp.hooks.doAction('on.checkout.update', cartState)
   }, [cartState.totalLineItems])
 
   useEffect(() => {
@@ -118,7 +110,7 @@ function CartWrapper() {
     }
 
     shopDispatch({
-      type: "UPDATE_CHECKOUT_ATTRIBUTES",
+      type: 'UPDATE_CHECKOUT_ATTRIBUTES',
       payload: updateCheckoutAttributes
     })
   }, [updateCheckoutAttributes])
@@ -130,7 +122,7 @@ function CartWrapper() {
     }
 
     shopDispatch({
-      type: "SET_CHECKOUT_ATTRIBUTES",
+      type: 'SET_CHECKOUT_ATTRIBUTES',
       payload: setCheckoutAttributes
     })
   }, [setCheckoutAttributes])
@@ -141,7 +133,7 @@ function CartWrapper() {
       return
     }
 
-    shopDispatch({ type: "SET_CHECKOUT_NOTE", payload: setCheckoutNotes })
+    shopDispatch({ type: 'SET_CHECKOUT_NOTE', payload: setCheckoutNotes })
   }, [setCheckoutNotes])
 
   useEffect(() => {
@@ -151,7 +143,7 @@ function CartWrapper() {
     }
 
     if (openCart) {
-      cartDispatch({ type: "TOGGLE_CART", payload: true })
+      cartDispatch({ type: 'TOGGLE_CART', payload: true })
     }
   }, [openCart])
 
@@ -163,32 +155,29 @@ function CartWrapper() {
 
     if (lineItemsAdded) {
       cartDispatch({
-        type: "UPDATE_LINE_ITEMS_AND_VARIANTS",
+        type: 'UPDATE_LINE_ITEMS_AND_VARIANTS',
         payload: lineItemsAdded
       })
-      cartDispatch({ type: "TOGGLE_CART", payload: true })
+      cartDispatch({ type: 'TOGGLE_CART', payload: true })
     }
 
     if (isEmpty(lineItemsAdded)) {
-      cartDispatch({ type: "SET_IS_CART_EMPTY", payload: true })
+      cartDispatch({ type: 'SET_IS_CART_EMPTY', payload: true })
     } else {
-      cartDispatch({ type: "SET_IS_CART_EMPTY", payload: false })
+      cartDispatch({ type: 'SET_IS_CART_EMPTY', payload: false })
     }
   }, [lineItemsAdded])
 
-
   useEffect(() => {
-
-   if (isFirstRender.current) {
+    if (isFirstRender.current) {
       isFirstRender.current = false
       return
-   }
-
-  }, [shopState.isDirctCheckoutOccuring])
+    }
+  }, [shopState.isDirectCheckoutOccurring])
 
   return (
     shopState.settings.general.cartLoaded && (
-      <section ref={cart} className="wps-cart">
+      <section ref={cart} className='wps-cart'>
         <CartButtons buttons={cartState.buttons} />
         <CartHeader />
         <CartContents

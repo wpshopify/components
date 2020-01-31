@@ -4,10 +4,7 @@ import { Pagination } from '../pagination'
 import { ShopContext } from '../shop/_state/context'
 
 function Products({ miscDispatch }) {
-  console.log('miscDispatch', miscDispatch)
-
   const [shopState] = useContext(ShopContext)
-  console.log('shopState', shopState)
 
   return (
     <Pagination shopSettings={shopState.settings} miscDispatch={miscDispatch}>

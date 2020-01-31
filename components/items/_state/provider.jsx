@@ -4,11 +4,11 @@ import { ItemsInitialState } from './initial-state'
 import { ItemsContext } from './context'
 
 function ItemsProvider(props) {
-   const [state, dispatch] = React.useReducer(ItemsReducer, ItemsInitialState(props.options))
+  const [state, dispatch] = React.useReducer(ItemsReducer, ItemsInitialState(props))
 
-   const value = React.useMemo(() => [state, dispatch], [state])
+  const value = React.useMemo(() => [state, dispatch], [state])
 
-   return <ItemsContext.Provider value={value} {...props} />
+  return <ItemsContext.Provider value={value} {...props} />
 }
 
 export { ItemsProvider }

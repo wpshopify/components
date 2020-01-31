@@ -12,7 +12,7 @@ export { ShortcodeBuilder } from './components/builder'
 
 export { BuilderWrapper } from './components/builder/wrapper'
 
-export { underscoreToCamel } from './common/utils'
+export { underscoreToCamel, decodeComponentOptions } from './common/utils'
 
 export { RootElement } from './components/root'
 
