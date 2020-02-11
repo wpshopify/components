@@ -1,8 +1,8 @@
-import React, { useEffect, useState, useContext } from 'react'
-import ReactDOM from 'react-dom'
 import hasIn from 'lodash/hasIn'
 import inView from 'in-view'
-import { createHooks } from '@wordpress/hooks'
+
+const { createHooks } = wp.hooks
+const { useEffect, useState, useContext } = wp.element
 
 function useOnClickOutside(ref, handler, targetOpened = false) {
   function addEventListener(listener) {
@@ -59,10 +59,6 @@ function useAction(hookName, defaultVal = false) {
   const [data, setData] = useState(defaultVal)
 
   useEffect(() => {
-    if (!wp.hooks) {
-      wp.hooks = createHooks()
-    }
-
     if (!wp.hooks.hasAction(hookName)) {
       wp.hooks.addAction(hookName, 'wpshopify.' + hookName, function(newData) {
         setData(newData)
@@ -82,7 +78,7 @@ function usePortal(componentMarkup, containerElement = false, skipEmptyRender = 
         containerElement.removeChild(placeholderElement)
       }
 
-      return ReactDOM.createPortal(componentMarkup, containerElement)
+      return wp.element.createPortal(componentMarkup, containerElement)
     } else {
       if (!skipEmptyRender) return componentMarkup
     }

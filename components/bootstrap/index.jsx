@@ -1,9 +1,10 @@
-import React, { useEffect, useContext } from 'react'
 import { createHooks } from '@wordpress/hooks'
 import { ShopContext } from '../shop/_state/context'
 import { hasHooks } from '../../common/utils'
 import { buildInstances } from '/Users/andrew/www/devil/devilbox-new/data/www/wpshopify-api'
 import to from 'await-to-js'
+
+const { useEffect, useContext } = wp.element
 
 function Bootstrap({ children }) {
   const [shopState, shopDispatch] = useContext(ShopContext)

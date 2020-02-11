@@ -1,8 +1,9 @@
-import React, { useContext } from "react"
-import { Collection } from "./collection"
-import { Pagination } from "../pagination"
-import { ShopContext } from "../shop/_state/context"
-import { ItemsContext } from "../items/_state/context"
+import { Collection } from './collection'
+import { Pagination } from '../pagination'
+import { ShopContext } from '../shop/_state/context'
+import { ItemsContext } from '../items/_state/context'
+
+const { useContext } = wp.element
 
 function Collections() {
   const [shopState] = useContext(ShopContext)

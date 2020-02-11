@@ -1,8 +1,7 @@
-import React, { useContext } from 'react'
 import { CartButtonContext } from '../button/_state/context'
 import { ShopContext } from '../../../shop/_state/context'
-import { useAction } from '../../../../common/hooks'
-import has from 'lodash/has'
+
+const { useContext } = wp.element
 
 function CartIcon() {
   const [cartButtonState] = useContext(CartButtonContext)

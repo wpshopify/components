@@ -1,8 +1,9 @@
-import React, { useContext } from 'react'
 import { StorefrontSelectionsValues } from './values'
 import { StorefrontContext } from '../_state/context'
 import { getSelectionTypes } from '../../../common/selections'
 import isEmpty from 'lodash/isEmpty'
+
+const { useContext } = wp.element
 
 function StorefrontSelectionsType({ selectionType }) {
   const [storefrontState] = useContext(StorefrontContext)

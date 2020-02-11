@@ -1,12 +1,14 @@
-import React, { useContext, useEffect, useRef } from 'react'
 import { PaginationContext } from '../../_state/context'
 import { ItemsContext } from '../../../items/_state/context'
 import { usePortal, useInView } from '../../../../common/hooks'
 import { fetchNextItems } from '../../../items/item'
+import { hasHooks } from '../../../../common/utils'
 import { Loader } from '../../../loader'
 import isEmpty from 'lodash/isEmpty'
 import has from 'lodash/has'
 import uniqid from 'uniqid'
+
+const { useContext, useEffect, useRef } = wp.element
 
 function PaginationLoadMore({ miscDispatch }) {
   const [itemsState, itemsDispatch] = useContext(ItemsContext)
@@ -71,7 +73,11 @@ function PaginationLoadMore({ miscDispatch }) {
           disabled={itemsState.isLoading}
           className={'wps-btn wps-btn-secondary wps-btn-next-page ' + randomClass}
           onClick={onNextPage}>
-          {itemsState.isLoading ? <Loader isLoading={itemsState.isLoading} /> : 'Load more'}
+          {itemsState.isLoading ? (
+            <Loader isLoading={itemsState.isLoading} />
+          ) : (
+            hasHooks() && wp.hooks.applyFilters('pagination.loadMore.text', 'Load more')
+          )}
         </button>
       )}
     </>,

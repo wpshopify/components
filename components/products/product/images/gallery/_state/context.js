@@ -1,5 +1,3 @@
-import React from 'react'
-
-const ProductGalleryContext = React.createContext()
+const ProductGalleryContext = wp.element.createContext()
 
 export { ProductGalleryContext }

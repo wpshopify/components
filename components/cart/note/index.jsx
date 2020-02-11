@@ -1,11 +1,12 @@
-import React, { useContext, useState, useEffect, useRef } from 'react'
 import { ShopContext } from '../../shop/_state/context'
 import { CartContext } from '../_state/context'
 import { useDebounce } from 'use-debounce'
 import { hasHooks } from '../../../common/utils'
 
+const { useContext, useState, useRef, useEffect } = wp.element
+
 function CartNote() {
-  const [cartState, cartDispatch] = useContext(CartContext)
+  //   const [cartState, cartDispatch] = useContext(CartContext)
   const [shopState, shopDispatch] = useContext(ShopContext)
   const [noteValue, setNoteValue] = useState('')
   const [debouncedValue] = useDebounce(noteValue, 250)

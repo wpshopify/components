@@ -1,5 +1,3 @@
-import React from 'react'
-
-const AddressesContext = React.createContext()
+const AddressesContext = wp.element.createContext()
 
 export { AddressesContext }

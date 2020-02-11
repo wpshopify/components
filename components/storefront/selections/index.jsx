@@ -1,15 +1,10 @@
-import React, { useContext, useEffect, useRef } from 'react'
 import { StorefrontContext } from '../_state/context'
 import { ItemsContext } from '../../items/_state/context'
 
 import { StorefrontSelectionsWrapper } from './wrapper'
-import { objectIsEmpty, capitalizeFirstLetter } from '../../../common/utils'
+import { objectIsEmpty } from '../../../common/utils'
 import { usePortal } from '../../../common/hooks'
-import {
-  filterObj,
-  commaToArray,
-  buildQuery
-} from '/Users/andrew/www/devil/devilbox-new/data/www/wpshopify-api'
+import { filterObj } from '/Users/andrew/www/devil/devilbox-new/data/www/wpshopify-api'
 import isArray from 'lodash/isArray'
 import isEmpty from 'lodash/isEmpty'
 import isString from 'lodash/isString'
@@ -19,8 +14,8 @@ import forOwn from 'lodash/forOwn'
 import transform from 'lodash/transform'
 import map from 'lodash/map'
 import has from 'lodash/has'
-import find from 'lodash/find'
-import remove from 'lodash/remove'
+
+const { useEffect, useContext, useRef } = wp.element
 
 function StorefrontSelections() {
   const [itemsState, itemsDispatch] = useContext(ItemsContext)

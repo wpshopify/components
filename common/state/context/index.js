@@ -1,7 +1,3 @@
-import React from 'react';
+const LoadingContext = wp.element.createContext()
 
-const LoadingContext = React.createContext();
-
-export {
-   LoadingContext
-}
+export { LoadingContext }

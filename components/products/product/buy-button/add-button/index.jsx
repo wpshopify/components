@@ -1,15 +1,12 @@
-import React, { useContext, useRef, useEffect, useState } from "react"
-import { ProductBuyButtonContext } from "../_state/context"
-import { ShopContext } from "../../../../shop/_state/context"
-import { Loader } from "../../../../loader"
-import { Notice } from "../../../../notice"
-import { ItemsContext } from "../../../../items/_state/context"
-import { ProductContext } from "../../_state/context"
-import { hasHooks } from "../../../../../common/utils"
-import { useAnime, pulse } from "../../../../../common/animations"
-import { hasCustomCheckoutAttributes } from "../../../../../common/checkout"
-
-import { checkoutRedirect } from "../../../../cart/checkout"
+import { ProductBuyButtonContext } from '../_state/context'
+import { ShopContext } from '../../../../shop/_state/context'
+import { Loader } from '../../../../loader'
+import { Notice } from '../../../../notice'
+import { ItemsContext } from '../../../../items/_state/context'
+import { ProductContext } from '../../_state/context'
+import { hasHooks } from '../../../../../common/utils'
+import { useAnime, pulse } from '../../../../../common/animations'
+import { checkoutRedirect } from '../../../../cart/checkout'
 
 import {
   buildClient,
@@ -17,8 +14,10 @@ import {
   createUniqueCheckout,
   addLineItemsAPI,
   updateCheckoutAttributes
-} from "/Users/andrew/www/devil/devilbox-new/data/www/wpshopify-api"
-import to from "await-to-js"
+} from '/Users/andrew/www/devil/devilbox-new/data/www/wpshopify-api'
+import to from 'await-to-js'
+
+const { useContext, useRef, useEffect, useState } = wp.element
 
 function ProductAddButton() {
   const button = useRef()
@@ -29,24 +28,18 @@ function ProductAddButton() {
 
   const [itemsState] = useContext(ItemsContext)
   const [productState, productDispatch] = useContext(ProductContext)
-  const [buyButtonState, buyButtonDispatch] = useContext(
-    ProductBuyButtonContext
-  )
+  const [buyButtonState, buyButtonDispatch] = useContext(ProductBuyButtonContext)
   const [shopState, shopDispatch] = useContext(ShopContext)
 
   const isDirectCheckout =
-    itemsState.componentOptions.directCheckout ||
-    shopState.settings.general.directCheckout
+    itemsState.componentOptions.directCheckout || shopState.settings.general.directCheckout
 
   const buttonStyle = {
     backgroundColor: itemsState.componentOptions.addToCartButtonColor
   }
 
   function findVariantFromSelections() {
-    return findVariantFromSelectedOptions(
-      buyButtonState.product,
-      buyButtonState.selectedOptions
-    )
+    return findVariantFromSelectedOptions(buyButtonState.product, buyButtonState.selectedOptions)
   }
 
   function findSingleVariantFromPayload() {
@@ -76,7 +69,7 @@ function ProductAddButton() {
     // check if all options are selected
     // if some are not selected, highlight them / shake them
     if (!buyButtonState.allOptionsSelected && productState.hasManyVariants) {
-      buyButtonDispatch({ type: "SET_MISSING_SELECTIONS", payload: true })
+      buyButtonDispatch({ type: 'SET_MISSING_SELECTIONS', payload: true })
     } else {
       if (productState.hasManyVariants) {
         var variant = findVariantFromSelections()
@@ -86,11 +79,11 @@ function ProductAddButton() {
 
       if (!variant) {
         // TODO: Handle this better
-        console.error("wpshopify error 💩 variant undefined ", variant)
+        console.error('wpshopify error 💩 variant undefined ', variant)
 
-        buyButtonDispatch({ type: "SET_MISSING_SELECTIONS", payload: true })
-        buyButtonDispatch({ type: "SET_ALL_SELECTED_OPTIONS", payload: false })
-        buyButtonDispatch({ type: "REMOVE_SELECTED_OPTIONS" })
+        buyButtonDispatch({ type: 'SET_MISSING_SELECTIONS', payload: true })
+        buyButtonDispatch({ type: 'SET_ALL_SELECTED_OPTIONS', payload: false })
+        buyButtonDispatch({ type: 'REMOVE_SELECTED_OPTIONS' })
         return
       }
 
@@ -105,52 +98,46 @@ function ProductAddButton() {
         if (err) {
           setIsCheckingOut(false)
           buyButtonDispatch({
-            type: "SET_ALL_SELECTED_OPTIONS",
+            type: 'SET_ALL_SELECTED_OPTIONS',
             payload: false
           })
-          buyButtonDispatch({ type: "REMOVE_SELECTED_OPTIONS" })
+          buyButtonDispatch({ type: 'REMOVE_SELECTED_OPTIONS' })
 
           return setHasNotice({
             message: err,
-            type: "error"
+            type: 'error'
           })
         }
 
-        const [error, respNewCheckout] = await to(
-          addLineItemsAPI(client, checkout, lineItems)
-        )
+        const [error, respNewCheckout] = await to(addLineItemsAPI(client, checkout, lineItems))
 
         if (error) {
           setIsCheckingOut(false)
           buyButtonDispatch({
-            type: "SET_ALL_SELECTED_OPTIONS",
+            type: 'SET_ALL_SELECTED_OPTIONS',
             payload: false
           })
-          buyButtonDispatch({ type: "REMOVE_SELECTED_OPTIONS" })
+          buyButtonDispatch({ type: 'REMOVE_SELECTED_OPTIONS' })
           return setHasNotice({
             message: error,
-            type: "error"
+            type: 'error'
           })
         }
 
         checkoutRedirect(respNewCheckout, shopState)
       } else {
         hasHooks() &&
-          wp.hooks.doAction(
-            "product.addToCart",
-            buildAddToCartParams(lineItems, [variant])
-          )
+          wp.hooks.doAction('product.addToCart', buildAddToCartParams(lineItems, [variant]))
 
         buyButtonDispatch({
-          type: "SET_ALL_SELECTED_OPTIONS",
+          type: 'SET_ALL_SELECTED_OPTIONS',
           payload: false
         })
-        buyButtonDispatch({ type: "REMOVE_SELECTED_OPTIONS" })
-        productDispatch({ type: "SET_ADDED_VARIANT", payload: variant })
-        productDispatch({ type: "SET_SELECTED_VARIANT", payload: false })
+        buyButtonDispatch({ type: 'REMOVE_SELECTED_OPTIONS' })
+        productDispatch({ type: 'SET_ADDED_VARIANT', payload: variant })
+        productDispatch({ type: 'SET_SELECTED_VARIANT', payload: false })
 
-        hasHooks() &&
-          wp.hooks.doAction("on.product.addToCart", lineItems, variant)
+        hasHooks() && wp.hooks.doAction('on.product.addToCart', lineItems, variant)
       }
     }
   }
@@ -172,48 +159,43 @@ function ProductAddButton() {
 
   function getButtonText() {
     if (isDirectCheckout) {
-      return "Checkout"
+      return 'Checkout'
     }
 
     if (itemsState.componentOptions.addToCartButtonText) {
       return itemsState.componentOptions.addToCartButtonText
     }
 
-    return "Add to cart"
+    return 'Add to cart'
   }
 
   return (
     <div
-      className="wps-component wps-component-products-add-button wps-btn-wrapper"
+      className='wps-component wps-component-products-add-button wps-btn-wrapper'
       data-wps-is-component-wrapper
       data-wps-product-id={buyButtonState.product.id}
-      data-wps-post-id=""
-    >
+      data-wps-post-id=''>
       <button
         ref={button}
-        type="button"
-        itemProp="potentialAction"
+        type='button'
+        itemProp='potentialAction'
         itemScope
-        itemType="https://schema.org/BuyAction"
-        className="wps-btn wps-btn-secondary wps-add-to-cart"
+        itemType='https://schema.org/BuyAction'
+        className='wps-btn wps-btn-secondary wps-add-to-cart'
         title={buyButtonState.product.title}
-        data-wps-is-ready={shopState.isShopReady ? "1" : "0"}
-        data-wps-is-direct-checkout={isDirectCheckout ? "1" : "0"}
+        data-wps-is-ready={shopState.isShopReady ? '1' : '0'}
+        data-wps-is-direct-checkout={isDirectCheckout ? '1' : '0'}
         onClick={handleClick}
         style={buttonStyle}
-        disabled={isCheckingOut}
-      >
+        disabled={isCheckingOut}>
         {isCheckingOut ? (
           <Loader />
         ) : (
-          hasHooks() &&
-          wp.hooks.applyFilters("product.addToCart.text", getButtonText())
+          hasHooks() && wp.hooks.applyFilters('product.addToCart.text', getButtonText())
         )}
       </button>
 
-      {hasNotice && (
-        <Notice message={hasNotice.message} type={hasNotice.type} />
-      )}
+      {hasNotice && <Notice message={hasNotice.message} type={hasNotice.type} />}
     </div>
   )
 }

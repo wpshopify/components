@@ -1,14 +1,13 @@
-import React from 'react'
 import { CartReducer } from './reducer'
 import { CartInitialState } from './initial-state'
 import { CartContext } from './context'
 
 function CartProvider(props) {
-   const [state, dispatch] = React.useReducer(CartReducer, CartInitialState(props.options))
+  const [state, dispatch] = wp.element.useReducer(CartReducer, CartInitialState(props.options))
 
-   const value = React.useMemo(() => [state, dispatch], [state])
+  const value = wp.element.useMemo(() => [state, dispatch], [state])
 
-   return <CartContext.Provider value={value} {...props} />
+  return <CartContext.Provider value={value} {...props} />
 }
 
 export { CartProvider }

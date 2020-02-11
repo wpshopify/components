@@ -1,5 +1,3 @@
-import React from 'react'
-
-const CartButtonContext = React.createContext()
+const CartButtonContext = wp.element.createContext()
 
 export { CartButtonContext }

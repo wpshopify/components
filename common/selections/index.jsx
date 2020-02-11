@@ -1,5 +1,3 @@
-import { useState } from 'react'
-
 import union from 'lodash/union'
 import without from 'lodash/without'
 import difference from 'lodash/difference'
@@ -7,6 +5,8 @@ import isEmpty from 'lodash/isEmpty'
 import hasIn from 'lodash/hasIn'
 import isString from 'lodash/isString'
 import { objectIsEmpty } from '../utils'
+
+const { useState } = wp.element
 
 function updateSelectionList(params) {
   if (!params.isSelected) {

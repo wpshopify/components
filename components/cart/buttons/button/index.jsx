@@ -1,4 +1,3 @@
-import React, { useContext, useRef, useEffect, useState } from 'react'
 import { ShopContext } from '../../../shop/_state/context'
 import { CartContext } from '../../_state/context'
 import { CartCounter } from '../counter'
@@ -7,6 +6,8 @@ import { CartButtonProvider } from './_state/provider'
 import { useAnime, slideInRight } from '../../../../common/animations'
 import { usePortal } from '../../../../common/hooks'
 import { isCartEmpty } from '../../../../common/cart'
+
+const { useContext, useRef, useEffect } = wp.element
 
 function CartButton({ options }) {
   const [shopState] = useContext(ShopContext)

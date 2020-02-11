@@ -1,5 +1,3 @@
-import React from 'react'
-
-const StorefrontContext = React.createContext()
+const StorefrontContext = wp.element.createContext()
 
 export { StorefrontContext }

@@ -8,11 +8,9 @@ export { Search } from './components/search'
 export { Notice } from './components/notices/notice'
 export { Collections } from './components/collections'
 export { Items } from './components/items'
-export { ShortcodeBuilder } from './components/builder'
-
-export { BuilderWrapper } from './components/builder/wrapper'
 
 export { underscoreToCamel, decodeComponentOptions } from './common/utils'
+export { useAction } from './common/hooks'
 
 export { RootElement } from './components/root'
 

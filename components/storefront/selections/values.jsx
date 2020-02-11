@@ -1,8 +1,9 @@
-import React, { useContext } from 'react'
 import { IconRemove } from '../../../common/icons/icon-remove.jsx'
 import { StorefrontContext } from '../_state/context'
 import { useTransition, animated } from 'react-spring'
 import { createSelectionsOfType, buildNewSelection } from '../../../common/selections'
+
+const { useContext } = wp.element
 
 function inSelection(selectionsArray, valToSearchFor) {
   return selectionsArray.find(element => element === valToSearchFor)

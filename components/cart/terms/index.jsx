@@ -1,8 +1,9 @@
-import React, { useContext, useEffect, useState } from 'react'
 import { ShopContext } from '../../shop/_state/context'
 import { CartContext } from '../_state/context'
 /** @jsx jsx */
 import { jsx, css } from '@emotion/core'
+
+const { useContext, useState, useEffect } = wp.element
 
 function CartTerms() {
   const [shopState] = useContext(ShopContext)

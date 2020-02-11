@@ -1,13 +1,13 @@
-import React, { useContext } from "react"
-import { PaginationContext } from "../_state/context"
-import { ItemsContext } from "../../items/_state/context"
-import { Notice } from "../../notice"
-import { containerFluidCSS, rowCSS } from "../../../common/css"
-import uuidv4 from "uuid/v4"
-// import Masonry from 'react-masonry-css'
+import { PaginationContext } from '../_state/context'
+import { ItemsContext } from '../../items/_state/context'
+import { Notice } from '../../notice'
+import { containerFluidCSS, rowCSS } from '../../../common/css'
+import uuidv4 from 'uuid/v4'
 
 /** @jsx jsx */
-import { jsx, css } from "@emotion/core"
+import { jsx, css } from '@emotion/core'
+
+const { useContext } = wp.element
 
 function PaginationItems({ children, alignHeight }) {
   const [itemsState] = useContext(ItemsContext)
@@ -30,13 +30,12 @@ function PaginationItems({ children, alignHeight }) {
   }
 
   return (
-    <section className={"wps-items-wrapper"} css={containerFluidCSS}>
+    <section className={'wps-items-wrapper'} css={containerFluidCSS}>
       <section
-        className="wps-items wps-items-list"
+        className='wps-items wps-items-list'
         css={rowCSS}
         data-item-is-loading={itemsState.isLoading}
-        data-is-align-height={alignHeight}
-      >
+        data-is-align-height={alignHeight}>
         {/* <Masonry className='my-masonry-grid' columnClassName='my-masonry-grid_column'>
                
             </Masonry> */}
@@ -45,9 +44,9 @@ function PaginationItems({ children, alignHeight }) {
       </section>
 
       {paginationState.controlsTouched && !itemsState.hasMoreItems ? (
-        <Notice message={itemsState.noResultsText} type="info" />
+        <Notice message={itemsState.noResultsText} type='info' />
       ) : (
-        ""
+        ''
       )}
     </section>
   )

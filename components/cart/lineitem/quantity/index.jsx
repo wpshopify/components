@@ -1,15 +1,16 @@
-import React, { useContext } from "react"
-import { CartContext } from "../../_state/context"
-import { ShopContext } from "../../../shop/_state/context"
+import { CartContext } from '../../_state/context'
+import { ShopContext } from '../../../shop/_state/context'
 
-import find from "lodash/find"
-import { calcLineItemTotal } from "../../../../common/products"
-import { useAnime, pulse } from "../../../../common/animations"
-import { containerFluidCSS } from "../../../../common/css"
-import { hasHooks } from "../../../../common/utils"
+import find from 'lodash/find'
+import { calcLineItemTotal } from '../../../../common/products'
+import { useAnime, pulse } from '../../../../common/animations'
+import { containerFluidCSS } from '../../../../common/css'
+import { hasHooks } from '../../../../common/utils'
 
 /** @jsx jsx */
-import { jsx, css } from "@emotion/core"
+import { jsx, css } from '@emotion/core'
+
+const { useContext } = wp.element
 
 // 1 is the previous value before decrementing _again_
 function isRemovingLineItem(quantity) {
@@ -34,15 +35,10 @@ function CartLineItemQuantity({
   const [cartState, cartDispatch] = useContext(CartContext)
   const animePulse = useAnime(pulse)
 
-  const maxQuantity = hasHooks()
-    ? wp.hooks.applyFilters("cart.maxQuantity", false)
-    : false
+  const maxQuantity = hasHooks() ? wp.hooks.applyFilters('cart.maxQuantity', false) : false
 
   function changeQuantity(newQuantity) {
-    let lineItemFound = getLineItemFromState(
-      lineItem,
-      cartState.checkoutCache.lineItems
-    )
+    let lineItemFound = getLineItemFromState(lineItem, cartState.checkoutCache.lineItems)
 
     if (lineItemFound && isFirstRender.current) {
       variantId.current = lineItemFound.variantId
@@ -55,7 +51,7 @@ function CartLineItemQuantity({
 
     if (isRemovingLineItem(newQuantity)) {
       cartDispatch({
-        type: "REMOVE_LINE_ITEM",
+        type: 'REMOVE_LINE_ITEM',
         payload: {
           lineItem: variantId.current,
           checkoutId: shopState.checkoutId
@@ -64,7 +60,7 @@ function CartLineItemQuantity({
     }
 
     cartDispatch({
-      type: "UPDATE_LINE_ITEM_QUANTITY",
+      type: 'UPDATE_LINE_ITEM_QUANTITY',
       payload: {
         lineItem: {
           variantId: variantId.current,
@@ -86,7 +82,7 @@ function CartLineItemQuantity({
   function handleQuantityBlur(e) {
     if (isRemovingLineItem(e.target.value)) {
       cartDispatch({
-        type: "REMOVE_LINE_ITEM",
+        type: 'REMOVE_LINE_ITEM',
         payload: {
           lineItem: variantId.current,
           checkoutId: shopState.checkoutId
@@ -95,7 +91,7 @@ function CartLineItemQuantity({
     }
 
     cartDispatch({
-      type: "UPDATE_LINE_ITEM_QUANTITY",
+      type: 'UPDATE_LINE_ITEM_QUANTITY',
       payload: {
         lineItem: {
           variantId: variantId.current,
@@ -130,36 +126,27 @@ function CartLineItemQuantity({
 
   return (
     <div
-      className="wps-cart-lineitem-quantity-container"
+      className='wps-cart-lineitem-quantity-container'
       data-wps-is-ready={isReady}
-      css={containerFluidCSS}
-    >
-      <div className="row">
-        <button
-          className="wps-quantity-decrement"
-          type="button"
-          onClick={handleDecrement}
-        >
-          <span className="wps-quantity-icon wps-quantity-decrement-icon" />
+      css={containerFluidCSS}>
+      <div className='row'>
+        <button className='wps-quantity-decrement' type='button' onClick={handleDecrement}>
+          <span className='wps-quantity-icon wps-quantity-decrement-icon' />
         </button>
 
         <input
-          className="wps-cart-lineitem-quantity"
-          type="number"
-          min="0"
-          max="8"
-          aria-label="Quantity"
+          className='wps-cart-lineitem-quantity'
+          type='number'
+          min='0'
+          max='8'
+          aria-label='Quantity'
           value={lineItemQuantity}
           onChange={handleQuantityChange}
           onBlur={handleQuantityBlur}
         />
 
-        <button
-          className="wps-quantity-increment"
-          type="button"
-          onClick={handleIncrement}
-        >
-          <span className="wps-quantity-icon wps-quantity-increment-icon" />
+        <button className='wps-quantity-increment' type='button' onClick={handleIncrement}>
+          <span className='wps-quantity-icon wps-quantity-increment-icon' />
         </button>
       </div>
     </div>

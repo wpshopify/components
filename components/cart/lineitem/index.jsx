@@ -1,4 +1,3 @@
-import React, { useContext, useRef, useEffect, useState } from 'react'
 import { CartContext } from '../../cart/_state/context'
 import { ShopContext } from '../../shop/_state/context'
 import { Link } from '../../link'
@@ -12,6 +11,8 @@ import { Notice } from '../../notice'
 import { jsx, css } from '@emotion/core'
 import find from 'lodash/find'
 import { hasHooks } from '../../../common/utils'
+
+const { useContext, useState, useRef, useEffect } = wp.element
 
 function getLineItemFromState(lineItem, lineItemsFromState) {
   return find(lineItemsFromState, { variantId: lineItem.id })

@@ -7,11 +7,10 @@ import isObject from 'lodash/isObject'
 import isArray from 'lodash/isArray'
 import md5 from 'js-md5'
 
-import React from 'react'
-import ReactDOM from 'react-dom'
 import { format, formatDistance, subDays } from 'date-fns'
-import { __ } from '@wordpress/i18n'
 import { textDomain } from '../globals'
+
+const { __ } = wp.i18n
 
 function removeFrom(array, valueToRemove) {
   return without(array, valueToRemove)

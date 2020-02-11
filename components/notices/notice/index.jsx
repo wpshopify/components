@@ -1,7 +1,5 @@
-import React from 'react'
-
-function Notice(props) {
-   return <p className={'wps-notice wps-notice-' + props.type}>{props.message}</p>
+function Notice({ message, type }) {
+  return <p className={'wps-notice wps-notice-' + type}>{message}</p>
 }
 
 export { Notice }

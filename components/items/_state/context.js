@@ -1,5 +1,3 @@
-import React from 'react'
-
-const ItemsContext = React.createContext()
+const ItemsContext = wp.element.createContext()
 
 export { ItemsContext }

@@ -1,5 +1,3 @@
-import React from 'react'
-
-const PaginationContext = React.createContext()
+const PaginationContext = wp.element.createContext()
 
 export { PaginationContext }

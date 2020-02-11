@@ -1,4 +1,3 @@
-import React, { useContext, useRef } from 'react'
 import { ShopContext } from '../../shop/_state/context'
 import { CartContext } from '../_state/context'
 import { Loader } from '../../loader'
@@ -12,6 +11,8 @@ import {
 } from '/Users/andrew/www/devil/devilbox-new/data/www/wpshopify-api'
 import isEmpty from 'lodash/isEmpty'
 import to from 'await-to-js'
+
+const { useContext, useRef } = wp.element
 
 function hasCustomDomain(shopState, checkout) {
   if (!shopState.settings.general.enableCustomCheckoutDomain) {

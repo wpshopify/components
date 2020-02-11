@@ -1,4 +1,3 @@
-import React from 'react'
 import { ItemsProvider } from './_state/provider'
 import { Item } from './item'
 import has from 'lodash/has'

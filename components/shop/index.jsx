@@ -1,4 +1,3 @@
-import React from 'react'
 import { ShopProvider } from './_state/provider'
 import { Bootstrap } from '../bootstrap'
 import { GlobalNotices } from './notices'

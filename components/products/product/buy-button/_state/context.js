@@ -1,7 +1,3 @@
-import React from 'react';
+const ProductBuyButtonContext = wp.element.createContext()
 
-const ProductBuyButtonContext = React.createContext();
-
-export {
-   ProductBuyButtonContext
-}
+export { ProductBuyButtonContext }

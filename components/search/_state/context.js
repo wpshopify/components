@@ -1,5 +1,3 @@
-import React from 'react'
-
-const SearchContext = React.createContext()
+const SearchContext = wp.element.createContext()
 
 export { SearchContext }

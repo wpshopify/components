@@ -1,10 +1,6 @@
-import React, { useContext } from "react"
-import { CartProvider } from "./_state/provider"
-import { ShopContext } from "../shop/_state/context"
+import { CartProvider } from './_state/provider'
 
-const CartWrapper = React.lazy(() =>
-  import(/* webpackChunkName: 'CartWrapper' */ "./wrapper")
-)
+const CartWrapper = wp.element.lazy(() => import(/* webpackChunkName: 'CartWrapper' */ './wrapper'))
 
 function Cart({ options }) {
   return (

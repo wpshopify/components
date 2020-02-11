@@ -1,23 +1,24 @@
-import React, { useContext } from "react"
-import { ItemsContext } from "../../../items/_state/context"
-import { ProductContext } from "../_state/context"
-import { isShowingComponent } from "../../../../common/components"
-import { itemWidthClass } from "../../../../common/utils"
+import { ItemsContext } from '../../../items/_state/context'
+import { ProductContext } from '../_state/context'
+import { isShowingComponent } from '../../../../common/components'
+import { itemWidthClass } from '../../../../common/utils'
 
-const ProductTitle = React.lazy(() =>
-  import(/* webpackChunkName: 'ProductTitle' */ "../title")
+const { useContext } = wp.element
+
+const ProductTitle = wp.element.lazy(() =>
+  import(/* webpackChunkName: 'ProductTitle' */ '../title')
 )
-const ProductPricing = React.lazy(() =>
-  import(/* webpackChunkName: 'ProductPricing' */ "../pricing")
+const ProductPricing = wp.element.lazy(() =>
+  import(/* webpackChunkName: 'ProductPricing' */ '../pricing')
 )
-const ProductDescription = React.lazy(() =>
-  import(/* webpackChunkName: 'ProductDescription' */ "../description")
+const ProductDescription = wp.element.lazy(() =>
+  import(/* webpackChunkName: 'ProductDescription' */ '../description')
 )
-const ProductBuyButton = React.lazy(() =>
-  import(/* webpackChunkName: 'ProductBuyButton' */ "../buy-button")
+const ProductBuyButton = wp.element.lazy(() =>
+  import(/* webpackChunkName: 'ProductBuyButton' */ '../buy-button')
 )
-const ProductImages = React.lazy(() =>
-  import(/* webpackChunkName: 'ProductImages' */ "../images")
+const ProductImages = wp.element.lazy(() =>
+  import(/* webpackChunkName: 'ProductImages' */ '../images')
 )
 
 function ProductWrapper({ isFirstItem }) {
@@ -26,17 +27,14 @@ function ProductWrapper({ isFirstItem }) {
 
   return (
     <div
-      className={`${itemWidthClass(
-        itemsState.componentOptions.itemsPerRow
-      )} wps-item p-3`}
+      className={`${itemWidthClass(itemsState.componentOptions.itemsPerRow)} wps-item p-3`}
       data-is-first-item={isFirstItem}
-      data-is-dropdown-open={productState.isDropdownOpen}
-    >
-      {isShowingComponent(itemsState, "images") && <ProductImages />}
-      {isShowingComponent(itemsState, "title") && <ProductTitle />}
-      {isShowingComponent(itemsState, "pricing") && <ProductPricing />}
-      {isShowingComponent(itemsState, "description") && <ProductDescription />}
-      {isShowingComponent(itemsState, "buy-button") && <ProductBuyButton />}
+      data-is-dropdown-open={productState.isDropdownOpen}>
+      {isShowingComponent(itemsState, 'images') && <ProductImages />}
+      {isShowingComponent(itemsState, 'title') && <ProductTitle />}
+      {isShowingComponent(itemsState, 'pricing') && <ProductPricing />}
+      {isShowingComponent(itemsState, 'description') && <ProductDescription />}
+      {isShowingComponent(itemsState, 'buy-button') && <ProductBuyButton />}
     </div>
   )
 }

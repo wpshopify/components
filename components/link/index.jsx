@@ -1,10 +1,9 @@
-import React from "react"
-import { getItemLink, singleIsShopify } from "../../common/settings"
+import { getItemLink, singleIsShopify } from '../../common/settings'
 
 function Link({
   type,
   payload,
-  classNames = "",
+  classNames = '',
   target,
   shopInfo,
   children,
@@ -12,7 +11,7 @@ function Link({
   manualLink,
   disableLink
 }) {
-  const className = "wps-" + type + "-link" + " " + classNames
+  const className = 'wps-' + type + '-link' + ' ' + classNames
 
   function getTarget(target) {
     if (target) {
@@ -20,9 +19,9 @@ function Link({
     }
 
     if (singleIsShopify()) {
-      return "_blank"
+      return '_blank'
     } else {
-      return "_self"
+      return '_self'
     }
   }
 
@@ -32,14 +31,9 @@ function Link({
         children
       ) : (
         <a
-          href={
-            manualLink
-              ? manualLink
-              : getItemLink(payload, shopInfo, type, linkTo)
-          }
+          href={manualLink ? manualLink : getItemLink(payload, shopInfo, type, linkTo)}
           className={className}
-          target={getTarget(target)}
-        >
+          target={getTarget(target)}>
           {children}
         </a>
       )}

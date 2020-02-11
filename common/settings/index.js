@@ -70,7 +70,7 @@ function getWordPressSingleLink(payload) {
     urlBase = wpshopify.settings.general.urlProducts
   }
 
-  return urlBase + '/' + itemHandle
+  return urlBase + '/' + encodeURI(itemHandle)
 }
 
 function getItemLink(payload, shopInfo, type, linkTo) {

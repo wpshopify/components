@@ -1,7 +1,12 @@
-import React from 'react'
-
-function Notice(props) {
-   return props.message && <p className={'wps-notice wps-notice-' + props.type} dangerouslySetInnerHTML={{ __html: props.message }} />
+function Notice({ message, type }) {
+  return (
+    message && (
+      <p
+        className={'wps-notice wps-notice-' + type}
+        dangerouslySetInnerHTML={{ __html: message }}
+      />
+    )
+  )
 }
 
 export { Notice }

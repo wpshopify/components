@@ -1,6 +1,5 @@
-import React from "react"
-import { ProductProvider } from "./_state/provider"
-import { ProductWrapper } from "./wrapper"
+import { ProductProvider } from './_state/provider'
+import { ProductWrapper } from './wrapper'
 
 function Product({ payload, isFirstItem }) {
   return (

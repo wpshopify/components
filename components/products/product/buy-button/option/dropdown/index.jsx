@@ -1,26 +1,23 @@
-import React, { useContext, useEffect, useRef } from "react"
-import { ProductVariants } from "../variants"
-import { ProductBuyButtonContext } from "../../_state/context"
-import { ProductContext } from "../../../_state/context"
-import { ProductOptionContext } from "../_state/context"
+import { ProductVariants } from '../variants'
+import { ProductBuyButtonContext } from '../../_state/context'
+import { ProductContext } from '../../../_state/context'
+import { ProductOptionContext } from '../_state/context'
 
-import find from "lodash/find"
-import isEmpty from "lodash/isEmpty"
-import Tippy from "@tippy.js/react"
-import "tippy.js/dist/tippy.css"
-import "tippy.js/animations/shift-away.css"
+import find from 'lodash/find'
+import isEmpty from 'lodash/isEmpty'
+import Tippy from '@tippy.js/react'
+import 'tippy.js/dist/tippy.css'
+import 'tippy.js/animations/shift-away.css'
 
-const ProductOptionTrigger = React.lazy(() =>
-  import(/* webpackChunkName: 'ProductOptionTrigger' */ "../trigger")
+const { useContext, useRef, useEffect } = wp.element
+
+const ProductOptionTrigger = wp.element.lazy(() =>
+  import(/* webpackChunkName: 'ProductOptionTrigger' */ '../trigger')
 )
 
 function ProductOptionDropdown() {
-  const [buyButtonState, buyButtonDispatch] = useContext(
-    ProductBuyButtonContext
-  )
-  const [productOptionState, productOptionDispatch] = useContext(
-    ProductOptionContext
-  )
+  const [buyButtonState, buyButtonDispatch] = useContext(ProductBuyButtonContext)
+  const [productOptionState, productOptionDispatch] = useContext(ProductOptionContext)
   const [productState] = useContext(ProductContext)
 
   const isFirstRender = useRef(true)
@@ -38,9 +35,9 @@ function ProductOptionDropdown() {
     )
 
     if (optionIsAvailable === undefined) {
-      productOptionDispatch({ type: "SET_IS_OPTION_SELECTED", payload: false })
+      productOptionDispatch({ type: 'SET_IS_OPTION_SELECTED', payload: false })
       buyButtonDispatch({
-        type: "UNSET_SELECTED_OPTIONS",
+        type: 'UNSET_SELECTED_OPTIONS',
         payload: productOptionState.option.name
       })
     }
@@ -53,31 +50,29 @@ function ProductOptionDropdown() {
     }
 
     if (isEmpty(buyButtonState.selectedOptions)) {
-      productOptionDispatch({ type: "SET_IS_OPTION_SELECTED", payload: false })
+      productOptionDispatch({ type: 'SET_IS_OPTION_SELECTED', payload: false })
     }
   }, [buyButtonState.selectedOptions])
 
   return (
-    <div className="row">
+    <div className='row'>
       <div
-        className="wps-btn-dropdown"
+        className='wps-btn-dropdown'
         data-wps-is-selected={productOptionState.isOptionSelected}
-        ref={productOptionState.dropdownElement}
-      >
+        ref={productOptionState.dropdownElement}>
         <Tippy
           visible={productOptionState.isDropdownOpen}
-          placement="bottom"
+          placement='bottom'
           allowHTML={true}
-          appendTo="parent"
+          appendTo='parent'
           arrow={false}
-          animation="shift-away"
+          animation='shift-away'
           flip={false}
-          theme="light"
+          theme='light'
           interactive={true}
           inertia={true}
           delay={[0, 0]}
-          content={<ProductVariants />}
-        >
+          content={<ProductVariants />}>
           <span>
             <ProductOptionTrigger />
           </span>

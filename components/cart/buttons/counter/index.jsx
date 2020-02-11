@@ -1,10 +1,11 @@
-import React, { useContext, useState, useEffect, useRef } from 'react'
 import { ShopContext } from '../../../shop/_state/context'
 import { CartContext } from '../../_state/context'
 import { CartButtonContext } from '../button/_state/context'
 import { Loader } from '../../../loader'
-import { findTotalCartQuantities, isTotalEmpty } from '../../../../common/cart'
+import { findTotalCartQuantities } from '../../../../common/cart'
 import { useAnime, pulse } from '../../../../common/animations'
+
+const { useContext, useState, useRef, useEffect } = wp.element
 
 function CartCounter() {
   const [cartState, cartDispatch] = useContext(CartContext)

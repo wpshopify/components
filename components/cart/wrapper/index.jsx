@@ -1,4 +1,3 @@
-import React, { useContext, useRef, useEffect, useState } from 'react'
 import { CartContext } from '../_state/context'
 import { ShopContext } from '../../shop/_state/context'
 import { useAction } from '../../../common/hooks'
@@ -8,10 +7,12 @@ import isEmpty from 'lodash/isEmpty'
 import { getProductsFromLineItems } from '/Users/andrew/www/devil/devilbox-new/data/www/wpshopify-api'
 import to from 'await-to-js'
 
-const CartHeader = React.lazy(() => import(/* webpackChunkName: 'CartHeader' */ '../header'))
-const CartContents = React.lazy(() => import(/* webpackChunkName: 'CartContents' */ '../contents'))
-const CartFooter = React.lazy(() => import(/* webpackChunkName: 'CartFooter' */ '../footer'))
-const CartButtons = React.lazy(() => import(/* webpackChunkName: 'CartButtons' */ '../buttons'))
+const { useContext, useState, useRef, useEffect } = wp.element
+
+const CartHeader = wp.element.lazy(() => import(/* webpackChunkName: 'CartHeader' */ '../header'))
+const CartContents = wp.element.lazy(() => import(/* webpackChunkName: 'CartContents' */ '../contents'))
+const CartFooter = wp.element.lazy(() => import(/* webpackChunkName: 'CartFooter' */ '../footer'))
+const CartButtons = wp.element.lazy(() => import(/* webpackChunkName: 'CartButtons' */ '../buttons'))
 
 function CartWrapper() {
   const [cartState, cartDispatch] = useContext(CartContext)

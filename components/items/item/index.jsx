@@ -1,6 +1,4 @@
-import React, { useContext, useRef, useEffect } from 'react'
 import { ItemsContext } from '../_state/context'
-import { ShopContext } from '../../shop/_state/context'
 import { hashQueryParams } from '../../../common/utils'
 import {
   fetchNextPage,
@@ -9,6 +7,8 @@ import {
 import to from 'await-to-js'
 import isEmpty from 'lodash/isEmpty'
 import has from 'lodash/has'
+
+const { useContext, useRef, useEffect } = wp.element
 
 function resendInitialQuery(state) {
   var originalDataType = has(state.originalParams, 'type')
@@ -173,7 +173,6 @@ function Item({ children }) {
         if (newItems.length) {
           let newPayloadCacheAddition = {}
           newPayloadCacheAddition[hashCacheId] = newItems
-          console.log('>>>>>>>>>>>> newItems ', newItems)
 
           itemsDispatch({
             type: 'UPDATE_PAYLOAD_CACHE',

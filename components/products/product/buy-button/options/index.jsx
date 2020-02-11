@@ -1,19 +1,19 @@
-import React, { useContext, useState, useEffect, useRef } from "react"
-import { ProductOption } from "../option"
-import { ProductBuyButtonContext } from "../_state/context"
-import { ProductContext } from "../../_state/context"
-import size from "lodash/size"
-import groupBy from "lodash/groupBy"
-import map from "lodash/map"
-import uniqBy from "lodash/uniqBy"
-import filter from "lodash/filter"
-import flatMap from "lodash/flatMap"
-import { onlyAvailableItems } from "../../../../../common/products"
-import { hasHooks } from "../../../../../common/utils"
-import { containerFluidCSS } from "../../../../../common/css"
+import { ProductOption } from '../option'
+import { ProductBuyButtonContext } from '../_state/context'
+import { ProductContext } from '../../_state/context'
+import size from 'lodash/size'
+import groupBy from 'lodash/groupBy'
+import map from 'lodash/map'
+import uniqBy from 'lodash/uniqBy'
+import filter from 'lodash/filter'
+import flatMap from 'lodash/flatMap'
+import { hasHooks } from '../../../../../common/utils'
+import { containerFluidCSS } from '../../../../../common/css'
 
 /** @jsx jsx */
-import { jsx, css } from "@emotion/core"
+import { jsx, css } from '@emotion/core'
+
+const { useEffect, useContext, useRef } = wp.element
 
 function allOptionsSelectedMatch(onlySelectedOptions, product) {
   return size(onlySelectedOptions) === product.options.length
@@ -22,12 +22,12 @@ function allOptionsSelectedMatch(onlySelectedOptions, product) {
 function onlyAvailableVariantsOptions(variants) {
   return groupBy(
     flatMap(variants, variant => variant.selectedOptions),
-    "name"
+    'name'
   )
 }
 
 function onlyUniqueOptionValues(optionValues) {
-  return uniqBy(optionValues, "value").filter(item => item.value)
+  return uniqBy(optionValues, 'value').filter(item => item.value)
 }
 
 function formatAvailableOptions(availOptions) {
@@ -50,9 +50,7 @@ function onlyAvailableOptionsFromVariants(variants) {
     return false
   }
 
-  return formatAvailableOptions(
-    onlyAvailableVariantsOptions(filterOnlyAvailableVariants(variants))
-  )
+  return formatAvailableOptions(onlyAvailableVariantsOptions(filterOnlyAvailableVariants(variants)))
 }
 
 /*
@@ -63,13 +61,9 @@ If this component is rendered, that means at least one variant is available for 
 function ProductOptions() {
   const isFirstRender = useRef(true)
   const [productState, productDispatch] = useContext(ProductContext)
-  const [buyButtonState, buyButtonDispatch] = useContext(
-    ProductBuyButtonContext
-  )
+  const [buyButtonState, buyButtonDispatch] = useContext(ProductBuyButtonContext)
 
-  const options = onlyAvailableOptionsFromVariants(
-    buyButtonState.product.variants
-  )
+  const options = onlyAvailableOptionsFromVariants(buyButtonState.product.variants)
 
   useEffect(() => {
     if (isFirstRender.current) {
@@ -77,36 +71,29 @@ function ProductOptions() {
       return
     }
 
-    if (
-      allOptionsSelectedMatch(
-        buyButtonState.selectedOptions,
-        buyButtonState.product
-      )
-    ) {
-      buyButtonDispatch({ type: "SET_ALL_SELECTED_OPTIONS", payload: true })
+    if (allOptionsSelectedMatch(buyButtonState.selectedOptions, buyButtonState.product)) {
+      buyButtonDispatch({ type: 'SET_ALL_SELECTED_OPTIONS', payload: true })
 
       productDispatch({
-        type: "SET_SELECTED_VARIANT",
+        type: 'SET_SELECTED_VARIANT',
         payload: {
           product: buyButtonState.product,
           selectedOptions: buyButtonState.selectedOptions
         }
       })
 
-      hasHooks() &&
-        wp.hooks.doAction("before.product.addToCart", buyButtonState)
+      hasHooks() && wp.hooks.doAction('before.product.addToCart', buyButtonState)
     } else {
-      buyButtonDispatch({ type: "SET_ALL_SELECTED_OPTIONS", payload: false })
+      buyButtonDispatch({ type: 'SET_ALL_SELECTED_OPTIONS', payload: false })
     }
   }, [buyButtonState.selectedOptions])
 
   return (
     options && (
       <div
-        className="wps-component wps-component-products-options"
+        className='wps-component wps-component-products-options'
         css={containerFluidCSS}
-        data-wps-is-component-wrapper
-      >
+        data-wps-is-component-wrapper>
         {options.map(option => (
           <ProductOption key={option.name} option={option} />
         ))}

@@ -1,4 +1,3 @@
-import React, { useContext } from 'react'
 import { PaginationControls } from './controls'
 import { PaginationItems } from './items'
 import { PaginationProvider } from './_state/provider'
@@ -6,6 +5,8 @@ import { ItemsContext } from '../items/_state/context'
 import { Notice } from '../notices/notice'
 import { Notices } from '../notices'
 import isEmpty from 'lodash/isEmpty'
+
+const { useContext } = wp.element
 
 function Pagination({ children, shopSettings, miscDispatch }) {
   const [itemsState] = useContext(ItemsContext)
