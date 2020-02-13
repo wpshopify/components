@@ -32,12 +32,9 @@ function Pagination({ children, shopSettings, miscDispatch }) {
   }
 
   function isAlignHeight() {
-    console.log('itemsState.componentOptions', itemsState.componentOptions)
-
     if (itemsState.componentOptions.alignHeight) {
       return true
     }
-    console.log('shopSettings', shopSettings)
 
     if (shopSettings.general.alignHeight) {
       return true

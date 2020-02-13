@@ -10,7 +10,6 @@ import { Notice } from '../../notice'
 /** @jsx jsx */
 import { jsx, css } from '@emotion/core'
 import find from 'lodash/find'
-import { hasHooks } from '../../../common/utils'
 
 const { useContext, useState, useRef, useEffect } = wp.element
 
@@ -86,13 +85,14 @@ function CartLineItem({ lineItem, index }) {
     return lineItem.title !== 'Default Title'
   }
 
-  const manualLink = hasHooks()
-    ? wp.hooks.applyFilters('cart.lineItems.link', false, lineItem, cartState)
-    : false
+  const manualLink = wp.hooks.applyFilters('cart.lineItems.link', false, lineItem, cartState)
 
-  const disableLink = hasHooks()
-    ? wp.hooks.applyFilters('cart.lineItems.disableLink', false, lineItem, cartState)
-    : false
+  const disableLink = wp.hooks.applyFilters(
+    'cart.lineItems.disableLink',
+    false,
+    lineItem,
+    cartState
+  )
 
   return (
     <div

@@ -1,18 +1,22 @@
 import { CartContext } from '../_state/context'
 import { ShopContext } from '../../shop/_state/context'
 import { useAction } from '../../../common/hooks'
-import { hasHooks } from '../../../common/utils'
-import { isCartEmpty, findTotalCartQuantities } from '../../../common/cart'
+import { findTotalCartQuantities } from '../../../common/cart'
 import isEmpty from 'lodash/isEmpty'
 import { getProductsFromLineItems } from '/Users/andrew/www/devil/devilbox-new/data/www/wpshopify-api'
 import to from 'await-to-js'
 
 const { useContext, useState, useRef, useEffect } = wp.element
+const { __ } = wp.i18n
 
 const CartHeader = wp.element.lazy(() => import(/* webpackChunkName: 'CartHeader' */ '../header'))
-const CartContents = wp.element.lazy(() => import(/* webpackChunkName: 'CartContents' */ '../contents'))
+const CartContents = wp.element.lazy(() =>
+  import(/* webpackChunkName: 'CartContents' */ '../contents')
+)
 const CartFooter = wp.element.lazy(() => import(/* webpackChunkName: 'CartFooter' */ '../footer'))
-const CartButtons = wp.element.lazy(() => import(/* webpackChunkName: 'CartButtons' */ '../buttons'))
+const CartButtons = wp.element.lazy(() =>
+  import(/* webpackChunkName: 'CartButtons' */ '../buttons')
+)
 
 function CartWrapper() {
   const [cartState, cartDispatch] = useContext(CartContext)
@@ -24,30 +28,33 @@ function CartWrapper() {
   const setCheckoutNotes = useAction('set.checkout.note')
   const lineItemsAdded = useAction('product.addToCart')
   const openCart = useAction('cart.toggle')
-  const [isCartInView, setIsCartInView] = useState(false)
 
   async function cartBootstrap() {
+    console.log('cartBootstrap 1')
+
     if (!shopState.checkoutId) {
+      console.log('cartBootstrap 2')
       shopDispatch({
         type: 'UPDATE_NOTICES',
         payload: {
           type: 'error',
-          message: 'No checkout found'
+          message: __('No checkout found', 'wpshopify')
         }
       })
 
       shopDispatch({ type: 'IS_CART_READY', payload: true })
       return
     }
-
+    console.log('cartBootstrap 3')
     let [productsError, products] = await to(getProductsFromLineItems())
-
+    console.log('cartBootstrap 4')
     if (productsError) {
+      console.log('cartBootstrap 5')
       shopDispatch({
         type: 'UPDATE_NOTICES',
         payload: {
           type: 'error',
-          message: productsError
+          message: __(productsError, 'wpshopify')
         }
       })
     }
@@ -64,7 +71,7 @@ function CartWrapper() {
         checkoutId: shopState.checkoutId
       }
     })
-
+    console.log('cartBootstrap 6')
     if (isEmpty(products)) {
       cartDispatch({ type: 'SET_IS_CART_EMPTY', payload: true })
     } else {
@@ -101,7 +108,7 @@ function CartWrapper() {
       return
     }
 
-    hasHooks() && wp.hooks.doAction('on.checkout.update', cartState)
+    wp.hooks.doAction('on.checkout.update', cartState)
   }, [cartState.totalLineItems])
 
   useEffect(() => {

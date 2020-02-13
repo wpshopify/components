@@ -70,14 +70,7 @@ function StorefrontSelections() {
   }
 
   function setInitialSelections() {
-    console.log(
-      'storefrontState.componentOptions.filterParams',
-      storefrontState.componentOptions.filterParams
-    )
-
     var initialSelections = getInitialSelections(storefrontState.componentOptions.filterParams)
-
-    console.log('initialSelections', initialSelections)
 
     storefrontDispatch({
       type: 'SET_SELECTIONS',
@@ -103,7 +96,7 @@ function StorefrontSelections() {
     }
 
     itemsDispatch({
-      type: 'SET_QUERY_PARAMS',
+      type: 'MERGE_QUERY_PARAMS',
       payload: updateFetchParamsQuery()
     })
   }, [storefrontState.selections])
@@ -138,8 +131,6 @@ function buildQueryStringFromSelections(selections, connective) {
   if (newQuery === '') {
     newQuery = '*'
   }
-
-  console.log('newQuerynewQuerynewQuerynewQuerynewQuerynewQuery', newQuery)
 
   return newQuery
 }

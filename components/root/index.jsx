@@ -1,9 +1,9 @@
-function RootElement({ componentId, loadingMsg, componentType = 'products' }) {
+function RootElement({ componentOptionsId, loadingMsg, componentType = 'products' }) {
   return (
     <div
       data-wpshopify-component
       data-wpshopify-component-type={componentType}
-      data-wpshopify-component-id={componentId}>
+      data-wpshopify-component-options={componentOptionsId}>
       {loadingMsg}
     </div>
   )

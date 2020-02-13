@@ -7,6 +7,7 @@ import {
 import to from 'await-to-js'
 import isEmpty from 'lodash/isEmpty'
 import has from 'lodash/has'
+import isEqual from 'lodash/isEqual'
 
 const { useContext, useRef, useEffect } = wp.element
 
@@ -120,14 +121,12 @@ function fetchNextItems(itemsState, itemsDispatch, miscDispatch = false) {
   })
 }
 
-function Item({ children }) {
+function Item({ children, customQueryParams }) {
   const [itemsState, itemsDispatch] = useContext(ItemsContext)
   const isFirstRender = useRef(true)
 
-  async function fetchNewItems(miscDispatch = false) {
+  async function fetchNewItems(miscDispatch = false, customQueryParams = false) {
     var hashCacheId = hashQueryParams(itemsState.queryParams)
-
-    console.log('hashCacheId', hashCacheId)
 
     if (has(itemsState.payloadCache, hashCacheId)) {
       itemsDispatch({
@@ -150,9 +149,6 @@ function Item({ children }) {
       itemsDispatch({ type: 'SET_IS_LOADING', payload: true })
       itemsDispatch({ type: 'UPDATE_NOTICES', payload: [] })
 
-      console.log('itemsState.queryParams', itemsState.queryParams)
-      console.log('itemsState.dataType', itemsState.dataType)
-
       const [resultsError, results] = await to(
         graphQuery(itemsState.dataType, itemsState.queryParams)
       )
@@ -166,9 +162,15 @@ function Item({ children }) {
         var newItems = results.model[itemsState.dataType]
         var newItemsTotal = newItems.length
 
-        itemsDispatch({ type: 'SET_TOTAL_SHOWN', payload: newItemsTotal })
+        itemsDispatch({
+          type: 'SET_TOTAL_SHOWN',
+          payload: newItemsTotal
+        })
         itemsDispatch({ type: 'SET_PAYLOAD', payload: newItems })
-        itemsDispatch({ type: 'UPDATE_HAS_MORE_ITEMS', payload: newItemsTotal })
+        itemsDispatch({
+          type: 'UPDATE_HAS_MORE_ITEMS',
+          payload: newItemsTotal
+        })
 
         if (newItems.length) {
           let newPayloadCacheAddition = {}
@@ -190,14 +192,26 @@ function Item({ children }) {
   }
 
   useEffect(() => {
-    //  if (isFirstRender.current) {
-    //    isFirstRender.current = false
-    //    return
-    //  }
-    console.log('Item itemsState', itemsState)
-
     fetchNewItems(itemsState.miscDispatch)
   }, [itemsState.queryParams])
+
+  /*
+
+   Run after every render. Make sure this only runs when customQueryParams changes
+
+   */
+  useEffect(() => {
+    if (!customQueryParams || itemsState.isLoading) {
+      return
+    }
+
+    if (!isEqual(itemsState.queryParams, customQueryParams)) {
+      itemsDispatch({
+        type: 'SET_QUERY_PARAMS',
+        payload: customQueryParams
+      })
+    }
+  }, [customQueryParams])
 
   return <>{children}</>
 }

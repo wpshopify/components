@@ -5,7 +5,6 @@ import find from 'lodash/find'
 import { calcLineItemTotal } from '../../../../common/products'
 import { useAnime, pulse } from '../../../../common/animations'
 import { containerFluidCSS } from '../../../../common/css'
-import { hasHooks } from '../../../../common/utils'
 
 /** @jsx jsx */
 import { jsx, css } from '@emotion/core'
@@ -35,7 +34,7 @@ function CartLineItemQuantity({
   const [cartState, cartDispatch] = useContext(CartContext)
   const animePulse = useAnime(pulse)
 
-  const maxQuantity = hasHooks() ? wp.hooks.applyFilters('cart.maxQuantity', false) : false
+  const maxQuantity = wp.hooks.applyFilters('cart.maxQuantity', false)
 
   function changeQuantity(newQuantity) {
     let lineItemFound = getLineItemFromState(lineItem, cartState.checkoutCache.lineItems)

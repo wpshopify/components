@@ -33,7 +33,6 @@ function StorefrontItems() {
       products: itemsState.payload.map(product => {
         return {
           product: product,
-          componentID: false,
           element: false,
           gid: false,
           excludes: false,

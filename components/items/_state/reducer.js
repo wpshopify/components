@@ -87,10 +87,17 @@ function ItemsReducer(state, action) {
       }
     }
 
-    case 'SET_QUERY_PARAMS': {
+    case 'MERGE_QUERY_PARAMS': {
       return {
         ...state,
         queryParams: update(state.queryParams, { $merge: action.payload })
+      }
+    }
+
+    case 'SET_QUERY_PARAMS': {
+      return {
+        ...state,
+        queryParams: update(state.queryParams, { $set: action.payload })
       }
     }
 
@@ -102,8 +109,6 @@ function ItemsReducer(state, action) {
     }
 
     case 'UPDATE_PAYLOAD_CACHE': {
-      console.log('....................... action.payload .... ', action.payload)
-
       return {
         ...state,
         payloadCache: update(state.payloadCache, { $merge: action.payload })

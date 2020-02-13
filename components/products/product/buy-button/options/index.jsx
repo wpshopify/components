@@ -7,7 +7,6 @@ import map from 'lodash/map'
 import uniqBy from 'lodash/uniqBy'
 import filter from 'lodash/filter'
 import flatMap from 'lodash/flatMap'
-import { hasHooks } from '../../../../../common/utils'
 import { containerFluidCSS } from '../../../../../common/css'
 
 /** @jsx jsx */
@@ -82,7 +81,7 @@ function ProductOptions() {
         }
       })
 
-      hasHooks() && wp.hooks.doAction('before.product.addToCart', buyButtonState)
+      wp.hooks.doAction('before.product.addToCart', buyButtonState)
     } else {
       buyButtonDispatch({ type: 'SET_ALL_SELECTED_OPTIONS', payload: false })
     }

@@ -1,7 +1,7 @@
 import { ShopContext } from '../../shop/_state/context'
 import { CartContext } from '../_state/context'
 import { Loader } from '../../loader'
-import { hasHooks, FilterHook } from '../../../common/utils'
+import { FilterHook } from '../../../common/utils'
 import { hasCustomCheckoutAttributes } from '../../../common/checkout'
 
 import {
@@ -12,6 +12,7 @@ import {
 import isEmpty from 'lodash/isEmpty'
 import to from 'await-to-js'
 
+const { __ } = wp.i18n
 const { useContext, useRef } = wp.element
 
 function hasCustomDomain(shopState, checkout) {
@@ -39,8 +40,7 @@ function checkoutRedirectOnly(checkout, shopState) {
 
 function hasDiscount(checkout, shopState) {
   /* @if NODE_ENV='pro' */
-  var hasCustomDiscount =
-    hasHooks() && wp.hooks.applyFilters('set.checkout.discount', false, checkout)
+  var hasCustomDiscount = wp.hooks.applyFilters('set.checkout.discount', false, checkout)
 
   if (hasCustomDiscount) {
     return hasCustomDiscount
@@ -53,7 +53,7 @@ function hasDiscount(checkout, shopState) {
 function checkoutRedirect(checkout, shopState) {
   const discountCode = hasDiscount(checkout, shopState)
 
-  hasHooks() && wp.hooks.doAction('before.checkout.redirect', checkout, shopState)
+  wp.hooks.doAction('before.checkout.redirect', checkout, shopState)
 
   if (discountCode) {
     addDiscount(discountCode, checkout).then(
@@ -138,15 +138,13 @@ function CartCheckout() {
     cartDispatch({ type: 'UPDATE_NOTICES', payload: [] })
     cartDispatch({ type: 'SET_IS_CHECKING_OUT', payload: true })
 
-    hasHooks() && wp.hooks.doAction('on.checkout', cartState.checkoutCache)
+    wp.hooks.doAction('on.checkout', cartState.checkoutCache)
 
-    var lineItems = hasHooks()
-      ? wp.hooks.applyFilters(
-          'before.checkout.lineItems',
-          cartState.checkoutCache.lineItems,
-          cartState
-        )
-      : cartState.checkoutCache.lineItems
+    var lineItems = wp.hooks.applyFilters(
+      'before.checkout.lineItems',
+      cartState.checkoutCache.lineItems,
+      cartState
+    )
 
     const [checkoutWithLineitemsError, checkoutWithLineitems] = await to(
       replaceLineItems(lineItems)
@@ -156,7 +154,7 @@ function CartCheckout() {
       cartDispatch({ type: 'SET_IS_CHECKING_OUT', payload: false })
       return cartDispatch({
         type: 'UPDATE_NOTICES',
-        payload: { type: 'error', message: checkoutWithLineitemsError }
+        payload: { type: 'error', message: __(checkoutWithLineitemsError, 'wpshopify') }
       })
     }
 
@@ -164,7 +162,7 @@ function CartCheckout() {
       cartDispatch({ type: 'SET_IS_CHECKING_OUT', payload: false })
       return cartDispatch({
         type: 'UPDATE_NOTICES',
-        payload: { type: 'error', message: 'No line items exist ' }
+        payload: { type: 'error', message: __('No line items exist ', 'wpshopify') }
       })
     }
 
@@ -180,7 +178,7 @@ function CartCheckout() {
         cartDispatch({ type: 'SET_IS_CHECKING_OUT', payload: false })
         return cartDispatch({
           type: 'UPDATE_NOTICES',
-          payload: { type: 'error', message: checkoutWithAttrsError }
+          payload: { type: 'error', message: __(checkoutWithAttrsError, 'wpshopify') }
         })
       }
 
@@ -226,7 +224,7 @@ function CartCheckoutButton({ buttonStyle, onCheckout, shopState, buttonRef }) {
       {cartState.isCheckingOut ? (
         <Loader isLoading={cartState.isCheckingOut} />
       ) : (
-        cartState.checkoutText
+        __(cartState.checkoutText, 'wpshopify')
       )}
     </button>
   )

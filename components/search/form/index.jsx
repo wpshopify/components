@@ -29,7 +29,7 @@ function SearchForm() {
     })
 
     itemsDispatch({
-      type: 'SET_QUERY_PARAMS',
+      type: 'MERGE_QUERY_PARAMS',
       payload: {
         query: hi
       }

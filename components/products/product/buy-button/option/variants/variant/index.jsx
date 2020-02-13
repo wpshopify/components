@@ -1,19 +1,16 @@
 import { ProductOptionContext } from '../../_state/context'
-import { ShopContext } from '../../../../../../shop/_state/context'
 import { ProductBuyButtonContext } from '../../../_state/context'
 import { ProductContext } from '../../../../_state/context'
 
 import find from 'lodash/find'
 import isEmpty from 'lodash/isEmpty'
-import { createObj, hasHooks } from '../../../../../../../common/utils'
+import { createObj } from '../../../../../../../common/utils'
 
 const { useEffect, useContext, useRef, useState } = wp.element
 
 function ProductVariant({ variant }) {
   const [isSelectable, setIsSelectable] = useState(true)
   const isFirstRender = useRef(true)
-
-  const [shopState, shopDispatch] = useContext(ShopContext)
   const [productOptionState, productOptionDispatch] = useContext(ProductOptionContext)
   const [buyButtonState, buyButtonDispatch] = useContext(ProductBuyButtonContext)
   const [productState, productDispatch] = useContext(ProductContext)
@@ -21,15 +18,13 @@ function ProductVariant({ variant }) {
   function onVariantSelection() {
     const selectedVariant = createObj(productOptionState.option.name, variant.value)
 
-    // setSelectedOptions(optionsUpdated);
     buyButtonDispatch({ type: 'UPDATE_SELECTED_OPTIONS', payload: selectedVariant })
     productDispatch({ type: 'TOGGLE_DROPDOWN', payload: false })
     productOptionDispatch({ type: 'TOGGLE_DROPDOWN', payload: false })
     productOptionDispatch({ type: 'SET_IS_OPTION_SELECTED', payload: true })
     productOptionDispatch({ type: 'SET_SELECTED_OPTION', payload: selectedVariant })
 
-    hasHooks() &&
-      wp.hooks.doAction('on.product.variant.selection', selectedVariant, productOptionState)
+    wp.hooks.doAction('on.product.variant.selection', selectedVariant, productOptionState)
   }
 
   useEffect(() => {

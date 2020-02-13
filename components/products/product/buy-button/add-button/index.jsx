@@ -4,7 +4,6 @@ import { Loader } from '../../../../loader'
 import { Notice } from '../../../../notice'
 import { ItemsContext } from '../../../../items/_state/context'
 import { ProductContext } from '../../_state/context'
-import { hasHooks } from '../../../../../common/utils'
 import { useAnime, pulse } from '../../../../../common/animations'
 import { checkoutRedirect } from '../../../../cart/checkout'
 
@@ -126,8 +125,7 @@ function ProductAddButton() {
 
         checkoutRedirect(respNewCheckout, shopState)
       } else {
-        hasHooks() &&
-          wp.hooks.doAction('product.addToCart', buildAddToCartParams(lineItems, [variant]))
+        wp.hooks.doAction('product.addToCart', buildAddToCartParams(lineItems, [variant]))
 
         buyButtonDispatch({
           type: 'SET_ALL_SELECTED_OPTIONS',
@@ -137,7 +135,7 @@ function ProductAddButton() {
         productDispatch({ type: 'SET_ADDED_VARIANT', payload: variant })
         productDispatch({ type: 'SET_SELECTED_VARIANT', payload: false })
 
-        hasHooks() && wp.hooks.doAction('on.product.addToCart', lineItems, variant)
+        wp.hooks.doAction('on.product.addToCart', lineItems, variant)
       }
     }
   }
@@ -191,7 +189,7 @@ function ProductAddButton() {
         {isCheckingOut ? (
           <Loader />
         ) : (
-          hasHooks() && wp.hooks.applyFilters('product.addToCart.text', getButtonText())
+          wp.hooks.applyFilters('product.addToCart.text', getButtonText())
         )}
       </button>
 

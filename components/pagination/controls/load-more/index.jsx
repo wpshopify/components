@@ -2,7 +2,6 @@ import { PaginationContext } from '../../_state/context'
 import { ItemsContext } from '../../../items/_state/context'
 import { usePortal, useInView } from '../../../../common/hooks'
 import { fetchNextItems } from '../../../items/item'
-import { hasHooks } from '../../../../common/utils'
 import { Loader } from '../../../loader'
 import isEmpty from 'lodash/isEmpty'
 import has from 'lodash/has'
@@ -76,7 +75,7 @@ function PaginationLoadMore({ miscDispatch }) {
           {itemsState.isLoading ? (
             <Loader isLoading={itemsState.isLoading} />
           ) : (
-            hasHooks() && wp.hooks.applyFilters('pagination.loadMore.text', 'Load more')
+            wp.hooks.applyFilters('pagination.loadMore.text', 'Load more')
           )}
         </button>
       )}

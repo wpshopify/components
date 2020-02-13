@@ -43,7 +43,7 @@ function StorefrontSorting() {
     setSortValue(event.target.value)
 
     itemsDispatch({
-      type: 'SET_QUERY_PARAMS',
+      type: 'MERGE_QUERY_PARAMS',
       payload: updateFetchParams(event)
     })
   }

@@ -73,8 +73,6 @@ function buildNewSelection(itemValue, itemType, isSelected, existingSelections) 
       currentList: existingSelections[itemType]
     })
   }
-  console.log('itemValue', itemValue)
-  console.log('itemType', itemType)
 
   if (isString(itemValue)) {
     var newSelectedVal = itemValue.toLowerCase()

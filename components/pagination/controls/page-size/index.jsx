@@ -42,7 +42,7 @@ function PaginationPageSize() {
   }
 
   function setAfterCursorQueryParams(params) {
-    itemsDispatch({ type: 'SET_QUERY_PARAMS', payload: params })
+    itemsDispatch({ type: 'MERGE_QUERY_PARAMS', payload: params })
   }
   function setControlsTouched(touched) {
     paginationDispatch({ type: 'SET_CONTROLS_TOUCHED', payload: touched })

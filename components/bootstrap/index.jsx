@@ -1,6 +1,4 @@
-import { createHooks } from '@wordpress/hooks'
 import { ShopContext } from '../shop/_state/context'
-import { hasHooks } from '../../common/utils'
 import { buildInstances } from '/Users/andrew/www/devil/devilbox-new/data/www/wpshopify-api'
 import to from 'await-to-js'
 
@@ -21,17 +19,7 @@ function Bootstrap({ children }) {
   }
 
   async function bootstrapShop() {
-    // If running WP less < 5.0, polyfill the hooks
-    if (hasHooks()) {
-      wp.hooks.doAction('before.ready', shopState)
-    } else {
-      if (typeof wp === 'undefined') {
-        window.wp = {}
-        wp.hooks = createHooks()
-      } else {
-        wp.hooks = createHooks()
-      }
-    }
+    wp.hooks.doAction('before.ready', shopState)
 
     setShopReady()
 

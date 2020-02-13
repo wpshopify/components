@@ -42,8 +42,6 @@ function StorefrontReducer(state, action) {
         return state
       }
 
-      console.log('action.payload', action.payload)
-
       return {
         ...state,
         selections: update(state.selections, { $merge: action.payload })
@@ -76,15 +74,11 @@ function StorefrontReducer(state, action) {
 
     // Is called dynamically
     case 'SET_SELECTED_AVAILABLE_FOR_SALE': {
-      console.log('action.payload', action.payload)
-
       if (!action.payload) {
         var newVal = null
       } else {
         var newVal = action.payload
       }
-
-      console.log('newVal', newVal)
 
       return {
         ...state,

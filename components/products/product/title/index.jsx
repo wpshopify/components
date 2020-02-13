@@ -2,7 +2,7 @@ import { ShopContext } from '../../../shop/_state/context'
 import { ProductContext } from '../_state/context'
 import { ItemsContext } from '../../../items/_state/context'
 import { usePortal } from '../../../../common/hooks'
-import { findPortalElement, hasHooks, FilterHook, _t } from '../../../../common/utils'
+import { findPortalElement, FilterHook } from '../../../../common/utils'
 import { Link } from '../../../link'
 import { hasSinglePage } from '../../../../common/settings'
 import { onSinglePage } from '../../../../common/components'
@@ -30,8 +30,7 @@ function ProductTitle() {
   `
 
   function getTitleClass() {
-    const defaultVal = 'wps-products-title'
-    return hasHooks() ? wp.hooks.applyFilters('product.title.class', defaultVal) : defaultVal
+    return wp.hooks.applyFilters('product.title.class', 'wps-products-title')
   }
 
   return usePortal(

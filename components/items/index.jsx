@@ -56,8 +56,10 @@ function Items(props) {
     props.options &&
     props.options.map(component => {
       return usePortal(
-        <ItemsProvider component={component} miscDispatch={props.miscDispatch}>
-          <Item>{props.children}</Item>
+        <ItemsProvider
+          component={component}
+          miscDispatch={has(props, 'miscDispatch') ? props.miscDispatch : false}>
+          <Item customQueryParams={props.customQueryParams}>{props.children}</Item>
         </ItemsProvider>,
         component.componentElement
       )

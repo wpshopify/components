@@ -3,7 +3,6 @@ import assign from 'lodash/assign'
 import mapValues from 'lodash/mapValues'
 import map from 'lodash/map'
 import { usePortal } from '../../../../common/hooks'
-import { hasHooks } from '../../../../common/utils'
 import { getFilterData } from '/Users/andrew/www/devil/devilbox-new/data/www/wpshopify-api'
 import { StorefrontContext } from '../../_state/context'
 import { StorefrontFilterOptionsGroup } from '../group'
@@ -66,17 +65,15 @@ function StorefrontOptionsWrapper() {
   }, [])
 
   function getTagsHeading() {
-    return hasHooks() ? wp.hooks.applyFilters('default.storefront.tags.heading', 'Tags') : 'Tags'
+    return wp.hooks.applyFilters('default.storefront.tags.heading', 'Tags')
   }
 
   function getVendorsHeading() {
-    return hasHooks()
-      ? wp.hooks.applyFilters('default.storefront.vendors.heading', 'Vendors')
-      : 'Vendors'
+    return wp.hooks.applyFilters('default.storefront.vendors.heading', 'Vendors')
   }
 
   function getTypesHeading() {
-    return hasHooks() ? wp.hooks.applyFilters('default.storefront.types.heading', 'Types') : 'Types'
+    return wp.hooks.applyFilters('default.storefront.types.heading', 'Types')
   }
 
   return usePortal(

@@ -1,4 +1,4 @@
-import { hashQueryParams, hasHooks, underscoreToCamel } from '../../../common/utils'
+import { hashQueryParams } from '../../../common/utils'
 
 function checkHasMore(component) {
   if (
@@ -89,7 +89,7 @@ function ItemsInitialState({ component, miscDispatch }) {
     miscDispatch: miscDispatch ? miscDispatch : false
   }
 
-  hasHooks() ? wp.hooks.doAction('items.init', itemsState) : ''
+  wp.hooks.doAction('items.init', itemsState)
 
   return itemsState
 }

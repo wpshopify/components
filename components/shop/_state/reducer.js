@@ -4,7 +4,6 @@ import concat from 'lodash/concat'
 import uniqWith from 'lodash/uniqWith'
 import isEqual from 'lodash/isEqual'
 import isEmpty from 'lodash/isEmpty'
-import { hasHooks } from '../../../common/utils'
 
 function ShopReducer(state, action) {
   switch (action.type) {
@@ -35,7 +34,7 @@ function ShopReducer(state, action) {
       }
 
       // App is ready to go
-      hasHooks() && wp.hooks.doAction('after.shop.ready', newState)
+      wp.hooks.doAction('after.shop.ready', newState)
 
       return newState
     }
@@ -49,7 +48,7 @@ function ShopReducer(state, action) {
       }
 
       // Cart is ready to go
-      hasHooks() && wp.hooks.doAction('after.cart.ready', newState)
+      wp.hooks.doAction('after.cart.ready', newState)
 
       return newState
     }
@@ -101,7 +100,7 @@ function ShopReducer(state, action) {
     }
 
     case 'SET_CHECKOUT_NOTE': {
-      hasHooks() && wp.hooks.doAction('on.checkout.note', action.payload)
+      wp.hooks.doAction('on.checkout.note', action.payload)
 
       return {
         ...state,

@@ -1,4 +1,4 @@
-import { hasHooks, _t } from "../../../common/utils"
+const { __ } = wp.i18n
 
 function CartInitialState(options) {
   return {
@@ -18,15 +18,11 @@ function CartInitialState(options) {
     customAttributes: [],
     note: false,
     totalLineItems: 0,
-    title: hasHooks()
-      ? wp.hooks.applyFilters("default.cart.title", _t("Shopping cart"))
-      : _t("Shopping cart"),
-    checkoutText: hasHooks()
-      ? wp.hooks.applyFilters(
-          "default.cart.checkout.text",
-          _t("Begin checkout")
-        )
-      : _t("Begin checkout")
+    title: wp.hooks.applyFilters('default.cart.title', __('Shopping cart', 'wpshopify')),
+    checkoutText: wp.hooks.applyFilters(
+      'default.cart.checkout.text',
+      __('Begin checkout', 'wpshopify')
+    )
   }
 }
 

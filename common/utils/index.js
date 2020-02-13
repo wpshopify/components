@@ -7,7 +7,7 @@ import isObject from 'lodash/isObject'
 import isArray from 'lodash/isArray'
 import md5 from 'js-md5'
 
-import { format, formatDistance, subDays } from 'date-fns'
+import { format } from 'date-fns'
 import { textDomain } from '../globals'
 
 const { __ } = wp.i18n
@@ -101,17 +101,12 @@ function hashQueryParams(queryParams) {
   return md5(createStringFromQueryParams(queryParams))
 }
 
-function hasHooks() {
-  return typeof wp !== 'undefined' && wp.hooks
-}
-
 function FilterHook({ name, defaultVal = false, args, isReady }) {
   if (!args) {
     args = []
   }
 
   return (
-    hasHooks() &&
     wp.hooks.hasFilter(name) && (
       <div
         data-wps-is-ready={isReady}
@@ -172,7 +167,6 @@ export {
   findPortalElement,
   convertTitleToHandle,
   hashQueryParams,
-  hasHooks,
   FilterHook,
   prettyDate,
   _t,
