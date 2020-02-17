@@ -14,7 +14,7 @@ function cartButtonOptions() {
         counter_text_color: '#fff',
         render_from_server: false
       },
-      componentOptionsId: 'ed1c77f041d947e17caafefdcad39384ed1c77f041d947e17caafefdcad39384',
+      payloadSettingsId: 'ed1c77f041d947e17caafefdcad39384ed1c77f041d947e17caafefdcad39384',
       element: document.querySelectorAll('#wps-cart-icon-fixed')[0],
       excludes: false,
       gid: false,

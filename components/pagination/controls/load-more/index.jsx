@@ -9,7 +9,7 @@ import uniqid from 'uniqid'
 
 const { useContext, useEffect, useRef } = wp.element
 
-function PaginationLoadMore({ miscDispatch }) {
+function PaginationLoadMore() {
   const [itemsState, itemsDispatch] = useContext(ItemsContext)
   const [paginationState, paginationDispatch] = useContext(PaginationContext)
   const randomClass = uniqid('wps-btn-')
@@ -20,14 +20,14 @@ function PaginationLoadMore({ miscDispatch }) {
   function onNextPage() {
     paginationDispatch({ type: 'SET_CONTROLS_TOUCHED', payload: true })
 
-    fetchNextItems(itemsState, itemsDispatch, miscDispatch)
+    fetchNextItems(itemsState, itemsDispatch)
   }
 
   useEffect(() => {
     if (!wpshopify.misc.isPro) {
       return
     }
-    if (!itemsState.componentOptions.infiniteScroll) {
+    if (!itemsState.payloadSettings.infiniteScroll) {
       return () => (inView = false)
     }
 
@@ -41,8 +41,8 @@ function PaginationLoadMore({ miscDispatch }) {
       isFirstRender.current = false
 
       if (
-        has(itemsState.componentOptions, 'paginationHideInitial') &&
-        itemsState.componentOptions.paginationHideInitial
+        has(itemsState.payloadSettings, 'paginationHideInitial') &&
+        itemsState.payloadSettings.paginationHideInitial
       ) {
         return false
       }
@@ -53,7 +53,7 @@ function PaginationLoadMore({ miscDispatch }) {
       return false
     }
 
-    if (!itemsState.componentOptions.paginationLoadMore) {
+    if (!itemsState.payloadSettings.paginationLoadMore) {
       return false
     }
 
@@ -80,7 +80,7 @@ function PaginationLoadMore({ miscDispatch }) {
         </button>
       )}
     </>,
-    document.querySelector(paginationState.componentOptions.dropzoneLoadMore)
+    document.querySelector(paginationState.payloadSettings.dropzoneLoadMore)
   )
 }
 

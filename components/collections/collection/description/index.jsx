@@ -18,7 +18,7 @@ function CollectionDescription({ isShopReady }) {
     />,
     findPortalElement(
       collectionState.element,
-      itemsState.componentOptions.dropzoneCollectionDescription
+      itemsState.payloadSettings.dropzoneCollectionDescription
     )
   )
 }

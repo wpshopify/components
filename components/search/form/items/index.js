@@ -28,27 +28,27 @@ function SearchItems() {
           excludes: false,
           renderFromServer: false,
           selectedVariant: false,
-          componentOptions: {
+          payloadSettings: {
             pagination: true
           }
         }
       }),
-      dataType: itemsState.componentOptions.dataType,
+      dataType: itemsState.payloadSettings.dataType,
       originalParams: {
-        type: itemsState.componentOptions.dataType,
+        type: itemsState.payloadSettings.dataType,
         queryParams: itemsState.queryParams,
         connectionParams: false
       },
       queryParams: itemsState.queryParams,
-      type: itemsState.componentOptions.dataType,
-      componentOptions: itemsState.componentOptions,
-      noResultsText: itemsState.componentOptions.noResultsText
+      type: itemsState.payloadSettings.dataType,
+      payloadSettings: itemsState.payloadSettings,
+      noResultsText: itemsState.payloadSettings.noResultsText
     }
   }
 
   return usePortal(
     <>{!initialRender.current && <Products options={buildOptions()} />}</>,
-    document.querySelector(searchState.componentOptions.dropzonePayload)
+    document.querySelector(searchState.payloadSettings.dropzonePayload)
   )
 }
 

@@ -25,19 +25,19 @@ function CollectionTitle({ isShopReady, shopInfo }) {
 
   return usePortal(
     <div className='wps-component wps-component-collection-title' data-wps-component-order='0'>
-      {hasSinglePage() && !onSinglePage(itemsState) && !itemsState.componentOptions.single ? (
+      {hasSinglePage() && !onSinglePage(itemsState) && !itemsState.payloadSettings.single ? (
         <Link
           type='collections'
           shopInfo={shopInfo}
           payload={collectionState.payload}
-          linkTo={itemsState.componentOptions.linkTo}>
+          linkTo={itemsState.payloadSettings.linkTo}>
           <Title />
         </Link>
       ) : (
         <Title />
       )}
     </div>,
-    findPortalElement(collectionState.element, itemsState.componentOptions.dropzoneCollectionTitle)
+    findPortalElement(collectionState.element, itemsState.payloadSettings.dropzoneCollectionTitle)
   )
 }
 

@@ -31,10 +31,10 @@ function ProductAddButton() {
   const [shopState, shopDispatch] = useContext(ShopContext)
 
   const isDirectCheckout =
-    itemsState.componentOptions.directCheckout || shopState.settings.general.directCheckout
+    itemsState.payloadSettings.directCheckout || shopState.settings.general.directCheckout
 
   const buttonStyle = {
-    backgroundColor: itemsState.componentOptions.addToCartButtonColor
+    backgroundColor: itemsState.payloadSettings.addToCartButtonColor
   }
 
   function findVariantFromSelections() {
@@ -160,8 +160,8 @@ function ProductAddButton() {
       return 'Checkout'
     }
 
-    if (itemsState.componentOptions.addToCartButtonText) {
-      return itemsState.componentOptions.addToCartButtonText
+    if (itemsState.payloadSettings.addToCartButtonText) {
+      return itemsState.payloadSettings.addToCartButtonText
     }
 
     return 'Add to cart'

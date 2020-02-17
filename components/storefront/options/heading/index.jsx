@@ -8,7 +8,7 @@ function StorefrontFilterOptionsHeading() {
 
   return usePortal(
     <h2 className='wps-storefront-heading'>Filter by</h2>,
-    document.querySelector(storefrontState.componentOptions.dropzoneHeading)
+    document.querySelector(storefrontState.payloadSettings.dropzoneHeading)
   )
 }
 

@@ -27,7 +27,7 @@ function StorefrontSelections() {
     return {
       query: buildQueryStringFromSelections(
         storefrontState.selections,
-        itemsState.componentOptions.connective
+        itemsState.payloadSettings.connective
       )
     }
   }
@@ -70,7 +70,7 @@ function StorefrontSelections() {
   }
 
   function setInitialSelections() {
-    var initialSelections = getInitialSelections(storefrontState.componentOptions.filterParams)
+    var initialSelections = getInitialSelections(storefrontState.payloadSettings.filterParams)
 
     storefrontDispatch({
       type: 'SET_SELECTIONS',
@@ -103,7 +103,7 @@ function StorefrontSelections() {
 
   return usePortal(
     !objectIsEmpty(storefrontState.selections) ? <StorefrontSelectionsWrapper /> : '',
-    document.querySelector(itemsState.componentOptions.dropzoneSelections)
+    document.querySelector(itemsState.payloadSettings.dropzoneSelections)
   )
 }
 

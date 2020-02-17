@@ -1,18 +1,16 @@
-import { hashQueryParams } from '../../../common/utils'
-
 function checkHasMore(component) {
   if (
     !component.componentPayload ||
-    !component.componentOptions.pageSize ||
-    !component.componentOptions.pagination
+    !component.payloadSettings.pageSize ||
+    !component.payloadSettings.pagination
   ) {
     return false
   }
 
   var payload = component.componentPayload
   var payloadLength = payload.length
-  var limit = component.componentOptions.limit ? parseInt(component.componentOptions.limit) : false
-  var pageSize = component.componentOptions.pageSize
+  var limit = component.payloadSettings.limit ? parseInt(component.payloadSettings.limit) : false
+  var pageSize = component.payloadSettings.pageSize
   var lastItem = payload[payloadLength - 1]
 
   if (!lastItem) {
@@ -42,51 +40,41 @@ function checkHasMore(component) {
   }
 }
 
-function hashInitialPayloadCache(queryParams, payload) {
-  let initalPayloadCache = {}
-
-  if (payload) {
-    var hashId = hashQueryParams(queryParams)
-    initalPayloadCache[hashId] = payload
-  }
-
-  return initalPayloadCache
-}
-
-function ItemsInitialState({ component, miscDispatch }) {
+function ItemsInitialState({ component, afterLoading, beforeLoading }) {
   var itemsState = {
-    componentOptions: component.componentOptions,
+    payloadSettings: component.payloadSettings,
     element: component.componentElement,
     payload: [],
     queryParams: {
-      query: component.componentOptions.query,
-      sortKey: component.componentOptions.sortBy,
-      reverse: component.componentOptions.reverse,
-      first: component.componentOptions.pageSize
+      query: component.payloadSettings.query,
+      sortKey: component.payloadSettings.sortBy,
+      reverse: component.payloadSettings.reverse,
+      first: component.payloadSettings.pageSize
     },
     originalParams: {
       type: component.componentType,
       queryParams: {
-        query: component.componentOptions.query,
-        sortKey: component.componentOptions.sortBy,
-        reverse: component.componentOptions.reverse,
-        first: component.componentOptions.pageSize
+        query: component.payloadSettings.query,
+        sortKey: component.payloadSettings.sortBy,
+        reverse: component.payloadSettings.reverse,
+        first: component.payloadSettings.pageSize
       },
       connectionParams: false
     },
     dataType: component.componentType,
-    limit: component.componentOptions.limit ? parseInt(component.componentOptions.limit) : false,
+    limit: component.payloadSettings.limit ? parseInt(component.payloadSettings.limit) : false,
     lastCursorId: false,
     totalShown: 0,
-    noResultsText: component.componentOptions.noResultsText
-      ? component.componentOptions.noResultsText
+    noResultsText: component.payloadSettings.noResultsText
+      ? component.payloadSettings.noResultsText
       : 'No items left',
     isLoading: false,
     hasMoreItems: checkHasMore(component),
     notices: [],
-    lastQuery: component.componentOptions.query ? component.componentOptions.query : false,
+    lastQuery: component.payloadSettings.query ? component.payloadSettings.query : false,
     payloadCache: {},
-    miscDispatch: miscDispatch ? miscDispatch : false
+    afterLoading: afterLoading,
+    beforeLoading: beforeLoading
   }
 
   wp.hooks.doAction('items.init', itemsState)

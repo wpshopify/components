@@ -11,7 +11,7 @@ function StorefrontSelectionsWrapper() {
     <div className='wps-filter-selections wps-mt-2 wps-mb-2'>
       <Loader
         isLoading={itemsState.isLoading}
-        dropzone={itemsState.componentOptions.dropzoneLoader}
+        dropzone={itemsState.payloadSettings.dropzoneLoader}
         color='#ddd'
       />
       <StorefrontSelectionsTypes />

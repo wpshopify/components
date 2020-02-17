@@ -34,13 +34,17 @@ function hasNextPageQueryAndPath(payload) {
   return has(payload[payload.length - 1], 'nextPageQueryAndPath')
 }
 
-function fetchNextItems(itemsState, itemsDispatch, miscDispatch = false) {
+function fetchNextItems(itemsState, itemsDispatch) {
   return new Promise(async (resolve, reject) => {
     if (isEmpty(itemsState.payload)) {
       return
     }
 
     itemsDispatch({ type: 'SET_IS_LOADING', payload: true })
+
+    if (itemsState.beforeLoading) {
+      itemsState.beforeLoading(itemsState)
+    }
 
     /*
       
@@ -113,8 +117,8 @@ function fetchNextItems(itemsState, itemsDispatch, miscDispatch = false) {
     itemsDispatch({ type: 'UPDATE_PAYLOAD', payload: nextItems })
     itemsDispatch({ type: 'SET_IS_LOADING', payload: false })
 
-    if (itemsState.miscDispatch) {
-      itemsState.miscDispatch(nextItems)
+    if (itemsState.afterLoading) {
+      itemsState.afterLoading(nextItems)
     }
 
     resolve(results)
@@ -125,7 +129,11 @@ function Item({ children, customQueryParams }) {
   const [itemsState, itemsDispatch] = useContext(ItemsContext)
   const isFirstRender = useRef(true)
 
-  async function fetchNewItems(miscDispatch = false, customQueryParams = false) {
+  async function fetchNewItems() {
+    if (itemsState.beforeLoading) {
+      itemsState.beforeLoading(itemsState)
+    }
+
     var hashCacheId = hashQueryParams(itemsState.queryParams)
 
     if (has(itemsState.payloadCache, hashCacheId)) {
@@ -142,8 +150,8 @@ function Item({ children, customQueryParams }) {
         payload: itemsState.payloadCache[hashCacheId].length
       })
 
-      if (itemsState.miscDispatch) {
-        itemsState.miscDispatch(itemsState.payloadCache)
+      if (itemsState.afterLoading) {
+        itemsState.afterLoading(itemsState.payloadCache)
       }
     } else {
       itemsDispatch({ type: 'SET_IS_LOADING', payload: true })
@@ -182,8 +190,8 @@ function Item({ children, customQueryParams }) {
           })
         }
 
-        if (itemsState.miscDispatch) {
-          itemsState.miscDispatch(newItems)
+        if (itemsState.afterLoading) {
+          itemsState.afterLoading(newItems)
         }
       }
 
@@ -192,7 +200,7 @@ function Item({ children, customQueryParams }) {
   }
 
   useEffect(() => {
-    fetchNewItems(itemsState.miscDispatch)
+    fetchNewItems()
   }, [itemsState.queryParams])
 
   /*

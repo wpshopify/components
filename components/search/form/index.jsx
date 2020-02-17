@@ -23,7 +23,7 @@ function SearchForm() {
     }
 
     var hi = queryBuilder({
-      filter: itemsState.componentOptions.sortBy,
+      filter: itemsState.payloadSettings.sortBy,
       phrase: shopState.settings.general.searchExactMatch,
       value: searchState.searchTerm
     })
@@ -45,7 +45,7 @@ function SearchForm() {
         <SearchButton />
       </div>
     </form>,
-    document.querySelector(searchState.componentOptions.dropzoneForm)
+    document.querySelector(searchState.payloadSettings.dropzoneForm)
   )
 }
 

@@ -18,7 +18,7 @@ function StorefrontSorting() {
   const [storefrontState, storefrontDispatch] = useContext(StorefrontContext)
   const [itemsState, itemsDispatch] = useContext(ItemsContext)
 
-  const [sortValue, setSortValue] = useState(storefrontState.componentOptions.sortBy)
+  const [sortValue, setSortValue] = useState(storefrontState.payloadSettings.sortBy)
 
   function updateFetchParams(event) {
     let reverse = false
@@ -76,7 +76,7 @@ function StorefrontSorting() {
         </option>
       </select>
     </div>,
-    document.querySelector(storefrontState.componentOptions.dropzoneSorting)
+    document.querySelector(storefrontState.payloadSettings.dropzoneSorting)
   )
 }
 

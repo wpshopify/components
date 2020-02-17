@@ -27,7 +27,7 @@ function ProductWrapper({ isFirstItem }) {
 
   return (
     <div
-      className={`${itemWidthClass(itemsState.componentOptions.itemsPerRow)} wps-item p-3`}
+      className={`${itemWidthClass(itemsState.payloadSettings.itemsPerRow)} wps-item p-3`}
       data-is-first-item={isFirstItem}
       data-is-dropdown-open={productState.isDropdownOpen}>
       {isShowingComponent(itemsState, 'images') && <ProductImages />}

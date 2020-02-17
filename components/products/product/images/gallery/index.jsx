@@ -23,11 +23,11 @@ function ProductGallery() {
   }
 
   function isFeaturedOnly() {
-    if (!has(itemsState.componentOptions, 'showFeaturedOnly')) {
+    if (!has(itemsState.payloadSettings, 'showFeaturedOnly')) {
       return false
     }
 
-    return itemsState.componentOptions.showFeaturedOnly
+    return itemsState.payloadSettings.showFeaturedOnly
   }
 
   useEffect(() => {

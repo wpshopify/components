@@ -75,7 +75,7 @@ function PaginationPageSize() {
 
   return usePortal(
     <>
-      {paginationState.componentOptions.paginationPageSize && (
+      {paginationState.payloadSettings.paginationPageSize && (
         <div className='wps-component wps-component-sorting'>
           <label className='wps-sorting-heading wps-mr-2' htmlFor='wps-sorting'>
             Page size:
@@ -99,7 +99,7 @@ function PaginationPageSize() {
         </div>
       )}
     </>,
-    document.querySelector(paginationState.componentOptions.dropzonePageSize)
+    document.querySelector(paginationState.payloadSettings.dropzonePageSize)
   )
 }
 

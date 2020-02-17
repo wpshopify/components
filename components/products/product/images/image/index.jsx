@@ -56,7 +56,7 @@ function ProductImage({ image, isFeatured }) {
 
   function isShowingLink() {
     return (
-      itemsState.componentOptions.linkTo ||
+      itemsState.payloadSettings.linkTo ||
       (hasSinglePage() && !onSinglePage(itemsState) && isFeatured)
     )
   }
@@ -81,7 +81,7 @@ function ProductImage({ image, isFeatured }) {
           payload={productState.payload}
           type='products'
           shop={shopState}
-          linkTo={itemsState.componentOptions.linkTo}>
+          linkTo={itemsState.payloadSettings.linkTo}>
           <Img
             imageRef={imageRef}
             image={image}

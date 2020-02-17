@@ -78,18 +78,14 @@ function StorefrontOptionsWrapper() {
 
   return usePortal(
     <>
-      {storefrontState.componentOptions.showOptionsHeading ? (
-        <StorefrontFilterOptionsHeading />
-      ) : (
-        ''
-      )}
+      {storefrontState.payloadSettings.showOptionsHeading ? <StorefrontFilterOptionsHeading /> : ''}
       <aside className='wps-storefront'>
-        {storefrontState.componentOptions.showTags ? (
+        {storefrontState.payloadSettings.showTags ? (
           <StorefrontFilterOptionsGroup heading={getTagsHeading()} groupType='tags' />
         ) : (
           ''
         )}
-        {storefrontState.componentOptions.showVendors ? (
+        {storefrontState.payloadSettings.showVendors ? (
           <StorefrontFilterOptionsGroup
             heading={getVendorsHeading()}
             groupType='vendors'
@@ -98,7 +94,7 @@ function StorefrontOptionsWrapper() {
         ) : (
           ''
         )}
-        {storefrontState.componentOptions.showTypes ? (
+        {storefrontState.payloadSettings.showTypes ? (
           <StorefrontFilterOptionsGroup
             heading={getTypesHeading()}
             groupType='types'
@@ -109,7 +105,7 @@ function StorefrontOptionsWrapper() {
         )}
       </aside>
     </>,
-    document.querySelector(storefrontState.componentOptions.dropzoneOptions)
+    document.querySelector(storefrontState.payloadSettings.dropzoneOptions)
   )
 }
 

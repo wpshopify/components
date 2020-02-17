@@ -1,8 +1,8 @@
 function StorefrontInitialState(options = {}) {
   return {
     element: options.element ? options.element : false,
-    renderFromServer: options.componentOptions ? options.componentOptions.renderFromServer : false,
-    componentOptions: options.componentOptions ? options.componentOptions : false,
+    renderFromServer: options.payloadSettings ? options.payloadSettings.renderFromServer : false,
+    payloadSettings: options.payloadSettings ? options.payloadSettings : false,
     isLoading: false,
     payload: [], // represents the actual filtered data (Products, collections, etc)
     selections: {},

@@ -153,8 +153,8 @@ function underscoreToCamel(o) {
   return o
 }
 
-function decodeComponentOptions(componentOptions) {
-  return underscoreToCamel(JSON.parse(atob(componentOptions)))
+function decodeComponentPayloadSettings(payloadSettings) {
+  return underscoreToCamel(JSON.parse(atob(payloadSettings)))
 }
 
 export {
@@ -171,5 +171,5 @@ export {
   prettyDate,
   _t,
   underscoreToCamel,
-  decodeComponentOptions
+  decodeComponentPayloadSettings
 }

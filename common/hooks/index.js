@@ -91,8 +91,8 @@ function useInView(selector, itemsState) {
   const [inViewState, setInViewState] = useState(false)
 
   useEffect(() => {
-    if (itemsState.componentOptions.infiniteScroll) {
-      inView.offset(itemsState.componentOptions.infiniteScrollOffset)
+    if (itemsState.payloadSettings.infiniteScroll) {
+      inView.offset(itemsState.payloadSettings.infiniteScrollOffset)
 
       inView(selector)
         .on('enter', el => {

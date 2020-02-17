@@ -30,10 +30,7 @@ function CartWrapper() {
   const openCart = useAction('cart.toggle')
 
   async function cartBootstrap() {
-    console.log('cartBootstrap 1')
-
     if (!shopState.checkoutId) {
-      console.log('cartBootstrap 2')
       shopDispatch({
         type: 'UPDATE_NOTICES',
         payload: {
@@ -45,11 +42,10 @@ function CartWrapper() {
       shopDispatch({ type: 'IS_CART_READY', payload: true })
       return
     }
-    console.log('cartBootstrap 3')
+
     let [productsError, products] = await to(getProductsFromLineItems())
-    console.log('cartBootstrap 4')
+
     if (productsError) {
-      console.log('cartBootstrap 5')
       shopDispatch({
         type: 'UPDATE_NOTICES',
         payload: {
@@ -71,7 +67,7 @@ function CartWrapper() {
         checkoutId: shopState.checkoutId
       }
     })
-    console.log('cartBootstrap 6')
+
     if (isEmpty(products)) {
       cartDispatch({ type: 'SET_IS_CART_EMPTY', payload: true })
     } else {

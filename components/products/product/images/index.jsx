@@ -16,7 +16,7 @@ function ProductImages() {
         <ProductGalleryWrapper productState={productState} />
       </div>
     </>,
-    findPortalElement(productState.element, itemsState.componentOptions.dropzoneProductGallery)
+    findPortalElement(productState.element, itemsState.payloadSettings.dropzoneProductGallery)
   )
 }
 

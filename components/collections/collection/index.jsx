@@ -14,7 +14,7 @@ const Collection = wp.element.memo(function Collection({
   shopSettings
 }) {
   return (
-    <div className={`${itemWidthClass(itemsState.componentOptions.itemsPerRow)} wps-item p-3`}>
+    <div className={`${itemWidthClass(itemsState.payloadSettings.itemsPerRow)} wps-item p-3`}>
       <CollectionProvider payload={payload}>
         {isShowingComponent(itemsState, 'image') && (
           <CollectionImage
@@ -29,7 +29,7 @@ const Collection = wp.element.memo(function Collection({
         {isShowingComponent(itemsState, 'description') && (
           <CollectionDescription isShopReady={isShopReady} />
         )}
-        {isShowingComponent(itemsState, 'products') && itemsState.componentOptions.single && (
+        {isShowingComponent(itemsState, 'products') && itemsState.payloadSettings.single && (
           <CollectionProducts />
         )}
       </CollectionProvider>

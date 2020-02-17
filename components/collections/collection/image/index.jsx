@@ -39,7 +39,7 @@ function CollectionImage({ isShopReady, shopSettings, shopInfo }) {
           type='collections'
           shopInfo={shopInfo}
           payload={collectionState.payload}
-          linkTo={itemsState.componentOptions.linkTo}>
+          linkTo={itemsState.payloadSettings.linkTo}>
           <img
             itemProp='image'
             src={imageSrc}
@@ -50,7 +50,7 @@ function CollectionImage({ isShopReady, shopSettings, shopInfo }) {
         </Link>
       </div>
     ),
-    findPortalElement(collectionState.element, itemsState.componentOptions.dropzoneCollectionImage)
+    findPortalElement(collectionState.element, itemsState.payloadSettings.dropzoneCollectionImage)
   )
 }
 

@@ -36,27 +36,27 @@ function CartCounter() {
   }
 
   function getColor() {
-    if (!cartButtonState.componentOptions.counterTextColor) {
-      if (cartButtonState.componentOptions.type !== 'fixed') {
+    if (!cartButtonState.payloadSettings.counterTextColor) {
+      if (cartButtonState.payloadSettings.type !== 'fixed') {
         return '#000'
       }
     }
 
-    if (cartButtonState.componentOptions.type !== 'fixed') {
-      return cartButtonState.componentOptions.counterTextColor
+    if (cartButtonState.payloadSettings.type !== 'fixed') {
+      return cartButtonState.payloadSettings.counterTextColor
     }
 
     return shopState.settings.general.cartCounterFixedColor
   }
 
   function getBackgroundColor() {
-    if (!cartButtonState.componentOptions.counterBackgroundColor) {
-      if (cartButtonState.componentOptions.type !== 'fixed') {
+    if (!cartButtonState.payloadSettings.counterBackgroundColor) {
+      if (cartButtonState.payloadSettings.type !== 'fixed') {
         return shopState.settings.general.cartCounterColor
       }
     }
 
-    return cartButtonState.componentOptions.counterBackgroundColor
+    return cartButtonState.payloadSettings.counterBackgroundColor
   }
 
   return (

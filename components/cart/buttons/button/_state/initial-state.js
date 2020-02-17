@@ -1,8 +1,8 @@
 function CartButtonInitialState(options) {
   return {
     element: options.element,
-    renderFromServer: options.componentOptions.renderFromServer,
-    componentOptions: options.componentOptions
+    renderFromServer: options.payloadSettings.renderFromServer,
+    payloadSettings: options.payloadSettings
   }
 }
 

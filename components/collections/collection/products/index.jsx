@@ -32,8 +32,8 @@ function CollectionProducts() {
           componentPayload: collectionState.productOptions[0]
             ? collectionState.productOptions[0].componentPayload
             : collectionState.products,
-          componentOptions: itemsState.componentOptions.products,
-          componentConnectionParams: paginationState.componentOptions.componentConnectionParams,
+          payloadSettings: itemsState.payloadSettings.products,
+          componentConnectionParams: paginationState.payloadSettings.componentConnectionParams,
           componentElement: false,
           dataType: 'products',
           type: 'list',
@@ -42,15 +42,15 @@ function CollectionProducts() {
             type: 'collections',
             queryParams: itemsState.queryParams,
             connectionParams: {
-              first: parseInt(itemsState.componentOptions.products.pageSize),
-              reverse: itemsState.componentOptions.products.reverse,
-              sortKey: itemsState.componentOptions.products.sortBy
+              first: parseInt(itemsState.payloadSettings.products.pageSize),
+              reverse: itemsState.payloadSettings.products.reverse,
+              sortKey: itemsState.payloadSettings.products.sortBy
             }
           },
           componentQueryParams: {
-            first: parseInt(itemsState.componentOptions.products.pageSize),
-            reverse: itemsState.componentOptions.products.reverse,
-            sortKey: itemsState.componentOptions.products.sortBy
+            first: parseInt(itemsState.payloadSettings.products.pageSize),
+            reverse: itemsState.payloadSettings.products.reverse,
+            sortKey: itemsState.payloadSettings.products.sortBy
           }
         }
       ]
@@ -58,10 +58,10 @@ function CollectionProducts() {
   }, [])
 
   return usePortal(
-    <Items options={collectionState.productOptions} miscDispatch={updateCollectionProducts}>
+    <Items options={collectionState.productOptions} afterLoading={updateCollectionProducts}>
       <Products />
     </Items>,
-    findPortalElement(itemsState.element, itemsState.componentOptions.dropzoneCollectionProducts)
+    findPortalElement(itemsState.element, itemsState.payloadSettings.dropzoneCollectionProducts)
   )
 }
 

@@ -36,11 +36,11 @@ function ProductFeaturedImage() {
   }
 
   function showZoom() {
-    if (isNull(itemsState.componentOptions.showZoom)) {
+    if (isNull(itemsState.payloadSettings.showZoom)) {
       return shopState.settings.general.productsImagesShowZoom
     }
 
-    return itemsState.componentOptions.showZoom
+    return itemsState.payloadSettings.showZoom
   }
 
   function hasFeatImage() {

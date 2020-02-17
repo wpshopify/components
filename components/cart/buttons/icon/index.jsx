@@ -8,11 +8,11 @@ function CartIcon() {
   const [shopState] = useContext(ShopContext)
 
   function getIconColor() {
-    if (cartButtonState.componentOptions.type === 'fixed') {
+    if (cartButtonState.payloadSettings.type === 'fixed') {
       return shopState.settings.general.cartIconFixedColor
     }
 
-    return cartButtonState.componentOptions.iconColor
+    return cartButtonState.payloadSettings.iconColor
   }
 
   function iconStyles() {
@@ -23,9 +23,9 @@ function CartIcon() {
 
   return (
     <>
-      {cartButtonState.componentOptions.icon ? (
+      {cartButtonState.payloadSettings.icon ? (
         <img
-          src={cartButtonState.componentOptions.icon}
+          src={cartButtonState.payloadSettings.icon}
           className='wps-icon wps-icon-cart lazyload'
         />
       ) : (

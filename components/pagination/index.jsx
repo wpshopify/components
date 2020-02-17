@@ -8,7 +8,7 @@ import isEmpty from 'lodash/isEmpty'
 
 const { useContext } = wp.element
 
-function Pagination({ children, shopSettings, miscDispatch }) {
+function Pagination({ children, shopSettings }) {
   const [itemsState] = useContext(ItemsContext)
 
   function isHidingPagination() {
@@ -16,7 +16,7 @@ function Pagination({ children, shopSettings, miscDispatch }) {
       return true
     }
 
-    if (itemsState.componentOptions.pagination) {
+    if (itemsState.payloadSettings.pagination) {
       return false
     } else {
       return true
@@ -32,7 +32,7 @@ function Pagination({ children, shopSettings, miscDispatch }) {
   }
 
   function isAlignHeight() {
-    if (itemsState.componentOptions.alignHeight) {
+    if (itemsState.payloadSettings.alignHeight) {
       return true
     }
 
@@ -48,7 +48,7 @@ function Pagination({ children, shopSettings, miscDispatch }) {
       {!isEmpty(itemsState.notices) && (
         <Notices
           notices={itemsState.notices}
-          dropzone={document.querySelector(itemsState.componentOptions.dropzoneNotices)}
+          dropzone={document.querySelector(itemsState.payloadSettings.dropzoneNotices)}
           noticeGroup='storefront'
         />
       )}
@@ -59,7 +59,7 @@ function Pagination({ children, shopSettings, miscDispatch }) {
         <PaginationItems alignHeight={isAlignHeight()}>{children}</PaginationItems>
       )}
 
-      {!isHidingPagination() && <PaginationControls miscDispatch={miscDispatch} />}
+      {!isHidingPagination() && <PaginationControls />}
     </PaginationProvider>
   )
 }

@@ -21,14 +21,14 @@ function ProductQuantity() {
       data-wps-post-id=''>
       <div className='wps-form-control row wps-product-quantity-wrapper m-0'>
         <ProductQuantityLabel
-          showQuantityLabel={itemsState.componentOptions.showQuantityLabel}
+          showQuantityLabel={itemsState.payloadSettings.showQuantityLabel}
           isShopReady={shopState.isShopReady}
-          label={itemsState.componentOptions.quantityLabelText}
+          label={itemsState.payloadSettings.quantityLabelText}
         />
 
         <ProductQuantityInput
-          minQuantity={itemsState.componentOptions.minQuantity}
-          maxQuantity={itemsState.componentOptions.maxQuantity}
+          minQuantity={itemsState.payloadSettings.minQuantity}
+          maxQuantity={itemsState.payloadSettings.maxQuantity}
           isShopReady={shopState.isShopReady}
         />
       </div>

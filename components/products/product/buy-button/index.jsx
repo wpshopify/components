@@ -30,7 +30,7 @@ function ProductBuyButton() {
       <ProductBuyButtonProvider productState={productState}>
         {productState.payload.availableForSale ? (
           <>
-            {!itemsState.componentOptions.hideQuantity && <ProductQuantity />}
+            {!itemsState.payloadSettings.hideQuantity && <ProductQuantity />}
             {productState.hasManyVariants && <ProductOptions />}
 
             <ProductAddButton />
@@ -46,7 +46,7 @@ function ProductBuyButton() {
         isReady={shopState.isShopReady}
       />
     </div>,
-    findPortalElement(productState.element, itemsState.componentOptions.dropzoneProductBuyButton)
+    findPortalElement(productState.element, itemsState.payloadSettings.dropzoneProductBuyButton)
   )
 }
 

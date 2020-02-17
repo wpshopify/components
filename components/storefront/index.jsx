@@ -12,8 +12,8 @@ function Storefront() {
 
   return (
     <StorefrontProvider options={itemsState}>
-      {itemsState.componentOptions.dropzoneSelections ? <StorefrontSelections /> : ''}
-      {itemsState.componentOptions.dropzoneSorting ? <StorefrontSorting /> : ''}
+      {itemsState.payloadSettings.dropzoneSelections ? <StorefrontSelections /> : ''}
+      {itemsState.payloadSettings.dropzoneSorting ? <StorefrontSorting /> : ''}
       <StorefrontOptions />
       <StorefrontItems />
     </StorefrontProvider>

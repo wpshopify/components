@@ -15,21 +15,21 @@ function ProductDescription() {
   const [itemsState] = useContext(ItemsContext)
 
   const fontSize = css`
-    font-size: ${itemsState.componentOptions.descriptionSize};
+    font-size: ${itemsState.payloadSettings.descriptionSize};
   `
 
   const fontColor = css`
-    color: ${itemsState.componentOptions.descriptionColor};
+    color: ${itemsState.payloadSettings.descriptionColor};
   `
 
   function maybeTruncateDescription() {
-    if (!itemsState.componentOptions.descriptionLength) {
+    if (!itemsState.payloadSettings.descriptionLength) {
       return productState.payload.descriptionHtml
     } else {
       return (
         productState.payload.descriptionHtml.substring(
           0,
-          itemsState.componentOptions.descriptionLength
+          itemsState.payloadSettings.descriptionLength
         ) + ' ...'
       )
     }
@@ -43,7 +43,7 @@ function ProductDescription() {
       data-wps-is-ready={shopState.isShopReady ? '1' : '0'}
       dangerouslySetInnerHTML={{ __html: maybeTruncateDescription() }}
     />,
-    findPortalElement(productState.element, itemsState.componentOptions.dropzoneProductDescription)
+    findPortalElement(productState.element, itemsState.payloadSettings.dropzoneProductDescription)
   )
 }
 

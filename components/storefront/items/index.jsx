@@ -38,7 +38,7 @@ function StorefrontItems() {
           excludes: false,
           renderFromServer: false,
           selectedVariant: false,
-          componentOptions: {
+          payloadSettings: {
             pagination: true
           }
         }
@@ -50,14 +50,14 @@ function StorefrontItems() {
         connectionParams: false
       },
       type: 'storefront',
-      componentOptions: itemsState.componentOptions,
-      noResultsText: itemsState.componentOptions.noResultsText
+      payloadSettings: itemsState.payloadSettings,
+      noResultsText: itemsState.payloadSettings.noResultsText
     }
   }
 
   return usePortal(
     <Products options={buildOptions()} />,
-    document.querySelector(storefrontState.componentOptions.dropzonePayload)
+    document.querySelector(storefrontState.payloadSettings.dropzonePayload)
   )
 }
 

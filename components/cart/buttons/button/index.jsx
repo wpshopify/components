@@ -21,13 +21,13 @@ function CartButton({ options }) {
       return
     }
 
-    if (options.componentOptions.type === 'fixed' && shopState.settings.general.showFixedCartTab) {
+    if (options.payloadSettings.type === 'fixed' && shopState.settings.general.showFixedCartTab) {
       animeSlideInRight(counterElement.current)
     }
   }, [shopState.isShopReady])
 
   function getIconColor() {
-    if (options.componentOptions.type === 'fixed') {
+    if (options.payloadSettings.type === 'fixed') {
       return shopState.settings.general.cartFixedBackgroundColor
     }
 
@@ -51,12 +51,12 @@ function CartButton({ options }) {
           data-is-cart-ready={shopState.isCartReady ? '1' : '0'}
           role='button'
           ref={counterElement}
-          className={`wps-btn-cart wps-cart-icon-${options.componentOptions.type} ${
+          className={`wps-btn-cart wps-cart-icon-${options.payloadSettings.type} ${
             isCartEmpty(cartState.checkoutCache.lineItems) ? 'wps-cart-is-empty' : ''
           }`}
           onClick={onClick}
           style={iconStyles()}>
-          {options.componentOptions.showCounter && <CartCounter />}
+          {options.payloadSettings.showCounter && <CartCounter />}
 
           <CartIcon />
         </button>

@@ -19,13 +19,13 @@ function ProductTitle() {
 
   const fontSize = css`
     && {
-      font-size: ${itemsState.componentOptions.titleSize};
+      font-size: ${itemsState.payloadSettings.titleSize};
     }
   `
 
   const fontColor = css`
     && {
-      color: ${itemsState.componentOptions.titleColor};
+      color: ${itemsState.payloadSettings.titleColor};
     }
   `
 
@@ -35,12 +35,12 @@ function ProductTitle() {
 
   return usePortal(
     <div className='wps-component wps-component-products-title' data-wps-component-order='0'>
-      {itemsState.componentOptions.linkTo || (hasSinglePage() && !onSinglePage(itemsState)) ? (
+      {itemsState.payloadSettings.linkTo || (hasSinglePage() && !onSinglePage(itemsState)) ? (
         <Link
           type='products'
           payload={productState.payload}
           shop={shopState}
-          linkTo={itemsState.componentOptions.linkTo}>
+          linkTo={itemsState.payloadSettings.linkTo}>
           <Title
             styles={[fontSize, fontColor]}
             title={productState.payload.title}
@@ -59,7 +59,7 @@ function ProductTitle() {
         />
       )}
     </div>,
-    findPortalElement(productState.element, itemsState.componentOptions.dropzoneProductTitle)
+    findPortalElement(productState.element, itemsState.payloadSettings.dropzoneProductTitle)
   )
 }
 

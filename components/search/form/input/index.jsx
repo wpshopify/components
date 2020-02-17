@@ -50,7 +50,7 @@ function SearchInput() {
 
       <Loader
         isLoading={itemsState.isLoading}
-        dropzone={itemsState.componentOptions.dropzoneLoader}
+        dropzone={itemsState.payloadSettings.dropzoneLoader}
         color='#ddd'
       />
     </div>

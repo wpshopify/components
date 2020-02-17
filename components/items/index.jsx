@@ -45,7 +45,7 @@ function hasItemsToShow(options) {
 Responsible for managing state of 'payload', 'queryParams', and 'isLoading'.
 Connects sibling components together like Filters, Search and Pagination.
 
-options, children, miscDispatch
+options, children, afterLoading, beforeLoading
 
 <Items> - Represents a ground of one or more products -- an "instance" use by either a shortcode or Render API 
 <Item> - Represents one or more products
@@ -58,7 +58,8 @@ function Items(props) {
       return usePortal(
         <ItemsProvider
           component={component}
-          miscDispatch={has(props, 'miscDispatch') ? props.miscDispatch : false}>
+          afterLoading={has(props, 'afterLoading') ? props.afterLoading : false}
+          beforeLoading={has(props, 'beforeLoading') ? props.beforeLoading : false}>
           <Item customQueryParams={props.customQueryParams}>{props.children}</Item>
         </ItemsProvider>,
         component.componentElement
