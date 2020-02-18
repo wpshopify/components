@@ -1,6 +1,7 @@
-import { Notice } from '../notice'
 import { renderToString } from 'react-dom/server'
 import { Loader } from '../loader'
+
+const { Notice } = wp.components
 
 function Form({
   children,
@@ -18,7 +19,11 @@ function Form({
       id={`wpshopify-component-customers-${formType}`}
       className='wpshopify-account-form'
       onSubmit={onSubmit}>
-      {noticeState && <Notice message={noticeState.message} type={noticeState.type} />}
+      {noticeState && (
+        <Notice status={noticeState.type} isDismissible={false}>
+          {noticeState.message}
+        </Notice>
+      )}
 
       {children}
 

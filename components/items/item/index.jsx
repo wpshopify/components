@@ -1,5 +1,5 @@
 import { ItemsContext } from '../_state/context'
-import { hashQueryParams } from '../../../common/utils'
+import { getHashFromQueryParams } from '../../../common/utils'
 import {
   fetchNextPage,
   graphQuery
@@ -47,22 +47,25 @@ function fetchNextItems(itemsState, itemsDispatch) {
     }
 
     /*
-      
-      This check is needed because of our caching system. The "next page" of products is fetched 
-      using the payload of the last page. This is using the built in Shopify buy SDK method fetchNextPage.
 
-      This Shopify function calls the method hasNextPageQueryAndPath on the last payload item.
-      
-      Since our caching system strips all functions from the payload, we loose the ability to call these built in functions.
+   This check is needed because of our caching system. The "next page" of products is fetched 
+   using the payload of the last page. This is using the built in Shopify buy SDK method fetchNextPage.
 
-      So before loading more, we need to check whether this method exists on the last item in our payload. If it does, we can simply proceed. If not, we need to refetch the initial query first. 
+   This Shopify function calls the method hasNextPageQueryAndPath on the last payload item.
 
-      */
+   Since our caching system strips all functions from the payload, we loose the ability to call these built in functions.
+
+   So before loading more, we need to check whether this method exists on the last item in our payload. If it does, we can simply proceed. If not, we need to refetch the initial query first. 
+
+   */
     if (!hasNextPageQueryAndPath(itemsState.payload)) {
+      console.log('11111111111111111111111')
+
       const [resendInitialError, resendInitialResp] = await to(resendInitialQuery(itemsState))
 
       var productsExisting = resendInitialResp.model.products
     } else {
+      console.log('22222222222222222222222222')
       var productsExisting = itemsState.payload
     }
 
@@ -72,6 +75,7 @@ function fetchNextItems(itemsState, itemsDispatch) {
       const [initialError, initialResponse] = await to(resendInitialQuery(itemsState))
 
       if (initialError) {
+        console.log('2.555555555')
         itemsDispatch({
           type: 'UPDATE_NOTICES',
           payload: { type: 'error', message: initialError }
@@ -84,6 +88,7 @@ function fetchNextItems(itemsState, itemsDispatch) {
           itemsState.dataType === 'collections' ||
           itemsState.originalParams.type === 'collections'
         ) {
+          console.log('33333333333333333')
           if (!itemsState.originalParams) {
             var nextPayload = initialResponse.model[itemsState.dataType]
           } else {
@@ -92,6 +97,7 @@ function fetchNextItems(itemsState, itemsDispatch) {
         } else {
           var nextPayload = initialResponse.model[itemsState.dataType]
         }
+        console.log('444444444444444444444444444')
 
         var [finalResultsError, finalResults] = await to(fetchNextPage(nextPayload))
 
@@ -105,15 +111,13 @@ function fetchNextItems(itemsState, itemsDispatch) {
           return reject(initialError)
         } else {
           var nextItems = finalResults.model
-          var nextItemsTotal = finalResults.model.length
         }
       }
     } else {
       var nextItems = results.model
-      var nextItemsTotal = results.model.length
     }
+    console.log('nextItems', nextItems)
 
-    itemsDispatch({ type: 'SET_TOTAL_SHOWN', payload: nextItemsTotal })
     itemsDispatch({ type: 'UPDATE_PAYLOAD', payload: nextItems })
     itemsDispatch({ type: 'SET_IS_LOADING', payload: false })
 
@@ -134,26 +138,25 @@ function Item({ children, customQueryParams }) {
       itemsState.beforeLoading(itemsState)
     }
 
-    var hashCacheId = hashQueryParams(itemsState.queryParams)
+    var hashCacheId = getHashFromQueryParams(itemsState.queryParams)
 
     if (has(itemsState.payloadCache, hashCacheId)) {
+      console.log('HAS FOUND CACHE', hashCacheId)
+
       itemsDispatch({
-        type: 'SET_TOTAL_SHOWN',
-        payload: itemsState.payloadCache[hashCacheId].length
-      })
-      itemsDispatch({
-        type: 'SET_PAYLOAD',
+        type: 'UPDATE_PAYLOAD',
         payload: itemsState.payloadCache[hashCacheId]
-      })
-      itemsDispatch({
-        type: 'UPDATE_HAS_MORE_ITEMS',
-        payload: itemsState.payloadCache[hashCacheId].length
       })
 
       if (itemsState.afterLoading) {
         itemsState.afterLoading(itemsState.payloadCache)
       }
     } else {
+      /*
+      
+      Lands here when we fetch brand new items
+      
+      */
       itemsDispatch({ type: 'SET_IS_LOADING', payload: true })
       itemsDispatch({ type: 'UPDATE_NOTICES', payload: [] })
 
@@ -166,33 +169,17 @@ function Item({ children, customQueryParams }) {
           type: 'UPDATE_NOTICES',
           payload: { type: 'error', message: resultsError }
         })
-      } else {
-        var newItems = results.model[itemsState.dataType]
-        var newItemsTotal = newItems.length
 
-        itemsDispatch({
-          type: 'SET_TOTAL_SHOWN',
-          payload: newItemsTotal
-        })
-        itemsDispatch({ type: 'SET_PAYLOAD', payload: newItems })
-        itemsDispatch({
-          type: 'UPDATE_HAS_MORE_ITEMS',
-          payload: newItemsTotal
-        })
+        return
+      }
 
-        if (newItems.length) {
-          let newPayloadCacheAddition = {}
-          newPayloadCacheAddition[hashCacheId] = newItems
+      var newItems = results.model[itemsState.dataType]
+      var newItemsTotal = newItems.length
 
-          itemsDispatch({
-            type: 'UPDATE_PAYLOAD_CACHE',
-            payload: newPayloadCacheAddition
-          })
-        }
+      itemsDispatch({ type: 'UPDATE_PAYLOAD', payload: newItems })
 
-        if (itemsState.afterLoading) {
-          itemsState.afterLoading(newItems)
-        }
+      if (itemsState.afterLoading) {
+        itemsState.afterLoading(newItems)
       }
 
       itemsDispatch({ type: 'SET_IS_LOADING', payload: false })
@@ -200,6 +187,8 @@ function Item({ children, customQueryParams }) {
   }
 
   useEffect(() => {
+    console.log('FIRST')
+
     fetchNewItems()
   }, [itemsState.queryParams])
 
@@ -209,6 +198,7 @@ function Item({ children, customQueryParams }) {
 
    */
   useEffect(() => {
+    console.log('SEECOND')
     if (!customQueryParams || itemsState.isLoading) {
       return
     }

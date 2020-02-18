@@ -1,27 +1,139 @@
 import update from 'immutability-helper'
 import isEmpty from 'lodash/isEmpty'
-import last from 'lodash/last'
 import some from 'lodash/some'
 import concat from 'lodash/concat'
-
-function hasNextPage(payload) {
-  if (isEmpty(payload)) {
-    return false
-  }
-
-  return last(payload).hasNextPage
-}
+import { getHashFromQueryParams } from '../../../common/utils'
+import has from 'lodash/has'
+import uniqBy from 'lodash/uniqBy'
 
 function limitReached(state) {
-  if (!state.limit) {
+  if (!state.payloadSettings.limit) {
     return false
   }
 
-  return state.totalShown >= state.limit
+  return state.totalShown >= state.payloadSettings.limit
 }
 
-function hasMorePages(state, newItemTotal) {
-  return newItemTotal >= state.queryParams.first
+function limitPayload(currentPayload, newPayload, limit) {
+  return currentPayload.concat(newPayload).slice(0, limit)
+}
+
+function createNewPayloadCacheObj(state, items) {
+  var hashCacheId = getHashFromQueryParams(state.queryParams)
+
+  let newPayloadCacheAddition = {}
+  newPayloadCacheAddition[hashCacheId] = items
+
+  return newPayloadCacheAddition
+}
+
+function maybeCachePayload(state, updatedPayload, updatedHasMoreItems, hasExistingCache = false) {
+  var newPayloadstuff = {
+    ...state,
+    payload: updatedPayload,
+    hasMoreItems: updatedHasMoreItems,
+    totalShown: updatedPayload.length
+  }
+
+  if (hasExistingCache) {
+    return newPayloadstuff
+  }
+
+  if (updatedPayload.length) {
+    var newCache = createNewPayloadCacheObj(state, updatedPayload)
+
+    newPayloadstuff['payloadCache'] = update(state.payloadCache, { $merge: newCache })
+  }
+
+  console.log('.......................... newPayloadstuff', newPayloadstuff)
+
+  return newPayloadstuff
+}
+
+function maybeLimitPayload(state, newPayload) {
+  var hashCacheId = getHashFromQueryParams(state.queryParams)
+
+  console.log('hashCacheId', hashCacheId)
+
+  if (has(state.payloadCache, hashCacheId)) {
+    console.log('BOOOOOOOOOOOOOOOOOOOOOOOOOOM')
+
+    let updatedPayload = update(state.payload, {
+      $set: state.payloadCache[hashCacheId]
+    })
+
+    let updatedHasMoreItems = update(state.hasMoreItems, {
+      $set: checkHasMore(state.payloadSettings, state.payloadCache[hashCacheId])
+    })
+
+    return maybeCachePayload(state, updatedPayload, updatedHasMoreItems, true)
+  }
+
+  if (limitReached(state)) {
+    console.log('maybeLimitPayload 1')
+
+    let updatedPayload = update(state.payload, {
+      $set: limitPayload(state.payload, newPayload, state.payloadSettings.limit)
+    })
+
+    let updatedHasMoreItems = update(state.hasMoreItems, {
+      $set: checkHasMore(state.payloadSettings, updatedPayload)
+    })
+
+    return maybeCachePayload(state, updatedPayload, updatedHasMoreItems)
+  }
+
+  console.log('maybeLimitPayload 2')
+
+  // => [{ 'x': 1 }, { 'x': 2 }]
+
+  // If lands here, we're not limiting, just adding
+  let updatedPayload = update(state.payload, {
+    $set: uniqBy(update(state.payload, { $push: newPayload }), 'id')
+  })
+
+  let updatedHasMoreItems = update(state.hasMoreItems, {
+    $set: checkHasMore(state.payloadSettings, updatedPayload)
+  })
+
+  return maybeCachePayload(state, updatedPayload, updatedHasMoreItems)
+}
+
+function checkHasMore(payloadSettings, payload) {
+  if (!payload || !payloadSettings.pageSize || !payloadSettings.pagination) {
+    return false
+  }
+
+  var payloadLength = payload.length
+  var limit = payloadSettings.limit ? parseInt(payloadSettings.limit) : false
+  var pageSize = payloadSettings.pageSize
+  var lastItem = payload[payloadLength - 1]
+
+  if (!lastItem) {
+    return false
+  }
+
+  var hasNextPage = lastItem.hasNextPage
+
+  if (!limit) {
+    return hasNextPage
+  }
+
+  if (pageSize === payloadLength) {
+    if (pageSize === limit) {
+      return false
+    } else if (limit < payloadLength) {
+      return false
+    } else {
+      return true
+    }
+  } else {
+    if (payloadLength > limit) {
+      return false
+    } else {
+      return hasNextPage
+    }
+  }
 }
 
 function ItemsReducer(state, action) {
@@ -33,57 +145,13 @@ function ItemsReducer(state, action) {
         }
       }
 
-      var updatedHasMoreItems = true
-
-      if (limitReached(state)) {
-        if (state.limit) {
-          var updatedPayload = update(state.payload, {
-            $set: state.payload.concat(action.payload).slice(0, state.limit)
-          })
-        } else {
-          var updatedPayload = state.payload
-        }
-
-        updatedHasMoreItems = update(state.hasMoreItems, { $set: false })
-      } else {
-        var updatedPayload = update(state.payload, { $push: action.payload })
-
-        if (!hasNextPage(action.payload)) {
-          updatedHasMoreItems = update(state.hasMoreItems, { $set: false })
-        }
-      }
-
-      return {
-        ...state,
-        payload: updatedPayload,
-        hasMoreItems: updatedHasMoreItems
-      }
-    }
-    case 'SET_PAYLOAD': {
-      return {
-        ...state,
-        payload: update(state.payload, { $set: action.payload })
-      }
-    }
-
-    case 'LIMIT_PAYLOAD': {
-      return {
-        ...state,
-        payload: update(state.payload, { $set: state.payload.slice(0, action.payload) })
-      }
+      return maybeLimitPayload(state, action.payload)
     }
 
     case 'SET_IS_LOADING': {
       return {
         ...state,
         isLoading: update(state.isLoading, { $set: action.payload })
-      }
-    }
-
-    case 'SET_TOTAL_SHOWN': {
-      return {
-        ...state,
-        totalShown: update(state.totalShown, { $set: action.payload + state.totalShown })
       }
     }
 
@@ -98,20 +166,6 @@ function ItemsReducer(state, action) {
       return {
         ...state,
         queryParams: update(state.queryParams, { $set: action.payload })
-      }
-    }
-
-    case 'UPDATE_HAS_MORE_ITEMS': {
-      return {
-        ...state,
-        hasMoreItems: update(state.hasMoreItems, { $set: hasMorePages(state, action.payload) })
-      }
-    }
-
-    case 'UPDATE_PAYLOAD_CACHE': {
-      return {
-        ...state,
-        payloadCache: update(state.payloadCache, { $merge: action.payload })
       }
     }
 

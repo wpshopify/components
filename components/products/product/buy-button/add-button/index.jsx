@@ -1,7 +1,6 @@
 import { ProductBuyButtonContext } from '../_state/context'
 import { ShopContext } from '../../../../shop/_state/context'
 import { Loader } from '../../../../loader'
-import { Notice } from '../../../../notice'
 import { ItemsContext } from '../../../../items/_state/context'
 import { ProductContext } from '../../_state/context'
 import { useAnime, pulse } from '../../../../../common/animations'
@@ -11,11 +10,11 @@ import {
   buildClient,
   findVariantFromSelectedOptions,
   createUniqueCheckout,
-  addLineItemsAPI,
-  updateCheckoutAttributes
+  addLineItemsAPI
 } from '/Users/andrew/www/devil/devilbox-new/data/www/wpshopify-api'
 import to from 'await-to-js'
 
+const { Notice } = wp.components
 const { useContext, useRef, useEffect, useState } = wp.element
 
 function ProductAddButton() {
@@ -193,7 +192,11 @@ function ProductAddButton() {
         )}
       </button>
 
-      {hasNotice && <Notice message={hasNotice.message} type={hasNotice.type} />}
+      {hasNotice && (
+        <Notice status={hasNotice.type} isDismissible={false}>
+          {hasNotice.message}
+        </Notice>
+      )}
     </div>
   )
 }

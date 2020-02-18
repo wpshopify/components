@@ -1,7 +1,6 @@
 import { registerCustomer } from '/Users/andrew/www/devil/devilbox-new/data/www/wpshopify-api'
 import to from 'await-to-js'
 import isEmpty from 'lodash/isEmpty'
-import { Notice } from '../../../notice'
 import { usePortal } from '../../../../common/hooks'
 import { CustomersContext } from '../../_state/context'
 import { ShopContext } from '../../../shop/_state/context'
@@ -9,6 +8,7 @@ import { Form } from '../../../forms'
 import { Input } from '../../../forms/input'
 
 const { useContext, useRef, useState } = wp.element
+const { Notice } = wp.components
 
 function CustomerFormRegister() {
   const [shopState] = useContext(ShopContext)
@@ -107,7 +107,9 @@ function CustomerFormRegister() {
 function LoginLink({ noticeState, shopState }) {
   return (
     <>
-      <Notice message={noticeState.message} type={noticeState.type} />
+      <Notice status={noticeState.type} isDismissible={false}>
+        {noticeState.message}
+      </Notice>
 
       <a
         href={'/' + shopState.settings.general.accountPageLogin}

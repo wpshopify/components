@@ -2,10 +2,10 @@ import { PaginationControls } from './controls'
 import { PaginationItems } from './items'
 import { PaginationProvider } from './_state/provider'
 import { ItemsContext } from '../items/_state/context'
-import { Notice } from '../notices/notice'
 import { Notices } from '../notices'
 import isEmpty from 'lodash/isEmpty'
 
+const { Notice } = wp.components
 const { useContext } = wp.element
 
 function Pagination({ children, shopSettings }) {
@@ -54,7 +54,9 @@ function Pagination({ children, shopSettings }) {
       )}
 
       {showNotices() ? (
-        <Notice message={itemsState.noResultsText} type='info' />
+        <Notice status='info' isDismissible={false}>
+          {itemsState.noResultsText}
+        </Notice>
       ) : (
         <PaginationItems alignHeight={isAlignHeight()}>{children}</PaginationItems>
       )}

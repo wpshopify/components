@@ -97,7 +97,7 @@ function createStringFromQueryParams(queryParams) {
   return queryParams.first + queryParams.query + reverse + sortKey
 }
 
-function hashQueryParams(queryParams) {
+function getHashFromQueryParams(queryParams) {
   return md5(createStringFromQueryParams(queryParams))
 }
 
@@ -166,7 +166,7 @@ export {
   itemWidthClass,
   findPortalElement,
   convertTitleToHandle,
-  hashQueryParams,
+  getHashFromQueryParams,
   FilterHook,
   prettyDate,
   _t,

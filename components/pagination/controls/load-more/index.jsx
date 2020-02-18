@@ -49,7 +49,7 @@ function PaginationLoadMore() {
     }
 
     // If total shown matches the limit
-    if (itemsState.totalShown === itemsState.limit) {
+    if (itemsState.totalShown === itemsState.payloadSettings.limit) {
       return false
     }
 

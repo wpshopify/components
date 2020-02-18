@@ -1,5 +1,5 @@
 import { CartLineItems } from '../lineitems'
-import { Notice } from '../../notice'
+const { Notice } = wp.components
 
 function CartContents(props) {
   const defaultEmptyText = 'Your cart is empty 🛒'
@@ -14,7 +14,9 @@ function CartContents(props) {
       data-is-cart-empty={props.isCartEmpty}
       data-wps-is-ready={props.isCartReady ? '1' : '0'}>
       {props.isCartEmpty ? (
-        <Notice type='info' message={wp.hooks.applyFilters('cart.empty.text', defaultEmptyText)} />
+        <Notice status='info' isDismissible='false'>
+          {wp.hooks.applyFilters('cart.empty.text', defaultEmptyText)}
+        </Notice>
       ) : (
         <CartLineItems lineItems={filterEmptyLineItems(props.checkoutCache.variants)} />
       )}

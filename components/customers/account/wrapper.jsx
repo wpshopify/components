@@ -10,7 +10,8 @@ import { jsx, css } from '@emotion/core'
 import { CustomersContext } from '../_state/context'
 import { Orders } from './orders'
 import { AccountDetails } from './details'
-import { Notice } from '../../notice'
+
+const { Notice } = wp.components
 
 const { useContext, useEffect } = wp.element
 
@@ -67,7 +68,9 @@ function AccountWrapper() {
   }, [customerState.customer])
 
   return !isEmpty(customerState.notices) ? (
-    <Notice message={customerState.notices.message} type={customerState.notices.type} />
+    <Notice status={customerState.notices.type} isDismissible={false}>
+      {customerState.notices.message}
+    </Notice>
   ) : (
     customerState.isAccountPage && (
       <div css={styles}>

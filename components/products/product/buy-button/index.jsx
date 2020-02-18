@@ -1,7 +1,6 @@
 import { ProductQuantity } from './quantity'
 import { ProductOptions } from './options'
 import { ProductAddButton } from './add-button'
-import { Notice } from '../../../notice'
 import { ProductBuyButtonProvider } from './_state/provider'
 import { ProductContext } from '../_state/context'
 import { ItemsContext } from '../../../items/_state/context'
@@ -9,6 +8,7 @@ import { ShopContext } from '../../../shop/_state/context'
 import { usePortal } from '../../../../common/hooks'
 import { findPortalElement, FilterHook } from '../../../../common/utils'
 
+const { Notice } = wp.components
 const { useContext } = wp.element
 
 function ProductBuyButton() {
@@ -36,7 +36,9 @@ function ProductBuyButton() {
             <ProductAddButton />
           </>
         ) : (
-          <Notice type='warning' message='Out of stock' />
+          <Notice status='warning' isDismissible={false}>
+            Out of stock
+          </Notice>
         )}
       </ProductBuyButtonProvider>
 

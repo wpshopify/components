@@ -6,12 +6,13 @@ import { formatPriceToCurrency } from '../../../common/pricing/formatting'
 import { calcLineItemTotal, isAvailable } from '../../../common/products'
 import { addCustomSizingToImageUrl } from '../../../common/images'
 import { containerFluidCSS } from '../../../common/css'
-import { Notice } from '../../notice'
+
 /** @jsx jsx */
 import { jsx, css } from '@emotion/core'
 import find from 'lodash/find'
 
 const { useContext, useState, useRef, useEffect } = wp.element
+const { Notice } = wp.components
 
 function getLineItemFromState(lineItem, lineItemsFromState) {
   return find(lineItemsFromState, { variantId: lineItem.id })
@@ -141,7 +142,9 @@ function CartLineItem({ lineItem, index }) {
         )}
 
         {!isAvailable(lineItem) ? (
-          <Notice type='warning' message='Out of stock' />
+          <Notice status='warning' isDismissible={false}>
+            Out of stock
+          </Notice>
         ) : (
           <div className='p-0' css={containerFluidCSS}>
             <div className='row'>

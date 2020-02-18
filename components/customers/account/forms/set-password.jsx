@@ -1,13 +1,14 @@
 import { setPasswordCustomer } from '/Users/andrew/www/devil/devilbox-new/data/www/wpshopify-api'
 import to from 'await-to-js'
 import isEmpty from 'lodash/isEmpty'
-import { Notice } from '../../../notice'
+
 import { usePortal } from '../../../../common/hooks'
 import { CustomersContext } from '../../_state/context'
 import { ShopContext } from '../../../shop/_state/context'
 import { Form } from '../../../forms'
 import { Input } from '../../../forms/input'
 
+const { Notice } = wp.components
 const { useContext, useEffect, useState } = wp.element
 
 function ResetForm({
@@ -58,7 +59,9 @@ function ResetForm({
 function LoginLink({ noticeState, shopState }) {
   return (
     <>
-      <Notice message={noticeState.message} type={noticeState.type} />
+      <Notice status={noticeState.type} isDismissible={false}>
+        {noticeState.message}
+      </Notice>
       <a
         href={'/' + shopState.settings.general.accountPageLogin}
         className='wps-btn wps-btn-secondary wpshopify-btn-auto-width'>

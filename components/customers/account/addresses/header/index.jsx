@@ -1,7 +1,7 @@
 import { AddressesContext } from '../_state/context'
 import { AccountReturn } from '../../return'
-import { Notice } from '../../../../notice'
 
+const { Notice } = wp.components
 const { useContext } = wp.element
 
 function AddressesHeader() {
@@ -13,7 +13,9 @@ function AddressesHeader() {
       <h2>Your Addresses</h2>
 
       {addressesState.notices && (
-        <Notice message={addressesState.notices.message} type={addressesState.notices.type} />
+        <Notice status={addressesState.notices.type} isDismissible={false}>
+          {addressesState.notices.message}
+        </Notice>
       )}
     </header>
   )

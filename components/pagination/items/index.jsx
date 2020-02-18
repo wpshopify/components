@@ -1,6 +1,5 @@
 import { PaginationContext } from '../_state/context'
 import { ItemsContext } from '../../items/_state/context'
-import { Notice } from '../../notice'
 import { containerFluidCSS, rowCSS } from '../../../common/css'
 import uuidv4 from 'uuid/v4'
 
@@ -8,6 +7,7 @@ import uuidv4 from 'uuid/v4'
 import { jsx, css } from '@emotion/core'
 
 const { useContext } = wp.element
+const { Notice } = wp.components
 
 function PaginationItems({ children, alignHeight }) {
   const [itemsState] = useContext(ItemsContext)
@@ -44,7 +44,9 @@ function PaginationItems({ children, alignHeight }) {
       </section>
 
       {paginationState.controlsTouched && !itemsState.hasMoreItems ? (
-        <Notice message={itemsState.noResultsText} type='info' />
+        <Notice status='info' isDismissible={false}>
+          {itemsState.noResultsText}
+        </Notice>
       ) : (
         ''
       )}

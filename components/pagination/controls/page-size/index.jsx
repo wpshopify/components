@@ -29,16 +29,8 @@ function PaginationPageSize() {
     }
   }
 
-  function setTotalItemsShown(itemsToAdd) {
-    itemsDispatch({ type: 'SET_TOTAL_SHOWN', payload: itemsToAdd })
-  }
-
   function setLoadingStates(isLoading) {
     itemsDispatch({ type: 'SET_IS_LOADING', payload: isLoading })
-  }
-
-  function setPayloadStates(payload) {
-    itemsDispatch({ type: 'UPDATE_PAYLOAD', payload: payload })
   }
 
   function setAfterCursorQueryParams(params) {
@@ -53,6 +45,7 @@ function PaginationPageSize() {
     setPageSize(event.target.value)
 
     let updatedParams = updatedFirstQueryParams(event)
+    console.log(':::::::::: updatedParams', updatedParams)
 
     setAfterCursorQueryParams(updatedParams)
 
@@ -66,8 +59,7 @@ function PaginationPageSize() {
     } else {
       setAfterCursorQueryParams(findLastCursorId(shopifyResponse, itemsState.dataType))
 
-      setTotalItemsShown(shopifyResponse.model.products.length)
-      setPayloadStates(shopifyResponse.model.products)
+      itemsDispatch({ type: 'UPDATE_PAYLOAD', payload: shopifyResponse.model.products })
     }
 
     itemsDispatch({ type: 'SET_IS_LOADING', payload: false })

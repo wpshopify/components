@@ -5,7 +5,6 @@ export { Cart } from './components/cart'
 export { Shop } from './components/shop'
 export { Storefront } from './components/storefront'
 export { Search } from './components/search'
-export { Notice } from './components/notices/notice'
 export { Collections } from './components/collections'
 export { Items } from './components/items'
 
