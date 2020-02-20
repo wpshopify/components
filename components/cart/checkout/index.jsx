@@ -154,7 +154,10 @@ function CartCheckout() {
       cartDispatch({ type: 'SET_IS_CHECKING_OUT', payload: false })
       return cartDispatch({
         type: 'UPDATE_NOTICES',
-        payload: { type: 'error', message: __(checkoutWithLineitemsError, 'wpshopify') }
+        payload: {
+          type: 'error',
+          message: __(checkoutWithLineitemsError, wpshopify.misc.textdomain)
+        }
       })
     }
 
@@ -162,7 +165,7 @@ function CartCheckout() {
       cartDispatch({ type: 'SET_IS_CHECKING_OUT', payload: false })
       return cartDispatch({
         type: 'UPDATE_NOTICES',
-        payload: { type: 'error', message: __('No line items exist ', 'wpshopify') }
+        payload: { type: 'error', message: __('No line items exist ', wpshopify.misc.textdomain) }
       })
     }
 
@@ -178,7 +181,7 @@ function CartCheckout() {
         cartDispatch({ type: 'SET_IS_CHECKING_OUT', payload: false })
         return cartDispatch({
           type: 'UPDATE_NOTICES',
-          payload: { type: 'error', message: __(checkoutWithAttrsError, 'wpshopify') }
+          payload: { type: 'error', message: __(checkoutWithAttrsError, wpshopify.misc.textdomain) }
         })
       }
 
@@ -224,7 +227,7 @@ function CartCheckoutButton({ buttonStyle, onCheckout, shopState, buttonRef }) {
       {cartState.isCheckingOut ? (
         <Loader isLoading={cartState.isCheckingOut} />
       ) : (
-        __(cartState.checkoutText, 'wpshopify')
+        __(cartState.checkoutText, wpshopify.misc.textdomain)
       )}
     </button>
   )

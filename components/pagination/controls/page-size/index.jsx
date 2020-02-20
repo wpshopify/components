@@ -45,7 +45,6 @@ function PaginationPageSize() {
     setPageSize(event.target.value)
 
     let updatedParams = updatedFirstQueryParams(event)
-    console.log(':::::::::: updatedParams', updatedParams)
 
     setAfterCursorQueryParams(updatedParams)
 
@@ -59,7 +58,18 @@ function PaginationPageSize() {
     } else {
       setAfterCursorQueryParams(findLastCursorId(shopifyResponse, itemsState.dataType))
 
-      itemsDispatch({ type: 'UPDATE_PAYLOAD', payload: shopifyResponse.model.products })
+      itemsDispatch({
+        type: 'UPDATE_TOTAL_SHOWN',
+        payload: shopifyResponse.model.products.length
+      })
+
+      itemsDispatch({
+        type: 'UPDATE_PAYLOAD',
+        payload: {
+          items: shopifyResponse.model.products,
+          skipCache: true
+        }
+      })
     }
 
     itemsDispatch({ type: 'SET_IS_LOADING', payload: false })

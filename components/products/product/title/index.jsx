@@ -11,6 +11,7 @@ import { onSinglePage } from '../../../../common/components'
 import { jsx, css } from '@emotion/core'
 
 const { useContext } = wp.element
+const { __ } = wp.i18n
 
 function ProductTitle() {
   const [shopState] = useContext(ShopContext)
@@ -73,7 +74,7 @@ function Title(props) {
         className={props.classList}
         data-wps-is-ready={props.isShopReady}
         css={props.styles}>
-        {props.title}
+        {wp.hooks.applyFilters('product.title.text', __(props.title, wpshopify.misc.textdomain))}
       </h2>
 
       <FilterHook name='product.title.after' args={[props.product]} isReady={props.isShopReady} />

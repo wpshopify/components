@@ -10,6 +10,7 @@ import { findPortalElement, FilterHook } from '../../../../common/utils'
 
 const { Notice } = wp.components
 const { useContext } = wp.element
+const { __ } = wp.i18n
 
 function ProductBuyButton() {
   const [shopState] = useContext(ShopContext)
@@ -37,7 +38,10 @@ function ProductBuyButton() {
           </>
         ) : (
           <Notice status='warning' isDismissible={false}>
-            Out of stock
+            {wp.hooks.applyFilters(
+              'notice.unavailable.text',
+              __('Out of stock', wpshopify.misc.textdomain)
+            )}
           </Notice>
         )}
       </ProductBuyButtonProvider>

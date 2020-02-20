@@ -4,10 +4,7 @@ import { useTransition, animated } from 'react-spring'
 import { createSelectionsOfType, buildNewSelection } from '../../../common/selections'
 
 const { useContext } = wp.element
-
-function inSelection(selectionsArray, valToSearchFor) {
-  return selectionsArray.find(element => element === valToSearchFor)
-}
+const { __ } = wp.i18n
 
 function StorefrontSelectionsValue({ selectionType, val }) {
   const [storefrontState, storefrontDispatch] = useContext(StorefrontContext)
@@ -28,7 +25,13 @@ function StorefrontSelectionsValue({ selectionType, val }) {
 
   return (
     <span className='wps-filter-selection-value wps-mr-2' onClick={e => onClick(val)}>
-      {selectionType === 'available_for_sale' ? 'Available for sale' : val} <IconRemove />{' '}
+      {selectionType === 'available_for_sale'
+        ? wp.hooks.applyFilters(
+            'storefront.selections.available.text',
+            __('Available for sale', wpshopify.misc.textdomain)
+          )
+        : val}{' '}
+      <IconRemove />{' '}
     </span>
   )
 }

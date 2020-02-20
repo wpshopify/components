@@ -60,7 +60,9 @@ function Items(props) {
           component={component}
           afterLoading={has(props, 'afterLoading') ? props.afterLoading : false}
           beforeLoading={has(props, 'beforeLoading') ? props.beforeLoading : false}>
-          <Item customQueryParams={props.customQueryParams}>{props.children}</Item>
+          <Item customQueryParams={props.customQueryParams} limit={props.limit}>
+            {props.children}
+          </Item>
         </ItemsProvider>,
         component.componentElement
       )

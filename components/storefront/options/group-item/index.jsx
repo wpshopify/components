@@ -12,7 +12,6 @@ function StorefrontFilterOptionsGroupItem({ itemValue, itemType, displayStyle })
   const [storefrontState, storefrontDispatch] = useContext(StorefrontContext)
 
   const [isSelected, setIsSelected] = useState(false)
-  const isFirstRender = useRef(true)
 
   useEffect(() => {
     setIsSelected(isCurrentlySelected(storefrontState.selections, itemValue, itemType))
@@ -51,20 +50,24 @@ function StorefrontFilterOptionsGroupItem({ itemValue, itemType, displayStyle })
         className='wps-input-value'
       />
 
-      <label htmlFor={'input-' + itemValue} className='wps-input-label'>
-        {itemValue}
-      </label>
+      {itemValue && (
+        <label htmlFor={'input-' + itemValue} className='wps-input-label'>
+          {itemValue}
+        </label>
+      )}
     </li>
   ) : (
-    <li
-      data-wps-is-current={isSelected}
-      data-wps-is-selected={isSelected}
-      data-wps-filter-value={itemValue}
-      data-wps-display-style={displayStyle}
-      className={'wps-' + itemType + '-single wps-filter-single'}
-      onClick={onClick}>
-      {itemValue}
-    </li>
+    itemValue && (
+      <li
+        data-wps-is-current={isSelected}
+        data-wps-is-selected={isSelected}
+        data-wps-filter-value={itemValue}
+        data-wps-display-style={displayStyle}
+        className={'wps-' + itemType + '-single wps-filter-single'}
+        onClick={onClick}>
+        {itemValue}
+      </li>
+    )
   )
 }
 

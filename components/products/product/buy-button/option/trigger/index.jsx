@@ -6,6 +6,7 @@ import { ProductOptionContext } from '../_state/context'
 import { ProductContext } from '../../../_state/context'
 
 const { useEffect, useContext, useRef } = wp.element
+const { __ } = wp.i18n
 
 function ProductOptionTrigger() {
   const [shopState] = useContext(ShopContext)
@@ -82,7 +83,10 @@ function ProductOptionTrigger() {
       onClick={onClick}
       ref={dropdownTrigger}
       style={{ backgroundColor: itemsState.payloadSettings.variantButtonColor }}>
-      {displayOptionName()}
+      {wp.hooks.applyFilters(
+        'products.option.title.text',
+        __(displayOptionName(), wpshopify.misc.textdomain)
+      )}
     </button>
   )
 }

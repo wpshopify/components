@@ -18,10 +18,13 @@ function CartInitialState(options) {
     customAttributes: [],
     note: false,
     totalLineItems: 0,
-    title: wp.hooks.applyFilters('default.cart.title', __('Shopping cart', 'wpshopify')),
+    title: wp.hooks.applyFilters(
+      'default.cart.title',
+      __('Shopping cart', wpshopify.misc.textdomain)
+    ),
     checkoutText: wp.hooks.applyFilters(
       'default.cart.checkout.text',
-      __('Begin checkout', 'wpshopify')
+      __('Begin checkout', wpshopify.misc.textdomain)
     )
   }
 }

@@ -7,6 +7,7 @@ import isEmpty from 'lodash/isEmpty'
 import { createObj } from '../../../../../../../common/utils'
 
 const { useEffect, useContext, useRef, useState } = wp.element
+const { __ } = wp.i18n
 
 function ProductVariant({ variant }) {
   const [isSelectable, setIsSelectable] = useState(true)
@@ -60,7 +61,10 @@ function ProductVariant({ variant }) {
       className='wps-product-variant wps-product-style wps-modal-close-trigger'
       onClick={onVariantSelection}
       data-wps-is-selectable={isSelectable}>
-      {variant.value}
+      {wp.hooks.applyFilters(
+        'products.variant.title.text',
+        __(variant.value, wpshopify.misc.textdomain)
+      )}
     </li>
   )
 }

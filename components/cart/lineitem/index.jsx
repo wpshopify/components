@@ -13,6 +13,7 @@ import find from 'lodash/find'
 
 const { useContext, useState, useRef, useEffect } = wp.element
 const { Notice } = wp.components
+const { __ } = wp.i18n
 
 function getLineItemFromState(lineItem, lineItemsFromState) {
   return find(lineItemsFromState, { variantId: lineItem.id })
@@ -143,7 +144,10 @@ function CartLineItem({ lineItem, index }) {
 
         {!isAvailable(lineItem) ? (
           <Notice status='warning' isDismissible={false}>
-            Out of stock
+            {wp.hooks.applyFilters(
+              'notice.unavailable.text',
+              __('Out of stock', wpshopify.misc.textdomain)
+            )}
           </Notice>
         ) : (
           <div className='p-0' css={containerFluidCSS}>

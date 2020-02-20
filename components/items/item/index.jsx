@@ -59,13 +59,10 @@ function fetchNextItems(itemsState, itemsDispatch) {
 
    */
     if (!hasNextPageQueryAndPath(itemsState.payload)) {
-      console.log('11111111111111111111111')
-
       const [resendInitialError, resendInitialResp] = await to(resendInitialQuery(itemsState))
 
       var productsExisting = resendInitialResp.model.products
     } else {
-      console.log('22222222222222222222222222')
       var productsExisting = itemsState.payload
     }
 
@@ -75,7 +72,6 @@ function fetchNextItems(itemsState, itemsDispatch) {
       const [initialError, initialResponse] = await to(resendInitialQuery(itemsState))
 
       if (initialError) {
-        console.log('2.555555555')
         itemsDispatch({
           type: 'UPDATE_NOTICES',
           payload: { type: 'error', message: initialError }
@@ -88,7 +84,6 @@ function fetchNextItems(itemsState, itemsDispatch) {
           itemsState.dataType === 'collections' ||
           itemsState.originalParams.type === 'collections'
         ) {
-          console.log('33333333333333333')
           if (!itemsState.originalParams) {
             var nextPayload = initialResponse.model[itemsState.dataType]
           } else {
@@ -97,7 +92,6 @@ function fetchNextItems(itemsState, itemsDispatch) {
         } else {
           var nextPayload = initialResponse.model[itemsState.dataType]
         }
-        console.log('444444444444444444444444444')
 
         var [finalResultsError, finalResults] = await to(fetchNextPage(nextPayload))
 
@@ -116,9 +110,19 @@ function fetchNextItems(itemsState, itemsDispatch) {
     } else {
       var nextItems = results.model
     }
-    console.log('nextItems', nextItems)
 
-    itemsDispatch({ type: 'UPDATE_PAYLOAD', payload: nextItems })
+    itemsDispatch({
+      type: 'UPDATE_TOTAL_SHOWN',
+      payload: nextItems.length
+    })
+
+    itemsDispatch({
+      type: 'UPDATE_PAYLOAD',
+      payload: {
+        items: nextItems,
+        skipCache: true
+      }
+    })
     itemsDispatch({ type: 'SET_IS_LOADING', payload: false })
 
     if (itemsState.afterLoading) {
@@ -129,7 +133,7 @@ function fetchNextItems(itemsState, itemsDispatch) {
   })
 }
 
-function Item({ children, customQueryParams }) {
+function Item({ children, customQueryParams, limit = false }) {
   const [itemsState, itemsDispatch] = useContext(ItemsContext)
   const isFirstRender = useRef(true)
 
@@ -141,7 +145,10 @@ function Item({ children, customQueryParams }) {
     var hashCacheId = getHashFromQueryParams(itemsState.queryParams)
 
     if (has(itemsState.payloadCache, hashCacheId)) {
-      console.log('HAS FOUND CACHE', hashCacheId)
+      itemsDispatch({
+        type: 'UPDATE_TOTAL_SHOWN',
+        payload: itemsState.payloadCache[hashCacheId].length
+      })
 
       itemsDispatch({
         type: 'UPDATE_PAYLOAD',
@@ -174,9 +181,18 @@ function Item({ children, customQueryParams }) {
       }
 
       var newItems = results.model[itemsState.dataType]
-      var newItemsTotal = newItems.length
 
-      itemsDispatch({ type: 'UPDATE_PAYLOAD', payload: newItems })
+      itemsDispatch({
+        type: 'UPDATE_TOTAL_SHOWN',
+        payload: newItems.length
+      })
+
+      itemsDispatch({
+        type: 'UPDATE_PAYLOAD',
+        payload: {
+          items: newItems
+        }
+      })
 
       if (itemsState.afterLoading) {
         itemsState.afterLoading(newItems)
@@ -187,8 +203,6 @@ function Item({ children, customQueryParams }) {
   }
 
   useEffect(() => {
-    console.log('FIRST')
-
     fetchNewItems()
   }, [itemsState.queryParams])
 
@@ -198,7 +212,6 @@ function Item({ children, customQueryParams }) {
 
    */
   useEffect(() => {
-    console.log('SEECOND')
     if (!customQueryParams || itemsState.isLoading) {
       return
     }
@@ -210,6 +223,24 @@ function Item({ children, customQueryParams }) {
       })
     }
   }, [customQueryParams])
+
+  useEffect(() => {
+    if (itemsState.isLoading) {
+      return
+    }
+
+    if (isFirstRender.current) {
+      isFirstRender.current = false
+      return
+    }
+
+    itemsDispatch({
+      type: 'UPDATE_PAYLOAD',
+      payload: {
+        items: itemsState.payload
+      }
+    })
+  }, [limit])
 
   return <>{children}</>
 }

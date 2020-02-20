@@ -16,6 +16,7 @@ import to from 'await-to-js'
 
 const { Notice } = wp.components
 const { useContext, useRef, useEffect, useState } = wp.element
+const { __ } = wp.i18n
 
 function ProductAddButton() {
   const button = useRef()
@@ -27,7 +28,7 @@ function ProductAddButton() {
   const [itemsState] = useContext(ItemsContext)
   const [productState, productDispatch] = useContext(ProductContext)
   const [buyButtonState, buyButtonDispatch] = useContext(ProductBuyButtonContext)
-  const [shopState, shopDispatch] = useContext(ShopContext)
+  const [shopState] = useContext(ShopContext)
 
   const isDirectCheckout =
     itemsState.payloadSettings.directCheckout || shopState.settings.general.directCheckout
@@ -188,13 +189,19 @@ function ProductAddButton() {
         {isCheckingOut ? (
           <Loader />
         ) : (
-          wp.hooks.applyFilters('product.addToCart.text', getButtonText())
+          wp.hooks.applyFilters(
+            'product.addToCart.text',
+            __(getButtonText(), wpshopify.misc.textdomain)
+          )
         )}
       </button>
 
       {hasNotice && (
         <Notice status={hasNotice.type} isDismissible={false}>
-          {hasNotice.message}
+          {wp.hooks.applyFilters(
+            'notice.product.addToCart.text',
+            __(hasNotice.message, wpshopify.misc.textdomain)
+          )}
         </Notice>
       )}
     </div>

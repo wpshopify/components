@@ -3,6 +3,7 @@ import { buildInstances } from '/Users/andrew/www/devil/devilbox-new/data/www/wp
 import to from 'await-to-js'
 
 const { useEffect, useContext } = wp.element
+const { __ } = wp.i18n
 
 function Bootstrap({ children }) {
   const [shopState, shopDispatch] = useContext(ShopContext)
@@ -31,7 +32,7 @@ function Bootstrap({ children }) {
             type: 'UPDATE_NOTICES',
             payload: {
               type: 'error',
-              message: 'No checkout instance available'
+              message: __('No checkout instance available', wpshopify.misc.textdomain)
             }
           })
 

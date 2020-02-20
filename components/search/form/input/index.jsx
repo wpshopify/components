@@ -4,6 +4,7 @@ import { useDebounce } from 'use-debounce'
 import { Loader } from '../../../loader'
 
 const { useEffect, useContext, useRef, useState } = wp.element
+const { __ } = wp.i18n
 
 /*
 
@@ -43,8 +44,14 @@ function SearchInput() {
         className='wps-search-input'
         name='search'
         val={localTerm}
-        placeholder='Search the store'
-        aria-label='Search store'
+        placeholder={wp.hooks.applyFilters(
+          'search.placeholder.text',
+          __('Search the store', wpshopify.misc.textdomain)
+        )}
+        aria-label={wp.hooks.applyFilters(
+          'search.placeholder.text',
+          __('Search the store', wpshopify.misc.textdomain)
+        )}
         onChange={e => setSearchTerm(e.target.value)}
       />
 

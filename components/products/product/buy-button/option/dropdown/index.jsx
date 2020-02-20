@@ -1,6 +1,5 @@
 import { ProductVariants } from '../variants'
 import { ProductBuyButtonContext } from '../../_state/context'
-import { ProductContext } from '../../../_state/context'
 import { ProductOptionContext } from '../_state/context'
 
 import find from 'lodash/find'
@@ -18,7 +17,6 @@ const ProductOptionTrigger = wp.element.lazy(() =>
 function ProductOptionDropdown() {
   const [buyButtonState, buyButtonDispatch] = useContext(ProductBuyButtonContext)
   const [productOptionState, productOptionDispatch] = useContext(ProductOptionContext)
-  const [productState] = useContext(ProductContext)
 
   const isFirstRender = useRef(true)
 

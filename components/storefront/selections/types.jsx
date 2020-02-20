@@ -4,6 +4,7 @@ import { getSelectionTypes } from '../../../common/selections'
 import isEmpty from 'lodash/isEmpty'
 
 const { useContext } = wp.element
+const { __ } = wp.i18n
 
 function StorefrontSelectionsType({ selectionType }) {
   const [storefrontState] = useContext(StorefrontContext)
@@ -13,7 +14,12 @@ function StorefrontSelectionsType({ selectionType }) {
       <div className='wps-filter-selection-type row mb-2'>
         <div className='wps-selections-group align-items-center'>
           {selectionType !== 'available_for_sale' && (
-            <span className='wps-filter-selection-type-heading'>{selectionType}: </span>
+            <span className='wps-filter-selection-type-heading'>
+              {wp.hooks.applyFilters(
+                'storefront.selections.type.text',
+                __(selectionType + ': ', wpshopify.misc.textdomain)
+              )}
+            </span>
           )}
 
           <StorefrontSelectionsValues

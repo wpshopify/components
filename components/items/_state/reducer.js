@@ -45,19 +45,13 @@ function maybeCachePayload(state, updatedPayload, updatedHasMoreItems, hasExisti
     newPayloadstuff['payloadCache'] = update(state.payloadCache, { $merge: newCache })
   }
 
-  console.log('.......................... newPayloadstuff', newPayloadstuff)
-
   return newPayloadstuff
 }
 
-function maybeLimitPayload(state, newPayload) {
+function updatePayload(state, newPayload, skipCache = false) {
   var hashCacheId = getHashFromQueryParams(state.queryParams)
 
-  console.log('hashCacheId', hashCacheId)
-
-  if (has(state.payloadCache, hashCacheId)) {
-    console.log('BOOOOOOOOOOOOOOOOOOOOOOOOOOM')
-
+  if (!skipCache && has(state.payloadCache, hashCacheId)) {
     let updatedPayload = update(state.payload, {
       $set: state.payloadCache[hashCacheId]
     })
@@ -66,12 +60,20 @@ function maybeLimitPayload(state, newPayload) {
       $set: checkHasMore(state.payloadSettings, state.payloadCache[hashCacheId])
     })
 
+    if (limitReached(state)) {
+      updatedPayload = update(state.payload, {
+        $set: limitPayload(state.payload, newPayload, state.payloadSettings.limit)
+      })
+
+      updatedHasMoreItems = update(state.hasMoreItems, {
+        $set: checkHasMore(state.payloadSettings, updatedPayload)
+      })
+    }
+
     return maybeCachePayload(state, updatedPayload, updatedHasMoreItems, true)
   }
 
   if (limitReached(state)) {
-    console.log('maybeLimitPayload 1')
-
     let updatedPayload = update(state.payload, {
       $set: limitPayload(state.payload, newPayload, state.payloadSettings.limit)
     })
@@ -82,10 +84,6 @@ function maybeLimitPayload(state, newPayload) {
 
     return maybeCachePayload(state, updatedPayload, updatedHasMoreItems)
   }
-
-  console.log('maybeLimitPayload 2')
-
-  // => [{ 'x': 1 }, { 'x': 2 }]
 
   // If lands here, we're not limiting, just adding
   let updatedPayload = update(state.payload, {
@@ -145,7 +143,13 @@ function ItemsReducer(state, action) {
         }
       }
 
-      return maybeLimitPayload(state, action.payload)
+      if (has(action.payload, 'skipCache')) {
+        var skipCache = true
+      } else {
+        var skipCache = false
+      }
+
+      return updatePayload(state, action.payload.items, skipCache)
     }
 
     case 'SET_IS_LOADING': {
@@ -159,6 +163,15 @@ function ItemsReducer(state, action) {
       return {
         ...state,
         queryParams: update(state.queryParams, { $merge: action.payload })
+      }
+    }
+
+    case 'UPDATE_TOTAL_SHOWN': {
+      const newTotal = action.payload + state.totalShown
+
+      return {
+        ...state,
+        totalShown: update(state.totalShown, { $set: newTotal })
       }
     }
 

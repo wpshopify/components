@@ -35,7 +35,7 @@ function CartWrapper() {
         type: 'UPDATE_NOTICES',
         payload: {
           type: 'error',
-          message: __('No checkout found', 'wpshopify')
+          message: __('No checkout found', wpshopify.misc.textdomain)
         }
       })
 
@@ -50,7 +50,7 @@ function CartWrapper() {
         type: 'UPDATE_NOTICES',
         payload: {
           type: 'error',
-          message: __(productsError, 'wpshopify')
+          message: __(productsError, wpshopify.misc.textdomain)
         }
       })
     }

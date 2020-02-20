@@ -30,13 +30,9 @@ function lowercaseFilterOptions(allFilteredData) {
   })
 }
 
-function optionsErrorMessage() {
-  return '. Occurred when fetching available filter options. Please clear your browser cache and reload the page.'
-}
-
 function StorefrontOptionsWrapper() {
   const [storefrontOptionsState, storefrontOptionsDispatch] = useContext(StorefrontOptionsContext)
-  const [storefrontState, storefrontDispatch] = useContext(StorefrontContext)
+  const [storefrontState] = useContext(StorefrontContext)
   const [itemsState, itemsDispatch] = useContext(ItemsContext)
 
   async function getAllFilterOptions() {
@@ -45,7 +41,14 @@ function StorefrontOptionsWrapper() {
     if (respError) {
       itemsDispatch({
         type: 'UPDATE_NOTICES',
-        payload: { type: 'error', message: respError.message + optionsErrorMessage() }
+        payload: {
+          type: 'error',
+          message: __(
+            respError.message +
+              '. Occurred when fetching available filter options. Please clear your browser cache and reload the page.',
+            wpshopify.misc.textdomain
+          )
+        }
       })
     } else {
       const allFilteredData = formatFilterOptions(getDataFromResponse(respData))
@@ -65,15 +68,24 @@ function StorefrontOptionsWrapper() {
   }, [])
 
   function getTagsHeading() {
-    return wp.hooks.applyFilters('default.storefront.tags.heading', 'Tags')
+    return wp.hooks.applyFilters(
+      'default.storefront.tags.heading',
+      __('Tags', wpshopify.misc.textdomain)
+    )
   }
 
   function getVendorsHeading() {
-    return wp.hooks.applyFilters('default.storefront.vendors.heading', 'Vendors')
+    return wp.hooks.applyFilters(
+      'default.storefront.vendors.heading',
+      __('Vendors', wpshopify.misc.textdomain)
+    )
   }
 
   function getTypesHeading() {
-    return wp.hooks.applyFilters('default.storefront.types.heading', 'Types')
+    return wp.hooks.applyFilters(
+      'default.storefront.types.heading',
+      __('Types', wpshopify.misc.textdomain)
+    )
   }
 
   return usePortal(

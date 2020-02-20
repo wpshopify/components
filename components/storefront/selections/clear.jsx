@@ -1,6 +1,7 @@
 import { StorefrontContext } from '../_state/context'
 
 const { useContext } = wp.element
+const { __ } = wp.i18n
 
 function StorefrontSelectionsClear() {
   const [storefrontState, storefrontDispatch] = useContext(StorefrontContext)
@@ -14,7 +15,10 @@ function StorefrontSelectionsClear() {
 
   return (
     <div className='wps-filter-selections-clear' onClick={clearAllSelections}>
-      Clear all
+      {wp.hooks.applyFilters(
+        'storefront.selections.clear.text',
+        __('Clear all', wpshopify.misc.textdomain)
+      )}
     </div>
   )
 }

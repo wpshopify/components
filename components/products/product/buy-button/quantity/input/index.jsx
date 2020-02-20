@@ -6,7 +6,6 @@ const { useEffect, useContext, useRef, useState } = wp.element
 function ProductQuantityInput({ minQuantity, maxQuantity, isShopReady }) {
   const [productState] = useContext(ProductContext)
   const [buyButtonState, buyButtonDispatch] = useContext(ProductBuyButtonContext)
-  const isFirstRender = useRef(true)
   const element = useRef()
   const [quantityValue, setQuantityValue] = useState(minQuantity)
 
