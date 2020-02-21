@@ -115,12 +115,14 @@ function fetchNextItems(itemsState, itemsDispatch) {
       type: 'UPDATE_TOTAL_SHOWN',
       payload: nextItems.length
     })
+    console.log('YUPPPP')
 
     itemsDispatch({
       type: 'UPDATE_PAYLOAD',
       payload: {
         items: nextItems,
-        skipCache: true
+        skipCache: true,
+        replace: false
       }
     })
     itemsDispatch({ type: 'SET_IS_LOADING', payload: false })
@@ -133,7 +135,7 @@ function fetchNextItems(itemsState, itemsDispatch) {
   })
 }
 
-function Item({ children, customQueryParams, limit = false }) {
+function Item({ children, customQueryParams, limit = false, infiniteScroll = false }) {
   const [itemsState, itemsDispatch] = useContext(ItemsContext)
   const isFirstRender = useRef(true)
 
@@ -152,7 +154,10 @@ function Item({ children, customQueryParams, limit = false }) {
 
       itemsDispatch({
         type: 'UPDATE_PAYLOAD',
-        payload: itemsState.payloadCache[hashCacheId]
+        payload: {
+          items: itemsState.payloadCache[hashCacheId],
+          replace: true
+        }
       })
 
       if (itemsState.afterLoading) {
@@ -190,7 +195,8 @@ function Item({ children, customQueryParams, limit = false }) {
       itemsDispatch({
         type: 'UPDATE_PAYLOAD',
         payload: {
-          items: newItems
+          items: newItems,
+          replace: true
         }
       })
 
@@ -233,14 +239,16 @@ function Item({ children, customQueryParams, limit = false }) {
       isFirstRender.current = false
       return
     }
+    console.log('itemsState', itemsState)
 
     itemsDispatch({
       type: 'UPDATE_PAYLOAD',
       payload: {
-        items: itemsState.payload
+        items: itemsState.payload,
+        replace: false
       }
     })
-  }, [limit])
+  }, [limit, infiniteScroll])
 
   return <>{children}</>
 }

@@ -67,7 +67,8 @@ function PaginationPageSize() {
         type: 'UPDATE_PAYLOAD',
         payload: {
           items: shopifyResponse.model.products,
-          skipCache: true
+          skipCache: true,
+          replace: true
         }
       })
     }

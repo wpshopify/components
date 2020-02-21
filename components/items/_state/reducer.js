@@ -48,7 +48,7 @@ function maybeCachePayload(state, updatedPayload, updatedHasMoreItems, hasExisti
   return newPayloadstuff
 }
 
-function updatePayload(state, newPayload, skipCache = false) {
+function updatePayload(state, newPayload, skipCache, replace) {
   var hashCacheId = getHashFromQueryParams(state.queryParams)
 
   if (!skipCache && has(state.payloadCache, hashCacheId)) {
@@ -86,9 +86,17 @@ function updatePayload(state, newPayload, skipCache = false) {
   }
 
   // If lands here, we're not limiting, just adding
-  let updatedPayload = update(state.payload, {
-    $set: uniqBy(update(state.payload, { $push: newPayload }), 'id')
-  })
+  console.log('sup sup', state)
+
+  if (replace) {
+    var updatedPayload = update(state.payload, {
+      $set: newPayload
+    })
+  } else {
+    var updatedPayload = update(state.payload, {
+      $set: uniqBy(update(state.payload, { $push: newPayload }), 'id')
+    })
+  }
 
   let updatedHasMoreItems = update(state.hasMoreItems, {
     $set: checkHasMore(state.payloadSettings, updatedPayload)
@@ -143,13 +151,22 @@ function ItemsReducer(state, action) {
         }
       }
 
-      if (has(action.payload, 'skipCache')) {
-        var skipCache = true
-      } else {
-        var skipCache = false
+      console.log('action.payload', action.payload)
+
+      if (!has(action.payload, 'skipCache')) {
+        action.payload.skipCache = false
       }
 
-      return updatePayload(state, action.payload.items, skipCache)
+      if (!has(action.payload, 'replace')) {
+        action.payload.replace = true
+      }
+
+      return updatePayload(
+        state,
+        action.payload.items,
+        action.payload.skipCache,
+        action.payload.replace
+      )
     }
 
     case 'SET_IS_LOADING': {

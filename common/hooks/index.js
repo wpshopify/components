@@ -92,13 +92,19 @@ function useInView(selector, itemsState) {
 
   useEffect(() => {
     if (itemsState.payloadSettings.infiniteScroll) {
+      console.log('hiiiiiiiiiiiii')
+
       inView.offset(itemsState.payloadSettings.infiniteScrollOffset)
+      console.log('selector', selector)
 
       inView(selector)
         .on('enter', el => {
+          console.log('enter')
+
           setInViewState(true)
         })
         .on('exit', el => {
+          console.log('exit')
           setInViewState(false)
         })
     }

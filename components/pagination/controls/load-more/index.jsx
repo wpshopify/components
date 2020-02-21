@@ -12,24 +12,34 @@ const { useContext, useEffect, useRef } = wp.element
 function PaginationLoadMore() {
   const [itemsState, itemsDispatch] = useContext(ItemsContext)
   const [paginationState, paginationDispatch] = useContext(PaginationContext)
-  const randomClass = uniqid('wps-btn-')
+  const randomClass = 'wps-btn-' + itemsState.uniqueId
   const loadMoreButtonSelector = '.' + randomClass
+
+  console.log('loadMoreButtonSelector', loadMoreButtonSelector)
+  console.log('itemsState.uniqueId', itemsState.uniqueId)
+
   var [inView] = useInView(loadMoreButtonSelector, itemsState)
   const isFirstRender = useRef(true)
 
   function onNextPage() {
     paginationDispatch({ type: 'SET_CONTROLS_TOUCHED', payload: true })
+    console.log('onNextPage', onNextPage)
 
     fetchNextItems(itemsState, itemsDispatch)
   }
 
   useEffect(() => {
+    console.log('inView', inView)
+
     if (!wpshopify.misc.isPro) {
       return
     }
+    console.log('infiniteScroll', itemsState.payloadSettings.infiniteScroll)
+
     if (!itemsState.payloadSettings.infiniteScroll) {
       return () => (inView = false)
     }
+    console.log('inView', inView)
 
     if (inView) {
       onNextPage()

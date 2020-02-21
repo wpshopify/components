@@ -1,3 +1,5 @@
+import uniqid from 'uniqid'
+
 function ItemsInitialState({ component, afterLoading, beforeLoading }) {
   var itemsState = {
     payloadSettings: component.payloadSettings,
@@ -22,6 +24,7 @@ function ItemsInitialState({ component, afterLoading, beforeLoading }) {
     dataType: component.componentType,
     lastCursorId: false,
     totalShown: 0,
+    uniqueId: uniqid(),
     noResultsText: component.payloadSettings.noResultsText
       ? component.payloadSettings.noResultsText
       : 'No items left',
