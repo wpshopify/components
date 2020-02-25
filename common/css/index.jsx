@@ -1,5 +1,5 @@
 /** @jsx jsx */
-import { jsx, css } from "@emotion/core"
+import { jsx, css } from '@emotion/core'
 
 const containerFluidCSS = css`
   width: 100%;
@@ -14,16 +14,15 @@ const containerFluidCSS = css`
 
 const rowCSS = css`
   && {
-    margin: 0 -15px 0 -15px;
+    padding: 0 1em;
+    margin: 0;
     display: flex;
     flex-wrap: wrap;
     box-sizing: border-box;
-    padding-top: 0;
-    padding-bottom: 0;
     flex: 1;
-    width: 100%;
+    width: calc(100% - 2em);
 
-    &[data-item-is-loading="true"] {
+    &[data-item-is-loading='true'] {
       .wps-item {
         opacity: 0.4;
       }

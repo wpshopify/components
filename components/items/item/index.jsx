@@ -36,13 +36,17 @@ function hasNextPageQueryAndPath(payload) {
 
 function fetchNextItems(itemsState, itemsDispatch) {
   return new Promise(async (resolve, reject) => {
+    console.log('fetchNextItems 1', itemsState)
+
     if (isEmpty(itemsState.payload)) {
+      console.log('fetchNextItems 2')
       return
     }
-
+    console.log('fetchNextItems 3')
     itemsDispatch({ type: 'SET_IS_LOADING', payload: true })
-
+    console.log('fetchNextItems 4')
     if (itemsState.beforeLoading) {
+      console.log('fetchNextItems 5')
       itemsState.beforeLoading(itemsState)
     }
 
@@ -59,13 +63,15 @@ function fetchNextItems(itemsState, itemsDispatch) {
 
    */
     if (!hasNextPageQueryAndPath(itemsState.payload)) {
+      console.log('fetchNextItems 6')
       const [resendInitialError, resendInitialResp] = await to(resendInitialQuery(itemsState))
 
       var productsExisting = resendInitialResp.model.products
     } else {
+      console.log('fetchNextItems 7')
       var productsExisting = itemsState.payload
     }
-
+    console.log('fetchNextItems 8')
     const [resultsError, results] = await to(fetchNextPage(productsExisting))
 
     if (resultsError) {

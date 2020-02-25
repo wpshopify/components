@@ -1,8 +1,5 @@
 import hasIn from 'lodash/hasIn'
-import inView from 'in-view'
-
-const { createHooks } = wp.hooks
-const { useEffect, useState, useContext } = wp.element
+const { useEffect, useState } = wp.element
 
 function useOnClickOutside(ref, handler, targetOpened = false) {
   function addEventListener(listener) {
@@ -87,30 +84,4 @@ function usePortal(componentMarkup, containerElement = false, skipEmptyRender = 
   return renderPortal()
 }
 
-function useInView(selector, itemsState) {
-  const [inViewState, setInViewState] = useState(false)
-
-  useEffect(() => {
-    if (itemsState.payloadSettings.infiniteScroll) {
-      console.log('hiiiiiiiiiiiii')
-
-      inView.offset(itemsState.payloadSettings.infiniteScrollOffset)
-      console.log('selector', selector)
-
-      inView(selector)
-        .on('enter', el => {
-          console.log('enter')
-
-          setInViewState(true)
-        })
-        .on('exit', el => {
-          console.log('exit')
-          setInViewState(false)
-        })
-    }
-  }, [])
-
-  return [inViewState]
-}
-
-export { useOnClickOutside, usePortal, useInView, useAction }
+export { useOnClickOutside, usePortal, useAction }

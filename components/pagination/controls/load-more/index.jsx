@@ -1,52 +1,27 @@
 import { PaginationContext } from '../../_state/context'
 import { ItemsContext } from '../../../items/_state/context'
-import { usePortal, useInView } from '../../../../common/hooks'
+import { usePortal } from '../../../../common/hooks'
 import { fetchNextItems } from '../../../items/item'
 import { Loader } from '../../../loader'
 import isEmpty from 'lodash/isEmpty'
 import has from 'lodash/has'
-import uniqid from 'uniqid'
+import { InView } from 'react-intersection-observer'
 
-const { useContext, useEffect, useRef } = wp.element
+const { useContext, useRef } = wp.element
+const { __ } = wp.i18n
 
 function PaginationLoadMore() {
   const [itemsState, itemsDispatch] = useContext(ItemsContext)
   const [paginationState, paginationDispatch] = useContext(PaginationContext)
-  const randomClass = 'wps-btn-' + itemsState.uniqueId
-  const loadMoreButtonSelector = '.' + randomClass
-
-  console.log('loadMoreButtonSelector', loadMoreButtonSelector)
-  console.log('itemsState.uniqueId', itemsState.uniqueId)
-
-  var [inView] = useInView(loadMoreButtonSelector, itemsState)
   const isFirstRender = useRef(true)
 
   function onNextPage() {
     paginationDispatch({ type: 'SET_CONTROLS_TOUCHED', payload: true })
-    console.log('onNextPage', onNextPage)
-
     fetchNextItems(itemsState, itemsDispatch)
   }
 
-  useEffect(() => {
-    console.log('inView', inView)
-
-    if (!wpshopify.misc.isPro) {
-      return
-    }
-    console.log('infiniteScroll', itemsState.payloadSettings.infiniteScroll)
-
-    if (!itemsState.payloadSettings.infiniteScroll) {
-      return () => (inView = false)
-    }
-    console.log('inView', inView)
-
-    if (inView) {
-      onNextPage()
-    }
-  }, [inView])
-
   function shouldShowLoadMore() {
+    //  return true
     if (isFirstRender.current) {
       isFirstRender.current = false
 
@@ -74,20 +49,38 @@ function PaginationLoadMore() {
     }
   }
 
+  function onViewChange(inView, entry) {
+    console.log('inView', inView)
+    console.log('entry', entry)
+
+    if (!itemsState.payloadSettings.infiniteScroll) {
+      return
+    }
+
+    if (inView) {
+      onNextPage()
+    }
+  }
+
   return usePortal(
     <>
       {shouldShowLoadMore() && (
-        <button
-          type='button'
-          disabled={itemsState.isLoading}
-          className={'wps-btn wps-btn-secondary wps-btn-next-page ' + randomClass}
-          onClick={onNextPage}>
-          {itemsState.isLoading ? (
-            <Loader isLoading={itemsState.isLoading} />
-          ) : (
-            wp.hooks.applyFilters('pagination.loadMore.text', 'Load more')
-          )}
-        </button>
+        <InView rootMargin='10px 0px 0px 0px' as='div' onChange={onViewChange}>
+          <button
+            type='button'
+            disabled={itemsState.isLoading}
+            className={'wps-btn wps-btn-secondary wps-btn-next-page'}
+            onClick={onNextPage}>
+            {itemsState.isLoading ? (
+              <Loader isLoading={itemsState.isLoading} />
+            ) : (
+              wp.hooks.applyFilters(
+                'pagination.loadMore.text',
+                __('Load more', wpshopify.misc.textdomain)
+              )
+            )}
+          </button>
+        </InView>
       )}
     </>,
     document.querySelector(paginationState.payloadSettings.dropzoneLoadMore)
