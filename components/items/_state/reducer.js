@@ -15,7 +15,8 @@ function limitReached(state) {
 }
 
 function limitPayload(currentPayload, newPayload, limit) {
-  return currentPayload.concat(newPayload).slice(0, limit)
+  return newPayload.slice(0, limit)
+  //   return newPayload.concat(currentPayload).slice(0, limit)
 }
 
 function createNewPayloadCacheObj(state, items) {
@@ -52,6 +53,8 @@ function updatePayload(state, newPayload, skipCache, replace) {
   var hashCacheId = getHashFromQueryParams(state.queryParams)
 
   if (!skipCache && has(state.payloadCache, hashCacheId)) {
+    console.log('1111111111')
+
     let updatedPayload = update(state.payload, {
       $set: state.payloadCache[hashCacheId]
     })
@@ -74,6 +77,7 @@ function updatePayload(state, newPayload, skipCache, replace) {
   }
 
   if (limitReached(state)) {
+    console.log('2222222222222', newPayload)
     let updatedPayload = update(state.payload, {
       $set: limitPayload(state.payload, newPayload, state.payloadSettings.limit)
     })
@@ -88,10 +92,12 @@ function updatePayload(state, newPayload, skipCache, replace) {
   // If lands here, we're not limiting, just adding
 
   if (replace) {
+    console.log('333333333333')
     var updatedPayload = update(state.payload, {
       $set: newPayload
     })
   } else {
+    console.log('44444444444444')
     var updatedPayload = update(state.payload, {
       $set: uniqBy(update(state.payload, { $push: newPayload }), 'id')
     })
@@ -144,6 +150,8 @@ function checkHasMore(payloadSettings, payload) {
 function ItemsReducer(state, action) {
   switch (action.type) {
     case 'UPDATE_PAYLOAD': {
+      console.log('UPDATE_PAYLOAD 1')
+
       if (!action.payload) {
         return {
           ...state

@@ -10,6 +10,8 @@ import md5 from 'js-md5'
 import { format } from 'date-fns'
 import { textDomain } from '../globals'
 
+import { decodePayloadSettings } from '/Users/andrew/www/devil/devilbox-new/data/www/wpshopify-api'
+
 const { __ } = wp.i18n
 
 function removeFrom(array, valueToRemove) {
@@ -153,8 +155,8 @@ function underscoreToCamel(o) {
   return o
 }
 
-function decodeComponentPayloadSettings(payloadSettings) {
-  return underscoreToCamel(JSON.parse(atob(payloadSettings)))
+function decodeComponentPayloadSettings(payloadSettingsId) {
+  return underscoreToCamel(decodePayloadSettings(payloadSettingsId))
 }
 
 export {
