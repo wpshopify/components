@@ -180,7 +180,7 @@ function ProductAddButton() {
         itemScope
         itemType='https://schema.org/BuyAction'
         className='wps-btn wps-btn-secondary wps-add-to-cart'
-        title={buyButtonState.product.title}
+        title={__(buyButtonState.product.title, wpshopify.misc.textdomain)}
         data-wps-is-ready={shopState.isShopReady ? '1' : '0'}
         data-wps-is-direct-checkout={isDirectCheckout ? '1' : '0'}
         onClick={handleClick}

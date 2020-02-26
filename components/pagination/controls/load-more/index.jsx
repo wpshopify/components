@@ -49,9 +49,9 @@ function PaginationLoadMore() {
     }
   }
 
+
+  
   function onViewChange(inView, entry) {
-    console.log('inView', inView)
-    console.log('entry', entry)
 
     if (!itemsState.payloadSettings.infiniteScroll) {
       return
@@ -60,6 +60,7 @@ function PaginationLoadMore() {
     if (inView) {
       onNextPage()
     }
+
   }
 
   return usePortal(

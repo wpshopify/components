@@ -102,17 +102,15 @@ function ProductImage({ image, isFeatured }) {
 
 function Img(props) {
   return (
-    <>
-      <img
-        ref={props.imageRef}
-        itemProp='image'
-        src={props.productImageSrc}
-        className='wps-product-image lazyload'
-        alt={props.image.altText}
-        data-wps-is-ready={props.shopState.isShopReady ? '1' : '0'}
-        data-zoom={props.image.src}
-      />
-    </>
+    <img
+      ref={props.imageRef}
+      itemProp='image'
+      src={props.productImageSrc}
+      className='wps-product-image lazyload'
+      alt={props.image.altText}
+      data-wps-is-ready={props.shopState.isShopReady ? '1' : '0'}
+      data-zoom={props.image.src}
+    />
   )
 }
 

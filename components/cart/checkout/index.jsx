@@ -214,7 +214,7 @@ function CartCheckout() {
 }
 
 function CartCheckoutButton({ buttonStyle, onCheckout, shopState, buttonRef }) {
-  const [cartState, cartDispatch] = useContext(CartContext)
+  const [cartState] = useContext(CartContext)
 
   return (
     <button
@@ -227,7 +227,10 @@ function CartCheckoutButton({ buttonStyle, onCheckout, shopState, buttonRef }) {
       {cartState.isCheckingOut ? (
         <Loader isLoading={cartState.isCheckingOut} />
       ) : (
-        __(cartState.checkoutText, wpshopify.misc.textdomain)
+        wp.hooks.applyFilters(
+          'cart.checkout.text',
+          __(cartState.checkoutText, wpshopify.misc.textdomain)
+        )
       )}
     </button>
   )

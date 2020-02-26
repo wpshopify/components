@@ -16,7 +16,7 @@ function CartTerms() {
 
   function termsLabel() {
     return {
-      __html: shopState.settings.general.cartTermsContent
+      __html: wp.hooks.applyFilters('cart.terms.text', shopState.settings.general.cartTermsContent)
     }
   }
 

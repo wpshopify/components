@@ -35,30 +35,23 @@ function maybeCachePayload(state, updatedPayload, updatedHasMoreItems, hasExisti
     totalShown: updatedPayload.length
   }
 
-  console.log('newPayloadstuff 1')
-
   if (hasExistingCache) {
-    console.log('newPayloadstuff 2')
     return newPayloadstuff
   }
 
   if (updatedPayload.length) {
-    console.log('newPayloadstuff 3')
     var newCache = createNewPayloadCacheObj(state, updatedPayload)
-    console.log('newPayloadstuff 4', newCache)
+
     newPayloadstuff['payloadCache'] = update(state.payloadCache, { $merge: newCache })
   }
-  console.log('newPayloadstuff 5 ........', newPayloadstuff)
+
   return newPayloadstuff
 }
 
 function updatePayload(state, newPayload, skipCache, replace) {
-  console.log('updatePayload 1')
-
   var hashCacheId = getHashFromQueryParams(state.queryParams)
-  console.log('updatePayload 2')
+
   if (!skipCache && has(state.payloadCache, hashCacheId)) {
-    console.log('updatePayload 3')
     let updatedPayload = update(state.payload, {
       $set: state.payloadCache[hashCacheId]
     })
@@ -68,7 +61,6 @@ function updatePayload(state, newPayload, skipCache, replace) {
     })
 
     if (limitReached(state)) {
-      console.log('updatePayload 4')
       updatedPayload = update(state.payload, {
         $set: limitPayload(state.payload, newPayload, state.payloadSettings.limit)
       })
@@ -77,12 +69,11 @@ function updatePayload(state, newPayload, skipCache, replace) {
         $set: checkHasMore(state.payloadSettings, updatedPayload)
       })
     }
-    console.log('updatePayload 5')
+
     return maybeCachePayload(state, updatedPayload, updatedHasMoreItems, true)
   }
 
   if (limitReached(state)) {
-    console.log('updatePayload 6')
     let updatedPayload = update(state.payload, {
       $set: limitPayload(state.payload, newPayload, state.payloadSettings.limit)
     })
@@ -90,20 +81,17 @@ function updatePayload(state, newPayload, skipCache, replace) {
     let updatedHasMoreItems = update(state.hasMoreItems, {
       $set: checkHasMore(state.payloadSettings, updatedPayload)
     })
-    console.log('updatePayload 7')
+
     return maybeCachePayload(state, updatedPayload, updatedHasMoreItems)
   }
-  console.log('updatePayload 8')
+
   // If lands here, we're not limiting, just adding
-  console.log('sup sup', state)
 
   if (replace) {
-    console.log('updatePayload 9')
     var updatedPayload = update(state.payload, {
       $set: newPayload
     })
   } else {
-    console.log('updatePayload 10')
     var updatedPayload = update(state.payload, {
       $set: uniqBy(update(state.payload, { $push: newPayload }), 'id')
     })
@@ -112,7 +100,7 @@ function updatePayload(state, newPayload, skipCache, replace) {
   let updatedHasMoreItems = update(state.hasMoreItems, {
     $set: checkHasMore(state.payloadSettings, updatedPayload)
   })
-  console.log('updatePayload 11')
+
   return maybeCachePayload(state, updatedPayload, updatedHasMoreItems)
 }
 
@@ -161,8 +149,6 @@ function ItemsReducer(state, action) {
           ...state
         }
       }
-
-      console.log('action.payload', action.payload)
 
       if (!has(action.payload, 'skipCache')) {
         action.payload.skipCache = false

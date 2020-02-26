@@ -125,10 +125,16 @@ function CartLineItem({ lineItem, index }) {
           <div className='p-0' css={containerFluidCSS}>
             <div className='row'>
               <span className='wps-cart-lineitem-title-content col-9'>
-                {lineItem.product.title}
+                {wp.hooks.applyFilters(
+                  'cart.lineItem.title',
+                  __(lineItem.product.title, wpshopify.misc.textdomain)
+                )}
               </span>
               <span className='wps-cart-lineitem-remove' onClick={removeLineItem}>
-                Remove
+                {wp.hooks.applyFilters(
+                  'cart.lineItem.remove.text',
+                  __('Remove', wpshopify.misc.textdomain)
+                )}
               </span>
             </div>
           </div>
@@ -138,7 +144,10 @@ function CartLineItem({ lineItem, index }) {
           <div
             className='wps-cart-lineitem-variant-title badge badge-pill badge-dark col-12'
             data-wps-is-ready={shopState.isCartReady}>
-            {lineItem.title}
+            {wp.hooks.applyFilters(
+              'cart.lineItem.variant.title',
+              __(lineItem.title, wpshopify.misc.textdomain)
+            )}
           </div>
         )}
 

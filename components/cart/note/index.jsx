@@ -2,6 +2,7 @@ import { ShopContext } from '../../shop/_state/context'
 import { useDebounce } from 'use-debounce'
 
 const { useContext, useState, useRef, useEffect } = wp.element
+const { __ } = wp.i18n
 
 function CartNote() {
   const [shopState, shopDispatch] = useContext(ShopContext)
@@ -30,11 +31,19 @@ function CartNote() {
 
   return (
     <section className='wps-cart-notes'>
-      <label value='Checkout notes' htmlFor='wps-input-notes'>
+      <label
+        value={wp.hooks.applyFilters(
+          'cart.note.label',
+          __('Checkout notes', wpshopify.misc.textdomain)
+        )}
+        htmlFor='wps-input-notes'>
         {getNotesLabel()}
       </label>
       <textarea
-        placeholder={shopState.settings.general.cartNotesPlaceholder}
+        placeholder={wp.hooks.applyFilters(
+          'cart.note.placeholder',
+          __(shopState.settings.general.cartNotesPlaceholder, wpshopify.misc.textdomain)
+        )}
         id='wps-input-notes'
         className='wps-input wps-input-textarea'
         onChange={onChange}
