@@ -2,6 +2,8 @@ import { ItemsContext } from '../../../items/_state/context'
 import { ProductContext } from '../_state/context'
 import { isShowingComponent } from '../../../../common/components'
 import { itemWidthClass } from '../../../../common/utils'
+/** @jsx jsx */
+import { jsx, css } from '@emotion/core'
 
 const { useContext } = wp.element
 
@@ -25,9 +27,22 @@ function ProductWrapper({ isFirstItem }) {
   const [itemsState] = useContext(ItemsContext)
   const [productState] = useContext(ProductContext)
 
+  const width =
+    itemsState.payloadSettings.itemsPerRow === 1 || itemsState.payloadSettings.itemsPerRow === 2
+      ? '360px'
+      : 100 / itemsState.payloadSettings.itemsPerRow + '%'
+
+  const styles = css`
+    padding: 1em;
+    position: relative;
+    z-index: 1;
+    flex: 0 0 ${width};
+  `
+
   return (
     <div
-      className={`${itemWidthClass(itemsState.payloadSettings.itemsPerRow)} wps-item p-3`}
+      css={styles}
+      className={''}
       data-is-first-item={isFirstItem}
       data-is-dropdown-open={productState.isDropdownOpen}>
       {isShowingComponent(itemsState, 'images') && <ProductImages />}

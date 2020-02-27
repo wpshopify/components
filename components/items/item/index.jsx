@@ -139,14 +139,12 @@ function Item({ children, customQueryParams, limit = false, infiniteScroll = fal
   const isFirstRender = useRef(true)
 
   async function fetchNewItems() {
-    console.log('fetchNewItems 1')
-
     if (itemsState.beforeLoading) {
       itemsState.beforeLoading(itemsState)
     }
 
     var hashCacheId = getHashFromQueryParams(itemsState.queryParams)
-    console.log('fetchNewItems 2', hashCacheId)
+
     if (has(itemsState.payloadCache, hashCacheId)) {
       itemsDispatch({
         type: 'UPDATE_TOTAL_SHOWN',
@@ -223,12 +221,7 @@ function Item({ children, customQueryParams, limit = false, infiniteScroll = fal
       return
     }
 
-    console.log('customQueryParams', customQueryParams)
-    console.log('itemsState.queryParams', itemsState.queryParams)
-
     if (!isEqual(itemsState.queryParams, customQueryParams)) {
-      console.log('h')
-
       itemsDispatch({
         type: 'SET_QUERY_PARAMS',
         payload: customQueryParams

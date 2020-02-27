@@ -3,13 +3,10 @@ import { jsx, css } from '@emotion/core'
 
 const containerFluidCSS = css`
   width: 100%;
-  padding-right: 15px;
-  padding-left: 15px;
+  padding: 0;
   margin-right: auto;
   margin-left: auto;
   box-sizing: border-box;
-  padding-top: 0;
-  padding-bottom: 0;
 `
 
 const rowCSS = css`

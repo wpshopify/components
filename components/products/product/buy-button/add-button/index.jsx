@@ -146,6 +146,8 @@ function ProductAddButton() {
     }
 
     if (isFirstRender.current) {
+      // Cart is ready to go
+      // wp.hooks.doAction('after.cart.ready', newState)
       isFirstRender.current = false
       return
     }

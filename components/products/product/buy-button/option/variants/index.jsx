@@ -1,4 +1,6 @@
 import { ProductVariant } from './variant'
+
+import { ProductVariantDropdownValue } from './variant'
 import { ProductBuyButtonContext } from '../../_state/context'
 import { ProductOptionContext } from '../_state/context'
 import { ProductContext } from '../../../_state/context'
@@ -25,24 +27,26 @@ function ProductVariants() {
     isDropdownOpen
   )
 
-  useEffect(() => {
-    if (isFirstRender.current) {
-      isFirstRender.current = false
-      return
-    }
+  //   useEffect(() => {
+  //     if (isFirstRender.current) {
+  //       isFirstRender.current = false
+  //       return
+  //     }
 
-    buyButtonDispatch({
-      type: 'SET_AVAILABLE_VARIANTS',
-      payload: productOptionState.selectedOption
-    })
-  }, [productOptionState.selectedOption])
+  //     buyButtonDispatch({
+  //       type: 'SET_AVAILABLE_VARIANTS',
+  //       payload: productOptionState.selectedOption
+  //     })
+  //   }, [productOptionState.selectedOption])
 
   return (
     <ul
       className='wps-modal wps-variants'
       data-wps-modal-is-open={productOptionState.isDropdownOpen}>
       {productOptionState.option.values.map(optionValue => (
-        <ProductVariant key={optionValue.value} variant={optionValue} />
+        <ProductVariant key={optionValue.value} variant={optionValue}>
+          <ProductVariantDropdownValue />
+        </ProductVariant>
       ))}
     </ul>
   )

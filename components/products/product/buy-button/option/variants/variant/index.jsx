@@ -9,14 +9,16 @@ import { createObj } from '../../../../../../../common/utils'
 const { useEffect, useContext, useRef, useState } = wp.element
 const { __ } = wp.i18n
 
-function ProductVariant({ variant }) {
+function ProductVariant({ variant, children }) {
   const [isSelectable, setIsSelectable] = useState(true)
   const isFirstRender = useRef(true)
   const [productOptionState, productOptionDispatch] = useContext(ProductOptionContext)
   const [buyButtonState, buyButtonDispatch] = useContext(ProductBuyButtonContext)
   const [productState, productDispatch] = useContext(ProductContext)
 
-  function onVariantSelection() {
+  function onSelection() {
+    console.log('productOptionState.option', productOptionState.option)
+
     const selectedVariant = createObj(productOptionState.option.name, variant.value)
 
     buyButtonDispatch({ type: 'UPDATE_SELECTED_OPTIONS', payload: selectedVariant })
@@ -55,18 +57,39 @@ function ProductVariant({ variant }) {
     }
   }, [buyButtonState.selectedOptions])
 
+  useEffect(() => {
+    if (isFirstRender.current) {
+      isFirstRender.current = false
+      return
+    }
+
+    buyButtonDispatch({
+      type: 'SET_AVAILABLE_VARIANTS',
+      payload: productOptionState.selectedOption
+    })
+  }, [productOptionState.selectedOption])
+
+  return wp.element.cloneElement(children, {
+    onSelection: onSelection,
+    isSelectable: isSelectable,
+    variant: variant
+  })
+}
+
+function ProductVariantDropdownValue({ variant, onSelection, isSelectable }) {
   return (
-    <li
-      itemProp='category'
-      className='wps-product-variant wps-product-style wps-modal-close-trigger'
-      onClick={onVariantSelection}
-      data-wps-is-selectable={isSelectable}>
-      {wp.hooks.applyFilters(
-        'products.variant.title.text',
-        __(variant.value, wpshopify.misc.textdomain)
-      )}
-    </li>
+    isSelectable && (
+      <li
+        itemProp='category'
+        className='wps-product-variant wps-product-style wps-modal-close-trigger'
+        onClick={onSelection}>
+        {wp.hooks.applyFilters(
+          'products.variant.title.text',
+          __(variant.value, wpshopify.misc.textdomain)
+        )}
+      </li>
+    )
   )
 }
 
-export { ProductVariant }
+export { ProductVariant, ProductVariantDropdownValue }

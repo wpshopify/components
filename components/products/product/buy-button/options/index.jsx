@@ -1,6 +1,9 @@
 import { ProductOption } from '../option'
+import { VariantButtons } from '../variant-buttons'
 import { ProductBuyButtonContext } from '../_state/context'
 import { ProductContext } from '../../_state/context'
+import { ItemsContext } from '../../../../items/_state/context'
+
 import size from 'lodash/size'
 import groupBy from 'lodash/groupBy'
 import map from 'lodash/map'
@@ -52,6 +55,27 @@ function onlyAvailableOptionsFromVariants(variants) {
   return formatAvailableOptions(onlyAvailableVariantsOptions(filterOnlyAvailableVariants(variants)))
 }
 
+function variantHasDropdown(itemsState) {
+  console.log('itemsState.payloadSettings.variantStyle', itemsState.payloadSettings.variantStyle)
+
+  return itemsState.payloadSettings.variantStyle === 'dropdown'
+}
+
+function VariantDropdown({ options }) {
+  return (
+    options && (
+      <div
+        className='wps-component wps-component-products-options'
+        css={containerFluidCSS}
+        data-wps-is-component-wrapper>
+        {options.map(option => (
+          <ProductOption key={option.name} option={option} />
+        ))}
+      </div>
+    )
+  )
+}
+
 /*
 
 If this component is rendered, that means at least one variant is available for purchase
@@ -59,6 +83,7 @@ If this component is rendered, that means at least one variant is available for 
 */
 function ProductOptions() {
   const isFirstRender = useRef(true)
+  const [itemsState] = useContext(ItemsContext)
   const [productState, productDispatch] = useContext(ProductContext)
   const [buyButtonState, buyButtonDispatch] = useContext(ProductBuyButtonContext)
 
@@ -87,17 +112,10 @@ function ProductOptions() {
     }
   }, [buyButtonState.selectedOptions])
 
-  return (
-    options && (
-      <div
-        className='wps-component wps-component-products-options'
-        css={containerFluidCSS}
-        data-wps-is-component-wrapper>
-        {options.map(option => (
-          <ProductOption key={option.name} option={option} />
-        ))}
-      </div>
-    )
+  return variantHasDropdown(itemsState) ? (
+    <VariantDropdown options={options} />
+  ) : (
+    <VariantButtons options={options} />
   )
 }
 

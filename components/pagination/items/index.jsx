@@ -21,7 +21,7 @@ function PaginationItems({ children, alignHeight }) {
     var lastPageIndex = itemsState.payload.length - itemsState.queryParams.first
 
     return itemsState.payload.map((item, i) => {
-      return React.cloneElement(children, {
+      return wp.element.cloneElement(children, {
         payload: item,
         key: uuidv4(),
         isFirstItem: isFirstItem(i, lastPageIndex)
