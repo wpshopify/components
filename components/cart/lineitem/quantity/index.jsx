@@ -4,7 +4,7 @@ import { ShopContext } from '../../../shop/_state/context'
 import find from 'lodash/find'
 import { calcLineItemTotal } from '../../../../common/products'
 import { useAnime, pulse } from '../../../../common/animations'
-import { containerFluidCSS } from '../../../../common/css'
+import { containerFluidCSS, flexRowCSS } from '../../../../common/css'
 
 /** @jsx jsx */
 import { jsx, css } from '@emotion/core'
@@ -128,7 +128,7 @@ function CartLineItemQuantity({
       className='wps-cart-lineitem-quantity-container'
       data-wps-is-ready={isReady}
       css={containerFluidCSS}>
-      <div className='row'>
+      <div css={flexRowCSS}>
         <button className='wps-quantity-decrement' type='button' onClick={handleDecrement}>
           <span className='wps-quantity-icon wps-quantity-decrement-icon' />
         </button>

@@ -1,16 +1,12 @@
 import { ProductVariant } from './variant'
-
 import { ProductVariantDropdownValue } from './variant'
-import { ProductBuyButtonContext } from '../../_state/context'
 import { ProductOptionContext } from '../_state/context'
 import { ProductContext } from '../../../_state/context'
 import { useOnClickOutside } from '../../../../../../common/hooks'
 
-const { useEffect, useContext, useRef } = wp.element
+const { useContext } = wp.element
 
 function ProductVariants() {
-  const isFirstRender = useRef(true)
-  const [buyButtonState, buyButtonDispatch] = useContext(ProductBuyButtonContext)
   const [productOptionState, productOptionDispatch] = useContext(ProductOptionContext)
   const [productState, productDispatch] = useContext(ProductContext)
 
@@ -26,18 +22,6 @@ function ProductVariants() {
     },
     isDropdownOpen
   )
-
-  //   useEffect(() => {
-  //     if (isFirstRender.current) {
-  //       isFirstRender.current = false
-  //       return
-  //     }
-
-  //     buyButtonDispatch({
-  //       type: 'SET_AVAILABLE_VARIANTS',
-  //       payload: productOptionState.selectedOption
-  //     })
-  //   }, [productOptionState.selectedOption])
 
   return (
     <ul

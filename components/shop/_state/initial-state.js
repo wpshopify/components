@@ -6,11 +6,6 @@ function ShopInitialState(options = false) {
     checkoutId: false,
     isShopReady: options.isShopReady ? true : false,
     isCartReady: options.isCartReady ? true : false,
-    checkoutCache: {
-      lineItems: [],
-      variants: [],
-      total: 0.0
-    },
     notices: [],
     info: {
       currencyCode: 'USD',

@@ -2,9 +2,8 @@ import { ProductOptionContext } from '../../_state/context'
 import { ProductBuyButtonContext } from '../../../_state/context'
 import { ProductContext } from '../../../../_state/context'
 
-import find from 'lodash/find'
 import isEmpty from 'lodash/isEmpty'
-import { createObj } from '../../../../../../../common/utils'
+import { createObj, isPairMatch } from '../../../../../../../common/utils'
 
 const { useEffect, useContext, useRef, useState } = wp.element
 const { __ } = wp.i18n
@@ -15,17 +14,29 @@ function ProductVariant({ variant, children }) {
   const [productOptionState, productOptionDispatch] = useContext(ProductOptionContext)
   const [buyButtonState, buyButtonDispatch] = useContext(ProductBuyButtonContext)
   const [productState, productDispatch] = useContext(ProductContext)
+  const selectedVariant = createObj(variant.name, variant.value)
 
   function onSelection() {
-    console.log('productOptionState.option', productOptionState.option)
-
-    const selectedVariant = createObj(productOptionState.option.name, variant.value)
-
-    buyButtonDispatch({ type: 'UPDATE_SELECTED_OPTIONS', payload: selectedVariant })
-    productDispatch({ type: 'TOGGLE_DROPDOWN', payload: false })
-    productOptionDispatch({ type: 'TOGGLE_DROPDOWN', payload: false })
-    productOptionDispatch({ type: 'SET_IS_OPTION_SELECTED', payload: true })
-    productOptionDispatch({ type: 'SET_SELECTED_OPTION', payload: selectedVariant })
+    buyButtonDispatch({
+      type: 'UPDATE_SELECTED_OPTIONS',
+      payload: selectedVariant
+    })
+    productDispatch({
+      type: 'TOGGLE_DROPDOWN',
+      payload: false
+    })
+    productOptionDispatch({
+      type: 'TOGGLE_DROPDOWN',
+      payload: false
+    })
+    productOptionDispatch({
+      type: 'SET_IS_OPTION_SELECTED',
+      payload: true
+    })
+    productOptionDispatch({
+      type: 'SET_SELECTED_OPTION',
+      payload: selectedVariant
+    })
 
     wp.hooks.doAction('on.product.variant.selection', selectedVariant, productOptionState)
   }
@@ -36,26 +47,23 @@ function ProductVariant({ variant, children }) {
       return
     }
 
-    var variantToCheck = createObj(productOptionState.option.name, variant.value)
-    var variantIsSelected = find(buyButtonState.availableVariants, variantToCheck)
+    if (!isPairMatch(buyButtonState.availableVariants, productOptionState.selectedOption)) {
+      productOptionDispatch({
+        type: 'SET_IS_OPTION_SELECTED',
+        payload: false
+      })
+      buyButtonDispatch({
+        type: 'UNSET_SELECTED_OPTIONS',
+        payload: productOptionState.option.name
+      })
+    }
 
-    if (variantIsSelected === undefined) {
-      setIsSelectable(false)
-    } else {
+    if (isPairMatch(buyButtonState.availableVariants, selectedVariant)) {
       setIsSelectable(true)
+    } else {
+      setIsSelectable(false)
     }
   }, [buyButtonState.availableVariants])
-
-  useEffect(() => {
-    if (isFirstRender.current) {
-      isFirstRender.current = false
-      return
-    }
-
-    if (isEmpty(buyButtonState.selectedOptions)) {
-      setIsSelectable(true)
-    }
-  }, [buyButtonState.selectedOptions])
 
   useEffect(() => {
     if (isFirstRender.current) {
@@ -68,6 +76,21 @@ function ProductVariant({ variant, children }) {
       payload: productOptionState.selectedOption
     })
   }, [productOptionState.selectedOption])
+
+  useEffect(() => {
+    if (isFirstRender.current) {
+      isFirstRender.current = false
+      return
+    }
+
+    if (isEmpty(buyButtonState.selectedOptions)) {
+      setIsSelectable(true)
+      productOptionDispatch({
+        type: 'SET_IS_OPTION_SELECTED',
+        payload: false
+      })
+    }
+  }, [buyButtonState.selectedOptions])
 
   return wp.element.cloneElement(children, {
     onSelection: onSelection,

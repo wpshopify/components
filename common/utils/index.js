@@ -5,6 +5,8 @@ import mapKeys from 'lodash/mapKeys'
 import isString from 'lodash/isString'
 import isObject from 'lodash/isObject'
 import isArray from 'lodash/isArray'
+import isMatch from 'lodash/isMatch'
+
 import md5 from 'js-md5'
 
 import { format } from 'date-fns'
@@ -40,6 +42,14 @@ function createObj(name, value) {
   newObbj[name] = value
 
   return newObbj
+}
+
+function isPairMatch(compareAgaisnt, pairToMatch) {
+  if (isArray(compareAgaisnt)) {
+    return !isEmpty(compareAgaisnt.filter(obj => isMatch(obj, pairToMatch)))
+  } else {
+    return isMatch(compareAgaisnt, pairToMatch)
+  }
 }
 
 /*
@@ -173,5 +183,6 @@ export {
   prettyDate,
   _t,
   underscoreToCamel,
-  decodeComponentPayloadSettings
+  decodeComponentPayloadSettings,
+  isPairMatch
 }

@@ -9,6 +9,10 @@ const containerFluidCSS = css`
   box-sizing: border-box;
 `
 
+const flexRowCSS = css`
+  display: flex;
+`
+
 const rowCSS = css`
   && {
     padding: 0 1em;
@@ -27,4 +31,4 @@ const rowCSS = css`
   }
 `
 
-export { containerFluidCSS, rowCSS }
+export { containerFluidCSS, rowCSS, flexRowCSS }

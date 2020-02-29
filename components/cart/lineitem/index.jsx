@@ -5,7 +5,7 @@ import { CartLineItemQuantity } from './quantity'
 import { formatPriceToCurrency } from '../../../common/pricing/formatting'
 import { calcLineItemTotal, isAvailable } from '../../../common/products'
 import { addCustomSizingToImageUrl } from '../../../common/images'
-import { containerFluidCSS } from '../../../common/css'
+import { containerFluidCSS, flexRowCSS } from '../../../common/css'
 
 /** @jsx jsx */
 import { jsx, css } from '@emotion/core'
@@ -96,12 +96,48 @@ function CartLineItem({ lineItem, index }) {
     cartState
   )
 
+  const lineItemStyles = css`
+    margin-top: 0;
+    margin-bottom: 40px;
+    overflow: hidden;
+    min-height: 100px;
+    position: relative;
+    display: flex;
+    top: -50px;
+  `
+
+  const priceCSS = css`
+    flex: 1;
+    text-align: right;
+  `
+
+  const badgeCSS = css`
+    display: inline-block;
+    width: auto;
+    font-weight: 400;
+    font-size: 12px;
+    margin-bottom: 16px;
+    color: white;
+    background-color: #343a40;
+    border-radius: 10rem;
+    padding: 0.25em 0.6em;
+    text-align: center;
+    white-space: nowrap;
+    vertical-align: baseline;
+    flex: 0 0 100%;
+    max-width: 100%;
+    letter-spacing: 0.02em;
+    line-height: 1.4;
+    margin: 5px 0 10px 0;
+  `
+
   return (
     <div
-      className='wps-cart-lineitem mr-0 ml-0 row'
+      className='wps-cart-lineitem'
       data-wps-is-updating={isUpdating}
       data-wps-is-available={isAvailable(lineItem)}
-      ref={lineItemElement}>
+      ref={lineItemElement}
+      css={lineItemStyles}>
       <Link
         payload={lineItem}
         shop={shopState}
@@ -123,7 +159,7 @@ function CartLineItem({ lineItem, index }) {
           data-wps-is-ready={shopState.isCartReady ? '1' : '0'}
           data-wps-is-empty={hasRealVariant() ? 'false' : 'true'}>
           <div className='p-0' css={containerFluidCSS}>
-            <div className='row'>
+            <div css={flexRowCSS}>
               <span className='wps-cart-lineitem-title-content col-9'>
                 {wp.hooks.applyFilters(
                   'cart.lineItem.title',
@@ -142,7 +178,8 @@ function CartLineItem({ lineItem, index }) {
 
         {hasRealVariant() && (
           <div
-            className='wps-cart-lineitem-variant-title badge badge-pill badge-dark col-12'
+            css={badgeCSS}
+            className='wps-cart-lineitem-variant-title'
             data-wps-is-ready={shopState.isCartReady}>
             {wp.hooks.applyFilters(
               'cart.lineItem.variant.title',
@@ -160,7 +197,7 @@ function CartLineItem({ lineItem, index }) {
           </Notice>
         ) : (
           <div className='p-0' css={containerFluidCSS}>
-            <div className='row'>
+            <div css={flexRowCSS}>
               <div className='col-8'>
                 <CartLineItemQuantity
                   lineItem={lineItem}
@@ -174,7 +211,7 @@ function CartLineItem({ lineItem, index }) {
                 />
               </div>
 
-              <div className='wps-cart-lineitem-price-total-wrapper'>
+              <div className='wps-cart-lineitem-price-total-wrapper' css={priceCSS}>
                 <div
                   className='wps-cart-lineitem-price wps-cart-lineitem-price-total'
                   data-wps-is-ready={shopState.isCartReady ? '1' : '0'}

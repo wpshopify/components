@@ -2,6 +2,7 @@ import { ShopContext } from '../../shop/_state/context'
 import { CartContext } from '../_state/context'
 /** @jsx jsx */
 import { jsx, css } from '@emotion/core'
+import { flexRowCSS } from '../../../common/css'
 
 const { useContext, useState, useEffect } = wp.element
 
@@ -29,16 +30,24 @@ function CartTerms() {
   }
 
   var containerCSS = css`
+    margin: 0.5em 0 1em 0;
+  `
+
+  var labelCSS = css`
+    padding-left: 10px;
+    position: relative;
     width: 100%;
-    padding-right: 15px;
-    padding-left: 15px;
-    margin-right: auto;
-    margin-left: auto;
+    text-transform: initial;
+    display: inline-block;
+    vertical-align: middle;
+    cursor: pointer;
+    margin: 0;
+    font-size: 16px;
   `
 
   return (
     <section className='wps-cart-terms' css={containerCSS}>
-      <div className='wps-input-row row'>
+      <div className='wps-input-row' css={flexRowCSS}>
         <input
           onChange={onChange}
           id='wps-input-terms'
@@ -49,7 +58,8 @@ function CartTerms() {
         <label
           dangerouslySetInnerHTML={termsLabel()}
           htmlFor='wps-input-terms'
-          className='col-11 wps-input-label wps-input-terms'
+          className='wps-input-label wps-input-terms'
+          css={labelCSS}
         />
       </div>
     </section>

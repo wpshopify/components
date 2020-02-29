@@ -56,8 +56,6 @@ function onlyAvailableOptionsFromVariants(variants) {
 }
 
 function variantHasDropdown(itemsState) {
-  console.log('itemsState.payloadSettings.variantStyle', itemsState.payloadSettings.variantStyle)
-
   return itemsState.payloadSettings.variantStyle === 'dropdown'
 }
 
