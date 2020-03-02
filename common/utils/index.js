@@ -45,6 +45,10 @@ function createObj(name, value) {
 }
 
 function isPairMatch(compareAgaisnt, pairToMatch) {
+  if (isEmpty(pairToMatch)) {
+    return false
+  }
+
   if (isArray(compareAgaisnt)) {
     return !isEmpty(compareAgaisnt.filter(obj => isMatch(obj, pairToMatch)))
   } else {

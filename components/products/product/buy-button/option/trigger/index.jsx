@@ -3,7 +3,6 @@ import { useAnime, pulse } from '../../../../../../common/animations'
 import { ShopContext } from '../../../../../shop/_state/context'
 import { ItemsContext } from '../../../../../items/_state/context'
 import { ProductOptionContext } from '../_state/context'
-import { ProductContext } from '../../../_state/context'
 
 const { useEffect, useContext, useRef } = wp.element
 const { __ } = wp.i18n
@@ -24,16 +23,17 @@ function ProductOptionTrigger() {
   const [itemsState] = useContext(ItemsContext)
   const [buyButtonState, buyButtonDispatch] = useContext(ProductBuyButtonContext)
   const [productOptionState, productOptionDispatch] = useContext(ProductOptionContext)
-  const [productState, productDispatch] = useContext(ProductContext)
+
   const dropdownTrigger = useRef()
   const animePulse = useAnime(pulse)
   const isFirstRender = useRef(true)
 
   function onClick() {
+    console.log('onClick')
+
     wp.hooks.doAction('before.product.variantDropdown.toggle', productOptionState)
 
     productOptionDispatch({ type: 'TOGGLE_DROPDOWN', payload: !productOptionState.isDropdownOpen })
-    productDispatch({ type: 'TOGGLE_DROPDOWN', payload: !productState.isDropdownOpen })
   }
 
   /*
@@ -56,7 +56,6 @@ function ProductOptionTrigger() {
     }
 
     if (!isOptionSelected()) {
-      buyButtonDispatch({ type: 'SET_MISSING_SELECTIONS', payload: false })
       animePulse(dropdownTrigger.current)
     }
   }, [buyButtonState.missingSelections])

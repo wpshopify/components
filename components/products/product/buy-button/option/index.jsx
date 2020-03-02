@@ -1,4 +1,5 @@
-import { ProductOptionProvider } from './_state/provider.jsx'
+import { ProductOptionProvider } from './_state/provider'
+import { ProductOptionWrapper } from './wrapper'
 
 const { useRef } = wp.element
 const ProductOptionDropdown = wp.element.lazy(() =>
@@ -14,7 +15,9 @@ function ProductOption({ option }) {
         option: option,
         dropdownElement: dropdownElement
       }}>
-      <ProductOptionDropdown />
+      <ProductOptionWrapper>
+        <ProductOptionDropdown />
+      </ProductOptionWrapper>
     </ProductOptionProvider>
   )
 }

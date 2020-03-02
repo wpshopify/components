@@ -1,12 +1,9 @@
 function ProductInitialState(payload) {
-  console.log(':::::::: payload', payload)
-
   return {
     payload: payload,
     element: false,
     selectedVariant: false,
     addedToCart: false,
-    isDropdownOpen: false,
     hasManyImages: payload.images && payload.images.length > 1 ? true : false,
     hasManyVariants: payload.variants && payload.variants.length > 1 ? true : false
   }

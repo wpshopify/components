@@ -117,11 +117,14 @@ function ProductAddButton() {
             payload: false
           })
           buyButtonDispatch({ type: 'REMOVE_SELECTED_OPTIONS' })
+
           return setHasNotice({
             message: error,
             type: 'error'
           })
         }
+
+        buyButtonDispatch({ type: 'SET_MISSING_SELECTIONS', payload: false })
 
         checkoutRedirect(respNewCheckout, shopState)
       } else {
@@ -131,9 +134,11 @@ function ProductAddButton() {
           type: 'SET_ALL_SELECTED_OPTIONS',
           payload: false
         })
+
         buyButtonDispatch({ type: 'REMOVE_SELECTED_OPTIONS' })
         productDispatch({ type: 'SET_ADDED_VARIANT', payload: variant })
         productDispatch({ type: 'SET_SELECTED_VARIANT', payload: false })
+        buyButtonDispatch({ type: 'SET_MISSING_SELECTIONS', payload: false })
 
         wp.hooks.doAction('on.product.addToCart', lineItems, variant)
       }

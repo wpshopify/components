@@ -118,7 +118,7 @@ function CartLineItem({ lineItem, index }) {
     font-size: 12px;
     margin-bottom: 16px;
     color: white;
-    background-color: #343a40;
+    background-color: #415aff;
     border-radius: 10rem;
     padding: 0.25em 0.6em;
     text-align: center;

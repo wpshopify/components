@@ -6,7 +6,7 @@ function ProductBuyButtonReducer(state, action) {
     case 'SET_ALL_SELECTED_OPTIONS':
       return {
         ...state,
-        allOptionsSelected: action.payload
+        allOptionsSelected: update(state.allOptionsSelected, { $set: action.payload })
       }
 
     case 'UNSET_SELECTED_OPTIONS':
@@ -16,8 +16,6 @@ function ProductBuyButtonReducer(state, action) {
       }
 
     case 'UPDATE_SELECTED_OPTIONS':
-      console.log('UPDATE_SELECTED_OPTIONS', action.payload)
-
       return {
         ...state,
         selectedOptions: update(state.selectedOptions, { $merge: action.payload })
@@ -32,7 +30,7 @@ function ProductBuyButtonReducer(state, action) {
     case 'SET_MISSING_SELECTIONS':
       return {
         ...state,
-        missingSelections: action.payload
+        missingSelections: update(state.missingSelections, { $set: action.payload })
       }
 
     case 'SET_AVAILABLE_VARIANTS':
@@ -46,7 +44,7 @@ function ProductBuyButtonReducer(state, action) {
     case 'UPDATE_QUANTITY':
       return {
         ...state,
-        quantity: action.payload
+        quantity: update(state.quantity, { $set: action.payload })
       }
 
     default: {

@@ -1,7 +1,6 @@
 import { ItemsContext } from '../../../items/_state/context'
-import { ProductContext } from '../_state/context'
 import { isShowingComponent } from '../../../../common/components'
-import { itemWidthClass } from '../../../../common/utils'
+
 /** @jsx jsx */
 import { jsx, css } from '@emotion/core'
 
@@ -25,7 +24,6 @@ const ProductImages = wp.element.lazy(() =>
 
 function ProductWrapper({ isFirstItem }) {
   const [itemsState] = useContext(ItemsContext)
-  const [productState] = useContext(ProductContext)
 
   const width =
     itemsState.payloadSettings.itemsPerRow === 1 || itemsState.payloadSettings.itemsPerRow === 2
@@ -40,11 +38,7 @@ function ProductWrapper({ isFirstItem }) {
   `
 
   return (
-    <div
-      css={styles}
-      className={''}
-      data-is-first-item={isFirstItem}
-      data-is-dropdown-open={productState.isDropdownOpen}>
+    <div css={styles} className={''} data-is-first-item={isFirstItem}>
       {isShowingComponent(itemsState, 'images') && <ProductImages />}
       {isShowingComponent(itemsState, 'title') && <ProductTitle />}
       {isShowingComponent(itemsState, 'pricing') && <ProductPricing />}
