@@ -40,7 +40,7 @@ function ProductBuyButton() {
           <Notice status='warning' isDismissible={false}>
             {wp.hooks.applyFilters(
               'notice.unavailable.text',
-              __('Out of stock', wpshopify.misc.textdomain)
+              __('Out of <a href="https://google.com">stock</a>', wpshopify.misc.textdomain)
             )}
           </Notice>
         )}
