@@ -5,7 +5,7 @@ import to from 'await-to-js'
 const { useEffect, useContext } = wp.element
 const { __ } = wp.i18n
 
-function Bootstrap({ children }) {
+function ShopBootstrap({ children }) {
   const [shopState, shopDispatch] = useContext(ShopContext)
 
   function setShopReady() {
@@ -20,7 +20,7 @@ function Bootstrap({ children }) {
   }
 
   async function bootstrapShop() {
-    wp.hooks.doAction('before.ready', shopState)
+    wp.hooks.doAction('before.app.ready', shopState)
 
     setShopReady()
 
@@ -88,7 +88,7 @@ function Bootstrap({ children }) {
     )
   }
 
-  // Bootstrap app on mount only
+  // ShopBootstrap app on mount only
   useEffect(() => {
     bootstrapShop()
   }, [])
@@ -96,4 +96,4 @@ function Bootstrap({ children }) {
   return <>{children}</>
 }
 
-export { Bootstrap }
+export { ShopBootstrap }

@@ -39,7 +39,8 @@ function CollectionImage({ isShopReady, shopSettings, shopInfo }) {
           type='collections'
           shopInfo={shopInfo}
           payload={collectionState.payload}
-          linkTo={itemsState.payloadSettings.linkTo}>
+          linkTo={itemsState.payloadSettings.linkTo}
+          target={itemsState.payloadSettings.productsLinkTarget}>
           <img
             itemProp='image'
             src={imageSrc}

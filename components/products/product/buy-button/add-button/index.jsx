@@ -140,7 +140,7 @@ function ProductAddButton() {
         productDispatch({ type: 'SET_SELECTED_VARIANT', payload: false })
         buyButtonDispatch({ type: 'SET_MISSING_SELECTIONS', payload: false })
 
-        wp.hooks.doAction('on.product.addToCart', lineItems, variant)
+        wp.hooks.doAction('after.product.addToCart', lineItems, variant)
       }
     }
   }
@@ -151,8 +151,6 @@ function ProductAddButton() {
     }
 
     if (isFirstRender.current) {
-      // Cart is ready to go
-      // wp.hooks.doAction('after.cart.ready', newState)
       isFirstRender.current = false
       return
     }

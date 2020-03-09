@@ -18,11 +18,8 @@ function Link({
       return target
     }
 
-    if (singleIsShopify()) {
-      return '_blank'
-    } else {
-      return '_self'
-    }
+    // Fallback in case we forget to pass target to <Link>
+    return '_blank'
   }
 
   return (

@@ -117,21 +117,23 @@ function getHashFromQueryParams(queryParams) {
   return md5(createStringFromQueryParams(queryParams))
 }
 
-function FilterHook({ name, defaultVal = false, args, isReady }) {
-  if (!args) {
-    args = []
+function FilterHook({ name, children, hasHTML = false, isReady = false, args = [] }) {
+  if (!wp.hooks.hasFilter(name, wpshopify.misc.textdomain)) {
+    return <>{children}</>
   }
 
-  return (
-    wp.hooks.hasFilter(name) && (
+  if (hasHTML) {
+    return (
       <div
-        data-wps-is-ready={isReady}
+        data-wps-is-ready={isReady ? isReady : true}
         dangerouslySetInnerHTML={{
-          __html: wp.hooks.applyFilters(name, defaultVal, ...args)
+          __html: wp.hooks.applyFilters(name, false, ...args)
         }}
       />
     )
-  )
+  }
+
+  return wp.hooks.applyFilters(name, false, ...args)
 }
 
 function prettyDate(rawDate, formatting) {

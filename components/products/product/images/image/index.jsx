@@ -81,7 +81,8 @@ function ProductImage({ image, isFeatured }) {
           payload={productState.payload}
           type='products'
           shop={shopState}
-          linkTo={itemsState.payloadSettings.linkTo}>
+          linkTo={itemsState.payloadSettings.linkTo}
+          target={itemsState.payloadSettings.productsLinkTarget}>
           <Img
             imageRef={imageRef}
             image={image}

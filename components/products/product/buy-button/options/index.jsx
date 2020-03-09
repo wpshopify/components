@@ -1,5 +1,3 @@
-import { ProductOption } from '../option'
-import { VariantButtons } from '../variant-buttons'
 import { ProductBuyButtonContext } from '../_state/context'
 import { ItemsContext } from '../../../../items/_state/context'
 
@@ -12,6 +10,14 @@ import { containerFluidCSS } from '../../../../../common/css'
 
 /** @jsx jsx */
 import { jsx, css } from '@emotion/core'
+
+const ProductOption = wp.element.lazy(() =>
+  import(/* webpackChunkName: 'ProductOption' */ '../option')
+)
+
+const ProductVariantButtons = wp.element.lazy(() =>
+  import(/* webpackChunkName: 'ProductVariantButtons' */ '../variant-buttons')
+)
 
 const { useContext } = wp.element
 
@@ -82,7 +88,7 @@ function ProductOptions() {
   return variantHasDropdown(itemsState) ? (
     <VariantDropdown options={options} />
   ) : (
-    <VariantButtons options={options} />
+    <ProductVariantButtons options={options} />
   )
 }
 

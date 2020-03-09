@@ -19,7 +19,6 @@ function ProductOptionWrapper({ children }) {
   const isFirstRender = useRef(true)
 
   useEffect(() => {
-    console.log('0')
     if (isFirstRender.current) {
       isFirstRender.current = false
       return
@@ -38,7 +37,6 @@ function ProductOptionWrapper({ children }) {
   }, [buyButtonState.availableVariants])
 
   useEffect(() => {
-    console.log('1')
     if (isFirstRender.current) {
       isFirstRender.current = false
       return
@@ -55,8 +53,6 @@ function ProductOptionWrapper({ children }) {
   }, [productOptionState.selectedOption])
 
   useEffect(() => {
-    console.log('2')
-
     if (isFirstRender.current) {
       isFirstRender.current = false
       return
@@ -98,4 +94,4 @@ function ProductOptionWrapper({ children }) {
   return children
 }
 
-export { ProductOptionWrapper }
+export default ProductOptionWrapper

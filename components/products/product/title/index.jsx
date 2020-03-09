@@ -34,13 +34,18 @@ function ProductTitle() {
     return wp.hooks.applyFilters('product.title.class', 'wps-products-title')
   }
 
+  function hasLink() {
+    return itemsState.payloadSettings.linkTo || (hasSinglePage() && !onSinglePage(itemsState))
+  }
+
   return usePortal(
     <div className='wps-component wps-component-products-title' data-wps-component-order='0'>
-      {itemsState.payloadSettings.linkTo || (hasSinglePage() && !onSinglePage(itemsState)) ? (
+      {hasLink() ? (
         <Link
           type='products'
           payload={productState.payload}
           shop={shopState}
+          target={itemsState.payloadSettings.productsLinkTarget}
           linkTo={itemsState.payloadSettings.linkTo}>
           <Title
             styles={[fontSize, fontColor]}

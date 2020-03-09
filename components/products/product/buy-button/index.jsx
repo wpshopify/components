@@ -37,12 +37,16 @@ function ProductBuyButton() {
             <ProductAddButton />
           </>
         ) : (
-          <Notice status='warning' isDismissible={false}>
-            {wp.hooks.applyFilters(
-              'notice.unavailable.text',
-              __('Out of <a href="https://google.com">stock</a>', wpshopify.misc.textdomain)
-            )}
-          </Notice>
+          <FilterHook
+            name='products.buyButton.unavailable.html'
+            hasHTML={true}
+            args={[productState]}>
+            <Notice status='warning' isDismissible={false}>
+              <FilterHook name='notice.unavailable.text'>
+                {__('Out of stock', wpshopify.misc.textdomain)}
+              </FilterHook>
+            </Notice>
+          </FilterHook>
         )}
       </ProductBuyButtonProvider>
 

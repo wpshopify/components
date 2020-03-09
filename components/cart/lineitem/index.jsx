@@ -6,6 +6,7 @@ import { formatPriceToCurrency } from '../../../common/pricing/formatting'
 import { calcLineItemTotal, isAvailable } from '../../../common/products'
 import { addCustomSizingToImageUrl } from '../../../common/images'
 import { containerFluidCSS, flexRowCSS } from '../../../common/css'
+import { FilterHook } from '../../../common/utils'
 
 /** @jsx jsx */
 import { jsx, css } from '@emotion/core'
@@ -161,16 +162,14 @@ function CartLineItem({ lineItem, index }) {
           <div className='p-0' css={containerFluidCSS}>
             <div css={flexRowCSS}>
               <span className='wps-cart-lineitem-title-content col-9'>
-                {wp.hooks.applyFilters(
-                  'cart.lineItem.title',
-                  __(lineItem.product.title, wpshopify.misc.textdomain)
-                )}
+                <FilterHook name='cart.lineItem.title.text'>
+                  {__(lineItem.product.title, wpshopify.misc.textdomain)}
+                </FilterHook>
               </span>
               <span className='wps-cart-lineitem-remove' onClick={removeLineItem}>
-                {wp.hooks.applyFilters(
-                  'cart.lineItem.remove.text',
-                  __('Remove', wpshopify.misc.textdomain)
-                )}
+                <FilterHook name='cart.lineItem.remove.text'>
+                  {__('Remove', wpshopify.misc.textdomain)}
+                </FilterHook>
               </span>
             </div>
           </div>

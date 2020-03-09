@@ -208,6 +208,8 @@ function Item({ children, customQueryParams, limit = false, infiniteScroll = fal
   }
 
   useEffect(() => {
+    wp.hooks.doAction('before.payload.update', itemsState)
+
     fetchNewItems()
   }, [itemsState.queryParams])
 

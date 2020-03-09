@@ -30,7 +30,8 @@ function CollectionTitle({ isShopReady, shopInfo }) {
           type='collections'
           shopInfo={shopInfo}
           payload={collectionState.payload}
-          linkTo={itemsState.payloadSettings.linkTo}>
+          linkTo={itemsState.payloadSettings.linkTo}
+          target={itemsState.payloadSettings.productsLinkTarget}>
           <Title />
         </Link>
       ) : (

@@ -19,18 +19,18 @@ function isCartOpen() {
   return document.querySelector('.wps-cart').classList.contains('wps-cart-is-showing')
 }
 
-function openCart() {
+function openCart(cartState) {
   let cartElement = document.querySelector('.wps-cart')
   cartElement.classList.add('wps-cart-is-showing')
 
-  wp.hooks.doAction('on.cart.open', cartElement)
+  wp.hooks.doAction('after.cart.open', cartState)
 }
 
-function closeCart() {
+function closeCart(cartState) {
   let cartElement = document.querySelector('.wps-cart')
   cartElement.classList.remove('wps-cart-is-showing')
 
-  wp.hooks.doAction('on.cart.close', cartElement)
+  wp.hooks.doAction('after.cart.close', cartState)
 }
 
 function animateCartLineItems() {
@@ -41,7 +41,7 @@ function getCartElement() {
   return document.querySelector('.wps-cart')
 }
 
-function toggleCart(opening) {
+function toggleCart(cartState, opening) {
   const cartElement = getCartElement()
 
   if (!cartElement) {
@@ -50,7 +50,7 @@ function toggleCart(opening) {
 
   var listener = function(e) {
     if (!cartElement.contains(e.target)) {
-      closeCart()
+      closeCart(cartState)
 
       document.removeEventListener('mousedown', listener)
       document.removeEventListener('touchstart', listener)
@@ -65,11 +65,11 @@ function toggleCart(opening) {
   }
 
   if (!opening) {
-    closeCart()
+    closeCart(cartState)
 
     return false
   } else {
-    openCart()
+    openCart(cartState)
 
     setTimeout(function() {
       animateCartLineItems()

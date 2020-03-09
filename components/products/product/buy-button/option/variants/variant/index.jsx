@@ -43,7 +43,7 @@ function ProductVariant({ variant, children }) {
       payload: true
     })
 
-    wp.hooks.doAction('on.product.variant.selection', selectedVariant, productOptionState)
+    wp.hooks.doAction('after.product.variant.selection', selectedVariant, productOptionState)
   }
 
   return wp.element.cloneElement(children, {

@@ -48,7 +48,7 @@ function ShopReducer(state, action) {
       }
 
       // Cart is ready to go
-      wp.hooks.doAction('after.cart.ready', newState)
+      wp.hooks.doAction('after.app.ready', newState)
 
       return newState
     }

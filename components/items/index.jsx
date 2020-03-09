@@ -2,6 +2,7 @@ import { ItemsProvider } from './_state/provider'
 import { Item } from './item'
 import has from 'lodash/has'
 import { usePortal } from '../../common/hooks'
+const { useEffect } = wp.element
 
 function hasItems(options) {
   return options.payload.length > 0
@@ -52,6 +53,10 @@ options, children, afterLoading, beforeLoading
 
 */
 function Items(props) {
+  useEffect(() => {
+    wp.hooks.doAction('after.items.render', props)
+  }, [])
+
   return (
     props.options &&
     props.options.map(component => {
