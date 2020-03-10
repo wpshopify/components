@@ -1,5 +1,6 @@
 import { ShopContext } from '../../shop/_state/context'
 import { useDebounce } from 'use-debounce'
+import { FilterHook } from '../../../common/utils'
 
 const { useContext, useState, useRef, useEffect } = wp.element
 const { __ } = wp.i18n
@@ -25,25 +26,25 @@ function CartNote() {
     }
   }, [debouncedValue])
 
-  function getNotesLabel() {
-    return wp.hooks.applyFilters('default.cart.notes.label', 'Notes:')
-  }
-
   return (
     <section className='wps-cart-notes'>
       <label
-        value={wp.hooks.applyFilters(
-          'cart.note.label',
-          __('Checkout notes', wpshopify.misc.textdomain)
-        )}
+        value={
+          <FilterHook name='cart.note.label'>
+            {__('Checkout notes', wpshopify.misc.textdomain)}
+          </FilterHook>
+        }
         htmlFor='wps-input-notes'>
-        {getNotesLabel()}
+        <FilterHook name='default.cart.notes.label'>
+          {__('Notes:', wpshopify.misc.textdomain)}
+        </FilterHook>
       </label>
       <textarea
-        placeholder={wp.hooks.applyFilters(
-          'cart.note.placeholder',
-          __(shopState.settings.general.cartNotesPlaceholder, wpshopify.misc.textdomain)
-        )}
+        placeholder={
+          <FilterHook name='cart.note.placeholder'>
+            {__(shopState.settings.general.cartNotesPlaceholder, wpshopify.misc.textdomain)}
+          </FilterHook>
+        }
         id='wps-input-notes'
         className='wps-input wps-input-textarea'
         onChange={onChange}

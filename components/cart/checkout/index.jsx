@@ -199,7 +199,7 @@ function CartCheckout() {
 
   return (
     <>
-      <FilterHook name='cart.checkout.before' args={[cartState]} />
+      <FilterHook name='before.cart.checkout.button' args={[cartState]} />
 
       <CartCheckoutButton
         onCheckout={onCheckout}
@@ -208,7 +208,7 @@ function CartCheckout() {
         buttonRef={checkoutButton}
       />
 
-      <FilterHook name='cart.checkout.after' args={[cartState]} />
+      <FilterHook name='after.cart.checkout.button' args={[cartState]} />
     </>
   )
 }
@@ -227,10 +227,9 @@ function CartCheckoutButton({ buttonStyle, onCheckout, shopState, buttonRef }) {
       {cartState.isCheckingOut ? (
         <Loader isLoading={cartState.isCheckingOut} />
       ) : (
-        wp.hooks.applyFilters(
-          'cart.checkout.text',
-          __(cartState.checkoutText, wpshopify.misc.textdomain)
-        )
+        <FilterHook name='cart.checkout.text'>
+          {__(cartState.checkoutText, wpshopify.misc.textdomain)}
+        </FilterHook>
       )}
     </button>
   )

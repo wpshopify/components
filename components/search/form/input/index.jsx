@@ -1,4 +1,5 @@
 import { SearchContext } from '../../_state/context'
+import { FilterHook } from '../../../../common/utils'
 import { ItemsContext } from '../../../items/_state/context'
 import { useDebounce } from 'use-debounce'
 import { Loader } from '../../../loader'
@@ -22,11 +23,6 @@ function SearchInput() {
     setLocalTerm(value)
   }
 
-  /*
-   
-   This changes every 300ms when typing
-   
-   */
   useEffect(() => {
     if (isFirstRender.current) {
       isFirstRender.current = false
@@ -36,6 +32,10 @@ function SearchInput() {
     searchDispatch({ type: 'SET_SEARCH_TERM', payload: debouncedSearchTerm })
   }, [debouncedSearchTerm])
 
+  function placeholderText() {
+    return __('Search the store', wpshopify.misc.textdomain)
+  }
+
   return (
     <div className='wps-search-input-wrapper'>
       <input
@@ -44,14 +44,8 @@ function SearchInput() {
         className='wps-search-input'
         name='search'
         val={localTerm}
-        placeholder={wp.hooks.applyFilters(
-          'search.placeholder.text',
-          __('Search the store', wpshopify.misc.textdomain)
-        )}
-        aria-label={wp.hooks.applyFilters(
-          'search.placeholder.text',
-          __('Search the store', wpshopify.misc.textdomain)
-        )}
+        placeholder={<FilterHook name='search.placeholder.text'>{placeholderText()}</FilterHook>}
+        aria-label={<FilterHook name='search.placeholder.text'>{placeholderText()}</FilterHook>}
         onChange={e => setSearchTerm(e.target.value)}
       />
 

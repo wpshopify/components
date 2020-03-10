@@ -1,3 +1,5 @@
+import { FilterHook } from '../../common/utils'
+
 const { __ } = wp.i18n
 
 function RootElement({ payloadSettingsId, loadingMsg, componentType = 'products' }) {
@@ -6,7 +8,9 @@ function RootElement({ payloadSettingsId, loadingMsg, componentType = 'products'
       data-wpshopify-component
       data-wpshopify-component-type={componentType}
       data-wpshopify-payload-settings={payloadSettingsId}>
-      {wp.hooks.applyFilters('global.loading.text', __(loadingMsg, wpshopify.misc.textdomain))}
+      <FilterHook name='global.loading.text'>
+        {__(loadingMsg, wpshopify.misc.textdomain)}
+      </FilterHook>
     </div>
   )
 }

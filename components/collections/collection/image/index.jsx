@@ -37,10 +37,10 @@ function CollectionImage({ isShopReady, shopSettings, shopInfo }) {
       <div className='wps-component wps-component-collection-image' data-wps-component-order='0'>
         <Link
           type='collections'
-          shopInfo={shopInfo}
+          shop={shopInfo}
           payload={collectionState.payload}
           linkTo={itemsState.payloadSettings.linkTo}
-          target={itemsState.payloadSettings.productsLinkTarget}>
+          target={itemsState.payloadSettings.linkTarget}>
           <img
             itemProp='image'
             src={imageSrc}

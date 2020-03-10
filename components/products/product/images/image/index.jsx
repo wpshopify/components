@@ -6,8 +6,7 @@ import { ProductGalleryContext } from '../gallery/_state/context'
 import { addCustomSizingToImageUrl } from '../../../../../common/images'
 
 import { Link } from '../../../../link'
-import { hasSinglePage } from '../../../../../common/settings'
-import { onSinglePage } from '../../../../../common/components'
+import { hasLink } from '../../../../../common/settings'
 
 const { useEffect, useContext, useRef, useState } = wp.element
 
@@ -54,13 +53,6 @@ function ProductImage({ image, isFeatured }) {
     }
   }
 
-  function isShowingLink() {
-    return (
-      itemsState.payloadSettings.linkTo ||
-      (hasSinglePage() && !onSinglePage(itemsState) && isFeatured)
-    )
-  }
-
   useEffect(() => {
     setProductImageSrc(applyImageSizing())
 
@@ -75,14 +67,14 @@ function ProductImage({ image, isFeatured }) {
    the image tag into a resuable component. Probably something to do with ref forwarding.
 
    */
-  return isShowingLink()
+  return hasLink(itemsState, shopState)
     ? productImageSrc && (
         <Link
           payload={productState.payload}
           type='products'
           shop={shopState}
           linkTo={itemsState.payloadSettings.linkTo}
-          target={itemsState.payloadSettings.productsLinkTarget}>
+          target={itemsState.payloadSettings.linkTarget}>
           <Img
             imageRef={imageRef}
             image={image}

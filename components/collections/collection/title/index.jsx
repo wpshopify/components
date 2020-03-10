@@ -1,16 +1,17 @@
 import { ItemsContext } from '../../../items/_state/context'
+import { ShopContext } from '../../../shop/_state/context'
 import { CollectionContext } from '../_state/context'
 import { Link } from '../../../link'
 import { usePortal } from '../../../../common/hooks'
 import { findPortalElement, _t } from '../../../../common/utils'
-import { hasSinglePage } from '../../../../common/settings'
-import { onSinglePage } from '../../../../common/components'
+import { hasLink } from '../../../../common/settings'
 
 const { useContext } = wp.element
 
 function CollectionTitle({ isShopReady, shopInfo }) {
   const [collectionState] = useContext(CollectionContext)
   const [itemsState] = useContext(ItemsContext)
+  const [shopState] = useContext(ShopContext)
 
   function Title() {
     return (
@@ -25,13 +26,13 @@ function CollectionTitle({ isShopReady, shopInfo }) {
 
   return usePortal(
     <div className='wps-component wps-component-collection-title' data-wps-component-order='0'>
-      {hasSinglePage() && !onSinglePage(itemsState) && !itemsState.payloadSettings.single ? (
+      {hasLink(itemsState, shopState) ? (
         <Link
           type='collections'
-          shopInfo={shopInfo}
+          shop={shopInfo}
           payload={collectionState.payload}
           linkTo={itemsState.payloadSettings.linkTo}
-          target={itemsState.payloadSettings.productsLinkTarget}>
+          target={itemsState.payloadSettings.linkTarget}>
           <Title />
         </Link>
       ) : (

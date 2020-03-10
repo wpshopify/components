@@ -7,35 +7,62 @@ hasEnableCustomCheckoutDomain
 
 */
 function hasEnableCustomCheckoutDomain() {
-  return wpshopify.settings.general.enableCustomCheckoutDomain
+  return wpshopify.settings.general.enable_custom_checkout_domain
 }
 
-function singleIsShopify() {
-  return wpshopify.settings.general.productsLinkToShopify
+function productsLinkTo() {
+  return wpshopify.settings.general.products_link_to
 }
 
 function isLiteSync() {
-  return wpshopify.settings.general.isLiteSync
+  return wpshopify.settings.general.is_lite_sync
 }
 
 function isSyncingPosts() {
-  return wpshopify.settings.general.isSyncingPosts
+  return wpshopify.settings.general.is_syncing_posts
 }
 
 function isDisablingDefaultPages() {
-  return wpshopify.settings.general.disableDefaultPages
+  return wpshopify.settings.general.disable_default_pages
 }
 
 function hasSinglePage() {
-  if (singleIsShopify()) {
-    return true
+  if (isDisablingDefaultPages()) {
+    return false
   }
 
-  if (!isDisablingDefaultPages() && isSyncingPosts()) {
-    return true
+  if (productsLinkTo() === 'none') {
+    return false
   }
 
-  return false
+  if (isLiteSync()) {
+    return false
+  }
+
+  return true
+}
+
+function onSinglePage(itemsState) {
+  return itemsState.payloadSettings.isSingular
+}
+
+function hasLink(itemsState, shop) {
+  console.log('hasLink 1', shop)
+
+  if (itemsState.payloadSettings.linkTo === 'none') {
+    return false
+  }
+
+  if (itemsState.payloadSettings.linkTo === 'shopify') {
+    return true
+  }
+  console.log('hasLink 2', itemsState)
+  if (liteSyncAndWordPressLink(itemsState, shop)) {
+    console.log('hasLink 3')
+    return false
+  }
+  console.log('hasLink 4')
+  return hasSinglePage() && !onSinglePage(itemsState)
 }
 
 function shopHasInfo(shop) {
@@ -74,28 +101,36 @@ function getWordPressSingleLink(payload) {
 }
 
 function getItemLink(payload, shopInfo, type, linkTo) {
-  // Manual links
+  console.log('.... linkTo', linkTo)
+
+  if (linkTo === 'none') {
+    return false
+  }
+
   if (linkTo === 'shopify') {
+    // Manual links
     return getShopifySingleLink(payload, shopInfo, type)
   }
 
-  if (linkTo === 'single') {
+  if (linkTo === 'wordpress') {
     return getWordPressSingleLink(payload)
   }
+}
 
-  if (singleIsShopify()) {
-    return getShopifySingleLink(payload, shopInfo, type)
-  } else {
-    return getWordPressSingleLink(payload)
-  }
+function liteSyncAndWordPressLink(itemsState, shop) {
+  return shop.settings.isLiteSync && itemsState.payloadSettings.linkTo == 'wordpress'
 }
 
 export {
   hasEnableCustomCheckoutDomain,
   hasSinglePage,
+  onSinglePage,
+  hasLink,
+  liteSyncAndWordPressLink,
   getShopifySingleLink,
   getWordPressSingleLink,
-  singleIsShopify,
+  productsLinkTo,
   getItemLink,
-  shopHasInfo
+  shopHasInfo,
+  isLiteSync
 }

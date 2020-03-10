@@ -1,6 +1,6 @@
 import { ProductOptionContext } from '../../_state/context'
 import { ProductBuyButtonContext } from '../../../_state/context'
-import { createObj, isPairMatch } from '../../../../../../../common/utils'
+import { createObj, isPairMatch, FilterHook } from '../../../../../../../common/utils'
 
 const { useContext } = wp.element
 const { __ } = wp.i18n
@@ -15,7 +15,6 @@ function ProductVariant({ variant, children }) {
     productOptionState.isDropdownOpen
 
   function onSelection() {
-    console.log('a')
     // ALREADY SELECTED
     if (
       isPairMatch(productOptionState.selectedOption, selectedVariant) &&
@@ -54,18 +53,15 @@ function ProductVariant({ variant, children }) {
 }
 
 function ProductVariantDropdownValue({ variant, onSelection, isAvailableToSelect }) {
-  console.log('isAvailableToSelect', isAvailableToSelect)
-
   return (
     isAvailableToSelect && (
       <li
         itemProp='category'
         className='wps-product-variant wps-product-style wps-modal-close-trigger'
         onClick={onSelection}>
-        {wp.hooks.applyFilters(
-          'products.variant.title.text',
-          __(variant.value, wpshopify.misc.textdomain)
-        )}
+        <FilterHook name='products.variant.title.text'>
+          {__(variant.value, wpshopify.misc.textdomain)}
+        </FilterHook>
       </li>
     )
   )

@@ -7,11 +7,11 @@ function baseCurrency() {
 }
 
 function showingCurrencyCode() {
-  return wpshopify.settings.general.priceWithCurrency
+  return wpshopify.settings.general.price_with_currency
 }
 
 function currencyDisplayStyle() {
-  return wpshopify.settings.general.currencyDisplayStyle
+  return wpshopify.settings.general.currency_display_style
 }
 
 function textDomain() {
@@ -19,15 +19,15 @@ function textDomain() {
 }
 
 function hideDecimals() {
-  return wpshopify.settings.general.hideDecimals
+  return wpshopify.settings.general.hide_decimals
 }
 
 function hideDecimalsAll() {
-  return wpshopify.settings.general.hideDecimalsAll
+  return wpshopify.settings.general.hide_decimals_all
 }
 
 function hideDecimalsOnlyZeros() {
-  return wpshopify.settings.general.hideDecimalsOnlyZeros
+  return wpshopify.settings.general.hide_decimals_only_zeros
 }
 
 export {

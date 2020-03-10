@@ -1,4 +1,5 @@
 import { usePortal } from '../../../../common/hooks'
+import { FilterHook } from '../../../../common/utils'
 import { StorefrontContext } from '../../_state/context'
 
 const { useContext } = wp.element
@@ -9,10 +10,9 @@ function StorefrontFilterOptionsHeading() {
 
   return usePortal(
     <h2 className='wps-storefront-heading'>
-      {wp.hooks.applyFilters(
-        'storefront.selections.filter.label',
-        __('Filter by', wpshopify.misc.textdomain)
-      )}
+      <FilterHook name='storefront.selections.filter.label'>
+        {__('Filter by', wpshopify.misc.textdomain)}
+      </FilterHook>
     </h2>,
     document.querySelector(storefrontState.payloadSettings.dropzoneHeading)
   )

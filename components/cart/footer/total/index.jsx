@@ -3,6 +3,7 @@ import { pulse, useAnime } from '../../../../common/animations'
 import { CartContext } from '../../_state/context'
 /** @jsx jsx */
 import { jsx, css } from '@emotion/core'
+import { FilterHook } from '../../../../common/utils'
 
 const { useContext, useEffect } = wp.element
 const { __ } = wp.i18n
@@ -41,7 +42,9 @@ function CartFooterTotal({ isReady, totalElement, currencyCode }) {
 function CartFooterSubtotalLabel() {
   return (
     <p className='wps-total-prefix'>
-      {wp.hooks.applyFilters('cart.subtotal.text', __('Subtotal:', wpshopify.misc.textdomain))}
+      <FilterHook name='cart.subtotal.text'>
+        {__('Subtotal:', wpshopify.misc.textdomain)}
+      </FilterHook>
     </p>
   )
 }

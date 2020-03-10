@@ -2,13 +2,17 @@ import has from 'lodash/has'
 import { ProductContext } from '../../_state/context'
 import { ProductGalleryContext } from './_state/context'
 import { ItemsContext } from '../../../../items/_state/context'
+import { ShopContext } from '../../../../shop/_state/context'
+
 import { ProductThumbnailImages } from '../thumbnails'
 import { ProductFeaturedImage } from '../featured'
+import { hasLink } from '../../../../../common/settings'
 
 const { useEffect, useContext, useRef } = wp.element
 
 function ProductGallery() {
   const [itemsState] = useContext(ItemsContext)
+  const [shopState] = useContext(ShopContext)
   const [productState] = useContext(ProductContext)
   const [galleryState, galleryDispatch] = useContext(ProductGalleryContext)
   const isFirstRender = useRef(true)
@@ -23,6 +27,10 @@ function ProductGallery() {
   }
 
   function isFeaturedOnly() {
+    if (hasLink(itemsState, shopState)) {
+      return true
+    }
+
     if (!has(itemsState.payloadSettings, 'showFeaturedOnly')) {
       return false
     }

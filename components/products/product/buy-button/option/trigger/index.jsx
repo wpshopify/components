@@ -1,5 +1,6 @@
 import { ProductBuyButtonContext } from '../../_state/context'
 import { useAnime, pulse } from '../../../../../../common/animations'
+import { FilterHook } from '../../../../../../common/utils'
 import { ShopContext } from '../../../../../shop/_state/context'
 import { ItemsContext } from '../../../../../items/_state/context'
 import { ProductOptionContext } from '../_state/context'
@@ -93,10 +94,9 @@ function ProductOptionTrigger() {
       onClick={onClick}
       ref={dropdownTrigger}
       style={{ backgroundColor: itemsState.payloadSettings.variantButtonColor }}>
-      {wp.hooks.applyFilters(
-        'products.option.title.text',
-        __(displayOptionName(), wpshopify.misc.textdomain)
-      )}
+      <FilterHook name='products.option.title.text'>
+        {__(displayOptionName(), wpshopify.misc.textdomain)}
+      </FilterHook>
       <TriggerIcon />
     </button>
   )

@@ -12,7 +12,6 @@ const ProductVariants = wp.element.lazy(() =>
 )
 
 const { useRef, useContext } = wp.element
-const { __ } = wp.i18n
 
 function ProductVariantButtonGroupWrapper({ option }) {
   const [buyButtonState] = useContext(ProductBuyButtonContext)

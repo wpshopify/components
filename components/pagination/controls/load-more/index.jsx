@@ -1,6 +1,8 @@
 import { PaginationContext } from '../../_state/context'
 import { ItemsContext } from '../../../items/_state/context'
 import { usePortal } from '../../../../common/hooks'
+import { FilterHook } from '../../../../common/utils'
+
 import { fetchNextItems } from '../../../items/item'
 import { Loader } from '../../../loader'
 import isEmpty from 'lodash/isEmpty'
@@ -49,10 +51,7 @@ function PaginationLoadMore() {
     }
   }
 
-
-  
   function onViewChange(inView, entry) {
-
     if (!itemsState.payloadSettings.infiniteScroll) {
       return
     }
@@ -60,7 +59,6 @@ function PaginationLoadMore() {
     if (inView) {
       onNextPage()
     }
-
   }
 
   return usePortal(
@@ -75,10 +73,9 @@ function PaginationLoadMore() {
             {itemsState.isLoading ? (
               <Loader isLoading={itemsState.isLoading} />
             ) : (
-              wp.hooks.applyFilters(
-                'pagination.loadMore.text',
-                __('Load more', wpshopify.misc.textdomain)
-              )
+              <FilterHook name='pagination.loadMore.text'>
+                {__('Load more', wpshopify.misc.textdomain)}
+              </FilterHook>
             )}
           </button>
         </InView>

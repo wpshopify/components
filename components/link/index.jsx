@@ -1,11 +1,11 @@
-import { getItemLink, singleIsShopify } from '../../common/settings'
+import { getItemLink, liteSyncAndWordPressLink } from '../../common/settings'
 
 function Link({
   type,
   payload,
   classNames = '',
   target,
-  shopInfo,
+  shop,
   children,
   linkTo,
   manualLink,
@@ -14,6 +14,8 @@ function Link({
   const className = 'wps-' + type + '-link' + ' ' + classNames
 
   function getTarget(target) {
+    console.log('target', target)
+
     if (target) {
       return target
     }
@@ -24,11 +26,11 @@ function Link({
 
   return (
     <>
-      {disableLink || linkTo === 'none' ? (
+      {disableLink || linkTo === 'none' || liteSyncAndWordPressLink(linkTo, shop) ? (
         children
       ) : (
         <a
-          href={manualLink ? manualLink : getItemLink(payload, shopInfo, type, linkTo)}
+          href={manualLink ? manualLink : getItemLink(payload, shop, type, linkTo)}
           className={className}
           target={getTarget(target)}>
           {children}

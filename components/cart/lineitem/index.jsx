@@ -180,19 +180,17 @@ function CartLineItem({ lineItem, index }) {
             css={badgeCSS}
             className='wps-cart-lineitem-variant-title'
             data-wps-is-ready={shopState.isCartReady}>
-            {wp.hooks.applyFilters(
-              'cart.lineItem.variant.title',
-              __(lineItem.title, wpshopify.misc.textdomain)
-            )}
+            <FilterHook name='cart.lineItem.variant.title'>
+              {__(lineItem.title, wpshopify.misc.textdomain)}
+            </FilterHook>
           </div>
         )}
 
         {!isAvailable(lineItem) ? (
           <Notice status='warning' isDismissible={false}>
-            {wp.hooks.applyFilters(
-              'notice.unavailable.text',
-              __('Out of stock', wpshopify.misc.textdomain)
-            )}
+            <FilterHook name='notice.unavailable.text'>
+              {__('Out of stock', wpshopify.misc.textdomain)}
+            </FilterHook>
           </Notice>
         ) : (
           <div className='p-0' css={containerFluidCSS}>

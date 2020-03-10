@@ -6,6 +6,8 @@ import { ProductContext } from '../_state/context'
 import { ItemsContext } from '../../../items/_state/context'
 import { ShopContext } from '../../../shop/_state/context'
 import { usePortal } from '../../../../common/hooks'
+import { hasLink } from '../../../../common/settings'
+
 import { findPortalElement, FilterHook } from '../../../../common/utils'
 
 const { Notice } = wp.components
@@ -23,7 +25,7 @@ function ProductBuyButton() {
       data-wps-is-ready={shopState.isCartReady ? '1' : '0'}
       data-wps-component-order='0'>
       <FilterHook
-        name='product.buyButton.before'
+        name='before.product.buyButton'
         args={[productState]}
         isReady={shopState.isShopReady}
       />
@@ -31,8 +33,10 @@ function ProductBuyButton() {
       <ProductBuyButtonProvider productState={productState}>
         {productState.payload.availableForSale ? (
           <>
-            {!itemsState.payloadSettings.hideQuantity && <ProductQuantity />}
-            {productState.hasManyVariants && <ProductOptions />}
+            {!itemsState.payloadSettings.hideQuantity && !hasLink(itemsState, shopState) && (
+              <ProductQuantity />
+            )}
+            {productState.hasManyVariants && !hasLink(itemsState, shopState) && <ProductOptions />}
 
             <ProductAddButton />
           </>
@@ -51,7 +55,7 @@ function ProductBuyButton() {
       </ProductBuyButtonProvider>
 
       <FilterHook
-        name='product.buyButton.after'
+        name='after.product.buyButton'
         args={[productState]}
         isReady={shopState.isShopReady}
       />

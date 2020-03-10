@@ -3,6 +3,7 @@ import assign from 'lodash/assign'
 import mapValues from 'lodash/mapValues'
 import map from 'lodash/map'
 import { usePortal } from '../../../../common/hooks'
+import { FilterHook } from '../../../../common/utils'
 import { getFilterData } from '/Users/andrew/www/devil/devilbox-new/data/www/wpshopify-api'
 import { StorefrontContext } from '../../_state/context'
 import { StorefrontFilterOptionsGroup } from '../group'
@@ -67,24 +68,27 @@ function StorefrontOptionsWrapper() {
     getAllFilterOptions()
   }, [])
 
-  function getTagsHeading() {
-    return wp.hooks.applyFilters(
-      'default.storefront.tags.heading',
-      __('Tags', wpshopify.misc.textdomain)
+  function TagsHeading() {
+    return (
+      <FilterHook name='default.storefront.tags.heading'>
+        {__('Tags', wpshopify.misc.textdomain)}
+      </FilterHook>
     )
   }
 
-  function getVendorsHeading() {
-    return wp.hooks.applyFilters(
-      'default.storefront.vendors.heading',
-      __('Vendors', wpshopify.misc.textdomain)
+  function VendorsHeading() {
+    return (
+      <FilterHook name='default.storefront.vendors.heading'>
+        {__('Vendors', wpshopify.misc.textdomain)}
+      </FilterHook>
     )
   }
 
-  function getTypesHeading() {
-    return wp.hooks.applyFilters(
-      'default.storefront.types.heading',
-      __('Types', wpshopify.misc.textdomain)
+  function TypesHeading() {
+    return (
+      <FilterHook name='default.storefront.types.heading'>
+        {__('Types', wpshopify.misc.textdomain)}
+      </FilterHook>
     )
   }
 
@@ -93,13 +97,13 @@ function StorefrontOptionsWrapper() {
       {storefrontState.payloadSettings.showOptionsHeading ? <StorefrontFilterOptionsHeading /> : ''}
       <aside className='wps-storefront'>
         {storefrontState.payloadSettings.showTags ? (
-          <StorefrontFilterOptionsGroup heading={getTagsHeading()} groupType='tags' />
+          <StorefrontFilterOptionsGroup heading={TagsHeading()} groupType='tags' />
         ) : (
           ''
         )}
         {storefrontState.payloadSettings.showVendors ? (
           <StorefrontFilterOptionsGroup
-            heading={getVendorsHeading()}
+            heading={VendorsHeading()}
             groupType='vendors'
             displayStyle='checkbox'
           />
@@ -108,7 +112,7 @@ function StorefrontOptionsWrapper() {
         )}
         {storefrontState.payloadSettings.showTypes ? (
           <StorefrontFilterOptionsGroup
-            heading={getTypesHeading()}
+            heading={TypesHeading()}
             groupType='types'
             displayStyle='checkbox'
           />

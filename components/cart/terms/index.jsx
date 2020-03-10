@@ -3,7 +3,9 @@ import { CartContext } from '../_state/context'
 /** @jsx jsx */
 import { jsx, css } from '@emotion/core'
 import { flexRowCSS } from '../../../common/css'
+import { FilterHook } from '../../../common/utils'
 
+const { __ } = wp.i18n
 const { useContext, useState, useEffect } = wp.element
 
 function CartTerms() {
@@ -17,7 +19,7 @@ function CartTerms() {
 
   function termsLabel() {
     return {
-      __html: wp.hooks.applyFilters('cart.terms.text', shopState.settings.general.cartTermsContent)
+      __html: __(shopState.settings.general.cartTermsContent, wpshopify.misc.textdomain)
     }
   }
 

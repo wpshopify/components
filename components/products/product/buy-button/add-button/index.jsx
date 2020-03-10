@@ -4,6 +4,10 @@ import { Loader } from '../../../../loader'
 import { ItemsContext } from '../../../../items/_state/context'
 import { ProductContext } from '../../_state/context'
 import { useAnime, pulse } from '../../../../../common/animations'
+import { FilterHook } from '../../../../../common/utils'
+import { hasLink } from '../../../../../common/settings'
+import { Link } from '../../../../link'
+
 import { checkoutRedirect } from '../../../../cart/checkout'
 
 import {
@@ -160,24 +164,49 @@ function ProductAddButton() {
     }
   }, [buyButtonState.allOptionsSelected])
 
+  function hasCustomButtonText() {
+    if (!itemsState.payloadSettings.addToCartButtonText) {
+      return false
+    }
+    if (
+      itemsState.payloadSettings.addToCartButtonText != 'Checkout' ||
+      itemsState.payloadSettings.addToCartButtonText != 'Add to cart' ||
+      itemsState.payloadSettings.addToCartButtonText != 'View product'
+    ) {
+      return true
+    }
+
+    return false
+  }
+
   function getButtonText() {
+    console.log('getButtonText 1')
+
+    if (hasCustomButtonText(itemsState)) {
+      return itemsState.payloadSettings.addToCartButtonText
+    }
+    console.log('getButtonText 3')
     if (isDirectCheckout) {
       return 'Checkout'
     }
 
-    if (itemsState.payloadSettings.addToCartButtonText) {
-      return itemsState.payloadSettings.addToCartButtonText
+    if (hasLink(itemsState, shopState)) {
+      return 'View product'
+    }
+
+    if (itemsState.payloadSettings.addToCartButtonText === 'View product') {
+      return 'View product'
+    }
+
+    if (itemsState.payloadSettings.addToCartButtonText === 'Checkout') {
+      return 'Checkout'
     }
 
     return 'Add to cart'
   }
 
-  return (
-    <div
-      className='wps-component wps-component-products-add-button wps-btn-wrapper'
-      data-wps-is-component-wrapper
-      data-wps-product-id={buyButtonState.product.id}
-      data-wps-post-id=''>
+  function AddButton({ hasLink }) {
+    return (
       <button
         ref={button}
         type='button'
@@ -188,25 +217,44 @@ function ProductAddButton() {
         title={__(buyButtonState.product.title, wpshopify.misc.textdomain)}
         data-wps-is-ready={shopState.isShopReady ? '1' : '0'}
         data-wps-is-direct-checkout={isDirectCheckout ? '1' : '0'}
-        onClick={handleClick}
+        onClick={!hasLink && handleClick}
         style={buttonStyle}
         disabled={isCheckingOut}>
         {isCheckingOut ? (
           <Loader />
         ) : (
-          wp.hooks.applyFilters(
-            'product.addToCart.text',
-            __(getButtonText(), wpshopify.misc.textdomain)
-          )
+          <FilterHook name='product.addToCart.text'>
+            {__(getButtonText(), wpshopify.misc.textdomain)}
+          </FilterHook>
         )}
       </button>
+    )
+  }
+
+  return (
+    <div
+      className='wps-component wps-component-products-add-button wps-btn-wrapper'
+      data-wps-is-component-wrapper
+      data-wps-product-id={buyButtonState.product.id}
+      data-wps-post-id=''>
+      {hasLink(itemsState, shopState) ? (
+        <Link
+          shop={shopState}
+          type='products'
+          payload={productState.payload}
+          linkTo={itemsState.payloadSettings.linkTo}
+          target={itemsState.payloadSettings.linkTarget}>
+          <AddButton hasLink={true} />
+        </Link>
+      ) : (
+        <AddButton />
+      )}
 
       {hasNotice && (
         <Notice status={hasNotice.type} isDismissible={false}>
-          {wp.hooks.applyFilters(
-            'notice.product.addToCart.text',
-            __(hasNotice.message, wpshopify.misc.textdomain)
-          )}
+          <FilterHook name='notice.product.addToCart.text'>
+            {__(hasNotice.message, wpshopify.misc.textdomain)}
+          </FilterHook>
         </Notice>
       )}
     </div>

@@ -2,6 +2,7 @@ import { IconRemove } from '../../../common/icons/icon-remove.jsx'
 import { StorefrontContext } from '../_state/context'
 import { useTransition, animated } from 'react-spring'
 import { createSelectionsOfType, buildNewSelection } from '../../../common/selections'
+import { FilterHook } from '../../../common/utils'
 
 const { useContext } = wp.element
 const { __ } = wp.i18n
@@ -25,13 +26,14 @@ function StorefrontSelectionsValue({ selectionType, val }) {
 
   return (
     <span className='wps-filter-selection-value wps-mr-2' onClick={e => onClick(val)}>
-      {selectionType === 'available_for_sale'
-        ? wp.hooks.applyFilters(
-            'storefront.selections.available.text',
-            __('Available for sale', wpshopify.misc.textdomain)
-          )
-        : val}{' '}
-      <IconRemove />{' '}
+      {selectionType === 'available_for_sale' ? (
+        <FilterHook name='storefront.selections.available.text'>
+          {__('Available for sale', wpshopify.misc.textdomain)}
+        </FilterHook>
+      ) : (
+        val
+      )}
+      <IconRemove />
     </span>
   )
 }
