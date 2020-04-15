@@ -10,31 +10,28 @@ function ShopReducer(state, action) {
     case 'SET_CHECKOUT_ID': {
       return {
         ...state,
-        checkoutId: update(state.checkoutId, { $set: action.payload })
+        checkoutId: update(state.checkoutId, { $set: action.payload }),
       }
     }
     case 'SET_SHOP_INFO': {
       return {
         ...state,
-        info: update(state.info, { $set: action.payload })
+        info: update(state.info, { $set: action.payload }),
       }
     }
     case 'SET_HOOKS_COMPATIBLE': {
       return {
         ...state,
-        hooksCompatible: update(state.hooksCompatible, { $set: action.payload })
+        hooksCompatible: update(state.hooksCompatible, { $set: action.payload }),
       }
     }
     case 'IS_SHOP_READY': {
       const newState = {
         ...state,
         isShopReady: update(state.isShopReady, {
-          $set: true
-        })
+          $set: true,
+        }),
       }
-
-      // App is ready to go
-      wp.hooks.doAction('after.shop.ready', newState)
 
       return newState
     }
@@ -43,8 +40,8 @@ function ShopReducer(state, action) {
       const newState = {
         ...state,
         isCartReady: update(state.isCartReady, {
-          $set: true
-        })
+          $set: true,
+        }),
       }
 
       // Cart is ready to go
@@ -64,14 +61,14 @@ function ShopReducer(state, action) {
 
       return {
         ...state,
-        notices: update(state.notices, { $set: updatedNotices })
+        notices: update(state.notices, { $set: updatedNotices }),
       }
     }
 
     case 'SET_CHECKOUT_DISCOUNT_CODE': {
       return {
         ...state,
-        discountCode: update(state.discountCode, { $set: action.payload })
+        discountCode: update(state.discountCode, { $set: action.payload }),
       }
     }
 
@@ -80,7 +77,7 @@ function ShopReducer(state, action) {
 
       return {
         ...state,
-        customAttributes: update(state.customAttributes, { $set: attributes })
+        customAttributes: update(state.customAttributes, { $set: attributes }),
       }
     }
 
@@ -94,8 +91,8 @@ function ShopReducer(state, action) {
       return {
         ...state,
         customAttributes: update(state.customAttributes, {
-          $set: newCheckoutAttributes
-        })
+          $set: newCheckoutAttributes,
+        }),
       }
     }
 
@@ -104,14 +101,16 @@ function ShopReducer(state, action) {
 
       return {
         ...state,
-        note: update(state.note, { $set: action.payload })
+        note: update(state.note, { $set: action.payload }),
       }
     }
 
     case 'SET_DIRECT_CHECKOUT_OCCURING': {
       return {
         ...state,
-        isDirectCheckoutOccurring: update(state.isDirectCheckoutOccurring, { $set: action.payload })
+        isDirectCheckoutOccurring: update(state.isDirectCheckoutOccurring, {
+          $set: action.payload,
+        }),
       }
     }
 

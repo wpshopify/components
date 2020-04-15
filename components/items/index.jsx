@@ -59,7 +59,7 @@ function Items(props) {
 
   return (
     props.options &&
-    props.options.map(component => {
+    props.options.map((component) => {
       return usePortal(
         <ItemsProvider
           component={component}

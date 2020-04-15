@@ -1,4 +1,4 @@
-import uuidv4 from 'uuid/v4'
+import { v4 as uuidv4 } from 'uuid'
 import { AccountDetailsAddress } from './address'
 import { AccountAddressControls } from './address-controls'
 
@@ -12,7 +12,7 @@ function AccountDetailsAddresses({ addresses }) {
 
   return (
     addresses &&
-    addresses.map(address => (
+    addresses.map((address) => (
       <div key={uuidv4()} css={style} className='address address-other'>
         <AccountDetailsAddress address={address.node} />
         <AccountAddressControls address={address.node} />

@@ -47,8 +47,6 @@ function onSinglePage(itemsState) {
 }
 
 function hasLink(itemsState, shop) {
-  console.log('hasLink 1', shop)
-
   if (itemsState.payloadSettings.linkTo === 'none') {
     return false
   }
@@ -56,12 +54,11 @@ function hasLink(itemsState, shop) {
   if (itemsState.payloadSettings.linkTo === 'shopify') {
     return true
   }
-  console.log('hasLink 2', itemsState)
+
   if (liteSyncAndWordPressLink(itemsState, shop)) {
-    console.log('hasLink 3')
     return false
   }
-  console.log('hasLink 4')
+
   return hasSinglePage() && !onSinglePage(itemsState)
 }
 
@@ -101,8 +98,6 @@ function getWordPressSingleLink(payload) {
 }
 
 function getItemLink(payload, shopInfo, type, linkTo) {
-  console.log('.... linkTo', linkTo)
-
   if (linkTo === 'none') {
     return false
   }

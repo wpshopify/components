@@ -180,12 +180,10 @@ function ProductAddButton() {
   }
 
   function getButtonText() {
-    console.log('getButtonText 1')
-
     if (hasCustomButtonText(itemsState)) {
       return itemsState.payloadSettings.addToCartButtonText
     }
-    console.log('getButtonText 3')
+
     if (isDirectCheckout) {
       return 'Checkout'
     }

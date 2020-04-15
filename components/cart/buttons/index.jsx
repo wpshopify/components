@@ -1,12 +1,11 @@
 import { CartButton } from './button'
-import uuidv4 from 'uuid/v4'
+import { v4 as uuidv4 } from 'uuid'
 
 function CartButtons({ buttons }) {
   return (
     <>
-      {buttons.map(buttonOptions => (
-        <CartButton key={uuidv4()} options={buttonOptions} />
-      ))}
+      {buttons &&
+        buttons.map((buttonOptions) => <CartButton key={uuidv4()} options={buttonOptions} />)}
     </>
   )
 }

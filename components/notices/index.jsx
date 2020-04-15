@@ -1,7 +1,6 @@
-import uuidv4 from 'uuid/v4'
+import { v4 as uuidv4 } from 'uuid'
 import { usePortal } from '../../common/hooks'
 import { findPortalElement } from '../../common/utils'
-
 const { Notice } = wp.components
 
 function Notices({ notices, dropzone, noticeGroup }) {
@@ -14,13 +13,15 @@ function Notices({ notices, dropzone, noticeGroup }) {
   }
   return usePortal(
     <>
-      <section className={'wps-notices-' + noticeGroup}>
-        {notices.map(n => (
-          <Notice key={uuidv4()} status={n.type} isDismissible={false}>
-            {checkForErrorObj(n.message)}
-          </Notice>
-        ))}
-      </section>
+      {notices && (
+        <section className={'wps-notices-' + noticeGroup}>
+          {notices.map((notice) => (
+            <Notice key={uuidv4()} status={notice.type} isDismissible={false}>
+              {checkForErrorObj(notice.message)}
+            </Notice>
+          ))}
+        </section>
+      )}
     </>,
     findPortalElement(dropzone)
   )

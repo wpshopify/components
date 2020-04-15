@@ -8,8 +8,8 @@ function GlobalNotices() {
 
   return (
     <Notices
-      notices={shopState.notices}
-      dropzone={document.querySelector('#wps-shop .wps-notices-global')}
+      notices={shopState.notices && shopState.notices}
+      dropzone={document.querySelector('#wpshopify-notices')}
       noticeGroup='global'
     />
   )

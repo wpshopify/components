@@ -5,7 +5,7 @@ import { ShopContext } from '../../../shop/_state/context'
 import { AccountReturn } from '../return'
 import { stylesSlideIn } from '../../_styles'
 import { OrderDetailsRow } from './details-row'
-import uuidv4 from 'uuid/v4'
+import { v4 as uuidv4 } from 'uuid'
 
 import { Table } from '../../../tables'
 import { TableHeader } from '../../../tables/header'
@@ -80,7 +80,7 @@ function OrderDetails() {
               <Th align='right'>Total</Th>
             </TableHeader>
             <TableBody>
-              {customersState.selectedOrderDetails.lineItems.edges.map(lineItem => (
+              {customersState.selectedOrderDetails.lineItems.edges.map((lineItem) => (
                 <OrderDetailsRow key={uuidv4()} lineItem={lineItem.node} />
               ))}
             </TableBody>

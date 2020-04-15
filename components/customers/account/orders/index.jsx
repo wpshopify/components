@@ -1,7 +1,7 @@
 import { Order } from './order'
 import { CustomersContext } from '../../_state/context'
 import { OrderDetails } from './details'
-import uuidv4 from 'uuid/v4'
+import { v4 as uuidv4 } from 'uuid'
 import ContentLoader from 'react-content-loader'
 import isEmpty from 'lodash/isEmpty'
 
@@ -20,7 +20,7 @@ function Orders() {
   const [hasEmptyOrders, setHasEmptyOrder] = useState(false)
 
   const stylesOrders = {
-    width: '65%'
+    width: '65%',
   }
 
   function hasOrders() {
@@ -56,7 +56,7 @@ function Orders() {
 
           <TableBody>
             {customerState.customer &&
-              customerState.customer.orders.edges.map(order => (
+              customerState.customer.orders.edges.map((order) => (
                 <Order key={uuidv4()} order={order} />
               ))}
           </TableBody>

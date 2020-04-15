@@ -30,8 +30,6 @@ function ProductOptionTrigger() {
   const isFirstRender = useRef(true)
 
   function onClick() {
-    console.log('onClick')
-
     wp.hooks.doAction('before.product.variantDropdown.toggle', productOptionState)
 
     productOptionDispatch({ type: 'TOGGLE_DROPDOWN', payload: !productOptionState.isDropdownOpen })

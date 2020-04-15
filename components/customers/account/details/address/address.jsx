@@ -1,4 +1,4 @@
-import uuidv4 from 'uuid/v4'
+import { v4 as uuidv4 } from 'uuid'
 
 /** @jsx jsx */
 import { jsx, css } from '@emotion/core'
@@ -25,7 +25,7 @@ function AccountDetailsAddress({ address }) {
     <div className='wps-account-address' css={stylesAddress}>
       {address.name}
       {address &&
-        address.formatted.map(line => (
+        address.formatted.map((line) => (
           <p css={stylesAddressLine} key={uuidv4()}>
             {line}
           </p>

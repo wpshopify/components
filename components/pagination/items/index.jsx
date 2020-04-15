@@ -1,7 +1,7 @@
 import { PaginationContext } from '../_state/context'
 import { ItemsContext } from '../../items/_state/context'
 import { containerFluidCSS, rowCSS } from '../../../common/css'
-import uuidv4 from 'uuid/v4'
+import { v4 as uuidv4 } from 'uuid'
 
 /** @jsx jsx */
 import { jsx, css } from '@emotion/core'
@@ -24,7 +24,7 @@ function PaginationItems({ children, alignHeight }) {
       return wp.element.cloneElement(children, {
         payload: item,
         key: uuidv4(),
-        isFirstItem: isFirstItem(i, lastPageIndex)
+        isFirstItem: isFirstItem(i, lastPageIndex),
       })
     })
   }

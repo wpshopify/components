@@ -13,7 +13,6 @@ const ProductOptionTrigger = wp.element.lazy(() =>
 
 function ProductOptionDropdown() {
   const [productOptionState] = useContext(ProductOptionContext)
-  console.log('productOptionState.isDropdownOpen', productOptionState.isDropdownOpen)
 
   return (
     <div className='row'>

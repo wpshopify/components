@@ -13,10 +13,21 @@ function ShopBootstrap({ children }) {
   }
 
   function setShopAndCheckoutId(instances = false) {
+    console.log('::::: instances', instances)
+
     if (instances) {
-      shopDispatch({ type: 'SET_CHECKOUT_ID', payload: instances.checkout.id })
-      shopDispatch({ type: 'SET_SHOP_INFO', payload: instances.shop })
+      shopDispatch({
+        type: 'SET_CHECKOUT_ID',
+        payload: instances.checkout && instances.checkout.id,
+      })
+      shopDispatch({
+        type: 'SET_SHOP_INFO',
+        payload: instances.shop && instances.shop,
+      })
     }
+
+    // App is ready to go
+    wp.hooks.doAction('after.shop.ready', shopState)
   }
 
   async function bootstrapShop() {
@@ -25,15 +36,15 @@ function ShopBootstrap({ children }) {
     setShopReady()
 
     buildInstances().then(
-      async instances => {
+      async (instances) => {
         // If no checkout was found ...
         if (!instances || !instances.checkout) {
           shopDispatch({
             type: 'UPDATE_NOTICES',
             payload: {
               type: 'error',
-              message: __('No checkout instance available', wpshopify.misc.textdomain)
-            }
+              message: __('No checkout instance available', wpshopify.misc.textdomain),
+            },
           })
 
           return setShopAndCheckoutId()
@@ -48,8 +59,8 @@ function ShopBootstrap({ children }) {
               type: 'UPDATE_NOTICES',
               payload: {
                 type: 'error',
-                message: buildInstancesError
-              }
+                message: buildInstancesError,
+              },
             })
 
             return setShopAndCheckoutId()
@@ -60,8 +71,8 @@ function ShopBootstrap({ children }) {
               type: 'UPDATE_NOTICES',
               payload: {
                 type: 'error',
-                message: 'No store checkout or client instances were found.'
-              }
+                message: 'No store checkout or client instances were found.',
+              },
             })
 
             return setShopAndCheckoutId()
@@ -74,13 +85,13 @@ function ShopBootstrap({ children }) {
         // Else just build like normal
         setShopAndCheckoutId(instances)
       },
-      error => {
+      (error) => {
         shopDispatch({
           type: 'UPDATE_NOTICES',
           payload: {
             type: 'error',
-            message: error
-          }
+            message: error,
+          },
         })
 
         return setShopAndCheckoutId()

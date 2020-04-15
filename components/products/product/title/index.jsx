@@ -33,8 +33,6 @@ function ProductTitle() {
     return wp.hooks.applyFilters('product.title.class', 'wps-products-title')
   }
 
-  console.log('>>>>> itemsState.payloadSettings', itemsState.payloadSettings)
-
   return usePortal(
     <div className='wps-component wps-component-products-title' data-wps-component-order='0'>
       {hasLink(itemsState, shopState) ? (

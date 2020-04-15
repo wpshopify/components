@@ -2,7 +2,7 @@ import { ItemsContext } from '../_state/context'
 import { getHashFromQueryParams } from '../../../common/utils'
 import {
   fetchNextPage,
-  graphQuery
+  graphQuery,
 } from '/Users/andrew/www/devil/devilbox-new/data/www/wpshopify-api'
 import to from 'await-to-js'
 import isEmpty from 'lodash/isEmpty'
@@ -74,7 +74,7 @@ function fetchNextItems(itemsState, itemsDispatch) {
       if (initialError) {
         itemsDispatch({
           type: 'UPDATE_NOTICES',
-          payload: { type: 'error', message: initialError }
+          payload: { type: 'error', message: initialError },
         })
         itemsDispatch({ type: 'SET_IS_LOADING', payload: false })
 
@@ -98,7 +98,7 @@ function fetchNextItems(itemsState, itemsDispatch) {
         if (finalResultsError) {
           itemsDispatch({
             type: 'UPDATE_NOTICES',
-            payload: { type: 'error', message: finalResultsError }
+            payload: { type: 'error', message: finalResultsError },
           })
           itemsDispatch({ type: 'SET_IS_LOADING', payload: false })
 
@@ -113,7 +113,7 @@ function fetchNextItems(itemsState, itemsDispatch) {
 
     itemsDispatch({
       type: 'UPDATE_TOTAL_SHOWN',
-      payload: nextItems.length
+      payload: nextItems.length,
     })
 
     itemsDispatch({
@@ -121,8 +121,8 @@ function fetchNextItems(itemsState, itemsDispatch) {
       payload: {
         items: nextItems,
         skipCache: true,
-        replace: false
-      }
+        replace: false,
+      },
     })
     itemsDispatch({ type: 'SET_IS_LOADING', payload: false })
 
@@ -139,26 +139,29 @@ function Item({ children, customQueryParams, limit = false, infiniteScroll = fal
   const isFirstRender = useRef(true)
 
   async function fetchNewItems() {
+    console.log('itemsState.beforeLoading', itemsState.beforeLoading)
+
     if (itemsState.beforeLoading) {
       itemsState.beforeLoading(itemsState)
     }
 
     var hashCacheId = getHashFromQueryParams(itemsState.queryParams)
+    console.log('hashCacheId', hashCacheId)
 
     if (has(itemsState.payloadCache, hashCacheId)) {
       itemsDispatch({
         type: 'UPDATE_TOTAL_SHOWN',
-        payload: itemsState.payloadCache[hashCacheId].length
+        payload: itemsState.payloadCache[hashCacheId].length,
       })
 
       itemsDispatch({
         type: 'UPDATE_PAYLOAD',
         payload: {
           items: itemsState.payloadCache[hashCacheId],
-          replace: true
-        }
+          replace: true,
+        },
       })
-
+      console.log('itemsState.afterLoading', itemsState.afterLoading)
       if (itemsState.afterLoading) {
         itemsState.afterLoading(itemsState.payloadCache)
       }
@@ -178,25 +181,26 @@ function Item({ children, customQueryParams, limit = false, infiniteScroll = fal
       if (resultsError) {
         itemsDispatch({
           type: 'UPDATE_NOTICES',
-          payload: { type: 'error', message: resultsError }
+          payload: { type: 'error', message: resultsError },
         })
 
         return
       }
 
       var newItems = results.model[itemsState.dataType]
+      console.log('newItems :: ', newItems)
 
       itemsDispatch({
         type: 'UPDATE_TOTAL_SHOWN',
-        payload: newItems.length
+        payload: newItems.length,
       })
 
       itemsDispatch({
         type: 'UPDATE_PAYLOAD',
         payload: {
           items: newItems,
-          replace: true
-        }
+          replace: true,
+        },
       })
 
       if (itemsState.afterLoading) {
@@ -226,7 +230,7 @@ function Item({ children, customQueryParams, limit = false, infiniteScroll = fal
     if (!isEqual(itemsState.queryParams, customQueryParams)) {
       itemsDispatch({
         type: 'SET_QUERY_PARAMS',
-        payload: customQueryParams
+        payload: customQueryParams,
       })
     }
   }, [customQueryParams])
@@ -245,8 +249,8 @@ function Item({ children, customQueryParams, limit = false, infiniteScroll = fal
       type: 'UPDATE_PAYLOAD',
       payload: {
         items: itemsState.payload,
-        replace: false
-      }
+        replace: false,
+      },
     })
   }, [limit, infiniteScroll])
 

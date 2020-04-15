@@ -1,5 +1,5 @@
 import { ProductThumbnailImage } from '../thumbnail'
-import uuidv4 from 'uuid/v4'
+import { v4 as uuidv4 } from 'uuid'
 import isEmpty from 'lodash/isEmpty'
 
 const ProductThumbnailImages = wp.element.memo(function ProductThumbnailImages({ product }) {
@@ -10,7 +10,7 @@ const ProductThumbnailImages = wp.element.memo(function ProductThumbnailImages({
   return (
     hasImages() && (
       <div className='wps-thumbnails-wrapper'>
-        {product.images.map(image => (
+        {product.images.map((image) => (
           <ProductThumbnailImage key={uuidv4()} image={image} />
         ))}
       </div>

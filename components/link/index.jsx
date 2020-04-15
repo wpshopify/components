@@ -14,8 +14,6 @@ function Link({
   const className = 'wps-' + type + '-link' + ' ' + classNames
 
   function getTarget(target) {
-    console.log('target', target)
-
     if (target) {
       return target
     }
