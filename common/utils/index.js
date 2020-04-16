@@ -27,7 +27,7 @@ function objectIsEmpty(object) {
 
   var foundNone = true
 
-  forOwn(object, function(value, key) {
+  forOwn(object, function (value, key) {
     if (!isEmpty(value)) {
       foundNone = false
     }
@@ -50,7 +50,7 @@ function isPairMatch(compareAgaisnt, pairToMatch) {
   }
 
   if (isArray(compareAgaisnt)) {
-    return !isEmpty(compareAgaisnt.filter(obj => isMatch(obj, pairToMatch)))
+    return !isEmpty(compareAgaisnt.filter((obj) => isMatch(obj, pairToMatch)))
   } else {
     return isMatch(compareAgaisnt, pairToMatch)
   }
@@ -66,7 +66,7 @@ function lowercaseObjKeys(obj) {
 }
 
 function capitalizeFirstLetter(string) {
-  return string.toLowerCase().replace(/^\w/, c => c.toUpperCase())
+  return string.toLowerCase().replace(/^\w/, (c) => c.toUpperCase())
 }
 
 function itemWidthClass(perRow) {
@@ -127,7 +127,7 @@ function FilterHook({ name, children, hasHTML = false, isReady = false, args = [
       <div
         data-wps-is-ready={isReady ? isReady : true}
         dangerouslySetInnerHTML={{
-          __html: wp.hooks.applyFilters(name, false, ...args)
+          __html: wp.hooks.applyFilters(name, false, ...args),
         }}
       />
     )
@@ -145,11 +145,8 @@ function _t(string) {
 }
 
 function toCamel(s) {
-  return s.replace(/([-_][a-z])/gi, $1 => {
-    return $1
-      .toUpperCase()
-      .replace('-', '')
-      .replace('_', '')
+  return s.replace(/([-_][a-z])/gi, ($1) => {
+    return $1.toUpperCase().replace('-', '').replace('_', '')
   })
 }
 
@@ -161,7 +158,7 @@ function underscoreToCamel(o) {
   if (isObject(o)) {
     const n = {}
 
-    Object.keys(o).forEach(k => {
+    Object.keys(o).forEach((k) => {
       n[toCamel(k)] = underscoreToCamel(o[k])
     })
 
@@ -190,5 +187,5 @@ export {
   _t,
   underscoreToCamel,
   decodeComponentPayloadSettings,
-  isPairMatch
+  isPairMatch,
 }

@@ -8,6 +8,8 @@ import to from 'await-to-js'
 
 const { useContext, useState, useRef, useEffect } = wp.element
 const { __ } = wp.i18n
+const { Spinner } = wp.components
+const { Suspense } = wp.element
 
 const CartHeader = wp.element.lazy(() => import(/* webpackChunkName: 'CartHeader' */ '../header'))
 const CartContents = wp.element.lazy(() =>
@@ -35,8 +37,8 @@ function CartWrapper() {
         type: 'UPDATE_NOTICES',
         payload: {
           type: 'error',
-          message: __('No checkout found', wpshopify.misc.textdomain)
-        }
+          message: __('No checkout found', wpshopify.misc.textdomain),
+        },
       })
 
       shopDispatch({ type: 'IS_CART_READY', payload: true })
@@ -50,22 +52,22 @@ function CartWrapper() {
         type: 'UPDATE_NOTICES',
         payload: {
           type: 'error',
-          message: __(productsError, wpshopify.misc.textdomain)
-        }
+          message: __(productsError, wpshopify.misc.textdomain),
+        },
       })
     }
 
     cartDispatch({
       type: 'SET_CHECKOUT_CACHE',
-      payload: { checkoutId: shopState.checkoutId }
+      payload: { checkoutId: shopState.checkoutId },
     })
 
     cartDispatch({
       type: 'SET_LINE_ITEMS_AND_VARIANTS',
       payload: {
         lineItems: { products: products },
-        checkoutId: shopState.checkoutId
-      }
+        checkoutId: shopState.checkoutId,
+      },
     })
 
     if (isEmpty(products)) {
@@ -94,7 +96,7 @@ function CartWrapper() {
 
     cartDispatch({
       type: 'SET_TOTAL_LINE_ITEMS',
-      payload: findTotalCartQuantities(cartState.checkoutCache.lineItems)
+      payload: findTotalCartQuantities(cartState.checkoutCache.lineItems),
     })
   }, [shopState.isCartReady, cartState.checkoutCache.lineItems])
 
@@ -115,7 +117,7 @@ function CartWrapper() {
 
     shopDispatch({
       type: 'UPDATE_CHECKOUT_ATTRIBUTES',
-      payload: updateCheckoutAttributes
+      payload: updateCheckoutAttributes,
     })
   }, [updateCheckoutAttributes])
 
@@ -127,7 +129,7 @@ function CartWrapper() {
 
     shopDispatch({
       type: 'SET_CHECKOUT_ATTRIBUTES',
-      payload: setCheckoutAttributes
+      payload: setCheckoutAttributes,
     })
   }, [setCheckoutAttributes])
 
@@ -160,7 +162,7 @@ function CartWrapper() {
     if (lineItemsAdded) {
       cartDispatch({
         type: 'UPDATE_LINE_ITEMS_AND_VARIANTS',
-        payload: lineItemsAdded
+        payload: lineItemsAdded,
       })
       cartDispatch({ type: 'TOGGLE_CART', payload: true })
     }
@@ -182,17 +184,19 @@ function CartWrapper() {
   return (
     shopState.settings.general.cartLoaded && (
       <section ref={cart} className='wps-cart'>
-        <CartButtons buttons={cartState.buttons} />
-        <CartHeader />
-        <CartContents
-          isCartReady={shopState.isCartEmpty}
-          isCartEmpty={cartState.isCartEmpty}
-          checkoutCache={cartState.checkoutCache}
-        />
-        <CartFooter />
+        <Suspense fallback={<Spinner />}>
+          <CartButtons buttons={cartState.buttons} />
+          <CartHeader />
+          <CartContents
+            isCartReady={shopState.isCartEmpty}
+            isCartEmpty={cartState.isCartEmpty}
+            checkoutCache={cartState.checkoutCache}
+          />
+          <CartFooter />
+        </Suspense>
       </section>
     )
   )
 }
 
-export default CartWrapper
+export { CartWrapper }

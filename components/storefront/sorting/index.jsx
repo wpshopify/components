@@ -35,18 +35,21 @@ function StorefrontSorting() {
       sortKey = sortKey.replace('-REVERSE', '')
     }
 
+    console.log('updateFetchParams')
+
     return {
       reverse: reverse,
-      sortKey: sortKey
+      sortKey: sortKey,
     }
   }
 
   function onChange(event) {
     setSortValue(event.target.value)
+    console.log('event', event)
 
     itemsDispatch({
       type: 'MERGE_QUERY_PARAMS',
-      payload: updateFetchParams(event)
+      payload: updateFetchParams(event),
     })
   }
 

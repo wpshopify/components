@@ -10,7 +10,7 @@ import { StorefrontFilterOptionsGroup } from '../group'
 import { StorefrontFilterOptionsHeading } from '../heading'
 import { StorefrontOptionsContext } from '../_state/context'
 import { ItemsContext } from '../../../items/_state/context'
-
+const { __ } = wp.i18n
 const { useEffect, useContext } = wp.element
 
 function combineFilterOptions(accumulator, currentValue) {
@@ -22,12 +22,12 @@ function formatFilterOptions(data) {
 }
 
 function getDataFromResponse(response) {
-  return response.map(item => item.data)
+  return response.map((item) => item.data)
 }
 
 function lowercaseFilterOptions(allFilteredData) {
-  return mapValues(allFilteredData, value => {
-    return map(value, val => val.toLowerCase())
+  return mapValues(allFilteredData, (value) => {
+    return map(value, (val) => val.toLowerCase())
   })
 }
 
@@ -48,15 +48,15 @@ function StorefrontOptionsWrapper() {
             respError.message +
               '. Occurred when fetching available filter options. Please clear your browser cache and reload the page.',
             wpshopify.misc.textdomain
-          )
-        }
+          ),
+        },
       })
     } else {
       const allFilteredData = formatFilterOptions(getDataFromResponse(respData))
 
       storefrontOptionsDispatch({
         type: 'SET_FILTER_OPTIONS',
-        payload: lowercaseFilterOptions(allFilteredData)
+        payload: lowercaseFilterOptions(allFilteredData),
       })
     }
 

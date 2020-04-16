@@ -1,11 +1,15 @@
 import { ProductProvider } from './_state/provider'
 import { ProductWrapper } from './wrapper'
+const { Suspense } = wp.element
+const { Spinner } = wp.components
 
 function Product({ payload, isFirstItem }) {
   return (
-    <ProductProvider payload={payload}>
-      <ProductWrapper isFirstItem={isFirstItem} />
-    </ProductProvider>
+    <Suspense fallback={<Spinner />}>
+      <ProductProvider payload={payload}>
+        <ProductWrapper isFirstItem={isFirstItem} />
+      </ProductProvider>
+    </Suspense>
   )
 }
 

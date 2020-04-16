@@ -31,14 +31,14 @@ function ProductWrapper({ isFirstItem }) {
       : 100 / itemsState.payloadSettings.itemsPerRow + '%'
 
   const styles = css`
-    padding: 1em;
+    padding: 0 1em 1em 1em;
     position: relative;
     z-index: 1;
     flex: 0 0 ${width};
   `
 
   return (
-    <div css={styles} className={''} data-is-first-item={isFirstItem}>
+    <div css={styles} className={'wps-item'} data-is-first-item={isFirstItem}>
       {isShowingComponent(itemsState, 'images') && <ProductImages />}
       {isShowingComponent(itemsState, 'title') && <ProductTitle />}
       {isShowingComponent(itemsState, 'pricing') && <ProductPricing />}

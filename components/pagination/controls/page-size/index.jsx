@@ -1,6 +1,6 @@
 import {
   graphQuery,
-  findLastCursorId
+  findLastCursorId,
 } from '/Users/andrew/www/devil/devilbox-new/data/www/wpshopify-api'
 import { PaginationContext } from '../../_state/context'
 import { ItemsContext } from '../../../items/_state/context'
@@ -25,7 +25,7 @@ function PaginationPageSize() {
 
   function updatedFirstQueryParams(event) {
     return {
-      first: parseInt(event.target.value)
+      first: parseInt(event.target.value),
     }
   }
 
@@ -60,7 +60,7 @@ function PaginationPageSize() {
 
       itemsDispatch({
         type: 'UPDATE_TOTAL_SHOWN',
-        payload: shopifyResponse.model.products.length
+        payload: shopifyResponse.model.products.length,
       })
 
       itemsDispatch({
@@ -68,8 +68,8 @@ function PaginationPageSize() {
         payload: {
           items: shopifyResponse.model.products,
           skipCache: true,
-          replace: true
-        }
+          replace: true,
+        },
       })
     }
 
@@ -88,7 +88,7 @@ function PaginationPageSize() {
             className='wps-input'
             value={pageSize}
             id='wps-sorting'
-            onChange={e => onChange(e)}
+            onChange={(e) => onChange(e)}
             disabled={itemsState.isLoading}>
             <option value='DEFAULT' disabled='disabled'>
               Choose a size
@@ -106,4 +106,4 @@ function PaginationPageSize() {
   )
 }
 
-export { PaginationPageSize }
+export default PaginationPageSize

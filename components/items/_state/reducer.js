@@ -38,11 +38,13 @@ function createNewPayloadCacheObj(state, items) {
 }
 
 function maybeCachePayload(state, updatedPayload, updatedHasMoreItems, hasExistingCache = false) {
+  console.log('maybeCachePayload')
+
   var newPayloadstuff = {
     ...state,
     payload: updatedPayload,
     hasMoreItems: updatedHasMoreItems,
-    totalShown: updatedPayload.length
+    totalShown: updatedPayload.length,
   }
 
   if (hasExistingCache) {
@@ -55,6 +57,8 @@ function maybeCachePayload(state, updatedPayload, updatedHasMoreItems, hasExisti
     newPayloadstuff['payloadCache'] = update(state.payloadCache, { $merge: newCache })
   }
 
+  console.log('____________ newPayloadstuff', newPayloadstuff)
+
   wp.hooks.doAction('after.payload.update', newPayloadstuff)
 
   return newPayloadstuff
@@ -65,20 +69,20 @@ function updatePayload(state, newPayload, skipCache, replace) {
 
   if (!skipCache && has(state.payloadCache, hashCacheId)) {
     let updatedPayload = update(state.payload, {
-      $set: state.payloadCache[hashCacheId]
+      $set: state.payloadCache[hashCacheId],
     })
 
     let updatedHasMoreItems = update(state.hasMoreItems, {
-      $set: checkHasMore(state.payloadSettings, state.payloadCache[hashCacheId])
+      $set: checkHasMore(state.payloadSettings, state.payloadCache[hashCacheId]),
     })
 
     if (limitReached(state)) {
       updatedPayload = update(state.payload, {
-        $set: limitPayload(state.payload, newPayload, state)
+        $set: limitPayload(state.payload, newPayload, state),
       })
 
       updatedHasMoreItems = update(state.hasMoreItems, {
-        $set: checkHasMore(state.payloadSettings, updatedPayload)
+        $set: checkHasMore(state.payloadSettings, updatedPayload),
       })
     }
 
@@ -87,11 +91,11 @@ function updatePayload(state, newPayload, skipCache, replace) {
 
   if (limitReached(state)) {
     let updatedPayload = update(state.payload, {
-      $set: limitPayload(state.payload, newPayload, state)
+      $set: limitPayload(state.payload, newPayload, state),
     })
 
     let updatedHasMoreItems = update(state.hasMoreItems, {
-      $set: checkHasMore(state.payloadSettings, updatedPayload)
+      $set: checkHasMore(state.payloadSettings, updatedPayload),
     })
 
     return maybeCachePayload(state, updatedPayload, updatedHasMoreItems)
@@ -101,16 +105,16 @@ function updatePayload(state, newPayload, skipCache, replace) {
 
   if (replace) {
     var updatedPayload = update(state.payload, {
-      $set: newPayload
+      $set: newPayload,
     })
   } else {
     var updatedPayload = update(state.payload, {
-      $set: uniqBy(update(state.payload, { $push: newPayload }), 'id')
+      $set: uniqBy(update(state.payload, { $push: newPayload }), 'id'),
     })
   }
 
   let updatedHasMoreItems = update(state.hasMoreItems, {
-    $set: checkHasMore(state.payloadSettings, updatedPayload)
+    $set: checkHasMore(state.payloadSettings, updatedPayload),
   })
 
   return maybeCachePayload(state, updatedPayload, updatedHasMoreItems)
@@ -158,7 +162,7 @@ function ItemsReducer(state, action) {
     case 'UPDATE_PAYLOAD': {
       if (!action.payload) {
         return {
-          ...state
+          ...state,
         }
       }
 
@@ -181,14 +185,14 @@ function ItemsReducer(state, action) {
     case 'SET_IS_LOADING': {
       return {
         ...state,
-        isLoading: update(state.isLoading, { $set: action.payload })
+        isLoading: update(state.isLoading, { $set: action.payload }),
       }
     }
 
     case 'MERGE_QUERY_PARAMS': {
       return {
         ...state,
-        queryParams: update(state.queryParams, { $merge: action.payload })
+        queryParams: update(state.queryParams, { $merge: action.payload }),
       }
     }
 
@@ -197,14 +201,14 @@ function ItemsReducer(state, action) {
 
       return {
         ...state,
-        totalShown: update(state.totalShown, { $set: newTotal })
+        totalShown: update(state.totalShown, { $set: newTotal }),
       }
     }
 
     case 'SET_QUERY_PARAMS': {
       return {
         ...state,
-        queryParams: update(state.queryParams, { $set: action.payload })
+        queryParams: update(state.queryParams, { $set: action.payload }),
       }
     }
 
@@ -223,7 +227,7 @@ function ItemsReducer(state, action) {
 
       return {
         ...state,
-        notices: update(state.notices, { $set: updatedNotices })
+        notices: update(state.notices, { $set: updatedNotices }),
       }
     }
 

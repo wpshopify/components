@@ -6,7 +6,8 @@ import { Notices } from '../notices'
 import isEmpty from 'lodash/isEmpty'
 
 const { Notice } = wp.components
-const { useContext } = wp.element
+const { useContext, Suspense } = wp.element
+const { Spinner } = wp.components
 
 function Pagination({ children, shopSettings }) {
   const [itemsState] = useContext(ItemsContext)
@@ -24,7 +25,9 @@ function Pagination({ children, shopSettings }) {
   }
 
   function showNotices() {
-    if (isEmpty(itemsState.payload) && !itemsState.isLoading) {
+    console.log('itemsState.hasMoreItems', itemsState.hasMoreItems)
+
+    if (isEmpty(itemsState.payload) || !itemsState.hasMoreItems) {
       return true
     }
 
@@ -53,15 +56,21 @@ function Pagination({ children, shopSettings }) {
         />
       )}
 
-      {showNotices() ? (
+      {/* {showNotices() ? (
         <Notice status='info' isDismissible={false}>
           {itemsState.noResultsText}
         </Notice>
       ) : (
         <PaginationItems alignHeight={isAlignHeight()}>{children}</PaginationItems>
-      )}
+      )} */}
 
-      {!isHidingPagination() && <PaginationControls />}
+      <PaginationItems alignHeight={isAlignHeight()}>{children}</PaginationItems>
+
+      {!isHidingPagination() && (
+        <Suspense fallback={''}>
+          <PaginationControls />
+        </Suspense>
+      )}
     </PaginationProvider>
   )
 }

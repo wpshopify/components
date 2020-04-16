@@ -43,12 +43,10 @@ function PaginationItems({ children, alignHeight }) {
         {mapPayload()}
       </section>
 
-      {paginationState.controlsTouched && !itemsState.hasMoreItems ? (
+      {paginationState.controlsTouched && !itemsState.hasMoreItems && (
         <Notice status='info' isDismissible={false}>
           {itemsState.noResultsText}
         </Notice>
-      ) : (
-        ''
       )}
     </section>
   )

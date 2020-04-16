@@ -2,8 +2,7 @@ import { PaginationContext } from '../../_state/context'
 import { ItemsContext } from '../../../items/_state/context'
 import { usePortal } from '../../../../common/hooks'
 import { FilterHook } from '../../../../common/utils'
-
-import { fetchNextItems } from '../../../items/item'
+import { fetchNextItems } from '../../../items/item/api'
 import { Loader } from '../../../loader'
 import isEmpty from 'lodash/isEmpty'
 import has from 'lodash/has'
@@ -85,4 +84,4 @@ function PaginationLoadMore() {
   )
 }
 
-export { PaginationLoadMore }
+export default PaginationLoadMore
