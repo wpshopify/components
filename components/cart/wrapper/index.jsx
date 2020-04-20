@@ -1,12 +1,13 @@
 import { CartContext } from '../_state/context'
 import { ShopContext } from '../../shop/_state/context'
-import { useAction } from '../../../common/hooks'
+import { useAction, useCartToggle } from '../../../common/hooks'
 import { findTotalCartQuantities } from '../../../common/cart'
+import { useAnime, slideOutCart, slideInCart } from '../../../common/animations'
 import isEmpty from 'lodash/isEmpty'
 import { getProductsFromLineItems } from '/Users/andrew/www/devil/devilbox-new/data/www/wpshopify-api'
 import to from 'await-to-js'
 
-const { useContext, useState, useRef, useEffect } = wp.element
+const { useContext, useRef, useEffect } = wp.element
 const { __ } = wp.i18n
 const { Spinner } = wp.components
 const { Suspense } = wp.element
@@ -16,35 +17,28 @@ const CartContents = wp.element.lazy(() =>
   import(/* webpackChunkName: 'CartContents' */ '../contents')
 )
 const CartFooter = wp.element.lazy(() => import(/* webpackChunkName: 'CartFooter' */ '../footer'))
-const CartButtons = wp.element.lazy(() =>
-  import(/* webpackChunkName: 'CartButtons' */ '../buttons')
-)
+// const CartButtons = wp.element.lazy(() =>
+//   import(/* webpackChunkName: 'CartButtons' */ '../buttons')
+// )
+
+import { CartButtons } from '../buttons'
+import { useIsFirstRender } from '/Users/andrew/www/devil/devilbox-new/data/www/wpshopify-hooks'
 
 function CartWrapper() {
   const [cartState, cartDispatch] = useContext(CartContext)
   const [shopState, shopDispatch] = useContext(ShopContext)
-  const cart = useRef()
-  const isFirstRender = useRef(true)
+  const cartElement = useRef()
+  const isFirstRender = useIsFirstRender()
   const updateCheckoutAttributes = useAction('update.checkout.attributes')
   const setCheckoutAttributes = useAction('set.checkout.attributes')
   const setCheckoutNotes = useAction('set.checkout.note')
   const lineItemsAdded = useAction('product.addToCart')
   const openCart = useAction('cart.toggle')
+  const animeSlideInRight = useAnime(slideInCart)
+  const animeSlideOutRight = useAnime(slideOutCart)
+  const isCartOpen = useCartToggle(cartElement, cartState)
 
   async function cartBootstrap() {
-    if (!shopState.checkoutId) {
-      shopDispatch({
-        type: 'UPDATE_NOTICES',
-        payload: {
-          type: 'error',
-          message: __('No checkout found', wpshopify.misc.textdomain),
-        },
-      })
-
-      shopDispatch({ type: 'IS_CART_READY', payload: true })
-      return
-    }
-
     let [productsError, products] = await to(getProductsFromLineItems())
 
     if (productsError) {
@@ -80,8 +74,7 @@ function CartWrapper() {
   }
 
   useEffect(() => {
-    if (isFirstRender.current) {
-      isFirstRender.current = false
+    if (!shopState.checkoutId) {
       return
     }
 
@@ -89,11 +82,6 @@ function CartWrapper() {
   }, [shopState.checkoutId])
 
   useEffect(() => {
-    if (isFirstRender.current) {
-      isFirstRender.current = false
-      return
-    }
-
     cartDispatch({
       type: 'SET_TOTAL_LINE_ITEMS',
       payload: findTotalCartQuantities(cartState.checkoutCache.lineItems),
@@ -101,20 +89,10 @@ function CartWrapper() {
   }, [shopState.isCartReady, cartState.checkoutCache.lineItems])
 
   useEffect(() => {
-    if (isFirstRender.current) {
-      isFirstRender.current = false
-      return
-    }
-
     wp.hooks.doAction('on.checkout.update', cartState)
   }, [cartState.totalLineItems])
 
   useEffect(() => {
-    if (isFirstRender.current) {
-      isFirstRender.current = false
-      return
-    }
-
     shopDispatch({
       type: 'UPDATE_CHECKOUT_ATTRIBUTES',
       payload: updateCheckoutAttributes,
@@ -122,11 +100,6 @@ function CartWrapper() {
   }, [updateCheckoutAttributes])
 
   useEffect(() => {
-    if (isFirstRender.current) {
-      isFirstRender.current = false
-      return
-    }
-
     shopDispatch({
       type: 'SET_CHECKOUT_ATTRIBUTES',
       payload: setCheckoutAttributes,
@@ -134,31 +107,18 @@ function CartWrapper() {
   }, [setCheckoutAttributes])
 
   useEffect(() => {
-    if (isFirstRender.current) {
-      isFirstRender.current = false
-      return
-    }
-
     shopDispatch({ type: 'SET_CHECKOUT_NOTE', payload: setCheckoutNotes })
   }, [setCheckoutNotes])
 
   useEffect(() => {
-    if (isFirstRender.current) {
-      isFirstRender.current = false
-      return
+    if (isCartOpen || openCart) {
+      animeSlideInRight(cartElement.current)
+    } else {
+      animeSlideOutRight(cartElement.current)
     }
-
-    if (openCart) {
-      cartDispatch({ type: 'TOGGLE_CART', payload: true })
-    }
-  }, [openCart])
+  }, [isCartOpen, openCart])
 
   useEffect(() => {
-    if (isFirstRender.current) {
-      isFirstRender.current = false
-      return
-    }
-
     if (lineItemsAdded) {
       cartDispatch({
         type: 'UPDATE_LINE_ITEMS_AND_VARIANTS',
@@ -174,28 +134,23 @@ function CartWrapper() {
     }
   }, [lineItemsAdded])
 
-  useEffect(() => {
-    if (isFirstRender.current) {
-      isFirstRender.current = false
-      return
-    }
-  }, [shopState.isDirectCheckoutOccurring])
-
   return (
-    shopState.settings.general.cartLoaded && (
-      <section ref={cart} className='wps-cart'>
-        <Suspense fallback={<Spinner />}>
-          <CartButtons buttons={cartState.buttons} />
-          <CartHeader />
-          <CartContents
-            isCartReady={shopState.isCartEmpty}
-            isCartEmpty={cartState.isCartEmpty}
-            checkoutCache={cartState.checkoutCache}
-          />
-          <CartFooter />
-        </Suspense>
-      </section>
-    )
+    <section ref={cartElement} className='wps-cart'>
+      <CartButtons buttons={cartState.buttons} />
+      <Suspense fallback={<Spinner />}>
+        {shopState.settings.general.cartLoaded && cartState.isCartLoaded && (
+          <>
+            <CartHeader />
+            <CartContents
+              isCartReady={shopState.isCartEmpty}
+              isCartEmpty={cartState.isCartEmpty}
+              checkoutCache={cartState.checkoutCache}
+            />
+            <CartFooter />
+          </>
+        )}
+      </Suspense>
+    </section>
   )
 }
 

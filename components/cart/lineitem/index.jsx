@@ -24,9 +24,9 @@ function CartLineItem({ lineItem, index }) {
   const [cartState, cartDispatch] = useContext(CartContext)
   const [shopState] = useContext(ShopContext)
 
-  const [isUpdating] = useState(false)
-  const [lineItemQuantity, setLineItemQuantity] = useState(0)
-  const [lineItemTotal, setLineItemTotal] = useState(0)
+  const [isUpdating] = useState(() => false)
+  const [lineItemQuantity, setLineItemQuantity] = useState(() => 0)
+  const [lineItemTotal, setLineItemTotal] = useState(() => 0)
 
   const variantId = useRef(false)
   const lineItemElement = useRef()
@@ -38,8 +38,8 @@ function CartLineItem({ lineItem, index }) {
       type: 'REMOVE_LINE_ITEM',
       payload: {
         lineItem: variantId.current,
-        checkoutId: shopState.checkoutId
-      }
+        checkoutId: shopState.checkoutId,
+      },
     })
 
     cartDispatch({
@@ -47,10 +47,10 @@ function CartLineItem({ lineItem, index }) {
       payload: {
         lineItem: {
           variantId: variantId.current,
-          lineItemNewQuantity: 0
+          lineItemNewQuantity: 0,
         },
-        checkoutId: shopState.checkoutId
-      }
+        checkoutId: shopState.checkoutId,
+      },
     })
   }
 
@@ -74,7 +74,7 @@ function CartLineItem({ lineItem, index }) {
       src: lineItem.image.src,
       width: 300,
       height: 300,
-      crop: 'center'
+      crop: 'center',
     })
   }
 

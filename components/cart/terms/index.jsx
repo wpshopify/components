@@ -11,7 +11,7 @@ const { useContext, useState, useEffect } = wp.element
 function CartTerms() {
   const [shopState] = useContext(ShopContext)
   const [cartState, cartDispatch] = useContext(CartContext)
-  const [isChecked, setIsChecked] = useState(false)
+  const [isChecked, setIsChecked] = useState(() => false)
 
   useEffect(() => {
     cartDispatch({ type: 'SET_TERMS_ACCEPTED', payload: false })
@@ -19,7 +19,7 @@ function CartTerms() {
 
   function termsLabel() {
     return {
-      __html: __(shopState.settings.general.cartTermsContent, wpshopify.misc.textdomain)
+      __html: __(shopState.settings.general.cartTermsContent, wpshopify.misc.textdomain),
     }
   }
 

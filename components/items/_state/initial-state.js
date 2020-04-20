@@ -1,15 +1,21 @@
 import uniqid from 'uniqid'
 
-function ItemsInitialState({ component, afterLoading, beforeLoading }) {
+function ItemsInitialState({
+  component,
+  afterLoading = false,
+  beforeLoading = false,
+  customQueryParams = false,
+  payload = false,
+}) {
   var itemsState = {
     payloadSettings: component.payloadSettings,
     element: component.componentElement,
-    payload: [],
+    payload: payload,
     queryParams: {
-      query: component.payloadSettings.query,
-      sortKey: component.payloadSettings.sortBy,
-      reverse: component.payloadSettings.reverse,
-      first: component.payloadSettings.pageSize
+      query: customQueryParams ? customQueryParams.query : component.payloadSettings.query,
+      sortKey: customQueryParams ? customQueryParams.sortKey : component.payloadSettings.sortBy,
+      reverse: customQueryParams ? customQueryParams.reverse : component.payloadSettings.reverse,
+      first: customQueryParams ? customQueryParams.first : component.payloadSettings.pageSize,
     },
     originalParams: {
       type: component.componentType,
@@ -17,10 +23,12 @@ function ItemsInitialState({ component, afterLoading, beforeLoading }) {
         query: component.payloadSettings.query,
         sortKey: component.payloadSettings.sortBy,
         reverse: component.payloadSettings.reverse,
-        first: component.payloadSettings.pageSize
+        first: component.payloadSettings.pageSize,
       },
-      connectionParams: false
+      connectionParams: false,
     },
+    hasParentPayload: payload ? true : false,
+    customQueryParams: customQueryParams,
     dataType: component.componentType,
     lastCursorId: false,
     totalShown: 0,
@@ -34,7 +42,7 @@ function ItemsInitialState({ component, afterLoading, beforeLoading }) {
     lastQuery: component.payloadSettings.query ? component.payloadSettings.query : false,
     payloadCache: {},
     afterLoading: afterLoading,
-    beforeLoading: beforeLoading
+    beforeLoading: beforeLoading,
   }
 
   wp.hooks.doAction('items.init', itemsState)

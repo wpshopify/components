@@ -13,18 +13,20 @@ const { Notice } = wp.components
 function CustomerFormRegister() {
   const [shopState] = useContext(ShopContext)
   const [customersState, customersDispatch] = useContext(CustomersContext)
-  const [isSubmitting, setIsSubmitting] = useState(false)
+  const [isSubmitting, setIsSubmitting] = useState(() => false)
   const emailRef = useRef()
 
-  const [formState, setFormState] = useState({
-    email: '',
-    username: '',
-    password: ''
+  const [formState, setFormState] = useState(() => {
+    return {
+      email: '',
+      username: '',
+      password: '',
+    }
   })
 
-  const [noticeState, setNoticeState] = useState(false)
+  const [noticeState, setNoticeState] = useState(() => false)
 
-  const [hasChanged, setHasChangedState] = useState(false)
+  const [hasChanged, setHasChangedState] = useState(() => false)
 
   async function register() {
     setIsSubmitting(true)
@@ -36,7 +38,7 @@ function CustomerFormRegister() {
     if (registerSuccess.data.type === 'error') {
       setNoticeState({
         message: registerSuccess.data.message,
-        type: registerSuccess.data.type
+        type: registerSuccess.data.type,
       })
 
       setFormState({ username: '', email: '', password: '' })
@@ -60,7 +62,7 @@ function CustomerFormRegister() {
         'Successfully created account! <a href="/' +
         shopState.settings.general.accountPageLogin +
         '">Login</a>.',
-      type: 'success'
+      type: 'success',
     })
 
     setHasChangedState(true)
@@ -130,7 +132,7 @@ function RegisterForm({
   emailRef,
   hasChanged,
   customersState,
-  isSubmitting
+  isSubmitting,
 }) {
   const element = document.querySelector(customersState.dropzones.formRegister)
 

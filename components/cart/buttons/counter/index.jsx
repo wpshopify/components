@@ -10,7 +10,7 @@ const { useContext, useState, useRef, useEffect } = wp.element
 function CartCounter() {
   const [cartState, cartDispatch] = useContext(CartContext)
   const [shopState] = useContext(ShopContext)
-  const [totalItems, setTotalItems] = useState(
+  const [totalItems, setTotalItems] = useState(() =>
     findTotalCartQuantities(cartState.checkoutCache.lineItems)
   )
   const [cartButtonState] = useContext(CartButtonContext)
@@ -31,7 +31,7 @@ function CartCounter() {
   function counterStyles() {
     return {
       backgroundColor: getBackgroundColor(),
-      color: getColor()
+      color: getColor(),
     }
   }
 

@@ -19,6 +19,7 @@ function PaginationItems({ children, alignHeight }) {
 
   function mapPayload() {
     var lastPageIndex = itemsState.payload.length - itemsState.queryParams.first
+    console.log('itemsState.payload', itemsState.payload.length)
 
     return itemsState.payload.map((item, i) => {
       return wp.element.cloneElement(children, {
@@ -40,15 +41,21 @@ function PaginationItems({ children, alignHeight }) {
                
             </Masonry> */}
 
-        {mapPayload()}
+        {itemsState.payload.length && mapPayload()}
       </section>
 
       {paginationState.controlsTouched && !itemsState.hasMoreItems && (
-        <Notice status='info' isDismissible={false}>
-          {itemsState.noResultsText}
-        </Notice>
+        <PaginationNotice noResultsText={itemsState.noResultsText} />
       )}
     </section>
+  )
+}
+
+function PaginationNotice({ noResultsText }) {
+  return (
+    <Notice status='info' isDismissible={false}>
+      {noResultsText}
+    </Notice>
   )
 }
 

@@ -17,6 +17,13 @@ function Pagination({ children, shopSettings }) {
       return true
     }
 
+    if (
+      itemsState.payloadSettings.limit &&
+      itemsState.payloadSettings.limit < itemsState.payloadSettings.pageSize
+    ) {
+      return true
+    }
+
     if (itemsState.payloadSettings.pagination) {
       return false
     } else {
@@ -25,8 +32,6 @@ function Pagination({ children, shopSettings }) {
   }
 
   function showNotices() {
-    console.log('itemsState.hasMoreItems', itemsState.hasMoreItems)
-
     if (isEmpty(itemsState.payload) || !itemsState.hasMoreItems) {
       return true
     }

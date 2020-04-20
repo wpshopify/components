@@ -16,7 +16,7 @@ function ProductImage({ image, isFeatured }) {
   const [itemsState] = useContext(ItemsContext)
   const [productState] = useContext(ProductContext)
   const [galleryState, galleryDispatch] = useContext(ProductGalleryContext)
-  const [productImageSrc, setProductImageSrc] = useState(applyImageSizing())
+  const [productImageSrc, setProductImageSrc] = useState(() => applyImageSizing())
 
   function doFeaturedSizing() {
     return addCustomSizingToImageUrl({
@@ -24,7 +24,7 @@ function ProductImage({ image, isFeatured }) {
       width: shopState.settings.general.productsImagesSizingWidth,
       height: shopState.settings.general.productsImagesSizingHeight,
       crop: shopState.settings.general.productsImagesSizingCrop,
-      scale: shopState.settings.general.productsImagesSizingScale
+      scale: shopState.settings.general.productsImagesSizingScale,
     })
   }
 
@@ -34,7 +34,7 @@ function ProductImage({ image, isFeatured }) {
       width: shopState.settings.general.productsThumbnailImagesSizingWidth,
       height: shopState.settings.general.productsThumbnailImagesSizingHeight,
       crop: shopState.settings.general.productsThumbnailImagesSizingCrop,
-      scale: shopState.settings.general.productsThumbnailImagesSizingScale
+      scale: shopState.settings.general.productsThumbnailImagesSizingScale,
     })
   }
 

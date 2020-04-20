@@ -9,7 +9,7 @@ function ProductQuantityInput({ minQuantity, maxQuantity, isShopReady }) {
   const [productState] = useContext(ProductContext)
   const [buyButtonState, buyButtonDispatch] = useContext(ProductBuyButtonContext)
   const element = useRef()
-  const [quantityValue, setQuantityValue] = useState(minQuantity)
+  const [quantityValue, setQuantityValue] = useState(() => minQuantity)
 
   const inputWrapperStyles = css``
 
@@ -24,7 +24,7 @@ function ProductQuantityInput({ minQuantity, maxQuantity, isShopReady }) {
   `
 
   useEffect(
-    function() {
+    function () {
       handleQuantityChange()
     },
     [productState.addedToCart]

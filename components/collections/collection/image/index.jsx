@@ -10,7 +10,7 @@ const { useContext, useState, useEffect } = wp.element
 function CollectionImage({ isShopReady, shopSettings, shopInfo }) {
   const [collectionState] = useContext(CollectionContext)
   const [itemsState] = useContext(ItemsContext)
-  const [imageSrc, setImageSrc] = useState(
+  const [imageSrc, setImageSrc] = useState(() =>
     collectionState.payload.image ? collectionState.payload.image.src : false
   )
 
@@ -26,7 +26,7 @@ function CollectionImage({ isShopReady, shopSettings, shopInfo }) {
           width: shopSettings.collectionsImagesSizingWidth,
           height: shopSettings.collectionsImagesSizingHeight,
           crop: shopSettings.collectionsImagesSizingCrop,
-          scale: shopSettings.collectionsImagesSizingScale
+          scale: shopSettings.collectionsImagesSizingScale,
         })
       )
     }

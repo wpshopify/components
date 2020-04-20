@@ -51,7 +51,7 @@ function ProductPrice({ compareAt }) {
   const [productPricingState] = useContext(ProductPricingContext)
   const isFirstRender = useRef(true)
   const singlePriceElement = useRef()
-  const [regPrice, setRegPrice] = useState(getFirstPrice())
+  const [regPrice, setRegPrice] = useState(() => getFirstPrice())
   const isShowing = useAction('show.product.pricing', true)
   const animePulse = useAnime(pulse)
 
@@ -126,26 +126,25 @@ function ProductPrice({ compareAt }) {
 
   return (
     <>
-      {!isRegAndCompareSame() &&
-        isShowing && (
-          <h3
-            itemScope
-            itemProp='offers'
-            itemType='https://schema.org/Offer'
-            className='wps-products-price wps-product-pricing wps-products-price-one'
-            data-wps-is-showing-compare-at={compareAt}
-            data-wps-is-ready={shopState.isShopReady ? '1' : '0'}>
-            {showingRange() && !productState.selectedVariant ? (
-              <ProductPricingRange
-                firstPrice={getFirstPrice()}
-                lastPrice={getLastPrice()}
-                isFirstAndLastSame={isFirstAndLastSame()}
-              />
-            ) : (
-              <ProductPriceSingle ref={singlePriceElement} price={regPrice} />
-            )}
-          </h3>
-        )}
+      {!isRegAndCompareSame() && isShowing && (
+        <h3
+          itemScope
+          itemProp='offers'
+          itemType='https://schema.org/Offer'
+          className='wps-products-price wps-product-pricing wps-products-price-one'
+          data-wps-is-showing-compare-at={compareAt}
+          data-wps-is-ready={shopState.isShopReady ? '1' : '0'}>
+          {showingRange() && !productState.selectedVariant ? (
+            <ProductPricingRange
+              firstPrice={getFirstPrice()}
+              lastPrice={getLastPrice()}
+              isFirstAndLastSame={isFirstAndLastSame()}
+            />
+          ) : (
+            <ProductPriceSingle ref={singlePriceElement} price={regPrice} />
+          )}
+        </h3>
+      )}
     </>
   )
 }

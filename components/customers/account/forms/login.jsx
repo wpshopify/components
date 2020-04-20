@@ -12,20 +12,22 @@ const { useState, useRef, useContext } = wp.element
 function CustomerFormLogin() {
   const [customersState, customersDispatch] = useContext(CustomersContext)
   const [shopState] = useContext(ShopContext)
-  const [isSubmitting, setIsSubmitting] = useState(false)
+  const [isSubmitting, setIsSubmitting] = useState(() => false)
 
   const element = document.querySelector(customersState.dropzones.formLogin)
 
   const emailRef = useRef()
 
-  const [formState, setFormState] = useState({
-    email: '',
-    password: ''
+  const [formState, setFormState] = useState(() => {
+    return {
+      email: '',
+      password: '',
+    }
   })
 
-  const [noticeState, setNoticeState] = useState(false)
+  const [noticeState, setNoticeState] = useState(() => false)
 
-  const [hasChanged, setHasChangedState] = useState(false)
+  const [hasChanged, setHasChangedState] = useState(() => false)
 
   async function login() {
     setIsSubmitting(true)
@@ -37,14 +39,14 @@ function CustomerFormLogin() {
 
       setNoticeState({
         message: loginSuccess.data.message,
-        type: loginSuccess.data.type
+        type: loginSuccess.data.type,
       })
 
       setHasChangedState(true)
 
       setFormState({
         email: '',
-        password: ''
+        password: '',
       })
 
       // emailRef.current.focus()

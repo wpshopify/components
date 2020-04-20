@@ -6,8 +6,6 @@ import hasIn from 'lodash/hasIn'
 import isString from 'lodash/isString'
 import { objectIsEmpty } from '../utils'
 
-const { useState } = wp.element
-
 function updateSelectionList(params) {
   if (!params.isSelected) {
     return without(params.currentList, params.selectedValue)
@@ -51,7 +49,7 @@ function isCurrentlySelected(selections, valueSelected, type) {
   } else {
     if (!hasIn(selections, type)) {
       selected = false
-    } else if (selections[type].find(value => valueSelected === value)) {
+    } else if (selections[type].find((value) => valueSelected === value)) {
       selected = true
     }
   }
@@ -70,7 +68,7 @@ function createSelectionsOfType(itemType, typeSelections) {
 function buildNewSelection(itemValue, itemType, isSelected, existingSelections) {
   if (!itemValue) {
     return updateSelectionList({
-      currentList: existingSelections[itemType]
+      currentList: existingSelections[itemType],
     })
   }
 
@@ -83,7 +81,7 @@ function buildNewSelection(itemValue, itemType, isSelected, existingSelections) 
   return updateSelectionList({
     isSelected: !isSelected,
     currentList: existingSelections[itemType],
-    selectedValue: newSelectedVal
+    selectedValue: newSelectedVal,
   })
 }
 
@@ -95,5 +93,5 @@ export {
   isCurrentlySelected,
   getSelectionTypes,
   createSelectionsOfType,
-  buildNewSelection
+  buildNewSelection,
 }

@@ -45,22 +45,22 @@ function useOnClickOutside(ref, handler, targetOpened = false) {
     if (targetOpened && targetOpened()) {
       addEventListener(eventListener)
 
-      return () => {
-        removeEventListener(eventListener)
-      }
+      return () => removeEventListener(eventListener)
     }
   }, [ref, handler])
 }
 
 function useAction(hookName, defaultVal = false) {
-  const [data, setData] = useState(defaultVal)
+  const [data, setData] = useState(() => defaultVal)
 
   useEffect(() => {
     if (!wp.hooks.hasAction(hookName)) {
-      wp.hooks.addAction(hookName, 'wpshopify.' + hookName, function(newData) {
+      wp.hooks.addAction(hookName, 'wpshopify.' + hookName, function (newData) {
         setData(newData)
       })
     }
+
+    return () => wp.hooks.removeAction(hookName, 'wpshopify.' + hookName)
   }, [])
 
   return data
@@ -77,11 +77,83 @@ function usePortal(componentMarkup, containerElement = false, skipEmptyRender = 
 
       return wp.element.createPortal(componentMarkup, containerElement)
     } else {
-      if (!skipEmptyRender) return componentMarkup
+      if (!skipEmptyRender) {
+        return componentMarkup
+      }
     }
   }
 
   return renderPortal()
 }
 
-export { useOnClickOutside, usePortal, useAction }
+function getClosest(elem, selector) {
+  if (!Element.prototype.matches) {
+    Element.prototype.matches =
+      Element.prototype.matchesSelector ||
+      Element.prototype.mozMatchesSelector ||
+      Element.prototype.msMatchesSelector ||
+      Element.prototype.oMatchesSelector ||
+      Element.prototype.webkitMatchesSelector ||
+      function (s) {
+        var matches = (this.document || this.ownerDocument).querySelectorAll(s),
+          i = matches.length
+        while (--i >= 0 && matches.item(i) !== this) {}
+        return i > -1
+      }
+  }
+
+  // Get the closest matching element
+  for (; elem && elem !== document; elem = elem.parentNode) {
+    if (elem.matches(selector)) return elem
+  }
+  return null
+}
+
+function useCartToggle(cartElement, cartState) {
+  const { useEffect } = wp.element
+  const [isOpen, setIsOpen] = useState(() => cartState.isCartOpen)
+
+  const escEvent = (event) => {
+    if (event.key === 'Escape' || event.keyCode === 27) {
+      setIsOpen(false)
+    }
+  }
+
+  const listener = (event) => {
+    var classList = event.target.classList
+    var iconClicked = getClosest(event.target, '.wps-btn-cart')
+
+    if (classList.contains('wps-modal-close-trigger')) {
+      setIsOpen(false)
+      return
+    }
+
+    if (iconClicked) {
+      setIsOpen(true)
+      return
+    }
+    if (cartElement.current.contains(event.target)) {
+      setIsOpen(true)
+      return
+    }
+
+    setIsOpen(false)
+  }
+
+  useEffect(() => {
+    document.addEventListener('mousedown', listener)
+    document.addEventListener('touchstart', listener)
+    document.addEventListener('keydown', escEvent)
+
+    // Remove event listeners on cleanup
+    return () => {
+      document.removeEventListener('mousedown', listener)
+      document.removeEventListener('touchstart', listener)
+      document.removeEventListener('keydown', escEvent)
+    }
+  }, [])
+
+  return isOpen
+}
+
+export { useOnClickOutside, usePortal, useAction, useCartToggle }

@@ -11,13 +11,15 @@ function CustomerFormForgotPassword() {
   const [customersState, customersDispatch] = useContext(CustomersContext)
   const element = document.querySelector(customersState.dropzones.formForgotPassword)
   const [isSubmitting, setIsSubmitting] = useState(false)
-  const [formState, setFormState] = useState({
-    email: ''
+  const [formState, setFormState] = useState(() => {
+    return {
+      email: '',
+    }
   })
 
-  const [noticeState, setNoticeState] = useState(false)
+  const [noticeState, setNoticeState] = useState(() => false)
 
-  const [hasChanged, setHasChangedState] = useState(false)
+  const [hasChanged, setHasChangedState] = useState(() => false)
 
   async function resetPassword() {
     setIsSubmitting(true)
@@ -29,7 +31,7 @@ function CustomerFormForgotPassword() {
     if (resetSuccess.data.type === 'error') {
       setNoticeState({
         message: resetSuccess.data.message,
-        type: resetSuccess.data.type
+        type: resetSuccess.data.type,
       })
 
       setHasChangedState(true)

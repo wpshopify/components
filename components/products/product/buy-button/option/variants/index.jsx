@@ -3,6 +3,7 @@ import { ProductVariantDropdownValue } from './variant'
 import { ProductOptionContext } from '../_state/context'
 import { ProductContext } from '../../../_state/context'
 import { useOnClickOutside } from '../../../../../../common/hooks'
+import { v4 as uuidv4 } from 'uuid'
 
 const { useContext } = wp.element
 
@@ -26,11 +27,12 @@ function ProductVariants() {
     <ul
       className='wps-modal wps-variants'
       data-wps-modal-is-open={productOptionState.isDropdownOpen}>
-      {productOptionState.option.values.map(optionValue => (
-        <ProductVariant key={optionValue.value} variant={optionValue}>
-          <ProductVariantDropdownValue />
-        </ProductVariant>
-      ))}
+      {productOptionState.option.values &&
+        productOptionState.option.values.map((optionValue) => (
+          <ProductVariant key={uuidv4()} variant={optionValue}>
+            <ProductVariantDropdownValue />
+          </ProductVariant>
+        ))}
     </ul>
   )
 }

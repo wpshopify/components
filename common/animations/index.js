@@ -14,19 +14,19 @@ function pulse(element, cb = false, currentlyAnimating) {
     scale: 1.09,
     duration: 300,
     elasticity: 0,
-    complete: function() {
+    complete: function () {
       anime({
         targets: element,
         scale: 1,
         duration: 500,
         elasticity: 800,
-        complete: function() {
+        complete: function () {
           if (cb && document.body.contains(element)) {
             cb(false)
           }
-        }
+        },
       })
-    }
+    },
   })
 }
 
@@ -42,11 +42,51 @@ function slideInRight(element, cb = false, currentlyAnimating) {
     translateX: ['100%', '0%'],
     duration: 210,
     easing: 'easeInOutQuad',
-    complete: function() {
+    complete: function () {
       if (cb && document.body.contains(element)) {
         cb(false)
       }
-    }
+    },
+  })
+}
+
+function slideInCart(element, cb = false, currentlyAnimating) {
+  if (currentlyAnimating) {
+    return
+  }
+
+  cb(true)
+
+  return anime({
+    targets: element,
+    translateX: ['100%', '0%'],
+    duration: 50,
+    easing: 'linear',
+    complete: function () {
+      if (cb && document.body.contains(element)) {
+        cb(false)
+      }
+    },
+  })
+}
+
+function slideOutCart(element, cb = false, currentlyAnimating) {
+  if (currentlyAnimating) {
+    return
+  }
+
+  cb(true)
+
+  return anime({
+    targets: element,
+    translateX: ['0%', '100%'],
+    duration: 50,
+    easing: 'linear',
+    complete: function () {
+      if (cb && document.body.contains(element)) {
+        cb(false)
+      }
+    },
   })
 }
 
@@ -62,11 +102,11 @@ function slideOutRight(element, cb = false, currentlyAnimating) {
     translateX: ['0%', '110%'],
     duration: 210,
     easing: 'easeInOutQuad',
-    complete: function() {
+    complete: function () {
       if (cb && document.body.contains(element)) {
         cb(false)
       }
-    }
+    },
   })
 }
 
@@ -77,7 +117,7 @@ function animeStagger(elements, completeFn = false) {
     duration: 350,
     easing: 'easeOutQuart',
     delay: anime.stagger(100, { start: 150 }),
-    complete: completeFn
+    complete: completeFn,
   })
 }
 
@@ -89,7 +129,7 @@ function animeStaggerFadeIn(elements, completeFn = false) {
     duration: 350,
     easing: 'easeOutQuart',
     delay: anime.stagger(100, { start: 150 }),
-    complete: completeFn
+    complete: completeFn,
   })
 }
 
@@ -100,24 +140,11 @@ function stagger(elements, cb = false, currentlyAnimating) {
 
   cb(true)
 
-  animeStagger(elements, function() {
+  animeStagger(elements, function () {
     if (cb && elements) {
       cb(false)
     }
   })
-
-  // return anime({
-  //    targets: elements,
-  //    translateX: ['450px', '0px'],
-  //    duration: 350,
-  //    easing: 'easeOutQuart',
-  //    delay: anime.stagger(100, { start: 150 }),
-  //    complete: function() {
-  //       if (cb && elements) {
-  //          cb(false)
-  //       }
-  //    }
-  // })
 }
 
 function fadeOutIn(elements, cb = false, currentlyAnimating) {
@@ -131,11 +158,11 @@ function fadeOutIn(elements, cb = false, currentlyAnimating) {
     targets: elements,
     keyframes: [{ opacity: 1 }, { opacity: 0.4 }, { opacity: 1 }],
     duration: 250,
-    complete: function() {
+    complete: function () {
       if (cb && elements) {
         cb(false)
       }
-    }
+    },
   })
 }
 
@@ -165,5 +192,7 @@ export {
   useAnime,
   fadeOutIn,
   animeStagger,
-  animeStaggerFadeIn
+  animeStaggerFadeIn,
+  slideInCart,
+  slideOutCart,
 }

@@ -26,12 +26,12 @@ function ProductFeaturedImage() {
   const [itemsState] = useContext(ItemsContext)
   const [productState] = useContext(ProductContext)
   const [galleryState] = useContext(ProductGalleryContext)
-  const [featImage, setFeatImage] = useState(galleryState.featImage)
+  const [featImage, setFeatImage] = useState(() => galleryState.featImage)
 
   function driftOptions() {
     return {
       paneContainer: paneElement.current,
-      inlineOffsetX: -80
+      inlineOffsetX: -80,
     }
   }
 

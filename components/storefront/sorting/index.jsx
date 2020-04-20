@@ -20,7 +20,7 @@ function StorefrontSorting() {
   const [storefrontState] = useContext(StorefrontContext)
   const [itemsState, itemsDispatch] = useContext(ItemsContext)
 
-  const [sortValue, setSortValue] = useState(storefrontState.payloadSettings.sortBy)
+  const [sortValue, setSortValue] = useState(() => storefrontState.payloadSettings.sortBy)
 
   function updateFetchParams(event) {
     let reverse = false
@@ -35,8 +35,6 @@ function StorefrontSorting() {
       sortKey = sortKey.replace('-REVERSE', '')
     }
 
-    console.log('updateFetchParams')
-
     return {
       reverse: reverse,
       sortKey: sortKey,
@@ -45,7 +43,6 @@ function StorefrontSorting() {
 
   function onChange(event) {
     setSortValue(event.target.value)
-    console.log('event', event)
 
     itemsDispatch({
       type: 'MERGE_QUERY_PARAMS',

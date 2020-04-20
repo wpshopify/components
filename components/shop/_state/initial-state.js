@@ -10,15 +10,15 @@ function ShopInitialState(options = false) {
     info: {
       currencyCode: 'USD',
       primaryDomain: {
-        url: ''
-      }
+        url: '',
+      },
     },
     isDirectCheckoutOccurring: false,
     isCartEmpty: true,
     isMobile: wpshopify.misc.isMobile,
     hooksCompatible: false,
     discountCode: false,
-    settings: underscoreToCamel(wpshopify.settings)
+    settings: underscoreToCamel(wpshopify.settings),
   }
 }
 

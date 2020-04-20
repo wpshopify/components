@@ -6,9 +6,7 @@ import isString from 'lodash/isString'
 import isObject from 'lodash/isObject'
 import isArray from 'lodash/isArray'
 import isMatch from 'lodash/isMatch'
-
 import md5 from 'js-md5'
-
 import { format } from 'date-fns'
 import { textDomain } from '../globals'
 

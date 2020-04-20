@@ -1,42 +1,82 @@
 import { ItemsContext } from '../_state/context'
-import isEqual from 'lodash/isEqual'
-import { fetchNewItems } from './api'
+import { fetchNewItems } from '/Users/andrew/www/devil/devilbox-new/data/www/wpshopify-api'
+import {
+  useIsMounted,
+  useIsFirstRender,
+} from '/Users/andrew/www/devil/devilbox-new/data/www/wpshopify-hooks'
 const { useContext, useRef, useEffect } = wp.element
 
-function Item({ children, customQueryParams, limit = false, infiniteScroll = false }) {
+const Item = wp.element.memo(function ({ children, limit = false, infiniteScroll = false }) {
   const [itemsState, itemsDispatch] = useContext(ItemsContext)
-  const isFirstRender = useRef(true)
+  const isMounted = useIsMounted()
+  const isFirstRender = useIsFirstRender()
+
+  function updatePayloadState(newItems) {
+    itemsDispatch({
+      type: 'UPDATE_TOTAL_SHOWN',
+      payload: newItems.length,
+    })
+
+    itemsDispatch({
+      type: 'UPDATE_PAYLOAD',
+      payload: {
+        items: newItems,
+        replace: true,
+      },
+    })
+
+    if (itemsState.afterLoading) {
+      itemsState.afterLoading(newItems)
+    }
+  }
 
   useEffect(() => {
-    wp.hooks.doAction('before.payload.update', itemsState)
-    console.log('---------')
+    if (itemsState.hasParentPayload) {
+      return
+    }
 
-    fetchNewItems(itemsState, itemsDispatch)
+    if (isMounted) {
+      wp.hooks.doAction('before.payload.update', itemsState)
+
+      if (itemsState.beforeLoading) {
+        itemsState.beforeLoading()
+      }
+
+      itemsDispatch({
+        type: 'SET_IS_LOADING',
+        payload: true,
+      })
+      itemsDispatch({
+        type: 'UPDATE_NOTICES',
+        payload: [],
+      })
+
+      fetchNewItems(itemsState)
+        .then(function (newItems) {
+          itemsDispatch({ type: 'SET_IS_LOADING', payload: false })
+          updatePayloadState(newItems)
+        })
+        .catch((error) => {
+          itemsDispatch({
+            type: 'UPDATE_NOTICES',
+            payload: error,
+          })
+
+          itemsDispatch({ type: 'SET_IS_LOADING', payload: false })
+        })
+    }
   }, [itemsState.queryParams])
 
-  // Run after every render. Make sure this only runs when customQueryParams changes
   useEffect(() => {
-    if (!customQueryParams || itemsState.isLoading) {
+    if (itemsState.isLoading || isFirstRender.current) {
       return
     }
 
-    if (!isEqual(itemsState.queryParams, customQueryParams)) {
-      itemsDispatch({
-        type: 'SET_QUERY_PARAMS',
-        payload: customQueryParams,
-      })
-    }
-  }, [customQueryParams])
-
-  useEffect(() => {
-    if (itemsState.isLoading) {
+    if (!itemsState.payload) {
       return
     }
 
-    if (isFirstRender.current) {
-      isFirstRender.current = false
-      return
-    }
+    console.log('<Item> :: useEffect[limit, infiniteScroll]', itemsState.payload)
 
     itemsDispatch({
       type: 'UPDATE_PAYLOAD',
@@ -48,6 +88,6 @@ function Item({ children, customQueryParams, limit = false, infiniteScroll = fal
   }, [limit, infiniteScroll])
 
   return <>{children}</>
-}
+})
 
 export { Item }

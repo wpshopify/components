@@ -36,9 +36,9 @@ function ProductVariantButtonGroupWrapper({ option }) {
   `
 
   return (
-    <div class='wpshopify-variant-buttons-group' css={groupStyles}>
+    <div className='wpshopify-variant-buttons-group' css={groupStyles}>
       <label css={labelStyles}>{option.name}</label>
-      <div class='wpshopify-variant-buttons' ref={variantGroup}>
+      <div className='wpshopify-variant-buttons' ref={variantGroup}>
         <ProductVariants option={option} />
       </div>
       {buyButtonState.missingSelections && !productOptionState.isOptionSelected && (

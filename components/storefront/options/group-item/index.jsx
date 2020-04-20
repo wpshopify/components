@@ -2,16 +2,16 @@ import { StorefrontContext } from '../../_state/context'
 import {
   isCurrentlySelected,
   createSelectionsOfType,
-  buildNewSelection
+  buildNewSelection,
 } from '../../../../common/selections'
 import { capitalizeFirstLetter } from '../../../../common/utils'
 
-const { useEffect, useContext, useRef, useState } = wp.element
+const { useEffect, useContext, useState } = wp.element
 
 function StorefrontFilterOptionsGroupItem({ itemValue, itemType, displayStyle }) {
   const [storefrontState, storefrontDispatch] = useContext(StorefrontContext)
 
-  const [isSelected, setIsSelected] = useState(false)
+  const [isSelected, setIsSelected] = useState(() => false)
 
   useEffect(() => {
     setIsSelected(isCurrentlySelected(storefrontState.selections, itemValue, itemType))
@@ -25,12 +25,12 @@ function StorefrontFilterOptionsGroupItem({ itemValue, itemType, displayStyle })
     if (newList) {
       storefrontDispatch({
         type: 'SET_SELECTIONS',
-        payload: createSelectionsOfType(itemType, newList)
+        payload: createSelectionsOfType(itemType, newList),
       })
 
       storefrontDispatch({
         type: 'SET_SELECTED_' + itemType.toUpperCase(),
-        payload: newList
+        payload: newList,
       })
     }
   }

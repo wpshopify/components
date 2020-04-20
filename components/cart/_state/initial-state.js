@@ -7,13 +7,14 @@ function CartInitialState(options) {
     isCartOpen: false,
     termsAccepted: true,
     isCartEmpty: true,
+    isCartLoaded: false,
     isCartInteractive: false,
     buttons: options,
     notices: [],
     checkoutCache: {
       lineItems: [],
       variants: [],
-      total: 0.0
+      total: 0.0,
     },
     customAttributes: [],
     note: false,
@@ -25,7 +26,7 @@ function CartInitialState(options) {
     checkoutText: wp.hooks.applyFilters(
       'default.cart.checkout.text',
       __('Begin checkout', wpshopify.misc.textdomain)
-    )
+    ),
   }
 }
 

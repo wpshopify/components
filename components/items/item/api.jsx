@@ -1,4 +1,3 @@
-import { getHashFromQueryParams } from '../../../common/utils'
 import {
   fetchNextPage,
   graphQuery,
@@ -48,11 +47,7 @@ Fetch NEXT items
 
 */
 function fetchNextItems(itemsState, itemsDispatch) {
-  console.log('fetchNextItems 0')
-
   return new Promise(async (resolve, reject) => {
-    console.log('itemsState', itemsState)
-
     if (isEmpty(itemsState.payload)) {
       console.log('fetchNextItems 1')
       return
@@ -156,87 +151,7 @@ function fetchNextItems(itemsState, itemsDispatch) {
   })
 }
 
-function setCachedPayload(itemsState, itemsDispatch, hashCacheId) {
-  console.log('fetchNewItems 2')
-  itemsDispatch({
-    type: 'UPDATE_TOTAL_SHOWN',
-    payload: itemsState.payloadCache[hashCacheId].length,
-  })
-
-  itemsDispatch({
-    type: 'UPDATE_PAYLOAD',
-    payload: {
-      items: itemsState.payloadCache[hashCacheId],
-      replace: true,
-    },
-  })
-
-  console.log('itemsState.afterLoading', itemsState.afterLoading)
-  console.log('fetchNewItems 3')
-  if (itemsState.afterLoading) {
-    console.log('fetchNewItems 4')
-    itemsState.afterLoading(itemsState.payloadCache)
-  }
-}
-
-/*
-
-Fetch NEW items
-
-*/
-async function fetchNewItems(itemsState, itemsDispatch) {
-  console.log('fetchNewItems 0', itemsState)
-  console.log('itemsState.beforeLoading', itemsState.beforeLoading)
-
-  if (itemsState.beforeLoading) {
-    console.log('fetchNewItems 1')
-    itemsState.beforeLoading(itemsState)
-  }
-
-  var hashCacheId = getHashFromQueryParams(itemsState.queryParams)
-  console.log('hashCacheId', hashCacheId)
-  console.log('itemsState.payloadCache', itemsState.payloadCache)
-
-  /* 
-  
-  This payloadCache is only available during a users page visit. As such, 
-  only the storefront, search, and pagination controls benefit.
-
-  */
-  if (has(itemsState.payloadCache, hashCacheId)) {
-    console.log('fetchNewItems 4')
-    return setCachedPayload(itemsState, itemsDispatch, hashCacheId)
-  }
-
-  console.log('fetchNewItems 5')
-  // Lands here when we fetch brand new items
-  itemsDispatch({
-    type: 'SET_IS_LOADING',
-    payload: true,
-  })
-  itemsDispatch({
-    type: 'UPDATE_NOTICES',
-    payload: [],
-  })
-
-  const [resultsError, results] = await to(graphQuery(itemsState.dataType, itemsState.queryParams))
-  console.log('fetchNewItems 6', resultsError)
-  console.log('fetchNewItems 7', results)
-
-  if (resultsError) {
-    itemsDispatch({
-      type: 'UPDATE_NOTICES',
-      payload: {
-        type: 'error',
-        message: resultsError,
-      },
-    })
-
-    return resultsError
-  }
-
-  var newItems = sanitizeQueryResponse(results, itemsState.dataType)
-
+function updatePayloadState(newItems) {
   itemsDispatch({
     type: 'UPDATE_TOTAL_SHOWN',
     payload: newItems.length,
@@ -253,11 +168,6 @@ async function fetchNewItems(itemsState, itemsDispatch) {
   if (itemsState.afterLoading) {
     itemsState.afterLoading(newItems)
   }
-
-  itemsDispatch({
-    type: 'SET_IS_LOADING',
-    payload: false,
-  })
 }
 
-export { fetchNewItems, fetchNextItems }
+export { fetchNextItems }

@@ -7,7 +7,7 @@ const { __ } = wp.i18n
 
 function CartNote() {
   const [shopState, shopDispatch] = useContext(ShopContext)
-  const [noteValue, setNoteValue] = useState('')
+  const [noteValue, setNoteValue] = useState(() => '')
   const [debouncedValue] = useDebounce(noteValue, 250)
   const isFirstRender = useRef(true)
 

@@ -14,7 +14,7 @@ import {
   buildClient,
   findVariantFromSelectedOptions,
   createUniqueCheckout,
-  addLineItemsAPI
+  addLineItemsAPI,
 } from '/Users/andrew/www/devil/devilbox-new/data/www/wpshopify-api'
 import to from 'await-to-js'
 
@@ -26,8 +26,8 @@ function ProductAddButton() {
   const button = useRef()
   const isFirstRender = useRef(false)
   const animePulse = useAnime(pulse)
-  const [isCheckingOut, setIsCheckingOut] = useState(false)
-  const [hasNotice, setHasNotice] = useState(false)
+  const [isCheckingOut, setIsCheckingOut] = useState(() => false)
+  const [hasNotice, setHasNotice] = useState(() => false)
 
   const [itemsState] = useContext(ItemsContext)
   const [productState, productDispatch] = useContext(ProductContext)
@@ -38,7 +38,7 @@ function ProductAddButton() {
     itemsState.payloadSettings.directCheckout || shopState.settings.general.directCheckout
 
   const buttonStyle = {
-    backgroundColor: itemsState.payloadSettings.addToCartButtonColor
+    backgroundColor: itemsState.payloadSettings.addToCartButtonColor,
   }
 
   function findVariantFromSelections() {
@@ -53,7 +53,7 @@ function ProductAddButton() {
     return {
       checkoutId: shopState.checkoutId,
       lineItems: lineItems,
-      variants: variants
+      variants: variants,
     }
   }
 
@@ -61,8 +61,8 @@ function ProductAddButton() {
     return [
       {
         variantId: variant.id,
-        quantity: quantity
-      }
+        quantity: quantity,
+      },
     ]
   }
 
@@ -73,79 +73,82 @@ function ProductAddButton() {
     // if some are not selected, highlight them / shake them
     if (!buyButtonState.allOptionsSelected && productState.hasManyVariants) {
       buyButtonDispatch({ type: 'SET_MISSING_SELECTIONS', payload: true })
+      return
+    }
+
+    if (productState.hasManyVariants) {
+      var variant = findVariantFromSelections()
     } else {
-      if (productState.hasManyVariants) {
-        var variant = findVariantFromSelections()
-      } else {
-        var variant = findSingleVariantFromPayload()
-      }
+      var variant = findSingleVariantFromPayload()
+    }
 
-      if (!variant) {
-        // TODO: Handle this better
-        console.error('wpshopify error 💩 variant undefined ', variant)
+    if (!variant) {
+      // TODO: Handle this better
+      console.error('WP Shopify error: handleClick variant undefined ')
 
-        buyButtonDispatch({ type: 'SET_MISSING_SELECTIONS', payload: true })
-        buyButtonDispatch({ type: 'SET_ALL_SELECTED_OPTIONS', payload: false })
-        buyButtonDispatch({ type: 'REMOVE_SELECTED_OPTIONS' })
-        return
-      }
+      buyButtonDispatch({ type: 'SET_MISSING_SELECTIONS', payload: true })
+      buyButtonDispatch({ type: 'SET_ALL_SELECTED_OPTIONS', payload: false })
+      buyButtonDispatch({ type: 'REMOVE_SELECTED_OPTIONS' })
+      return
+    }
 
-      const lineItems = buildLineItemParams(variant, buyButtonState.quantity)
+    const lineItems = buildLineItemParams(variant, buyButtonState.quantity)
 
-      if (isDirectCheckout) {
-        setIsCheckingOut(true)
+    if (isDirectCheckout) {
+      setIsCheckingOut(true)
 
-        const client = buildClient()
-        const [err, checkout] = await to(createUniqueCheckout(client))
+      const client = buildClient()
+      const [err, checkout] = await to(createUniqueCheckout(client))
 
-        if (err) {
-          setIsCheckingOut(false)
-          buyButtonDispatch({
-            type: 'SET_ALL_SELECTED_OPTIONS',
-            payload: false
-          })
-          buyButtonDispatch({ type: 'REMOVE_SELECTED_OPTIONS' })
-
-          return setHasNotice({
-            message: err,
-            type: 'error'
-          })
-        }
-
-        const [error, respNewCheckout] = await to(addLineItemsAPI(client, checkout, lineItems))
-
-        if (error) {
-          setIsCheckingOut(false)
-          buyButtonDispatch({
-            type: 'SET_ALL_SELECTED_OPTIONS',
-            payload: false
-          })
-          buyButtonDispatch({ type: 'REMOVE_SELECTED_OPTIONS' })
-
-          return setHasNotice({
-            message: error,
-            type: 'error'
-          })
-        }
-
-        buyButtonDispatch({ type: 'SET_MISSING_SELECTIONS', payload: false })
-
-        checkoutRedirect(respNewCheckout, shopState)
-      } else {
-        wp.hooks.doAction('product.addToCart', buildAddToCartParams(lineItems, [variant]))
-
+      if (err) {
+        setIsCheckingOut(false)
         buyButtonDispatch({
           type: 'SET_ALL_SELECTED_OPTIONS',
-          payload: false
+          payload: false,
         })
-
         buyButtonDispatch({ type: 'REMOVE_SELECTED_OPTIONS' })
-        productDispatch({ type: 'SET_ADDED_VARIANT', payload: variant })
-        productDispatch({ type: 'SET_SELECTED_VARIANT', payload: false })
-        buyButtonDispatch({ type: 'SET_MISSING_SELECTIONS', payload: false })
 
-        wp.hooks.doAction('after.product.addToCart', lineItems, variant)
+        return setHasNotice({
+          message: err,
+          type: 'error',
+        })
       }
+
+      const [error, respNewCheckout] = await to(addLineItemsAPI(client, checkout, lineItems))
+
+      if (error) {
+        setIsCheckingOut(false)
+        buyButtonDispatch({
+          type: 'SET_ALL_SELECTED_OPTIONS',
+          payload: false,
+        })
+        buyButtonDispatch({ type: 'REMOVE_SELECTED_OPTIONS' })
+
+        return setHasNotice({
+          message: error,
+          type: 'error',
+        })
+      }
+
+      buyButtonDispatch({ type: 'SET_MISSING_SELECTIONS', payload: false })
+
+      checkoutRedirect(respNewCheckout, shopState)
+    } else {
+      console.log('ADDING PRODUCTS ............................')
+
+      wp.hooks.doAction('product.addToCart', buildAddToCartParams(lineItems, [variant]))
+
+      buyButtonDispatch({
+        type: 'SET_ALL_SELECTED_OPTIONS',
+        payload: false,
+      })
+
+      buyButtonDispatch({ type: 'REMOVE_SELECTED_OPTIONS' })
+      productDispatch({ type: 'SET_ADDED_VARIANT', payload: variant })
+      productDispatch({ type: 'SET_SELECTED_VARIANT', payload: false })
+      buyButtonDispatch({ type: 'SET_MISSING_SELECTIONS', payload: false })
+
+      wp.hooks.doAction('after.product.addToCart', lineItems, variant)
     }
   }
 

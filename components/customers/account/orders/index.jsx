@@ -17,7 +17,7 @@ const { useContext, useEffect, useState } = wp.element
 
 function Orders() {
   const [customerState, customerDispatch] = useContext(CustomersContext)
-  const [hasEmptyOrders, setHasEmptyOrder] = useState(false)
+  const [hasEmptyOrders, setHasEmptyOrder] = useState(() => false)
 
   const stylesOrders = {
     width: '65%',

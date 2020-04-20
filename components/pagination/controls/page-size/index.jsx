@@ -13,7 +13,7 @@ const { useContext, useState } = wp.element
 function PaginationPageSize() {
   const [paginationState, paginationDispatch] = useContext(PaginationContext)
   const [itemsState, itemsDispatch] = useContext(ItemsContext)
-  const [pageSize, setPageSize] = useState(defaultPageSize())
+  const [pageSize, setPageSize] = useState(() => defaultPageSize())
 
   function defaultPageSize() {
     if (itemsState.queryParams.first < 10) {

@@ -15,6 +15,13 @@ function limitReached(state) {
 }
 
 function limitPayload(currentPayload, newPayload, state) {
+  if (!currentPayload) {
+    currentPayload = []
+  }
+  console.log('currentPayload', currentPayload)
+  console.log('newPayload', newPayload)
+  console.log('state', state)
+
   var combinedPayloads = currentPayload.concat(newPayload)
   var combinedPayloadsLength = combinedPayloads.length
 
@@ -38,8 +45,6 @@ function createNewPayloadCacheObj(state, items) {
 }
 
 function maybeCachePayload(state, updatedPayload, updatedHasMoreItems, hasExistingCache = false) {
-  console.log('maybeCachePayload')
-
   var newPayloadstuff = {
     ...state,
     payload: updatedPayload,
@@ -56,8 +61,6 @@ function maybeCachePayload(state, updatedPayload, updatedHasMoreItems, hasExisti
 
     newPayloadstuff['payloadCache'] = update(state.payloadCache, { $merge: newCache })
   }
-
-  console.log('____________ newPayloadstuff', newPayloadstuff)
 
   wp.hooks.doAction('after.payload.update', newPayloadstuff)
 
@@ -190,6 +193,8 @@ function ItemsReducer(state, action) {
     }
 
     case 'MERGE_QUERY_PARAMS': {
+      console.log('MERGE_QUERY_PARAMS')
+
       return {
         ...state,
         queryParams: update(state.queryParams, { $merge: action.payload }),
@@ -206,6 +211,7 @@ function ItemsReducer(state, action) {
     }
 
     case 'SET_QUERY_PARAMS': {
+      console.log('SET_QUERY_PARAMS')
       return {
         ...state,
         queryParams: update(state.queryParams, { $set: action.payload }),

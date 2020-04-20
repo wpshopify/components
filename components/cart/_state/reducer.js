@@ -2,12 +2,11 @@ import update from 'immutability-helper'
 import isEmpty from 'lodash/isEmpty'
 import some from 'lodash/some'
 import concat from 'lodash/concat'
-import { toggleCart } from '../../../common/cart'
 import {
   getCheckoutCache,
   setCheckoutCache,
   mergeCheckoutCacheVariants,
-  mergeCheckoutCacheLineItems
+  mergeCheckoutCacheLineItems,
 } from '/Users/andrew/www/devil/devilbox-new/data/www/wpshopify-api'
 import flattenDepth from 'lodash/flattenDepth'
 import reduce from 'lodash/reduce'
@@ -20,7 +19,7 @@ function productVariantExistsInCheckoutCache(checkoutCacheVariants, variant) {
 }
 
 function onlyVariantsInCheckoutCache(checkoutCacheVariants, variants) {
-  return variants.filter(variant =>
+  return variants.filter((variant) =>
     productVariantExistsInCheckoutCache(checkoutCacheVariants, variant)
   )
 }
@@ -35,7 +34,7 @@ function addProductInfoToVariants(productsFromShopify, checkoutCache) {
     return []
   }
 
-  return productsFromShopify.map(product => {
+  return productsFromShopify.map((product) => {
     if (product) {
       var variants = flattenDepth(
         onlyVariantsInCheckoutCache(checkoutCache.variants, product.variants),
@@ -44,7 +43,7 @@ function addProductInfoToVariants(productsFromShopify, checkoutCache) {
 
       return {
         product: product,
-        variants: variants
+        variants: variants,
       }
     }
   })
@@ -56,15 +55,15 @@ Responsible for: only finding variants within the checkout
 
 */
 function onlyVariantsInCheckout(allVariantsAndProducts) {
-  return allVariantsAndProducts.map(variantsAndProducts => {
+  return allVariantsAndProducts.map((variantsAndProducts) => {
     if (variantsAndProducts) {
       return {
-        variants: variantsAndProducts.variants.map(variant => {
+        variants: variantsAndProducts.variants.map((variant) => {
           variant.product = {}
           variant.product.title = variantsAndProducts.product.title
           variant.product.id = variantsAndProducts.product.id
           return variant
-        })
+        }),
       }
     }
   })
@@ -78,7 +77,7 @@ Responsible for: combining all variants
 function combineAllVariants(variants) {
   return reduce(
     variants,
-    function(result, value, key) {
+    function (result, value, key) {
       if (value) return result.concat(value.variants)
     },
     []
@@ -106,8 +105,8 @@ removes a variant, this keeps our cache up to date
 
 */
 function findLineItemsFromProducts(productsFromShopify, checkoutCache) {
-  return checkoutCache.lineItems.filter(lineItem => {
-    return find(productsFromShopify, function(product) {
+  return checkoutCache.lineItems.filter((lineItem) => {
+    return find(productsFromShopify, function (product) {
       if (product) {
         return find(product.variants, { id: lineItem.variantId })
       }
@@ -130,7 +129,7 @@ Responsible for: updating the ShopState "lineItems"
 
 */
 function updateLineItemQuantity(state, payload) {
-  state.lineItems = state.lineItems.map(lineItem => {
+  state.lineItems = state.lineItems.map((lineItem) => {
     if (lineItem.variantId === payload.variantId) {
       lineItem.quantity = payload.lineItemNewQuantity
     }
@@ -152,7 +151,7 @@ variants: What we use to display the correct data within the cart
 function updateLineItemsAndVariants(checkoutCache, payload) {
   return {
     lineItems: mergeCheckoutCacheLineItems(checkoutCache.lineItems, payload.lineItems),
-    variants: mergeCheckoutCacheVariants(checkoutCache.variants, payload.variants)
+    variants: mergeCheckoutCacheVariants(checkoutCache.variants, payload.variants),
   }
 }
 
@@ -166,7 +165,7 @@ Responsible for: setting line items and variants
 function setLineItemsAndVariants(checkoutCache, payload) {
   return {
     lineItems: findLineItemsFromProducts(payload.products, checkoutCache),
-    variants: findVariantsFromProductIds(payload.products, checkoutCache)
+    variants: findVariantsFromProductIds(payload.products, checkoutCache),
   }
 }
 
@@ -176,8 +175,8 @@ Responsible for: removing line items and variants
 
 */
 function removeLineItemsAndVariants(checkoutCache, payload) {
-  checkoutCache.lineItems = filter(checkoutCache.lineItems, o => o.variantId !== payload)
-  checkoutCache.variants = filter(checkoutCache.variants, o => o.id !== payload)
+  checkoutCache.lineItems = filter(checkoutCache.lineItems, (o) => o.variantId !== payload)
+  checkoutCache.variants = filter(checkoutCache.variants, (o) => o.id !== payload)
 
   return checkoutCache
 }
@@ -185,23 +184,31 @@ function removeLineItemsAndVariants(checkoutCache, payload) {
 function CartReducer(state, action) {
   switch (action.type) {
     case 'TOGGLE_CART': {
-      toggleCart(state, action.payload)
+      return {
+        ...state,
+        isCartOpen: update(state.isCartOpen, { $set: action.payload }),
+      }
+    }
+    case 'CART_LOADED': {
+      if (state.isCartLoaded) {
+        return state
+      }
 
       return {
-        isCartOpen: action.payload,
-        ...state
+        ...state,
+        isCartLoaded: update(state.isCartLoaded, { $set: action.payload }),
       }
     }
     case 'SET_IS_CHECKING_OUT': {
       return {
         ...state,
-        isCheckingOut: update(state.isCheckingOut, { $set: action.payload })
+        isCheckingOut: update(state.isCheckingOut, { $set: action.payload }),
       }
     }
     case 'SET_TERMS_ACCEPTED': {
       return {
         ...state,
-        termsAccepted: update(state.termsAccepted, { $set: action.payload })
+        termsAccepted: update(state.termsAccepted, { $set: action.payload }),
       }
     }
     case 'UPDATE_NOTICES': {
@@ -219,20 +226,20 @@ function CartReducer(state, action) {
 
       return {
         ...state,
-        notices: update(state.notices, { $set: updatedNotices })
+        notices: update(state.notices, { $set: updatedNotices }),
       }
     }
     case 'SET_IS_CART_EMPTY': {
       return {
         ...state,
-        isCartEmpty: update(state.isCartEmpty, { $set: action.payload })
+        isCartEmpty: update(state.isCartEmpty, { $set: action.payload }),
       }
     }
 
     case 'IS_CART_INTERACTIVE': {
       return {
         ...state,
-        isCartInteractive: update(state.isCartEmpty, { $set: action.payload })
+        isCartInteractive: update(state.isCartEmpty, { $set: action.payload }),
       }
     }
 
@@ -243,12 +250,12 @@ function CartReducer(state, action) {
       if (checkoutCache) {
         return {
           ...state,
-          checkoutCache: checkoutCache
+          checkoutCache: checkoutCache,
         }
       }
 
       let newCheckoutCache = update(state.checkoutCache, {
-        $set: state.checkoutCache
+        $set: state.checkoutCache,
       })
 
       setCheckoutCache(action.payload.checkoutId, newCheckoutCache)
@@ -257,14 +264,14 @@ function CartReducer(state, action) {
         ...state,
         checkoutCache: newCheckoutCache,
         total: update(state.total, {
-          $set: calcCheckoutTotal(newCheckoutCache)
-        })
+          $set: calcCheckoutTotal(newCheckoutCache),
+        }),
       }
     }
 
     case 'UPDATE_LINE_ITEMS_AND_VARIANTS': {
       const checkoutCacheUpdated = update(state.checkoutCache, {
-        $apply: checkoutCache => updateLineItemsAndVariants(checkoutCache, action.payload)
+        $apply: (checkoutCache) => updateLineItemsAndVariants(checkoutCache, action.payload),
       })
 
       setCheckoutCache(action.payload.checkoutId, checkoutCacheUpdated)
@@ -273,14 +280,14 @@ function CartReducer(state, action) {
         ...state,
         checkoutCache: checkoutCacheUpdated,
         total: update(state.total, {
-          $set: calcCheckoutTotal(checkoutCacheUpdated)
-        })
+          $set: calcCheckoutTotal(checkoutCacheUpdated),
+        }),
       }
     }
 
     case 'SET_LINE_ITEMS_AND_VARIANTS': {
       const newCheckoutCache = update(state.checkoutCache, {
-        $apply: checkoutCache => setLineItemsAndVariants(checkoutCache, action.payload.lineItems)
+        $apply: (checkoutCache) => setLineItemsAndVariants(checkoutCache, action.payload.lineItems),
       })
 
       // action.payload.products comes from an API call during bootstrap
@@ -290,14 +297,15 @@ function CartReducer(state, action) {
         ...state,
         checkoutCache: newCheckoutCache,
         total: update(state.total, {
-          $set: calcCheckoutTotal(newCheckoutCache)
-        })
+          $set: calcCheckoutTotal(newCheckoutCache),
+        }),
       }
     }
 
     case 'REMOVE_LINE_ITEM': {
       const newCheckoutCache = update(state.checkoutCache, {
-        $apply: checkoutCache => removeLineItemsAndVariants(checkoutCache, action.payload.lineItem)
+        $apply: (checkoutCache) =>
+          removeLineItemsAndVariants(checkoutCache, action.payload.lineItem),
       })
 
       setCheckoutCache(action.payload.checkoutId, newCheckoutCache)
@@ -306,14 +314,14 @@ function CartReducer(state, action) {
         ...state,
         checkoutCache: newCheckoutCache,
         total: update(state.total, {
-          $set: calcCheckoutTotal(newCheckoutCache)
-        })
+          $set: calcCheckoutTotal(newCheckoutCache),
+        }),
       }
     }
 
     case 'UPDATE_LINE_ITEM_QUANTITY': {
       const checkoutCacheUpdated = update(state.checkoutCache, {
-        $apply: stateObj => updateLineItemQuantity(stateObj, action.payload.lineItem)
+        $apply: (stateObj) => updateLineItemQuantity(stateObj, action.payload.lineItem),
       })
 
       setCheckoutCache(action.payload.checkoutId, checkoutCacheUpdated)
@@ -322,9 +330,9 @@ function CartReducer(state, action) {
         ...state,
         isCartEmpty: isCartEmpty(checkoutCacheUpdated.lineItems),
         total: update(state.total, {
-          $set: calcCheckoutTotal(checkoutCacheUpdated)
+          $set: calcCheckoutTotal(checkoutCacheUpdated),
         }),
-        checkoutCache: checkoutCacheUpdated
+        checkoutCache: checkoutCacheUpdated,
       }
     }
 
@@ -333,14 +341,14 @@ function CartReducer(state, action) {
 
       return {
         ...state,
-        total: update(state.total, { $set: calcCheckoutTotal(checkoutCache) })
+        total: update(state.total, { $set: calcCheckoutTotal(checkoutCache) }),
       }
     }
 
     case 'SET_TOTAL_LINE_ITEMS': {
       return {
         ...state,
-        totalLineItems: update(state.totalLineItems, { $set: action.payload })
+        totalLineItems: update(state.totalLineItems, { $set: action.payload }),
       }
     }
 

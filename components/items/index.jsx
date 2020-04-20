@@ -1,45 +1,7 @@
 import { ItemsProvider } from './_state/provider'
 import { Item } from './item'
-import has from 'lodash/has'
 import { usePortal } from '../../common/hooks'
-const { useEffect } = wp.element
-
-function hasItems(options) {
-  return options.payload.length > 0
-}
-
-function skippingInitialLoad(options) {
-  if (!has(options, 'skipInitialLoad')) {
-    return false
-  }
-
-  return options.skipInitialLoad
-}
-
-/*
-
-Handle the errors differently ...
-
-*/
-function hasItemsToShow(options) {
-  if (!options) {
-    return false
-  }
-
-  if (has(options, 'errors')) {
-    return false
-  }
-
-  if (!has(options, 'payload')) {
-    return true
-  }
-
-  if (hasItems(options) || skippingInitialLoad(options)) {
-    return true
-  } else {
-    return false
-  }
-}
+import { v4 as uuidv4 } from 'uuid'
 
 /*
 
@@ -53,29 +15,32 @@ options, children, afterLoading, beforeLoading
 
 */
 
-function Items(props) {
-  useEffect(() => {
-    wp.hooks.doAction('after.items.render', props)
-  }, [])
+function ItemWrapper(props) {
+  return (
+    <ItemsProvider
+      component={props.component}
+      customQueryParams={props.customQueryParams && props.customQueryParams}
+      payload={props.payload && props.payload}
+      afterLoading={props.afterLoading && props.afterLoading}
+      beforeLoading={props.beforeLoading && props.beforeLoading}>
+      {usePortal(
+        <Item limit={props.limit} infiniteScroll={props.infiniteScroll}>
+          {props.children}
+        </Item>,
+        props.component.componentElement
+      )}
+    </ItemsProvider>
+  )
+}
 
+function Items(props) {
   return (
     props.options &&
-    props.options.map((component) => {
-      return usePortal(
-        <ItemsProvider
-          component={component}
-          afterLoading={has(props, 'afterLoading') ? props.afterLoading : false}
-          beforeLoading={has(props, 'beforeLoading') ? props.beforeLoading : false}>
-          <Item
-            customQueryParams={props.customQueryParams}
-            limit={props.limit}
-            infiniteScroll={props.infiniteScroll}>
-            {props.children}
-          </Item>
-        </ItemsProvider>,
-        component.componentElement
-      )
-    })
+    props.options.map((component) => (
+      <ItemWrapper key={uuidv4()} component={component} {...props}>
+        {props.children}
+      </ItemWrapper>
+    ))
   )
 }
 

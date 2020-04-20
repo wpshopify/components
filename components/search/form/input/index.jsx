@@ -13,7 +13,7 @@ Component: SearchInput
 
 */
 function SearchInput() {
-  const [localTerm, setLocalTerm] = useState('')
+  const [localTerm, setLocalTerm] = useState(() => '')
   const [searchState, searchDispatch] = useContext(SearchContext)
   const [itemsState] = useContext(ItemsContext)
   const [debouncedSearchTerm] = useDebounce(localTerm, 250)
@@ -46,7 +46,7 @@ function SearchInput() {
         val={localTerm}
         placeholder={<FilterHook name='search.placeholder.text'>{placeholderText()}</FilterHook>}
         aria-label={<FilterHook name='search.placeholder.text'>{placeholderText()}</FilterHook>}
-        onChange={e => setSearchTerm(e.target.value)}
+        onChange={(e) => setSearchTerm(e.target.value)}
       />
 
       <Loader

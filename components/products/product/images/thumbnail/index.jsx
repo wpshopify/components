@@ -5,10 +5,10 @@ const { useEffect, useContext, useState } = wp.element
 
 const ProductThumbnailImage = wp.element.memo(function ProductThumbnailImage({ image }) {
   const [galleryState, galleryDispatch] = useContext(ProductGalleryContext)
-  const [isActive, setIsActive] = useState(false)
+  const [isActive, setIsActive] = useState(() => false)
 
   useEffect(
-    function() {
+    function () {
       if (!checkIsActive(galleryState.featImage.src)) {
         setIsActive(false)
       } else {

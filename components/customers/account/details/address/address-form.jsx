@@ -2,7 +2,7 @@ import { CustomersContext } from '../../../_state/context'
 import to from 'await-to-js'
 import {
   updateCustomerAddress,
-  addCustomerAddress
+  addCustomerAddress,
 } from '/Users/andrew/www/devil/devilbox-new/data/www/wpshopify-api'
 import { Form } from '../../../../forms'
 import { Input } from '../../../../forms/input'
@@ -15,27 +15,29 @@ const { useContext, useEffect, useState } = wp.element
 
 function AddressForm({ address, type }) {
   const [customerState, customerDispatch] = useContext(CustomersContext)
-  const [hasChanged, setHasChangedState] = useState(false)
-  const [noticeState, setNoticeState] = useState(false)
-  const [isSubmitting, setIsSubmitting] = useState(false)
+  const [hasChanged, setHasChangedState] = useState(() => false)
+  const [noticeState, setNoticeState] = useState(() => false)
+  const [isSubmitting, setIsSubmitting] = useState(() => false)
 
-  const [formState, setFormState] = useState({
-    firstName: '',
-    lastName: '',
-    company: '',
-    address1: '',
-    address2: '',
-    zip: '',
-    phone: '',
-    province: '',
-    country: '',
-    city: '',
-    setDefault: false
+  const [formState, setFormState] = useState(() => {
+    return {
+      firstName: '',
+      lastName: '',
+      company: '',
+      address1: '',
+      address2: '',
+      zip: '',
+      phone: '',
+      province: '',
+      country: '',
+      city: '',
+      setDefault: false,
+    }
   })
 
   function onChange(name, event) {
     var newState = {
-      ...formState
+      ...formState,
     }
 
     if (name === 'setDefault') {
@@ -50,10 +52,6 @@ function AddressForm({ address, type }) {
   }
 
   useEffect(() => {
-    // if (!address) {
-    //    return
-    // }
-
     setFormState({
       firstName: address && address.firstName ? address.firstName : '',
       lastName: address && address.lastName ? address.lastName : '',
@@ -65,7 +63,7 @@ function AddressForm({ address, type }) {
       province: address && address.province ? address.province : '',
       country: address && address.country ? address.country : '',
       city: address && address.city ? address.city : '',
-      setDefault: false
+      setDefault: false,
     })
   }, [])
 
@@ -94,7 +92,7 @@ function AddressForm({ address, type }) {
     const [addressUpdateError, addressUpdateSuccess] = await to(
       updateCustomerAddress({
         address: formState,
-        addressId: customerState.selectedAddress.id
+        addressId: customerState.selectedAddress.id,
       })
     )
 
@@ -103,7 +101,7 @@ function AddressForm({ address, type }) {
     if (addressUpdateSuccess.data.type === 'error') {
       setNoticeState({
         message: addressUpdateSuccess.data.message,
-        type: addressUpdateSuccess.data.type
+        type: addressUpdateSuccess.data.type,
       })
 
       return
@@ -123,35 +121,35 @@ function AddressForm({ address, type }) {
       type: 'UPDATE_CUSTOMER_ADDRESS',
       payload: {
         oldAddressId: customerState.selectedAddress.id,
-        newAddress: addressUpdateSuccess.data.updateAddress.customerAddressUpdate.customerAddress
-      }
+        newAddress: addressUpdateSuccess.data.updateAddress.customerAddressUpdate.customerAddress,
+      },
     })
 
     if (addressUpdateSuccess.data.updateDefaultAddress) {
       customerDispatch({
         type: 'SET_DEFAULT_ADDRESS',
         payload:
-          addressUpdateSuccess.data.updateDefaultAddress.customerDefaultAddressUpdate.customer
+          addressUpdateSuccess.data.updateDefaultAddress.customerDefaultAddressUpdate.customer,
       })
     }
 
     setNoticeState({
       message: 'Successfully updated address',
-      type: 'success'
+      type: 'success',
     })
   }
 
   async function addAddress() {
     const [addError, addSuccess] = await to(
       addCustomerAddress({
-        address: formState
+        address: formState,
       })
     )
 
     if (addSuccess.data.type === 'error') {
       setNoticeState({
         message: addSuccess.data.message,
-        type: addSuccess.data.type
+        type: addSuccess.data.type,
       })
 
       return
@@ -169,19 +167,19 @@ function AddressForm({ address, type }) {
 
     customerDispatch({
       type: 'ADD_CUSTOMER_ADDRESS',
-      payload: addSuccess.data.addAddress.customerAddressCreate.customerAddress
+      payload: addSuccess.data.addAddress.customerAddressCreate.customerAddress,
     })
 
     if (addSuccess.data.addDefaultAddress) {
       customerDispatch({
         type: 'SET_DEFAULT_ADDRESS',
-        payload: addSuccess.data.addDefaultAddress.customerDefaultAddressUpdate.customer
+        payload: addSuccess.data.addDefaultAddress.customerDefaultAddressUpdate.customer,
       })
     }
 
     setNoticeState({
       message: 'Successfully added address',
-      type: 'success'
+      type: 'success',
     })
   }
 
@@ -211,7 +209,7 @@ function AddressForm({ address, type }) {
         name='first'
         placeholder='First Name'
         value={formState.firstName}
-        onChange={e => onChange('firstName', e)}
+        onChange={(e) => onChange('firstName', e)}
         isSubmitting={isSubmitting}
       />
 
@@ -221,7 +219,7 @@ function AddressForm({ address, type }) {
         name='last'
         placeholder='Last Name'
         value={formState.lastName}
-        onChange={e => onChange('lastName', e)}
+        onChange={(e) => onChange('lastName', e)}
         isSubmitting={isSubmitting}
       />
 
@@ -231,7 +229,7 @@ function AddressForm({ address, type }) {
         name='company'
         placeholder='Company Name'
         value={formState.company}
-        onChange={e => onChange('company', e)}
+        onChange={(e) => onChange('company', e)}
         isSubmitting={isSubmitting}
       />
 
@@ -241,7 +239,7 @@ function AddressForm({ address, type }) {
         name='address1'
         placeholder='Address 1'
         value={formState.address1}
-        onChange={e => onChange('address1', e)}
+        onChange={(e) => onChange('address1', e)}
         isSubmitting={isSubmitting}
       />
 
@@ -251,7 +249,7 @@ function AddressForm({ address, type }) {
         name='address2'
         placeholder='Address 2'
         value={formState.address2}
-        onChange={e => onChange('address2', e)}
+        onChange={(e) => onChange('address2', e)}
         isSubmitting={isSubmitting}
       />
 
@@ -261,7 +259,7 @@ function AddressForm({ address, type }) {
         name='city'
         placeholder='City'
         value={formState.city}
-        onChange={e => onChange('city', e)}
+        onChange={(e) => onChange('city', e)}
         isSubmitting={isSubmitting}
       />
 
@@ -271,7 +269,7 @@ function AddressForm({ address, type }) {
         name='province'
         placeholder='State/Province'
         value={formState.province}
-        onChange={e => onChange('province', e)}
+        onChange={(e) => onChange('province', e)}
         isSubmitting={isSubmitting}
       />
 
@@ -281,7 +279,7 @@ function AddressForm({ address, type }) {
         name='country'
         placeholder='Country'
         value={formState.country}
-        onChange={e => onChange('country', e)}
+        onChange={(e) => onChange('country', e)}
         isSubmitting={isSubmitting}
       />
 
@@ -291,7 +289,7 @@ function AddressForm({ address, type }) {
         name='zip'
         placeholder='Postal/Zip'
         value={formState.zip}
-        onChange={e => onChange('zip', e)}
+        onChange={(e) => onChange('zip', e)}
         isSubmitting={isSubmitting}
       />
 
@@ -301,7 +299,7 @@ function AddressForm({ address, type }) {
         name='phone'
         placeholder='Phone'
         value={formState.phone}
-        onChange={e => onChange('phone', e)}
+        onChange={(e) => onChange('phone', e)}
         isSubmitting={isSubmitting}
       />
 
@@ -311,7 +309,7 @@ function AddressForm({ address, type }) {
           type='checkbox'
           name='set-default'
           value={formState.setDefault}
-          onChange={e => onChange('setDefault', e)}
+          onChange={(e) => onChange('setDefault', e)}
           cssWrapper={cssWrapper}
           cssInput={cssInput}
           isSubmitting={isSubmitting}

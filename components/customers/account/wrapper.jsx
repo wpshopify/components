@@ -1,6 +1,6 @@
 import {
   getCustomer,
-  isWordPressError
+  isWordPressError,
 } from '/Users/andrew/www/devil/devilbox-new/data/www/wpshopify-api'
 import to from 'await-to-js'
 import isEmpty from 'lodash/isEmpty'
@@ -16,7 +16,7 @@ const { Notice } = wp.components
 const { useContext, useEffect } = wp.element
 
 function findDefaultAddress(addressLookup, addresses) {
-  var found = find(addresses.edges, function(o) {
+  var found = find(addresses.edges, function (o) {
     return o.node.address1 === addressLookup
   })
 
@@ -29,11 +29,12 @@ function findDefaultAddress(addressLookup, addresses) {
 
 function AccountWrapper() {
   const [customerState, customerDispatch] = useContext(CustomersContext)
+  const isMountedRef = useRef(true)
 
   var styles = {
     display: 'flex',
     justifyContent: 'space-between',
-    width: '100%'
+    width: '100%',
   }
 
   async function getCustomerInfo() {
@@ -48,8 +49,8 @@ function AccountWrapper() {
         type: 'SET_NOTICES',
         payload: {
           message: respCust.data.message,
-          type: respCust.data.type
-        }
+          type: respCust.data.type,
+        },
       })
     }
 
@@ -64,7 +65,11 @@ function AccountWrapper() {
   }
 
   useEffect(() => {
-    getCustomerInfo()
+    if (isMountedRef.current) {
+      getCustomerInfo()
+    }
+
+    return () => (isMountedRef.current = false)
   }, [customerState.customer])
 
   return !isEmpty(customerState.notices) ? (

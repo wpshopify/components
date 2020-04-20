@@ -13,7 +13,6 @@ function CartButton({ options }) {
   const [shopState] = useContext(ShopContext)
   const [cartState, cartDispatch] = useContext(CartContext)
   const counterElement = useRef()
-  const isFirstRender = useRef(true)
   const animeSlideInRight = useAnime(slideInRight)
 
   useEffect(() => {
@@ -36,7 +35,7 @@ function CartButton({ options }) {
 
   function iconStyles() {
     return {
-      backgroundColor: getIconColor()
+      backgroundColor: getIconColor(),
     }
   }
 
@@ -44,24 +43,27 @@ function CartButton({ options }) {
     cartDispatch({ type: 'TOGGLE_CART', payload: true })
   }
 
-  return usePortal(
-    <>
-      <CartButtonProvider options={options}>
-        <button
-          data-is-cart-ready={shopState.isCartReady ? '1' : '0'}
-          role='button'
-          ref={counterElement}
-          className={`wps-btn-cart wps-cart-icon-${options.payloadSettings.type} ${
-            isCartEmpty(cartState.checkoutCache.lineItems) ? 'wps-cart-is-empty' : ''
-          }`}
-          onClick={onClick}
-          style={iconStyles()}>
-          {options.payloadSettings.showCounter && <CartCounter />}
+  function onEnter() {
+    cartDispatch({ type: 'CART_LOADED', payload: true })
+  }
 
-          <CartIcon />
-        </button>
-      </CartButtonProvider>
-    </>,
+  return usePortal(
+    <CartButtonProvider options={options}>
+      <button
+        data-is-cart-ready={shopState.isCartReady ? '1' : '0'}
+        role='button'
+        ref={counterElement}
+        className={`wps-btn-cart wps-cart-icon-${options.payloadSettings.type} ${
+          isCartEmpty(cartState.checkoutCache.lineItems) ? 'wps-cart-is-empty' : ''
+        }`}
+        onClick={onClick}
+        onMouseEnter={onEnter}
+        style={iconStyles()}>
+        {options.payloadSettings.showCounter && <CartCounter />}
+
+        <CartIcon />
+      </button>
+    </CartButtonProvider>,
     options.componentElement
   )
 }

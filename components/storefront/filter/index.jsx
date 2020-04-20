@@ -3,7 +3,7 @@ const { useState } = wp.element
 const { __ } = wp.i18n
 
 function StorefrontFilter({ heading, children }) {
-  const [drawerToggle, setDrawerToggle] = useState(false)
+  const [drawerToggle, setDrawerToggle] = useState(() => false)
 
   function toggleDrawer() {
     setDrawerToggle(!drawerToggle)

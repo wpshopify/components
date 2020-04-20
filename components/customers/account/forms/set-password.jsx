@@ -18,7 +18,7 @@ function ResetForm({
   onConfirmPasswordChange,
   onSubmit,
   customersState,
-  isSubmitting
+  isSubmitting,
 }) {
   const element = document.querySelector(customersState.dropzones.formSetPassword)
 
@@ -74,17 +74,19 @@ function LoginLink({ noticeState, shopState }) {
 function CustomerFormSetPassword() {
   const [customersState, customersDispatch] = useContext(CustomersContext)
   const [shopState] = useContext(ShopContext)
-  const [isSubmitting, setIsSubmitting] = useState(false)
-  const [formState, setFormState] = useState({
-    password: '',
-    confirmPassword: '',
-    customerId: '',
-    resetToken: ''
+  const [isSubmitting, setIsSubmitting] = useState(() => false)
+  const [formState, setFormState] = useState(() => {
+    return {
+      password: '',
+      confirmPassword: '',
+      customerId: '',
+      resetToken: '',
+    }
   })
 
-  const [noticeState, setNoticeState] = useState(false)
+  const [noticeState, setNoticeState] = useState(() => false)
 
-  const [hasChanged, setHasChangedState] = useState(false)
+  const [hasChanged, setHasChangedState] = useState(() => false)
 
   useEffect(() => {
     var urlParams = new URLSearchParams(window.location.search)
@@ -94,12 +96,12 @@ function CustomerFormSetPassword() {
         password: '',
         confirmPassword: '',
         customerId: '',
-        resetToken: ''
+        resetToken: '',
       })
 
       setNoticeState({
         message: 'No token found',
-        type: 'error'
+        type: 'error',
       })
     } else {
       var token = urlParams.get('token')
@@ -120,14 +122,14 @@ function CustomerFormSetPassword() {
     if (!resetSuccess && resetError) {
       setNoticeState({
         message: 'Error: ' + resetError.message + '. Error code: ' + resetError.statusCode,
-        type: 'error'
+        type: 'error',
       })
 
       setFormState({
         password: '',
         confirmPassword: '',
         customerId: '',
-        resetToken: ''
+        resetToken: '',
       })
 
       return
@@ -140,7 +142,7 @@ function CustomerFormSetPassword() {
         password: '',
         confirmPassword: '',
         customerId: '',
-        resetToken: ''
+        resetToken: '',
       })
 
       return
@@ -150,14 +152,14 @@ function CustomerFormSetPassword() {
       var errorObj = resetSuccess.data.customerReset.customerUserErrors[0]
       setNoticeState({
         message: 'Error: ' + errorObj.message + '. Error code: ' + errorObj.code,
-        type: 'error'
+        type: 'error',
       })
 
       setFormState({
         password: '',
         confirmPassword: '',
         customerId: '',
-        resetToken: ''
+        resetToken: '',
       })
     } else {
       if (!resetError) {
@@ -165,13 +167,13 @@ function CustomerFormSetPassword() {
           password: '',
           confirmPassword: '',
           customerId: '',
-          resetToken: ''
+          resetToken: '',
         })
 
         setNoticeState({
           message:
             'Success! Your password has been changed. <a href="/login">Login to your account.</a>',
-          type: 'success'
+          type: 'success',
         })
         setHasChangedState(true)
       } else {
