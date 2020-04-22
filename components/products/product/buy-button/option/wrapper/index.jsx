@@ -27,11 +27,11 @@ function ProductOptionWrapper({ children }) {
     if (!isPairMatch(buyButtonState.availableVariants, productOptionState.selectedOption)) {
       productOptionDispatch({
         type: 'SET_IS_OPTION_SELECTED',
-        payload: false
+        payload: false,
       })
       buyButtonDispatch({
         type: 'UNSET_SELECTED_OPTIONS',
-        payload: productOptionState.option.name
+        payload: productOptionState.option.name,
       })
     }
   }, [buyButtonState.availableVariants])
@@ -48,7 +48,7 @@ function ProductOptionWrapper({ children }) {
 
     buyButtonDispatch({
       type: 'SET_AVAILABLE_VARIANTS',
-      payload: productOptionState.selectedOption
+      payload: productOptionState.selectedOption,
     })
   }, [productOptionState.selectedOption])
 
@@ -65,12 +65,12 @@ function ProductOptionWrapper({ children }) {
     if (isEmpty(buyButtonState.selectedOptions)) {
       productOptionDispatch({
         type: 'SET_IS_OPTION_SELECTED',
-        payload: false
+        payload: false,
       })
 
       productOptionDispatch({
         type: 'SET_SELECTED_OPTION',
-        payload: {}
+        payload: {},
       })
 
       return
@@ -83,8 +83,8 @@ function ProductOptionWrapper({ children }) {
         type: 'SET_SELECTED_VARIANT',
         payload: {
           product: buyButtonState.product,
-          selectedOptions: buyButtonState.selectedOptions
-        }
+          selectedOptions: buyButtonState.selectedOptions,
+        },
       })
 
       wp.hooks.doAction('before.product.addToCart', buyButtonState)

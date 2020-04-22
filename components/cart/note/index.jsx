@@ -21,9 +21,7 @@ function CartNote() {
       return
     }
 
-    if (wpshopify.misc.isPro) {
-      shopDispatch({ type: 'SET_CHECKOUT_NOTE', payload: debouncedValue })
-    }
+    wpshopify.misc.isPro && shopDispatch({ type: 'SET_CHECKOUT_NOTE', payload: debouncedValue })
   }, [debouncedValue])
 
   return (

@@ -3,10 +3,12 @@ import { ProductContext } from '../../_state/context'
 import { ItemsContext } from '../../../../items/_state/context'
 
 import { ProductGalleryContext } from '../gallery/_state/context'
-import { addCustomSizingToImageUrl } from '../../../../../common/images'
+import { doFeaturedSizing, doThumbnailSizing } from '../../../../../common/images'
 
 import { Link } from '../../../../link'
 import { hasLink } from '../../../../../common/settings'
+/** @jsx jsx */
+import { jsx, css } from '@emotion/core'
 
 const { useEffect, useContext, useRef, useState } = wp.element
 
@@ -18,36 +20,16 @@ function ProductImage({ image, isFeatured }) {
   const [galleryState, galleryDispatch] = useContext(ProductGalleryContext)
   const [productImageSrc, setProductImageSrc] = useState(() => applyImageSizing())
 
-  function doFeaturedSizing() {
-    return addCustomSizingToImageUrl({
-      src: image.src,
-      width: shopState.settings.general.productsImagesSizingWidth,
-      height: shopState.settings.general.productsImagesSizingHeight,
-      crop: shopState.settings.general.productsImagesSizingCrop,
-      scale: shopState.settings.general.productsImagesSizingScale,
-    })
-  }
-
-  function doThumbnailSizing() {
-    return addCustomSizingToImageUrl({
-      src: image.src,
-      width: shopState.settings.general.productsThumbnailImagesSizingWidth,
-      height: shopState.settings.general.productsThumbnailImagesSizingHeight,
-      crop: shopState.settings.general.productsThumbnailImagesSizingCrop,
-      scale: shopState.settings.general.productsThumbnailImagesSizingScale,
-    })
-  }
-
   function applyImageSizing() {
     if (isFeatured) {
       if (shopState.settings.general.productsImagesSizingToggle) {
-        return doFeaturedSizing()
+        return doFeaturedSizing(image.src, shopState)
       }
 
       return image.src
     } else {
       if (shopState.settings.general.productsThumbnailImagesSizingToggle) {
-        return doThumbnailSizing()
+        return doThumbnailSizing(image.src, shopState)
       }
       return image.src
     }
@@ -80,6 +62,8 @@ function ProductImage({ image, isFeatured }) {
             image={image}
             productImageSrc={productImageSrc}
             shopState={shopState}
+            galleryState={galleryState}
+            isFeatured={isFeatured}
           />
         </Link>
       )
@@ -89,13 +73,33 @@ function ProductImage({ image, isFeatured }) {
           image={image}
           productImageSrc={productImageSrc}
           shopState={shopState}
+          galleryState={galleryState}
+          isFeatured={isFeatured}
         />
       )
 }
 
 function Img(props) {
+  function isSelectedImage() {
+    if (props.isFeatured) {
+      return
+    }
+
+    return props.galleryState.featImage.src === props.image.src
+  }
+
+  const featThumbStyles = css`
+    outline: 4px solid #ffaf4c;
+    outline-offset: -4px;
+
+    &:hover {
+      opacity: 1;
+    }
+  `
+
   return (
     <img
+      css={isSelectedImage() && featThumbStyles}
       ref={props.imageRef}
       itemProp='image'
       src={props.productImageSrc}

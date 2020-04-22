@@ -1,6 +1,21 @@
 /** @jsx jsx */
 import { jsx, css } from '@emotion/core'
 
+const bp = {
+  small: 500,
+}
+
+const mq = (n) => {
+  const bpArray = Object.keys(bp).map((key) => [key, bp[key]])
+
+  const [result] = bpArray.reduce((acc, [name, size]) => {
+    if (n === name) return [...acc, `@media (max-width: ${size}px)`]
+    return acc
+  }, [])
+
+  return result
+}
+
 const containerFluidCSS = css`
   width: 100%;
   padding: 0;
@@ -23,6 +38,10 @@ const rowCSS = css`
     flex: 1;
     width: calc(100% - 2em);
 
+    ${mq('small')} {
+      width: 100%;
+    }
+
     &[data-item-is-loading='true'] {
       .wps-item {
         opacity: 0.4;
@@ -31,4 +50,4 @@ const rowCSS = css`
   }
 `
 
-export { containerFluidCSS, rowCSS, flexRowCSS }
+export { containerFluidCSS, rowCSS, flexRowCSS, mq }

@@ -23,26 +23,26 @@ const { useContext } = wp.element
 
 function onlyAvailableVariantsOptions(variants) {
   return groupBy(
-    flatMap(variants, variant => variant.selectedOptions),
+    flatMap(variants, (variant) => variant.selectedOptions),
     'name'
   )
 }
 
 function onlyUniqueOptionValues(optionValues) {
-  return uniqBy(optionValues, 'value').filter(item => item.value)
+  return uniqBy(optionValues, 'value').filter((item) => item.value)
 }
 
 function formatAvailableOptions(availOptions) {
   return map(availOptions, (optionValues, optionName) => {
     return {
       name: optionName,
-      values: onlyUniqueOptionValues(optionValues)
+      values: onlyUniqueOptionValues(optionValues),
     }
   })
 }
 
 function filterOnlyAvailableVariants(variants) {
-  return filter(variants, function(v) {
+  return filter(variants, function (v) {
     return v.availableForSale
   })
 }
@@ -59,18 +59,14 @@ function variantHasDropdown(itemsState) {
   return itemsState.payloadSettings.variantStyle === 'dropdown'
 }
 
-function VariantDropdown({ options }) {
+function ProductVariantDropdown({ options }) {
   return (
-    options && (
-      <div
-        className='wps-component wps-component-products-options'
-        css={containerFluidCSS}
-        data-wps-is-component-wrapper>
-        {options.map(option => (
-          <ProductOption key={option.name} option={option} />
-        ))}
-      </div>
-    )
+    <div
+      className='wps-component wps-component-products-options'
+      css={containerFluidCSS}
+      data-wps-is-component-wrapper>
+      {options && options.map((option) => <ProductOption key={option.name} option={option} />)}
+    </div>
   )
 }
 
@@ -86,7 +82,7 @@ function ProductOptions() {
   const options = onlyAvailableOptionsFromVariants(buyButtonState.product.variants)
 
   return variantHasDropdown(itemsState) ? (
-    <VariantDropdown options={options} />
+    <ProductVariantDropdown options={options} />
   ) : (
     <ProductVariantButtons options={options} />
   )

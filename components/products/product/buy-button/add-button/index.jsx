@@ -32,7 +32,7 @@ function ProductAddButton() {
   const [itemsState] = useContext(ItemsContext)
   const [productState, productDispatch] = useContext(ProductContext)
   const [buyButtonState, buyButtonDispatch] = useContext(ProductBuyButtonContext)
-  const [shopState] = useContext(ShopContext)
+  const [shopState, shopDispatch] = useContext(ShopContext)
 
   const isDirectCheckout =
     itemsState.payloadSettings.directCheckout || shopState.settings.general.directCheckout
@@ -136,8 +136,6 @@ function ProductAddButton() {
     } else {
       console.log('ADDING PRODUCTS ............................')
 
-      wp.hooks.doAction('product.addToCart', buildAddToCartParams(lineItems, [variant]))
-
       buyButtonDispatch({
         type: 'SET_ALL_SELECTED_OPTIONS',
         payload: false,
@@ -148,6 +146,8 @@ function ProductAddButton() {
       productDispatch({ type: 'SET_SELECTED_VARIANT', payload: false })
       buyButtonDispatch({ type: 'SET_MISSING_SELECTIONS', payload: false })
 
+      wp.hooks.doAction('cart.toggle', 'open')
+      wp.hooks.doAction('product.addToCart', buildAddToCartParams(lineItems, [variant]))
       wp.hooks.doAction('after.product.addToCart', lineItems, variant)
     }
   }

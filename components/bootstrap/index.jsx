@@ -26,7 +26,7 @@ function ShopBootstrap({ children }) {
     }
 
     // App is ready to go
-    wp.hooks.doAction('after.shop.ready', shopState)
+    wp.hooks.doAction('after.app.ready', shopState)
   }
 
   async function bootstrapShop() {

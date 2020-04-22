@@ -15,7 +15,6 @@ function ProductVariant({ variant, children }) {
     productOptionState.isDropdownOpen
 
   function onSelection() {
-    // ALREADY SELECTED
     if (
       isPairMatch(productOptionState.selectedOption, selectedVariant) &&
       !productOptionState.isDropdownOpen
@@ -25,21 +24,22 @@ function ProductVariant({ variant, children }) {
 
     buyButtonDispatch({
       type: 'UPDATE_SELECTED_OPTIONS',
-      payload: selectedVariant
+      payload: selectedVariant,
     })
 
     productOptionDispatch({
       type: 'SET_SELECTED_OPTION',
-      payload: selectedVariant
+      payload: selectedVariant,
     })
 
     productOptionDispatch({
       type: 'TOGGLE_DROPDOWN',
-      payload: false
+      payload: false,
     })
+
     productOptionDispatch({
       type: 'SET_IS_OPTION_SELECTED',
-      payload: true
+      payload: true,
     })
 
     wp.hooks.doAction('after.product.variant.selection', selectedVariant, productOptionState)
@@ -48,7 +48,7 @@ function ProductVariant({ variant, children }) {
   return wp.element.cloneElement(children, {
     onSelection: onSelection,
     variant: variant,
-    isAvailableToSelect: isAvailableToSelect
+    isAvailableToSelect: isAvailableToSelect,
   })
 }
 

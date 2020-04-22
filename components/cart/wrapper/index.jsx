@@ -7,7 +7,7 @@ import isEmpty from 'lodash/isEmpty'
 import { getProductsFromLineItems } from '/Users/andrew/www/devil/devilbox-new/data/www/wpshopify-api'
 import to from 'await-to-js'
 
-const { useContext, useRef, useEffect } = wp.element
+const { useContext, useRef, useEffect, useState } = wp.element
 const { __ } = wp.i18n
 const { Spinner } = wp.components
 const { Suspense } = wp.element
@@ -25,18 +25,17 @@ import { CartButtons } from '../buttons'
 import { useIsFirstRender } from '/Users/andrew/www/devil/devilbox-new/data/www/wpshopify-hooks'
 
 function CartWrapper() {
+  const [isReady, setIsReady] = useState(false)
   const [cartState, cartDispatch] = useContext(CartContext)
   const [shopState, shopDispatch] = useContext(ShopContext)
   const cartElement = useRef()
-  const isFirstRender = useIsFirstRender()
   const updateCheckoutAttributes = useAction('update.checkout.attributes')
   const setCheckoutAttributes = useAction('set.checkout.attributes')
   const setCheckoutNotes = useAction('set.checkout.note')
   const lineItemsAdded = useAction('product.addToCart')
-  const openCart = useAction('cart.toggle')
   const animeSlideInRight = useAnime(slideInCart)
   const animeSlideOutRight = useAnime(slideOutCart)
-  const isCartOpen = useCartToggle(cartElement, cartState)
+  const isCartOpen = useCartToggle(cartElement)
 
   async function cartBootstrap() {
     let [productsError, products] = await to(getProductsFromLineItems())
@@ -71,7 +70,28 @@ function CartWrapper() {
     }
 
     shopDispatch({ type: 'IS_CART_READY', payload: true })
+    setIsReady(true)
   }
+
+  function openCart() {
+    animeSlideInRight(cartElement.current)
+    cartDispatch({ type: 'CART_LOADED', payload: true })
+    cartDispatch({ type: 'TOGGLE_CART', payload: true })
+  }
+
+  function closeCart() {
+    animeSlideOutRight(cartElement.current)
+    cartDispatch({ type: 'TOGGLE_CART', payload: false })
+  }
+
+  useEffect(() => {
+    if (!isReady) {
+      wp.hooks.doAction('before.cart.ready', cartState)
+      return
+    }
+
+    wp.hooks.doAction('after.cart.ready', cartState)
+  }, [isReady])
 
   useEffect(() => {
     if (!shopState.checkoutId) {
@@ -107,31 +127,35 @@ function CartWrapper() {
   }, [setCheckoutAttributes])
 
   useEffect(() => {
-    shopDispatch({ type: 'SET_CHECKOUT_NOTE', payload: setCheckoutNotes })
+    wpshopify.misc.isPro && shopDispatch({ type: 'SET_CHECKOUT_NOTE', payload: setCheckoutNotes })
   }, [setCheckoutNotes])
 
   useEffect(() => {
-    if (isCartOpen || openCart) {
-      animeSlideInRight(cartElement.current)
-    } else {
-      animeSlideOutRight(cartElement.current)
+    if (isCartOpen) {
+      openCart()
+      return
     }
-  }, [isCartOpen, openCart])
+    closeCart()
+  }, [isCartOpen])
 
+  /*
+  
+  This hook is fired also from the <AddButton> component
+  
+  */
   useEffect(() => {
-    if (lineItemsAdded) {
-      cartDispatch({
-        type: 'UPDATE_LINE_ITEMS_AND_VARIANTS',
-        payload: lineItemsAdded,
-      })
-      cartDispatch({ type: 'TOGGLE_CART', payload: true })
+    if (!lineItemsAdded || isEmpty(lineItemsAdded)) {
+      cartDispatch({ type: 'SET_IS_CART_EMPTY', payload: true })
+      return
     }
 
-    if (isEmpty(lineItemsAdded)) {
-      cartDispatch({ type: 'SET_IS_CART_EMPTY', payload: true })
-    } else {
-      cartDispatch({ type: 'SET_IS_CART_EMPTY', payload: false })
-    }
+    cartDispatch({
+      type: 'UPDATE_LINE_ITEMS_AND_VARIANTS',
+      payload: lineItemsAdded,
+    })
+    //   cartDispatch({ type: 'TOGGLE_CART', payload: true })
+    console.log('............. lineItemsAdded cartState ', cartState)
+    cartDispatch({ type: 'SET_IS_CART_EMPTY', payload: false })
   }, [lineItemsAdded])
 
   return (

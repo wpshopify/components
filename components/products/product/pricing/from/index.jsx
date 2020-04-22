@@ -12,7 +12,7 @@ function ProductPriceFrom() {
   return (
     <small css={styles} className='wps-product-from-price'>
       <FilterHook name='product.pricing.from.text'>
-        {__('From:', wpshopify.misc.textdomain)}
+        {__('Price:', wpshopify.misc.textdomain)}
       </FilterHook>
     </small>
   )

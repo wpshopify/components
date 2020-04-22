@@ -29,10 +29,10 @@ function ProductFeaturedImage() {
   const [featImage, setFeatImage] = useState(() => galleryState.featImage)
 
   function driftOptions() {
-    return {
+    return wp.hooks.applyFilters('default.image.zoom.options', {
       paneContainer: paneElement.current,
       inlineOffsetX: -80,
-    }
+    })
   }
 
   function showZoom() {

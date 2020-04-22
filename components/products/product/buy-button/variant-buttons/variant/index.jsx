@@ -19,7 +19,7 @@ function ProductVariantButtonValue({ variant, onSelection, isAvailableToSelect }
   const cursor = 'pointer'
 
   function addColorSwatches() {
-    wp.hooks.addFilter('product.variant.styles', 'wpshopify', function(
+    wp.hooks.addFilter('product.variant.styles', 'wpshopify', function (
       defaultCustomStyles,
       variant,
       isSelected,
@@ -69,6 +69,7 @@ function ProductVariantButtonValue({ variant, onSelection, isAvailableToSelect }
 
     &:hover {
       cursor: ${cursor};
+      opacity: 0.7;
     }
 
     ${customStyles}

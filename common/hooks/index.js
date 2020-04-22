@@ -1,5 +1,6 @@
 import hasIn from 'lodash/hasIn'
-const { useEffect, useState } = wp.element
+import { CartContext } from '../../components/cart/_state/context'
+const { useEffect, useState, useContext } = wp.element
 
 function useOnClickOutside(ref, handler, targetOpened = false) {
   function addEventListener(listener) {
@@ -109,9 +110,11 @@ function getClosest(elem, selector) {
   return null
 }
 
-function useCartToggle(cartElement, cartState) {
+function useCartToggle(cartElement) {
   const { useEffect } = wp.element
-  const [isOpen, setIsOpen] = useState(() => cartState.isCartOpen)
+  const [cartState] = useContext(CartContext)
+  const [isOpen, setIsOpen] = useState(cartState.isCartOpen)
+  const cartToggleAction = useAction('cart.toggle', false)
 
   const escEvent = (event) => {
     if (event.key === 'Escape' || event.keyCode === 27) {
@@ -136,7 +139,6 @@ function useCartToggle(cartElement, cartState) {
       setIsOpen(true)
       return
     }
-
     setIsOpen(false)
   }
 
@@ -152,6 +154,26 @@ function useCartToggle(cartElement, cartState) {
       document.removeEventListener('keydown', escEvent)
     }
   }, [])
+
+  useEffect(() => {
+    if (!cartToggleAction) {
+      return
+    }
+
+    if (cartToggleAction === 'open') {
+      setIsOpen(true)
+    }
+
+    if (cartToggleAction === 'close') {
+      setIsOpen(false)
+    }
+
+    wp.hooks.doAction('cart.toggle', false)
+
+    return () => {
+      wp.hooks.doAction('cart.toggle', false)
+    }
+  }, [cartToggleAction])
 
   return isOpen
 }

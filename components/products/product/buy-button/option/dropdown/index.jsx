@@ -1,18 +1,20 @@
-import { ProductVariants } from '../variants'
 import { ProductOptionContext } from '../_state/context'
-
-import Tippy from '@tippy.js/react'
+const { useContext, useState } = wp.element
 import 'tippy.js/dist/tippy.css'
 import 'tippy.js/animations/shift-away.css'
-
-const { useContext } = wp.element
+import Tippy from '@tippyjs/react'
 
 const ProductOptionTrigger = wp.element.lazy(() =>
   import(/* webpackChunkName: 'ProductOptionTrigger' */ '../trigger')
 )
 
+const ProductVariantsDropdown = wp.element.lazy(() =>
+  import(/* webpackChunkName: 'ProductVariantsDropdown' */ '../variants')
+)
+
 function ProductOptionDropdown() {
   const [productOptionState] = useContext(ProductOptionContext)
+  useState()
 
   return (
     <div className='row'>
@@ -27,12 +29,12 @@ function ProductOptionDropdown() {
           appendTo='parent'
           arrow={false}
           animation='shift-away'
-          flip={false}
           theme='light'
           interactive={true}
           inertia={true}
           delay={[0, 0]}
-          content={<ProductVariants />}>
+          offset={[0, 15]}
+          content={<ProductVariantsDropdown />}>
           <span>
             <ProductOptionTrigger />
           </span>

@@ -19,7 +19,6 @@ function PaginationItems({ children, alignHeight }) {
 
   function mapPayload() {
     var lastPageIndex = itemsState.payload.length - itemsState.queryParams.first
-    console.log('itemsState.payload', itemsState.payload.length)
 
     return itemsState.payload.map((item, i) => {
       return wp.element.cloneElement(children, {

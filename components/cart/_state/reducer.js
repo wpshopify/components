@@ -184,6 +184,8 @@ function removeLineItemsAndVariants(checkoutCache, payload) {
 function CartReducer(state, action) {
   switch (action.type) {
     case 'TOGGLE_CART': {
+      console.log('TOGGLE_CART', action.payload)
+
       return {
         ...state,
         isCartOpen: update(state.isCartOpen, { $set: action.payload }),

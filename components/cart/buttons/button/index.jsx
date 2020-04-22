@@ -10,7 +10,7 @@ import { isCartEmpty } from '../../../../common/cart'
 const { useContext, useRef, useEffect } = wp.element
 
 function CartButton({ options }) {
-  const [shopState] = useContext(ShopContext)
+  const [shopState, shopDispatch] = useContext(ShopContext)
   const [cartState, cartDispatch] = useContext(CartContext)
   const counterElement = useRef()
   const animeSlideInRight = useAnime(slideInRight)

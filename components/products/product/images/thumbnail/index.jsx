@@ -5,6 +5,7 @@ const { useEffect, useContext, useState } = wp.element
 
 const ProductThumbnailImage = wp.element.memo(function ProductThumbnailImage({ image }) {
   const [galleryState, galleryDispatch] = useContext(ProductGalleryContext)
+
   const [isActive, setIsActive] = useState(() => false)
 
   useEffect(
@@ -22,14 +23,14 @@ const ProductThumbnailImage = wp.element.memo(function ProductThumbnailImage({ i
     return featImageSrc === image.src
   }
 
-  function handleThumbnailClick() {
+  function onClick() {
     galleryDispatch({ type: 'SET_FEAT_IMAGE', payload: image })
   }
 
   return (
     <div
       className='wps-component wps-component-products-images-thumbnail'
-      onClick={handleThumbnailClick}
+      onClick={onClick}
       data-wps-is-active={isActive}>
       <ProductImage isFeatured={false} image={image} />
     </div>

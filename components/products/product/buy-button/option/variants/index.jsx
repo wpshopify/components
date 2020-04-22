@@ -7,7 +7,7 @@ import { v4 as uuidv4 } from 'uuid'
 
 const { useContext } = wp.element
 
-function ProductVariants() {
+function ProductVariantsDropdown() {
   const [productOptionState, productOptionDispatch] = useContext(ProductOptionContext)
   const [productState, productDispatch] = useContext(ProductContext)
 
@@ -37,4 +37,4 @@ function ProductVariants() {
   )
 }
 
-export { ProductVariants }
+export default ProductVariantsDropdown

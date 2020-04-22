@@ -2,10 +2,7 @@
 import { jsx, css } from '@emotion/core'
 import { ProductBuyButtonContext } from '../../_state/context'
 import { ProductOptionContext } from '../../option/_state/context'
-
-const ProductVariantMissingSelection = wp.element.lazy(() =>
-  import(/* webpackChunkName: 'ProductVariantMissingSelection' */ '../missing-selection')
-)
+import ProductVariantMissingSelection from '../missing-selection'
 
 const ProductVariants = wp.element.lazy(() =>
   import(/* webpackChunkName: 'ProductVariants' */ '../variants')
@@ -30,11 +27,6 @@ function ProductVariantButtonGroupWrapper({ option }) {
     margin-bottom: 1em;
   `
 
-  const selectStyles = css`
-    margin-top: 6px;
-    color: red;
-  `
-
   return (
     <div className='wpshopify-variant-buttons-group' css={groupStyles}>
       <label css={labelStyles}>{option.name}</label>
@@ -42,7 +34,7 @@ function ProductVariantButtonGroupWrapper({ option }) {
         <ProductVariants option={option} />
       </div>
       {buyButtonState.missingSelections && !productOptionState.isOptionSelected && (
-        <ProductVariantMissingSelection selectStyles={selectStyles} />
+        <ProductVariantMissingSelection />
       )}
     </div>
   )

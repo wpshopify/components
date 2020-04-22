@@ -3,7 +3,12 @@ import { jsx, css } from '@emotion/core'
 import { FilterHook } from '../../../../../../common/utils'
 const { __ } = wp.i18n
 
-function ProductVariantMissingSelection({ selectStyles }) {
+function ProductVariantMissingSelection() {
+  const selectStyles = css`
+    margin-top: 6px;
+    color: red;
+  `
+
   return (
     <p css={selectStyles}>
       <FilterHook name='product.missingSelection.text'>

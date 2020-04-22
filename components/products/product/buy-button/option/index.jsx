@@ -16,7 +16,7 @@ function ProductOption({ option }) {
     <ProductOptionProvider
       options={{
         option: option,
-        dropdownElement: dropdownElement
+        dropdownElement: dropdownElement,
       }}>
       <ProductOptionWrapper>
         <ProductOptionDropdown />
@@ -25,4 +25,4 @@ function ProductOption({ option }) {
   )
 }
 
-export { ProductOption }
+export default ProductOption
