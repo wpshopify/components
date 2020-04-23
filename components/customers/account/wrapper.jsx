@@ -44,6 +44,16 @@ function AccountWrapper() {
 
     const [errorCust, respCust] = await to(getCustomer(customerState.user.id))
 
+    if (errorCust) {
+      customerDispatch({
+        type: 'SET_NOTICES',
+        payload: {
+          message: errorCust,
+          type: 'error',
+        },
+      })
+    }
+
     if (isWordPressError(respCust)) {
       customerDispatch({
         type: 'SET_NOTICES',
@@ -54,13 +64,9 @@ function AccountWrapper() {
       })
     }
 
-    if (!errorCust) {
-      customerDispatch({ type: 'SET_CUSTOMER', payload: respCust.data.customer })
-      customerDispatch({ type: 'SET_DEFAULT_ADDRESS', payload: respCust.data.customer })
-    }
-
+    customerDispatch({ type: 'SET_CUSTOMER', payload: respCust.data.customer })
+    customerDispatch({ type: 'SET_DEFAULT_ADDRESS', payload: respCust.data.customer })
     customerDispatch({ type: 'SET_IS_READY', payload: true })
-
     // customerDispatch({ type: 'SET_INNER_PAGE', payload: false })
   }
 

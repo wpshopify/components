@@ -13,6 +13,7 @@ import reduce from 'lodash/reduce'
 import filter from 'lodash/filter'
 import find from 'lodash/find'
 import { calcCheckoutTotal } from '../../../common/products'
+import { updateNoticesState } from '../../../common/state'
 
 function productVariantExistsInCheckoutCache(checkoutCacheVariants, variant) {
   return some(checkoutCacheVariants, { id: variant.id })
@@ -214,21 +215,9 @@ function CartReducer(state, action) {
       }
     }
     case 'UPDATE_NOTICES': {
-      let updatedNotices = state.notices
-
-      if (isEmpty(action.payload)) {
-        updatedNotices = action.payload
-      } else {
-        if (!some(state.notices, action.payload)) {
-          updatedNotices = concat(state.notices, [action.payload])
-        } else {
-          updatedNotices = state.notices
-        }
-      }
-
       return {
         ...state,
-        notices: update(state.notices, { $set: updatedNotices }),
+        notices: updateNoticesState(state.notices, action.payload),
       }
     }
     case 'SET_IS_CART_EMPTY': {

@@ -6,6 +6,8 @@ import to from 'await-to-js'
 import isEmpty from 'lodash/isEmpty'
 import has from 'lodash/has'
 
+const { __ } = wp.i18n
+
 function sanitizeQueryResponse(response, type) {
   if (type === 'storefront' || type === 'search') {
     type = 'products'
@@ -75,6 +77,17 @@ function fetchNextItems(itemsState, itemsDispatch) {
     if (!hasNextPageQueryAndPath(itemsState.payload)) {
       const [resendInitialError, resendInitialResp] = await to(resendInitialQuery(itemsState))
 
+      if (resendInitialError) {
+        itemsDispatch({
+          type: 'UPDATE_NOTICES',
+          payload: { type: 'error', message: __(resendInitialError, wpshopify.misc.textdomain) },
+        })
+
+        itemsDispatch({ type: 'SET_IS_LOADING', payload: false })
+
+        return reject(resendInitialError)
+      }
+
       var productsExisting = sanitizeQueryResponse(resendInitialResp, itemsState.dataType)
     } else {
       var productsExisting = itemsState.payload
@@ -88,7 +101,7 @@ function fetchNextItems(itemsState, itemsDispatch) {
       if (initialError) {
         itemsDispatch({
           type: 'UPDATE_NOTICES',
-          payload: { type: 'error', message: initialError },
+          payload: { type: 'error', message: __(initialError, wpshopify.misc.textdomain) },
         })
         itemsDispatch({ type: 'SET_IS_LOADING', payload: false })
 
@@ -115,7 +128,7 @@ function fetchNextItems(itemsState, itemsDispatch) {
         if (finalResultsError) {
           itemsDispatch({
             type: 'UPDATE_NOTICES',
-            payload: { type: 'error', message: finalResultsError },
+            payload: { type: 'error', message: __(finalResultsError, wpshopify.misc.textdomain) },
           })
           itemsDispatch({ type: 'SET_IS_LOADING', payload: false })
 

@@ -5,6 +5,8 @@ import {
   useIsFirstRender,
 } from '/Users/andrew/www/devil/devilbox-new/data/www/wpshopify-hooks'
 const { useContext, useRef, useEffect } = wp.element
+import to from 'await-to-js'
+const { __ } = wp.i18n
 
 const Item = wp.element.memo(function ({ children, limit = false, infiniteScroll = false }) {
   const [itemsState, itemsDispatch] = useContext(ItemsContext)
@@ -30,6 +32,36 @@ const Item = wp.element.memo(function ({ children, limit = false, infiniteScroll
     }
   }
 
+  async function getNewItems(itemsState) {
+    const [error, newItems] = await to(fetchNewItems(itemsState))
+
+    if (error) {
+      console.log('....... error', error)
+      console.log('isMountedisMountedisMounted')
+
+      if (isMounted.current) {
+        console.log('111111111111111111111111')
+
+        itemsDispatch({
+          type: 'UPDATE_NOTICES',
+          payload: {
+            type: 'error',
+            message: __(error, wpshopify.misc.textdomain),
+          },
+        })
+
+        itemsDispatch({ type: 'SET_IS_LOADING', payload: false })
+      }
+
+      return
+    }
+
+    console.log('................. newItems', newItems)
+
+    itemsDispatch({ type: 'SET_IS_LOADING', payload: false })
+    updatePayloadState(newItems)
+  }
+
   useEffect(() => {
     if (itemsState.hasParentPayload) {
       return
@@ -51,19 +83,7 @@ const Item = wp.element.memo(function ({ children, limit = false, infiniteScroll
         payload: [],
       })
 
-      fetchNewItems(itemsState)
-        .then(function (newItems) {
-          itemsDispatch({ type: 'SET_IS_LOADING', payload: false })
-          updatePayloadState(newItems)
-        })
-        .catch((error) => {
-          itemsDispatch({
-            type: 'UPDATE_NOTICES',
-            payload: error,
-          })
-
-          itemsDispatch({ type: 'SET_IS_LOADING', payload: false })
-        })
+      getNewItems(itemsState)
     }
   }, [itemsState.queryParams])
 

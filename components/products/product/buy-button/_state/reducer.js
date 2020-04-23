@@ -1,4 +1,5 @@
 import { filterAvailableVariantsBySelectedOption } from '../../../../../common/products'
+import { updateNoticesState } from '../../../../../common/state'
 import update from 'immutability-helper'
 
 function ProductBuyButtonReducer(state, action) {
@@ -6,45 +7,51 @@ function ProductBuyButtonReducer(state, action) {
     case 'SET_ALL_SELECTED_OPTIONS':
       return {
         ...state,
-        allOptionsSelected: update(state.allOptionsSelected, { $set: action.payload })
+        allOptionsSelected: update(state.allOptionsSelected, { $set: action.payload }),
       }
 
     case 'UNSET_SELECTED_OPTIONS':
       return {
         ...state,
-        selectedOptions: update(state.selectedOptions, { $unset: [action.payload] })
+        selectedOptions: update(state.selectedOptions, { $unset: [action.payload] }),
       }
 
     case 'UPDATE_SELECTED_OPTIONS':
       return {
         ...state,
-        selectedOptions: update(state.selectedOptions, { $merge: action.payload })
+        selectedOptions: update(state.selectedOptions, { $merge: action.payload }),
       }
 
     case 'REMOVE_SELECTED_OPTIONS':
       return {
         ...state,
-        selectedOptions: update(state.selectedOptions, { $set: {} })
+        selectedOptions: update(state.selectedOptions, { $set: {} }),
       }
 
     case 'SET_MISSING_SELECTIONS':
       return {
         ...state,
-        missingSelections: update(state.missingSelections, { $set: action.payload })
+        missingSelections: update(state.missingSelections, { $set: action.payload }),
       }
 
     case 'SET_AVAILABLE_VARIANTS':
       return {
         ...state,
         availableVariants: update(state.product, {
-          $apply: product => filterAvailableVariantsBySelectedOption(product, action.payload)
-        })
+          $apply: (product) => filterAvailableVariantsBySelectedOption(product, action.payload),
+        }),
       }
 
     case 'UPDATE_QUANTITY':
       return {
         ...state,
-        quantity: update(state.quantity, { $set: action.payload })
+        quantity: update(state.quantity, { $set: action.payload }),
+      }
+
+    case 'UPDATE_NOTICES':
+      return {
+        ...state,
+        notices: updateNoticesState(state.notices, action.payload),
       }
 
     default: {

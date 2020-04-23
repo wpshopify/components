@@ -1,9 +1,9 @@
 import update from 'immutability-helper'
-import some from 'lodash/some'
 import concat from 'lodash/concat'
 import uniqWith from 'lodash/uniqWith'
 import isEqual from 'lodash/isEqual'
 import isEmpty from 'lodash/isEmpty'
+import { updateNoticesState } from '../../../common/state'
 
 function ShopReducer(state, action) {
   switch (action.type) {
@@ -48,17 +48,9 @@ function ShopReducer(state, action) {
     }
 
     case 'UPDATE_NOTICES': {
-      let updatedNotices = state.notices
-
-      if (!some(state.notices, action.payload)) {
-        updatedNotices = concat(state.notices, [action.payload])
-      } else {
-        updatedNotices = state.notices
-      }
-
       return {
         ...state,
-        notices: update(state.notices, { $set: updatedNotices }),
+        notices: updateNoticesState(state.notices, action.payload),
       }
     }
 

@@ -22,7 +22,6 @@ const CartFooter = wp.element.lazy(() => import(/* webpackChunkName: 'CartFooter
 // )
 
 import { CartButtons } from '../buttons'
-import { useIsFirstRender } from '/Users/andrew/www/devil/devilbox-new/data/www/wpshopify-hooks'
 
 function CartWrapper() {
   const [isReady, setIsReady] = useState(false)

@@ -7,8 +7,8 @@ import { ItemsContext } from '../../../items/_state/context'
 import { usePortal } from '../../../../common/hooks'
 
 import to from 'await-to-js'
-
 const { useContext, useState } = wp.element
+const { __ } = wp.i18n
 
 function PaginationPageSize() {
   const [paginationState, paginationDispatch] = useContext(PaginationContext)
@@ -54,24 +54,29 @@ function PaginationPageSize() {
     const [shopifyError, shopifyResponse] = await to(graphQuery(itemsState.dataType, updatedParams))
 
     if (shopifyError) {
-      itemsDispatch({ type: 'UPDATE_NOTICES', payload: { type: 'error', message: shopifyError } })
-    } else {
-      setAfterCursorQueryParams(findLastCursorId(shopifyResponse, itemsState.dataType))
-
       itemsDispatch({
-        type: 'UPDATE_TOTAL_SHOWN',
-        payload: shopifyResponse.model.products.length,
+        type: 'UPDATE_NOTICES',
+        payload: { type: 'error', message: __(shopifyError, wpshopify.misc.textdomain) },
       })
-
-      itemsDispatch({
-        type: 'UPDATE_PAYLOAD',
-        payload: {
-          items: shopifyResponse.model.products,
-          skipCache: true,
-          replace: true,
-        },
-      })
+      itemsDispatch({ type: 'SET_IS_LOADING', payload: false })
+      return
     }
+
+    setAfterCursorQueryParams(findLastCursorId(shopifyResponse, itemsState.dataType))
+
+    itemsDispatch({
+      type: 'UPDATE_TOTAL_SHOWN',
+      payload: shopifyResponse.model.products.length,
+    })
+
+    itemsDispatch({
+      type: 'UPDATE_PAYLOAD',
+      payload: {
+        items: shopifyResponse.model.products,
+        skipCache: true,
+        replace: true,
+      },
+    })
 
     itemsDispatch({ type: 'SET_IS_LOADING', payload: false })
   }

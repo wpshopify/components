@@ -7,7 +7,7 @@ import { hasCustomCheckoutAttributes } from '../../../common/checkout'
 import {
   replaceLineItems,
   updateCheckoutAttributes,
-  addDiscount
+  addDiscount,
 } from '/Users/andrew/www/devil/devilbox-new/data/www/wpshopify-api'
 import isEmpty from 'lodash/isEmpty'
 import to from 'await-to-js'
@@ -50,23 +50,34 @@ function hasDiscount(checkout, shopState) {
   return shopState.discountCode
 }
 
-function checkoutRedirect(checkout, shopState) {
+async function checkoutRedirect(checkout, shopState, componentDispatch) {
   const discountCode = hasDiscount(checkout, shopState)
 
   wp.hooks.doAction('before.checkout.redirect', checkout, shopState)
 
   if (discountCode) {
-    addDiscount(discountCode, checkout).then(
-      value => {
-        checkoutRedirectOnly(value, shopState)
-      },
-      reason => {
-        console.error('addDiscount error', reason) // Error!
-      }
-    )
-  } else {
-    checkoutRedirectOnly(checkout, shopState)
+    const [err, resp] = await to(addDiscount(discountCode, checkout))
+
+    if (err) {
+      console.error('WP Shopify error ', err)
+      componentDispatch({
+        type: 'UPDATE_NOTICES',
+        payload: {
+          type: 'error',
+          message: __(err, wpshopify.misc.textdomain),
+        },
+      })
+
+      itemsDispatch({ type: 'SET_IS_LOADING', payload: false })
+      return
+    }
+
+    checkoutRedirectOnly(resp, shopState)
+
+    return
   }
+
+  checkoutRedirectOnly(checkout, shopState)
 }
 
 function hasManagedDomain(url) {
@@ -99,6 +110,7 @@ function decorateCheckoutUrl(link) {
 }
 
 function redirect(checkoutUrl, target) {
+  // window.location.href = url; (open in same window)
   window.open(checkoutUrl, target)
 }
 
@@ -156,8 +168,8 @@ function CartCheckout() {
         type: 'UPDATE_NOTICES',
         payload: {
           type: 'error',
-          message: __(checkoutWithLineitemsError, wpshopify.misc.textdomain)
-        }
+          message: __(checkoutWithLineitemsError, wpshopify.misc.textdomain),
+        },
       })
     }
 
@@ -165,7 +177,7 @@ function CartCheckout() {
       cartDispatch({ type: 'SET_IS_CHECKING_OUT', payload: false })
       return cartDispatch({
         type: 'UPDATE_NOTICES',
-        payload: { type: 'error', message: __('No line items exist ', wpshopify.misc.textdomain) }
+        payload: { type: 'error', message: __('No line items exist ', wpshopify.misc.textdomain) },
       })
     }
 
@@ -173,7 +185,7 @@ function CartCheckout() {
       const [checkoutWithAttrsError, checkoutWithAttrs] = await to(
         updateCheckoutAttributes({
           customAttributes: shopState.customAttributes,
-          note: shopState.note
+          note: shopState.note,
         })
       )
 
@@ -181,19 +193,22 @@ function CartCheckout() {
         cartDispatch({ type: 'SET_IS_CHECKING_OUT', payload: false })
         return cartDispatch({
           type: 'UPDATE_NOTICES',
-          payload: { type: 'error', message: __(checkoutWithAttrsError, wpshopify.misc.textdomain) }
+          payload: {
+            type: 'error',
+            message: __(checkoutWithAttrsError, wpshopify.misc.textdomain),
+          },
         })
       }
 
-      return checkoutRedirect(checkoutWithAttrs, shopState)
+      return checkoutRedirect(checkoutWithAttrs, shopState, cartDispatch)
     }
 
-    checkoutRedirect(checkoutWithLineitems, shopState)
+    checkoutRedirect(checkoutWithLineitems, shopState, cartDispatch)
   }
 
   function buttonStyle() {
     return {
-      backgroundColor: shopState.settings.general.checkoutColor
+      backgroundColor: shopState.settings.general.checkoutColor,
     }
   }
 

@@ -11,7 +11,6 @@ import { Link } from '../../../../link'
 import { checkoutRedirect } from '../../../../cart/checkout'
 
 import {
-  buildClient,
   findVariantFromSelectedOptions,
   createUniqueCheckout,
   addLineItemsAPI,
@@ -97,7 +96,6 @@ function ProductAddButton() {
     if (isDirectCheckout) {
       setIsCheckingOut(true)
 
-      const client = buildClient()
       const [err, checkout] = await to(createUniqueCheckout(client))
 
       if (err) {
@@ -108,10 +106,12 @@ function ProductAddButton() {
         })
         buyButtonDispatch({ type: 'REMOVE_SELECTED_OPTIONS' })
 
-        return setHasNotice({
-          message: err,
+        setHasNotice({
           type: 'error',
+          message: err,
         })
+
+        return
       }
 
       const [error, respNewCheckout] = await to(addLineItemsAPI(client, checkout, lineItems))
@@ -124,15 +124,16 @@ function ProductAddButton() {
         })
         buyButtonDispatch({ type: 'REMOVE_SELECTED_OPTIONS' })
 
-        return setHasNotice({
-          message: error,
+        setHasNotice({
           type: 'error',
+          message: error,
         })
+        return
       }
 
       buyButtonDispatch({ type: 'SET_MISSING_SELECTIONS', payload: false })
 
-      checkoutRedirect(respNewCheckout, shopState)
+      checkoutRedirect(respNewCheckout, shopState, buyButtonDispatch)
     } else {
       console.log('ADDING PRODUCTS ............................')
 

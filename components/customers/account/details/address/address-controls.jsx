@@ -42,14 +42,22 @@ function AccountAddressControls({ address }) {
   async function deleteAddress() {
     const [error, success] = await to(
       deleteCustomerAddress({
-        addressId: address.id
+        addressId: address.id,
       })
     )
 
+    if (error) {
+      setNoticeState({
+        message: error,
+        type: 'error',
+      })
+
+      return
+    }
     if (success.data.type === 'error') {
       setNoticeState({
         message: success.data.message,
-        type: success.data.type
+        type: success.data.type,
       })
 
       return
@@ -59,8 +67,8 @@ function AccountAddressControls({ address }) {
       type: 'SET_NOTICES',
       payload: {
         message: 'Successfully deleted address',
-        type: 'success'
-      }
+        type: 'success',
+      },
     })
 
     customerDispatch({ type: 'DELETE_CUSTOMER_ADDRESS', payload: address.id })

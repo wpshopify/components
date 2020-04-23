@@ -1,10 +1,8 @@
 import update from 'immutability-helper'
-import isEmpty from 'lodash/isEmpty'
-import some from 'lodash/some'
-import concat from 'lodash/concat'
-import { getHashFromQueryParams } from '../../../common/utils'
 import has from 'lodash/has'
 import uniqBy from 'lodash/uniqBy'
+import { getHashFromQueryParams } from '../../../common/utils'
+import { updateNoticesState } from '../../../common/state'
 
 function limitReached(state) {
   if (!state.payloadSettings.limit) {
@@ -219,21 +217,9 @@ function ItemsReducer(state, action) {
     }
 
     case 'UPDATE_NOTICES': {
-      let updatedNotices = state.notices
-
-      if (isEmpty(action.payload)) {
-        updatedNotices = action.payload
-      } else {
-        if (!some(state.notices, action.payload)) {
-          updatedNotices = concat(state.notices, [action.payload])
-        } else {
-          updatedNotices = state.notices
-        }
-      }
-
       return {
         ...state,
-        notices: update(state.notices, { $set: updatedNotices }),
+        notices: updateNoticesState(state.notices, action.payload),
       }
     }
 

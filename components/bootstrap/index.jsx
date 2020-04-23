@@ -1,5 +1,6 @@
 import { ShopContext } from '../shop/_state/context'
 import { buildInstances } from '/Users/andrew/www/devil/devilbox-new/data/www/wpshopify-api'
+import { useIsMounted } from '/Users/andrew/www/devil/devilbox-new/data/www/wpshopify-hooks'
 import to from 'await-to-js'
 
 const { useEffect, useContext, useRef } = wp.element
@@ -7,7 +8,7 @@ const { __ } = wp.i18n
 
 function ShopBootstrap({ children }) {
   const [shopState, shopDispatch] = useContext(ShopContext)
-  const isMountedRef = useRef(false)
+  const isMounted = useIsMounted()
 
   function setShopReady() {
     shopDispatch({ type: 'IS_SHOP_READY' })
@@ -34,88 +35,89 @@ function ShopBootstrap({ children }) {
 
     setShopReady()
 
-    buildInstances().then(
-      async (instances) => {
-        if (isMountedRef.current) {
-          // If no checkout was found ...
-          if (!instances || !instances.checkout) {
-            shopDispatch({
-              type: 'UPDATE_NOTICES',
-              payload: {
-                type: 'error',
-                message: __('No checkout instance available', wpshopify.misc.textdomain),
-              },
-            })
+    const [error, instances] = await to(buildInstances())
 
-            return setShopAndCheckoutId()
-          }
+    console.log('AWAIT TO :::::::: error', error)
+    console.log('AWAIT TO :::::::: instances', instances)
 
-          // If checkout was completed ...
-          if (instances.checkout.completedAt) {
-            var [buildInstancesError, newInstances] = await to(buildInstances(true))
+    if (!isMounted.current) {
+      return
+    }
 
-            if (buildInstancesError) {
-              shopDispatch({
-                type: 'UPDATE_NOTICES',
-                payload: {
-                  type: 'error',
-                  message: buildInstancesError,
-                },
-              })
+    if (error) {
+      shopDispatch({
+        type: 'UPDATE_NOTICES',
+        payload: {
+          type: 'error',
+          message: __(error, wpshopify.misc.textdomain),
+        },
+      })
 
-              return setShopAndCheckoutId()
-            }
+      return setShopAndCheckoutId()
+    }
 
-            if (!newInstances) {
-              shopDispatch({
-                type: 'UPDATE_NOTICES',
-                payload: {
-                  type: 'error',
-                  message: 'No store checkout or client instances were found.',
-                },
-              })
+    // If no checkout was found ...
+    if (!instances || !instances.checkout) {
+      shopDispatch({
+        type: 'UPDATE_NOTICES',
+        payload: {
+          type: 'error',
+          message: __('No checkout instance available', wpshopify.misc.textdomain),
+        },
+      })
 
-              return setShopAndCheckoutId()
-            }
+      return setShopAndCheckoutId()
+    }
 
-            // Responsible for creating the new checkout instance
-            instances = newInstances
-          }
+    // If checkout was completed ...
+    if (instances.checkout.completedAt) {
+      var [buildInstancesError, newInstances] = await to(buildInstances(true))
 
-          // Else just build like normal
-          setShopAndCheckoutId(instances)
-        }
-      },
-      (error) => {
-        if (isMountedRef.current) {
-          shopDispatch({
-            type: 'UPDATE_NOTICES',
-            payload: {
-              type: 'error',
-              message: error,
-            },
-          })
+      if (buildInstancesError) {
+        shopDispatch({
+          type: 'UPDATE_NOTICES',
+          payload: {
+            type: 'error',
+            message: __(buildInstancesError, wpshopify.misc.textdomain),
+          },
+        })
 
-          return setShopAndCheckoutId()
-        }
+        return setShopAndCheckoutId()
       }
-    )
+
+      if (!newInstances) {
+        shopDispatch({
+          type: 'UPDATE_NOTICES',
+          payload: {
+            type: 'error',
+            message: __(
+              'No store checkout or client instances were found.',
+              wpshopify.misc.textdomain
+            ),
+          },
+        })
+
+        return setShopAndCheckoutId()
+      }
+
+      // Responsible for creating the new checkout instance
+      instances = newInstances
+    }
+
+    // Else just build like normal
+    setShopAndCheckoutId(instances)
   }
 
   // ShopBootstrap app on mount only
   useEffect(() => {
-    isMountedRef.current = true
-
-    //  console.log('<ShopBootstrap> :: useEffect[]', isMountedRef.current)
-
-    if (isMountedRef.current) {
-      bootstrapShop()
+    if (shopState.notices.length) {
+      return
     }
 
-    return () => (isMountedRef.current = false)
+    bootstrapShop()
   }, [])
 
-  return <>{children}</>
+  return <>{!shopState.notices.length && children}</>
 }
 
 export { ShopBootstrap }
