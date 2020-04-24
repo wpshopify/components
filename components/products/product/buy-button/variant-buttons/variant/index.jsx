@@ -69,7 +69,7 @@ function ProductVariantButtonValue({ variant, onSelection, isAvailableToSelect }
 
     &:hover {
       cursor: ${cursor};
-      opacity: 0.7;
+      opacity: ${!isSelected ? 0.7 : 1};
     }
 
     ${customStyles}

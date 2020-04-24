@@ -54,6 +54,13 @@ function ProductBuyButtonReducer(state, action) {
         notices: updateNoticesState(state.notices, action.payload),
       }
 
+    case 'SET_IS_CHECKING_OUT': {
+      return {
+        ...state,
+        isCheckingOut: update(state.isCheckingOut, { $set: action.payload }),
+      }
+    }
+
     default: {
       throw new Error(`Unhandled action type: ${action.type} in ProductBuyButtonReducer`)
     }

@@ -5,7 +5,6 @@ import concat from 'lodash/concat'
 
 function updateNoticesState(existingNotices, newNotice) {
   let updatedNotices = existingNotices
-  console.log('existingNotices :: ', existingNotices)
 
   if (isEmpty(newNotice)) {
     updatedNotices = newNotice
@@ -17,9 +16,7 @@ function updateNoticesState(existingNotices, newNotice) {
     }
   }
 
-  var uasdpas = update(existingNotices, { $set: updatedNotices })
-  console.log('updatedNotices :: ', uasdpas)
-  return uasdpas
+  return update(existingNotices, { $set: updatedNotices })
 }
 
 export { updateNoticesState }

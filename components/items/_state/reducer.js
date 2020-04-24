@@ -223,6 +223,13 @@ function ItemsReducer(state, action) {
       }
     }
 
+    case 'UPDATE_VARIANTS_INVENTORY': {
+      return {
+        ...state,
+        variantsInventory: updateNoticesState(state.variantsInventory, action.payload),
+      }
+    }
+
     default: {
       throw new Error(`Unhandled action type: ${action.type} in ItemsReducer`)
     }

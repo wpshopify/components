@@ -43,7 +43,7 @@ function CartButton({ options }) {
     cartDispatch({ type: 'TOGGLE_CART', payload: true })
   }
 
-  function onEnter() {
+  function onMouseOver() {
     cartDispatch({ type: 'CART_LOADED', payload: true })
   }
 
@@ -57,7 +57,7 @@ function CartButton({ options }) {
           isCartEmpty(cartState.checkoutCache.lineItems) ? 'wps-cart-is-empty' : ''
         }`}
         onClick={onClick}
-        onMouseEnter={onEnter}
+        onMouseOver={onMouseOver}
         style={iconStyles()}>
         {options.payloadSettings.showCounter && <CartCounter />}
 

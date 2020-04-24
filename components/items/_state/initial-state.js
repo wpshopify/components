@@ -39,6 +39,7 @@ function ItemsInitialState({
     isLoading: false,
     hasMoreItems: true,
     notices: [],
+    variantsInventory: [],
     lastQuery: component.payloadSettings.query ? component.payloadSettings.query : false,
     payloadCache: {},
     afterLoading: afterLoading,

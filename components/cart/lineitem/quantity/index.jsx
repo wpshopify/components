@@ -28,7 +28,7 @@ function CartLineItemQuantity({
   isReady,
   isFirstRender,
   setLineItemTotal,
-  lineItemTotalElement
+  lineItemTotalElement,
 }) {
   const [shopState] = useContext(ShopContext)
   const [cartState, cartDispatch] = useContext(CartContext)
@@ -53,8 +53,8 @@ function CartLineItemQuantity({
         type: 'REMOVE_LINE_ITEM',
         payload: {
           lineItem: variantId.current,
-          checkoutId: shopState.checkoutId
-        }
+          checkoutId: shopState.checkoutId,
+        },
       })
     }
 
@@ -63,10 +63,10 @@ function CartLineItemQuantity({
       payload: {
         lineItem: {
           variantId: variantId.current,
-          lineItemNewQuantity: newQuantity
+          lineItemNewQuantity: newQuantity,
         },
-        checkoutId: shopState.checkoutId
-      }
+        checkoutId: shopState.checkoutId,
+      },
     })
   }
 
@@ -84,8 +84,8 @@ function CartLineItemQuantity({
         type: 'REMOVE_LINE_ITEM',
         payload: {
           lineItem: variantId.current,
-          checkoutId: shopState.checkoutId
-        }
+          checkoutId: shopState.checkoutId,
+        },
       })
     }
 
@@ -94,10 +94,10 @@ function CartLineItemQuantity({
       payload: {
         lineItem: {
           variantId: variantId.current,
-          lineItemNewQuantity: Number(e.target.value)
+          lineItemNewQuantity: Number(e.target.value),
         },
-        checkoutId: shopState.checkoutId
-      }
+        checkoutId: shopState.checkoutId,
+      },
     })
   }
 
@@ -124,29 +124,31 @@ function CartLineItemQuantity({
   }
 
   return (
-    <div
-      className='wps-cart-lineitem-quantity-container'
-      data-wps-is-ready={isReady}
-      css={containerFluidCSS}>
-      <div css={flexRowCSS}>
-        <button className='wps-quantity-decrement' type='button' onClick={handleDecrement}>
-          <span className='wps-quantity-icon wps-quantity-decrement-icon' />
-        </button>
+    <div className='col-8'>
+      <div
+        className='wps-cart-lineitem-quantity-container'
+        data-wps-is-ready={isReady}
+        css={containerFluidCSS}>
+        <div css={flexRowCSS}>
+          <button className='wps-quantity-decrement' type='button' onClick={handleDecrement}>
+            <span className='wps-quantity-icon wps-quantity-decrement-icon' />
+          </button>
 
-        <input
-          className='wps-cart-lineitem-quantity'
-          type='number'
-          min='0'
-          max='8'
-          aria-label='Quantity'
-          value={lineItemQuantity}
-          onChange={handleQuantityChange}
-          onBlur={handleQuantityBlur}
-        />
+          <input
+            className='wps-cart-lineitem-quantity'
+            type='number'
+            min='0'
+            max='8'
+            aria-label='Quantity'
+            value={lineItemQuantity}
+            onChange={handleQuantityChange}
+            onBlur={handleQuantityBlur}
+          />
 
-        <button className='wps-quantity-increment' type='button' onClick={handleIncrement}>
-          <span className='wps-quantity-icon wps-quantity-increment-icon' />
-        </button>
+          <button className='wps-quantity-increment' type='button' onClick={handleIncrement}>
+            <span className='wps-quantity-icon wps-quantity-increment-icon' />
+          </button>
+        </div>
       </div>
     </div>
   )

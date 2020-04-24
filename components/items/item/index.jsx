@@ -56,7 +56,7 @@ const Item = wp.element.memo(function ({ children, limit = false, infiniteScroll
       return
     }
 
-    console.log('................. newItems', newItems)
+    console.log('00000000000000000000000000000000')
 
     itemsDispatch({ type: 'SET_IS_LOADING', payload: false })
     updatePayloadState(newItems)
@@ -82,7 +82,7 @@ const Item = wp.element.memo(function ({ children, limit = false, infiniteScroll
         type: 'UPDATE_NOTICES',
         payload: [],
       })
-
+      console.log('444444444444444444444444444444444')
       getNewItems(itemsState)
     }
   }, [itemsState.queryParams])

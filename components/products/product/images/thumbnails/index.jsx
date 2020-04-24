@@ -3,18 +3,23 @@ import { ProductThumbnailImage } from '../thumbnail'
 import { doFeaturedSizing } from '../../../../../common/images'
 import { v4 as uuidv4 } from 'uuid'
 import isEmpty from 'lodash/isEmpty'
-const { useContext } = wp.element
+const { useContext, useState } = wp.element
 
 const ProductThumbnailImages = wp.element.memo(function ProductThumbnailImages({ product }) {
   const [shopState] = useContext(ShopContext)
+  const [didPreload, setDidPreload] = useState(false)
 
   function hasImages() {
     return product && !isEmpty(product.images)
   }
 
   function onMouseEnter() {
-    console.log('preload all', product.images)
-    product.images.map((img) => (new Image().src = doFeaturedSizing(img.src, shopState)))
+    if (!didPreload) {
+      console.log('preload all', product.images)
+      product.images.map((img) => (new Image().src = doFeaturedSizing(img.src, shopState)))
+
+      setDidPreload(true)
+    }
   }
 
   return (

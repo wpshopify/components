@@ -1,26 +1,24 @@
 import { CartContext } from '../../cart/_state/context'
 import { ShopContext } from '../../shop/_state/context'
-import { Link } from '../../link'
+
 import { CartLineItemQuantity } from './quantity'
-import { formatPriceToCurrency } from '../../../common/pricing/formatting'
+import { CartLineItemPrice } from './price'
+import { CartLineItemImage } from './image'
+import { CartLineItemOutOfStock } from './out-of-stock'
+import { CartLineItemTitle } from './title'
+import { CartLineItemRemove } from './remove'
+import { CartLineItemVariantTitle } from './variant-title'
+
 import { calcLineItemTotal, isAvailable } from '../../../common/products'
-import { addCustomSizingToImageUrl } from '../../../common/images'
-import { containerFluidCSS, flexRowCSS } from '../../../common/css'
-import { FilterHook } from '../../../common/utils'
+import { containerFluidCSS, flexRowCSS, flexColSmallCSS } from '../../../common/css'
 
 /** @jsx jsx */
 import { jsx, css } from '@emotion/core'
 import find from 'lodash/find'
 
 const { useContext, useState, useRef, useEffect } = wp.element
-const { Notice } = wp.components
-const { __ } = wp.i18n
 
-function getLineItemFromState(lineItem, lineItemsFromState) {
-  return find(lineItemsFromState, { variantId: lineItem.id })
-}
-
-function CartLineItem({ lineItem, index }) {
+function CartLineItem({ lineItem }) {
   const [cartState, cartDispatch] = useContext(CartContext)
   const [shopState] = useContext(ShopContext)
 
@@ -33,7 +31,7 @@ function CartLineItem({ lineItem, index }) {
   const isFirstRender = useRef(true)
   const lineItemTotalElement = useRef()
 
-  function removeLineItem(e) {
+  function onRemove(e) {
     cartDispatch({
       type: 'REMOVE_LINE_ITEM',
       payload: {
@@ -54,8 +52,16 @@ function CartLineItem({ lineItem, index }) {
     })
   }
 
+  function getLineItemFromState() {
+    return find(cartState.checkoutCache.lineItems, { variantId: lineItem.id })
+  }
+
+  function hasRealVariant() {
+    return lineItem.title !== 'Default Title'
+  }
+
   useEffect(() => {
-    let lineItemFound = getLineItemFromState(lineItem, cartState.checkoutCache.lineItems)
+    let lineItemFound = getLineItemFromState()
 
     if (lineItemFound) {
       variantId.current = lineItemFound.variantId
@@ -65,71 +71,13 @@ function CartLineItem({ lineItem, index }) {
     }
   }, [cartState.checkoutCache.lineItems])
 
-  function placeholderImageUrl() {
-    return wpshopify.misc.pluginsDirURL + 'public/imgs/placeholder.png'
-  }
-
-  function actualImageUrl() {
-    return addCustomSizingToImageUrl({
-      src: lineItem.image.src,
-      width: 300,
-      height: 300,
-      crop: 'center',
-    })
-  }
-
-  function lineItemImage() {
-    return lineItem.image
-      ? { backgroundImage: `url(${actualImageUrl()})` }
-      : { backgroundImage: `url(${placeholderImageUrl()})` }
-  }
-
-  function hasRealVariant() {
-    return lineItem.title !== 'Default Title'
-  }
-
-  const manualLink = wp.hooks.applyFilters('cart.lineItems.link', false, lineItem, cartState)
-
-  const disableLink = wp.hooks.applyFilters(
-    'cart.lineItems.disableLink',
-    false,
-    lineItem,
-    cartState
-  )
-
   const lineItemStyles = css`
     margin-top: 0;
     margin-bottom: 40px;
-    overflow: hidden;
     min-height: 100px;
     position: relative;
     display: flex;
     top: -50px;
-  `
-
-  const priceCSS = css`
-    flex: 1;
-    text-align: right;
-  `
-
-  const badgeCSS = css`
-    display: inline-block;
-    width: auto;
-    font-weight: 400;
-    font-size: 12px;
-    margin-bottom: 16px;
-    color: white;
-    background-color: #415aff;
-    border-radius: 10rem;
-    padding: 0.25em 0.6em;
-    text-align: center;
-    white-space: nowrap;
-    vertical-align: baseline;
-    flex: 0 0 100%;
-    max-width: 100%;
-    letter-spacing: 0.02em;
-    line-height: 1.4;
-    margin: 5px 0 10px 0;
   `
 
   return (
@@ -139,20 +87,7 @@ function CartLineItem({ lineItem, index }) {
       data-wps-is-available={isAvailable(lineItem)}
       ref={lineItemElement}
       css={lineItemStyles}>
-      <Link
-        payload={lineItem}
-        shop={shopState}
-        type='products'
-        classNames='wps-cart-lineitem-img-link'
-        target='_blank'
-        manualLink={manualLink}
-        disableLink={disableLink}>
-        <div
-          className='wps-cart-lineitem-img'
-          style={lineItemImage()}
-          data-wps-is-ready={shopState.isCartReady ? '1' : '0'}
-        />
-      </Link>
+      <CartLineItemImage lineItem={lineItem} shopState={shopState} cartState={cartState} />
 
       <div className='wps-cart-lineitem-content'>
         <div
@@ -161,62 +96,38 @@ function CartLineItem({ lineItem, index }) {
           data-wps-is-empty={hasRealVariant() ? 'false' : 'true'}>
           <div className='p-0' css={containerFluidCSS}>
             <div css={flexRowCSS}>
-              <span className='wps-cart-lineitem-title-content col-9'>
-                <FilterHook name='cart.lineItem.title.text'>
-                  {__(lineItem.product.title, wpshopify.misc.textdomain)}
-                </FilterHook>
-              </span>
-              <span className='wps-cart-lineitem-remove' onClick={removeLineItem}>
-                <FilterHook name='cart.lineItem.remove.text'>
-                  {__('Remove', wpshopify.misc.textdomain)}
-                </FilterHook>
-              </span>
+              <CartLineItemTitle lineItem={lineItem} />
+              <CartLineItemRemove onRemove={onRemove} />
             </div>
           </div>
         </div>
 
         {hasRealVariant() && (
-          <div
-            css={badgeCSS}
-            className='wps-cart-lineitem-variant-title'
-            data-wps-is-ready={shopState.isCartReady}>
-            <FilterHook name='cart.lineItem.variant.title'>
-              {__(lineItem.title, wpshopify.misc.textdomain)}
-            </FilterHook>
-          </div>
+          <CartLineItemVariantTitle isReady={shopState.isCartReady} lineItem={lineItem} />
         )}
 
         {!isAvailable(lineItem) ? (
-          <Notice status='warning' isDismissible={false}>
-            <FilterHook name='notice.unavailable.text'>
-              {__('Out of stock', wpshopify.misc.textdomain)}
-            </FilterHook>
-          </Notice>
+          <CartLineItemOutOfStock />
         ) : (
           <div className='p-0' css={containerFluidCSS}>
-            <div css={flexRowCSS}>
-              <div className='col-8'>
-                <CartLineItemQuantity
-                  lineItem={lineItem}
-                  variantId={variantId}
-                  lineItemQuantity={lineItemQuantity}
-                  setLineItemQuantity={setLineItemQuantity}
-                  isReady={shopState.isCartReady}
-                  isFirstRender={isFirstRender}
-                  setLineItemTotal={setLineItemTotal}
-                  lineItemTotalElement={lineItemTotalElement}
-                />
-              </div>
+            <div css={[flexRowCSS, flexColSmallCSS]}>
+              <CartLineItemQuantity
+                lineItem={lineItem}
+                variantId={variantId}
+                lineItemQuantity={lineItemQuantity}
+                setLineItemQuantity={setLineItemQuantity}
+                isReady={shopState.isCartReady}
+                isFirstRender={isFirstRender}
+                setLineItemTotal={setLineItemTotal}
+                lineItemTotalElement={lineItemTotalElement}
+              />
 
-              <div className='wps-cart-lineitem-price-total-wrapper' css={priceCSS}>
-                <div
-                  className='wps-cart-lineitem-price wps-cart-lineitem-price-total'
-                  data-wps-is-ready={shopState.isCartReady ? '1' : '0'}
-                  ref={lineItemTotalElement}>
-                  {shopState.isCartReady &&
-                    formatPriceToCurrency(lineItemTotal, shopState.info.currencyCode)}
-                </div>
-              </div>
+              <CartLineItemPrice
+                isReady={shopState.isCartReady}
+                lineItemTotal={lineItemTotal}
+                lineItemTotalElement={lineItemTotalElement}
+                shopState={shopState}
+              />
             </div>
           </div>
         )}

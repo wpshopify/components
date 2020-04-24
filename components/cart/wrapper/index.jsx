@@ -38,6 +38,7 @@ function CartWrapper() {
 
   async function cartBootstrap() {
     let [productsError, products] = await to(getProductsFromLineItems())
+    console.log('cartBootstrap :: products', products)
 
     if (productsError) {
       shopDispatch({
@@ -47,25 +48,25 @@ function CartWrapper() {
           message: __(productsError, wpshopify.misc.textdomain),
         },
       })
-    }
-
-    cartDispatch({
-      type: 'SET_CHECKOUT_CACHE',
-      payload: { checkoutId: shopState.checkoutId },
-    })
-
-    cartDispatch({
-      type: 'SET_LINE_ITEMS_AND_VARIANTS',
-      payload: {
-        lineItems: { products: products },
-        checkoutId: shopState.checkoutId,
-      },
-    })
-
-    if (isEmpty(products)) {
-      cartDispatch({ type: 'SET_IS_CART_EMPTY', payload: true })
     } else {
-      cartDispatch({ type: 'SET_IS_CART_EMPTY', payload: false })
+      cartDispatch({
+        type: 'SET_CHECKOUT_CACHE',
+        payload: { checkoutId: shopState.checkoutId },
+      })
+
+      cartDispatch({
+        type: 'SET_LINE_ITEMS_AND_VARIANTS',
+        payload: {
+          lineItems: { products: products },
+          checkoutId: shopState.checkoutId,
+        },
+      })
+
+      if (isEmpty(products)) {
+        cartDispatch({ type: 'SET_IS_CART_EMPTY', payload: true })
+      } else {
+        cartDispatch({ type: 'SET_IS_CART_EMPTY', payload: false })
+      }
     }
 
     shopDispatch({ type: 'IS_CART_READY', payload: true })

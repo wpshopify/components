@@ -3,7 +3,7 @@ import { buildInstances } from '/Users/andrew/www/devil/devilbox-new/data/www/wp
 import { useIsMounted } from '/Users/andrew/www/devil/devilbox-new/data/www/wpshopify-hooks'
 import to from 'await-to-js'
 
-const { useEffect, useContext, useRef } = wp.element
+const { useEffect, useContext } = wp.element
 const { __ } = wp.i18n
 
 function ShopBootstrap({ children }) {
@@ -35,10 +35,7 @@ function ShopBootstrap({ children }) {
 
     setShopReady()
 
-    const [error, instances] = await to(buildInstances())
-
-    console.log('AWAIT TO :::::::: error', error)
-    console.log('AWAIT TO :::::::: instances', instances)
+    var [error, instances] = await to(buildInstances())
 
     if (!isMounted.current) {
       return

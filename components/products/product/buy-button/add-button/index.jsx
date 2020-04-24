@@ -164,6 +164,8 @@ function ProductAddButton() {
     }
 
     if (buyButtonState.allOptionsSelected) {
+      var variant = findVariantFromSelections()
+      console.log('::::::::::::: variant', variant)
       animePulse(button.current)
     }
   }, [buyButtonState.allOptionsSelected])

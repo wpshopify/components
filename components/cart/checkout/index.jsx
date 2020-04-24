@@ -56,7 +56,7 @@ async function checkoutRedirect(checkout, shopState, componentDispatch) {
   wp.hooks.doAction('before.checkout.redirect', checkout, shopState)
 
   if (discountCode) {
-    const [err, resp] = await to(addDiscount(discountCode, checkout))
+    var [err, resp] = await to(addDiscount(discountCode, checkout))
 
     if (err) {
       console.error('WP Shopify error ', err)
@@ -68,7 +68,7 @@ async function checkoutRedirect(checkout, shopState, componentDispatch) {
         },
       })
 
-      itemsDispatch({ type: 'SET_IS_LOADING', payload: false })
+      componentDispatch({ type: 'SET_IS_CHECKING_OUT', payload: false })
       return
     }
 
@@ -161,7 +161,8 @@ function CartCheckout() {
     const [checkoutWithLineitemsError, checkoutWithLineitems] = await to(
       replaceLineItems(lineItems)
     )
-
+    console.log('AWAIT TO :::::::: checkoutWithLineitemsError', checkoutWithLineitemsError)
+    console.log('AWAIT TO :::::::: checkoutWithLineitems', checkoutWithLineitems)
     if (checkoutWithLineitemsError) {
       cartDispatch({ type: 'SET_IS_CHECKING_OUT', payload: false })
       return cartDispatch({

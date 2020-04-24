@@ -2,7 +2,7 @@
 import { jsx, css } from '@emotion/core'
 
 const bp = {
-  small: 500,
+  small: 600,
 }
 
 const mq = (n) => {
@@ -28,6 +28,12 @@ const flexRowCSS = css`
   display: flex;
 `
 
+const flexColSmallCSS = css`
+  ${mq('small')} {
+    flex-direction: column;
+  }
+`
+
 const rowCSS = css`
   && {
     padding: 0 1em;
@@ -50,4 +56,4 @@ const rowCSS = css`
   }
 `
 
-export { containerFluidCSS, rowCSS, flexRowCSS, mq }
+export { containerFluidCSS, rowCSS, flexRowCSS, flexColSmallCSS, mq }
