@@ -1,5 +1,4 @@
 import { CustomersContext } from '../../_state/context'
-import { ShopContext } from '../../../shop/_state/context'
 import { stylesSlideIn } from '../../_styles'
 import { A } from 'hookrouter'
 import { AccountDetailsDefaultAddress } from '../details/address/default-address'
@@ -14,12 +13,11 @@ import { jsx, css } from '@emotion/core'
 const { useContext, useEffect } = wp.element
 
 function withoutDefault(addresses, lookup) {
-  return addresses.filter(address => address.node.address1 !== lookup)
+  return addresses.filter((address) => address.node.address1 !== lookup)
 }
 
 function Addresses() {
   const [customerState, customersDispatch] = useContext(CustomersContext)
-  const [shopState] = useContext(ShopContext)
 
   const stylesWrap = css`
     display: flex;
@@ -61,7 +59,7 @@ function Addresses() {
         )}
 
         <A
-          href={'/' + shopState.settings.general.accountPageAccount + '/addresses/add'}
+          href={'/' + wpshopify.settings.general.accountPageAccount + '/addresses/add'}
           className='wps-btn wps-btn-secondary wpshopify-btn-auto-width'>
           Add new address
         </A>

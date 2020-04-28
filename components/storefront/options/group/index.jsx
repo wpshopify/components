@@ -1,12 +1,11 @@
 import { StorefrontFilter } from '../../filter'
 import { StorefrontOptionsContext } from '../_state/context'
 import { StorefrontFilterOptionsGroupItem } from '../group-item'
-import { FilterHook } from '../../../../common/utils'
+import { FilterHook, __t } from '../../../../common/utils'
 import isEmpty from 'lodash/isEmpty'
 
 const { Notice } = wp.components
 const { useContext } = wp.element
-const { __ } = wp.i18n
 
 function StorefrontFilterOptionsGroup({ groupType, displayStyle, heading }) {
   const [storefrontOptionsState] = useContext(StorefrontOptionsContext)
@@ -15,20 +14,18 @@ function StorefrontFilterOptionsGroup({ groupType, displayStyle, heading }) {
     <StorefrontFilter heading={heading}>
       <div className='wps-filter-content'>
         {storefrontOptionsState.isBootstrapping ? (
-          <p data-wps-is-ready='0'>
-            <FilterHook name='storefront.group.loading.text'>
-              {__('Loading ' + groupType + ' ...', wpshopify.misc.textdomain)}
-            </FilterHook>
-          </p>
+          <FilterHook name='storefront.group.loading.text'>
+            <p>{__t('Loading ' + groupType + ' ...')}</p>
+          </FilterHook>
         ) : isEmpty(storefrontOptionsState.filterOptions[groupType]) ? (
           <Notice status='info' isDismissible={false}>
             <FilterHook name='notice.storefront.noGroup.text'>
-              {__('No ' + groupType + ' found', wpshopify.misc.textdomain)}
+              {__t('No ' + groupType + ' found')}
             </FilterHook>
           </Notice>
         ) : (
           <ul className={'wps-' + groupType}>
-            {storefrontOptionsState.filterOptions[groupType].map(item => (
+            {storefrontOptionsState.filterOptions[groupType].map((item) => (
               <StorefrontFilterOptionsGroupItem
                 key={item}
                 itemValue={item}

@@ -1,9 +1,7 @@
 /** @jsx jsx */
 import { jsx, css } from '@emotion/core'
 import { CartLineItems } from '../lineitems'
-import { FilterHook } from '../../../common/utils'
-
-const { __ } = wp.i18n
+import { FilterHook, __t } from '../../../common/utils'
 
 function CartContents(props) {
   function filterEmptyLineItems(lineItems) {
@@ -23,15 +21,10 @@ function CartContents(props) {
   `
 
   return (
-    <section
-      className='wps-cart-contents'
-      data-is-cart-empty={props.isCartEmpty}
-      data-wps-is-ready={props.isCartReady ? '1' : '0'}>
+    <section className='wps-cart-contents' data-is-cart-empty={props.isCartEmpty}>
       {props.isCartEmpty ? (
         <h2 css={styles}>
-          <FilterHook name='cart.empty.text'>
-            {__('Your cart is empty', wpshopify.misc.textdomain)}
-          </FilterHook>
+          <FilterHook name='cart.empty.text'>{__t('Your cart is empty')}</FilterHook>
         </h2>
       ) : (
         <CartLineItems lineItems={filterEmptyLineItems(props.checkoutCache.variants)} />

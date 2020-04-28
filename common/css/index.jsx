@@ -37,7 +37,7 @@ const flexColSmallCSS = css`
 const rowCSS = css`
   && {
     padding: 0 1em;
-    margin: 0;
+    margin: 0 auto;
     display: flex;
     flex-wrap: wrap;
     box-sizing: border-box;

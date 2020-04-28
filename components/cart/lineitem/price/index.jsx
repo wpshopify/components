@@ -3,7 +3,7 @@ import { jsx, css } from '@emotion/core'
 import { formatPriceToCurrency } from '../../../../common/pricing/formatting'
 import { mq } from '../../../../common/css'
 
-function CartLineItemPrice({ isReady, shopState, lineItemTotal, lineItemTotalElement }) {
+function CartLineItemPrice({ currencyCode, lineItemTotal, lineItemTotalElement }) {
   const priceCSS = css`
     flex: 1;
     text-align: right;
@@ -31,10 +31,9 @@ function CartLineItemPrice({ isReady, shopState, lineItemTotal, lineItemTotalEle
     <div className='wps-cart-lineitem-price-total-wrapper' css={priceCSS}>
       <div
         className='wps-cart-lineitem-price wps-cart-lineitem-price-total'
-        data-wps-is-ready={isReady ? '1' : '0'}
         ref={lineItemTotalElement}
         css={lineItemPriceCSS}>
-        {isReady && formatPriceToCurrency(lineItemTotal, shopState.info.currencyCode)}
+        {formatPriceToCurrency(lineItemTotal, currencyCode)}
       </div>
     </div>
   )

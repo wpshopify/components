@@ -223,23 +223,23 @@ function addCustomSizingToImageUrl(settings) {
   )
 }
 
-function doFeaturedSizing(src, shopState) {
+function doFeaturedSizing(src) {
   return addCustomSizingToImageUrl({
     src: src,
-    width: shopState.settings.general.productsImagesSizingWidth,
-    height: shopState.settings.general.productsImagesSizingHeight,
-    crop: shopState.settings.general.productsImagesSizingCrop,
-    scale: shopState.settings.general.productsImagesSizingScale,
+    width: wpshopify.settings.general.productsImagesSizingWidth,
+    height: wpshopify.settings.general.productsImagesSizingHeight,
+    crop: wpshopify.settings.general.productsImagesSizingCrop,
+    scale: wpshopify.settings.general.productsImagesSizingScale,
   })
 }
 
-function doThumbnailSizing(src, shopState) {
+function doThumbnailSizing(src) {
   return addCustomSizingToImageUrl({
     src: src,
-    width: shopState.settings.general.productsThumbnailImagesSizingWidth,
-    height: shopState.settings.general.productsThumbnailImagesSizingHeight,
-    crop: shopState.settings.general.productsThumbnailImagesSizingCrop,
-    scale: shopState.settings.general.productsThumbnailImagesSizingScale,
+    width: wpshopify.settings.general.productsThumbnailImagesSizingWidth,
+    height: wpshopify.settings.general.productsThumbnailImagesSizingHeight,
+    crop: wpshopify.settings.general.productsThumbnailImagesSizingCrop,
+    scale: wpshopify.settings.general.productsThumbnailImagesSizingScale,
   })
 }
 

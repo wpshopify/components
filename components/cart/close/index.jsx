@@ -1,11 +1,6 @@
-import { CartContext } from '../_state/context'
+import { __t } from '../../../common/utils'
 
-const { useContext } = wp.element
-const { __ } = wp.i18n
-
-function CartClose() {
-  const [cartState, cartDispatch] = useContext(CartContext)
-
+function CartClose({ cartDispatch }) {
   function onClose(e) {
     cartDispatch({ type: 'TOGGLE_CART', payload: false })
   }
@@ -13,7 +8,7 @@ function CartClose() {
   return (
     <button
       className='wps-btn-close wps-modal-close-trigger'
-      title={__('Close Cart', wpshopify.misc.textdomain)}
+      title={__t('Close Cart')}
       onClick={onClose}>
       <span className='wps-modal-close-trigger'>×</span>
     </button>

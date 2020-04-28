@@ -7,7 +7,7 @@ import { Link } from '../../../link'
 
 const { useContext, useState, useEffect } = wp.element
 
-function CollectionImage({ isShopReady, shopSettings, shopInfo }) {
+function CollectionImage() {
   const [collectionState] = useContext(CollectionContext)
   const [itemsState] = useContext(ItemsContext)
   const [imageSrc, setImageSrc] = useState(() =>
@@ -19,14 +19,14 @@ function CollectionImage({ isShopReady, shopSettings, shopInfo }) {
       return
     }
 
-    if (shopSettings.collectionsImagesSizingToggle) {
+    if (wpshopify.settings.general.collectionsImagesSizingToggle) {
       setImageSrc(
         addCustomSizingToImageUrl({
           src: collectionState.payload.image.src,
-          width: shopSettings.collectionsImagesSizingWidth,
-          height: shopSettings.collectionsImagesSizingHeight,
-          crop: shopSettings.collectionsImagesSizingCrop,
-          scale: shopSettings.collectionsImagesSizingScale,
+          width: wpshopify.settings.general.collectionsImagesSizingWidth,
+          height: wpshopify.settings.general.collectionsImagesSizingHeight,
+          crop: wpshopify.settings.general.collectionsImagesSizingCrop,
+          scale: wpshopify.settings.general.collectionsImagesSizingScale,
         })
       )
     }
@@ -37,7 +37,7 @@ function CollectionImage({ isShopReady, shopSettings, shopInfo }) {
       <div className='wps-component wps-component-collection-image' data-wps-component-order='0'>
         <Link
           type='collections'
-          shop={shopInfo}
+          shop={info.shopInfo}
           payload={collectionState.payload}
           linkTo={itemsState.payloadSettings.linkTo}
           target={itemsState.payloadSettings.linkTarget}>
@@ -46,7 +46,6 @@ function CollectionImage({ isShopReady, shopSettings, shopInfo }) {
             src={imageSrc}
             className='wps-product-image lazyload'
             alt={collectionState.payload.image ? collectionState.payload.image.altText : ''}
-            data-wps-is-ready={isShopReady ? '1' : '0'}
           />
         </Link>
       </div>

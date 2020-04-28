@@ -1,21 +1,20 @@
 import has from 'lodash/has'
-import { currencyDisplayStyle, hideDecimals, hideDecimalsOnlyZeros } from '../globals'
 
 function hasDecimal(num) {
   return num % 1 != 0
 }
 
 function maybeHideDecimals(config, amount) {
-  if (!hideDecimals()) {
+  if (!wpshopify.settings.general.hideDecimals) {
     return config
   }
 
-  if (hideDecimalsOnlyZeros()) {
-    if (!hasDecimal(amount)) {
-      config.minimumFractionDigits = 0
-      config.maximumFractionDigits = 0
-    }
-  } else if (hideDecimalsOnlyZeros()) {
+  if (wpshopify.settings.general.hideDecimalsOnlyZeros && !hasDecimal(amount)) {
+    config.minimumFractionDigits = 0
+    config.maximumFractionDigits = 0
+  }
+
+  if (wpshopify.settings.general.hideDecimalsOnlyZeros) {
     config.minimumFractionDigits = 0
     config.maximumFractionDigits = 0
   }
@@ -30,7 +29,7 @@ function formatNumber(config) {
       {
         style: 'currency',
         currency: config.countryCode,
-        currencyDisplay: config.currencyDisplay
+        currencyDisplay: config.currencyDisplay,
       },
       config.amount
     )
@@ -66,7 +65,7 @@ function formatPriceToCurrency(price, currencyCode) {
   return formatPrice({
     countryCode: currencyCode, // getLocalCurrencyCodeCache(), maybeConvertPriceToLocalCurrency
     amount: price,
-    currencyDisplay: currencyDisplayStyle()
+    currencyDisplay: wpshopify.settings.general.currencyDisplayStyle,
   })
 }
 

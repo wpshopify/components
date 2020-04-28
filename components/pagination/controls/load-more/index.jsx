@@ -1,7 +1,7 @@
 import { PaginationContext } from '../../_state/context'
 import { ItemsContext } from '../../../items/_state/context'
 import { usePortal } from '../../../../common/hooks'
-import { FilterHook } from '../../../../common/utils'
+import { FilterHook, __t } from '../../../../common/utils'
 import { fetchNextItems } from '../../../items/item/api'
 import { Loader } from '../../../loader'
 import isEmpty from 'lodash/isEmpty'
@@ -9,7 +9,6 @@ import has from 'lodash/has'
 import { InView } from 'react-intersection-observer'
 
 const { useContext, useRef } = wp.element
-const { __ } = wp.i18n
 
 function PaginationLoadMore() {
   const [itemsState, itemsDispatch] = useContext(ItemsContext)
@@ -72,15 +71,13 @@ function PaginationLoadMore() {
             {itemsState.isLoading ? (
               <Loader isLoading={itemsState.isLoading} />
             ) : (
-              <FilterHook name='pagination.loadMore.text'>
-                {__('Load more', wpshopify.misc.textdomain)}
-              </FilterHook>
+              <FilterHook name='pagination.loadMore.text'>{__t('Load more')}</FilterHook>
             )}
           </button>
         </InView>
       )}
     </>,
-    document.querySelector(paginationState.payloadSettings.dropzoneLoadMore)
+    document.querySelector(itemsState.payloadSettings.dropzoneLoadMore)
   )
 }
 

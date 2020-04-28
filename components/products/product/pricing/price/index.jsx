@@ -1,4 +1,3 @@
-import { ShopContext } from '../../../../shop/_state/context'
 import { ProductPricingContext } from '../_state/context'
 import { ProductContext } from '../../_state/context'
 
@@ -46,7 +45,6 @@ function lastPriceCompareAt(prices) {
 }
 
 function ProductPrice({ compareAt }) {
-  const [shopState] = useContext(ShopContext)
   const [productState] = useContext(ProductContext)
   const [productPricingState] = useContext(ProductPricingContext)
   const isFirstRender = useRef(true)
@@ -132,16 +130,20 @@ function ProductPrice({ compareAt }) {
           itemProp='offers'
           itemType='https://schema.org/Offer'
           className='wps-products-price wps-product-pricing wps-products-price-one'
-          data-wps-is-showing-compare-at={compareAt}
-          data-wps-is-ready={shopState.isShopReady ? '1' : '0'}>
+          data-wps-is-showing-compare-at={compareAt}>
           {showingRange() && !productState.selectedVariant ? (
             <ProductPricingRange
               firstPrice={getFirstPrice()}
               lastPrice={getLastPrice()}
               isFirstAndLastSame={isFirstAndLastSame()}
+              currencyCode={productPricingState.currencyCode}
             />
           ) : (
-            <ProductPriceSingle ref={singlePriceElement} price={regPrice} />
+            <ProductPriceSingle
+              currencyCode={productPricingState.currencyCode}
+              ref={singlePriceElement}
+              price={regPrice}
+            />
           )}
         </h3>
       )}

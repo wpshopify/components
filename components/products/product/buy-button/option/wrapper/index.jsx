@@ -13,12 +13,16 @@ function allOptionsSelectedMatch(onlySelectedOptions, product) {
 }
 
 function ProductOptionWrapper({ children }) {
+  console.log('<ProductOptionWrapper> :: Render Start')
+
   const [productState, productDispatch] = useContext(ProductContext)
   const [productOptionState, productOptionDispatch] = useContext(ProductOptionContext)
   const [buyButtonState, buyButtonDispatch] = useContext(ProductBuyButtonContext)
   const isFirstRender = useRef(true)
 
   useEffect(() => {
+    console.log('<ProductOptionWrapper> :: useEffect[buyButtonState.availableVariants]')
+
     if (isFirstRender.current) {
       isFirstRender.current = false
       return
@@ -37,6 +41,8 @@ function ProductOptionWrapper({ children }) {
   }, [buyButtonState.availableVariants])
 
   useEffect(() => {
+    console.log('<ProductOptionWrapper> :: useEffect[productOptionState.selectedOption]')
+
     if (isFirstRender.current) {
       isFirstRender.current = false
       return
@@ -53,6 +59,8 @@ function ProductOptionWrapper({ children }) {
   }, [productOptionState.selectedOption])
 
   useEffect(() => {
+    console.log('<ProductOptionWrapper> :: useEffect[buyButtonState.selectedOptions]')
+
     if (isFirstRender.current) {
       isFirstRender.current = false
       return
@@ -88,6 +96,8 @@ function ProductOptionWrapper({ children }) {
       })
 
       wp.hooks.doAction('before.product.addToCart', buyButtonState)
+    } else {
+      buyButtonDispatch({ type: 'SET_ALL_SELECTED_OPTIONS', payload: false })
     }
   }, [buyButtonState.selectedOptions])
 

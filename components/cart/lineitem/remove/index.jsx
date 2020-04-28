@@ -1,12 +1,27 @@
-import { FilterHook } from '../../../../common/utils'
-const { __ } = wp.i18n
+import { FilterHook, __t } from '../../../../common/utils'
+/** @jsx jsx */
+import { jsx, css } from '@emotion/core'
 
 function CartLineItemRemove({ onRemove }) {
+  const removeStyles = css`
+    position: absolute;
+    top: -12px;
+    right: 0;
+    font-size: 13px;
+    text-decoration: underline;
+    padding-right: 0;
+    text-align: right;
+    padding: 13px 0;
+
+    &:hover {
+      cursor: pointer;
+      opacity: 0.7;
+    }
+  `
+
   return (
-    <span className='wps-cart-lineitem-remove' onClick={onRemove}>
-      <FilterHook name='cart.lineItem.remove.text'>
-        {__('Remove', wpshopify.misc.textdomain)}
-      </FilterHook>
+    <span className='wps-cart-lineitem-remove' css={removeStyles} onClick={onRemove}>
+      <FilterHook name='cart.lineItem.remove.text'>{__t('Remove')}</FilterHook>
     </span>
   )
 }

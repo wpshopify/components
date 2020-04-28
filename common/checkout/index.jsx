@@ -1,11 +1,11 @@
 import isEmpty from 'lodash/isEmpty'
 
-function hasCustomCheckoutAttributes(shopState) {
+function hasCustomCheckoutAttributes(cartState) {
   if (!wpshopify.misc.isPro) {
     return false
   }
 
-  if (!isEmpty(shopState.customAttributes) || !isEmpty(shopState.note)) {
+  if (!isEmpty(cartState.customAttributes) || !isEmpty(cartState.note)) {
     return true
   }
 

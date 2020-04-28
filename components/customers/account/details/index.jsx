@@ -1,4 +1,3 @@
-import { ShopContext } from '../../../shop/_state/context'
 import { CustomersContext } from '../../_state/context'
 import { stylesSlideIn } from '../../_styles'
 import { A } from 'hookrouter'
@@ -11,7 +10,6 @@ import { jsx, css } from '@emotion/core'
 const { useContext } = wp.element
 
 function AccountDetails() {
-  const [shopState] = useContext(ShopContext)
   const [customerState, customerDispatch] = useContext(CustomersContext)
 
   const stylesDetails = css`
@@ -55,7 +53,7 @@ function AccountDetails() {
           <AccountDetailsDefaultAddress />
 
           <A
-            href={'/' + shopState.settings.general.accountPageAccount + '/addresses'}
+            href={'/' + wpshopify.settings.general.accountPageAccount + '/addresses'}
             onClick={onClick}
             className='wps-view-addresses'
             css={stylesViewAddresses}>

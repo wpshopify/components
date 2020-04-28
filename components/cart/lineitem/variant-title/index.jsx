@@ -1,10 +1,8 @@
-import { FilterHook } from '../../../../common/utils'
+import { FilterHook, __t } from '../../../../common/utils'
 /** @jsx jsx */
 import { jsx, css } from '@emotion/core'
 
-const { __ } = wp.i18n
-
-function CartLineItemVariantTitle({ lineItem, isReady }) {
+function CartLineItemVariantTitle({ lineItem }) {
   const badgeCSS = css`
     display: inline-block;
     width: auto;
@@ -26,10 +24,8 @@ function CartLineItemVariantTitle({ lineItem, isReady }) {
   `
 
   return (
-    <div css={badgeCSS} className='wps-cart-lineitem-variant-title' data-wps-is-ready={isReady}>
-      <FilterHook name='cart.lineItem.variant.title'>
-        {__(lineItem.title, wpshopify.misc.textdomain)}
-      </FilterHook>
+    <div css={badgeCSS} className='wps-cart-lineitem-variant-title'>
+      <FilterHook name='cart.lineItem.variant.title'>{__t(lineItem.title)}</FilterHook>
     </div>
   )
 }

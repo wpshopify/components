@@ -1,7 +1,6 @@
 import { queryBuilder } from '/Users/andrew/www/devil/devilbox-new/data/www/wpshopify-api'
 import { SearchContext } from '../_state/context'
 import { ItemsContext } from '../../items/_state/context'
-import { ShopContext } from '../../shop/_state/context'
 
 import { usePortal } from '../../../common/hooks'
 import { SearchInput } from './input'
@@ -11,9 +10,8 @@ import { SearchNotices } from './notices'
 const { useEffect, useContext, useRef } = wp.element
 
 function SearchForm() {
-  const [shopState] = useContext(ShopContext)
   const [itemsState, itemsDispatch] = useContext(ItemsContext)
-  const [searchState, searchDispatch] = useContext(SearchContext)
+  const [searchState] = useContext(SearchContext)
   const isFirstRender = useRef(true)
 
   useEffect(() => {
@@ -24,15 +22,15 @@ function SearchForm() {
 
     var hi = queryBuilder({
       filter: itemsState.payloadSettings.sortBy,
-      phrase: shopState.settings.general.searchExactMatch,
-      value: searchState.searchTerm
+      phrase: wpshopify.settings.general.searchExactMatch,
+      value: searchState.searchTerm,
     })
 
     itemsDispatch({
       type: 'MERGE_QUERY_PARAMS',
       payload: {
-        query: hi
-      }
+        query: hi,
+      },
     })
   }, [searchState.searchTerm])
 

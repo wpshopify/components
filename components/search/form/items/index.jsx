@@ -20,29 +20,31 @@ function SearchItems() {
   function buildOptions() {
     return {
       payload: itemsState.payload,
-      products: itemsState.payload.map(product => {
-        return {
-          product: product,
-          element: false,
-          gid: false,
-          excludes: false,
-          renderFromServer: false,
-          selectedVariant: false,
-          payloadSettings: {
-            pagination: true
+      products:
+        itemsState.payload &&
+        itemsState.payload.map((product) => {
+          return {
+            product: product,
+            element: false,
+            gid: false,
+            excludes: false,
+            renderFromServer: false,
+            selectedVariant: false,
+            payloadSettings: {
+              pagination: true,
+            },
           }
-        }
-      }),
+        }),
       dataType: itemsState.payloadSettings.dataType,
       originalParams: {
         type: itemsState.payloadSettings.dataType,
         queryParams: itemsState.queryParams,
-        connectionParams: false
+        connectionParams: false,
       },
       queryParams: itemsState.queryParams,
       type: itemsState.payloadSettings.dataType,
       payloadSettings: itemsState.payloadSettings,
-      noResultsText: itemsState.payloadSettings.noResultsText
+      noResultsText: itemsState.payloadSettings.noResultsText,
     }
   }
 

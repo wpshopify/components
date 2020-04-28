@@ -3,7 +3,6 @@ import to from 'await-to-js'
 import isEmpty from 'lodash/isEmpty'
 import { usePortal } from '../../../../common/hooks'
 import { CustomersContext } from '../../_state/context'
-import { ShopContext } from '../../../shop/_state/context'
 import { Form } from '../../../forms'
 import { Input } from '../../../forms/input'
 
@@ -11,8 +10,7 @@ const { useContext, useRef, useState } = wp.element
 const { Notice } = wp.components
 
 function CustomerFormRegister() {
-  const [shopState] = useContext(ShopContext)
-  const [customersState, customersDispatch] = useContext(CustomersContext)
+  const [customersState] = useContext(CustomersContext)
   const [isSubmitting, setIsSubmitting] = useState(() => false)
   const emailRef = useRef()
 
@@ -60,7 +58,7 @@ function CustomerFormRegister() {
     setNoticeState({
       message:
         'Successfully created account! <a href="/' +
-        shopState.settings.general.accountPageLogin +
+        wpshopify.settings.general.accountPageLogin +
         '">Login</a>.',
       type: 'success',
     })
@@ -89,7 +87,7 @@ function CustomerFormRegister() {
   }
 
   return hasChanged ? (
-    <LoginLink noticeState={noticeState} shopState={shopState} />
+    <LoginLink noticeState={noticeState} />
   ) : (
     <RegisterForm
       onSubmit={onSubmit}
@@ -106,7 +104,7 @@ function CustomerFormRegister() {
   )
 }
 
-function LoginLink({ noticeState, shopState }) {
+function LoginLink({ noticeState }) {
   return (
     <>
       <Notice status={noticeState.type} isDismissible={false}>
@@ -114,7 +112,7 @@ function LoginLink({ noticeState, shopState }) {
       </Notice>
 
       <a
-        href={'/' + shopState.settings.general.accountPageLogin}
+        href={'/' + wpshopify.settings.general.accountPageLogin}
         className='wps-btn wps-btn-secondary wpshopify-btn-auto-width'>
         Login to your account
       </a>

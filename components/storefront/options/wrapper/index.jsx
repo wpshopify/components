@@ -3,14 +3,13 @@ import assign from 'lodash/assign'
 import mapValues from 'lodash/mapValues'
 import map from 'lodash/map'
 import { usePortal } from '../../../../common/hooks'
-import { FilterHook } from '../../../../common/utils'
+import { FilterHook, __t } from '../../../../common/utils'
 import { getFilterData } from '/Users/andrew/www/devil/devilbox-new/data/www/wpshopify-api'
 import { StorefrontContext } from '../../_state/context'
 import { StorefrontFilterOptionsGroup } from '../group'
 import { StorefrontFilterOptionsHeading } from '../heading'
 import { StorefrontOptionsContext } from '../_state/context'
 import { ItemsContext } from '../../../items/_state/context'
-const { __ } = wp.i18n
 const { useEffect, useContext } = wp.element
 
 function combineFilterOptions(accumulator, currentValue) {
@@ -44,10 +43,9 @@ function StorefrontOptionsWrapper() {
         type: 'UPDATE_NOTICES',
         payload: {
           type: 'error',
-          message: __(
+          message: __t(
             respError.message +
-              '. Occurred when fetching available filter options. Please clear your browser cache and reload the page.',
-            wpshopify.misc.textdomain
+              '. Occurred when fetching available filter options. Please clear your browser cache and reload the page.'
           ),
         },
       })
@@ -69,27 +67,15 @@ function StorefrontOptionsWrapper() {
   }, [])
 
   function TagsHeading() {
-    return (
-      <FilterHook name='default.storefront.tags.heading'>
-        {__('Tags', wpshopify.misc.textdomain)}
-      </FilterHook>
-    )
+    return <FilterHook name='default.storefront.tags.heading'>{__t('Tags')}</FilterHook>
   }
 
   function VendorsHeading() {
-    return (
-      <FilterHook name='default.storefront.vendors.heading'>
-        {__('Vendors', wpshopify.misc.textdomain)}
-      </FilterHook>
-    )
+    return <FilterHook name='default.storefront.vendors.heading'>{__t('Vendors')}</FilterHook>
   }
 
   function TypesHeading() {
-    return (
-      <FilterHook name='default.storefront.types.heading'>
-        {__('Types', wpshopify.misc.textdomain)}
-      </FilterHook>
-    )
+    return <FilterHook name='default.storefront.types.heading'>{__t('Types')}</FilterHook>
   }
 
   return usePortal(

@@ -1,6 +1,5 @@
 import { formatPriceToCurrency } from '../../../../common/pricing/formatting'
 import { prettyDate } from '../../../../common/utils'
-import { ShopContext } from '../../../shop/_state/context'
 import { CustomersContext } from '../../_state/context'
 import { A } from 'hookrouter'
 import { Td } from '../../../tables/body/td'
@@ -13,21 +12,20 @@ import { jsx, css } from '@emotion/core'
 const { useContext } = wp.element
 
 function Order({ order }) {
-  const [shopState] = useContext(ShopContext)
   const [customersState, customerDispatch] = useContext(CustomersContext)
 
   const stylesthtd = {
     textAlign: 'left',
     padding: '15px',
-    border: '1px solid #e7e7e7'
+    border: '1px solid #e7e7e7',
   }
 
   const stylesOrderLink = {
     textDecoration: 'underline',
     color: '#3ba9fc',
     ':hover': {
-      cursor: 'pointer'
-    }
+      cursor: 'pointer',
+    },
   }
 
   const cellLinkStyles = css`
@@ -49,7 +47,7 @@ function Order({ order }) {
     <tr>
       <Td extraCSS={tableTdLink}>
         <A
-          href={'/' + shopState.settings.general.accountPageAccount + '/order'}
+          href={'/' + wpshopify.settings.general.accountPageAccount + '/order'}
           onClick={onClick}
           css={cellLinkStyles}>
           {order.node.name}
@@ -62,7 +60,12 @@ function Order({ order }) {
       <Td>
         <FulfillmentStatus order={order.node} />
       </Td>
-      <Td>{formatPriceToCurrency(order.node.totalPriceV2.amount, shopState.info.currencyCode)}</Td>
+      <Td>
+        {formatPriceToCurrency(
+          order.node.totalPriceV2.amount,
+          order.node.totalPriceV2.currencyCode
+        )}
+      </Td>
     </tr>
   )
 }

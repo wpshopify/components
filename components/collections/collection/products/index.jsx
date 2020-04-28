@@ -4,14 +4,12 @@ import { Items } from '../../../items'
 import { Products } from '../../../products'
 import { CollectionContext } from '../_state/context'
 import { ItemsContext } from '../../../items/_state/context'
-import { PaginationContext } from '../../../pagination/_state/context'
 
 const { useContext, useRef, useEffect } = wp.element
 
 function CollectionProducts() {
   const [collectionState, collectionDispatch] = useContext(CollectionContext)
-  const [itemsState, itemsDispatch] = useContext(ItemsContext)
-  const [paginationState, paginationDispatch] = useContext(PaginationContext)
+  const [itemsState] = useContext(ItemsContext)
   const isFirstRender = useRef(true)
 
   function updateCollectionProducts(payload) {
@@ -33,7 +31,7 @@ function CollectionProducts() {
             ? collectionState.productOptions[0].componentPayload
             : collectionState.products,
           payloadSettings: itemsState.payloadSettings.products,
-          componentConnectionParams: paginationState.payloadSettings.componentConnectionParams,
+          componentConnectionParams: itemsState.payloadSettings.componentConnectionParams,
           componentElement: false,
           dataType: 'products',
           type: 'list',
@@ -44,16 +42,16 @@ function CollectionProducts() {
             connectionParams: {
               first: parseInt(itemsState.payloadSettings.products.pageSize),
               reverse: itemsState.payloadSettings.products.reverse,
-              sortKey: itemsState.payloadSettings.products.sortBy
-            }
+              sortKey: itemsState.payloadSettings.products.sortBy,
+            },
           },
           componentQueryParams: {
             first: parseInt(itemsState.payloadSettings.products.pageSize),
             reverse: itemsState.payloadSettings.products.reverse,
-            sortKey: itemsState.payloadSettings.products.sortBy
-          }
-        }
-      ]
+            sortKey: itemsState.payloadSettings.products.sortBy,
+          },
+        },
+      ],
     })
   }, [])
 

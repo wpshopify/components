@@ -1,7 +1,6 @@
 /** @jsx jsx */
 import { jsx, css } from '@emotion/core'
-import { FilterHook } from '../../../../../common/utils'
-const { __ } = wp.i18n
+import { FilterHook, __t } from '../../../../../common/utils'
 
 function ProductPriceFrom() {
   const styles = css`
@@ -11,9 +10,7 @@ function ProductPriceFrom() {
 
   return (
     <small css={styles} className='wps-product-from-price'>
-      <FilterHook name='product.pricing.from.text'>
-        {__('Price:', wpshopify.misc.textdomain)}
-      </FilterHook>
+      <FilterHook name='product.pricing.from.text'>{__t('Price:')}</FilterHook>
     </small>
   )
 }

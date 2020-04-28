@@ -3,10 +3,7 @@ import { PaginationInitialState } from './initial-state'
 import { PaginationContext } from './context'
 
 function PaginationProvider(props) {
-  const [state, dispatch] = wp.element.useReducer(
-    PaginationReducer,
-    PaginationInitialState(props.options)
-  )
+  const [state, dispatch] = wp.element.useReducer(PaginationReducer, PaginationInitialState(props))
 
   const value = wp.element.useMemo(() => [state, dispatch], [state])
 

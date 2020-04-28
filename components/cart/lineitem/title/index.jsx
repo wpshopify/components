@@ -1,13 +1,9 @@
-import { FilterHook } from '../../../../common/utils'
-
-const { __ } = wp.i18n
+import { FilterHook, __t } from '../../../../common/utils'
 
 function CartLineItemTitle({ lineItem }) {
   return (
     <span className='wps-cart-lineitem-title-content col-9'>
-      <FilterHook name='cart.lineItem.title.text'>
-        {__(lineItem.product.title, wpshopify.misc.textdomain)}
-      </FilterHook>
+      <FilterHook name='cart.lineItem.title.text'>{__t(lineItem.product.title)}</FilterHook>
     </span>
   )
 }

@@ -1,15 +1,12 @@
-import { ShopContext } from '../../shop/_state/context'
 import { CartContext } from '../_state/context'
 /** @jsx jsx */
 import { jsx, css } from '@emotion/core'
 import { flexRowCSS } from '../../../common/css'
-import { FilterHook } from '../../../common/utils'
+import { __t } from '../../../common/utils'
 
-const { __ } = wp.i18n
 const { useContext, useState, useEffect } = wp.element
 
 function CartTerms() {
-  const [shopState] = useContext(ShopContext)
   const [cartState, cartDispatch] = useContext(CartContext)
   const [isChecked, setIsChecked] = useState(() => false)
 
@@ -19,7 +16,7 @@ function CartTerms() {
 
   function termsLabel() {
     return {
-      __html: __(shopState.settings.general.cartTermsContent, wpshopify.misc.textdomain),
+      __html: __t(wpshopify.settings.general.cartTermsContent),
     }
   }
 

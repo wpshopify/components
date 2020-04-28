@@ -1,4 +1,3 @@
-import { ShopContext } from '../../../shop/_state/context'
 import { CartContext } from '../../_state/context'
 import { CartCounter } from '../counter'
 import { CartIcon } from '../icon'
@@ -10,24 +9,19 @@ import { isCartEmpty } from '../../../../common/cart'
 const { useContext, useRef, useEffect } = wp.element
 
 function CartButton({ options }) {
-  const [shopState, shopDispatch] = useContext(ShopContext)
   const [cartState, cartDispatch] = useContext(CartContext)
   const counterElement = useRef()
   const animeSlideInRight = useAnime(slideInRight)
 
   useEffect(() => {
-    if (!shopState.isShopReady) {
-      return
-    }
-
-    if (options.payloadSettings.type === 'fixed' && shopState.settings.general.showFixedCartTab) {
+    if (options.payloadSettings.type === 'fixed' && wpshopify.settings.general.showFixedCartTab) {
       animeSlideInRight(counterElement.current)
     }
-  }, [shopState.isShopReady])
+  }, [])
 
   function getIconColor() {
     if (options.payloadSettings.type === 'fixed') {
-      return shopState.settings.general.cartFixedBackgroundColor
+      return wpshopify.settings.general.cartFixedBackgroundColor
     }
 
     return ''
@@ -50,7 +44,7 @@ function CartButton({ options }) {
   return usePortal(
     <CartButtonProvider options={options}>
       <button
-        data-is-cart-ready={shopState.isCartReady ? '1' : '0'}
+        data-is-cart-ready={cartState.isCartReady ? '1' : '0'}
         role='button'
         ref={counterElement}
         className={`wps-btn-cart wps-cart-icon-${options.payloadSettings.type} ${

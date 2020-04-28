@@ -5,15 +5,14 @@ import { ItemsContext } from '../items/_state/context'
 import { Notices } from '../notices'
 import isEmpty from 'lodash/isEmpty'
 
-const { Notice } = wp.components
 const { useContext, Suspense } = wp.element
-const { Spinner } = wp.components
 
-function Pagination({ children, shopSettings }) {
+function Pagination({ children }) {
   const [itemsState] = useContext(ItemsContext)
 
+  console.log('<Pagination> :: Render Start')
   function isHidingPagination() {
-    if (shopSettings.hidePagination) {
+    if (wpshopify.settings.general.hidePagination) {
       return true
     }
 
@@ -31,28 +30,8 @@ function Pagination({ children, shopSettings }) {
     }
   }
 
-  function showNotices() {
-    if (isEmpty(itemsState.payload) || !itemsState.hasMoreItems) {
-      return true
-    }
-
-    return false
-  }
-
-  function isAlignHeight() {
-    if (itemsState.payloadSettings.alignHeight) {
-      return true
-    }
-
-    if (shopSettings.general.alignHeight) {
-      return true
-    }
-
-    return false
-  }
-
   return (
-    <PaginationProvider options={itemsState}>
+    <PaginationProvider>
       {!isEmpty(itemsState.notices) && (
         <Notices
           notices={itemsState.notices}
@@ -61,15 +40,7 @@ function Pagination({ children, shopSettings }) {
         />
       )}
 
-      {/* {showNotices() ? (
-        <Notice status='info' isDismissible={false}>
-          {itemsState.noResultsText}
-        </Notice>
-      ) : (
-        <PaginationItems alignHeight={isAlignHeight()}>{children}</PaginationItems>
-      )} */}
-
-      <PaginationItems alignHeight={isAlignHeight()}>{children}</PaginationItems>
+      <PaginationItems>{children}</PaginationItems>
 
       {!isHidingPagination() && (
         <Suspense fallback={''}>

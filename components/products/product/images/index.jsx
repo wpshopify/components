@@ -11,11 +11,7 @@ function ProductImages() {
   const [itemsState] = useContext(ItemsContext)
 
   return usePortal(
-    <>
-      <div className='wps-component wps-component-products-images' data-wps-component-order='0'>
-        <ProductGalleryWrapper productState={productState} />
-      </div>
-    </>,
+    <ProductGalleryWrapper productState={productState} />,
     findPortalElement(productState.element, itemsState.payloadSettings.dropzoneProductGallery)
   )
 }

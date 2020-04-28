@@ -5,7 +5,7 @@ import { jsx, css } from '@emotion/core'
 
 const { useEffect, useContext, useRef, useState } = wp.element
 
-function ProductQuantityInput({ minQuantity, maxQuantity, isShopReady }) {
+function ProductQuantityInput({ minQuantity, maxQuantity }) {
   const [productState] = useContext(ProductContext)
   const [buyButtonState, buyButtonDispatch] = useContext(ProductBuyButtonContext)
   const element = useRef()
@@ -41,10 +41,7 @@ function ProductQuantityInput({ minQuantity, maxQuantity, isShopReady }) {
   }
 
   return (
-    <div
-      className='wps-quantity-input wps-quantity-input-wrapper'
-      data-wps-is-ready={isShopReady ? '1' : '0'}
-      css={inputWrapperStyles}>
+    <div className='wps-quantity-input wps-quantity-input-wrapper' css={inputWrapperStyles}>
       <input
         ref={element}
         css={inputStyles}

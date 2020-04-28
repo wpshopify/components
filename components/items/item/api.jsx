@@ -2,11 +2,10 @@ import {
   fetchNextPage,
   graphQuery,
 } from '/Users/andrew/www/devil/devilbox-new/data/www/wpshopify-api'
+import { __t } from '../../../common/utils'
 import to from 'await-to-js'
 import isEmpty from 'lodash/isEmpty'
 import has from 'lodash/has'
-
-const { __ } = wp.i18n
 
 function sanitizeQueryResponse(response, type) {
   if (type === 'storefront' || type === 'search') {
@@ -51,17 +50,15 @@ Fetch NEXT items
 function fetchNextItems(itemsState, itemsDispatch) {
   return new Promise(async (resolve, reject) => {
     if (isEmpty(itemsState.payload)) {
-      console.log('fetchNextItems 1')
       return
     }
 
     itemsDispatch({ type: 'SET_IS_LOADING', payload: true })
-    console.log('fetchNextItems 2')
+
     if (itemsState.beforeLoading) {
-      console.log('fetchNextItems 3')
       itemsState.beforeLoading(itemsState)
     }
-    console.log('fetchNextItems 4')
+
     /*
 
    This check is needed because of our caching system. The "next page" of products is fetched 
@@ -80,7 +77,7 @@ function fetchNextItems(itemsState, itemsDispatch) {
       if (resendInitialError) {
         itemsDispatch({
           type: 'UPDATE_NOTICES',
-          payload: { type: 'error', message: __(resendInitialError, wpshopify.misc.textdomain) },
+          payload: { type: 'error', message: __t(resendInitialError) },
         })
 
         itemsDispatch({ type: 'SET_IS_LOADING', payload: false })
@@ -101,7 +98,7 @@ function fetchNextItems(itemsState, itemsDispatch) {
       if (initialError) {
         itemsDispatch({
           type: 'UPDATE_NOTICES',
-          payload: { type: 'error', message: __(initialError, wpshopify.misc.textdomain) },
+          payload: { type: 'error', message: __t(initialError) },
         })
         itemsDispatch({ type: 'SET_IS_LOADING', payload: false })
 
@@ -128,7 +125,7 @@ function fetchNextItems(itemsState, itemsDispatch) {
         if (finalResultsError) {
           itemsDispatch({
             type: 'UPDATE_NOTICES',
-            payload: { type: 'error', message: __(finalResultsError, wpshopify.misc.textdomain) },
+            payload: { type: 'error', message: __t(finalResultsError) },
           })
           itemsDispatch({ type: 'SET_IS_LOADING', payload: false })
 

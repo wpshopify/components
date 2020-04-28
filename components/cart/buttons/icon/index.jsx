@@ -1,15 +1,13 @@
 import { CartButtonContext } from '../button/_state/context'
-import { ShopContext } from '../../../shop/_state/context'
 
 const { useContext } = wp.element
 
 function CartIcon() {
   const [cartButtonState] = useContext(CartButtonContext)
-  const [shopState] = useContext(ShopContext)
 
   function getIconColor() {
     if (cartButtonState.payloadSettings.type === 'fixed') {
-      return shopState.settings.general.cartIconFixedColor
+      return wpshopify.settings.general.cartIconFixedColor
     }
 
     return cartButtonState.payloadSettings.iconColor
@@ -17,7 +15,7 @@ function CartIcon() {
 
   function iconStyles() {
     return {
-      fill: getIconColor()
+      fill: getIconColor(),
     }
   }
 

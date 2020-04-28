@@ -9,11 +9,13 @@ function ProductVariantButtonGroups({ options }) {
     margin: 1em 0;
   `
 
+  console.log('<ProductVariantButtonGroups> :: Render Start')
+
   return (
     options && (
-      <div className='wpshopify-products-variant-dropdowns' css={styles}>
+      <div className='wpshopify-products-variant-buttons' css={styles}>
         {options.map(
-          option => option && <ProductVariantButtonGroup key={option.name} option={option} />
+          (option) => option && <ProductVariantButtonGroup key={option.name} option={option} />
         )}
       </div>
     )

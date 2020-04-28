@@ -1,12 +1,10 @@
 import { ProductBuyButtonContext } from '../../_state/context'
 import { useAnime, pulse } from '../../../../../../common/animations'
-import { FilterHook } from '../../../../../../common/utils'
-import { ShopContext } from '../../../../../shop/_state/context'
+import { FilterHook, __t } from '../../../../../../common/utils'
 import { ItemsContext } from '../../../../../items/_state/context'
 import { ProductOptionContext } from '../_state/context'
 
 const { useEffect, useContext, useRef } = wp.element
-const { __ } = wp.i18n
 
 function TriggerIcon() {
   return (
@@ -20,9 +18,8 @@ function TriggerIcon() {
 }
 
 function ProductOptionTrigger() {
-  const [shopState] = useContext(ShopContext)
   const [itemsState] = useContext(ItemsContext)
-  const [buyButtonState, buyButtonDispatch] = useContext(ProductBuyButtonContext)
+  const [buyButtonState] = useContext(ProductBuyButtonContext)
   const [productOptionState, productOptionDispatch] = useContext(ProductOptionContext)
 
   const dropdownTrigger = useRef()
@@ -41,10 +38,6 @@ function ProductOptionTrigger() {
 
    */
   useEffect(() => {
-    if (!shopState.isShopReady) {
-      return
-    }
-
     if (isFirstRender.current) {
       isFirstRender.current = false
       return
@@ -86,15 +79,10 @@ function ProductOptionTrigger() {
   return (
     <button
       className='wps-btn wps-icon wps-icon-dropdown wps-modal-trigger'
-      data-option=''
-      data-option-id=''
-      data-wps-is-ready={shopState.isShopReady ? '1' : '0'}
       onClick={onClick}
       ref={dropdownTrigger}
       style={{ backgroundColor: itemsState.payloadSettings.variantButtonColor }}>
-      <FilterHook name='products.option.title.text'>
-        {__(displayOptionName(), wpshopify.misc.textdomain)}
-      </FilterHook>
+      <FilterHook name='products.option.title.text'>{__t(displayOptionName())}</FilterHook>
       <TriggerIcon />
     </button>
   )

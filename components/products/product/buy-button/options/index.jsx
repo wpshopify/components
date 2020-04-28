@@ -48,6 +48,8 @@ function filterOnlyAvailableVariants(variants) {
 }
 
 function onlyAvailableOptionsFromVariants(variants) {
+  console.log('onlyAvailableOptionsFromVariants')
+
   if (!variants.length) {
     return false
   }
@@ -60,6 +62,8 @@ function variantHasDropdown(itemsState) {
 }
 
 function ProductVariantDropdown({ options }) {
+  console.log('<ProductVariantDropdown> :: Render Start')
+
   return (
     <div
       className='wps-component wps-component-products-options'
@@ -75,11 +79,10 @@ function ProductVariantDropdown({ options }) {
 If this component is rendered, that means at least one variant is available for purchase
 
 */
-function ProductOptions() {
-  const [itemsState] = useContext(ItemsContext)
-  const [buyButtonState] = useContext(ProductBuyButtonContext)
+function ProductOptions({ itemsState, variants }) {
+  const options = onlyAvailableOptionsFromVariants(variants)
 
-  const options = onlyAvailableOptionsFromVariants(buyButtonState.product.variants)
+  console.log('<ProductOptions> :: Render Start')
 
   return variantHasDropdown(itemsState) ? (
     <ProductVariantDropdown options={options} />

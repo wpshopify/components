@@ -1,16 +1,11 @@
-import { FilterHook } from '../../../../../../common/utils'
-const { __ } = wp.i18n
+import { FilterHook, __t } from '../../../../../../common/utils'
 
-function ProductQuantityLabel({ showQuantityLabel, isShopReady, label }) {
+function ProductQuantityLabel({ showQuantityLabel, label }) {
   return (
     showQuantityLabel && (
-      <div
-        className='wps-quantity-input wps-quantity-label-wrapper d-flex align-items-center'
-        data-wps-is-ready={isShopReady ? '1' : '0'}>
+      <div className='wps-quantity-input wps-quantity-label-wrapper d-flex align-items-center'>
         <label htmlFor='wps-product-quantity'>
-          <FilterHook name='products.quantity.label.text'>
-            {__(label, wpshopify.misc.textdomain)}
-          </FilterHook>
+          <FilterHook name='products.quantity.label.text'>{__t(label)}</FilterHook>
         </label>
       </div>
     )

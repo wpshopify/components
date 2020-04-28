@@ -1,6 +1,5 @@
 import to from 'await-to-js'
 import isEmpty from 'lodash/isEmpty'
-import { ShopContext } from '../../../shop/_state/context'
 import { CustomersContext } from '../../_state/context'
 import { loginCustomer } from '/Users/andrew/www/devil/devilbox-new/data/www/wpshopify-api'
 import { usePortal } from '../../../../common/hooks'
@@ -11,7 +10,6 @@ const { useState, useRef, useContext } = wp.element
 
 function CustomerFormLogin() {
   const [customersState, customersDispatch] = useContext(CustomersContext)
-  const [shopState] = useContext(ShopContext)
   const [isSubmitting, setIsSubmitting] = useState(() => false)
 
   const element = document.querySelector(customersState.dropzones.formLogin)
@@ -65,7 +63,7 @@ function CustomerFormLogin() {
       return
     }
 
-    window.location.replace('/' + shopState.settings.general.accountPageAccount)
+    window.location.replace('/' + wpshopify.settings.general.accountPageAccount)
   }
 
   function onSubmit(e) {

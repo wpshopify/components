@@ -6,29 +6,13 @@ import { CollectionProvider } from './_state/provider'
 import { isShowingComponent } from '../../../common/components'
 import { itemWidthClass } from '../../../common/utils'
 
-const Collection = wp.element.memo(function Collection({
-  itemsState,
-  payload,
-  isShopReady,
-  shopInfo,
-  shopSettings
-}) {
+const Collection = wp.element.memo(function Collection({ itemsState }) {
   return (
     <div className={`${itemWidthClass(itemsState.payloadSettings.itemsPerRow)} wps-item p-3`}>
-      <CollectionProvider payload={payload}>
-        {isShowingComponent(itemsState, 'image') && (
-          <CollectionImage
-            isShopReady={isShopReady}
-            shopInfo={shopInfo}
-            shopSettings={shopSettings}
-          />
-        )}
-        {isShowingComponent(itemsState, 'title') && (
-          <CollectionTitle isShopReady={isShopReady} shopInfo={shopInfo} />
-        )}
-        {isShowingComponent(itemsState, 'description') && (
-          <CollectionDescription isShopReady={isShopReady} />
-        )}
+      <CollectionProvider payload={itemsState.payload}>
+        {isShowingComponent(itemsState, 'image') && <CollectionImage />}
+        {isShowingComponent(itemsState, 'title') && <CollectionTitle />}
+        {isShowingComponent(itemsState, 'description') && <CollectionDescription />}
         {isShowingComponent(itemsState, 'products') && itemsState.payloadSettings.single && (
           <CollectionProducts />
         )}

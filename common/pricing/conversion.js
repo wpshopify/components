@@ -1,7 +1,6 @@
-import money from "money"
-import accounting from "accounting"
-import { localCurrency } from "./currency"
-import { baseCurrency, showingLocalCurrency } from "../globals"
+import money from 'money'
+import accounting from 'accounting'
+import { localCurrency } from './currency'
 
 function convertAmount(amount, fromCode, toCode) {
   if (!toCode) {
@@ -9,20 +8,15 @@ function convertAmount(amount, fromCode, toCode) {
   }
 
   if (fromCode === toCode) {
-    console.info("WP Shopify ℹ️ Did not convert to local currency")
+    console.info('WP Shopify ℹ️ Did not convert to local currency')
     return amount
   }
 
-  return accounting.toFixed(
-    money(amount)
-      .from(fromCode)
-      .to(toCode),
-    2
-  )
+  return accounting.toFixed(money(amount).from(fromCode).to(toCode), 2)
 }
 
 function convertToLocalCurrency(amount) {
-  return convertAmount(amount, baseCurrency(), localCurrency())
+  return convertAmount(amount, 'USD', localCurrency())
 }
 
 /*
@@ -30,6 +24,11 @@ function convertToLocalCurrency(amount) {
 Format product price into format from Shopify
 
 */
+
+function showingLocalCurrency() {
+  return false
+}
+
 function maybeConvertPriceToLocalCurrency(amount) {
   if (showingLocalCurrency()) {
     return convertToLocalCurrency(amount)

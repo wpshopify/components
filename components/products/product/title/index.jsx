@@ -1,8 +1,7 @@
-import { ShopContext } from '../../../shop/_state/context'
 import { ProductContext } from '../_state/context'
 import { ItemsContext } from '../../../items/_state/context'
 import { usePortal } from '../../../../common/hooks'
-import { findPortalElement, FilterHook } from '../../../../common/utils'
+import { findPortalElement, FilterHook, __t } from '../../../../common/utils'
 import { Link } from '../../../link'
 import { hasLink } from '../../../../common/settings'
 
@@ -13,7 +12,6 @@ const { useContext } = wp.element
 const { __ } = wp.i18n
 
 function ProductTitle() {
-  const [shopState] = useContext(ShopContext)
   const [productState] = useContext(ProductContext)
   const [itemsState] = useContext(ItemsContext)
 
@@ -35,18 +33,16 @@ function ProductTitle() {
 
   return usePortal(
     <div className='wps-component wps-component-products-title' data-wps-component-order='0'>
-      {hasLink(itemsState, shopState) ? (
+      {hasLink(itemsState) ? (
         <Link
           type='products'
           payload={productState.payload}
-          shop={shopState}
           target={itemsState.payloadSettings.linkTarget}
           linkTo={itemsState.payloadSettings.linkTo}>
           <Title
             styles={[fontSize, fontColor]}
             title={productState.payload.title}
             classList={getTitleClass()}
-            isShopReady={shopState.isShopReady ? '1' : '0'}
             product={productState.payload}
           />
         </Link>
@@ -55,7 +51,6 @@ function ProductTitle() {
           styles={[fontSize, fontColor]}
           title={productState.payload.title}
           classList={getTitleClass()}
-          isShopReady={shopState.isShopReady ? '1' : '0'}
           product={productState.payload}
         />
       )}
@@ -67,29 +62,13 @@ function ProductTitle() {
 function Title(props) {
   return (
     <>
-      <FilterHook
-        name='before.product.title'
-        hasHTML={true}
-        args={[props.product]}
-        isReady={props.isShopReady}
-      />
+      <FilterHook name='before.product.title' hasHTML={true} args={[props.product]} />
 
-      <h2
-        itemProp='name'
-        className={props.classList}
-        data-wps-is-ready={props.isShopReady}
-        css={props.styles}>
-        <FilterHook name='product.title.text'>
-          {__(props.title, wpshopify.misc.textdomain)}
-        </FilterHook>
+      <h2 itemProp='name' className={props.classList} css={props.styles}>
+        <FilterHook name='product.title.text'>{__t(props.title)}</FilterHook>
       </h2>
 
-      <FilterHook
-        name='after.product.title'
-        hasHTML={true}
-        args={[props.product]}
-        isReady={props.isShopReady}
-      />
+      <FilterHook name='after.product.title' hasHTML={true} args={[props.product]} />
     </>
   )
 }

@@ -3,12 +3,12 @@ import { pulse, useAnime } from '../../../../common/animations'
 import { CartContext } from '../../_state/context'
 /** @jsx jsx */
 import { jsx, css } from '@emotion/core'
-import { FilterHook } from '../../../../common/utils'
+import { FilterHook, __t } from '../../../../common/utils'
+import { getCurrencyCodeFromPayload } from '../../../../common/pricing/data'
 
 const { useContext, useEffect } = wp.element
-const { __ } = wp.i18n
 
-function CartFooterTotal({ isReady, totalElement, currencyCode }) {
+function CartFooterTotal({ totalElement }) {
   const animate = useAnime(pulse)
   const [cartState] = useContext(CartContext)
 
@@ -20,7 +20,7 @@ function CartFooterTotal({ isReady, totalElement, currencyCode }) {
   `
 
   useEffect(() => {
-    if (!isReady) {
+    if (!cartState.total) {
       return
     }
     animate(totalElement.current)
@@ -31,9 +31,8 @@ function CartFooterTotal({ isReady, totalElement, currencyCode }) {
       <CartFooterSubtotalLabel />
       <CartFooterSubtotalAmount
         total={cartState.total}
-        currencyCode={currencyCode}
+        currencyCode={getCurrencyCodeFromPayload(cartState.checkoutCache)}
         totalElement={totalElement}
-        isReady={isReady}
       />
     </div>
   )
@@ -42,20 +41,15 @@ function CartFooterTotal({ isReady, totalElement, currencyCode }) {
 function CartFooterSubtotalLabel() {
   return (
     <p className='wps-total-prefix'>
-      <FilterHook name='cart.subtotal.text'>
-        {__('Subtotal:', wpshopify.misc.textdomain)}
-      </FilterHook>
+      <FilterHook name='cart.subtotal.text'>{__t('Subtotal:')}</FilterHook>
     </p>
   )
 }
 
-function CartFooterSubtotalAmount({ total, currencyCode, totalElement, isReady }) {
+function CartFooterSubtotalAmount({ total, currencyCode, totalElement }) {
   return (
-    <p
-      className='wps-total-amount col p-0'
-      ref={totalElement}
-      data-wps-is-ready={isReady ? '1' : '0'}>
-      {isReady && formatPriceToCurrency(total, currencyCode)}
+    <p className='wps-total-amount col p-0' ref={totalElement}>
+      {formatPriceToCurrency(total, currencyCode)}
     </p>
   )
 }

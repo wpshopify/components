@@ -9,7 +9,6 @@ const { useContext } = wp.element
 
 function Storefront() {
   const [itemsState] = useContext(ItemsContext)
-  console.log('Storefront')
 
   return (
     <StorefrontProvider options={itemsState}>

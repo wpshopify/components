@@ -1,11 +1,10 @@
 import { SearchContext } from '../../_state/context'
-import { FilterHook } from '../../../../common/utils'
+import { FilterHook, __t } from '../../../../common/utils'
 import { ItemsContext } from '../../../items/_state/context'
 import { useDebounce } from 'use-debounce'
 import { Loader } from '../../../loader'
 
 const { useEffect, useContext, useRef, useState } = wp.element
-const { __ } = wp.i18n
 
 /*
 
@@ -33,7 +32,7 @@ function SearchInput() {
   }, [debouncedSearchTerm])
 
   function placeholderText() {
-    return __('Search the store', wpshopify.misc.textdomain)
+    return __t('Search the store')
   }
 
   return (

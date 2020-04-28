@@ -1,9 +1,8 @@
 import { StorefrontContext } from '../_state/context'
 import { ItemsContext } from '../../items/_state/context'
 import { usePortal } from '../../../common/hooks'
-import { FilterHook } from '../../../common/utils'
+import { FilterHook, __t } from '../../../common/utils'
 
-const { __ } = wp.i18n
 const { useContext, useState } = wp.element
 
 function getSelectedOption(select) {
@@ -53,9 +52,7 @@ function StorefrontSorting() {
   return usePortal(
     <div className='wps-component wps-component-sorting'>
       <label className='wps-sorting-heading wps-mr-2' htmlFor='wps-sorting'>
-        <FilterHook name='storefront.sorting.label.text'>
-          {__('Sort by:', wpshopify.misc.textdomain)}
-        </FilterHook>
+        <FilterHook name='storefront.sorting.label.text'>{__t('Sort by:')}</FilterHook>
       </label>
 
       <select
@@ -64,39 +61,27 @@ function StorefrontSorting() {
         onChange={onChange}
         disabled={itemsState.isLoading}>
         <option value='DEFAULT' disabled='disabled'>
-          <FilterHook name='storefront.sorting.default.text'>
-            {__('Choose an option', wpshopify.misc.textdomain)}
-          </FilterHook>
+          <FilterHook name='storefront.sorting.default.text'>{__t('Choose an option')}</FilterHook>
         </option>
         <option value='PRICE'>
-          <FilterHook name='storefront.sorting.price.text'>
-            {__('Price (Low to high)', wpshopify.misc.textdomain)}
-          </FilterHook>
+          <FilterHook name='storefront.sorting.price.text'>{__t('Price (Low to high)')}</FilterHook>
         </option>
         <option value='PRICE-REVERSE' data-wps-reverse>
           <FilterHook name='storefront.sorting.priceReverse.text'>
-            {__('Price (High to low)', wpshopify.misc.textdomain)}
+            {__t('Price (High to low)')}
           </FilterHook>
         </option>
         <option value='CREATED_AT' data-wps-reverse>
-          <FilterHook name='storefront.sorting.newArrival.text'>
-            {__('New Arrival', wpshopify.misc.textdomain)}
-          </FilterHook>
+          <FilterHook name='storefront.sorting.newArrival.text'>{__t('New Arrival')}</FilterHook>
         </option>
         <option value='BEST_SELLING'>
-          <FilterHook name='storefront.sorting.bestSelling.text'>
-            {__('Best Selling', wpshopify.misc.textdomain)}
-          </FilterHook>
+          <FilterHook name='storefront.sorting.bestSelling.text'>{__t('Best Selling')}</FilterHook>
         </option>
         <option value='TITLE'>
-          <FilterHook name='storefront.sorting.title.text'>
-            {__('Title (A-Z)', wpshopify.misc.textdomain)}
-          </FilterHook>
+          <FilterHook name='storefront.sorting.title.text'>{__t('Title (A-Z)')}</FilterHook>
         </option>
         <option value='TITLE-REVERSE' data-wps-reverse>
-          <FilterHook name='storefront.sorting.titleReverse.text'>
-            {__('Title (Z-A)', wpshopify.misc.textdomain)}
-          </FilterHook>
+          <FilterHook name='storefront.sorting.titleReverse.text'>{__t('Title (Z-A)')}</FilterHook>
         </option>
       </select>
     </div>,

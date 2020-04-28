@@ -4,7 +4,7 @@ import { mq } from '../../../../common/css'
 import { addCustomSizingToImageUrl } from '../../../../common/images'
 import { Link } from '../../../link'
 
-function CartLineItemImage({ lineItem, shopState, cartState }) {
+function CartLineItemImage({ lineItem, cartState }) {
   const manualLink = wp.hooks.applyFilters('cart.lineItems.link', false, lineItem, cartState)
 
   const disableLink = wp.hooks.applyFilters(
@@ -36,17 +36,12 @@ function CartLineItemImage({ lineItem, shopState, cartState }) {
   return (
     <Link
       payload={lineItem}
-      shop={shopState}
       type='products'
       classNames='wps-cart-lineitem-img-link'
       target='_blank'
       manualLink={manualLink}
       disableLink={disableLink}>
-      <div
-        className='wps-cart-lineitem-img'
-        style={lineItemImage()}
-        data-wps-is-ready={shopState.isCartReady ? '1' : '0'}
-      />
+      <div className='wps-cart-lineitem-img' style={lineItemImage()} />
     </Link>
   )
 }

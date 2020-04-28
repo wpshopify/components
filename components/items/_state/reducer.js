@@ -16,9 +16,6 @@ function limitPayload(currentPayload, newPayload, state) {
   if (!currentPayload) {
     currentPayload = []
   }
-  console.log('currentPayload', currentPayload)
-  console.log('newPayload', newPayload)
-  console.log('state', state)
 
   var combinedPayloads = currentPayload.concat(newPayload)
   var combinedPayloadsLength = combinedPayloads.length
@@ -191,8 +188,6 @@ function ItemsReducer(state, action) {
     }
 
     case 'MERGE_QUERY_PARAMS': {
-      console.log('MERGE_QUERY_PARAMS')
-
       return {
         ...state,
         queryParams: update(state.queryParams, { $merge: action.payload }),
@@ -209,7 +204,6 @@ function ItemsReducer(state, action) {
     }
 
     case 'SET_QUERY_PARAMS': {
-      console.log('SET_QUERY_PARAMS')
       return {
         ...state,
         queryParams: update(state.queryParams, { $set: action.payload }),

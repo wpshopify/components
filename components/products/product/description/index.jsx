@@ -1,4 +1,3 @@
-import { ShopContext } from '../../../shop/_state/context'
 import { ProductContext } from '../_state/context'
 import { ItemsContext } from '../../../items/_state/context'
 import { usePortal } from '../../../../common/hooks'
@@ -10,7 +9,6 @@ import { jsx, css } from '@emotion/core'
 const { useContext } = wp.element
 
 function ProductDescription() {
-  const [shopState] = useContext(ShopContext)
   const [productState] = useContext(ProductContext)
   const [itemsState] = useContext(ItemsContext)
 
@@ -40,7 +38,6 @@ function ProductDescription() {
       css={[fontSize, fontColor]}
       itemProp='description'
       className='wps-products-description'
-      data-wps-is-ready={shopState.isShopReady ? '1' : '0'}
       dangerouslySetInnerHTML={{ __html: maybeTruncateDescription() }}
     />,
     findPortalElement(productState.element, itemsState.payloadSettings.dropzoneProductDescription)

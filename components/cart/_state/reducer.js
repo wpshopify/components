@@ -1,17 +1,20 @@
 import update from 'immutability-helper'
-import isEmpty from 'lodash/isEmpty'
 import some from 'lodash/some'
 import concat from 'lodash/concat'
+import uniqWith from 'lodash/uniqWith'
+import isEqual from 'lodash/isEqual'
+import isEmpty from 'lodash/isEmpty'
+import flattenDepth from 'lodash/flattenDepth'
+import reduce from 'lodash/reduce'
+import filter from 'lodash/filter'
+import find from 'lodash/find'
+
 import {
   getCheckoutCache,
   setCheckoutCache,
   mergeCheckoutCacheVariants,
   mergeCheckoutCacheLineItems,
 } from '/Users/andrew/www/devil/devilbox-new/data/www/wpshopify-api'
-import flattenDepth from 'lodash/flattenDepth'
-import reduce from 'lodash/reduce'
-import filter from 'lodash/filter'
-import find from 'lodash/find'
 import { calcCheckoutTotal } from '../../../common/products'
 import { updateNoticesState } from '../../../common/state'
 
@@ -120,7 +123,7 @@ function findLineItemsFromProducts(productsFromShopify, checkoutCache) {
 Responsible for: checking whether the cart is empty or not
 
 */
-function isCartEmpty(lineItems) {
+function hasCartEmpty(lineItems) {
   return lineItems.length === 0
 }
 
@@ -185,8 +188,6 @@ function removeLineItemsAndVariants(checkoutCache, payload) {
 function CartReducer(state, action) {
   switch (action.type) {
     case 'TOGGLE_CART': {
-      console.log('TOGGLE_CART', action.payload)
-
       return {
         ...state,
         isCartOpen: update(state.isCartOpen, { $set: action.payload }),
@@ -319,7 +320,7 @@ function CartReducer(state, action) {
 
       return {
         ...state,
-        isCartEmpty: isCartEmpty(checkoutCacheUpdated.lineItems),
+        isCartEmpty: hasCartEmpty(checkoutCacheUpdated.lineItems),
         total: update(state.total, {
           $set: calcCheckoutTotal(checkoutCacheUpdated),
         }),
@@ -340,6 +341,62 @@ function CartReducer(state, action) {
       return {
         ...state,
         totalLineItems: update(state.totalLineItems, { $set: action.payload }),
+      }
+    }
+
+    case 'SET_SHOP_INFO': {
+      return {
+        ...state,
+        shopInfo: update(state.shopInfo, { $set: action.payload }),
+      }
+    }
+
+    case 'UPDATE_CHECKOUT_ATTRIBUTES': {
+      let attributes = uniqWith(concat(state.customAttributes, [action.payload]), isEqual)
+
+      return {
+        ...state,
+        customAttributes: update(state.customAttributes, { $set: attributes }),
+      }
+    }
+
+    case 'SET_CHECKOUT_ATTRIBUTES': {
+      if (isEmpty(action.payload)) {
+        var newCheckoutAttributes = []
+      } else {
+        var newCheckoutAttributes = [action.payload]
+      }
+
+      return {
+        ...state,
+        customAttributes: update(state.customAttributes, {
+          $set: newCheckoutAttributes,
+        }),
+      }
+    }
+
+    case 'SET_CHECKOUT_NOTE': {
+      wp.hooks.doAction('on.checkout.note', action.payload)
+
+      return {
+        ...state,
+        note: update(state.note, { $set: action.payload }),
+      }
+    }
+
+    case 'IS_CART_READY': {
+      return {
+        ...state,
+        isCartReady: update(state.isCartReady, {
+          $set: true,
+        }),
+      }
+    }
+
+    case 'SET_CHECKOUT_ID': {
+      return {
+        ...state,
+        checkoutId: update(state.checkoutId, { $set: action.payload }),
       }
     }
 

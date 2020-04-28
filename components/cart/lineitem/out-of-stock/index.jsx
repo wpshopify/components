@@ -1,14 +1,11 @@
-import { FilterHook } from '../../../../common/utils'
+import { FilterHook, __t } from '../../../../common/utils'
 
 const { Notice } = wp.components
-const { __ } = wp.i18n
 
 function CartLineItemOutOfStock() {
   return (
     <Notice status='warning' isDismissible={false}>
-      <FilterHook name='notice.unavailable.text'>
-        {__('Out of stock', wpshopify.misc.textdomain)}
-      </FilterHook>
+      <FilterHook name='notice.unavailable.text'>{__t('Out of stock')}</FilterHook>
     </Notice>
   )
 }

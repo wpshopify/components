@@ -1,28 +1,36 @@
 import { ProductQuantity } from './quantity'
 import { ProductOptions } from './options'
 import { ProductAddButton } from './add-button'
+import { ProductBuyButtonTextNotice } from './notice'
 import { ProductBuyButtonProvider } from './_state/provider'
 import { ProductContext } from '../_state/context'
 import { ItemsContext } from '../../../items/_state/context'
-import { ShopContext } from '../../../shop/_state/context'
 import { usePortal } from '../../../../common/hooks'
 import { hasLink } from '../../../../common/settings'
-import { findPortalElement, FilterHook } from '../../../../common/utils'
+import { findPortalElement, FilterHook, __t } from '../../../../common/utils'
 import { getVariantInventoryManagement } from '/Users/andrew/www/devil/devilbox-new/data/www/wpshopify-api'
+
 import to from 'await-to-js'
 import find from 'lodash/find'
+/** @jsx jsx */
+import { jsx, css } from '@emotion/core'
+
 const { Notice } = wp.components
 const { useContext, useState, useEffect } = wp.element
-const { __ } = wp.i18n
 
 function ProductBuyButton() {
+  console.log('<ProductBuyButton> :: Render Start')
+
   const [status, setStatus] = useState('idle')
-  const [lowSupply, setLowSupply] = useState(false)
+  const [quantityLeft, setQuantityLeft] = useState(false)
   const [variantInventory, setVariantInventory] = useState(false)
-  const [shopState] = useContext(ShopContext)
   const [itemsState] = useContext(ItemsContext)
   const [productState] = useContext(ProductContext)
-  console.log('<ProductBuyButton>')
+
+  const buyButtonWrapperCSS = css`
+    display: flex;
+    flex-direction: column;
+  `
 
   function getVariantIds(items) {
     if (!items.length) {
@@ -34,8 +42,6 @@ function ProductBuyButton() {
 
   function sanitizeInventoryResponse(response) {
     return response.data.map((variant) => {
-      console.log('((((((((((( variant', variant)
-
       return {
         id: btoa(variant.id),
         tracked: variant.inventoryItem.tracked,
@@ -44,8 +50,6 @@ function ProductBuyButton() {
       }
     })
   }
-  // const vIds =
-  // console.log('vIdsvIdsvIdsvIds', vIds)
 
   async function fetchVariantInventoryManagement() {
     const variantIs = getVariantIds(itemsState.payload)
@@ -56,28 +60,37 @@ function ProductBuyButton() {
     }
 
     setStatus('pending')
-    console.log('fetchVariantInventoryManagement')
+
     const [error, resp] = await to(getVariantInventoryManagement({ ids: variantIs }))
 
-    if (error) {
-      console.error('>>>>>>>>>>>>>>>>>  err', err)
+    if (error || resp.data.type === 'error') {
       setStatus('error')
+
+      if (error) {
+        console.error('WP Shopify error: ', error)
+      }
+
+      console.error('WP Shopify error: ', resp.data.message)
+
       return
     }
 
-    console.log('........... resp', resp)
-
     var variantInventoryResp = sanitizeInventoryResponse(resp)
-    console.log('HEY ', variantInventoryResp)
 
     setStatus('resolved')
     setVariantInventory(variantInventoryResp)
   }
 
-  function findTotalAvailableQuantity(variant) {
-    return variant.inventoryLevels.reduce((accumulator, currentValue) => {
+  function findAvailableQuantityByLocations(variant) {
+    if (variant.inventoryLevels.length === 1) {
+      return variant.inventoryLevels[0].node.available
+    }
+
+    const varianttwo = variant.inventoryLevels.reduce((accumulator, currentValue) => {
       return accumulator.node.available + currentValue.node.available
     })
+
+    return varianttwo
   }
 
   function findSelectedVariant(selectedVariantId) {
@@ -85,20 +98,32 @@ function ProductBuyButton() {
   }
 
   function onMouseEnter() {
-    console.log('onMouseEnter')
     fetchVariantInventoryManagement()
   }
 
+  function findInventoryFromVariantId(selectedVariantId, selectedVariant) {
+    if (!variantInventory) {
+      return false
+    }
+
+    let totalAvailableQuantity = findAvailableQuantityByLocations(selectedVariant)
+
+    if (totalAvailableQuantity > 0 && totalAvailableQuantity < 10) {
+      return totalAvailableQuantity
+    } else {
+      return false
+    }
+  }
+
   useEffect(() => {
-    console.log('<ProductBuyButton> productState.selectedVariant')
+    console.log('<ProductBuyButton> :: useEffect[productState.selectedVariant]')
+
     if (!productState.selectedVariant) {
       return
     }
 
     if (productState.selectedVariant.availableForSale) {
-      console.log('VARIANT AVAILABLE FOR SALE!!!!!', productState.selectedVariant)
       let selectedVariant = findSelectedVariant(productState.selectedVariant.id)
-      console.log('asofkassssssss', selectedVariant)
 
       if (!selectedVariant) {
         console.warn('WP Shopify warning: could not find selectd variant within <ProductBuyButton>')
@@ -106,16 +131,10 @@ function ProductBuyButton() {
       }
 
       if (!selectedVariant.tracked) {
-        console.log('VARIANT NOT TRACKED -- RETURNING')
         return
       }
 
-      console.log('selectedVariantselectedVariant', selectedVariant)
-
       if (selectedVariant.inventoryPolicy === 'CONTINUE') {
-        console.log(
-          'VARIANT Customers are allowed to place an order for the product variant when its out of stock. -- RETURNING'
-        )
         return
       }
 
@@ -124,57 +143,31 @@ function ProductBuyButton() {
         selectedVariant
       )
 
-      setLowSupply(totalAvailableQuantity)
-    } else {
-      console.log('VARIANT NOT AVAILABLE FOR SALE -- RETURNING')
-      return
-    }
+      if (!totalAvailableQuantity) {
+        return
+      }
 
-    console.log('totalAvailableQuantity', totalAvailableQuantity)
+      setQuantityLeft(totalAvailableQuantity)
+    }
   }, [productState.selectedVariant])
-
-  function findInventoryFromVariantId(selectedVariantId, selectedVariant) {
-    console.log('variantInventory', variantInventory)
-    console.log('selectedVariantId ', selectedVariantId)
-
-    if (!variantInventory) {
-      return false
-    }
-
-    let totalAvailableQuantity = findTotalAvailableQuantity(selectedVariant)
-
-    if (totalAvailableQuantity > 0 && totalAvailableQuantity < 10) {
-      console.log('PRODUCT VARIANT HAS UP TO 9 ITEMS LEFT')
-    } else {
-      console.log('PRODUCT VARIANT available quanaity not in range', totalAvailableQuantity)
-    }
-
-    return totalAvailableQuantity
-  }
-
-  function LowSupplyNotice({ quantityLeft }) {
-    return <div>Hurry! We only have {quantityLeft} left!</div>
-  }
 
   return usePortal(
     <div
+      css={buyButtonWrapperCSS}
       className='wps-buy-button-wrapper'
-      data-wps-is-ready={shopState.isCartReady ? '1' : '0'}
       data-wps-component-order='0'
       onMouseEnter={status === 'idle' ? onMouseEnter : null}>
-      <FilterHook
-        name='before.product.buyButton'
-        args={[productState]}
-        isReady={shopState.isShopReady}
-      />
+      <FilterHook name='before.product.buyButton' args={[productState]} />
 
       <ProductBuyButtonProvider productState={productState}>
         {productState.payload.availableForSale ? (
           <>
-            {!itemsState.payloadSettings.hideQuantity && !hasLink(itemsState, shopState) && (
+            {!itemsState.payloadSettings.hideQuantity && !hasLink(itemsState) && (
               <ProductQuantity />
             )}
-            {productState.hasManyVariants && !hasLink(itemsState, shopState) && <ProductOptions />}
+            {productState.hasManyVariants && !hasLink(itemsState) && (
+              <ProductOptions itemsState={itemsState} variants={productState.payload.variants} />
+            )}
 
             <ProductAddButton />
           </>
@@ -184,20 +177,15 @@ function ProductBuyButton() {
             hasHTML={true}
             args={[productState]}>
             <Notice status='warning' isDismissible={false}>
-              <FilterHook name='notice.unavailable.text'>
-                {__('Out of stock', wpshopify.misc.textdomain)}
-              </FilterHook>
+              <FilterHook name='notice.unavailable.text'>{__t('Out of stock')}</FilterHook>
             </Notice>
           </FilterHook>
         )}
+
+        {quantityLeft && <ProductBuyButtonTextNotice quantityLeft={quantityLeft} />}
       </ProductBuyButtonProvider>
 
-      {lowSupply && <LowSupplyNotice quantityLeft={lowSupply} />}
-      <FilterHook
-        name='after.product.buyButton'
-        args={[productState]}
-        isReady={shopState.isShopReady}
-      />
+      <FilterHook name='after.product.buyButton' args={[productState]} />
     </div>,
     findPortalElement(productState.element, itemsState.payloadSettings.dropzoneProductBuyButton)
   )

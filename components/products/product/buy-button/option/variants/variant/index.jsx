@@ -1,13 +1,15 @@
 import { ProductOptionContext } from '../../_state/context'
 import { ProductBuyButtonContext } from '../../../_state/context'
-import { createObj, isPairMatch, FilterHook } from '../../../../../../../common/utils'
+import { createObj, isPairMatch, FilterHook, __t } from '../../../../../../../common/utils'
 
 const { useContext } = wp.element
-const { __ } = wp.i18n
 
 function ProductVariant({ variant, children }) {
+  console.log('<ProductVariant> :: Render Start')
+
   const [productOptionState, productOptionDispatch] = useContext(ProductOptionContext)
   const [buyButtonState, buyButtonDispatch] = useContext(ProductBuyButtonContext)
+
   const selectedVariant = createObj(variant.name, variant.value)
   const isAvailableToSelect =
     isPairMatch(buyButtonState.availableVariants, selectedVariant) ||
@@ -59,9 +61,7 @@ function ProductVariantDropdownValue({ variant, onSelection, isAvailableToSelect
         itemProp='category'
         className='wps-product-variant wps-product-style wps-modal-close-trigger'
         onClick={onSelection}>
-        <FilterHook name='products.variant.title.text'>
-          {__(variant.value, wpshopify.misc.textdomain)}
-        </FilterHook>
+        <FilterHook name='products.variant.title.text'>{__t(variant.value)}</FilterHook>
       </li>
     )
   )

@@ -5,10 +5,10 @@ import {
 import { PaginationContext } from '../../_state/context'
 import { ItemsContext } from '../../../items/_state/context'
 import { usePortal } from '../../../../common/hooks'
+import { __t } from '../../../../common/utils'
 
 import to from 'await-to-js'
 const { useContext, useState } = wp.element
-const { __ } = wp.i18n
 
 function PaginationPageSize() {
   const [paginationState, paginationDispatch] = useContext(PaginationContext)
@@ -56,7 +56,7 @@ function PaginationPageSize() {
     if (shopifyError) {
       itemsDispatch({
         type: 'UPDATE_NOTICES',
-        payload: { type: 'error', message: __(shopifyError, wpshopify.misc.textdomain) },
+        payload: { type: 'error', message: __t(shopifyError) },
       })
       itemsDispatch({ type: 'SET_IS_LOADING', payload: false })
       return
@@ -83,7 +83,7 @@ function PaginationPageSize() {
 
   return usePortal(
     <>
-      {paginationState.payloadSettings.paginationPageSize && (
+      {itemsState.payloadSettings.paginationPageSize && (
         <div className='wps-component wps-component-sorting'>
           <label className='wps-sorting-heading wps-mr-2' htmlFor='wps-sorting'>
             Page size:
@@ -107,7 +107,7 @@ function PaginationPageSize() {
         </div>
       )}
     </>,
-    document.querySelector(paginationState.payloadSettings.dropzonePageSize)
+    document.querySelector(itemsState.payloadSettings.dropzonePageSize)
   )
 }
 

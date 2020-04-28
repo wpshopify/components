@@ -1,7 +1,5 @@
-import { CartContext } from '../../_state/context'
-import { ShopContext } from '../../../shop/_state/context'
-
 import find from 'lodash/find'
+import { CartContext } from '../../_state/context'
 import { calcLineItemTotal } from '../../../../common/products'
 import { useAnime, pulse } from '../../../../common/animations'
 import { containerFluidCSS, flexRowCSS } from '../../../../common/css'
@@ -25,16 +23,27 @@ function CartLineItemQuantity({
   variantId,
   lineItemQuantity,
   setLineItemQuantity,
-  isReady,
   isFirstRender,
   setLineItemTotal,
   lineItemTotalElement,
 }) {
-  const [shopState] = useContext(ShopContext)
   const [cartState, cartDispatch] = useContext(CartContext)
   const animePulse = useAnime(pulse)
 
   const maxQuantity = wp.hooks.applyFilters('cart.maxQuantity', false)
+
+  const inputStyles = css`
+    input::-webkit-outer-spin-button,
+    input::-webkit-inner-spin-button {
+      -webkit-appearance: none;
+      margin: 0;
+    }
+
+    /* Firefox */
+    input[type='number'] {
+      -moz-appearance: textfield;
+    }
+  `
 
   function changeQuantity(newQuantity) {
     let lineItemFound = getLineItemFromState(lineItem, cartState.checkoutCache.lineItems)
@@ -53,7 +62,7 @@ function CartLineItemQuantity({
         type: 'REMOVE_LINE_ITEM',
         payload: {
           lineItem: variantId.current,
-          checkoutId: shopState.checkoutId,
+          checkoutId: cartState.checkoutId,
         },
       })
     }
@@ -65,40 +74,44 @@ function CartLineItemQuantity({
           variantId: variantId.current,
           lineItemNewQuantity: newQuantity,
         },
-        checkoutId: shopState.checkoutId,
+        checkoutId: cartState.checkoutId,
       },
     })
   }
 
   function handleQuantityChange(e) {
-    if (maxQuantity && e.target.value >= maxQuantity) {
-      setLineItemQuantity(maxQuantity)
-    } else {
-      setLineItemQuantity(e.target.value)
+    if (e.target.value || e.target.value === 0) {
+      if (maxQuantity && e.target.value >= maxQuantity) {
+        setLineItemQuantity(maxQuantity)
+      } else {
+        setLineItemQuantity(e.target.value)
+      }
     }
   }
 
   function handleQuantityBlur(e) {
-    if (isRemovingLineItem(e.target.value)) {
+    if (e.target.value || e.target.value === 0) {
+      if (isRemovingLineItem(e.target.value)) {
+        cartDispatch({
+          type: 'REMOVE_LINE_ITEM',
+          payload: {
+            lineItem: variantId.current,
+            checkoutId: cartState.checkoutId,
+          },
+        })
+      }
+
       cartDispatch({
-        type: 'REMOVE_LINE_ITEM',
+        type: 'UPDATE_LINE_ITEM_QUANTITY',
         payload: {
-          lineItem: variantId.current,
-          checkoutId: shopState.checkoutId,
+          lineItem: {
+            variantId: variantId.current,
+            lineItemNewQuantity: Number(e.target.value),
+          },
+          checkoutId: cartState.checkoutId,
         },
       })
     }
-
-    cartDispatch({
-      type: 'UPDATE_LINE_ITEM_QUANTITY',
-      payload: {
-        lineItem: {
-          variantId: variantId.current,
-          lineItemNewQuantity: Number(e.target.value),
-        },
-        checkoutId: shopState.checkoutId,
-      },
-    })
   }
 
   /*
@@ -125,11 +138,8 @@ function CartLineItemQuantity({
 
   return (
     <div className='col-8'>
-      <div
-        className='wps-cart-lineitem-quantity-container'
-        data-wps-is-ready={isReady}
-        css={containerFluidCSS}>
-        <div css={flexRowCSS}>
+      <div className='wps-cart-lineitem-quantity-container' css={containerFluidCSS}>
+        <div css={[flexRowCSS, inputStyles]}>
           <button className='wps-quantity-decrement' type='button' onClick={handleDecrement}>
             <span className='wps-quantity-icon wps-quantity-decrement-icon' />
           </button>

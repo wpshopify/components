@@ -14,7 +14,6 @@ const { useEffect, useContext, useRef, useState } = wp.element
 
 function ProductImage({ image, isFeatured }) {
   const imageRef = useRef()
-  const [shopState] = useContext(ShopContext)
   const [itemsState] = useContext(ItemsContext)
   const [productState] = useContext(ProductContext)
   const [galleryState, galleryDispatch] = useContext(ProductGalleryContext)
@@ -22,14 +21,14 @@ function ProductImage({ image, isFeatured }) {
 
   function applyImageSizing() {
     if (isFeatured) {
-      if (shopState.settings.general.productsImagesSizingToggle) {
-        return doFeaturedSizing(image.src, shopState)
+      if (wpshopify.settings.general.productsImagesSizingToggle) {
+        return doFeaturedSizing(image.src)
       }
 
       return image.src
     } else {
-      if (shopState.settings.general.productsThumbnailImagesSizingToggle) {
-        return doThumbnailSizing(image.src, shopState)
+      if (wpshopify.settings.general.productsThumbnailImagesSizingToggle) {
+        return doThumbnailSizing(image.src)
       }
       return image.src
     }
@@ -49,19 +48,17 @@ function ProductImage({ image, isFeatured }) {
    the image tag into a resuable component. Probably something to do with ref forwarding.
 
    */
-  return hasLink(itemsState, shopState)
+  return hasLink(itemsState)
     ? productImageSrc && (
         <Link
           payload={productState.payload}
           type='products'
-          shop={shopState}
           linkTo={itemsState.payloadSettings.linkTo}
           target={itemsState.payloadSettings.linkTarget}>
           <Img
             imageRef={imageRef}
             image={image}
             productImageSrc={productImageSrc}
-            shopState={shopState}
             galleryState={galleryState}
             isFeatured={isFeatured}
           />
@@ -72,7 +69,6 @@ function ProductImage({ image, isFeatured }) {
           imageRef={imageRef}
           image={image}
           productImageSrc={productImageSrc}
-          shopState={shopState}
           galleryState={galleryState}
           isFeatured={isFeatured}
         />
@@ -105,7 +101,6 @@ function Img(props) {
       src={props.productImageSrc}
       className='wps-product-image lazyload'
       alt={props.image.altText}
-      data-wps-is-ready={props.shopState.isShopReady ? '1' : '0'}
       data-zoom={props.image.src}
     />
   )

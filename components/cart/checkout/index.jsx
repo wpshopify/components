@@ -1,22 +1,22 @@
-import { ShopContext } from '../../shop/_state/context'
 import { CartContext } from '../_state/context'
 import { Loader } from '../../loader'
 import { FilterHook } from '../../../common/utils'
 import { hasCustomCheckoutAttributes } from '../../../common/checkout'
+import { __t } from '../../../common/utils'
 
 import {
   replaceLineItems,
   updateCheckoutAttributes,
   addDiscount,
+  maybeFetchShop,
 } from '/Users/andrew/www/devil/devilbox-new/data/www/wpshopify-api'
 import isEmpty from 'lodash/isEmpty'
 import to from 'await-to-js'
 
-const { __ } = wp.i18n
 const { useContext, useRef } = wp.element
 
-function hasCustomDomain(shopState, checkout) {
-  if (!shopState.settings.general.enableCustomCheckoutDomain) {
+function hasCustomDomain(checkout) {
+  if (!wpshopify.settings.general.enableCustomCheckoutDomain) {
     return false
   }
 
@@ -28,17 +28,17 @@ function hasCustomDomain(shopState, checkout) {
   return true
 }
 
-function checkoutRedirectOnly(checkout, shopState) {
-  var target = checkoutWindowTarget(shopState)
+function checkoutRedirectOnly(checkout, primaryDomain) {
+  var target = checkoutWindowTarget()
 
-  if (hasCustomDomain(shopState, checkout)) {
-    customDomainRedirect(checkout, shopState, target)
+  if (hasCustomDomain(checkout)) {
+    customDomainRedirect(checkout, primaryDomain, target)
   }
 
   return managedDomainRedirect(checkout, target)
 }
 
-function hasDiscount(checkout, shopState) {
+function hasDiscount(checkout) {
   /* @if NODE_ENV='pro' */
   var hasCustomDiscount = wp.hooks.applyFilters('set.checkout.discount', false, checkout)
 
@@ -47,13 +47,13 @@ function hasDiscount(checkout, shopState) {
   }
   /* @endif */
 
-  return shopState.discountCode
+  return false
 }
 
-async function checkoutRedirect(checkout, shopState, componentDispatch) {
-  const discountCode = hasDiscount(checkout, shopState)
+async function checkoutRedirect(checkout, componentDispatch, primaryDomain) {
+  const discountCode = hasDiscount(checkout)
 
-  wp.hooks.doAction('before.checkout.redirect', checkout, shopState)
+  wp.hooks.doAction('before.checkout.redirect', checkout)
 
   if (discountCode) {
     var [err, resp] = await to(addDiscount(discountCode, checkout))
@@ -64,7 +64,7 @@ async function checkoutRedirect(checkout, shopState, componentDispatch) {
         type: 'UPDATE_NOTICES',
         payload: {
           type: 'error',
-          message: __(err, wpshopify.misc.textdomain),
+          message: __t(err),
         },
       })
 
@@ -72,12 +72,12 @@ async function checkoutRedirect(checkout, shopState, componentDispatch) {
       return
     }
 
-    checkoutRedirectOnly(resp, shopState)
+    checkoutRedirectOnly(resp, primaryDomain)
 
     return
   }
 
-  checkoutRedirectOnly(checkout, shopState)
+  checkoutRedirectOnly(checkout, primaryDomain)
 }
 
 function hasManagedDomain(url) {
@@ -99,7 +99,7 @@ function hasGaLoaded() {
 }
 
 function decorateCheckoutUrl(link) {
-  if (!window.gaplugins || !window.gaplugins.Linker) {
+  if (!window.gaplugins || !window.gaplugins.Linker || !window.ga.getAll) {
     return link
   }
 
@@ -114,27 +114,28 @@ function redirect(checkoutUrl, target) {
   window.open(checkoutUrl, target)
 }
 
-function customDomainRedirect(checkout, shopState, target) {
+function customDomainRedirect(checkout, primaryDomain, target) {
   if (hasGaLoaded()) {
-    var checkoutUrl = decorateCheckoutUrl(checkoutUrlWithCustomDomain(shopState, checkout.webUrl))
+    var checkoutUrl = decorateCheckoutUrl(
+      checkoutUrlWithCustomDomain(primaryDomain, checkout.webUrl)
+    )
   } else {
-    var checkoutUrl = checkoutUrlWithCustomDomain(shopState, checkout.webUrl)
+    var checkoutUrl = checkoutUrlWithCustomDomain(primaryDomain, checkout.webUrl)
   }
 
   redirect(checkoutUrl, target)
 }
 
-function checkoutUrlWithCustomDomain(shopState, webUrl) {
-  return shopState.info.primaryDomain.url + extractCheckoutURL(webUrl)
+function checkoutUrlWithCustomDomain(primaryDomain, webUrl) {
+  return primaryDomain.url + extractCheckoutURL(webUrl)
 }
 
-function checkoutWindowTarget(shopState) {
-  if (shopState.isMobile) {
-    // cartDispatch({ type: "SET_IS_CHECKING_OUT", payload: false })
+function checkoutWindowTarget() {
+  if (wpshopify.misc.isMobile) {
     return '_self'
   }
 
-  return shopState.settings.general.checkoutButtonTarget
+  return wpshopify.settings.general.checkoutButtonTarget
 }
 
 function extractCheckoutURL(webUrl) {
@@ -142,7 +143,6 @@ function extractCheckoutURL(webUrl) {
 }
 
 function CartCheckout() {
-  const [shopState] = useContext(ShopContext)
   const [cartState, cartDispatch] = useContext(CartContext)
   const checkoutButton = useRef()
 
@@ -158,18 +158,30 @@ function CartCheckout() {
       cartState
     )
 
+    const [shopInfoErrors, shopInfo] = await to(maybeFetchShop())
+
+    if (shopInfoErrors) {
+      cartDispatch({ type: 'SET_IS_CHECKING_OUT', payload: false })
+      return cartDispatch({
+        type: 'UPDATE_NOTICES',
+        payload: {
+          type: 'error',
+          message: __t(shopInfoErrors),
+        },
+      })
+    }
+
     const [checkoutWithLineitemsError, checkoutWithLineitems] = await to(
       replaceLineItems(lineItems)
     )
-    console.log('AWAIT TO :::::::: checkoutWithLineitemsError', checkoutWithLineitemsError)
-    console.log('AWAIT TO :::::::: checkoutWithLineitems', checkoutWithLineitems)
+
     if (checkoutWithLineitemsError) {
       cartDispatch({ type: 'SET_IS_CHECKING_OUT', payload: false })
       return cartDispatch({
         type: 'UPDATE_NOTICES',
         payload: {
           type: 'error',
-          message: __(checkoutWithLineitemsError, wpshopify.misc.textdomain),
+          message: __t(checkoutWithLineitemsError),
         },
       })
     }
@@ -178,15 +190,18 @@ function CartCheckout() {
       cartDispatch({ type: 'SET_IS_CHECKING_OUT', payload: false })
       return cartDispatch({
         type: 'UPDATE_NOTICES',
-        payload: { type: 'error', message: __('No line items exist ', wpshopify.misc.textdomain) },
+        payload: {
+          type: 'error',
+          message: __t('No line items exist '),
+        },
       })
     }
 
-    if (hasCustomCheckoutAttributes(shopState)) {
+    if (hasCustomCheckoutAttributes(cartState)) {
       const [checkoutWithAttrsError, checkoutWithAttrs] = await to(
         updateCheckoutAttributes({
-          customAttributes: shopState.customAttributes,
-          note: shopState.note,
+          customAttributes: cartState.customAttributes,
+          note: cartState.note,
         })
       )
 
@@ -196,20 +211,20 @@ function CartCheckout() {
           type: 'UPDATE_NOTICES',
           payload: {
             type: 'error',
-            message: __(checkoutWithAttrsError, wpshopify.misc.textdomain),
+            message: __t(checkoutWithAttrsError),
           },
         })
       }
 
-      return checkoutRedirect(checkoutWithAttrs, shopState, cartDispatch)
+      return checkoutRedirect(checkoutWithAttrs, cartDispatch, shopInfo.primaryDomain)
     }
 
-    checkoutRedirect(checkoutWithLineitems, shopState, cartDispatch)
+    checkoutRedirect(checkoutWithLineitems, cartDispatch, shopInfo.primaryDomain)
   }
 
   function buttonStyle() {
     return {
-      backgroundColor: shopState.settings.general.checkoutColor,
+      backgroundColor: wpshopify.settings.general.checkoutColor,
     }
   }
 
@@ -220,7 +235,6 @@ function CartCheckout() {
       <CartCheckoutButton
         onCheckout={onCheckout}
         buttonStyle={buttonStyle}
-        shopState={shopState}
         buttonRef={checkoutButton}
       />
 
@@ -229,7 +243,7 @@ function CartCheckout() {
   )
 }
 
-function CartCheckoutButton({ buttonStyle, onCheckout, shopState, buttonRef }) {
+function CartCheckoutButton({ buttonStyle, onCheckout, buttonRef }) {
   const [cartState] = useContext(CartContext)
 
   return (
@@ -237,15 +251,12 @@ function CartCheckoutButton({ buttonStyle, onCheckout, shopState, buttonRef }) {
       ref={buttonRef}
       className='wps-btn wps-btn-checkout'
       onClick={onCheckout}
-      data-wps-is-ready={shopState.isCartReady ? '1' : '0'}
       disabled={cartState.isCheckingOut || !cartState.termsAccepted || cartState.isCartEmpty}
       style={buttonStyle()}>
       {cartState.isCheckingOut ? (
         <Loader isLoading={cartState.isCheckingOut} />
       ) : (
-        <FilterHook name='cart.checkout.text'>
-          {__(cartState.checkoutText, wpshopify.misc.textdomain)}
-        </FilterHook>
+        <FilterHook name='cart.checkout.text'>{__t(cartState.checkoutText)}</FilterHook>
       )}
     </button>
   )

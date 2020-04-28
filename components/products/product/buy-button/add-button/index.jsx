@@ -1,10 +1,9 @@
 import { ProductBuyButtonContext } from '../_state/context'
-import { ShopContext } from '../../../../shop/_state/context'
 import { Loader } from '../../../../loader'
 import { ItemsContext } from '../../../../items/_state/context'
 import { ProductContext } from '../../_state/context'
 import { useAnime, pulse } from '../../../../../common/animations'
-import { FilterHook } from '../../../../../common/utils'
+import { FilterHook, __t } from '../../../../../common/utils'
 import { hasLink } from '../../../../../common/settings'
 import { Link } from '../../../../link'
 
@@ -19,7 +18,6 @@ import to from 'await-to-js'
 
 const { Notice } = wp.components
 const { useContext, useRef, useEffect, useState } = wp.element
-const { __ } = wp.i18n
 
 function ProductAddButton() {
   const button = useRef()
@@ -31,10 +29,9 @@ function ProductAddButton() {
   const [itemsState] = useContext(ItemsContext)
   const [productState, productDispatch] = useContext(ProductContext)
   const [buyButtonState, buyButtonDispatch] = useContext(ProductBuyButtonContext)
-  const [shopState, shopDispatch] = useContext(ShopContext)
 
   const isDirectCheckout =
-    itemsState.payloadSettings.directCheckout || shopState.settings.general.directCheckout
+    itemsState.payloadSettings.directCheckout || wpshopify.settings.general.directCheckout
 
   const buttonStyle = {
     backgroundColor: itemsState.payloadSettings.addToCartButtonColor,
@@ -49,8 +46,10 @@ function ProductAddButton() {
   }
 
   function buildAddToCartParams(lineItems, variants) {
+    var checkoutId = localStorage.getItem('wps-last-checkout-id')
+
     return {
-      checkoutId: shopState.checkoutId,
+      checkoutId: checkoutId,
       lineItems: lineItems,
       variants: variants,
     }
@@ -133,10 +132,8 @@ function ProductAddButton() {
 
       buyButtonDispatch({ type: 'SET_MISSING_SELECTIONS', payload: false })
 
-      checkoutRedirect(respNewCheckout, shopState, buyButtonDispatch)
+      checkoutRedirect(respNewCheckout, buyButtonDispatch)
     } else {
-      console.log('ADDING PRODUCTS ............................')
-
       buyButtonDispatch({
         type: 'SET_ALL_SELECTED_OPTIONS',
         payload: false,
@@ -154,18 +151,14 @@ function ProductAddButton() {
   }
 
   useEffect(() => {
-    if (!shopState.isShopReady) {
-      return
-    }
-
     if (isFirstRender.current) {
       isFirstRender.current = false
       return
     }
 
     if (buyButtonState.allOptionsSelected) {
-      var variant = findVariantFromSelections()
-      console.log('::::::::::::: variant', variant)
+      // var variant = findVariantFromSelections()
+
       animePulse(button.current)
     }
   }, [buyButtonState.allOptionsSelected])
@@ -194,7 +187,7 @@ function ProductAddButton() {
       return 'Checkout'
     }
 
-    if (hasLink(itemsState, shopState)) {
+    if (hasLink(itemsState)) {
       return 'View product'
     }
 
@@ -218,8 +211,7 @@ function ProductAddButton() {
         itemScope
         itemType='https://schema.org/BuyAction'
         className='wps-btn wps-btn-secondary wps-add-to-cart'
-        title={__(buyButtonState.product.title, wpshopify.misc.textdomain)}
-        data-wps-is-ready={shopState.isShopReady ? '1' : '0'}
+        title={__t(buyButtonState.product.title)}
         data-wps-is-direct-checkout={isDirectCheckout ? '1' : '0'}
         onClick={!hasLink && handleClick}
         style={buttonStyle}
@@ -227,9 +219,7 @@ function ProductAddButton() {
         {isCheckingOut ? (
           <Loader />
         ) : (
-          <FilterHook name='product.addToCart.text'>
-            {__(getButtonText(), wpshopify.misc.textdomain)}
-          </FilterHook>
+          <FilterHook name='product.addToCart.text'>{__t(getButtonText())}</FilterHook>
         )}
       </button>
     )
@@ -241,9 +231,8 @@ function ProductAddButton() {
       data-wps-is-component-wrapper
       data-wps-product-id={buyButtonState.product.id}
       data-wps-post-id=''>
-      {hasLink(itemsState, shopState) ? (
+      {hasLink(itemsState) ? (
         <Link
-          shop={shopState}
           type='products'
           payload={productState.payload}
           linkTo={itemsState.payloadSettings.linkTo}
@@ -256,9 +245,7 @@ function ProductAddButton() {
 
       {hasNotice && (
         <Notice status={hasNotice.type} isDismissible={false}>
-          <FilterHook name='notice.product.addToCart.text'>
-            {__(hasNotice.message, wpshopify.misc.textdomain)}
-          </FilterHook>
+          <FilterHook name='notice.product.addToCart.text'>{__t(hasNotice.message)}</FilterHook>
         </Notice>
       )}
     </div>

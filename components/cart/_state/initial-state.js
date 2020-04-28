@@ -1,4 +1,4 @@
-const { __ } = wp.i18n
+import { __t } from '../../../common/utils'
 
 function CartInitialState(options) {
   return {
@@ -9,6 +9,7 @@ function CartInitialState(options) {
     isCartEmpty: true,
     isCartLoaded: false,
     isCartInteractive: false,
+    isCartReady: false,
     buttons: options,
     notices: [],
     checkoutCache: {
@@ -16,17 +17,12 @@ function CartInitialState(options) {
       variants: [],
       total: 0.0,
     },
+    shopInfo: false,
     customAttributes: [],
     note: false,
     totalLineItems: 0,
-    title: wp.hooks.applyFilters(
-      'default.cart.title',
-      __('Shopping cart', wpshopify.misc.textdomain)
-    ),
-    checkoutText: wp.hooks.applyFilters(
-      'default.cart.checkout.text',
-      __('Begin checkout', wpshopify.misc.textdomain)
-    ),
+    title: wp.hooks.applyFilters('default.cart.title', __t('Shopping cart')),
+    checkoutText: wp.hooks.applyFilters('default.cart.checkout.text', __t('Begin checkout')),
   }
 }
 

@@ -1,6 +1,5 @@
 import { ProductContext } from '../../_state/context'
 import { ItemsContext } from '../../../../items/_state/context'
-import { ShopContext } from '../../../../shop/_state/context'
 import { ProductGalleryContext } from '../gallery/_state/context'
 import { ProductImage } from '../image'
 import isNull from 'lodash/isNull'
@@ -22,7 +21,6 @@ function ProductFeaturedImage() {
   const paneElement = useRef()
   const isFirstRender = useRef(true)
 
-  const [shopState] = useContext(ShopContext)
   const [itemsState] = useContext(ItemsContext)
   const [productState] = useContext(ProductContext)
   const [galleryState] = useContext(ProductGalleryContext)
@@ -37,7 +35,7 @@ function ProductFeaturedImage() {
 
   function showZoom() {
     if (isNull(itemsState.payloadSettings.showZoom)) {
-      return shopState.settings.general.productsImagesShowZoom
+      return wpshopify.settings.general.productsImagesShowZoom
     }
 
     return itemsState.payloadSettings.showZoom

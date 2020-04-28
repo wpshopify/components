@@ -3,13 +3,15 @@ import { ProductWrapper } from './wrapper'
 const { Suspense } = wp.element
 const { Spinner } = wp.components
 
-function Product({ payload, isFirstItem }) {
+function Product({ payload }) {
+  console.log('<Product> :: Render Start')
+
   return (
-    <Suspense fallback={<Spinner />}>
-      <ProductProvider payload={payload}>
-        <ProductWrapper isFirstItem={isFirstItem} />
-      </ProductProvider>
-    </Suspense>
+    <ProductProvider payload={payload}>
+      <Suspense fallback={<Spinner />}>
+        <ProductWrapper />
+      </Suspense>
+    </ProductProvider>
   )
 }
 

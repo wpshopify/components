@@ -8,7 +8,6 @@ import isArray from 'lodash/isArray'
 import isMatch from 'lodash/isMatch'
 import md5 from 'js-md5'
 import { format } from 'date-fns'
-import { textDomain } from '../globals'
 
 import { decodePayloadSettings } from '/Users/andrew/www/devil/devilbox-new/data/www/wpshopify-api'
 
@@ -115,7 +114,7 @@ function getHashFromQueryParams(queryParams) {
   return md5(createStringFromQueryParams(queryParams))
 }
 
-function FilterHook({ name, children, hasHTML = false, isReady = false, args = [] }) {
+function FilterHook({ name, children, hasHTML = false, args = [] }) {
   if (!wp.hooks.hasFilter(name, wpshopify.misc.textdomain)) {
     return <>{children}</>
   }
@@ -123,7 +122,6 @@ function FilterHook({ name, children, hasHTML = false, isReady = false, args = [
   if (hasHTML) {
     return (
       <div
-        data-wps-is-ready={isReady ? isReady : true}
         dangerouslySetInnerHTML={{
           __html: wp.hooks.applyFilters(name, false, ...args),
         }}
@@ -138,8 +136,8 @@ function prettyDate(rawDate, formatting) {
   return format(new Date(rawDate), formatting)
 }
 
-function _t(string) {
-  return __(string, textDomain)
+function __t(string) {
+  return __(string, wpshopify.misc.textdomain)
 }
 
 function toCamel(s) {
@@ -182,7 +180,7 @@ export {
   getHashFromQueryParams,
   FilterHook,
   prettyDate,
-  _t,
+  __t,
   underscoreToCamel,
   decodeComponentPayloadSettings,
   isPairMatch,

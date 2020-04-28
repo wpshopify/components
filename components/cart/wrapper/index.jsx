@@ -1,14 +1,17 @@
 import { CartContext } from '../_state/context'
-import { ShopContext } from '../../shop/_state/context'
 import { useAction, useCartToggle } from '../../../common/hooks'
 import { findTotalCartQuantities } from '../../../common/cart'
+import { __t } from '../../../common/utils'
 import { useAnime, slideOutCart, slideInCart } from '../../../common/animations'
 import isEmpty from 'lodash/isEmpty'
-import { getProductsFromLineItems } from '/Users/andrew/www/devil/devilbox-new/data/www/wpshopify-api'
+import {
+  getProductsFromLineItems,
+  buildInstances,
+} from '/Users/andrew/www/devil/devilbox-new/data/www/wpshopify-api'
+import { CartButtons } from '../buttons'
 import to from 'await-to-js'
 
-const { useContext, useRef, useEffect, useState } = wp.element
-const { __ } = wp.i18n
+const { useContext, useRef, useEffect } = wp.element
 const { Spinner } = wp.components
 const { Suspense } = wp.element
 
@@ -17,16 +20,9 @@ const CartContents = wp.element.lazy(() =>
   import(/* webpackChunkName: 'CartContents' */ '../contents')
 )
 const CartFooter = wp.element.lazy(() => import(/* webpackChunkName: 'CartFooter' */ '../footer'))
-// const CartButtons = wp.element.lazy(() =>
-//   import(/* webpackChunkName: 'CartButtons' */ '../buttons')
-// )
-
-import { CartButtons } from '../buttons'
 
 function CartWrapper() {
-  const [isReady, setIsReady] = useState(false)
   const [cartState, cartDispatch] = useContext(CartContext)
-  const [shopState, shopDispatch] = useContext(ShopContext)
   const cartElement = useRef()
   const updateCheckoutAttributes = useAction('update.checkout.attributes')
   const setCheckoutAttributes = useAction('set.checkout.attributes')
@@ -36,29 +32,97 @@ function CartWrapper() {
   const animeSlideOutRight = useAnime(slideOutCart)
   const isCartOpen = useCartToggle(cartElement)
 
-  async function cartBootstrap() {
-    let [productsError, products] = await to(getProductsFromLineItems())
-    console.log('cartBootstrap :: products', products)
+  useEffect(() => {
+    cartBootstrap()
+  }, [])
 
-    if (productsError) {
-      shopDispatch({
+  async function cartBootstrap() {
+    var [error, instances] = await to(buildInstances())
+    console.log('cartBootstrap', instances)
+
+    if (error) {
+      cartDispatch({
         type: 'UPDATE_NOTICES',
         payload: {
           type: 'error',
-          message: __(productsError, wpshopify.misc.textdomain),
+          message: __t(error),
+        },
+      })
+
+      return setShopAndCheckoutId()
+    }
+
+    // If no checkout was found ...
+    if (!instances || !instances.checkout) {
+      cartDispatch({
+        type: 'UPDATE_NOTICES',
+        payload: {
+          type: 'error',
+          message: __t('No checkout instance available'),
+        },
+      })
+
+      return setShopAndCheckoutId()
+    }
+
+    // If checkout was completed ...
+    if (instances.checkout.completedAt) {
+      var [buildInstancesError, newInstances] = await to(buildInstances(true))
+
+      if (buildInstancesError) {
+        cartDispatch({
+          type: 'UPDATE_NOTICES',
+          payload: {
+            type: 'error',
+            message: __t(buildInstancesError),
+          },
+        })
+
+        return setShopAndCheckoutId()
+      }
+
+      if (!newInstances) {
+        cartDispatch({
+          type: 'UPDATE_NOTICES',
+          payload: {
+            type: 'error',
+            message: __t('No store checkout or client instances were found.'),
+          },
+        })
+
+        return setShopAndCheckoutId()
+      }
+
+      // Responsible for creating the new checkout instance
+      instances = newInstances
+    }
+
+    cartDispatch({
+      type: 'SET_CHECKOUT_ID',
+      payload: instances.checkout && instances.checkout.id ? instances.checkout.id : false,
+    })
+
+    let [productsError, products] = await to(getProductsFromLineItems())
+
+    if (productsError) {
+      cartDispatch({
+        type: 'UPDATE_NOTICES',
+        payload: {
+          type: 'error',
+          message: __t(productsError),
         },
       })
     } else {
       cartDispatch({
         type: 'SET_CHECKOUT_CACHE',
-        payload: { checkoutId: shopState.checkoutId },
+        payload: { checkoutId: instances.checkout.id },
       })
 
       cartDispatch({
         type: 'SET_LINE_ITEMS_AND_VARIANTS',
         payload: {
           lineItems: { products: products },
-          checkoutId: shopState.checkoutId,
+          checkoutId: instances.checkout.id,
         },
       })
 
@@ -69,8 +133,7 @@ function CartWrapper() {
       }
     }
 
-    shopDispatch({ type: 'IS_CART_READY', payload: true })
-    setIsReady(true)
+    cartDispatch({ type: 'IS_CART_READY', payload: true })
   }
 
   function openCart() {
@@ -85,49 +148,41 @@ function CartWrapper() {
   }
 
   useEffect(() => {
-    if (!isReady) {
+    if (!cartState.isCartReady) {
       wp.hooks.doAction('before.cart.ready', cartState)
       return
     }
 
     wp.hooks.doAction('after.cart.ready', cartState)
-  }, [isReady])
-
-  useEffect(() => {
-    if (!shopState.checkoutId) {
-      return
-    }
-
-    cartBootstrap()
-  }, [shopState.checkoutId])
+  }, [cartState.isCartReady])
 
   useEffect(() => {
     cartDispatch({
       type: 'SET_TOTAL_LINE_ITEMS',
       payload: findTotalCartQuantities(cartState.checkoutCache.lineItems),
     })
-  }, [shopState.isCartReady, cartState.checkoutCache.lineItems])
+  }, [cartState.checkoutCache.lineItems])
 
   useEffect(() => {
     wp.hooks.doAction('on.checkout.update', cartState)
   }, [cartState.totalLineItems])
 
   useEffect(() => {
-    shopDispatch({
+    cartDispatch({
       type: 'UPDATE_CHECKOUT_ATTRIBUTES',
       payload: updateCheckoutAttributes,
     })
   }, [updateCheckoutAttributes])
 
   useEffect(() => {
-    shopDispatch({
+    cartDispatch({
       type: 'SET_CHECKOUT_ATTRIBUTES',
       payload: setCheckoutAttributes,
     })
   }, [setCheckoutAttributes])
 
   useEffect(() => {
-    wpshopify.misc.isPro && shopDispatch({ type: 'SET_CHECKOUT_NOTE', payload: setCheckoutNotes })
+    wpshopify.misc.isPro && cartDispatch({ type: 'SET_CHECKOUT_NOTE', payload: setCheckoutNotes })
   }, [setCheckoutNotes])
 
   useEffect(() => {
@@ -153,8 +208,7 @@ function CartWrapper() {
       type: 'UPDATE_LINE_ITEMS_AND_VARIANTS',
       payload: lineItemsAdded,
     })
-    //   cartDispatch({ type: 'TOGGLE_CART', payload: true })
-    console.log('............. lineItemsAdded cartState ', cartState)
+
     cartDispatch({ type: 'SET_IS_CART_EMPTY', payload: false })
   }, [lineItemsAdded])
 
@@ -162,11 +216,10 @@ function CartWrapper() {
     <section ref={cartElement} className='wps-cart'>
       <CartButtons buttons={cartState.buttons} />
       <Suspense fallback={<Spinner />}>
-        {shopState.settings.general.cartLoaded && cartState.isCartLoaded && (
+        {wpshopify.settings.general.cartLoaded && cartState.isCartLoaded && (
           <>
-            <CartHeader />
+            <CartHeader cartState={cartState} cartDispatch={cartDispatch} />
             <CartContents
-              isCartReady={shopState.isCartEmpty}
               isCartEmpty={cartState.isCartEmpty}
               checkoutCache={cartState.checkoutCache}
             />

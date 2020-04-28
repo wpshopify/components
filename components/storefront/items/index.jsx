@@ -1,6 +1,5 @@
 import { usePortal } from '../../../common/hooks'
 import { ItemsContext } from '../../items/_state/context'
-import { ShopContext } from '../../shop/_state/context'
 import { StorefrontContext } from '../_state/context'
 import { Products } from '../../products'
 import { animeStaggerFadeIn } from '../../../common/animations'
@@ -8,12 +7,11 @@ import { animeStaggerFadeIn } from '../../../common/animations'
 const { useEffect, useContext } = wp.element
 
 function StorefrontItems() {
-  const [shopState] = useContext(ShopContext)
   const [itemsState] = useContext(ItemsContext)
   const [storefrontState] = useContext(StorefrontContext)
 
   useEffect(
-    function() {
+    function () {
       if (itemsState.isLoading) {
         return
       }
@@ -24,34 +22,38 @@ function StorefrontItems() {
         )
       )
     },
-    [shopState.isShopReady, itemsState.isLoading]
+    [itemsState.isLoading]
   )
 
   function buildOptions() {
+    console.log('itemsState >>>>>>', itemsState)
+
     return {
       payload: itemsState.payload,
-      products: itemsState.payload.map(product => {
-        return {
-          product: product,
-          element: false,
-          gid: false,
-          excludes: false,
-          renderFromServer: false,
-          selectedVariant: false,
-          payloadSettings: {
-            pagination: true
+      products:
+        itemsState.payload &&
+        itemsState.payload.map((product) => {
+          return {
+            product: product,
+            element: false,
+            gid: false,
+            excludes: false,
+            renderFromServer: false,
+            selectedVariant: false,
+            payloadSettings: {
+              pagination: true,
+            },
           }
-        }
-      }),
+        }),
       dataType: 'products',
       originalParams: {
         type: 'products',
         queryParams: itemsState.queryParams,
-        connectionParams: false
+        connectionParams: false,
       },
       type: 'storefront',
       payloadSettings: itemsState.payloadSettings,
-      noResultsText: itemsState.payloadSettings.noResultsText
+      noResultsText: itemsState.payloadSettings.noResultsText,
     }
   }
 

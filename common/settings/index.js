@@ -46,7 +46,7 @@ function onSinglePage(itemsState) {
   return itemsState.payloadSettings.isSingular
 }
 
-function hasLink(itemsState, shop) {
+function hasLink(itemsState) {
   if (itemsState.payloadSettings.linkTo === 'none') {
     return false
   }
@@ -55,7 +55,7 @@ function hasLink(itemsState, shop) {
     return true
   }
 
-  if (liteSyncAndWordPressLink(itemsState, shop)) {
+  if (liteSyncAndWordPressLink(itemsState)) {
     return false
   }
 
@@ -69,7 +69,14 @@ function shopHasInfo(shop) {
 function getShopifySingleLink(payload, shopInfo, type) {
   if (!payload.onlineStoreUrl) {
     if (shopInfo) {
-      return shopInfo.primaryDomain.url + '/' + type + '/' + payload.handle
+      return (
+        'https://' +
+        wpshopify.settings.connection.storefront.domain +
+        '/' +
+        type +
+        '/' +
+        payload.handle
+      )
     } else {
       return '#!'
     }
@@ -97,14 +104,14 @@ function getWordPressSingleLink(payload) {
   return urlBase + '/' + encodeURI(itemHandle)
 }
 
-function getItemLink(payload, shopInfo, type, linkTo) {
+function getItemLink(payload, type, linkTo) {
   if (linkTo === 'none') {
     return false
   }
 
   if (linkTo === 'shopify') {
     // Manual links
-    return getShopifySingleLink(payload, shopInfo, type)
+    return getShopifySingleLink(payload, type)
   }
 
   if (linkTo === 'wordpress') {
@@ -112,8 +119,8 @@ function getItemLink(payload, shopInfo, type, linkTo) {
   }
 }
 
-function liteSyncAndWordPressLink(itemsState, shop) {
-  return shop.settings.isLiteSync && itemsState.payloadSettings.linkTo == 'wordpress'
+function liteSyncAndWordPressLink(itemsState) {
+  return wpshopify.settings.isLiteSync && itemsState.payloadSettings.linkTo == 'wordpress'
 }
 
 export {
@@ -127,5 +134,5 @@ export {
   productsLinkTo,
   getItemLink,
   shopHasInfo,
-  isLiteSync
+  isLiteSync,
 }

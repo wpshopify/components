@@ -1,12 +1,11 @@
-import { ShopContext } from '../../shop/_state/context'
+import { CartContext } from '../_state/context'
 import { useDebounce } from 'use-debounce'
-import { FilterHook } from '../../../common/utils'
+import { FilterHook, __t } from '../../../common/utils'
 
 const { useContext, useState, useRef, useEffect } = wp.element
-const { __ } = wp.i18n
 
 function CartNote() {
-  const [shopState, shopDispatch] = useContext(ShopContext)
+  const [cartState, cartDispatch] = useContext(CartContext)
   const [noteValue, setNoteValue] = useState(() => '')
   const [debouncedValue] = useDebounce(noteValue, 250)
   const isFirstRender = useRef(true)
@@ -21,26 +20,20 @@ function CartNote() {
       return
     }
 
-    wpshopify.misc.isPro && shopDispatch({ type: 'SET_CHECKOUT_NOTE', payload: debouncedValue })
+    wpshopify.misc.isPro && cartDispatch({ type: 'SET_CHECKOUT_NOTE', payload: debouncedValue })
   }, [debouncedValue])
 
   return (
     <section className='wps-cart-notes'>
       <label
-        value={
-          <FilterHook name='cart.note.label'>
-            {__('Checkout notes', wpshopify.misc.textdomain)}
-          </FilterHook>
-        }
+        value={<FilterHook name='cart.note.label'>{__t('Checkout notes')}</FilterHook>}
         htmlFor='wps-input-notes'>
-        <FilterHook name='default.cart.notes.label'>
-          {__('Notes:', wpshopify.misc.textdomain)}
-        </FilterHook>
+        <FilterHook name='default.cart.notes.label'>{__t('Notes:')}</FilterHook>
       </label>
       <textarea
         placeholder={
           <FilterHook name='cart.note.placeholder'>
-            {__(shopState.settings.general.cartNotesPlaceholder, wpshopify.misc.textdomain)}
+            {__t(wpshopify.settings.general.cartNotesPlaceholder)}
           </FilterHook>
         }
         id='wps-input-notes'

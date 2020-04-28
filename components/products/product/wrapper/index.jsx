@@ -22,7 +22,9 @@ const ProductImages = wp.element.lazy(() =>
   import(/* webpackChunkName: 'ProductImages' */ '../images')
 )
 
-function ProductWrapper({ isFirstItem }) {
+function ProductWrapper() {
+  console.log('<ProductWrapper> :: Render Start')
+
   const [itemsState] = useContext(ItemsContext)
 
   const width =
@@ -38,7 +40,7 @@ function ProductWrapper({ isFirstItem }) {
   `
 
   return (
-    <div css={styles} className={'wps-item'} data-is-first-item={isFirstItem}>
+    <div css={styles} className={'wps-item'}>
       {isShowingComponent(itemsState, 'images') && <ProductImages />}
       {isShowingComponent(itemsState, 'title') && <ProductTitle />}
       {isShowingComponent(itemsState, 'pricing') && <ProductPricing />}

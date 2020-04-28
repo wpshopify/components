@@ -5,11 +5,10 @@ function Link({
   payload,
   classNames = '',
   target,
-  shop,
   children,
   linkTo,
   manualLink,
-  disableLink
+  disableLink,
 }) {
   const className = 'wps-' + type + '-link' + ' ' + classNames
 
@@ -24,13 +23,13 @@ function Link({
 
   return (
     <>
-      {disableLink || linkTo === 'none' || liteSyncAndWordPressLink(linkTo, shop) ? (
+      {disableLink || linkTo === 'none' || liteSyncAndWordPressLink(linkTo) ? (
         children
       ) : (
         <a
-          href={manualLink ? manualLink : getItemLink(payload, shop, type, linkTo)}
+          href={manualLink ? manualLink : getItemLink(payload, type, linkTo)}
           className={className}
-          target={getTarget(target)}>
+          target={wp.hooks.applyFilters('misc.link.target', getTarget(target), type, payload)}>
           {children}
         </a>
       )}

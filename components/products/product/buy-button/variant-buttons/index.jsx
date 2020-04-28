@@ -3,6 +3,7 @@ const ProductVariantButtonGroups = wp.element.lazy(() =>
 )
 
 function ProductVariantButtons({ options }) {
+  console.log('<ProductVariantButtons> :: Render Start')
   return <ProductVariantButtonGroups options={options} />
 }
 

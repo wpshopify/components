@@ -6,15 +6,15 @@ import { containerFluidCSS } from '../../../common/css'
 /** @jsx jsx */
 import { jsx, css } from '@emotion/core'
 
-function CartHeader() {
+function CartHeader({ cartState, cartDispatch }) {
   const isShowingTitle = useAction('show.cart.title', true)
   const isShowingClose = useAction('show.cart.close', true)
 
   return (
     <section className='wps-cart-header' css={containerFluidCSS}>
       <div className='row'>
-        {isShowingTitle && <CartTitle />}
-        {isShowingClose && <CartClose />}
+        {isShowingTitle && <CartTitle cartState={cartState} />}
+        {isShowingClose && <CartClose cartDispatch={cartDispatch} />}
       </div>
     </section>
   )

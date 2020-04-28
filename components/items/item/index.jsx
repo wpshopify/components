@@ -4,11 +4,15 @@ import {
   useIsMounted,
   useIsFirstRender,
 } from '/Users/andrew/www/devil/devilbox-new/data/www/wpshopify-hooks'
-const { useContext, useRef, useEffect } = wp.element
+
+import { __t } from '../../../common/utils'
 import to from 'await-to-js'
-const { __ } = wp.i18n
+
+const { useContext, useEffect } = wp.element
 
 const Item = wp.element.memo(function ({ children, limit = false, infiniteScroll = false }) {
+  console.log('<Item> :: Render Start')
+
   const [itemsState, itemsDispatch] = useContext(ItemsContext)
   const isMounted = useIsMounted()
   const isFirstRender = useIsFirstRender()
@@ -36,17 +40,12 @@ const Item = wp.element.memo(function ({ children, limit = false, infiniteScroll
     const [error, newItems] = await to(fetchNewItems(itemsState))
 
     if (error) {
-      console.log('....... error', error)
-      console.log('isMountedisMountedisMounted')
-
       if (isMounted.current) {
-        console.log('111111111111111111111111')
-
         itemsDispatch({
           type: 'UPDATE_NOTICES',
           payload: {
             type: 'error',
-            message: __(error, wpshopify.misc.textdomain),
+            message: __t(error),
           },
         })
 
@@ -56,38 +55,48 @@ const Item = wp.element.memo(function ({ children, limit = false, infiniteScroll
       return
     }
 
-    console.log('00000000000000000000000000000000')
-
     itemsDispatch({ type: 'SET_IS_LOADING', payload: false })
     updatePayloadState(newItems)
   }
 
+  /*
+  
+  These deps require a new fetch when changed.
+  
+  */
+
   useEffect(() => {
+    console.log('<Item> :: useEffect[itemsState.queryParams] top')
     if (itemsState.hasParentPayload) {
       return
     }
 
-    if (isMounted) {
-      wp.hooks.doAction('before.payload.update', itemsState)
+    wp.hooks.doAction('before.payload.update', itemsState)
 
-      if (itemsState.beforeLoading) {
-        itemsState.beforeLoading()
-      }
-
-      itemsDispatch({
-        type: 'SET_IS_LOADING',
-        payload: true,
-      })
-      itemsDispatch({
-        type: 'UPDATE_NOTICES',
-        payload: [],
-      })
-      console.log('444444444444444444444444444444444')
-      getNewItems(itemsState)
+    if (itemsState.beforeLoading) {
+      itemsState.beforeLoading()
     }
+
+    console.log('<Item> :: useEffect[itemsState.queryParams] bottom')
+
+    itemsDispatch({
+      type: 'SET_IS_LOADING',
+      payload: true,
+    })
+    itemsDispatch({
+      type: 'UPDATE_NOTICES',
+      payload: [],
+    })
+    getNewItems(itemsState)
   }, [itemsState.queryParams])
 
+  /*
+  
+  These deps don't require a new fetch, but still require a new render when changed.
+  
+  */
   useEffect(() => {
+    console.log('<Item> :: useEffect[limit, infiniteScroll] top')
     if (itemsState.isLoading || isFirstRender.current) {
       return
     }
@@ -96,7 +105,7 @@ const Item = wp.element.memo(function ({ children, limit = false, infiniteScroll
       return
     }
 
-    console.log('<Item> :: useEffect[limit, infiniteScroll]', itemsState.payload)
+    console.log('<Item> :: useEffect[limit, infiniteScroll] bottom')
 
     itemsDispatch({
       type: 'UPDATE_PAYLOAD',

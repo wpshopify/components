@@ -1,14 +1,11 @@
 import { Product } from './product'
 import { Pagination } from '../pagination'
-import { ShopContext } from '../shop/_state/context'
-
-const { useContext } = wp.element
 
 function Products() {
-  const [shopState] = useContext(ShopContext)
+  console.log('<Products> :: Render Start')
 
   return (
-    <Pagination shopSettings={shopState.settings}>
+    <Pagination>
       <Product />
     </Pagination>
   )

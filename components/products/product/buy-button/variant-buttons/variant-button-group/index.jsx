@@ -11,10 +11,12 @@ const ProductVariantButtonGroupWrapper = wp.element.lazy(() =>
 )
 
 function ProductVariantButtonGroup({ option }) {
+  console.log('<ProductVariantButtonGroup> :: Render Start')
+
   return option ? (
     <ProductOptionProvider
       options={{
-        option: option
+        option: option,
       }}>
       <ProductOptionWrapper>
         <ProductVariantButtonGroupWrapper option={option} />

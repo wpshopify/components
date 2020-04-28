@@ -6,6 +6,8 @@ const ProductVariantButtonValue = wp.element.lazy(() =>
 )
 
 function ProductVariants({ option }) {
+  console.log('<ProductVariants> :: Render Start')
+
   return option.values.map((variant) => (
     <ProductVariant variant={variant} key={uuidv4()}>
       <ProductVariantButtonValue />

@@ -5,7 +5,7 @@ import { findPortalElement } from '../../../../common/utils'
 
 const { useContext } = wp.element
 
-function CollectionDescription({ isShopReady }) {
+function CollectionDescription() {
   const [collectionState] = useContext(CollectionContext)
   const [itemsState] = useContext(ItemsContext)
 
@@ -13,7 +13,6 @@ function CollectionDescription({ isShopReady }) {
     <div
       itemProp='description'
       className='wps-collections-description'
-      data-wps-is-ready={isShopReady ? '1' : '0'}
       dangerouslySetInnerHTML={{ __html: collectionState.payload.descriptionHtml }}
     />,
     findPortalElement(

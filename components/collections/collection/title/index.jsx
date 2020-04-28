@@ -1,5 +1,4 @@
 import { ItemsContext } from '../../../items/_state/context'
-import { ShopContext } from '../../../shop/_state/context'
 import { CollectionContext } from '../_state/context'
 import { Link } from '../../../link'
 import { usePortal } from '../../../../common/hooks'
@@ -8,17 +7,13 @@ import { hasLink } from '../../../../common/settings'
 
 const { useContext } = wp.element
 
-function CollectionTitle({ isShopReady, shopInfo }) {
+function CollectionTitle() {
   const [collectionState] = useContext(CollectionContext)
   const [itemsState] = useContext(ItemsContext)
-  const [shopState] = useContext(ShopContext)
 
   function Title() {
     return (
-      <h2
-        itemProp='name'
-        className='wps-collection-title'
-        data-wps-is-ready={isShopReady ? '1' : '0'}>
+      <h2 itemProp='name' className='wps-collection-title'>
         {collectionState.payload.title}
       </h2>
     )
@@ -26,10 +21,9 @@ function CollectionTitle({ isShopReady, shopInfo }) {
 
   return usePortal(
     <div className='wps-component wps-component-collection-title' data-wps-component-order='0'>
-      {hasLink(itemsState, shopState) ? (
+      {hasLink(itemsState) ? (
         <Link
           type='collections'
-          shop={shopInfo}
           payload={collectionState.payload}
           linkTo={itemsState.payloadSettings.linkTo}
           target={itemsState.payloadSettings.linkTarget}>

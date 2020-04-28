@@ -1,12 +1,12 @@
-import { ShopContext } from '../../../../shop/_state/context'
 import { ProductThumbnailImage } from '../thumbnail'
 import { doFeaturedSizing } from '../../../../../common/images'
 import { v4 as uuidv4 } from 'uuid'
 import isEmpty from 'lodash/isEmpty'
-const { useContext, useState } = wp.element
+const { useState } = wp.element
 
 const ProductThumbnailImages = wp.element.memo(function ProductThumbnailImages({ product }) {
-  const [shopState] = useContext(ShopContext)
+  console.log('<ProductThumbnailImages> :: Render Start')
+
   const [didPreload, setDidPreload] = useState(false)
 
   function hasImages() {
@@ -15,8 +15,7 @@ const ProductThumbnailImages = wp.element.memo(function ProductThumbnailImages({
 
   function onMouseEnter() {
     if (!didPreload) {
-      console.log('preload all', product.images)
-      product.images.map((img) => (new Image().src = doFeaturedSizing(img.src, shopState)))
+      product.images.map((img) => (new Image().src = doFeaturedSizing(img.src)))
 
       setDidPreload(true)
     }
