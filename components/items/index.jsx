@@ -16,7 +16,7 @@ options, children, afterLoading, beforeLoading
 */
 
 function ItemWrapper(props) {
-  console.log('<ItemWrapper> :: Render Start')
+  console.log('<ItemWrapper> :: Render Start', props.payload)
 
   return (
     <ItemsProvider

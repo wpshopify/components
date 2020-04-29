@@ -81,4 +81,4 @@ function PaginationLoadMore() {
   )
 }
 
-export default PaginationLoadMore
+export { PaginationLoadMore }

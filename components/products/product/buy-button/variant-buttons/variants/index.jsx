@@ -1,9 +1,7 @@
 import { ProductVariant } from '../../option/variants/variant'
 import { v4 as uuidv4 } from 'uuid'
 
-const ProductVariantButtonValue = wp.element.lazy(() =>
-  import(/* webpackChunkName: 'ProductVariantButtonValue' */ '../variant')
-)
+import { ProductVariantButtonValue } from '../variant'
 
 function ProductVariants({ option }) {
   console.log('<ProductVariants> :: Render Start')

@@ -213,7 +213,9 @@ function ProductAddButton() {
         className='wps-btn wps-btn-secondary wps-add-to-cart'
         title={__t(buyButtonState.product.title)}
         data-wps-is-direct-checkout={isDirectCheckout ? '1' : '0'}
-        onClick={!hasLink && handleClick}
+        onClick={(e) => {
+          !hasLink && handleClick(e)
+        }}
         style={buttonStyle}
         disabled={isCheckingOut}>
         {isCheckingOut ? (
@@ -240,7 +242,7 @@ function ProductAddButton() {
           <AddButton hasLink={true} />
         </Link>
       ) : (
-        <AddButton />
+        <AddButton hasLink={false} />
       )}
 
       {hasNotice && (

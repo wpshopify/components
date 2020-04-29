@@ -191,4 +191,4 @@ function ProductBuyButton() {
   )
 }
 
-export default ProductBuyButton
+export { ProductBuyButton }

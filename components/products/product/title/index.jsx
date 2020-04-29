@@ -73,4 +73,4 @@ function Title(props) {
   )
 }
 
-export default ProductTitle
+export { ProductTitle }

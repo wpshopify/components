@@ -1,14 +1,7 @@
 import { ProductOptionProvider } from '../../option/_state/provider'
 
-const ProductOptionWrapper = wp.element.lazy(() =>
-  import(/* webpackChunkName: 'ProductOptionWrapper' */ '../../option/wrapper')
-)
-
-const ProductVariantButtonGroupWrapper = wp.element.lazy(() =>
-  import(
-    /* webpackChunkName: 'ProductVariantButtonGroupWrapper' */ '../variant-button-group-wrapper'
-  )
-)
+import ProductOptionWrapper from '../../option/wrapper'
+import ProductVariantButtonGroupWrapper from '../variant-button-group-wrapper'
 
 function ProductVariantButtonGroup({ option }) {
   console.log('<ProductVariantButtonGroup> :: Render Start')

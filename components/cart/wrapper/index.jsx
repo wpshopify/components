@@ -22,8 +22,8 @@ const CartContents = wp.element.lazy(() =>
 const CartFooter = wp.element.lazy(() => import(/* webpackChunkName: 'CartFooter' */ '../footer'))
 
 function CartWrapper() {
-  const [cartState, cartDispatch] = useContext(CartContext)
   const cartElement = useRef()
+  const [cartState, cartDispatch] = useContext(CartContext)
   const updateCheckoutAttributes = useAction('update.checkout.attributes')
   const setCheckoutAttributes = useAction('set.checkout.attributes')
   const setCheckoutNotes = useAction('set.checkout.note')

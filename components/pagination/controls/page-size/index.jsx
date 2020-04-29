@@ -111,4 +111,4 @@ function PaginationPageSize() {
   )
 }
 
-export default PaginationPageSize
+export { PaginationPageSize }

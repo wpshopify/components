@@ -14,7 +14,7 @@ function PaginationItems({ children }) {
   const [itemsState] = useContext(ItemsContext)
   const [paginationState] = useContext(PaginationContext)
 
-  console.log('<PaginationItems> :: Render Start')
+  console.log('<PaginationItems> :: Render Start', itemsState)
 
   function displayItems() {
     return itemsState.payload.map((item) => {

@@ -4,26 +4,16 @@ import { isShowingComponent } from '../../../../common/components'
 /** @jsx jsx */
 import { jsx, css } from '@emotion/core'
 
+import { ProductTitle } from '../title'
+import { ProductPricing } from '../pricing'
+import { ProductDescription } from '../description'
+import { ProductBuyButton } from '../buy-button'
+import { ProductImages } from '../images'
+
 const { useContext } = wp.element
 
-const ProductTitle = wp.element.lazy(() =>
-  import(/* webpackChunkName: 'ProductTitle' */ '../title')
-)
-const ProductPricing = wp.element.lazy(() =>
-  import(/* webpackChunkName: 'ProductPricing' */ '../pricing')
-)
-const ProductDescription = wp.element.lazy(() =>
-  import(/* webpackChunkName: 'ProductDescription' */ '../description')
-)
-const ProductBuyButton = wp.element.lazy(() =>
-  import(/* webpackChunkName: 'ProductBuyButton' */ '../buy-button')
-)
-const ProductImages = wp.element.lazy(() =>
-  import(/* webpackChunkName: 'ProductImages' */ '../images')
-)
-
 function ProductWrapper() {
-  console.log('<ProductWrapper> :: Render Start')
+  console.log('<ProductWrapper> :: Render Start', itemsState)
 
   const [itemsState] = useContext(ItemsContext)
 

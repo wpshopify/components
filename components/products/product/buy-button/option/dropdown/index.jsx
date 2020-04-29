@@ -4,13 +4,8 @@ import 'tippy.js/dist/tippy.css'
 import 'tippy.js/animations/shift-away.css'
 import Tippy from '@tippyjs/react'
 
-const ProductOptionTrigger = wp.element.lazy(() =>
-  import(/* webpackChunkName: 'ProductOptionTrigger' */ '../trigger')
-)
-
-const ProductVariantsDropdown = wp.element.lazy(() =>
-  import(/* webpackChunkName: 'ProductVariantsDropdown' */ '../variants')
-)
+import ProductOptionTrigger from '../trigger'
+import ProductVariantsDropdown from '../variants'
 
 function ProductOptionDropdown() {
   const [productOptionState] = useContext(ProductOptionContext)

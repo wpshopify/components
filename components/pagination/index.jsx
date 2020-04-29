@@ -10,7 +10,7 @@ const { useContext, Suspense } = wp.element
 function Pagination({ children }) {
   const [itemsState] = useContext(ItemsContext)
 
-  console.log('<Pagination> :: Render Start')
+  console.log('<Pagination> :: Render Start', itemsState)
   function isHidingPagination() {
     if (wpshopify.settings.general.hidePagination) {
       return true

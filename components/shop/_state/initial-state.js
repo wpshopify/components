@@ -1,4 +1,4 @@
-function ShopInitialState(options = false) {
+function ShopInitialState() {
   return {
     notices: [],
   }

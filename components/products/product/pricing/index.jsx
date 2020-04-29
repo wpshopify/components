@@ -19,4 +19,4 @@ function ProductPricing() {
   )
 }
 
-export default ProductPricing
+export { ProductPricing }

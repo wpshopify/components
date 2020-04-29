@@ -1,6 +1,4 @@
-const ProductVariantButtonGroups = wp.element.lazy(() =>
-  import(/* webpackChunkName: 'ProductVariantButtonGroups' */ './variant-button-groups')
-)
+import ProductVariantButtonGroups from './variant-button-groups'
 
 function ProductVariantButtons({ options }) {
   console.log('<ProductVariantButtons> :: Render Start')

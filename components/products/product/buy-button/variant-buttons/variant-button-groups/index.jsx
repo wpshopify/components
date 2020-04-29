@@ -1,8 +1,6 @@
 import { jsx, css } from '@emotion/core'
 
-const ProductVariantButtonGroup = wp.element.lazy(() =>
-  import(/* webpackChunkName: 'ProductVariantButtonGroup' */ '../variant-button-group')
-)
+import ProductVariantButtonGroup from '../variant-button-group'
 
 function ProductVariantButtonGroups({ options }) {
   const styles = css`

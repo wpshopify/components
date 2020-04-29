@@ -11,13 +11,8 @@ import { containerFluidCSS } from '../../../../../common/css'
 /** @jsx jsx */
 import { jsx, css } from '@emotion/core'
 
-const ProductOption = wp.element.lazy(() =>
-  import(/* webpackChunkName: 'ProductOption' */ '../option')
-)
-
-const ProductVariantButtons = wp.element.lazy(() =>
-  import(/* webpackChunkName: 'ProductVariantButtons' */ '../variant-buttons')
-)
+import ProductOption from '../option'
+import ProductVariantButtons from '../variant-buttons'
 
 const { useContext } = wp.element
 

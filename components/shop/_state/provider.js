@@ -3,7 +3,7 @@ import { ShopInitialState } from './initial-state'
 import { ShopContext } from './context'
 
 function ShopProvider(props) {
-  const [state, dispatch] = wp.element.useReducer(ShopReducer, ShopInitialState(props.options))
+  const [state, dispatch] = wp.element.useReducer(ShopReducer, ShopInitialState(props))
 
   const value = wp.element.useMemo(() => [state, dispatch], [state])
 

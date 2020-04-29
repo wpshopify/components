@@ -89,4 +89,4 @@ function ProductVariantButtonValue({ variant, onSelection, isAvailableToSelect }
   )
 }
 
-export default ProductVariantButtonValue
+export { ProductVariantButtonValue }

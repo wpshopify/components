@@ -1,12 +1,7 @@
 import { ProductOptionProvider } from './_state/provider'
+import ProductOptionWrapper from './wrapper'
+import ProductOptionDropdown from './dropdown'
 
-const ProductOptionWrapper = wp.element.lazy(() =>
-  import(/* webpackChunkName: 'ProductOptionWrapper' */ './wrapper')
-)
-
-const ProductOptionDropdown = wp.element.lazy(() =>
-  import(/* webpackChunkName: 'ProductOptionDropdown' */ './dropdown')
-)
 const { useRef } = wp.element
 
 function ProductOption({ option }) {

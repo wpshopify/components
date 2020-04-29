@@ -16,4 +16,4 @@ function ProductImages() {
   )
 }
 
-export default ProductImages
+export { ProductImages }

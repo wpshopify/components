@@ -5,7 +5,11 @@ const { useContext } = wp.element
 function GlobalNotices() {
   const [shopState] = useContext(ShopContext)
 
-  return <Notices notices={shopState.notices && shopState.notices} noticeGroup='global' />
+  return shopState.notices.length ? (
+    <Notices notices={shopState.notices && shopState.notices} noticeGroup='global' />
+  ) : (
+    ''
+  )
 }
 
 export { GlobalNotices }

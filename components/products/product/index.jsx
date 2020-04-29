@@ -1,16 +1,12 @@
 import { ProductProvider } from './_state/provider'
 import { ProductWrapper } from './wrapper'
-const { Suspense } = wp.element
-const { Spinner } = wp.components
 
 function Product({ payload }) {
-  console.log('<Product> :: Render Start')
+  console.log('<Product> :: Render Start', payload)
 
   return (
     <ProductProvider payload={payload}>
-      <Suspense fallback={<Spinner />}>
-        <ProductWrapper />
-      </Suspense>
+      <ProductWrapper />
     </ProductProvider>
   )
 }

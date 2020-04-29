@@ -4,39 +4,31 @@ import {
   useIsMounted,
   useIsFirstRender,
 } from '/Users/andrew/www/devil/devilbox-new/data/www/wpshopify-hooks'
-
+import ProductPlaceholder from '../../products/product/placeholder'
 import { __t } from '../../../common/utils'
 import to from 'await-to-js'
 
 const { useContext, useEffect } = wp.element
 
 const Item = wp.element.memo(function ({ children, limit = false, infiniteScroll = false }) {
-  console.log('<Item> :: Render Start')
-
   const [itemsState, itemsDispatch] = useContext(ItemsContext)
   const isMounted = useIsMounted()
   const isFirstRender = useIsFirstRender()
 
-  function updatePayloadState(newItems) {
-    itemsDispatch({
-      type: 'UPDATE_TOTAL_SHOWN',
-      payload: newItems.length,
-    })
-
-    itemsDispatch({
-      type: 'UPDATE_PAYLOAD',
-      payload: {
-        items: newItems,
-        replace: true,
-      },
-    })
-
-    if (itemsState.afterLoading) {
-      itemsState.afterLoading(newItems)
-    }
-  }
+  console.log('<Item> :: Render Start', itemsState.payload)
 
   async function getNewItems(itemsState) {
+    console.log('<Item> :: getNewItems BEFORE')
+
+    itemsDispatch({
+      type: 'SET_IS_LOADING',
+      payload: true,
+    })
+    itemsDispatch({
+      type: 'UPDATE_NOTICES',
+      payload: [],
+    })
+
     const [error, newItems] = await to(fetchNewItems(itemsState))
 
     if (error) {
@@ -56,7 +48,25 @@ const Item = wp.element.memo(function ({ children, limit = false, infiniteScroll
     }
 
     itemsDispatch({ type: 'SET_IS_LOADING', payload: false })
-    updatePayloadState(newItems)
+
+    itemsDispatch({
+      type: 'UPDATE_TOTAL_SHOWN',
+      payload: newItems.length,
+    })
+
+    itemsDispatch({
+      type: 'UPDATE_PAYLOAD',
+      payload: {
+        items: newItems,
+        replace: true,
+      },
+    })
+
+    if (itemsState.afterLoading) {
+      itemsState.afterLoading(newItems)
+    }
+
+    console.log('<Item> :: getNewItems AFTER')
   }
 
   /*
@@ -79,14 +89,6 @@ const Item = wp.element.memo(function ({ children, limit = false, infiniteScroll
 
     console.log('<Item> :: useEffect[itemsState.queryParams] bottom')
 
-    itemsDispatch({
-      type: 'SET_IS_LOADING',
-      payload: true,
-    })
-    itemsDispatch({
-      type: 'UPDATE_NOTICES',
-      payload: [],
-    })
     getNewItems(itemsState)
   }, [itemsState.queryParams])
 
@@ -116,7 +118,7 @@ const Item = wp.element.memo(function ({ children, limit = false, infiniteScroll
     })
   }, [limit, infiniteScroll])
 
-  return <>{children}</>
+  return itemsState.payload ? children : <ProductPlaceholder />
 })
 
 export { Item }

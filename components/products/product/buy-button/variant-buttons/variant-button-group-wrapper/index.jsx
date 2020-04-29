@@ -3,10 +3,7 @@ import { jsx, css } from '@emotion/core'
 import { ProductBuyButtonContext } from '../../_state/context'
 import { ProductOptionContext } from '../../option/_state/context'
 import ProductVariantMissingSelection from '../missing-selection'
-
-const ProductVariants = wp.element.lazy(() =>
-  import(/* webpackChunkName: 'ProductVariants' */ '../variants')
-)
+import ProductVariants from '../variants'
 
 const { useRef, useContext } = wp.element
 

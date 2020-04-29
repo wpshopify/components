@@ -2,9 +2,9 @@ import { ShopProvider } from './_state/provider'
 import { ShopBootstrap } from '../bootstrap'
 import { GlobalNotices } from './notices'
 
-function Shop({ options, children }) {
+function Shop({ children }) {
   return (
-    <ShopProvider options={options}>
+    <ShopProvider>
       <ShopBootstrap>{children}</ShopBootstrap>
       <GlobalNotices />
     </ShopProvider>
