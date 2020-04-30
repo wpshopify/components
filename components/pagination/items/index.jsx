@@ -21,6 +21,7 @@ function PaginationItems({ children }) {
       return wp.element.cloneElement(children, {
         payload: item,
         key: uuidv4(),
+        itemsState: itemsState,
       })
     })
   }
@@ -28,10 +29,7 @@ function PaginationItems({ children }) {
   return (
     itemsState.payload && (
       <section className={'wps-items-wrapper'} css={containerFluidCSS}>
-        <section
-          className='wps-items wps-items-list'
-          css={rowCSS}
-          data-item-is-loading={itemsState.isLoading}>
+        <section className='wps-items wps-items-list' css={rowCSS}>
           {itemsState.payload && itemsState.payload.length ? displayItems() : ''}
         </section>
 

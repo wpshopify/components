@@ -7,7 +7,7 @@ function ProductVariantButtonGroups({ options }) {
     margin: 1em 0;
   `
 
-  console.log('<ProductVariantButtonGroups> :: Render Start')
+  console.log('<ProductVariantButtonGroups> :: Render Start', options)
 
   return (
     options && (

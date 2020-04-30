@@ -12,18 +12,16 @@ const { useContext } = wp.element
 const { __ } = wp.i18n
 
 function ProductTitle() {
+  console.log('<ProductTitle> :: Render Start')
   const [productState] = useContext(ProductContext)
   const [itemsState] = useContext(ItemsContext)
 
-  const fontSize = css`
+  const titleStyles = css`
     && {
       font-size: ${itemsState.payloadSettings.titleSize};
-    }
-  `
-
-  const fontColor = css`
-    && {
       color: ${itemsState.payloadSettings.titleColor};
+      margin-bottom: 15px;
+      margin-top: 10px;
     }
   `
 
@@ -40,7 +38,7 @@ function ProductTitle() {
           target={itemsState.payloadSettings.linkTarget}
           linkTo={itemsState.payloadSettings.linkTo}>
           <Title
-            styles={[fontSize, fontColor]}
+            styles={titleStyles}
             title={productState.payload.title}
             classList={getTitleClass()}
             product={productState.payload}
@@ -48,7 +46,7 @@ function ProductTitle() {
         </Link>
       ) : (
         <Title
-          styles={[fontSize, fontColor]}
+          styles={titleStyles}
           title={productState.payload.title}
           classList={getTitleClass()}
           product={productState.payload}

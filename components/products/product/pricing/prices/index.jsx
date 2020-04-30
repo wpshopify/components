@@ -9,10 +9,10 @@ function ProductPrices() {
   const [productState] = useContext(ProductContext)
 
   return productPricingState.showCompareAt && !productState.selectedVariant ? (
-    <>
+    <div className='wps-pricing-compare-at'>
       <ProductPrice compareAt={true} prices={productPricingState.prices} />
       <ProductPrice compareAt={false} prices={productPricingState.prices} />
-    </>
+    </div>
   ) : (
     <ProductPrice
       compareAt={productState.selectedVariant ? false : productPricingState.showCompareAt}

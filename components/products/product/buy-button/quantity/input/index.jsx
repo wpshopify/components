@@ -1,17 +1,13 @@
-import { ProductContext } from '../../../_state/context'
 import { ProductBuyButtonContext } from '../../_state/context'
 /** @jsx jsx */
 import { jsx, css } from '@emotion/core'
 
-const { useEffect, useContext, useRef, useState } = wp.element
+const { useEffect, useContext, useState } = wp.element
 
-function ProductQuantityInput({ minQuantity, maxQuantity }) {
-  const [productState] = useContext(ProductContext)
+function ProductQuantityInput({ minQuantity, maxQuantity, addedToCart }) {
+  console.log('<ProductQuantityInput> :: Render Start')
   const [buyButtonState, buyButtonDispatch] = useContext(ProductBuyButtonContext)
-  const element = useRef()
   const [quantityValue, setQuantityValue] = useState(() => minQuantity)
-
-  const inputWrapperStyles = css``
 
   const inputStyles = css`
     margin: 15px 0 15px 7px;
@@ -23,12 +19,11 @@ function ProductQuantityInput({ minQuantity, maxQuantity }) {
     padding: 7px;
   `
 
-  useEffect(
-    function () {
+  useEffect(() => {
+    if (addedToCart) {
       handleQuantityChange()
-    },
-    [productState.addedToCart]
-  )
+    }
+  }, [addedToCart])
 
   function handleQuantityChange(event = false) {
     if (!event) {
@@ -41,9 +36,8 @@ function ProductQuantityInput({ minQuantity, maxQuantity }) {
   }
 
   return (
-    <div className='wps-quantity-input wps-quantity-input-wrapper' css={inputWrapperStyles}>
+    <div className='wps-quantity-input wps-quantity-input-wrapper'>
       <input
-        ref={element}
         css={inputStyles}
         type='number'
         name='wps-product-quantity'

@@ -52,8 +52,8 @@ function onlyAvailableOptionsFromVariants(variants) {
   return formatAvailableOptions(onlyAvailableVariantsOptions(filterOnlyAvailableVariants(variants)))
 }
 
-function variantHasDropdown(itemsState) {
-  return itemsState.payloadSettings.variantStyle === 'dropdown'
+function variantHasDropdown(variantStyle) {
+  return variantStyle === 'dropdown'
 }
 
 function ProductVariantDropdown({ options }) {
@@ -74,12 +74,12 @@ function ProductVariantDropdown({ options }) {
 If this component is rendered, that means at least one variant is available for purchase
 
 */
-function ProductOptions({ itemsState, variants }) {
+function ProductOptions({ variantStyle, variants }) {
   const options = onlyAvailableOptionsFromVariants(variants)
 
   console.log('<ProductOptions> :: Render Start')
 
-  return variantHasDropdown(itemsState) ? (
+  return variantHasDropdown(variantStyle) ? (
     <ProductVariantDropdown options={options} />
   ) : (
     <ProductVariantButtons options={options} />

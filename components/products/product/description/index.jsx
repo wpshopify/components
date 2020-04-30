@@ -9,6 +9,7 @@ import { jsx, css } from '@emotion/core'
 const { useContext } = wp.element
 
 function ProductDescription() {
+  console.log('<ProductDescription> :: Render Start')
   const [productState] = useContext(ProductContext)
   const [itemsState] = useContext(ItemsContext)
 

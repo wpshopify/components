@@ -11,6 +11,9 @@ import { ProductPriceSingle } from '../single'
 import { useAction } from '../../../../../common/hooks'
 import { useAnime, pulse } from '../../../../../common/animations'
 
+/** @jsx jsx */
+import { jsx, css } from '@emotion/core'
+
 const { useEffect, useContext, useRef, useState } = wp.element
 
 function lastPrice(prices, type) {
@@ -122,30 +125,43 @@ function ProductPrice({ compareAt }) {
     }
   }, [productState.selectedVariant])
 
+  const priceCSS = css`
+    display: block;
+    font-weight: bold;
+    margin: ${compareAt ? 0 : '5px 0 15px 0'};
+    padding: 0;
+    font-size: ${compareAt ? '16px' : '22px'};
+    color: ${compareAt ? '#848484' : '#121212'};
+    text-decoration: ${compareAt ? 'line-through' : 'none'};
+  `
+
   return (
     <>
       {!isRegAndCompareSame() && isShowing && (
-        <h3
+        <span
           itemScope
           itemProp='offers'
           itemType='https://schema.org/Offer'
           className='wps-products-price wps-product-pricing wps-products-price-one'
-          data-wps-is-showing-compare-at={compareAt}>
+          data-wps-is-showing-compare-at={compareAt}
+          css={[priceCSS]}>
           {showingRange() && !productState.selectedVariant ? (
             <ProductPricingRange
               firstPrice={getFirstPrice()}
               lastPrice={getLastPrice()}
               isFirstAndLastSame={isFirstAndLastSame()}
               currencyCode={productPricingState.currencyCode}
+              compareAt={compareAt}
             />
           ) : (
             <ProductPriceSingle
               currencyCode={productPricingState.currencyCode}
               ref={singlePriceElement}
               price={regPrice}
+              compareAt={compareAt}
             />
           )}
-        </h3>
+        </span>
       )}
     </>
   )

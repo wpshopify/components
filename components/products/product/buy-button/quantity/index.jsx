@@ -1,29 +1,16 @@
-import { ProductBuyButtonContext } from '../_state/context'
-import { ItemsContext } from '../../../../items/_state/context'
 import { ProductQuantityLabel } from './label'
 import { ProductQuantityInput } from './input'
 
-const { useContext } = wp.element
-
-function ProductQuantity() {
-  const [buyButtonState] = useContext(ProductBuyButtonContext)
-  const [itemsState] = useContext(ItemsContext)
-
+function ProductQuantity({ showLabel, labelText, minQuantity, maxQuantity, addedToCart }) {
+  console.log('<ProductQuantity> :: Render Start')
   return (
-    <div
-      className='wps-component wps-component-products-quantity'
-      data-wps-is-component-wrapper
-      data-wps-product-id={buyButtonState.product.id}
-      data-wps-post-id=''>
+    <div className='wps-component wps-component-products-quantity'>
       <div className='wps-form-control row wps-product-quantity-wrapper m-0'>
-        <ProductQuantityLabel
-          showQuantityLabel={itemsState.payloadSettings.showQuantityLabel}
-          label={itemsState.payloadSettings.quantityLabelText}
-        />
-
+        <ProductQuantityLabel showLabel={showLabel} labelText={labelText} />
         <ProductQuantityInput
-          minQuantity={itemsState.payloadSettings.minQuantity}
-          maxQuantity={itemsState.payloadSettings.maxQuantity}
+          minQuantity={minQuantity}
+          maxQuantity={maxQuantity}
+          addedToCart={addedToCart}
         />
       </div>
     </div>

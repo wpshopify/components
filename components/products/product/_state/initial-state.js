@@ -1,3 +1,5 @@
+import { hasLink } from '../../../../common/settings'
+
 function hasManyVariants(payload) {
   if (!payload.variants) {
     return false
@@ -14,7 +16,7 @@ function hasManyVariants(payload) {
   return true
 }
 
-function ProductInitialState(payload) {
+function ProductInitialState({ payload, itemsState }) {
   return {
     payload: payload,
     element: false,
@@ -22,6 +24,7 @@ function ProductInitialState(payload) {
     addedToCart: false,
     hasManyImages: payload.images && payload.images.length > 1 ? true : false,
     hasManyVariants: hasManyVariants(payload),
+    hasLink: hasLink(itemsState),
   }
 }
 

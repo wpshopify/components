@@ -47,6 +47,10 @@ function onSinglePage(itemsState) {
 }
 
 function hasLink(itemsState) {
+  if (!itemsState) {
+    return false
+  }
+
   if (itemsState.payloadSettings.linkTo === 'none') {
     return false
   }
@@ -60,6 +64,45 @@ function hasLink(itemsState) {
   }
 
   return hasSinglePage() && !onSinglePage(itemsState)
+}
+
+function hasCustomButtonText(itemsState) {
+  if (!itemsState.payloadSettings.addToCartButtonText) {
+    return false
+  }
+  if (
+    itemsState.payloadSettings.addToCartButtonText != 'Checkout' ||
+    itemsState.payloadSettings.addToCartButtonText != 'Add to cart' ||
+    itemsState.payloadSettings.addToCartButtonText != 'View product'
+  ) {
+    return true
+  }
+
+  return false
+}
+
+function getButtonText(itemsState) {
+  if (hasCustomButtonText(itemsState)) {
+    return itemsState.payloadSettings.addToCartButtonText
+  }
+
+  if (isDirectCheckout) {
+    return 'Checkout'
+  }
+
+  if (hasLink(itemsState)) {
+    return 'View product'
+  }
+
+  if (itemsState.payloadSettings.addToCartButtonText === 'View product') {
+    return 'View product'
+  }
+
+  if (itemsState.payloadSettings.addToCartButtonText === 'Checkout') {
+    return 'Checkout'
+  }
+
+  return 'Add to cart'
 }
 
 function shopHasInfo(shop) {
@@ -135,4 +178,6 @@ export {
   getItemLink,
   shopHasInfo,
   isLiteSync,
+  hasCustomButtonText,
+  getButtonText,
 }
