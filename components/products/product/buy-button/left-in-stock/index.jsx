@@ -103,7 +103,10 @@ function ProductBuyButtonLeftInStock({ selectedVariant }) {
   }
 
   useEffect(() => {
-    console.log('<ProductBuyButton> :: useEffect[selectedVariant]', isMounted.current)
+    console.log(
+      '<ProductBuyButton> :: useEffect[selectedVariant] :: selectedVariant',
+      selectedVariant
+    )
 
     if (!isMounted.current || !selectedVariant) {
       return
@@ -112,8 +115,12 @@ function ProductBuyButtonLeftInStock({ selectedVariant }) {
     if (selectedVariant.availableForSale) {
       let selectedVariantFound = findSelectedVariant(selectedVariant.id)
 
+      console.log('selectedVariantFound', selectedVariantFound)
+
       if (!selectedVariantFound) {
-        console.warn('WP Shopify warning: could not find selectd variant within <ProductBuyButton>')
+        console.warn(
+          'WP Shopify warning: could not find selected variant within <ProductBuyButton>'
+        )
         return
       }
 

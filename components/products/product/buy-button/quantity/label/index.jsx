@@ -13,4 +13,4 @@ function ProductQuantityLabel({ showLabel, labelText }) {
   )
 }
 
-export { ProductQuantityLabel }
+export default wp.element.memo(ProductQuantityLabel)

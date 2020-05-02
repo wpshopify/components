@@ -1,4 +1,4 @@
-import { ProductQuantityLabel } from './label'
+import ProductQuantityLabel from './label'
 import { ProductQuantityInput } from './input'
 
 function ProductQuantity({ showLabel, labelText, minQuantity, maxQuantity, addedToCart }) {
@@ -17,4 +17,4 @@ function ProductQuantity({ showLabel, labelText, minQuantity, maxQuantity, added
   )
 }
 
-export { ProductQuantity }
+export default wp.element.memo(ProductQuantity)

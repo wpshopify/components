@@ -1,34 +1,18 @@
 /** @jsx jsx */
 import { jsx, css } from '@emotion/core'
-import { ProductBuyButtonContext } from '../../_state/context'
 import { createObj, isPairMatch } from '../../../../../../common/utils'
-import isEmpty from 'lodash/isEmpty'
 
-function ProductVariantButtonValue({ variant, onSelection, isAvailableToSelect }) {
-  console.log('<ProductVariantButtonValue> :: Render Start')
-
-  const { useContext } = wp.element
-
-  const [buyButtonState] = useContext(ProductBuyButtonContext)
+function ProductVariantButtonValue({ variant, onSelection, selectedOptions, isAvailableToSelect }) {
+  console.log('<ProductVariantButtonValue> :: Render Start', selectedOptions)
   const variantObj = createObj(variant.name, variant.value)
-  const isSelected = isPairMatch(buyButtonState.selectedOptions, variantObj)
-  const isSelectable = isEmpty(buyButtonState.selectedOptions) || isAvailableToSelect
-
+  const isSelected = isPairMatch(selectedOptions, variantObj)
+  const isColorOption = variant.name.toLowerCase() === 'color'
   const border = isSelected ? '#415aff' : 'black'
   const color = isSelected ? 'white' : 'black'
   const backgroundColor = isSelected ? '#415aff' : 'transparent'
-  const opacity = isSelectable ? 1 : 0.4
-  const cursor = 'pointer'
+  const opacity = isSelected || isAvailableToSelect ? 1 : 0.4
 
-  const customStyles = wp.hooks.applyFilters(
-    'product.variant.styles',
-    '',
-    variant,
-    isSelected,
-    isSelectable
-  )
-
-  const defaultStyles = css`
+  var defaultStyles = css`
     margin: 0 10px 10px 0;
     outline: none;
     border: 1px solid ${border};
@@ -40,53 +24,51 @@ function ProductVariantButtonValue({ variant, onSelection, isAvailableToSelect }
     background-color: ${backgroundColor};
 
     &:hover {
-      cursor: ${cursor};
+      cursor: ${!isSelected ? 'pointer' : 'auto'};
       opacity: ${!isSelected ? 0.6 : 1};
     }
-
-    ${customStyles}
   `
 
-  function addColorSwatches() {
-    wp.hooks.addFilter('product.variant.styles', 'wpshopify', function (
-      defaultCustomStyles,
-      variant,
-      isSelected,
-      isSelectable
-    ) {
-      if (variant.name.toLowerCase() === 'color') {
-        return (
-          defaultCustomStyles +
-          `
-            background-color: ${variant.value};
-            text-indent: 100%;
-            white-space: nowrap;
-            overflow: hidden;
-            width: 40px;
-            height: 40px;
-            font-size: 0;
-            opacity: ${isSelectable ? 1 : 0.2};
-            border-radius: 50%;
-            border: ${isSelected ? '1px solid ' + variant.value : 'none'};
-            box-shadow: ${isSelected ? 'inset 0 0 0px 4px' : 'none'};
-            transition: all ease 0.15s;
-         `
-        )
-      }
-    })
+  if (isColorOption) {
+    defaultStyles = css`
+      ${wp.hooks.applyFilters(
+        'product.variant.styles',
+        defaultStyles,
+        variant,
+        isSelected,
+        isAvailableToSelect
+      )}
+    `
   }
 
-  addColorSwatches()
+  return (
+    <ProductVariantButtonValueButton
+      defaultStyles={defaultStyles}
+      onSelection={onSelection}
+      isSelected={isSelected}
+      isAvailableToSelect={isAvailableToSelect}
+      variantValue={variant.value}
+    />
+  )
+}
 
+function ProductVariantButtonValueButton({
+  defaultStyles,
+  onSelection,
+  isSelected,
+  isAvailableToSelect,
+  variantValue,
+}) {
+  console.log('<ProductVariantButtonValueButton> :: Render Start')
   return (
     <button
       css={defaultStyles}
       onClick={onSelection}
       data-is-variant-selected={isSelected}
-      data-is-available={isSelectable}>
-      {variant.value}
+      data-is-available={isAvailableToSelect}>
+      {variantValue}
     </button>
   )
 }
 
-export { ProductVariantButtonValue }
+export default wp.element.memo(ProductVariantButtonValue)

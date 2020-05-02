@@ -20,4 +20,4 @@ function ProductOption({ option }) {
   )
 }
 
-export default ProductOption
+export default wp.element.memo(ProductOption)

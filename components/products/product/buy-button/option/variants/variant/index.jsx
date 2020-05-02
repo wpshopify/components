@@ -1,20 +1,22 @@
 import { ProductOptionContext } from '../../_state/context'
-import { ProductBuyButtonContext } from '../../../_state/context'
-import { createObj, isPairMatch, FilterHook, __t } from '../../../../../../../common/utils'
-
+import { createObj, isPairMatch, __t } from '../../../../../../../common/utils'
+import isEmpty from 'lodash/isEmpty'
 const { useContext } = wp.element
 
-function ProductVariant({ variant, children }) {
-  console.log('<ProductVariant> :: Render Start')
-
+function ProductVariant({
+  variant,
+  buyButtonDispatch,
+  availableVariants,
+  selectedOptions,
+  children,
+}) {
   const [productOptionState, productOptionDispatch] = useContext(ProductOptionContext)
-  const [buyButtonState, buyButtonDispatch] = useContext(ProductBuyButtonContext)
-
   const selectedVariant = createObj(variant.name, variant.value)
-  const isAvailableToSelect =
-    isPairMatch(buyButtonState.availableVariants, selectedVariant) ||
+
+  var isAvailableToSelect =
+    isPairMatch(availableVariants, selectedVariant) ||
     productOptionState.isOptionSelected ||
-    productOptionState.isDropdownOpen
+    isEmpty(selectedOptions)
 
   function onSelection() {
     if (
@@ -51,20 +53,8 @@ function ProductVariant({ variant, children }) {
     onSelection: onSelection,
     variant: variant,
     isAvailableToSelect: isAvailableToSelect,
+    selectedOptions: selectedOptions,
   })
 }
 
-function ProductVariantDropdownValue({ variant, onSelection, isAvailableToSelect }) {
-  return (
-    isAvailableToSelect && (
-      <li
-        itemProp='category'
-        className='wps-product-variant wps-product-style wps-modal-close-trigger'
-        onClick={onSelection}>
-        <FilterHook name='products.variant.title.text'>{__t(variant.value)}</FilterHook>
-      </li>
-    )
-  )
-}
-
-export { ProductVariant, ProductVariantDropdownValue }
+export default ProductVariant

@@ -1,8 +1,23 @@
-import ProductVariantButtonGroups from './variant-button-groups'
+import { jsx, css } from '@emotion/core'
+
+import ProductVariantButtonGroup from './variant-button-group'
 
 function ProductVariantButtons({ options }) {
-  console.log('<ProductVariantButtons> :: Render Start')
-  return <ProductVariantButtonGroups options={options} />
+  const styles = css`
+    margin: 1em 0;
+  `
+
+  console.log('<ProductVariantButtons> :: Render Start', options)
+
+  return (
+    options && (
+      <div className='wpshopify-products-variant-buttons' css={styles}>
+        {options.map(
+          (option) => option && <ProductVariantButtonGroup key={option.name} option={option} />
+        )}
+      </div>
+    )
+  )
 }
 
-export default ProductVariantButtons
+export default wp.element.memo(ProductVariantButtons)

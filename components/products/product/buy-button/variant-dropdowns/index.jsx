@@ -1,0 +1,14 @@
+import ProductOption from '../option'
+
+function ProductVariantDropdowns({ options }) {
+  console.log('<ProductVariantDropdowns> :: Render Start')
+
+  return (
+    <div className='wps-component wps-component-products-options'>
+      {options && options.map((option) => <ProductOption key={option.name} option={option} />)}
+    </div>
+  )
+}
+
+// export default wp.element.memo(ProductVariantDropdowns)
+export default ProductVariantDropdowns

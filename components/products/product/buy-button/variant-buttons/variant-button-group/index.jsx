@@ -11,7 +11,7 @@ function ProductVariantButtonGroup({ option }) {
       options={{
         option: option,
       }}>
-      <ProductOptionWrapper>
+      <ProductOptionWrapper option={option}>
         <ProductVariantButtonGroupWrapper option={option} />
       </ProductOptionWrapper>
     </ProductOptionProvider>

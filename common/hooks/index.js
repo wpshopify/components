@@ -43,7 +43,7 @@ function useOnClickOutside(ref, handler, targetOpened = false) {
   }
 
   useEffect(() => {
-    if (targetOpened && targetOpened()) {
+    if (targetOpened) {
       addEventListener(eventListener)
 
       return () => removeEventListener(eventListener)

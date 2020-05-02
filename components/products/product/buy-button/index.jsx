@@ -1,5 +1,5 @@
-import { ProductQuantity } from './quantity'
-import { ProductOptions } from './options'
+import ProductQuantity from './quantity'
+import ProductOptions from './options'
 import { ProductAddButton } from './add-button'
 
 import { ProductBuyButtonProvider } from './_state/provider'
@@ -7,6 +7,7 @@ import { ProductContext } from '../_state/context'
 import { ItemsContext } from '../../../items/_state/context'
 import { usePortal } from '../../../../common/hooks'
 import { hasLink, getButtonText } from '../../../../common/settings'
+import { onlyAvailableOptionsFromVariants } from '../../../../common/variants'
 import { findPortalElement, FilterHook, __t } from '../../../../common/utils'
 
 /** @jsx jsx */
@@ -45,7 +46,7 @@ function ProductBuyButton() {
             {productState.hasManyVariants && !hasLink(itemsState) && (
               <ProductOptions
                 variantStyle={itemsState.payloadSettings.variantStyle}
-                variants={productState.payload.variants}
+                availableOptions={onlyAvailableOptionsFromVariants(productState.payload.variants)}
               />
             )}
             <ProductAddButton

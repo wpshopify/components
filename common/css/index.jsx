@@ -16,14 +16,6 @@ const mq = (n) => {
   return result
 }
 
-const containerFluidCSS = css`
-  width: 100%;
-  padding: 0;
-  margin-right: auto;
-  margin-left: auto;
-  box-sizing: border-box;
-`
-
 const flexRowCSS = css`
   display: flex;
 `
@@ -56,4 +48,12 @@ const rowCSS = css`
   }
 `
 
-export { containerFluidCSS, rowCSS, flexRowCSS, flexColSmallCSS, mq }
+const containerFluidCSS = css`
+  width: 100%;
+  padding: 0;
+  margin-right: auto;
+  margin-left: auto;
+  box-sizing: border-box;
+`
+
+export { rowCSS, flexRowCSS, flexColSmallCSS, containerFluidCSS, mq }

@@ -41,7 +41,10 @@ function ProductOptionWrapper({ children }) {
   }, [buyButtonState.availableVariants])
 
   useEffect(() => {
-    console.log('<ProductOptionWrapper> :: useEffect[productOptionState.selectedOption]')
+    console.log(
+      '<ProductOptionWrapper> :: useEffect[productOptionState.selectedOption]',
+      productOptionState.selectedOption
+    )
 
     if (isFirstRender.current) {
       isFirstRender.current = false

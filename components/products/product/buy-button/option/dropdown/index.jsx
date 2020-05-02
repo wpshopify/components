@@ -1,5 +1,7 @@
 import { ProductOptionContext } from '../_state/context'
-const { useContext, useState } = wp.element
+import { ProductBuyButtonContext } from '../../_state/context'
+
+const { useContext } = wp.element
 import 'tippy.js/dist/tippy.css'
 import 'tippy.js/animations/shift-away.css'
 import Tippy from '@tippyjs/react'
@@ -9,7 +11,7 @@ import ProductVariantsDropdown from '../variants'
 
 function ProductOptionDropdown() {
   const [productOptionState] = useContext(ProductOptionContext)
-  useState()
+  const [buyButtonState, buyButtonDispatch] = useContext(ProductBuyButtonContext)
 
   return (
     <div className='row'>
@@ -29,7 +31,17 @@ function ProductOptionDropdown() {
           inertia={true}
           delay={[0, 0]}
           offset={[0, 15]}
-          content={<ProductVariantsDropdown />}>
+          content={
+            <ProductVariantsDropdown
+              dropdownElement={productOptionState.dropdownElement}
+              isDropdownOpen={productOptionState.isDropdownOpen}
+              isOptionSelected={productOptionState.isOptionSelected}
+              option={productOptionState.option}
+              availableVariants={buyButtonState.availableVariants}
+              selectedOptions={buyButtonState.selectedOptions}
+              buyButtonDispatch={buyButtonDispatch}
+            />
+          }>
           <span>
             <ProductOptionTrigger />
           </span>
