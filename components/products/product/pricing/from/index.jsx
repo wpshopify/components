@@ -1,21 +1,27 @@
 /** @jsx jsx */
 import { jsx, css } from '@emotion/core'
 import { FilterHook, __t } from '../../../../../common/utils'
+import ProductPriceSaleNotice from '../sale-notice'
 
-function ProductPriceFrom({ compareAt }) {
+function ProductPriceFrom({ compareAt, showPriceRange, selectedVariant }) {
   const styles = css`
     margin-right: 5px;
-    font-size: 15px;
+    font-size: 16px;
   `
-  console.log('compareAtcompareAtcompareAt', compareAt)
 
-  return (
+  return compareAt ? (
+    <ProductPriceSaleNotice
+      compareAt={compareAt}
+      showPriceRange={showPriceRange}
+      selectedVariant={selectedVariant}
+    />
+  ) : (
     <small css={styles} className='wps-product-from-price'>
       <FilterHook name='product.pricing.from.text' args={[compareAt]}>
-        {__t(compareAt ? 'Was:' : 'Price:')}
+        {__t('Price:')}
       </FilterHook>
     </small>
   )
 }
 
-export { ProductPriceFrom }
+export default wp.element.memo(ProductPriceFrom)

@@ -1,20 +1,17 @@
-import { ProductPricingContext } from '../_state/context'
-import { ProductContext } from '../../_state/context'
-
 import isEmpty from 'lodash/isEmpty'
 import last from 'lodash/last'
 import min from 'lodash/min'
 import max from 'lodash/max'
 
-import { ProductPricingRange } from '../range'
-import { ProductPriceSingle } from '../single'
+import ProductPricingRange from '../range'
+import ProductPriceSingle from '../single'
 import { useAction } from '../../../../../common/hooks'
-import { useAnime, pulse } from '../../../../../common/animations'
+import { useAnime, fadeInBottom } from '../../../../../common/animations'
 
 /** @jsx jsx */
 import { jsx, css } from '@emotion/core'
 
-const { useEffect, useContext, useRef, useState } = wp.element
+const { useEffect, useRef, useState } = wp.element
 
 function lastPrice(prices, type) {
   if (isEmpty(prices)) {
@@ -47,25 +44,16 @@ function lastPriceCompareAt(prices) {
   return lastPrice(prices, 'compareAtPrices')
 }
 
-function ProductPrice({ compareAt }) {
-  const [productState] = useContext(ProductContext)
-  const [productPricingState] = useContext(ProductPricingContext)
-  const isFirstRender = useRef(true)
+function ProductPrice({ compareAt, prices, currencyCode, showPriceRange, selectedVariant }) {
   const singlePriceElement = useRef()
   const [regPrice, setRegPrice] = useState(() => getFirstPrice())
+  const [comparePrice, setComparePrice] = useState(() => firstPriceCompareAt(prices))
   const isShowing = useAction('show.product.pricing', true)
-  const animePulse = useAnime(pulse)
-
-  function showingRange() {
-    return productPricingState.showPriceRange
-  }
+  const animePulse = useAnime(fadeInBottom)
 
   function isRegAndCompareSame() {
-    if (!showingRange() && compareAt) {
-      if (
-        firstPriceCompareAt(productPricingState.prices) ===
-        firstRegPrice(productPricingState.prices)
-      ) {
+    if (!showPriceRange && compareAt) {
+      if (firstPriceCompareAt(prices) === firstRegPrice(prices)) {
         return true
       }
     }
@@ -83,88 +71,93 @@ function ProductPrice({ compareAt }) {
 
   function getFirstPrice() {
     if (compareAt) {
-      if (showingRange()) {
-        return min(productPricingState.prices.compareAtPrices)
+      if (showPriceRange) {
+        return min(prices.compareAtPrices)
       } else {
-        return firstPriceCompareAt(productPricingState.prices)
+        return firstPriceCompareAt(prices)
       }
     } else {
-      if (showingRange()) {
-        return min(productPricingState.prices.regPrices)
+      if (showPriceRange) {
+        return min(prices.regPrices)
       } else {
-        return firstRegPrice(productPricingState.prices)
+        return firstRegPrice(prices)
       }
     }
   }
 
   function getLastPrice() {
     if (compareAt) {
-      if (showingRange()) {
-        return max(productPricingState.prices.compareAtPrices)
+      if (showPriceRange) {
+        return max(prices.compareAtPrices)
       } else {
-        return lastPriceCompareAt(productPricingState.prices)
+        return lastPriceCompareAt(prices)
       }
     } else {
-      if (showingRange()) {
-        return max(productPricingState.prices.regPrices)
+      if (showPriceRange) {
+        return max(prices.regPrices)
       } else {
-        return lastRegPrice(productPricingState.prices)
+        return lastRegPrice(prices)
       }
     }
   }
 
   useEffect(() => {
-    if (isFirstRender.current) {
-      isFirstRender.current = false
-      return
-    }
+    if (selectedVariant) {
+      if (selectedVariant.compareAtPriceV2) {
+        setComparePrice(selectedVariant.compareAtPriceV2.amount)
+      } else {
+        setComparePrice(false)
+      }
 
-    if (productState.selectedVariant) {
-      setRegPrice(productState.selectedVariant.price)
-      animePulse(singlePriceElement.current)
-    }
-  }, [productState.selectedVariant])
+      setRegPrice(selectedVariant.priceV2.amount)
+      console.log('singlePriceElement.current', singlePriceElement.current)
 
-  const priceCSS = css`
+      if (!compareAt) {
+        animePulse(singlePriceElement.current)
+      }
+    } else {
+      setComparePrice(firstPriceCompareAt(prices))
+      setRegPrice(getFirstPrice())
+    }
+  }, [selectedVariant])
+
+  const priceWrapperCSS = css`
+    line-height: 1;
+    margin: 15px 0;
     display: block;
-    font-weight: bold;
-    margin: ${compareAt ? 0 : '5px 0 15px 0'};
-    padding: 0;
-    font-size: ${compareAt ? '16px' : '22px'};
-    color: ${compareAt ? '#848484' : '#121212'};
-    text-decoration: ${compareAt ? 'line-through' : 'none'};
   `
 
   return (
-    <>
-      {!isRegAndCompareSame() && isShowing && (
-        <span
-          itemScope
-          itemProp='offers'
-          itemType='https://schema.org/Offer'
-          className='wps-products-price wps-product-pricing wps-products-price-one'
-          data-wps-is-showing-compare-at={compareAt}
-          css={[priceCSS]}>
-          {showingRange() && !productState.selectedVariant ? (
-            <ProductPricingRange
-              firstPrice={getFirstPrice()}
-              lastPrice={getLastPrice()}
-              isFirstAndLastSame={isFirstAndLastSame()}
-              currencyCode={productPricingState.currencyCode}
-              compareAt={compareAt}
-            />
-          ) : (
-            <ProductPriceSingle
-              currencyCode={productPricingState.currencyCode}
-              ref={singlePriceElement}
-              price={regPrice}
-              compareAt={compareAt}
-            />
-          )}
-        </span>
-      )}
-    </>
+    !isRegAndCompareSame() &&
+    isShowing && (
+      <span
+        itemScope
+        itemProp='offers'
+        itemType='https://schema.org/Offer'
+        className='wps-products-price wps-product-pricing wps-products-price-one'
+        css={priceWrapperCSS}>
+        {showPriceRange && !selectedVariant ? (
+          <ProductPricingRange
+            firstPrice={getFirstPrice()}
+            lastPrice={getLastPrice()}
+            isFirstAndLastSame={isFirstAndLastSame()}
+            currencyCode={currencyCode}
+            compareAt={compareAt}
+            showPriceRange={showPriceRange}
+            selectedVariant={selectedVariant}
+          />
+        ) : (
+          <ProductPriceSingle
+            currencyCode={currencyCode}
+            ref={singlePriceElement}
+            price={compareAt ? comparePrice : regPrice}
+            compareAt={compareAt}
+            showPriceRange={showPriceRange}
+          />
+        )}
+      </span>
+    )
   )
 }
 
-export { ProductPrice }
+export default ProductPrice

@@ -85,17 +85,26 @@ function Img(props) {
   }
 
   const featThumbStyles = css`
-    outline: 4px solid #ffaf4c;
-    outline-offset: -4px;
+    outline: 1px dashed #000000;
+    outline-offset: 3px;
+    transition: transform 100ms ease;
 
     &:hover {
       opacity: 1;
     }
   `
 
+  const thumbnailStyles = css`
+    &:focus,
+    &:active {
+      outline: 1px dashed #000000;
+      outline-offset: 3px;
+    }
+  `
+
   return (
     <img
-      css={isSelectedImage() && featThumbStyles}
+      css={isSelectedImage() ? featThumbStyles : thumbnailStyles}
       ref={props.imageRef}
       itemProp='image'
       src={props.productImageSrc}

@@ -12,6 +12,7 @@ import {
   findVariantFromSelectedOptions,
   createUniqueCheckout,
   addLineItemsAPI,
+  getCache,
 } from '/Users/andrew/www/devil/devilbox-new/data/www/wpshopify-api'
 import to from 'await-to-js'
 
@@ -29,7 +30,7 @@ function findSingleVariantFromPayload(buyButtonState) {
 }
 
 function buildAddToCartParams(lineItems, variants) {
-  var checkoutId = localStorage.getItem('wps-last-checkout-id')
+  var checkoutId = getCache('wps-last-checkout-id')
 
   return {
     checkoutId: checkoutId,
@@ -133,6 +134,8 @@ function AddButton({
       var variant = findSingleVariantFromPayload(buyButtonState)
     }
 
+    console.log('.......................... variant', variant)
+
     if (!variant) {
       // TODO: Handle this better
       console.error('WP Shopify error: handleClick variant undefined ')
@@ -144,6 +147,8 @@ function AddButton({
     }
 
     const lineItems = buildLineItemParams(variant, buyButtonState.quantity)
+
+    console.log('.......................... lineItems', lineItems)
 
     if (isDirectCheckout) {
       setIsCheckingOut(true)
@@ -187,6 +192,9 @@ function AddButton({
 
       checkoutRedirect(respNewCheckout, buyButtonDispatch)
     } else {
+      let addToCartParams = buildAddToCartParams(lineItems, [variant])
+      console.log('.......................... addToCartParams', addToCartParams)
+
       buyButtonDispatch({
         type: 'SET_ALL_SELECTED_OPTIONS',
         payload: false,
@@ -198,7 +206,7 @@ function AddButton({
       buyButtonDispatch({ type: 'SET_MISSING_SELECTIONS', payload: false })
 
       wp.hooks.doAction('cart.toggle', 'open')
-      wp.hooks.doAction('product.addToCart', buildAddToCartParams(lineItems, [variant]))
+      wp.hooks.doAction('product.addToCart', addToCartParams)
       wp.hooks.doAction('after.product.addToCart', lineItems, variant)
     }
   }

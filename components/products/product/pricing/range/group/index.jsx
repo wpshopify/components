@@ -1,16 +1,39 @@
-import { ProductPriceSingle } from '../../single'
-import { ProductPriceFrom } from '../../from'
+import ProductPriceSingle from '../../single'
+import ProductPriceFrom from '../../from'
 import { ProductPricingSeparator } from '../../separator'
 
-function ProductPricingRangeGroup({ firstPrice, lastPrice, currencyCode, compareAt }) {
+function ProductPricingRangeGroup({
+  firstPrice,
+  lastPrice,
+  currencyCode,
+  compareAt,
+  showPriceRange,
+  selectedVariant,
+}) {
   return (
     <>
-      {firstPrice !== lastPrice && <ProductPriceFrom compareAt={compareAt} />}
-      <ProductPriceSingle price={firstPrice} currencyCode={currencyCode} />
+      {firstPrice !== lastPrice && (
+        <ProductPriceFrom
+          compareAt={compareAt}
+          showPriceRange={showPriceRange}
+          selectedVariant={selectedVariant}
+        />
+      )}
+      <ProductPriceSingle
+        price={firstPrice}
+        compareAt={compareAt}
+        currencyCode={currencyCode}
+        showPriceRange={showPriceRange}
+      />
       <ProductPricingSeparator />
-      <ProductPriceSingle price={lastPrice} currencyCode={currencyCode} />
+      <ProductPriceSingle
+        price={lastPrice}
+        compareAt={compareAt}
+        currencyCode={currencyCode}
+        showPriceRange={showPriceRange}
+      />
     </>
   )
 }
 
-export { ProductPricingRangeGroup }
+export default wp.element.memo(ProductPricingRangeGroup)

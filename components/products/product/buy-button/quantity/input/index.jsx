@@ -10,7 +10,7 @@ function ProductQuantityInput({ minQuantity, maxQuantity, addedToCart }) {
   const [quantityValue, setQuantityValue] = useState(() => minQuantity)
 
   const inputStyles = css`
-    margin: 15px 0 15px 7px;
+    margin: 25px 0 25px 7px;
     text-align: center;
     max-width: 60px;
     font-size: 1em;

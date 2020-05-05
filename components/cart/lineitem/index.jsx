@@ -119,6 +119,7 @@ function CartLineItem({ lineItem }) {
               />
 
               <CartLineItemPrice
+                lineItem={lineItem}
                 lineItemTotal={lineItemTotal}
                 lineItemTotalElement={lineItemTotalElement}
                 currencyCode={getCurrencyCodeFromPayload(cartState.checkoutCache)}

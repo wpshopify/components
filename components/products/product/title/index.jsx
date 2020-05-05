@@ -20,7 +20,7 @@ function ProductTitle() {
     && {
       font-size: ${itemsState.payloadSettings.titleSize};
       color: ${itemsState.payloadSettings.titleColor};
-      margin-bottom: 15px;
+      margin-bottom: 5px;
       margin-top: 10px;
     }
   `

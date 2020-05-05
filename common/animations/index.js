@@ -50,6 +50,27 @@ function slideInRight(element, cb = false, currentlyAnimating) {
   })
 }
 
+function fadeInBottom(element, cb = false, currentlyAnimating) {
+  if (currentlyAnimating) {
+    return
+  }
+
+  cb(true)
+
+  return anime({
+    targets: element,
+    translateY: ['20px', '0px'],
+    opacity: [0.3, 1],
+    duration: 300,
+    easing: 'easeOutQuart',
+    complete: function () {
+      if (cb && document.body.contains(element)) {
+        cb(false)
+      }
+    },
+  })
+}
+
 function slideInCart(element, cb = false, currentlyAnimating) {
   if (currentlyAnimating) {
     return
@@ -195,4 +216,5 @@ export {
   animeStaggerFadeIn,
   slideInCart,
   slideOutCart,
+  fadeInBottom,
 }

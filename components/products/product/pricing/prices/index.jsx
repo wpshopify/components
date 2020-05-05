@@ -1,6 +1,8 @@
 import { ProductPricingContext } from '../_state/context'
 import { ProductContext } from '../../_state/context'
-import { ProductPrice } from '../price'
+import ProductPrice from '../price'
+
+import ProductPricesCompareAt from '../compare-at'
 
 const { useContext } = wp.element
 
@@ -8,15 +10,22 @@ function ProductPrices() {
   const [productPricingState] = useContext(ProductPricingContext)
   const [productState] = useContext(ProductContext)
 
-  return productPricingState.showCompareAt && !productState.selectedVariant ? (
-    <div className='wps-pricing-compare-at'>
-      <ProductPrice compareAt={true} prices={productPricingState.prices} />
-      <ProductPrice compareAt={false} prices={productPricingState.prices} />
-    </div>
+  return !productState.selectedVariant ||
+    (productState.selectedVariant.compareAtPriceV2 && productPricingState.showCompareAt) ? (
+    <ProductPricesCompareAt
+      selectedVariant={productState.selectedVariant}
+      prices={productPricingState.prices}
+      currencyCode={productPricingState.currencyCode}
+      showPriceRange={productPricingState.showPriceRange}
+      compareAt={productPricingState.showCompareAt}
+    />
   ) : (
     <ProductPrice
-      compareAt={productState.selectedVariant ? false : productPricingState.showCompareAt}
+      selectedVariant={productState.selectedVariant}
+      compareAt={false}
       prices={productPricingState.prices}
+      currencyCode={productPricingState.currencyCode}
+      showPriceRange={productPricingState.showPriceRange}
     />
   )
 }
