@@ -1,5 +1,5 @@
 import { formatPriceToCurrency } from '../../../../common/pricing/formatting'
-import { pulse, useAnime } from '../../../../common/animations'
+import { fadeInRightSlow, useAnime } from '../../../../common/animations'
 import { CartContext } from '../../_state/context'
 /** @jsx jsx */
 import { jsx, css } from '@emotion/core'
@@ -9,7 +9,7 @@ import { getCurrencyCodeFromPayload } from '../../../../common/pricing/data'
 const { useContext, useEffect } = wp.element
 
 function CartFooterTotal({ totalElement }) {
-  const animate = useAnime(pulse)
+  const animeFadeInRightSlow = useAnime(fadeInRightSlow)
   const [cartState] = useContext(CartContext)
 
   const footerStyles = css`
@@ -23,7 +23,7 @@ function CartFooterTotal({ totalElement }) {
     if (!cartState.total) {
       return
     }
-    animate(totalElement.current)
+    animeFadeInRightSlow(totalElement.current)
   }, [cartState.total])
 
   return (

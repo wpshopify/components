@@ -8,14 +8,8 @@ const ProductPriceSingle = React.forwardRef((props, ref) => {
     display: inline-block;
     line-height: 1;
     padding: 0;
+    margin: 0;
     font-weight: ${props.compareAt ? 'normal' : 'bold'};
-    margin: ${!props.compareAt
-      ? '0'
-      : props.compareAt && !props.showPriceRange
-      ? '0'
-      : props.compareAt && props.showPriceRange
-      ? '0'
-      : '0'};
     font-size: ${props.compareAt ? '16px' : '22px'};
     color: ${props.compareAt ? '#848484' : '#121212'};
     text-decoration: ${props.compareAt ? 'line-through' : 'none'};

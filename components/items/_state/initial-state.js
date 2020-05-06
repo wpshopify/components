@@ -7,6 +7,19 @@ function ItemsInitialState({
   customQueryParams = false,
   payload = false,
 }) {
+  console.log('component.connectionParams >>>>>>>', component)
+
+  if (component.componentType === 'collections') {
+    var connectionParams = {
+      first: parseInt(component.payloadSettings.products.pageSize),
+      reverse: component.payloadSettings.products.reverse,
+      sortKey: component.payloadSettings.products.sortBy,
+      query: component.payloadSettings.products.query,
+    }
+  } else {
+    var connectionParams = false
+  }
+
   var itemsState = {
     payloadSettings: component.payloadSettings,
     element: component.componentElement,
@@ -17,6 +30,7 @@ function ItemsInitialState({
       reverse: customQueryParams ? customQueryParams.reverse : component.payloadSettings.reverse,
       first: customQueryParams ? customQueryParams.first : component.payloadSettings.pageSize,
     },
+    connectionParams: connectionParams,
     originalParams: {
       type: component.componentType,
       queryParams: {
@@ -25,7 +39,7 @@ function ItemsInitialState({
         reverse: component.payloadSettings.reverse,
         first: component.payloadSettings.pageSize,
       },
-      connectionParams: false,
+      connectionParams: connectionParams,
     },
     hasParentPayload: payload ? true : false,
     customQueryParams: customQueryParams,

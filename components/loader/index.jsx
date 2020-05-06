@@ -1,4 +1,4 @@
-var LoaderSpinner = require('react-loaders').Loader
+import LoaderSpinner from 'react-loaders'
 import { usePortal } from '../../common/hooks'
 
 function Loader({ isLoading, dropzone, color }) {

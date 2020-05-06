@@ -8,10 +8,12 @@ function CartLineItemPrice({ lineItem, currencyCode, lineItemTotal, lineItemTota
   const priceCSS = css`
     flex: 1;
     display: flex;
-    justify-content: flex-end;
-    align-items: center;
+    flex-direction: column;
+    align-items: flex-end;
 
     ${mq('small')} {
+      align-items: baseline;
+      flex-direction: row;
       justify-content: flex-start;
       margin-top: 10px;
     }
@@ -30,8 +32,6 @@ function CartLineItemPrice({ lineItem, currencyCode, lineItemTotal, lineItemTota
     }
   `
 
-  console.log('........... lineItem ............', lineItem)
-
   return (
     <div className='wps-cart-lineitem-price-total-wrapper' css={priceCSS}>
       <div
@@ -41,9 +41,9 @@ function CartLineItemPrice({ lineItem, currencyCode, lineItemTotal, lineItemTota
         {formatPriceToCurrency(lineItemTotal, currencyCode)}
       </div>
 
-      <CartLineItemPriceSaleNotice />
+      {lineItem.compareAtPriceV2 && <CartLineItemPriceSaleNotice lineItem={lineItem} />}
     </div>
   )
 }
 
-export { CartLineItemPrice }
+export default wp.element.memo(CartLineItemPrice)

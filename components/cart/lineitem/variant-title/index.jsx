@@ -20,7 +20,7 @@ function CartLineItemVariantTitle({ lineItem }) {
     max-width: 100%;
     letter-spacing: 0.02em;
     line-height: 1.4;
-    margin: 5px 0 10px 0;
+    margin: 5px 0 15px 0;
   `
 
   return (
@@ -30,4 +30,4 @@ function CartLineItemVariantTitle({ lineItem }) {
   )
 }
 
-export { CartLineItemVariantTitle }
+export default wp.element.memo(CartLineItemVariantTitle)

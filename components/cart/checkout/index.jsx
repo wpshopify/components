@@ -3,6 +3,10 @@ import { Loader } from '../../loader'
 import { FilterHook } from '../../../common/utils'
 import { hasCustomCheckoutAttributes } from '../../../common/checkout'
 import { __t } from '../../../common/utils'
+import { buttonCSS } from '../../../common/css'
+
+/** @jsx jsx */
+import { jsx, css } from '@emotion/core'
 
 import {
   replaceLineItems,
@@ -246,13 +250,21 @@ function CartCheckout() {
 function CartCheckoutButton({ buttonStyle, onCheckout, buttonRef }) {
   const [cartState] = useContext(CartContext)
 
+  const checkoutButtonCSS = css`
+    font-size: 22px;
+    margin-top: 0.5em;
+    margin-bottom: 0;
+    background-color: ${wpshopify.settings.general.checkoutColor};
+    padding: 16px 0 20px 0;
+  `
+
   return (
     <button
       ref={buttonRef}
-      className='wps-btn wps-btn-checkout'
+      className='wps-btn-checkout'
       onClick={onCheckout}
       disabled={cartState.isCheckingOut || !cartState.termsAccepted || cartState.isCartEmpty}
-      style={buttonStyle()}>
+      css={[buttonCSS, checkoutButtonCSS]}>
       {cartState.isCheckingOut ? (
         <Loader isLoading={cartState.isCheckingOut} />
       ) : (

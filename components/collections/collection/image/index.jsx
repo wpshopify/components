@@ -37,7 +37,6 @@ function CollectionImage() {
       <div className='wps-component wps-component-collection-image' data-wps-component-order='0'>
         <Link
           type='collections'
-          shop={info.shopInfo}
           payload={collectionState.payload}
           linkTo={itemsState.payloadSettings.linkTo}
           target={itemsState.payloadSettings.linkTarget}>

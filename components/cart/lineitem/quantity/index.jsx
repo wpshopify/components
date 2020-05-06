@@ -1,7 +1,7 @@
 import find from 'lodash/find'
 import { CartContext } from '../../_state/context'
 import { calcLineItemTotal } from '../../../../common/products'
-import { useAnime, pulse } from '../../../../common/animations'
+import { useAnime, fadeInRightSlow } from '../../../../common/animations'
 import { containerFluidCSS, flexRowCSS } from '../../../../common/css'
 
 /** @jsx jsx */
@@ -28,7 +28,7 @@ function CartLineItemQuantity({
   lineItemTotalElement,
 }) {
   const [cartState, cartDispatch] = useContext(CartContext)
-  const animePulse = useAnime(pulse)
+  const animeFadeInRightSlow = useAnime(fadeInRightSlow)
 
   const maxQuantity = wp.hooks.applyFilters('cart.maxQuantity', false)
 
@@ -52,7 +52,7 @@ function CartLineItemQuantity({
       variantId.current = lineItemFound.variantId
     }
 
-    animePulse(lineItemTotalElement.current)
+    animeFadeInRightSlow(lineItemTotalElement.current)
 
     setLineItemQuantity(newQuantity)
     setLineItemTotal(calcLineItemTotal(newQuantity, lineItem.price))

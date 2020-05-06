@@ -12,7 +12,7 @@ function ProductPlaceholder() {
     animation-timing-function: linear !important;
     background: linear-gradient(to right, #ececec 8%, #f4f4f4 38%, #ececec 54%) !important;
     background-size: 1000px 640px !important;
-    border-radius: 7px !important;
+    border-radius: 9px !important;
     position: relative !important;
     margin: 5px 20px 15px 20px !important;
     border: none !important;

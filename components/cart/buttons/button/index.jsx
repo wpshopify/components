@@ -6,6 +6,9 @@ import { useAnime, slideInRight } from '../../../../common/animations'
 import { usePortal } from '../../../../common/hooks'
 import { isCartEmpty } from '../../../../common/cart'
 
+/** @jsx jsx */
+import { jsx, css } from '@emotion/core'
+
 const { useContext, useRef, useEffect } = wp.element
 
 function CartButton({ options }) {
@@ -27,12 +30,6 @@ function CartButton({ options }) {
     return ''
   }
 
-  function iconStyles() {
-    return {
-      backgroundColor: getIconColor(),
-    }
-  }
-
   function onClick() {
     cartDispatch({ type: 'TOGGLE_CART', payload: true })
   }
@@ -40,6 +37,59 @@ function CartButton({ options }) {
   function onMouseOver() {
     cartDispatch({ type: 'CART_LOADED', payload: true })
   }
+
+  const cartIconCSS = css`
+    background-color: ${getIconColor()};
+  `
+
+  const cartIconFixedCSS =
+    options.payloadSettings.type === 'fixed'
+      ? css`
+          position: fixed;
+          top: calc(50% - 80px);
+          right: 0;
+          z-index: 99999;
+          border-radius: 6px 0 0 6px;
+          display: flex;
+          flex-direction: column;
+          align-items: center;
+          padding: 15px 0 17px 0;
+          transform: translateX(100%);
+          justify-content: center;
+          transition: translate 1s ease;
+          width: 70px;
+          border: none;
+          outline: none;
+          overflow-y: visible;
+
+          &:hover {
+            cursor: pointer;
+
+            span,
+            svg {
+              opacity: 0.8;
+            }
+          }
+        `
+      : css`
+          border: none;
+          outline: none;
+          position: relative;
+
+          &:hover {
+            cursor: pointer;
+          }
+
+          .ball-pulse > div {
+            width: 9px;
+            height: 9px;
+          }
+
+          .wps-loader {
+            position: relative;
+            top: 2px;
+          }
+        `
 
   return usePortal(
     <CartButtonProvider options={options}>
@@ -52,7 +102,7 @@ function CartButton({ options }) {
         }`}
         onClick={onClick}
         onMouseOver={onMouseOver}
-        style={iconStyles()}>
+        css={[cartIconCSS, cartIconFixedCSS]}>
         {options.payloadSettings.showCounter && <CartCounter />}
 
         <CartIcon />

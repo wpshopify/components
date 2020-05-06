@@ -1,34 +1,31 @@
 import { ProductBuyButtonTextNotice } from '../notice'
 import { getVariantInventoryManagement } from '/Users/andrew/www/devil/devilbox-new/data/www/wpshopify-api'
 import { useIsMounted } from '/Users/andrew/www/devil/devilbox-new/data/www/wpshopify-hooks'
-import { useInView } from 'react-intersection-observer'
 import to from 'await-to-js'
 import find from 'lodash/find'
 
-function ProductBuyButtonLeftInStock({ selectedVariant }) {
+function ProductBuyButtonLeftInStock({ payload, selectedVariant, inView }) {
   const { useEffect, useState } = wp.element
   const [quantityLeft, setQuantityLeft] = useState(false)
   const [status, setStatus] = useState('idle')
   const [variantInventory, setVariantInventory] = useState(false)
   const isMounted = useIsMounted()
 
-  const [ref, inView, entry] = useInView({
-    threshold: 0,
-    triggerOnce: true,
-  })
-
   useEffect(() => {
+    console.log('status', status)
+    console.log('inView', inView)
+
     if (inView && status === 'idle') {
       fetchVariantInventoryManagement()
     }
   }, [inView])
 
-  function getVariantIds(items) {
-    if (!items.length) {
+  function getVariantIds(payload) {
+    if (!payload.variants) {
       return []
     }
 
-    return items.map((item) => item.variants.map((v) => v.id)).flat()
+    return payload.variants.map((v) => v.id)
   }
 
   function sanitizeInventoryResponse(response) {
@@ -43,16 +40,17 @@ function ProductBuyButtonLeftInStock({ selectedVariant }) {
   }
 
   async function fetchVariantInventoryManagement() {
-    const variantIs = getVariantIds(itemsState.payload)
+    const variantIDs = getVariantIds(payload)
 
-    if (!variantIs.length) {
+    if (!variantIDs.length) {
       console.warn('WP Shopify warning: No variant ids found for fetchVariantInventoryManagement')
       return
     }
 
     setStatus('pending')
+    console.log('variantIDs', variantIDs)
 
-    const [error, resp] = await to(getVariantInventoryManagement({ ids: variantIs }))
+    const [error, resp] = await to(getVariantInventoryManagement({ ids: variantIDs }))
 
     if (error || resp.data.type === 'error') {
       setStatus('error')
@@ -68,6 +66,7 @@ function ProductBuyButtonLeftInStock({ selectedVariant }) {
 
     setStatus('resolved')
     var variantInventoryResp = sanitizeInventoryResponse(resp)
+    console.log('variantInventoryResp', variantInventoryResp)
 
     setVariantInventory(variantInventoryResp)
   }
@@ -113,6 +112,8 @@ function ProductBuyButtonLeftInStock({ selectedVariant }) {
     }
 
     if (selectedVariant.availableForSale) {
+      console.log('selectedVariant.id', selectedVariant.id)
+
       let selectedVariantFound = findSelectedVariant(selectedVariant.id)
 
       console.log('selectedVariantFound', selectedVariantFound)

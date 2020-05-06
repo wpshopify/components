@@ -12,17 +12,19 @@ function ProductBuyButtonTextNotice({ quantityLeft }) {
     margin-top: 5px;
     font-size: 15px;
     padding: 10px;
-    display: inline;
-    color: #d9870c;
-    font-weight: bold;
+    color: red;
+    width: 100%;
+    font-weight: normal;
+    margin: 0 auto;
+    display: block;
   `
 
   return (
     buyButtonState.allOptionsSelected &&
     quantityLeft && (
-      <strong className='wps-notice-text' css={textNoticeCSS}>
+      <span className='wps-notice-text' css={textNoticeCSS}>
         {__t(`Only ${quantityLeft} left!`)}
-      </strong>
+      </span>
     )
   )
 }

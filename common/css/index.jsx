@@ -56,4 +56,43 @@ const containerFluidCSS = css`
   box-sizing: border-box;
 `
 
-export { rowCSS, flexRowCSS, flexColSmallCSS, containerFluidCSS, mq }
+const buttonCSS = css`
+  border-radius: 8px;
+  padding: 14px 0 15px 0;
+  transition: background-color 180ms ease;
+  height: auto;
+  font-weight: normal;
+  position: relative;
+  text-decoration: none;
+  display: inline-block;
+  border: none;
+  line-height: 1;
+  text-align: center;
+  color: #fff;
+  width: 100%;
+  max-width: 100%;
+  white-space: normal;
+  background-color: #415aff;
+  font-size: 18px;
+
+  ${mq('small')} {
+    font-size: 16px;
+  }
+
+  &:hover {
+    color: rgba(255, 255, 255, 0.7);
+    cursor: pointer;
+  }
+
+  &:disabled {
+    background-color: #d4d4d4 !important;
+    box-shadow: none;
+  }
+
+  &:focus {
+    outline: none;
+    border: none;
+  }
+`
+
+export { rowCSS, flexRowCSS, flexColSmallCSS, containerFluidCSS, buttonCSS, mq }

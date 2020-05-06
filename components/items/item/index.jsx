@@ -15,7 +15,7 @@ const Item = wp.element.memo(function ({ children, limit = false, infiniteScroll
   const isMounted = useIsMounted()
   const isFirstRender = useIsFirstRender()
 
-  console.log('<Item> :: Render Start', itemsState.payload)
+  console.log('<Item> :: Render Start itemsState', itemsState)
 
   async function getNewItems(itemsState) {
     console.log('<Item> :: getNewItems BEFORE')
@@ -24,12 +24,15 @@ const Item = wp.element.memo(function ({ children, limit = false, infiniteScroll
       type: 'SET_IS_LOADING',
       payload: true,
     })
+
     itemsDispatch({
       type: 'UPDATE_NOTICES',
       payload: [],
     })
 
     const [error, newItems] = await to(fetchNewItems(itemsState))
+    console.log('.............. error', error)
+    console.log('.............. newItems', newItems)
 
     if (error) {
       if (isMounted.current) {
@@ -76,7 +79,7 @@ const Item = wp.element.memo(function ({ children, limit = false, infiniteScroll
   */
 
   useEffect(() => {
-    console.log('<Item> :: useEffect[itemsState.queryParams] top')
+    console.log('<Item> :: useEffect[itemsState.queryParams] top', itemsState.hasParentPayload)
     if (itemsState.hasParentPayload) {
       return
     }

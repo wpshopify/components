@@ -6,7 +6,7 @@ import max from 'lodash/max'
 import ProductPricingRange from '../range'
 import ProductPriceSingle from '../single'
 import { useAction } from '../../../../../common/hooks'
-import { useAnime, fadeInBottom } from '../../../../../common/animations'
+import { useAnime, fadeInRightSlow } from '../../../../../common/animations'
 
 /** @jsx jsx */
 import { jsx, css } from '@emotion/core'
@@ -49,7 +49,7 @@ function ProductPrice({ compareAt, prices, currencyCode, showPriceRange, selecte
   const [regPrice, setRegPrice] = useState(() => getFirstPrice())
   const [comparePrice, setComparePrice] = useState(() => firstPriceCompareAt(prices))
   const isShowing = useAction('show.product.pricing', true)
-  const animePulse = useAnime(fadeInBottom)
+  const animeFadeInRightSlow = useAnime(fadeInRightSlow)
 
   function isRegAndCompareSame() {
     if (!showPriceRange && compareAt) {
@@ -113,7 +113,7 @@ function ProductPrice({ compareAt, prices, currencyCode, showPriceRange, selecte
       console.log('singlePriceElement.current', singlePriceElement.current)
 
       if (!compareAt) {
-        animePulse(singlePriceElement.current)
+        animeFadeInRightSlow(singlePriceElement.current)
       }
     } else {
       setComparePrice(firstPriceCompareAt(prices))

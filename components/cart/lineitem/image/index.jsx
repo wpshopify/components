@@ -27,11 +27,21 @@ function CartLineItemImage({ lineItem, cartState }) {
     })
   }
 
-  function lineItemImage() {
-    return lineItem.image
-      ? { backgroundImage: `url(${actualImageUrl()})` }
-      : { backgroundImage: `url(${placeholderImageUrl()})` }
-  }
+  const lineItemImgCSS = css`
+    background-image: url(${lineItem.image ? actualImageUrl() : placeholderImageUrl()});
+    width: 100px;
+    height: 100px;
+    border-radius: 5px;
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-position: center center;
+    background-color: #e5e5e5;
+
+    ${mq('small')} {
+      width: 60px;
+      height: 60px;
+    }
+  `
 
   return (
     <Link
@@ -41,7 +51,7 @@ function CartLineItemImage({ lineItem, cartState }) {
       target='_blank'
       manualLink={manualLink}
       disableLink={disableLink}>
-      <div className='wps-cart-lineitem-img' style={lineItemImage()} />
+      <div className='wps-cart-lineitem-img' css={[lineItemImgCSS]} />
     </Link>
   )
 }

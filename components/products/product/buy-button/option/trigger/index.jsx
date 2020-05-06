@@ -1,8 +1,12 @@
 import { ProductBuyButtonContext } from '../../_state/context'
 import { useAnime, pulse } from '../../../../../../common/animations'
 import { FilterHook, __t } from '../../../../../../common/utils'
+import { buttonCSS } from '../../../../../../common/css'
 import { ItemsContext } from '../../../../../items/_state/context'
 import { ProductOptionContext } from '../_state/context'
+
+/** @jsx jsx */
+import { jsx, css } from '@emotion/core'
 
 const { useEffect, useContext, useRef } = wp.element
 
@@ -76,12 +80,16 @@ function ProductOptionTrigger() {
     return isOptionSelected() ? optionNameWithSelect() : optionName()
   }
 
+  const customBackgroundColor = css`
+    background-color: ${itemsState.payloadSettings.variantButtonColor};
+  `
+
   return (
     <button
       className='wps-btn wps-icon wps-icon-dropdown wps-modal-trigger'
       onClick={onClick}
       ref={dropdownTrigger}
-      style={{ backgroundColor: itemsState.payloadSettings.variantButtonColor }}>
+      css={[buttonCSS, customBackgroundColor]}>
       <FilterHook name='products.option.title.text'>{__t(displayOptionName())}</FilterHook>
       <TriggerIcon />
     </button>

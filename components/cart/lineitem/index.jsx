@@ -1,12 +1,12 @@
 import { CartContext } from '../../cart/_state/context'
 
 import { CartLineItemQuantity } from './quantity'
-import { CartLineItemPrice } from './price'
+import CartLineItemPrice from './price'
 import { CartLineItemImage } from './image'
 import { CartLineItemOutOfStock } from './out-of-stock'
 import { CartLineItemTitle } from './title'
 import { CartLineItemRemove } from './remove'
-import { CartLineItemVariantTitle } from './variant-title'
+import CartLineItemVariantTitle from './variant-title'
 
 import { calcLineItemTotal, isAvailable } from '../../../common/products'
 import { containerFluidCSS, flexRowCSS, flexColSmallCSS } from '../../../common/css'

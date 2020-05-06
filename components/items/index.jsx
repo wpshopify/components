@@ -16,7 +16,7 @@ options, children, afterLoading, beforeLoading
 */
 
 function ItemWrapper(props) {
-  console.log('<ItemWrapper> :: Render Start', props.payload)
+  console.log('<ItemWrapper> :: Render Start', props)
 
   return (
     <ItemsProvider
@@ -36,7 +36,7 @@ function ItemWrapper(props) {
 }
 
 function Items(props) {
-  console.log('<Items> :: Render Start')
+  console.log('<Items> :: Render Start', props)
 
   return (
     props.options &&

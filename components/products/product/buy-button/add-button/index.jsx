@@ -4,6 +4,7 @@ import ProductBuyButtonLeftInStock from '../left-in-stock'
 import { Loader } from '../../../../loader'
 import { useAnime, pulse } from '../../../../../common/animations'
 import { FilterHook, __t } from '../../../../../common/utils'
+import { buttonCSS } from '../../../../../common/css'
 import { Link } from '../../../../link'
 
 import { checkoutRedirect } from '../../../../cart/checkout'
@@ -18,6 +19,8 @@ import to from 'await-to-js'
 
 /** @jsx jsx */
 import { jsx, css } from '@emotion/core'
+import { useInView } from 'react-intersection-observer'
+
 const { Notice } = wp.components
 const { useContext, useRef, useEffect, useState } = wp.element
 
@@ -61,8 +64,15 @@ function ProductAddButton({
   selectedVariant,
 }) {
   console.log('<ProductAddButton> :: Render Start')
+
+  const [ref, inView, entry] = useInView({
+    threshold: 0,
+    triggerOnce: true,
+  })
+
   return (
     <div
+      ref={ref}
       className='wps-component wps-component-products-add-button wps-btn-wrapper'
       data-wps-is-component-wrapper
       data-wps-post-id=''>
@@ -76,7 +86,11 @@ function ProductAddButton({
           <FilterHook name='product.addToCart.text'>{__t(buttonText)}</FilterHook>
         </AddButton>
       </AddButtonWrapper>
-      <ProductBuyButtonLeftInStock selectedVariant={selectedVariant} />
+      <ProductBuyButtonLeftInStock
+        payload={payload}
+        inView={inView}
+        selectedVariant={selectedVariant}
+      />
     </div>
   )
 }
@@ -114,7 +128,7 @@ function AddButton({
     }
   }, [buyButtonState.allOptionsSelected])
 
-  const buttonStyle = css`
+  const customBackgroundColor = css`
     background-color: ${addToCartButtonColor};
   `
 
@@ -225,7 +239,7 @@ function AddButton({
         onClick={(e) => {
           !hasLink && handleClick(e)
         }}
-        css={buttonStyle}
+        css={[buttonCSS, customBackgroundColor]}
         disabled={isCheckingOut}>
         {isCheckingOut ? loader : children}
       </button>
