@@ -2,11 +2,15 @@ import { PaginationContext } from '../../_state/context'
 import { ItemsContext } from '../../../items/_state/context'
 import { usePortal } from '../../../../common/hooks'
 import { FilterHook, __t } from '../../../../common/utils'
+import { buttonCSS, loadMoreButtonCSS } from '../../../../common/css'
 import { fetchNextItems } from '../../../items/item/api'
 import { Loader } from '../../../loader'
 import isEmpty from 'lodash/isEmpty'
 import has from 'lodash/has'
 import { InView } from 'react-intersection-observer'
+
+/** @jsx jsx */
+import { jsx, css } from '@emotion/core'
 
 const { useContext, useRef } = wp.element
 
@@ -60,23 +64,22 @@ function PaginationLoadMore() {
   }
 
   return usePortal(
-    <>
-      {shouldShowLoadMore() && (
-        <InView rootMargin='10px 0px 0px 0px' as='div' onChange={onViewChange}>
-          <button
-            type='button'
-            disabled={itemsState.isLoading}
-            className={'wps-btn wps-btn-secondary wps-btn-next-page'}
-            onClick={onNextPage}>
-            {itemsState.isLoading ? (
-              <Loader isLoading={itemsState.isLoading} />
-            ) : (
-              <FilterHook name='pagination.loadMore.text'>{__t('Load more')}</FilterHook>
-            )}
-          </button>
-        </InView>
-      )}
-    </>,
+    shouldShowLoadMore() && (
+      <InView rootMargin='10px 0px 0px 0px' as='div' onChange={onViewChange}>
+        <button
+          css={[buttonCSS, loadMoreButtonCSS]}
+          type='button'
+          disabled={itemsState.isLoading}
+          className={'wps-btn-next-page'}
+          onClick={onNextPage}>
+          {itemsState.isLoading ? (
+            <Loader isLoading={itemsState.isLoading} />
+          ) : (
+            <FilterHook name='pagination.loadMore.text'>{__t('Load more')}</FilterHook>
+          )}
+        </button>
+      </InView>
+    ),
     document.querySelector(itemsState.payloadSettings.dropzoneLoadMore)
   )
 }

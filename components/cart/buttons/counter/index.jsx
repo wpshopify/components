@@ -28,7 +28,7 @@ function CartCounter() {
     }
 
     if (cartButtonState.payloadSettings.type === 'inline') {
-      return cartButtonState.payloadSettings.inlineCounterColor
+      return cartButtonState.payloadSettings.inlineCartCounterTextColor
     }
   }
 
@@ -47,7 +47,7 @@ function CartCounter() {
     font-weight: normal;
     top: ${cartButtonState.payloadSettings.type === 'fixed' ? '-8px' : '-12px'};
     right: -12px;
-    left: ${cartButtonState.payloadSettings.type === 'fixed' ? '2px' : 'auto'};
+    left: ${cartButtonState.payloadSettings.type === 'fixed' ? '1px' : 'auto'};
     background: ${cartButtonState.payloadSettings.type === 'fixed' ? 'none' : '#6ae06a'};
     border-radius: 50%;
     display: inline-block;
@@ -59,7 +59,8 @@ function CartCounter() {
     width: ${cartButtonState.payloadSettings.type === 'fixed' ? 'auto' : '25px'};
     height: 25px;
     max-height: 25px;
-    padding: 0;
+    padding: 0px;
+    font-weight: bold;
     overflow: ${cartButtonState.payloadSettings.type === 'fixed' ? 'visible' : 'hidden'};
   `
   const customCounterCSS = css`

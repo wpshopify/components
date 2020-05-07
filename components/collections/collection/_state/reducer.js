@@ -9,15 +9,18 @@ function CollectionReducer(state, action) {
         }
       }
 
-      var updatedPayload = update(state.productOptions[0].payload, { $push: action.payload })
+      console.log('........ state.productOptions', state.products)
+      console.log('........ action.payload', action.payload)
 
-      var okoko = update(state.productOptions[0].payload, { $set: updatedPayload })
+      var updatedPayload = update(state.products, { $push: action.payload })
 
-      state.productOptions[0].payload = updatedPayload
+      // var okoko = update(state.products, { $set: updatedPayload })
+
+      // state.products = updatedPayload
 
       return {
         ...state,
-        productOptions: state.productOptions,
+        products: updatedPayload,
       }
     }
 

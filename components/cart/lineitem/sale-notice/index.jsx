@@ -1,5 +1,6 @@
 import { formatPriceToCurrency } from '../../../../common/pricing/formatting'
 import { FilterHook, __t } from '../../../../common/utils'
+import { mq } from '../../../../common/css'
 
 /** @jsx jsx */
 import { jsx, css } from '@emotion/core'
@@ -10,6 +11,10 @@ function CartLineItemPriceSaleNotice({ lineItem }) {
     color: red;
     margin-left: 15px;
     margin-top: 10px;
+
+    ${mq('small')} {
+      margin-top: 0px;
+    }
   `
 
   const priceWasCSS = css`

@@ -50,6 +50,7 @@ function ProductBuyButton() {
               />
             )}
             <ProductAddButton
+              addedToCart={productState.addedToCart}
               hasLink={productState.hasLink}
               payload={productState.payload}
               linkTarget={itemsState.payloadSettings.linkTarget}

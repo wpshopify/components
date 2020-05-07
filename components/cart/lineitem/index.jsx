@@ -19,8 +19,6 @@ import find from 'lodash/find'
 const { useContext, useState, useRef, useEffect } = wp.element
 
 function CartLineItem({ lineItem }) {
-  console.log('lineItem>?>>>>>>>>>. ', lineItem)
-
   const [cartState, cartDispatch] = useContext(CartContext)
   const [isUpdating] = useState(() => false)
   const [lineItemQuantity, setLineItemQuantity] = useState(() => 0)

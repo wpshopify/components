@@ -14,6 +14,7 @@ function ProductBuyButtonLeftInStock({ payload, selectedVariant, inView }) {
   useEffect(() => {
     console.log('status', status)
     console.log('inView', inView)
+    console.log('................................... 1 isMounted', isMounted)
 
     if (inView && status === 'idle') {
       fetchVariantInventoryManagement()
@@ -42,6 +43,8 @@ function ProductBuyButtonLeftInStock({ payload, selectedVariant, inView }) {
   async function fetchVariantInventoryManagement() {
     const variantIDs = getVariantIds(payload)
 
+    console.log('................................... 3 isMounted', isMounted)
+
     if (!variantIDs.length) {
       console.warn('WP Shopify warning: No variant ids found for fetchVariantInventoryManagement')
       return
@@ -52,23 +55,28 @@ function ProductBuyButtonLeftInStock({ payload, selectedVariant, inView }) {
 
     const [error, resp] = await to(getVariantInventoryManagement({ ids: variantIDs }))
 
-    if (error || resp.data.type === 'error') {
-      setStatus('error')
+    console.log('................................... 4 isMounted', isMounted)
 
-      if (error) {
-        console.error('WP Shopify error: ', error)
+    if (isMounted.current) {
+      if (error || resp.data.type === 'error') {
+        setStatus('error')
+
+        if (error) {
+          console.error('WP Shopify error: ', error)
+        }
+
+        console.error('WP Shopify error: ', resp.data.message)
+
+        return
       }
 
-      console.error('WP Shopify error: ', resp.data.message)
+      setStatus('resolved')
 
-      return
+      var variantInventoryResp = sanitizeInventoryResponse(resp)
+      console.log('variantInventoryResp', variantInventoryResp)
+
+      setVariantInventory(variantInventoryResp)
     }
-
-    setStatus('resolved')
-    var variantInventoryResp = sanitizeInventoryResponse(resp)
-    console.log('variantInventoryResp', variantInventoryResp)
-
-    setVariantInventory(variantInventoryResp)
   }
 
   function findAvailableQuantityByLocations(variant) {
@@ -102,6 +110,8 @@ function ProductBuyButtonLeftInStock({ payload, selectedVariant, inView }) {
   }
 
   useEffect(() => {
+    console.log('................................... 2 isMounted', isMounted)
+
     console.log(
       '<ProductBuyButton> :: useEffect[selectedVariant] :: selectedVariant',
       selectedVariant

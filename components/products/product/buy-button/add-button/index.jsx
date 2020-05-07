@@ -2,7 +2,7 @@ import { ProductBuyButtonContext } from '../_state/context'
 import ProductBuyButtonLeftInStock from '../left-in-stock'
 
 import { Loader } from '../../../../loader'
-import { useAnime, pulse } from '../../../../../common/animations'
+import { useAnime, pulse, fadeInBottomSlow } from '../../../../../common/animations'
 import { FilterHook, __t } from '../../../../../common/utils'
 import { buttonCSS } from '../../../../../common/css'
 import { Link } from '../../../../link'
@@ -62,6 +62,7 @@ function ProductAddButton({
   productDispatch,
   buttonText,
   selectedVariant,
+  addedToCart,
 }) {
   console.log('<ProductAddButton> :: Render Start')
 
@@ -82,9 +83,10 @@ function ProductAddButton({
           loader={<Loader />}
           isDirectCheckout={isDirectCheckout}
           hasManyVariants={hasManyVariants}
-          productDispatch={productDispatch}>
-          <FilterHook name='product.addToCart.text'>{__t(buttonText)}</FilterHook>
-        </AddButton>
+          productDispatch={productDispatch}
+          buttonText={buttonText}
+          addedToCart={addedToCart}
+        />
       </AddButtonWrapper>
       <ProductBuyButtonLeftInStock
         payload={payload}
@@ -113,7 +115,8 @@ function AddButton({
   productDispatch,
   hasManyVariants,
   loader,
-  children,
+  buttonText,
+  addedToCart,
 }) {
   console.log('<AddButton> :: Render Start')
   const [buyButtonState, buyButtonDispatch] = useContext(ProductBuyButtonContext)
@@ -241,7 +244,11 @@ function AddButton({
         }}
         css={[buttonCSS, customBackgroundColor]}
         disabled={isCheckingOut}>
-        {isCheckingOut ? loader : children}
+        {isCheckingOut ? (
+          loader
+        ) : (
+          <AddButtonText addedToCart={addedToCart} buttonText={buttonText} />
+        )}
       </button>
 
       {hasNotice && (
@@ -250,6 +257,44 @@ function AddButton({
         </Notice>
       )}
     </>
+  )
+}
+
+function AddButtonText({ buttonText, addedToCart }) {
+  const [originalText] = useState(buttonText)
+  const [text, setText] = useState(buttonText)
+  const animeFadeInBottomSlow = useAnime(fadeInBottomSlow)
+  const addedTest = useRef()
+
+  useEffect(() => {
+    console.log('addedToCartaddedToCartaddedToCartaddedToCartaddedToCart', addedToCart)
+
+    // setTimeout(() => {
+    //   animeFadeInBottomSlow(addedTest.current)
+    //   // setHasAdded(false)
+    // }, 2000)
+    if (addedToCart) {
+      setText('Added!')
+      animeFadeInBottomSlow(addedTest.current)
+
+      setTimeout(function () {
+        setText(originalText)
+      }, 2000)
+    }
+  }, [addedToCart])
+
+  const AddButtonTextCSS = css`
+    display: block;
+    margin: 0;
+    paddding: 0;
+  `
+
+  return (
+    <FilterHook name='product.addToCart.text'>
+      <span css={AddButtonTextCSS} ref={addedTest}>
+        {__t(text)}
+      </span>
+    </FilterHook>
   )
 }
 

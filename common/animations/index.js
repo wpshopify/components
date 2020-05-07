@@ -71,6 +71,27 @@ function fadeInRightSlow(element, cb = false, currentlyAnimating) {
   })
 }
 
+function fadeInBottomSlow(element, cb = false, currentlyAnimating) {
+  if (currentlyAnimating) {
+    return
+  }
+
+  cb(true)
+
+  return anime({
+    targets: element,
+    translateY: ['40px', '0px'],
+    opacity: [0.4, 1],
+    duration: 250,
+    easing: 'easeInQuart',
+    complete: function () {
+      if (cb && document.body.contains(element)) {
+        cb(false)
+      }
+    },
+  })
+}
+
 function slideInCart(element, cb = false, currentlyAnimating) {
   if (currentlyAnimating) {
     return
@@ -217,4 +238,5 @@ export {
   slideInCart,
   slideOutCart,
   fadeInRightSlow,
+  fadeInBottomSlow,
 }

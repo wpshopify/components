@@ -95,4 +95,8 @@ const buttonCSS = css`
   }
 `
 
-export { rowCSS, flexRowCSS, flexColSmallCSS, containerFluidCSS, buttonCSS, mq }
+const loadMoreButtonCSS = css`
+  max-width: 150px;
+`
+
+export { rowCSS, flexRowCSS, flexColSmallCSS, containerFluidCSS, buttonCSS, loadMoreButtonCSS, mq }
