@@ -108,12 +108,12 @@ function AddressForm({ address, type }) {
     }
 
     if (addressUpdateError) {
-      console.error('UPDATE ADDRESS ERROR', addressUpdateError)
+      console.error('WP Shopify error: ', addressUpdateError)
       return
     }
 
     if (isEmpty(addressUpdateSuccess.data)) {
-      console.error('UPDATE ADDRESS ERROR :: NO ADDRESS FOUND', addressUpdateSuccess)
+      console.error('WP Shopify error: ', addressUpdateSuccess)
       return
     }
 
@@ -156,12 +156,12 @@ function AddressForm({ address, type }) {
     }
 
     if (addError) {
-      console.error('ADD ADDRESS ERROR', addError)
+      console.error('WP Shopify error: ', addError)
       return
     }
 
     if (isEmpty(addSuccess.data)) {
-      console.error('ADD ADDRESS ERROR :: NO ADDRESS FOUND', addSuccess)
+      console.error('WP Shopify error: ', addSuccess)
       return
     }
 

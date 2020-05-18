@@ -55,7 +55,7 @@ function CustomerFormLogin() {
     if (loginError) {
       setIsSubmitting(false)
 
-      console.error('LOGIN ERROR', loginError)
+      console.error('WP Shopify error: ', loginError)
       return
     }
 

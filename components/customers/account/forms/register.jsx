@@ -47,7 +47,7 @@ function CustomerFormRegister() {
     }
 
     if (registerError) {
-      console.error('LOGIN ERROR', registerError)
+      console.error('WP Shopify error: ', registerError)
       return
     }
 
