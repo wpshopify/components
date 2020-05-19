@@ -3,7 +3,8 @@ import assign from 'lodash/assign'
 import mapValues from 'lodash/mapValues'
 import map from 'lodash/map'
 import { usePortal } from '../../../../common/hooks'
-import { FilterHook, __t } from '../../../../common/utils'
+import { FilterHook } from '../../../../common/utils'
+
 import { getFilterData } from '/Users/andrew/www/devil/devilbox-new/data/www/wpshopify-api'
 import { StorefrontContext } from '../../_state/context'
 import { StorefrontFilterOptionsGroup } from '../group'
@@ -43,9 +44,12 @@ function StorefrontOptionsWrapper() {
         type: 'UPDATE_NOTICES',
         payload: {
           type: 'error',
-          message: __t(
-            respError.message +
-              '. Occurred when fetching available filter options. Please clear your browser cache and reload the page.'
+          message: wp.i18n.sprintf(
+            wp.i18n.__(
+              '%s. Occurred when fetching available filter options. Please clear your browser cache and reload the page. ',
+              'wpshopify'
+            ),
+            respError.message
           ),
         },
       })
@@ -67,15 +71,27 @@ function StorefrontOptionsWrapper() {
   }, [])
 
   function TagsHeading() {
-    return <FilterHook name='default.storefront.tags.heading'>{__t('Tags')}</FilterHook>
+    return (
+      <FilterHook name='default.storefront.tags.heading'>
+        {wp.i18n.__('Tags', 'wpshopify')}
+      </FilterHook>
+    )
   }
 
   function VendorsHeading() {
-    return <FilterHook name='default.storefront.vendors.heading'>{__t('Vendors')}</FilterHook>
+    return (
+      <FilterHook name='default.storefront.vendors.heading'>
+        {wp.i18n.__('Vendors', 'wpshopify')}
+      </FilterHook>
+    )
   }
 
   function TypesHeading() {
-    return <FilterHook name='default.storefront.types.heading'>{__t('Types')}</FilterHook>
+    return (
+      <FilterHook name='default.storefront.types.heading'>
+        {wp.i18n.__('Types', 'wpshopify')}
+      </FilterHook>
+    )
   }
 
   return usePortal(

@@ -1,7 +1,6 @@
 import { ProductOptionContext } from '../../_state/context'
-import { createObj, isPairMatch, __t } from '../../../../../../../common/utils'
+import { createObj, isPairMatch } from '../../../../../../../common/utils'
 import isEmpty from 'lodash/isEmpty'
-const { useContext } = wp.element
 
 function ProductVariant({
   variant,
@@ -10,6 +9,7 @@ function ProductVariant({
   selectedOptions,
   children,
 }) {
+  const { useContext } = wp.element
   const [productOptionState, productOptionDispatch] = useContext(ProductOptionContext)
   const selectedVariant = createObj(variant.name, variant.value)
 

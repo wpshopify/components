@@ -5,7 +5,7 @@ import {
   useIsFirstRender,
 } from '/Users/andrew/www/devil/devilbox-new/data/www/wpshopify-hooks'
 import ProductPlaceholder from '../../products/product/placeholder'
-import { __t } from '../../../common/utils'
+
 import to from 'await-to-js'
 
 const { useContext, useEffect } = wp.element
@@ -40,7 +40,7 @@ const Item = wp.element.memo(function ({ children, limit = false, infiniteScroll
           type: 'UPDATE_NOTICES',
           payload: {
             type: 'error',
-            message: __t(error),
+            message: error,
           },
         })
 

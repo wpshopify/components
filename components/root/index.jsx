@@ -1,4 +1,4 @@
-import { FilterHook, __t } from '../../common/utils'
+import { FilterHook } from '../../common/utils'
 
 function RootElement({ payloadSettingsId, loadingMsg, componentType = 'products' }) {
   return (
@@ -6,7 +6,7 @@ function RootElement({ payloadSettingsId, loadingMsg, componentType = 'products'
       data-wpshopify-component
       data-wpshopify-component-type={componentType}
       data-wpshopify-payload-settings={payloadSettingsId}>
-      <FilterHook name='global.loading.text'>{__t(loadingMsg)}</FilterHook>
+      <FilterHook name='global.loading.text'>{loadingMsg}</FilterHook>
     </div>
   )
 }

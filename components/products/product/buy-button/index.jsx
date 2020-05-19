@@ -8,7 +8,7 @@ import { ItemsContext } from '../../../items/_state/context'
 import { usePortal } from '../../../../common/hooks'
 import { hasLink, getButtonText } from '../../../../common/settings'
 import { onlyAvailableOptionsFromVariants } from '../../../../common/variants'
-import { findPortalElement, FilterHook, __t } from '../../../../common/utils'
+import { findPortalElement, FilterHook } from '../../../../common/utils'
 
 /** @jsx jsx */
 import { jsx, css } from '@emotion/core'
@@ -72,7 +72,9 @@ function ProductBuyButton() {
             hasHTML={true}
             args={[productState]}>
             <Notice status='warning' isDismissible={false}>
-              <FilterHook name='notice.unavailable.text'>{__t('Out of stock')}</FilterHook>
+              <FilterHook name='notice.unavailable.text'>
+                {wp.i18n.__('Out of stock', 'wpshopify')}
+              </FilterHook>
             </Notice>
           </FilterHook>
         )}

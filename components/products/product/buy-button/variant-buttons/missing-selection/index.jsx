@@ -1,6 +1,6 @@
 /** @jsx jsx */
 import { jsx, css } from '@emotion/core'
-import { FilterHook, __t } from '../../../../../../common/utils'
+import { FilterHook } from '../../../../../../common/utils'
 
 function ProductVariantMissingSelection() {
   const selectStyles = css`
@@ -11,7 +11,7 @@ function ProductVariantMissingSelection() {
   return (
     <p css={selectStyles}>
       <FilterHook name='product.missingSelection.text'>
-        {__t('Please select a variation')}
+        {wp.i18n.__('Please select a variation', 'wpshopify')}
       </FilterHook>
     </p>
   )

@@ -1,4 +1,4 @@
-import { FilterHook, __t } from '../../../../common/utils'
+import { FilterHook } from '../../../../common/utils'
 /** @jsx jsx */
 import { jsx, css } from '@emotion/core'
 
@@ -25,7 +25,7 @@ function CartLineItemVariantTitle({ lineItem }) {
 
   return (
     <div css={badgeCSS} className='wps-cart-lineitem-variant-title'>
-      <FilterHook name='cart.lineItem.variant.title'>{__t(lineItem.title)}</FilterHook>
+      <FilterHook name='cart.lineItem.variant.title'>{wp.i18n.__(lineItem.title)}</FilterHook>
     </div>
   )
 }

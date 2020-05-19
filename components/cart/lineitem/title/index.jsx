@@ -1,4 +1,4 @@
-import { FilterHook, __t } from '../../../../common/utils'
+import { FilterHook } from '../../../../common/utils'
 import { mq } from '../../../../common/css'
 /** @jsx jsx */
 import { jsx, css } from '@emotion/core'
@@ -19,7 +19,7 @@ function CartLineItemTitle({ lineItem }) {
 
   return (
     <span className='wps-cart-lineitem-title-content col-9' css={CartLineItemTitleCSS}>
-      <FilterHook name='cart.lineItem.title.text'>{__t(lineItem.product.title)}</FilterHook>
+      <FilterHook name='cart.lineItem.title.text'>{lineItem.product.title}</FilterHook>
     </span>
   )
 }

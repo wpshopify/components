@@ -5,7 +5,6 @@ import {
 import { PaginationContext } from '../../_state/context'
 import { ItemsContext } from '../../../items/_state/context'
 import { usePortal } from '../../../../common/hooks'
-import { __t } from '../../../../common/utils'
 
 import to from 'await-to-js'
 const { useContext, useState } = wp.element
@@ -56,7 +55,7 @@ function PaginationPageSize() {
     if (shopifyError) {
       itemsDispatch({
         type: 'UPDATE_NOTICES',
-        payload: { type: 'error', message: __t(shopifyError) },
+        payload: { type: 'error', message: shopifyError },
       })
       itemsDispatch({ type: 'SET_IS_LOADING', payload: false })
       return

@@ -1,7 +1,7 @@
 import { ProductContext } from '../_state/context'
 import { ItemsContext } from '../../../items/_state/context'
 import { usePortal } from '../../../../common/hooks'
-import { findPortalElement, FilterHook, __t } from '../../../../common/utils'
+import { findPortalElement, FilterHook } from '../../../../common/utils'
 import { Link } from '../../../link'
 import { hasLink } from '../../../../common/settings'
 
@@ -63,7 +63,7 @@ function Title(props) {
       <FilterHook name='before.product.title' hasHTML={true} args={[props.product]} />
 
       <h2 itemProp='name' className={props.classList} css={props.styles}>
-        <FilterHook name='product.title.text'>{__t(props.title)}</FilterHook>
+        <FilterHook name='product.title.text'>{props.title}</FilterHook>
       </h2>
 
       <FilterHook name='after.product.title' hasHTML={true} args={[props.product]} />

@@ -1,6 +1,6 @@
 import { ProductBuyButtonContext } from '../../_state/context'
 import { useAnime, pulse } from '../../../../../../common/animations'
-import { FilterHook, __t } from '../../../../../../common/utils'
+import { FilterHook } from '../../../../../../common/utils'
 import { buttonCSS } from '../../../../../../common/css'
 import { ItemsContext } from '../../../../../items/_state/context'
 import { ProductOptionContext } from '../_state/context'
@@ -90,7 +90,7 @@ function ProductOptionTrigger() {
       onClick={onClick}
       ref={dropdownTrigger}
       css={[buttonCSS, customBackgroundColor]}>
-      <FilterHook name='products.option.title.text'>{__t(displayOptionName())}</FilterHook>
+      <FilterHook name='products.option.title.text'>{displayOptionName()}</FilterHook>
       <TriggerIcon />
     </button>
   )

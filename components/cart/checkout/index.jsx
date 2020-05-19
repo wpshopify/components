@@ -2,7 +2,7 @@ import { CartContext } from '../_state/context'
 import { Loader } from '../../loader'
 import { FilterHook } from '../../../common/utils'
 import { hasCustomCheckoutAttributes } from '../../../common/checkout'
-import { __t } from '../../../common/utils'
+
 import { buttonCSS } from '../../../common/css'
 
 /** @jsx jsx */
@@ -63,12 +63,11 @@ async function checkoutRedirect(checkout, componentDispatch, primaryDomain) {
     var [err, resp] = await to(addDiscount(discountCode, checkout))
 
     if (err) {
-      console.error('WP Shopify error ', err)
       componentDispatch({
         type: 'UPDATE_NOTICES',
         payload: {
           type: 'error',
-          message: __t(err),
+          message: err,
         },
       })
 
@@ -174,7 +173,7 @@ function CartCheckout() {
         type: 'UPDATE_NOTICES',
         payload: {
           type: 'error',
-          message: __t(shopInfoErrors),
+          message: shopInfoErrors,
         },
       })
     }
@@ -189,7 +188,7 @@ function CartCheckout() {
         type: 'UPDATE_NOTICES',
         payload: {
           type: 'error',
-          message: __t(checkoutWithLineitemsError),
+          message: checkoutWithLineitemsError,
         },
       })
     }
@@ -200,7 +199,7 @@ function CartCheckout() {
         type: 'UPDATE_NOTICES',
         payload: {
           type: 'error',
-          message: __t('No line items exist '),
+          message: wp.i18n.__('No line items exist', 'wpshopify'),
         },
       })
     }
@@ -219,7 +218,7 @@ function CartCheckout() {
           type: 'UPDATE_NOTICES',
           payload: {
             type: 'error',
-            message: __t(checkoutWithAttrsError),
+            message: checkoutWithAttrsError,
           },
         })
       }
@@ -272,7 +271,7 @@ function CartCheckoutButton({ buttonStyle, onCheckout, buttonRef }) {
       {cartState.isCheckingOut ? (
         <Loader isLoading={cartState.isCheckingOut} />
       ) : (
-        <FilterHook name='cart.checkout.text'>{__t(cartState.checkoutText)}</FilterHook>
+        <FilterHook name='cart.checkout.text'>{cartState.checkoutText}</FilterHook>
       )}
     </button>
   )

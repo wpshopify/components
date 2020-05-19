@@ -1,5 +1,5 @@
 import { formatPriceToCurrency } from '../../../../common/pricing/formatting'
-import { FilterHook, __t } from '../../../../common/utils'
+import { FilterHook } from '../../../../common/utils'
 import { mq } from '../../../../common/css'
 
 /** @jsx jsx */
@@ -32,11 +32,11 @@ function CartLineItemPriceSaleNotice({ lineItem }) {
   return (
     <>
       <span className='wps-cart-lineitem-price-sale' css={CartLineItemPriceSaleNoticeStyles}>
-        <FilterHook name='cart.lineItem.price.sale'>{__t('Sale!')}</FilterHook>
+        <FilterHook name='cart.lineItem.price.sale'>{wp.i18n.__('Sale!', 'wpshopify')}</FilterHook>
       </span>
       {lineItem.compareAtPriceV2 && (
         <span css={priceWasCSS}>
-          {__t('Was:')}
+          {wp.i18n.__('Was:', 'wpshopify')}
           {formatPriceToCurrency(
             lineItem.compareAtPriceV2.amount,
             lineItem.compareAtPriceV2.currencyCode

@@ -1,7 +1,7 @@
 import { StorefrontFilter } from '../../filter'
 import { StorefrontOptionsContext } from '../_state/context'
 import { StorefrontFilterOptionsGroupItem } from '../group-item'
-import { FilterHook, __t } from '../../../../common/utils'
+import { FilterHook } from '../../../../common/utils'
 import isEmpty from 'lodash/isEmpty'
 
 const { Notice } = wp.components
@@ -15,12 +15,12 @@ function StorefrontFilterOptionsGroup({ groupType, displayStyle, heading }) {
       <div className='wps-filter-content'>
         {storefrontOptionsState.isBootstrapping ? (
           <FilterHook name='storefront.group.loading.text'>
-            <p>{__t('Loading ' + groupType + ' ...')}</p>
+            <p>{wp.i18n.sprintf(wp.i18n.__('Loading %s ...', 'wpshopify'), groupType)}</p>
           </FilterHook>
         ) : isEmpty(storefrontOptionsState.filterOptions[groupType]) ? (
           <Notice status='info' isDismissible={false}>
             <FilterHook name='notice.storefront.noGroup.text'>
-              {__t('No ' + groupType + ' found')}
+              {wp.i18n.sprintf(wp.i18n.__('No %s found', 'wpshopify'), groupType)}
             </FilterHook>
           </Notice>
         ) : (

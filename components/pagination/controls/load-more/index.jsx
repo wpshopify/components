@@ -1,7 +1,7 @@
 import { PaginationContext } from '../../_state/context'
 import { ItemsContext } from '../../../items/_state/context'
 import { usePortal } from '../../../../common/hooks'
-import { FilterHook, __t } from '../../../../common/utils'
+import { FilterHook } from '../../../../common/utils'
 import { buttonCSS, loadMoreButtonCSS } from '../../../../common/css'
 import { fetchNextItems } from '../../../items/item/api'
 import { Loader } from '../../../loader'
@@ -75,7 +75,9 @@ function PaginationLoadMore() {
           {itemsState.isLoading ? (
             <Loader isLoading={itemsState.isLoading} />
           ) : (
-            <FilterHook name='pagination.loadMore.text'>{__t('Load more')}</FilterHook>
+            <FilterHook name='pagination.loadMore.text'>
+              {wp.i18n.__('Load more', 'wpshopify')}
+            </FilterHook>
           )}
         </button>
       </InView>

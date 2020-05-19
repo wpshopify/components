@@ -1,17 +1,17 @@
 import { v4 as uuidv4 } from 'uuid'
 import { usePortal } from '../../common/hooks'
-import { findPortalElement, __t } from '../../common/utils'
+import { findPortalElement } from '../../common/utils'
+
 import isString from 'lodash/isString'
 import isObject from 'lodash/isObject'
 
 /** @jsx jsx */
 import { jsx, css } from '@emotion/core'
-const { Notice } = wp.components
 
 function Notices({ notices, dropzone, noticeGroup }) {
-  function checkForErrorObj(maybeError) {
-    console.log('maybeError', maybeError)
+  const { Notice } = wp.components
 
+  function checkForErrorObj(maybeError) {
     if (maybeError instanceof Error) {
       return maybeError.message
     }
@@ -24,7 +24,10 @@ function Notices({ notices, dropzone, noticeGroup }) {
       return maybeError.message
     }
 
-    return 'Uh oh, it looks like an error occured. Please clear your browser cache and try again.'
+    return wp.i18n.__(
+      'Uh oh, it looks like an error occured. Please clear your browser cache and try again.',
+      'wpshopify'
+    )
   }
 
   const noticeInnerStyles = css`
@@ -43,7 +46,7 @@ function Notices({ notices, dropzone, noticeGroup }) {
         {notices.map((notice) => (
           <Notice key={uuidv4()} status={notice.type} isDismissible={false} css={noticeInnerStyles}>
             {console.log('noticenoticenotice', notice)}
-            {__t(checkForErrorObj(notice.message))}
+            {checkForErrorObj(notice.message)}
           </Notice>
         ))}
       </section>

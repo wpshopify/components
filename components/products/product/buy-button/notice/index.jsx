@@ -1,7 +1,7 @@
 import { ProductBuyButtonContext } from '../_state/context'
 /** @jsx jsx */
 import { jsx, css } from '@emotion/core'
-import { __t } from '../../../../../common/utils'
+
 const { useContext } = wp.element
 
 function ProductBuyButtonTextNotice({ quantityLeft }) {
@@ -23,7 +23,7 @@ function ProductBuyButtonTextNotice({ quantityLeft }) {
     buyButtonState.allOptionsSelected &&
     quantityLeft && (
       <span className='wps-notice-text' css={textNoticeCSS}>
-        {__t(`Only ${quantityLeft} left!`)}
+        {wp.i18n.sprintf(wp.i18n.__('Only %s left!', 'wpshopify'), quantityLeft)}
       </span>
     )
   )

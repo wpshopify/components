@@ -3,7 +3,7 @@ import ProductBuyButtonLeftInStock from '../left-in-stock'
 
 import { Loader } from '../../../../loader'
 import { useAnime, pulse, fadeInBottomSlow } from '../../../../../common/animations'
-import { FilterHook, __t } from '../../../../../common/utils'
+import { FilterHook } from '../../../../../common/utils'
 import { buttonCSS } from '../../../../../common/css'
 import { Link } from '../../../../link'
 
@@ -237,7 +237,7 @@ function AddButton({
         itemScope
         itemType='https://schema.org/BuyAction'
         className='wps-btn wps-btn-secondary wps-add-to-cart'
-        title={__t(buyButtonState.product.title)}
+        title={buyButtonState.product.title}
         data-wps-is-direct-checkout={isDirectCheckout ? '1' : '0'}
         onClick={(e) => {
           !hasLink && handleClick(e)
@@ -253,7 +253,7 @@ function AddButton({
 
       {hasNotice && (
         <Notice status={hasNotice.type} isDismissible={false}>
-          <FilterHook name='notice.product.addToCart.text'>{__t(hasNotice.message)}</FilterHook>
+          <FilterHook name='notice.product.addToCart.text'>{hasNotice.message}</FilterHook>
         </Notice>
       )}
     </>
@@ -292,7 +292,7 @@ function AddButtonText({ buttonText, addedToCart }) {
   return (
     <FilterHook name='product.addToCart.text'>
       <span css={AddButtonTextCSS} ref={addedTest}>
-        {__t(text)}
+        {text}
       </span>
     </FilterHook>
   )

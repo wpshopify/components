@@ -2,7 +2,7 @@ import {
   fetchNextPage,
   graphQuery,
 } from '/Users/andrew/www/devil/devilbox-new/data/www/wpshopify-api'
-import { __t } from '../../../common/utils'
+
 import to from 'await-to-js'
 import isEmpty from 'lodash/isEmpty'
 import has from 'lodash/has'
@@ -77,7 +77,7 @@ function fetchNextItems(itemsState, itemsDispatch) {
       if (resendInitialError) {
         itemsDispatch({
           type: 'UPDATE_NOTICES',
-          payload: { type: 'error', message: __t(resendInitialError) },
+          payload: { type: 'error', message: resendInitialError },
         })
 
         itemsDispatch({ type: 'SET_IS_LOADING', payload: false })
@@ -98,7 +98,7 @@ function fetchNextItems(itemsState, itemsDispatch) {
       if (initialError) {
         itemsDispatch({
           type: 'UPDATE_NOTICES',
-          payload: { type: 'error', message: __t(initialError) },
+          payload: { type: 'error', message: initialError },
         })
         itemsDispatch({ type: 'SET_IS_LOADING', payload: false })
 
@@ -125,7 +125,7 @@ function fetchNextItems(itemsState, itemsDispatch) {
         if (finalResultsError) {
           itemsDispatch({
             type: 'UPDATE_NOTICES',
-            payload: { type: 'error', message: __t(finalResultsError) },
+            payload: { type: 'error', message: finalResultsError },
           })
           itemsDispatch({ type: 'SET_IS_LOADING', payload: false })
 

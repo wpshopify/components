@@ -1,5 +1,5 @@
 import { formatPriceToCurrency } from '../../../../../common/pricing/formatting'
-import { FilterHook, __t } from '../../../../../common/utils'
+import { FilterHook } from '../../../../../common/utils'
 /** @jsx jsx */
 import { jsx, css } from '@emotion/core'
 
@@ -20,7 +20,7 @@ const ProductPriceSingle = React.forwardRef((props, ref) => {
       <span ref={ref} className='wps-product-individual-price' css={priceCSS}>
         {props.compareAt && !props.showPriceRange && (
           <FilterHook name='product.pricing.from.text' args={[props.compareAt]}>
-            {__t('Was: ')}
+            {wp.i18n.__('Was: ', 'wpshopify')}
           </FilterHook>
         )}
         {formatPriceToCurrency(props.price, props.currencyCode)}

@@ -1,9 +1,9 @@
-import { FilterHook, __t } from '../../../../common/utils'
+import { FilterHook } from '../../../../common/utils'
 
 function SearchButton() {
   return (
     <button className='wps-search-submit'>
-      <FilterHook name='search.button.text'>{__t('Search')}</FilterHook>
+      <FilterHook name='search.button.text'>{wp.i18n.__('Search', 'wpshopify')}</FilterHook>
     </button>
   )
 }

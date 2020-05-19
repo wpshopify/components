@@ -1,6 +1,6 @@
 import { CartContext } from '../_state/context'
 import { useDebounce } from 'use-debounce'
-import { FilterHook, __t } from '../../../common/utils'
+import { FilterHook } from '../../../common/utils'
 
 const { useContext, useState, useRef, useEffect } = wp.element
 
@@ -26,14 +26,18 @@ function CartNote() {
   return (
     <section className='wps-cart-notes'>
       <label
-        value={<FilterHook name='cart.note.label'>{__t('Checkout notes')}</FilterHook>}
+        value={
+          <FilterHook name='cart.note.label'>
+            {wp.i18n.__('Checkout notes', 'wpshopify')}
+          </FilterHook>
+        }
         htmlFor='wps-input-notes'>
-        <FilterHook name='default.cart.notes.label'>{__t('Notes:')}</FilterHook>
+        <FilterHook name='default.cart.notes.label'>{wp.i18n.__('Notes:', 'wpshopify')}</FilterHook>
       </label>
       <textarea
         placeholder={
           <FilterHook name='cart.note.placeholder'>
-            {__t(wpshopify.settings.general.cartNotesPlaceholder)}
+            {wpshopify.settings.general.cartNotesPlaceholder}
           </FilterHook>
         }
         id='wps-input-notes'

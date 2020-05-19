@@ -3,12 +3,11 @@ import { fadeInRightSlow, useAnime } from '../../../../common/animations'
 import { CartContext } from '../../_state/context'
 /** @jsx jsx */
 import { jsx, css } from '@emotion/core'
-import { FilterHook, __t } from '../../../../common/utils'
+import { FilterHook } from '../../../../common/utils'
 import { getCurrencyCodeFromPayload } from '../../../../common/pricing/data'
 
-const { useContext, useEffect } = wp.element
-
 function CartFooterTotal({ totalElement }) {
+  const { useContext, useEffect } = wp.element
   const animeFadeInRightSlow = useAnime(fadeInRightSlow)
   const [cartState] = useContext(CartContext)
 
@@ -41,7 +40,7 @@ function CartFooterTotal({ totalElement }) {
 function CartFooterSubtotalLabel() {
   return (
     <p className='wps-total-prefix'>
-      <FilterHook name='cart.subtotal.text'>{__t('Subtotal:')}</FilterHook>
+      <FilterHook name='cart.subtotal.text'>{wp.i18n.__('Subtotal:', 'wpshopify')}</FilterHook>
     </p>
   )
 }

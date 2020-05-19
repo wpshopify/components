@@ -1,5 +1,3 @@
-import { __t } from '../../../common/utils'
-
 function CartInitialState(options) {
   return {
     isUpdating: false,
@@ -21,8 +19,11 @@ function CartInitialState(options) {
     customAttributes: [],
     note: false,
     totalLineItems: 0,
-    title: wp.hooks.applyFilters('default.cart.title', __t('Shopping cart')),
-    checkoutText: wp.hooks.applyFilters('default.cart.checkout.text', __t('Begin checkout')),
+    title: wp.hooks.applyFilters('default.cart.title', wp.i18n.__('Shopping cart', 'wpshopify')),
+    checkoutText: wp.hooks.applyFilters(
+      'default.cart.checkout.text',
+      wp.i18n.__('Begin checkout', 'wpshopify')
+    ),
   }
 }
 

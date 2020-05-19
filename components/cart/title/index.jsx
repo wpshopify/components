@@ -1,4 +1,4 @@
-import { FilterHook, __t } from '../../../common/utils'
+import { FilterHook } from '../../../common/utils'
 
 function CartTitle({ cartState }) {
   return (
@@ -6,7 +6,7 @@ function CartTitle({ cartState }) {
       <FilterHook name='before.cart.title' hasHTML={true} args={[cartState]} />
 
       <h2 className='wps-cart-title'>
-        <FilterHook name='cart.title.text'>{__t(cartState.title)}</FilterHook>
+        <FilterHook name='cart.title.text'>{cartState.title}</FilterHook>
       </h2>
 
       <FilterHook name='after.cart.title' hasHTML={true} args={[cartState]} />

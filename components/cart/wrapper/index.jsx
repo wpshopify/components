@@ -1,7 +1,7 @@
 import { CartContext } from '../_state/context'
 import { useAction, useCartToggle } from '../../../common/hooks'
 import { findTotalCartQuantities } from '../../../common/cart'
-import { __t } from '../../../common/utils'
+
 import { useAnime, slideOutCart, slideInCart } from '../../../common/animations'
 import isEmpty from 'lodash/isEmpty'
 import {
@@ -45,7 +45,7 @@ function CartWrapper() {
         type: 'UPDATE_NOTICES',
         payload: {
           type: 'error',
-          message: __t(error),
+          message: error,
         },
       })
 
@@ -58,7 +58,7 @@ function CartWrapper() {
         type: 'UPDATE_NOTICES',
         payload: {
           type: 'error',
-          message: __t('No checkout instance available'),
+          message: wp.i18n.__('No checkout instance available', 'wpshopify'),
         },
       })
 
@@ -74,7 +74,7 @@ function CartWrapper() {
           type: 'UPDATE_NOTICES',
           payload: {
             type: 'error',
-            message: __t(buildInstancesError),
+            message: buildInstancesError,
           },
         })
 
@@ -86,7 +86,7 @@ function CartWrapper() {
           type: 'UPDATE_NOTICES',
           payload: {
             type: 'error',
-            message: __t('No store checkout or client instances were found.'),
+            message: wp.i18n.__('No store checkout or client instances were found.', 'wpshopify'),
           },
         })
 
@@ -109,7 +109,7 @@ function CartWrapper() {
         type: 'UPDATE_NOTICES',
         payload: {
           type: 'error',
-          message: __t(productsError),
+          message: productsError,
         },
       })
     } else {

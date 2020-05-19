@@ -1,4 +1,5 @@
-import { FilterHook, __t } from '../../../../common/utils'
+import { FilterHook } from '../../../../common/utils'
+
 /** @jsx jsx */
 import { jsx, css } from '@emotion/core'
 
@@ -21,7 +22,7 @@ function CartLineItemRemove({ onRemove }) {
 
   return (
     <span className='wps-cart-lineitem-remove' css={removeStyles} onClick={onRemove}>
-      <FilterHook name='cart.lineItem.remove.text'>{__t('Remove')}</FilterHook>
+      <FilterHook name='cart.lineItem.remove.text'>{wp.i18n.__('Remove', 'wpshopify')}</FilterHook>
     </span>
   )
 }

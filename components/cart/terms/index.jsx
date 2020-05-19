@@ -2,7 +2,6 @@ import { CartContext } from '../_state/context'
 /** @jsx jsx */
 import { jsx, css } from '@emotion/core'
 import { flexRowCSS } from '../../../common/css'
-import { __t } from '../../../common/utils'
 
 const { useContext, useState, useEffect } = wp.element
 
@@ -16,7 +15,7 @@ function CartTerms() {
 
   function termsLabel() {
     return {
-      __html: __t(wpshopify.settings.general.cartTermsContent),
+      __html: wpshopify.settings.general.cartTermsContent,
     }
   }
 

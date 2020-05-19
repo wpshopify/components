@@ -1,7 +1,7 @@
 import { PaginationContext } from '../_state/context'
 import { ItemsContext } from '../../items/_state/context'
 import { containerFluidCSS, rowCSS } from '../../../common/css'
-import { __t } from '../../../common/utils'
+
 import { v4 as uuidv4 } from 'uuid'
 
 /** @jsx jsx */
@@ -35,7 +35,7 @@ function PaginationItems({ children }) {
 
         {paginationState.controlsTouched && !itemsState.hasMoreItems && (
           <Notice status='info' isDismissible={false}>
-            {__t(itemsState.noResultsText)}
+            {itemsState.noResultsText}
           </Notice>
         )}
       </section>

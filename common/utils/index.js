@@ -137,10 +137,6 @@ function prettyDate(rawDate, formatting) {
   return format(new Date(rawDate), formatting)
 }
 
-function __t(string) {
-  return __(string, wpshopify.misc.textdomain)
-}
-
 function toCamel(s) {
   return s.replace(/([-_][a-z])/gi, ($1) => {
     return $1.toUpperCase().replace('-', '').replace('_', '')
@@ -181,7 +177,6 @@ export {
   getHashFromQueryParams,
   FilterHook,
   prettyDate,
-  __t,
   underscoreToCamel,
   decodeComponentPayloadSettings,
   isPairMatch,
