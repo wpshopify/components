@@ -64,8 +64,6 @@ function ProductAddButton({
   selectedVariant,
   addedToCart,
 }) {
-  console.log('<ProductAddButton> :: Render Start')
-
   const [ref, inView, entry] = useInView({
     threshold: 0,
     triggerOnce: true,
@@ -98,7 +96,6 @@ function ProductAddButton({
 }
 
 function AddButtonWrapper({ hasLink, payload, children, linkTo, linkTarget }) {
-  console.log('<AddButtonWrapper> :: Render Start')
   return hasLink ? (
     <Link type='products' payload={payload} linkTo={linkTo} target={linkTarget}>
       {children}
@@ -118,7 +115,6 @@ function AddButton({
   buttonText,
   addedToCart,
 }) {
-  console.log('<AddButton> :: Render Start')
   const [buyButtonState, buyButtonDispatch] = useContext(ProductBuyButtonContext)
   const [isCheckingOut, setIsCheckingOut] = useState(false)
   const [hasNotice, setHasNotice] = useState(false)
@@ -151,8 +147,6 @@ function AddButton({
       var variant = findSingleVariantFromPayload(buyButtonState)
     }
 
-    console.log('.......................... variant', variant)
-
     if (!variant) {
       // TODO: Handle this better
       console.error('WP Shopify error: handleClick variant undefined ')
@@ -164,8 +158,6 @@ function AddButton({
     }
 
     const lineItems = buildLineItemParams(variant, buyButtonState.quantity)
-
-    console.log('.......................... lineItems', lineItems)
 
     if (isDirectCheckout) {
       setIsCheckingOut(true)
@@ -210,7 +202,6 @@ function AddButton({
       checkoutRedirect(respNewCheckout, buyButtonDispatch)
     } else {
       let addToCartParams = buildAddToCartParams(lineItems, [variant])
-      console.log('.......................... addToCartParams', addToCartParams)
 
       buyButtonDispatch({
         type: 'SET_ALL_SELECTED_OPTIONS',
@@ -267,12 +258,6 @@ function AddButtonText({ buttonText, addedToCart }) {
   const addedTest = useRef()
 
   useEffect(() => {
-    console.log('addedToCartaddedToCartaddedToCartaddedToCartaddedToCart', addedToCart)
-
-    // setTimeout(() => {
-    //   animeFadeInBottomSlow(addedTest.current)
-    //   // setHasAdded(false)
-    // }, 2000)
     if (addedToCart) {
       setText('Added!')
       animeFadeInBottomSlow(addedTest.current)
@@ -286,7 +271,7 @@ function AddButtonText({ buttonText, addedToCart }) {
   const AddButtonTextCSS = css`
     display: block;
     margin: 0;
-    paddding: 0;
+    padding: 0;
   `
 
   return (

@@ -15,9 +15,6 @@ function CollectionProducts() {
     collectionDispatch({ type: 'UPDATE_PRODUCTS', payload: payload })
   }
 
-  console.log('collectionState.productOptions', collectionState.productOptions)
-  console.log('collectionState.products', collectionState.products)
-
   return (
     collectionState.products &&
     usePortal(

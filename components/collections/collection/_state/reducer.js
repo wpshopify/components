@@ -9,14 +9,7 @@ function CollectionReducer(state, action) {
         }
       }
 
-      console.log('........ state.productOptions', state.products)
-      console.log('........ action.payload', action.payload)
-
       var updatedPayload = update(state.products, { $push: action.payload })
-
-      // var okoko = update(state.products, { $set: updatedPayload })
-
-      // state.products = updatedPayload
 
       return {
         ...state,

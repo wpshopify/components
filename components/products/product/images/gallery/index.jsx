@@ -9,7 +9,6 @@ import { hasLink } from '../../../../../common/settings'
 const { useEffect, useContext, useRef } = wp.element
 
 function ProductGallery() {
-  console.log('<ProductGallery> :: Render Start')
   const [itemsState] = useContext(ItemsContext)
   const [productState] = useContext(ProductContext)
   const [galleryState, galleryDispatch] = useContext(ProductGalleryContext)

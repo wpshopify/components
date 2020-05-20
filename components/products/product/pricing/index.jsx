@@ -8,7 +8,6 @@ import { findPortalElement } from '../../../../common/utils'
 const { useContext } = wp.element
 
 function ProductPricing() {
-  console.log('<ProductPricing> :: Render Start')
   const [itemsState] = useContext(ItemsContext)
   const [productState] = useContext(ProductContext)
 

@@ -17,9 +17,6 @@ function ProductPricesCompareAt({
     position: relative;
   `
 
-  console.log('!! selectedVariant', selectedVariant)
-  console.log('!!! prices', prices)
-
   return (
     <div className='wps-pricing-compare-at' css={styles}>
       <ProductPrice

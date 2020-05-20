@@ -17,8 +17,6 @@ const { Notice } = wp.components
 const { useContext } = wp.element
 
 function ProductBuyButton() {
-  console.log('<ProductBuyButton> :: Render Start')
-
   const [itemsState] = useContext(ItemsContext)
   const [productState, productDispatch] = useContext(ProductContext)
 

@@ -10,7 +10,6 @@ const { useContext } = wp.element
 function CollectionTitle() {
   const [collectionState] = useContext(CollectionContext)
   const [itemsState] = useContext(ItemsContext)
-  console.log('collectionState', collectionState)
 
   function Title() {
     return (

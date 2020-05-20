@@ -7,8 +7,6 @@ function ItemsInitialState({
   customQueryParams = false,
   payload = false,
 }) {
-  console.log('component.connectionParams >>>>>>>', component)
-
   if (component.componentType === 'collections') {
     var connectionParams = {
       first: parseInt(component.payloadSettings.products.pageSize),
@@ -49,7 +47,7 @@ function ItemsInitialState({
     uniqueId: uniqid(),
     noResultsText: component.payloadSettings.noResultsText
       ? component.payloadSettings.noResultsText
-      : 'No items left',
+      : wp.i18n.__('No items left', 'wpshopify'),
     isLoading: false,
     hasMoreItems: true,
     notices: [],

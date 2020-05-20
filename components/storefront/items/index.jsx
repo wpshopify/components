@@ -26,8 +26,6 @@ function StorefrontItems() {
   )
 
   function buildOptions() {
-    console.log('itemsState >>>>>>', itemsState)
-
     return {
       payload: itemsState.payload,
       products:

@@ -3,9 +3,6 @@ import { CartClose } from '../close'
 import { useAction } from '../../../common/hooks'
 import { containerFluidCSS } from '../../../common/css'
 
-/** @jsx jsx */
-import { jsx, css } from '@emotion/core'
-
 function CartHeader({ cartState, cartDispatch }) {
   const isShowingTitle = useAction('show.cart.title', true)
   const isShowingClose = useAction('show.cart.close', true)

@@ -16,8 +16,6 @@ options, children, afterLoading, beforeLoading
 */
 
 function ItemWrapper(props) {
-  console.log('<ItemWrapper> :: Render Start', props)
-
   return (
     <ItemsProvider
       component={props.component}
@@ -36,8 +34,6 @@ function ItemWrapper(props) {
 }
 
 function Items(props) {
-  console.log('<Items> :: Render Start', props)
-
   return (
     props.options &&
     props.options.map((component) => (

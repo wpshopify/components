@@ -12,7 +12,7 @@ function ProductPriceSaleNotice({ showPriceRange, selectedVariant }) {
 
   return (
     <small className='wps-pricing-sale-notice' css={styles}>
-      Sale!
+      {wp.i18n.__('Sale!', 'wpshopify')}
     </small>
   )
 }

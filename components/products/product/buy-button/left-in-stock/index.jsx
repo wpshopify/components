@@ -12,10 +12,6 @@ function ProductBuyButtonLeftInStock({ payload, selectedVariant, inView }) {
   const isMounted = useIsMounted()
 
   useEffect(() => {
-    console.log('status', status)
-    console.log('inView', inView)
-    console.log('................................... 1 isMounted', isMounted)
-
     if (inView && status === 'idle') {
       fetchVariantInventoryManagement()
     }
@@ -42,8 +38,6 @@ function ProductBuyButtonLeftInStock({ payload, selectedVariant, inView }) {
 
   async function fetchVariantInventoryManagement() {
     const variantIDs = getVariantIds(payload)
-
-    console.log('................................... 3 isMounted', isMounted)
 
     if (!variantIDs.length) {
       console.warn('WP Shopify warning: No variant ids found for fetchVariantInventoryManagement')
@@ -73,7 +67,6 @@ function ProductBuyButtonLeftInStock({ payload, selectedVariant, inView }) {
       setStatus('resolved')
 
       var variantInventoryResp = sanitizeInventoryResponse(resp)
-      console.log('variantInventoryResp', variantInventoryResp)
 
       setVariantInventory(variantInventoryResp)
     }
@@ -110,23 +103,12 @@ function ProductBuyButtonLeftInStock({ payload, selectedVariant, inView }) {
   }
 
   useEffect(() => {
-    console.log('................................... 2 isMounted', isMounted)
-
-    console.log(
-      '<ProductBuyButton> :: useEffect[selectedVariant] :: selectedVariant',
-      selectedVariant
-    )
-
     if (!isMounted.current || !selectedVariant) {
       return
     }
 
     if (selectedVariant.availableForSale) {
-      console.log('selectedVariant.id', selectedVariant.id)
-
       let selectedVariantFound = findSelectedVariant(selectedVariant.id)
-
-      console.log('selectedVariantFound', selectedVariantFound)
 
       if (!selectedVariantFound) {
         console.warn(

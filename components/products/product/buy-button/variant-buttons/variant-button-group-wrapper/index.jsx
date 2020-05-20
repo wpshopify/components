@@ -8,8 +8,6 @@ import ProductVariantsButtons from '../variants'
 const { useRef, useContext } = wp.element
 
 function ProductVariantButtonGroupWrapper({ option }) {
-  console.log('<ProductVariantButtonGroupWrapper> :: Render Start')
-
   const [buyButtonState, buyButtonDispatch] = useContext(ProductBuyButtonContext)
   const [productOptionState] = useContext(ProductOptionContext)
   const variantGroup = useRef()

@@ -13,8 +13,6 @@ import { ProductImages } from '../images'
 const { useContext } = wp.element
 
 function ProductWrapper() {
-  console.log('<ProductWrapper> :: Render Start', itemsState)
-
   const [itemsState] = useContext(ItemsContext)
 
   const width =
@@ -22,15 +20,16 @@ function ProductWrapper() {
       ? '360px'
       : 100 / itemsState.payloadSettings.itemsPerRow + '%'
 
-  const styles = css`
+  const ProductWrapperCSS = css`
     padding: 0 1em 1em 1em;
     position: relative;
     z-index: 1;
     flex: 0 0 ${width};
+    margin-bottom: 2em;
   `
 
   return (
-    <div css={styles} className={'wps-item'}>
+    <div css={ProductWrapperCSS} className={'wps-item'}>
       {isShowingComponent(itemsState, 'images') && <ProductImages />}
       {isShowingComponent(itemsState, 'title') && <ProductTitle />}
       {isShowingComponent(itemsState, 'pricing') && <ProductPricing />}

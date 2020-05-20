@@ -128,7 +128,6 @@ function FilterHook({ name, children, hasHTML = false, args = [] }) {
       />
     )
   }
-  console.log('argsssssssssssssssssssssss', args)
 
   return wp.hooks.applyFilters(name, children, ...args)
 }

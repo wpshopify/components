@@ -5,8 +5,6 @@ import isEmpty from 'lodash/isEmpty'
 const { useState } = wp.element
 
 const ProductThumbnailImages = wp.element.memo(function ProductThumbnailImages({ product }) {
-  console.log('<ProductThumbnailImages> :: Render Start')
-
   const [didPreload, setDidPreload] = useState(false)
 
   function hasImages() {

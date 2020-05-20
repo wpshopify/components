@@ -85,7 +85,7 @@ function PaginationPageSize() {
       {itemsState.payloadSettings.paginationPageSize && (
         <div className='wps-component wps-component-sorting'>
           <label className='wps-sorting-heading wps-mr-2' htmlFor='wps-sorting'>
-            Page size:
+            {wp.i18n.__('Page size:', 'wpshopify')}
           </label>
 
           <select
@@ -95,7 +95,7 @@ function PaginationPageSize() {
             onChange={(e) => onChange(e)}
             disabled={itemsState.isLoading}>
             <option value='DEFAULT' disabled='disabled'>
-              Choose a size
+              {wp.i18n.__('Choose a size', 'wpshopify')}
             </option>
             <option value='10'>10</option>
             <option value='25'>25</option>

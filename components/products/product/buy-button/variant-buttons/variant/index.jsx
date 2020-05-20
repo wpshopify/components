@@ -3,7 +3,6 @@ import { jsx, css } from '@emotion/core'
 import { createObj, isPairMatch } from '../../../../../../common/utils'
 
 function ProductVariantButtonValue({ variant, onSelection, selectedOptions, isAvailableToSelect }) {
-  console.log('<ProductVariantButtonValue> :: Render Start', selectedOptions)
   const variantObj = createObj(variant.name, variant.value)
   const isSelected = isPairMatch(selectedOptions, variantObj)
   const isColorOption = variant.name.toLowerCase() === 'color'
@@ -59,7 +58,6 @@ function ProductVariantButtonValueButton({
   isAvailableToSelect,
   variantValue,
 }) {
-  console.log('<ProductVariantButtonValueButton> :: Render Start')
   return (
     <button
       css={defaultStyles}

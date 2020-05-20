@@ -9,10 +9,8 @@ import { hasLink } from '../../../../common/settings'
 import { jsx, css } from '@emotion/core'
 
 const { useContext } = wp.element
-const { __ } = wp.i18n
 
 function ProductTitle() {
-  console.log('<ProductTitle> :: Render Start')
   const [productState] = useContext(ProductContext)
   const [itemsState] = useContext(ItemsContext)
 

@@ -70,17 +70,13 @@ function useAction(hookName, defaultVal = false) {
 function usePortal(componentMarkup, containerElement = false, skipEmptyRender = false) {
   function renderPortal() {
     if (containerElement) {
-      var placeholderElement = containerElement.querySelector('.wpshopify-loading-placeholder')
-
-      if (placeholderElement) {
-        containerElement.removeChild(placeholderElement)
-      }
+      containerElement.classList.add('wpshopify-has-rendered')
 
       return wp.element.createPortal(componentMarkup, containerElement)
-    } else {
-      if (!skipEmptyRender) {
-        return componentMarkup
-      }
+    }
+
+    if (!skipEmptyRender) {
+      return componentMarkup
     }
   }
 

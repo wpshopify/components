@@ -5,7 +5,6 @@ import { jsx, css } from '@emotion/core'
 const { useEffect, useContext, useState } = wp.element
 
 function ProductQuantityInput({ minQuantity, maxQuantity, addedToCart }) {
-  console.log('<ProductQuantityInput> :: Render Start')
   const [buyButtonState, buyButtonDispatch] = useContext(ProductBuyButtonContext)
   const [quantityValue, setQuantityValue] = useState(() => minQuantity)
 

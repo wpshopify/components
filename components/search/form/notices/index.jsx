@@ -2,10 +2,14 @@ import { SearchContext } from '../../_state/context'
 
 const { useContext } = wp.element
 
-function SearchNotices({ isLoading }) {
+function SearchNotices() {
   const [searchState] = useContext(SearchContext)
 
-  return <div className='is-loading'>{searchState.isLoading ? 'Loading ⌛️' : ''}</div>
+  return (
+    <div className='is-loading'>
+      {searchState.isLoading ? wp.i18n.__('Loading ...', 'wpshopify') : ''}
+    </div>
+  )
 }
 
 export { SearchNotices }

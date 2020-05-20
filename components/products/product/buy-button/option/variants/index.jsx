@@ -17,9 +17,6 @@ function ProductVariantsDropdown({
   option,
   isOptionSelected,
 }) {
-  console.log('option', option)
-  console.log('availableVariants', availableVariants)
-
   const [productOptionState, productOptionDispatch] = useContext(ProductOptionContext)
 
   function isAvail(variant) {

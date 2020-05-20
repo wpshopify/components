@@ -7,8 +7,6 @@ function ProductVariantButtons({ options }) {
     margin: 1em 0;
   `
 
-  console.log('<ProductVariantButtons> :: Render Start', options)
-
   return (
     options && (
       <div className='wpshopify-products-variant-buttons' css={styles}>

@@ -110,7 +110,6 @@ function ProductPrice({ compareAt, prices, currencyCode, showPriceRange, selecte
       }
 
       setRegPrice(selectedVariant.priceV2.amount)
-      console.log('singlePriceElement.current', singlePriceElement.current)
 
       if (!compareAt) {
         animeFadeInRightSlow(singlePriceElement.current)

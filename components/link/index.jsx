@@ -1,5 +1,8 @@
 import { getItemLink, liteSyncAndWordPressLink } from '../../common/settings'
 
+/** @jsx jsx */
+import { jsx, css } from '@emotion/core'
+
 function Link({
   type,
   payload,
@@ -11,6 +14,10 @@ function Link({
   disableLink,
 }) {
   const className = 'wps-' + type + '-link' + ' ' + classNames
+
+  const linkCSS = css`
+    text-decoration: none;
+  `
 
   function getTarget(target) {
     if (target) {
@@ -29,6 +36,7 @@ function Link({
         <a
           href={manualLink ? manualLink : getItemLink(payload, type, linkTo)}
           className={className}
+          css={linkCSS}
           target={wp.hooks.applyFilters('misc.link.target', getTarget(target), type, payload)}>
           {children}
         </a>

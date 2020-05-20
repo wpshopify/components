@@ -2,7 +2,6 @@ import ProductQuantityLabel from './label'
 import { ProductQuantityInput } from './input'
 
 function ProductQuantity({ showLabel, labelText, minQuantity, maxQuantity, addedToCart }) {
-  console.log('<ProductQuantity> :: Render Start')
   return (
     <div className='wps-component wps-component-products-quantity'>
       <div className='wps-form-control row wps-product-quantity-wrapper m-0'>

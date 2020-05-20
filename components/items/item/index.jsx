@@ -15,11 +15,7 @@ const Item = wp.element.memo(function ({ children, limit = false, infiniteScroll
   const isMounted = useIsMounted()
   const isFirstRender = useIsFirstRender()
 
-  console.log('<Item> :: Render Start itemsState', itemsState)
-
   async function getNewItems(itemsState) {
-    console.log('<Item> :: getNewItems BEFORE')
-
     itemsDispatch({
       type: 'SET_IS_LOADING',
       payload: true,
@@ -79,7 +75,6 @@ const Item = wp.element.memo(function ({ children, limit = false, infiniteScroll
   */
 
   useEffect(() => {
-    console.log('<Item> :: useEffect[itemsState.queryParams] top', itemsState.hasParentPayload)
     if (itemsState.hasParentPayload) {
       return
     }
@@ -90,8 +85,6 @@ const Item = wp.element.memo(function ({ children, limit = false, infiniteScroll
       itemsState.beforeLoading()
     }
 
-    console.log('<Item> :: useEffect[itemsState.queryParams] bottom')
-
     getNewItems(itemsState)
   }, [itemsState.queryParams])
 
@@ -101,7 +94,6 @@ const Item = wp.element.memo(function ({ children, limit = false, infiniteScroll
   
   */
   useEffect(() => {
-    console.log('<Item> :: useEffect[limit, infiniteScroll] top')
     if (itemsState.isLoading || isFirstRender.current) {
       return
     }
@@ -109,8 +101,6 @@ const Item = wp.element.memo(function ({ children, limit = false, infiniteScroll
     if (!itemsState.payload) {
       return
     }
-
-    console.log('<Item> :: useEffect[limit, infiniteScroll] bottom')
 
     itemsDispatch({
       type: 'UPDATE_PAYLOAD',

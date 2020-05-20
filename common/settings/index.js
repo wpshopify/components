@@ -87,22 +87,22 @@ function getButtonText(itemsState) {
   }
 
   if (isDirectCheckout) {
-    return 'Checkout'
+    return wp.i18n.__('Checkout', 'wpshopify')
   }
 
   if (hasLink(itemsState)) {
-    return 'View product'
+    return wp.i18n.__('View product', 'wpshopify')
   }
 
   if (itemsState.payloadSettings.addToCartButtonText === 'View product') {
-    return 'View product'
+    return wp.i18n.__('View product', 'wpshopify')
   }
 
   if (itemsState.payloadSettings.addToCartButtonText === 'Checkout') {
-    return 'Checkout'
+    return wp.i18n.__('Checkout', 'wpshopify')
   }
 
-  return 'Add to cart'
+  return wp.i18n.__('Add to cart', 'wpshopify')
 }
 
 function shopHasInfo(shop) {
