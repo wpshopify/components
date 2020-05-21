@@ -23,13 +23,13 @@
       "@emotion/core": "^10.0.28",
       "@tippy.js/react": "^3.1.1",
       "@tippyjs/react": "^4.0.2",
-      "@wordpress/block-editor": "^3.10.0",
-      "@wordpress/components": "^9.5.0",
-      "@wordpress/element": "^2.13.1",
+      "@wordpress/block-editor": "^3.11.0",
+      "@wordpress/components": "^9.6.0",
+      "@wordpress/element": "^2.14.0",
       "@wordpress/hooks": "^2.8.0",
       "@wordpress/i18n": "^3.12.0",
-      "@wordpress/nux": "^3.15.0",
-      "@wordpress/rich-text": "^3.15.0",
+      "@wordpress/nux": "^3.16.0",
+      "@wordpress/rich-text": "^3.16.0",
       "@wpshopify/api": "^0.2.5",
       "accounting": "^0.4.1",
       "animejs": "^3.2.0",
@@ -38,7 +38,7 @@
       "copy-to-clipboard": "^3.3.1",
       "country-data": "0.0.31",
       "custom-event": "^1.0.1",
-      "date-fns": "^2.13.0",
+      "date-fns": "^2.14.0",
       "drift-zoom": "^1.4.0",
       "geolocator": "^2.1.5",
       "hookrouter": "^1.2.3",
@@ -62,7 +62,7 @@
       "tippy.js": "^6.2.3",
       "uniqid": "^5.2.0",
       "use-debounce": "^3.4.2",
-      "uuid": "^8.0.0"
+      "uuid": "^8.1.0"
    },
    "devDependencies": {
       "@babel/core": "^7.9.6",
@@ -96,7 +96,7 @@
       "progress-bar-webpack-plugin": "^2.1.0",
       "react-testing-library": "^8.0.1",
       "webpack": "^4.43.0",
-      "webpack-bundle-analyzer": "^3.7.0",
+      "webpack-bundle-analyzer": "^3.8.0",
       "webpack-cli": "^3.3.11"
    }
 }

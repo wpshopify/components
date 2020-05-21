@@ -48,21 +48,36 @@ const Item = wp.element.memo(function ({ children, limit = false, infiniteScroll
 
     itemsDispatch({ type: 'SET_IS_LOADING', payload: false })
 
-    itemsDispatch({
-      type: 'UPDATE_TOTAL_SHOWN',
-      payload: newItems.length,
-    })
+    if (!newItems) {
+      itemsDispatch({
+        type: 'UPDATE_TOTAL_SHOWN',
+        payload: 0,
+      })
 
-    itemsDispatch({
-      type: 'UPDATE_PAYLOAD',
-      payload: {
-        items: newItems,
-        replace: true,
-      },
-    })
+      itemsDispatch({
+        type: 'UPDATE_PAYLOAD',
+        payload: {
+          items: [],
+          replace: true,
+        },
+      })
+    } else {
+      itemsDispatch({
+        type: 'UPDATE_TOTAL_SHOWN',
+        payload: newItems.length,
+      })
 
-    if (itemsState.afterLoading) {
-      itemsState.afterLoading(newItems)
+      itemsDispatch({
+        type: 'UPDATE_PAYLOAD',
+        payload: {
+          items: newItems,
+          replace: true,
+        },
+      })
+
+      if (itemsState.afterLoading) {
+        itemsState.afterLoading(newItems)
+      }
     }
 
     console.log('<Item> :: getNewItems AFTER')

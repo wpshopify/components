@@ -20,6 +20,8 @@ function PaginationLoadMore() {
   const isFirstRender = useRef(true)
 
   function onNextPage() {
+    console.log('onNextPage')
+
     paginationDispatch({ type: 'SET_CONTROLS_TOUCHED', payload: true })
     fetchNextItems(itemsState, itemsDispatch)
   }

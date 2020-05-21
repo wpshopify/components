@@ -86,11 +86,7 @@ function ProductAddButton({
           addedToCart={addedToCart}
         />
       </AddButtonWrapper>
-      <ProductBuyButtonLeftInStock
-        payload={payload}
-        inView={inView}
-        selectedVariant={selectedVariant}
-      />
+      <ProductBuyButtonLeftInStock payload={payload} selectedVariant={selectedVariant} />
     </div>
   )
 }

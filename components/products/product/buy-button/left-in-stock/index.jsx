@@ -11,11 +11,11 @@ function ProductBuyButtonLeftInStock({ payload, selectedVariant, inView }) {
   const [variantInventory, setVariantInventory] = useState(false)
   const isMounted = useIsMounted()
 
-  useEffect(() => {
-    if (inView && status === 'idle') {
-      fetchVariantInventoryManagement()
-    }
-  }, [inView])
+  //   useEffect(() => {
+  //     if (inView && status === 'idle') {
+  //       fetchVariantInventoryManagement()
+  //     }
+  //   }, [inView])
 
   function getVariantIds(payload) {
     if (!payload.variants) {

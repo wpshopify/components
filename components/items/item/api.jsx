@@ -52,6 +52,7 @@ function fetchNextItems(itemsState, itemsDispatch) {
     if (isEmpty(itemsState.payload)) {
       return
     }
+    console.log('SET_IS_LOADING')
 
     itemsDispatch({ type: 'SET_IS_LOADING', payload: true })
 
