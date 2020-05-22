@@ -28,13 +28,14 @@ const flexColSmallCSS = css`
 
 const rowCSS = css`
   && {
-    padding: 0 1em;
-    margin: 0 auto;
+    padding: 0;
+    margin: 0;
     display: flex;
     flex-wrap: wrap;
+    justify-content: space-between;
     box-sizing: border-box;
     flex: 1;
-    width: calc(100% - 2em);
+    width: 100%;
 
     ${mq('small')} {
       width: 100%;

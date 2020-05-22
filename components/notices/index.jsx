@@ -8,7 +8,7 @@ import isObject from 'lodash/isObject'
 /** @jsx jsx */
 import { jsx, css } from '@emotion/core'
 
-function Notices({ notices, dropzone, noticeGroup }) {
+function Notices({ notices, dropzone = false, noticeGroup = '' }) {
   const { Notice } = wp.components
 
   function checkForErrorObj(maybeError) {
@@ -36,7 +36,7 @@ function Notices({ notices, dropzone, noticeGroup }) {
   `
 
   const noticeStyles = css`
-    max-width: 500px;
+    max-width: 600px;
     margin: 0 auto;
   `
 
@@ -45,7 +45,6 @@ function Notices({ notices, dropzone, noticeGroup }) {
       <section className={'wps-notices-' + noticeGroup} css={noticeStyles}>
         {notices.map((notice) => (
           <Notice key={uuidv4()} status={notice.type} isDismissible={false} css={noticeInnerStyles}>
-            {console.log('noticenoticenotice', notice)}
             {checkForErrorObj(notice.message)}
           </Notice>
         ))}

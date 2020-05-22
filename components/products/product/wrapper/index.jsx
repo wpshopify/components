@@ -17,11 +17,11 @@ function ProductWrapper() {
 
   const width =
     itemsState.payloadSettings.itemsPerRow === 1 || itemsState.payloadSettings.itemsPerRow === 2
-      ? '360px'
-      : 100 / itemsState.payloadSettings.itemsPerRow + '%'
+      ? '300px'
+      : 95 / itemsState.payloadSettings.itemsPerRow + '%'
 
   const ProductWrapperCSS = css`
-    padding: 0 1em 1em 1em;
+    padding: 0;
     position: relative;
     z-index: 1;
     flex: 0 0 ${width};

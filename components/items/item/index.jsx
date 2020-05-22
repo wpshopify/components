@@ -14,6 +14,7 @@ const Item = wp.element.memo(function ({ children, limit = false, infiniteScroll
   const [itemsState, itemsDispatch] = useContext(ItemsContext)
   const isMounted = useIsMounted()
   const isFirstRender = useIsFirstRender()
+  const { Notice } = wp.components
 
   async function getNewItems(itemsState) {
     itemsDispatch({
@@ -48,7 +49,7 @@ const Item = wp.element.memo(function ({ children, limit = false, infiniteScroll
 
     itemsDispatch({ type: 'SET_IS_LOADING', payload: false })
 
-    if (!newItems) {
+    if (!newItems || !newItems.length) {
       itemsDispatch({
         type: 'UPDATE_TOTAL_SHOWN',
         payload: 0,
@@ -126,7 +127,15 @@ const Item = wp.element.memo(function ({ children, limit = false, infiniteScroll
     })
   }, [limit, infiniteScroll])
 
-  return itemsState.payload ? children : <ProductPlaceholder />
+  return !itemsState.payload ? (
+    <ProductPlaceholder />
+  ) : !itemsState.payload.length ? (
+    <Notice status='info' isDismissible={false}>
+      {itemsState.noResultsText}
+    </Notice>
+  ) : (
+    children
+  )
 })
 
 export { Item }

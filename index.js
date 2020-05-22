@@ -12,8 +12,10 @@ export { Storefront } from './components/storefront'
 export { Search } from './components/search'
 export { Collections } from './components/collections'
 export { Items } from './components/items'
+export { Notices } from './components/notices'
 export { decodeComponentPayloadSettings, underscoreToCamel } from './common/utils'
 export { useAction } from './common/hooks'
+export { updateNoticesState } from './common/state'
 
 export { RootElement } from './components/root'
 
