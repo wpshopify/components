@@ -1,11 +1,8 @@
 import ProductPlaceholder from './components/products/product/placeholder'
 
 export { ProductPlaceholder }
-
 export { Product } from './components/products/product'
 export { Products } from './components/products'
-
-export { Pagination } from './components/pagination'
 export { Cart } from './components/cart'
 export { Shop } from './components/shop'
 export { Storefront } from './components/storefront'

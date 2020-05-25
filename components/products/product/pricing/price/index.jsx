@@ -48,16 +48,23 @@ function ProductPrice({ compareAt, prices, currencyCode, showPriceRange, selecte
   const singlePriceElement = useRef()
   const [regPrice, setRegPrice] = useState(() => getFirstPrice())
   const [comparePrice, setComparePrice] = useState(() => firstPriceCompareAt(prices))
-  const isShowing = useAction('show.product.pricing', true)
   const animeFadeInRightSlow = useAnime(fadeInRightSlow)
 
   function isRegAndCompareSame() {
+    console.log('isRegAndCompareSame 1', prices)
+
     if (!showPriceRange && compareAt) {
-      if (firstPriceCompareAt(prices) === firstRegPrice(prices)) {
+      console.log('isRegAndCompareSame 2')
+
+      var firstCompare = firstPriceCompareAt(prices)
+      var firstReg = firstRegPrice(prices)
+
+      if (firstCompare === firstReg) {
+        console.log('isRegAndCompareSame 3', prices)
         return true
       }
     }
-
+    console.log('isRegAndCompareSame 4')
     return false
   }
 
@@ -78,6 +85,7 @@ function ProductPrice({ compareAt, prices, currencyCode, showPriceRange, selecte
       }
     } else {
       if (showPriceRange) {
+        console.log('prices.regPrices', prices.regPrices)
         return min(prices.regPrices)
       } else {
         return firstRegPrice(prices)
@@ -122,13 +130,12 @@ function ProductPrice({ compareAt, prices, currencyCode, showPriceRange, selecte
 
   const priceWrapperCSS = css`
     line-height: 1;
-    margin: 15px 0;
+    margin: ${!selectedVariant && compareAt && showPriceRange ? '-15px 0 10px 0' : '0 0 10px 0'};
     display: block;
   `
 
   return (
-    !isRegAndCompareSame() &&
-    isShowing && (
+    !isRegAndCompareSame() && (
       <span
         itemScope
         itemProp='offers'

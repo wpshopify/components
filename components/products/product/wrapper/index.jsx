@@ -1,3 +1,4 @@
+import { ProductContext } from '../_state/context'
 import { ItemsContext } from '../../../items/_state/context'
 import { isShowingComponent } from '../../../../common/components'
 
@@ -14,22 +15,22 @@ const { useContext } = wp.element
 
 function ProductWrapper() {
   const [itemsState] = useContext(ItemsContext)
-
-  const width =
-    itemsState.payloadSettings.itemsPerRow === 1 || itemsState.payloadSettings.itemsPerRow === 2
-      ? '300px'
-      : 95 / itemsState.payloadSettings.itemsPerRow + '%'
+  const [productState, productDispatch] = useContext(ProductContext)
 
   const ProductWrapperCSS = css`
     padding: 0;
     position: relative;
-    z-index: 1;
-    flex: 0 0 ${width};
-    margin-bottom: 2em;
+    margin: 0;
   `
 
+  function onMouseOver() {
+    if (!productState.isTouched) {
+      productDispatch({ type: 'SET_IS_TOUCHED', payload: true })
+    }
+  }
+
   return (
-    <div css={ProductWrapperCSS} className={'wps-item'}>
+    <div css={ProductWrapperCSS} className={'wps-item'} onMouseOver={onMouseOver}>
       {isShowingComponent(itemsState, 'images') && <ProductImages />}
       {isShowingComponent(itemsState, 'title') && <ProductTitle />}
       {isShowingComponent(itemsState, 'pricing') && <ProductPricing />}

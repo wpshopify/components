@@ -143,6 +143,7 @@ function fetchNextItems(itemsState, itemsDispatch) {
       type: 'UPDATE_TOTAL_SHOWN',
       payload: nextItems.length,
     })
+    console.log('UPDATE_PAYLOAD 11111')
 
     itemsDispatch({
       type: 'UPDATE_PAYLOAD',
@@ -167,7 +168,7 @@ function updatePayloadState(newItems) {
     type: 'UPDATE_TOTAL_SHOWN',
     payload: newItems.length,
   })
-
+  console.log('UPDATE_PAYLOAD 222222')
   itemsDispatch({
     type: 'UPDATE_PAYLOAD',
     payload: {

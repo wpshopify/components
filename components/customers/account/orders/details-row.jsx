@@ -1,4 +1,4 @@
-import { formatPriceToCurrency } from '../../../../common/pricing/formatting'
+import PrettyPrice from '../../../../common/pricing/pretty'
 import { addCustomSizingToImageUrl } from '../../../../common/images'
 import { ShopContext } from '../../../shop/_state/context'
 
@@ -27,7 +27,7 @@ function OrderDetailsRow({ lineItem }) {
               src: lineItem.variant.image.originalSrc,
               width: 100,
               height: 100,
-              crop: 'center'
+              crop: 'center',
             })}
             alt={lineItem.variant.image.altText}
             className='lazyload'
@@ -37,11 +37,17 @@ function OrderDetailsRow({ lineItem }) {
       </Td>
       <Td>{lineItem.variant.sku}</Td>
       <Td align='right'>
-        {formatPriceToCurrency(lineItem.variant.priceV2.amount, shopState.info.currencyCode)}
+        <PrettyPrice
+          price={lineItem.variant.priceV2.amount}
+          currencyCode={shopState.info.currencyCode}
+        />
       </Td>
       <Td align='right'>{lineItem.quantity}</Td>
       <Td align='right'>
-        {formatPriceToCurrency(lineItem.variant.priceV2.amount, shopState.info.currencyCode)}
+        <PrettyPrice
+          price={shopState.info.currencyCode}
+          currencyCode={shopState.info.currencyCode}
+        />
       </Td>
     </tr>
   )

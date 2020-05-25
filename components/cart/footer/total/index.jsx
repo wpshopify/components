@@ -5,6 +5,7 @@ import { CartContext } from '../../_state/context'
 import { jsx, css } from '@emotion/core'
 import { FilterHook } from '../../../../common/utils'
 import { getCurrencyCodeFromPayload } from '../../../../common/pricing/data'
+import PrettyPrice from '../../../../common/pricing/pretty'
 
 function CartFooterTotal({ totalElement }) {
   const { useContext, useEffect } = wp.element
@@ -48,7 +49,7 @@ function CartFooterSubtotalLabel() {
 function CartFooterSubtotalAmount({ total, currencyCode, totalElement }) {
   return (
     <p className='wps-total-amount col p-0' ref={totalElement}>
-      {formatPriceToCurrency(total, currencyCode)}
+      <PrettyPrice price={total} currencyCode={currencyCode} />
     </p>
   )
 }

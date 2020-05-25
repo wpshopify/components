@@ -7,7 +7,7 @@ function ProductReducer(state, action) {
       if (!action.payload) {
         return {
           ...state,
-          selectedVariant: false
+          selectedVariant: false,
         }
       }
 
@@ -16,14 +16,14 @@ function ProductReducer(state, action) {
         selectedVariant: findVariantFromSelectedOptions(
           action.payload.product,
           action.payload.selectedOptions
-        )
+        ),
       }
     }
 
     case 'SET_HAS_MANY_IMAGES': {
       return {
         ...state,
-        hasManyImages: update(state.hasManyImages, { $set: action.payload })
+        hasManyImages: update(state.hasManyImages, { $set: action.payload }),
       }
     }
 
@@ -31,8 +31,17 @@ function ProductReducer(state, action) {
       return {
         ...state,
         addedToCart: update(state.addedToCart, {
-          $set: { variant: action.payload, at: new Date() }
-        })
+          $set: { variant: action.payload, at: new Date() },
+        }),
+      }
+    }
+
+    case 'SET_IS_TOUCHED': {
+      return {
+        ...state,
+        isTouched: update(state.isTouched, {
+          $set: action.payload,
+        }),
       }
     }
 

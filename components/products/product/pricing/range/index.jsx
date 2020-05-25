@@ -13,7 +13,7 @@ function ProductPricingRange({
   selectedVariant,
 }) {
   const showPriceRangeStyles = css`
-    margin-top: ${showPriceRange && compareAt ? '-5px' : '0'};
+    margin-top: 0;
     position: ${showPriceRange && compareAt ? 'relative' : 'static'};
     display: block;
   `

@@ -5,7 +5,6 @@ import { createObj, isPairMatch } from '../../../../../../common/utils'
 function ProductVariantButtonValue({ variant, onSelection, selectedOptions, isAvailableToSelect }) {
   const variantObj = createObj(variant.name, variant.value)
   const isSelected = isPairMatch(selectedOptions, variantObj)
-  const isColorOption = variant.name.toLowerCase() === 'color'
   const border = isSelected ? '#415aff' : 'black'
   const color = isSelected ? 'white' : 'black'
   const backgroundColor = isSelected ? '#415aff' : 'transparent'
@@ -26,19 +25,15 @@ function ProductVariantButtonValue({ variant, onSelection, selectedOptions, isAv
       cursor: ${!isSelected ? 'pointer' : 'auto'};
       opacity: ${!isSelected ? 0.6 : 1};
     }
-  `
 
-  if (isColorOption) {
-    defaultStyles = css`
-      ${wp.hooks.applyFilters(
-        'product.variant.styles',
-        defaultStyles,
-        variant,
-        isSelected,
-        isAvailableToSelect
-      )}
-    `
-  }
+    ${wp.hooks.applyFilters(
+      'product.variant.styles',
+      defaultStyles,
+      variant,
+      isSelected,
+      isAvailableToSelect
+    )}
+  `
 
   return (
     <ProductVariantButtonValueButton

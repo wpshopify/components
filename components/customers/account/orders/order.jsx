@@ -1,4 +1,4 @@
-import { formatPriceToCurrency } from '../../../../common/pricing/formatting'
+import PrettyPrice from '../../../../common/pricing/pretty'
 import { prettyDate } from '../../../../common/utils'
 import { CustomersContext } from '../../_state/context'
 import { A } from 'hookrouter'
@@ -61,10 +61,10 @@ function Order({ order }) {
         <FulfillmentStatus order={order.node} />
       </Td>
       <Td>
-        {formatPriceToCurrency(
-          order.node.totalPriceV2.amount,
-          order.node.totalPriceV2.currencyCode
-        )}
+        <PrettyPrice
+          price={order.node.totalPriceV2.amount}
+          currencyCode={order.node.totalPriceV2.currencyCode}
+        />
       </Td>
     </tr>
   )

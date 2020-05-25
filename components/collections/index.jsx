@@ -1,10 +1,9 @@
 import { Collection } from './collection'
-import { Pagination } from '../pagination'
 import { ItemsContext } from '../items/_state/context'
-
-const { useContext } = wp.element
+import Pagination from '../pagination'
 
 function Collections() {
+  const { useContext } = wp.element
   const [itemsState] = useContext(ItemsContext)
 
   return (

@@ -47,6 +47,8 @@ function maybeCachePayload(state, updatedPayload, updatedHasMoreItems, hasExisti
     totalShown: updatedPayload.length,
   }
 
+  console.log('newPayloadstuff', newPayloadstuff)
+
   if (hasExistingCache) {
     return newPayloadstuff
   }
@@ -119,6 +121,8 @@ function updatePayload(state, newPayload, skipCache, replace) {
 }
 
 function checkHasMore(payloadSettings, payload) {
+  console.log('checkHasMore', payload)
+
   if (!payload || !payloadSettings.pageSize || !payloadSettings.pagination) {
     return false
   }

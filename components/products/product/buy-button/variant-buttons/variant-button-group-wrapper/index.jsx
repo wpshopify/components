@@ -13,9 +13,9 @@ function ProductVariantButtonGroupWrapper({ option }) {
   const variantGroup = useRef()
 
   const labelStyles = css`
-    label {
-      margin-botton: 5px;
-    }
+    margin-bottom: 5px;
+    font-weight: bold;
+    font-size: 15px;
   `
 
   const groupStyles = css`

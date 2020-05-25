@@ -5,6 +5,9 @@ import { ProductImage } from '../image'
 import isNull from 'lodash/isNull'
 import Drift from 'drift-zoom'
 
+/** @jsx jsx */
+import { jsx, css } from '@emotion/core'
+
 const { useEffect, useContext, useRef, useState } = wp.element
 
 function getVariantImage(variant) {
@@ -25,6 +28,9 @@ function ProductFeaturedImage() {
   const [productState] = useContext(ProductContext)
   const [galleryState] = useContext(ProductGalleryContext)
   const [featImage, setFeatImage] = useState(() => galleryState.featImage)
+  const ProductFeaturedImageCSS = css`
+    position: relative;
+  `
 
   function driftOptions() {
     return wp.hooks.applyFilters('default.image.zoom.options', {
@@ -78,7 +84,7 @@ function ProductFeaturedImage() {
   }, [productState.selectedVariant])
 
   return (
-    <div className='wps-gallery-featured-wrapper' ref={paneElement}>
+    <div className='wps-gallery-featured-wrapper' css={ProductFeaturedImageCSS} ref={paneElement}>
       <div className='wps-product-image-wrapper'>
         {featImage ? (
           <ProductImage isFeatured={true} image={featImage} />

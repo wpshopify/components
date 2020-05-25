@@ -20,8 +20,6 @@ function PaginationLoadMore() {
   const isFirstRender = useRef(true)
 
   function onNextPage() {
-    console.log('onNextPage')
-
     paginationDispatch({ type: 'SET_CONTROLS_TOUCHED', payload: true })
     fetchNextItems(itemsState, itemsDispatch)
   }
@@ -66,7 +64,7 @@ function PaginationLoadMore() {
   }
 
   return usePortal(
-    shouldShowLoadMore() && (
+    itemsState.hasMoreItems && (
       <InView rootMargin='10px 0px 0px 0px' as='div' onChange={onViewChange}>
         <button
           css={[buttonCSS, loadMoreButtonCSS]}

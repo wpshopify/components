@@ -2,10 +2,22 @@ import { ProductThumbnailImage } from '../thumbnail'
 import { doFeaturedSizing } from '../../../../../common/images'
 import { v4 as uuidv4 } from 'uuid'
 import isEmpty from 'lodash/isEmpty'
-const { useState } = wp.element
+
+/** @jsx jsx */
+import { jsx, css } from '@emotion/core'
 
 const ProductThumbnailImages = wp.element.memo(function ProductThumbnailImages({ product }) {
+  const { useState } = wp.element
   const [didPreload, setDidPreload] = useState(false)
+
+  const thumbnailsWrapperCSS = css`
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);
+    grid-template-rows: 1fr;
+    grid-column-gap: 15px;
+    grid-row-gap: 0px;
+    margin-top: 12px;
+  `
 
   function hasImages() {
     return product && !isEmpty(product.images)
@@ -21,7 +33,10 @@ const ProductThumbnailImages = wp.element.memo(function ProductThumbnailImages({
 
   return (
     hasImages() && (
-      <div className='wps-thumbnails-wrapper' onMouseEnter={onMouseEnter}>
+      <div
+        className='wps-thumbnails-wrapper'
+        css={thumbnailsWrapperCSS}
+        onMouseEnter={onMouseEnter}>
         {product.images.map((image) => (
           <ProductThumbnailImage key={uuidv4()} image={image} />
         ))}

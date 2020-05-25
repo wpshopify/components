@@ -1,5 +1,4 @@
 import concat from 'lodash/concat'
-import compact from 'lodash/compact'
 
 function sortAsc(a, b) {
   return a - b
@@ -14,15 +13,13 @@ function convertToFloat(maybeString) {
 }
 
 function pricesArray(product, type) {
-  return compact(
-    product.variants.reduce((acc, current) => {
-      if (!current[type]) {
-        return acc
-      }
+  return product.variants.reduce((acc, current) => {
+    if (!current[type]) {
+      return concat(acc, null)
+    }
 
-      return concat(acc, convertToFloat(current[type].amount))
-    }, [])
-  )
+    return concat(acc, convertToFloat(current[type].amount))
+  }, [])
 }
 
 function getPrices(product, sort = false) {

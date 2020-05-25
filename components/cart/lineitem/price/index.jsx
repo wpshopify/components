@@ -1,6 +1,6 @@
 /** @jsx jsx */
 import { jsx, css } from '@emotion/core'
-import { formatPriceToCurrency } from '../../../../common/pricing/formatting'
+import PrettyPrice from '../../../../common/pricing/pretty'
 import CartLineItemPriceSaleNotice from '../sale-notice'
 import { mq } from '../../../../common/css'
 
@@ -38,7 +38,7 @@ function CartLineItemPrice({ lineItem, currencyCode, lineItemTotal, lineItemTota
         className='wps-cart-lineitem-price wps-cart-lineitem-price-total'
         ref={lineItemTotalElement}
         css={lineItemPriceCSS}>
-        {formatPriceToCurrency(lineItemTotal, currencyCode)}
+        <PrettyPrice price={lineItemTotal} currencyCode={currencyCode} />
       </div>
 
       {lineItem.compareAtPriceV2 && <CartLineItemPriceSaleNotice lineItem={lineItem} />}

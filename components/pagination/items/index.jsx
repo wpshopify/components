@@ -1,7 +1,5 @@
 import { PaginationContext } from '../_state/context'
 import { ItemsContext } from '../../items/_state/context'
-import { containerFluidCSS, rowCSS } from '../../../common/css'
-
 import { v4 as uuidv4 } from 'uuid'
 
 /** @jsx jsx */
@@ -24,10 +22,19 @@ function PaginationItems({ children }) {
     })
   }
 
+  const itemsListCSS = css`
+    display: grid;
+    grid-template-columns: repeat(${itemsState.payloadSettings.itemsPerRow}, 1fr);
+    grid-column-gap: 20px;
+    grid-row-gap: 40px;
+    max-width: 580px;
+    margin: 0 auto;
+  `
+
   return (
     itemsState.payload && (
-      <section className={'wps-items-wrapper'} css={containerFluidCSS}>
-        <section className='wps-items wps-items-list' css={rowCSS}>
+      <section className='wps-items-wrapper'>
+        <section className='wps-items wps-items-list' css={itemsListCSS}>
           {itemsState.payload && itemsState.payload.length ? displayItems() : ''}
         </section>
 

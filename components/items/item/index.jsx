@@ -8,9 +8,8 @@ import ProductPlaceholder from '../../products/product/placeholder'
 
 import to from 'await-to-js'
 
-const { useContext, useEffect } = wp.element
-
-const Item = wp.element.memo(function ({ children, limit = false, infiniteScroll = false }) {
+function Item({ children, limit = false, infiniteScroll = false }) {
+  const { useContext, useEffect } = wp.element
   const [itemsState, itemsDispatch] = useContext(ItemsContext)
   const isMounted = useIsMounted()
   const isFirstRender = useIsFirstRender()
@@ -28,8 +27,6 @@ const Item = wp.element.memo(function ({ children, limit = false, infiniteScroll
     })
 
     const [error, newItems] = await to(fetchNewItems(itemsState))
-    console.log('.............. error', error)
-    console.log('.............. newItems', newItems)
 
     if (error) {
       if (isMounted.current) {
@@ -80,8 +77,6 @@ const Item = wp.element.memo(function ({ children, limit = false, infiniteScroll
         itemsState.afterLoading(newItems)
       }
     }
-
-    console.log('<Item> :: getNewItems AFTER')
   }
 
   /*
@@ -136,6 +131,6 @@ const Item = wp.element.memo(function ({ children, limit = false, infiniteScroll
   ) : (
     children
   )
-})
+}
 
-export { Item }
+export default wp.element.memo(Item)

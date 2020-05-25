@@ -1,5 +1,6 @@
 import { formatPriceToCurrency } from '../../../../common/pricing/formatting'
 import { FilterHook } from '../../../../common/utils'
+import PrettyPrice from '../../../../common/pricing/pretty'
 import { mq } from '../../../../common/css'
 
 /** @jsx jsx */
@@ -37,10 +38,10 @@ function CartLineItemPriceSaleNotice({ lineItem }) {
       {lineItem.compareAtPriceV2 && (
         <span css={priceWasCSS}>
           {wp.i18n.__('Was:', 'wpshopify')}
-          {formatPriceToCurrency(
-            lineItem.compareAtPriceV2.amount,
-            lineItem.compareAtPriceV2.currencyCode
-          )}
+          <PrettyPrice
+            price={lineItem.compareAtPriceV2.amount}
+            currencyCode={lineItem.compareAtPriceV2.currencyCode}
+          />
         </span>
       )}
     </>

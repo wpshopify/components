@@ -23,6 +23,10 @@ function ProductBuyButton() {
   const buyButtonWrapperCSS = css`
     display: flex;
     flex-direction: column;
+
+    > .wps-component-products-add-button {
+      margin-top: 20px;
+    }
   `
 
   return usePortal(
@@ -32,7 +36,7 @@ function ProductBuyButton() {
       <ProductBuyButtonProvider productState={productState}>
         {productState.payload.availableForSale ? (
           <>
-            {!itemsState.payloadSettings.hideQuantity && !hasLink(itemsState) && (
+            {!itemsState.payloadSettings.hideQuantity && (
               <ProductQuantity
                 addedToCart={productState.addedToCart}
                 minQuantity={itemsState.payloadSettings.minQuantity}
@@ -41,7 +45,7 @@ function ProductBuyButton() {
                 labelText={itemsState.payloadSettings.quantityLabelText}
               />
             )}
-            {productState.hasManyVariants && !hasLink(itemsState) && (
+            {productState.hasManyVariants && (
               <ProductOptions
                 variantStyle={itemsState.payloadSettings.variantStyle}
                 availableOptions={onlyAvailableOptionsFromVariants(productState.payload.variants)}
@@ -49,6 +53,7 @@ function ProductBuyButton() {
             )}
             <ProductAddButton
               addedToCart={productState.addedToCart}
+              isTouched={productState.isTouched}
               hasLink={productState.hasLink}
               payload={productState.payload}
               linkTarget={itemsState.payloadSettings.linkTarget}

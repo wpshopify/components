@@ -1,4 +1,4 @@
-import { formatPriceToCurrency } from '../../../../common/pricing/formatting'
+import PrettyPrice from '../../../../common/pricing/pretty'
 import { prettyDate } from '../../../../common/utils'
 import { CustomersContext } from '../../_state/context'
 import { ShopContext } from '../../../shop/_state/context'
@@ -90,10 +90,10 @@ function OrderDetails() {
                   Subtotal
                 </Th>
                 <Td align='right' extraCSS={stylesLeft} colspan={4}>
-                  {formatPriceToCurrency(
-                    customersState.selectedOrderDetails.subtotalPriceV2.amount,
-                    shopState.info.currencyCode
-                  )}
+                  <PrettyPrice
+                    price={customersState.selectedOrderDetails.subtotalPriceV2.amount}
+                    currencyCode={shopState.info.currencyCode}
+                  />
                 </Td>
               </tr>
               <tr>
@@ -102,10 +102,10 @@ function OrderDetails() {
                 </Th>
                 <Td align='right' extraCSS={stylesLeft} colspan={4}>
                   <strong>
-                    {formatPriceToCurrency(
-                      customersState.selectedOrderDetails.totalPriceV2.amount,
-                      shopState.info.currencyCode
-                    )}
+                    <PrettyPrice
+                      price={customersState.selectedOrderDetails.totalPriceV2.amount}
+                      currencyCode={shopState.info.currencyCode}
+                    />
                   </strong>
                 </Td>
               </tr>

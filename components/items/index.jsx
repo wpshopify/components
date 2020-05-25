@@ -1,5 +1,5 @@
 import { ItemsProvider } from './_state/provider'
-import { Item } from './item'
+import Item from './item'
 import { usePortal } from '../../common/hooks'
 import { v4 as uuidv4 } from 'uuid'
 
@@ -34,8 +34,6 @@ function ItemWrapper(props) {
 }
 
 function Items(props) {
-  console.log('props.options', props.options)
-
   return (
     props.options &&
     props.options.map((component) => (

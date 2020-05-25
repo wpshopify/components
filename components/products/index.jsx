@@ -1,5 +1,5 @@
 import { Product } from './product'
-import { Pagination } from '../pagination'
+import Pagination from '../pagination'
 
 function Products() {
   return (

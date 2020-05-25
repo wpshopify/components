@@ -4,18 +4,21 @@ import { useIsMounted } from '/Users/andrew/www/devil/devilbox-new/data/www/wpsh
 import to from 'await-to-js'
 import find from 'lodash/find'
 
-function ProductBuyButtonLeftInStock({ payload, selectedVariant, inView }) {
+function ProductBuyButtonLeftInStock({ payload, selectedVariant, isTouched }) {
   const { useEffect, useState } = wp.element
   const [quantityLeft, setQuantityLeft] = useState(false)
   const [status, setStatus] = useState('idle')
   const [variantInventory, setVariantInventory] = useState(false)
   const isMounted = useIsMounted()
 
-  //   useEffect(() => {
-  //     if (inView && status === 'idle') {
-  //       fetchVariantInventoryManagement()
-  //     }
-  //   }, [inView])
+  useEffect(() => {
+    console.log('isTouched', isTouched)
+    console.log('status', status)
+
+    if (isTouched && status === 'idle') {
+      fetchVariantInventoryManagement()
+    }
+  }, [isTouched])
 
   function getVariantIds(payload) {
     if (!payload.variants) {
@@ -37,8 +40,10 @@ function ProductBuyButtonLeftInStock({ payload, selectedVariant, inView }) {
   }
 
   async function fetchVariantInventoryManagement() {
-    const variantIDs = getVariantIds(payload)
+    console.log('fetchVariantInventoryManagement')
 
+    const variantIDs = getVariantIds(payload)
+    console.log('fetchVariantInventoryManagement', variantIDs)
     if (!variantIDs.length) {
       console.warn('WP Shopify warning: No variant ids found for fetchVariantInventoryManagement')
       return
@@ -48,8 +53,8 @@ function ProductBuyButtonLeftInStock({ payload, selectedVariant, inView }) {
     console.log('variantIDs', variantIDs)
 
     const [error, resp] = await to(getVariantInventoryManagement({ ids: variantIDs }))
-
-    console.log('................................... 4 isMounted', isMounted)
+    console.log('getVariantInventoryManagement -- resp', resp)
+    console.log('getVariantInventoryManagement -- error', error)
 
     if (isMounted.current) {
       if (error || resp.data.type === 'error') {
@@ -108,7 +113,10 @@ function ProductBuyButtonLeftInStock({ payload, selectedVariant, inView }) {
     }
 
     if (selectedVariant.availableForSale) {
+      console.log('selectedVariant.id', selectedVariant.id)
+
       let selectedVariantFound = findSelectedVariant(selectedVariant.id)
+      console.log('selectedVariantFound', selectedVariantFound)
 
       if (!selectedVariantFound) {
         console.warn(
@@ -124,6 +132,7 @@ function ProductBuyButtonLeftInStock({ payload, selectedVariant, inView }) {
       if (selectedVariantFound.inventoryPolicy === 'CONTINUE') {
         return
       }
+      console.log('selectedVariantFound :: ', selectedVariantFound)
 
       var totalAvailableQuantity = findInventoryFromVariantId(selectedVariantFound)
 

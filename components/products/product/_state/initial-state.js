@@ -22,6 +22,7 @@ function ProductInitialState({ payload, itemsState }) {
     element: false,
     selectedVariant: false,
     addedToCart: false,
+    isTouched: false,
     hasManyImages: payload.images && payload.images.length > 1 ? true : false,
     hasManyVariants: hasManyVariants(payload),
     hasLink: hasLink(itemsState),

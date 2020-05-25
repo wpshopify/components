@@ -95,6 +95,9 @@ function Img(props) {
   `
 
   const thumbnailStyles = css`
+    display: block;
+    margin-bottom: 10px;
+
     &:focus,
     &:active {
       outline: 1px dashed #000000;

@@ -49,7 +49,7 @@ function ItemsInitialState({
       ? component.payloadSettings.noResultsText
       : wp.i18n.__('No items left', 'wpshopify'),
     isLoading: false,
-    hasMoreItems: true,
+    hasMoreItems: false,
     notices: [],
     variantsInventory: [],
     lastQuery: component.payloadSettings.query ? component.payloadSettings.query : false,

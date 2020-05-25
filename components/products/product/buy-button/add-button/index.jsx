@@ -19,7 +19,6 @@ import to from 'await-to-js'
 
 /** @jsx jsx */
 import { jsx, css } from '@emotion/core'
-import { useInView } from 'react-intersection-observer'
 
 const { Notice } = wp.components
 const { useContext, useRef, useEffect, useState } = wp.element
@@ -63,15 +62,10 @@ function ProductAddButton({
   buttonText,
   selectedVariant,
   addedToCart,
+  isTouched,
 }) {
-  const [ref, inView, entry] = useInView({
-    threshold: 0,
-    triggerOnce: true,
-  })
-
   return (
     <div
-      ref={ref}
       className='wps-component wps-component-products-add-button wps-btn-wrapper'
       data-wps-is-component-wrapper
       data-wps-post-id=''>
@@ -86,7 +80,11 @@ function ProductAddButton({
           addedToCart={addedToCart}
         />
       </AddButtonWrapper>
-      <ProductBuyButtonLeftInStock payload={payload} selectedVariant={selectedVariant} />
+      <ProductBuyButtonLeftInStock
+        isTouched={isTouched}
+        payload={payload}
+        selectedVariant={selectedVariant}
+      />
     </div>
   )
 }

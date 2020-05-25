@@ -58,7 +58,7 @@ const containerFluidCSS = css`
 `
 
 const buttonCSS = css`
-  border-radius: 8px;
+  border-radius: 7px;
   padding: 14px 0 15px 0;
   transition: background-color 180ms ease;
   height: auto;

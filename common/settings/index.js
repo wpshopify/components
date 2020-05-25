@@ -151,9 +151,8 @@ function getItemLink(payload, type, linkTo) {
   if (linkTo === 'none') {
     return false
   }
-
+  // Manual links
   if (linkTo === 'shopify') {
-    // Manual links
     return getShopifySingleLink(payload, type)
   }
 
@@ -163,7 +162,7 @@ function getItemLink(payload, type, linkTo) {
 }
 
 function liteSyncAndWordPressLink(itemsState) {
-  return wpshopify.settings.isLiteSync && itemsState.payloadSettings.linkTo == 'wordpress'
+  return wpshopify.settings.general.isLiteSync && itemsState.payloadSettings.linkTo == 'wordpress'
 }
 
 export {
