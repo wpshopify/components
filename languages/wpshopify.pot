@@ -1,0 +1,209 @@
+msgid ""
+msgstr ""
+"Project-Id-Version: \n"
+"Report-Msgid-Bugs-To: \n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"POT-Creation-Date: 2020-05-26T03:57:40+00:00\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"X-Generator: WP-CLI 2.3.0\n"
+"X-Domain: wpshopify\n"
+
+#: common/settings/index.js:90
+#: common/settings/index.js:102
+msgid "Checkout"
+msgstr ""
+
+#: common/settings/index.js:94
+#: common/settings/index.js:98
+msgid "View product"
+msgstr ""
+
+#: common/settings/index.js:105
+msgid "Add to cart"
+msgstr ""
+
+#: components/cart/checkout/index.jsx:202
+msgid "No line items exist"
+msgstr ""
+
+#: components/cart/close/index.jsx:9
+msgid "Close Cart"
+msgstr ""
+
+#: components/cart/contents/index.jsx:28
+msgid "Your cart is empty"
+msgstr ""
+
+#: components/cart/footer/total/index.jsx:44
+msgid "Subtotal:"
+msgstr ""
+
+#: components/cart/lineitem/out-of-stock/index.jsx:8
+#: components/products/product/buy-button/index.jsx:79
+msgid "Out of stock"
+msgstr ""
+
+#: components/cart/lineitem/remove/index.jsx:25
+msgid "Remove"
+msgstr ""
+
+#: components/cart/lineitem/sale-notice/index.jsx:36
+#: components/products/product/pricing/sale-notice/index.jsx:15
+msgid "Sale!"
+msgstr ""
+
+#: components/cart/lineitem/sale-notice/index.jsx:40
+msgid "Was:"
+msgstr ""
+
+#: components/cart/note/index.jsx:31
+msgid "Checkout notes"
+msgstr ""
+
+#: components/cart/note/index.jsx:35
+msgid "Notes:"
+msgstr ""
+
+#: components/cart/wrapper/index.jsx:61
+msgid "No checkout instance available"
+msgstr ""
+
+#: components/cart/wrapper/index.jsx:89
+msgid "No store checkout or client instances were found."
+msgstr ""
+
+#: components/cart/_state/initial-state.js:22
+msgid "Shopping cart"
+msgstr ""
+
+#: components/cart/_state/initial-state.js:25
+msgid "Begin checkout"
+msgstr ""
+
+#: components/collections/collection/_state/initial-state.js:11
+msgid "No products left to show"
+msgstr ""
+
+#: components/items/_state/initial-state.js:50
+msgid "No items left"
+msgstr ""
+
+#: components/notices/index.jsx:27
+msgid "Uh oh, it looks like an error occured. Please clear your browser cache and try again."
+msgstr ""
+
+#: components/pagination/controls/load-more/index.jsx:79
+msgid "Load more"
+msgstr ""
+
+#: components/pagination/controls/page-size/index.jsx:88
+msgid "Page size:"
+msgstr ""
+
+#: components/pagination/controls/page-size/index.jsx:98
+msgid "Choose a size"
+msgstr ""
+
+#: components/products/product/buy-button/notice/index.jsx:26
+msgid "Only %s left!"
+msgstr ""
+
+#: components/products/product/buy-button/variant-buttons/missing-selection/index.jsx:14
+msgid "Please select a variation"
+msgstr ""
+
+#: components/products/product/images/gallery/_state/initial-state.js:9
+msgid "WP Shopify Placeholder Image"
+msgstr ""
+
+#: components/products/product/pricing/from/index.jsx:22
+msgid "Price:"
+msgstr ""
+
+#: components/products/product/pricing/single/index.jsx:20
+msgid "Was: "
+msgstr ""
+
+#: components/search/form/button/index.jsx:6
+msgid "Search"
+msgstr ""
+
+#: components/search/form/input/index.jsx:34
+msgid "Search the store"
+msgstr ""
+
+#: components/search/form/notices/index.jsx:10
+msgid "Loading ..."
+msgstr ""
+
+#: components/storefront/options/group/index.jsx:18
+msgid "Loading %s ..."
+msgstr ""
+
+#: components/storefront/options/group/index.jsx:23
+msgid "No %s found"
+msgstr ""
+
+#: components/storefront/options/heading/index.jsx:13
+msgid "Filter by"
+msgstr ""
+
+#: components/storefront/options/wrapper/index.jsx:48
+msgid "%s. Occurred when fetching available filter options. Please clear your browser cache and reload the page. "
+msgstr ""
+
+#: components/storefront/options/wrapper/index.jsx:76
+msgid "Tags"
+msgstr ""
+
+#: components/storefront/options/wrapper/index.jsx:84
+msgid "Vendors"
+msgstr ""
+
+#: components/storefront/options/wrapper/index.jsx:92
+msgid "Types"
+msgstr ""
+
+#: components/storefront/selections/clear.jsx:19
+msgid "Clear all"
+msgstr ""
+
+#: components/storefront/selections/values.jsx:30
+msgid "Available for sale"
+msgstr ""
+
+#: components/storefront/sorting/index.jsx:56
+msgid "Sort by:"
+msgstr ""
+
+#: components/storefront/sorting/index.jsx:67
+msgid "Choose an option"
+msgstr ""
+
+#: components/storefront/sorting/index.jsx:72
+msgid "Price (Low to high)"
+msgstr ""
+
+#: components/storefront/sorting/index.jsx:77
+msgid "Price (High to low)"
+msgstr ""
+
+#: components/storefront/sorting/index.jsx:82
+msgid "New Arrival"
+msgstr ""
+
+#: components/storefront/sorting/index.jsx:87
+msgid "Best Selling"
+msgstr ""
+
+#: components/storefront/sorting/index.jsx:92
+msgid "Title (A-Z)"
+msgstr ""
+
+#: components/storefront/sorting/index.jsx:97
+msgid "Title (Z-A)"
+msgstr ""

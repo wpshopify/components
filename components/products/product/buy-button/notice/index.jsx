@@ -23,7 +23,10 @@ function ProductBuyButtonTextNotice({ quantityLeft }) {
     buyButtonState.allOptionsSelected &&
     quantityLeft && (
       <span className='wps-notice-text' css={textNoticeCSS}>
-        {wp.i18n.sprintf(wp.i18n.__('Only %s left!', 'wpshopify'), quantityLeft)}
+        {
+          /* translators: %s: Only 9 left */
+          wp.i18n.sprintf(wp.i18n.__('Only %s left!', 'wpshopify'), quantityLeft)
+        }
       </span>
     )
   )

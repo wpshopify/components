@@ -15,7 +15,12 @@ function StorefrontFilterOptionsGroup({ groupType, displayStyle, heading }) {
       <div className='wps-filter-content'>
         {storefrontOptionsState.isBootstrapping ? (
           <FilterHook name='storefront.group.loading.text'>
-            <p>{wp.i18n.sprintf(wp.i18n.__('Loading %s ...', 'wpshopify'), groupType)}</p>
+            <p>
+              {
+                /* translators: %s: Loading products / collections */
+                wp.i18n.sprintf(wp.i18n.__('Loading %s ...', 'wpshopify'), groupType)
+              }
+            </p>
           </FilterHook>
         ) : isEmpty(storefrontOptionsState.filterOptions[groupType]) ? (
           <Notice status='info' isDismissible={false}>

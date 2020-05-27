@@ -40,6 +40,7 @@ function StorefrontOptionsWrapper() {
     var [respError, respData] = await to(getFilterData())
 
     if (respError) {
+      /* translators: %s: Error message */
       itemsDispatch({
         type: 'UPDATE_NOTICES',
         payload: {

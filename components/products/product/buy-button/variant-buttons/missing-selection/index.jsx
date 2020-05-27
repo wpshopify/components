@@ -7,7 +7,6 @@ function ProductVariantMissingSelection() {
     margin-top: 6px;
     color: red;
   `
-
   return (
     <p css={selectStyles}>
       <FilterHook name='product.missingSelection.text'>
