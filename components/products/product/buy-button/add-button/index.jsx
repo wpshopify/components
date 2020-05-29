@@ -253,7 +253,7 @@ function AddButtonText({ buttonText, addedToCart }) {
 
   useEffect(() => {
     if (addedToCart) {
-      setText('Added!')
+      setText(wp.i18n.__('Added!', 'wpshopify'))
       animeFadeInBottomSlow(addedTest.current)
 
       setTimeout(function () {

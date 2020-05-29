@@ -19,7 +19,8 @@ const { useContext } = wp.element
 function ProductBuyButton() {
   const [itemsState] = useContext(ItemsContext)
   const [productState, productDispatch] = useContext(ProductContext)
-
+  const isDirectCheckout =
+    itemsState.payloadSettings.directCheckout || wpshopify.settings.general.directCheckout
   const buyButtonWrapperCSS = css`
     display: flex;
     flex-direction: column;
@@ -59,13 +60,10 @@ function ProductBuyButton() {
               linkTarget={itemsState.payloadSettings.linkTarget}
               linkTo={itemsState.payloadSettings.linkTo}
               addToCartButtonColor={itemsState.payloadSettings.addToCartButtonColor}
-              isDirectCheckout={
-                itemsState.payloadSettings.directCheckout ||
-                wpshopify.settings.general.directCheckout
-              }
+              isDirectCheckout={isDirectCheckout}
               hasManyVariants={productState.hasManyVariants}
               productDispatch={productDispatch}
-              buttonText={getButtonText(itemsState)}
+              buttonText={getButtonText(itemsState, isDirectCheckout)}
               selectedVariant={productState.selectedVariant}
             />
           </>

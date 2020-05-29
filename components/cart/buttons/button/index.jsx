@@ -22,14 +22,6 @@ function CartButton({ options }) {
     }
   }, [])
 
-  function getIconColor() {
-    if (options.payloadSettings.type === 'fixed') {
-      return wpshopify.settings.general.cartFixedBackgroundColor
-    }
-
-    return ''
-  }
-
   function onClick() {
     cartDispatch({ type: 'TOGGLE_CART', payload: true })
   }
@@ -39,7 +31,9 @@ function CartButton({ options }) {
   }
 
   const cartIconCSS = css`
-    background-color: ${getIconColor()};
+    background-color: ${options.payloadSettings.type === 'fixed'
+      ? wpshopify.settings.general.cartFixedBackgroundColor
+      : 'transparent'};
   `
 
   const cartIconFixedCSS =

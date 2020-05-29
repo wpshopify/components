@@ -81,9 +81,9 @@ function hasCustomButtonText(itemsState) {
   return false
 }
 
-function getButtonText(itemsState) {
+function getButtonText(itemsState, isDirectCheckout) {
   if (hasCustomButtonText(itemsState)) {
-    return itemsState.payloadSettings.addToCartButtonText
+    return wp.i18n.__(itemsState.payloadSettings.addToCartButtonText, 'wpshopify')
   }
 
   if (isDirectCheckout) {

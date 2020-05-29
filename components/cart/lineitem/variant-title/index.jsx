@@ -25,7 +25,7 @@ function CartLineItemVariantTitle({ lineItem }) {
 
   return (
     <div css={badgeCSS} className='wps-cart-lineitem-variant-title'>
-      <FilterHook name='cart.lineItem.variant.title'>{wp.i18n.__(lineItem.title)}</FilterHook>
+      <FilterHook name='cart.lineItem.variant.title'>{lineItem.title}</FilterHook>
     </div>
   )
 }

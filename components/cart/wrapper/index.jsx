@@ -15,11 +15,15 @@ const { useContext, useRef, useEffect } = wp.element
 const { Spinner } = wp.components
 const { Suspense } = wp.element
 
-const CartHeader = wp.element.lazy(() => import(/* webpackChunkName: 'CartHeader' */ '../header'))
-const CartContents = wp.element.lazy(() =>
-  import(/* webpackChunkName: 'CartContents' */ '../contents')
+const CartHeader = wp.element.lazy(() =>
+  import(/* webpackChunkName: 'CartHeader-public' */ '../header')
 )
-const CartFooter = wp.element.lazy(() => import(/* webpackChunkName: 'CartFooter' */ '../footer'))
+const CartContents = wp.element.lazy(() =>
+  import(/* webpackChunkName: 'CartContents-public' */ '../contents')
+)
+const CartFooter = wp.element.lazy(() =>
+  import(/* webpackChunkName: 'CartFooter-public' */ '../footer')
+)
 
 function CartWrapper() {
   const cartElement = useRef()
