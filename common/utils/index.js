@@ -115,7 +115,7 @@ function getHashFromQueryParams(queryParams) {
 }
 
 function FilterHook({ name, children, hasHTML = false, args = [] }) {
-  if (!wp.hooks.hasFilter(name, wpshopify.misc.textdomain)) {
+  if (!wp.hooks.hasFilter(name, 'wpshopify')) {
     return <>{children}</>
   }
 

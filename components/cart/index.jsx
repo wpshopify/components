@@ -3,9 +3,11 @@ import { CartWrapper } from './wrapper'
 
 function Cart({ options }) {
   return (
-    <CartProvider options={options}>
-      <CartWrapper />
-    </CartProvider>
+    wpshopify.settings.general.cartLoaded && (
+      <CartProvider options={options}>
+        <CartWrapper />
+      </CartProvider>
+    )
   )
 }
 

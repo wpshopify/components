@@ -59,7 +59,7 @@ function CartCounter() {
     width: ${cartButtonState.payloadSettings.type === 'fixed' ? 'auto' : '25px'};
     height: 25px;
     max-height: 25px;
-    padding: 0px;
+    padding: 1px 1px 0px 0px;
     font-weight: bold;
     overflow: ${cartButtonState.payloadSettings.type === 'fixed' ? 'visible' : 'hidden'};
   `
