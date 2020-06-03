@@ -1,8 +1,6 @@
 import has from 'lodash/has'
 
 function maybeHideDecimals(config) {
-  console.log('config ................', config)
-
   if (!wpshopify.settings.general.hideDecimals) {
     return config
   }

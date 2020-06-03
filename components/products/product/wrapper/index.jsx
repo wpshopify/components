@@ -21,12 +21,19 @@ function ProductWrapper() {
     padding: 0;
     position: relative;
     margin: 0;
+    display: ${isAlignHeight() ? 'flex' : 'block'};
+    flex-direction: column;
+    justify-content: space-between;
   `
 
   function onMouseOver() {
     if (!productState.isTouched) {
       productDispatch({ type: 'SET_IS_TOUCHED', payload: true })
     }
+  }
+
+  function isAlignHeight() {
+    return wpshopify.settings.general.alignHeight || itemsState.payloadSettings.alignHeight
   }
 
   return (

@@ -1,4 +1,4 @@
-function CartInitialState(options) {
+function CartInitialState(cartOptions, productOptions) {
   return {
     isUpdating: false,
     isCheckingOut: false,
@@ -8,13 +8,14 @@ function CartInitialState(options) {
     isCartLoaded: false,
     isCartInteractive: false,
     isCartReady: false,
-    buttons: options,
+    buttons: cartOptions,
     notices: [],
     checkoutCache: {
       lineItems: [],
       variants: [],
       total: 0.0,
     },
+    productsVisible: productOptions ? productOptions.length : false,
     shopInfo: false,
     customAttributes: [],
     note: false,

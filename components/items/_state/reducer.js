@@ -47,8 +47,6 @@ function maybeCachePayload(state, updatedPayload, updatedHasMoreItems, hasExisti
     totalShown: updatedPayload.length,
   }
 
-  console.log('newPayloadstuff', newPayloadstuff)
-
   if (hasExistingCache) {
     return newPayloadstuff
   }
@@ -58,8 +56,6 @@ function maybeCachePayload(state, updatedPayload, updatedHasMoreItems, hasExisti
 
     newPayloadstuff['payloadCache'] = update(state.payloadCache, { $merge: newCache })
   }
-
-  wp.hooks.doAction('after.payload.update', newPayloadstuff)
 
   return newPayloadstuff
 }

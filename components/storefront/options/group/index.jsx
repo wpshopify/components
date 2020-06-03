@@ -7,8 +7,22 @@ import isEmpty from 'lodash/isEmpty'
 const { Notice } = wp.components
 const { useContext } = wp.element
 
+function sortAndCleanValues(values) {
+  if (!values) {
+    return
+  }
+
+  return values
+    .sort((a, b) => a.localeCompare(b))
+    .filter(function (e) {
+      return e === 0 || e
+    })
+}
+
 function StorefrontFilterOptionsGroup({ groupType, displayStyle, heading }) {
   const [storefrontOptionsState] = useContext(StorefrontOptionsContext)
+
+  const filterOptions = sortAndCleanValues(storefrontOptionsState.filterOptions[groupType])
 
   return (
     <StorefrontFilter heading={heading}>
@@ -22,7 +36,7 @@ function StorefrontFilterOptionsGroup({ groupType, displayStyle, heading }) {
               }
             </p>
           </FilterHook>
-        ) : isEmpty(storefrontOptionsState.filterOptions[groupType]) ? (
+        ) : isEmpty(filterOptions) ? (
           <Notice status='info' isDismissible={false}>
             <FilterHook name='notice.storefront.noGroup.text'>
               {wp.i18n.sprintf(wp.i18n.__('No %s found', 'wpshopify'), groupType)}
@@ -30,7 +44,7 @@ function StorefrontFilterOptionsGroup({ groupType, displayStyle, heading }) {
           </Notice>
         ) : (
           <ul className={'wps-' + groupType}>
-            {storefrontOptionsState.filterOptions[groupType].map((item) => (
+            {filterOptions.map((item) => (
               <StorefrontFilterOptionsGroupItem
                 key={item}
                 itemValue={item}

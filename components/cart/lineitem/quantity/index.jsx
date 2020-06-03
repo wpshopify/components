@@ -30,7 +30,9 @@ function CartLineItemQuantity({
   const [cartState, cartDispatch] = useContext(CartContext)
   const animeFadeInRightSlow = useAnime(fadeInRightSlow)
 
-  const maxQuantity = wp.hooks.applyFilters('cart.maxQuantity', false)
+  const maxQuantity = wp.hooks.applyFilters('cart.lineItems.maxQuantity', false, cartState)
+  const minQuantity = wp.hooks.applyFilters('cart.lineItems.minQuantity', false, cartState)
+  const customStep = wp.hooks.applyFilters('cart.lineItems.quantityStep', false, cartState)
 
   const inputStyles = css`
     input::-webkit-outer-spin-button,
@@ -83,6 +85,8 @@ function CartLineItemQuantity({
     if (e.target.value || e.target.value === 0) {
       if (maxQuantity && e.target.value >= maxQuantity) {
         setLineItemQuantity(maxQuantity)
+      } else if (minQuantity && e.target.value <= minQuantity) {
+        setLineItemQuantity(minQuantity)
       } else {
         setLineItemQuantity(e.target.value)
       }
@@ -120,7 +124,15 @@ function CartLineItemQuantity({
 
    */
   function handleDecrement() {
-    changeQuantity(lineItemQuantity - 1)
+    if (minQuantity && lineItemQuantity <= minQuantity) {
+      changeQuantity(minQuantity)
+    } else {
+      if (!customStep) {
+        changeQuantity(lineItemQuantity - 1)
+      } else {
+        changeQuantity(lineItemQuantity - customStep)
+      }
+    }
   }
 
   /*
@@ -132,7 +144,11 @@ function CartLineItemQuantity({
     if (maxQuantity && lineItemQuantity >= maxQuantity) {
       changeQuantity(maxQuantity)
     } else {
-      changeQuantity(lineItemQuantity + 1)
+      if (!customStep) {
+        changeQuantity(lineItemQuantity + 1)
+      } else {
+        changeQuantity(lineItemQuantity + customStep)
+      }
     }
   }
 
@@ -148,11 +164,11 @@ function CartLineItemQuantity({
             className='wps-cart-lineitem-quantity'
             type='number'
             min='0'
-            max='8'
             aria-label='Quantity'
             value={lineItemQuantity}
             onChange={handleQuantityChange}
             onBlur={handleQuantityBlur}
+            disabled={customStep}
           />
 
           <button className='wps-quantity-increment' type='button' onClick={handleIncrement}>

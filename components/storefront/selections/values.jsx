@@ -1,3 +1,5 @@
+/** @jsx jsx */
+import { jsx, css } from '@emotion/core'
 import { IconRemove } from '../../../common/icons/icon-remove.jsx'
 import { StorefrontContext } from '../_state/context'
 import { useTransition, animated } from 'react-spring'
@@ -23,8 +25,44 @@ function StorefrontSelectionsValue({ selectionType, val }) {
     })
   }
 
+  const selectionValueCSS = css`
+    margin-right: 8px;
+    text-transform: capitalize;
+    padding: 5px 10px;
+    background: #e6e6e6;
+    font-size: 16px;
+    position: relative;
+    display: flex;
+    align-items: center;
+
+    &:hover {
+      cursor: pointer;
+      opacity: 0.8;
+    }
+
+    .icon {
+      width: 10px;
+      height: 10px;
+      display: inline-block;
+      right: 0;
+      top: calc(50% - 5px);
+      margin-left: 10px;
+    }
+
+    .icon svg {
+      width: 10px;
+      height: 10px;
+      display: inline-block;
+      position: relative;
+      position: absolute;
+    }
+  `
+
   return (
-    <span className='wps-filter-selection-value wps-mr-2' onClick={(e) => onClick(val)}>
+    <span
+      className='wps-filter-selection-value wps-mr-2'
+      onClick={(e) => onClick(val)}
+      css={selectionValueCSS}>
       {selectionType === 'available_for_sale' ? (
         <FilterHook name='storefront.selections.available.text'>
           {wp.i18n.__('Available for sale', 'wpshopify')}

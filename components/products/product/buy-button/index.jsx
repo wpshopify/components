@@ -21,13 +21,10 @@ function ProductBuyButton() {
   const [productState, productDispatch] = useContext(ProductContext)
   const isDirectCheckout =
     itemsState.payloadSettings.directCheckout || wpshopify.settings.general.directCheckout
+
   const buyButtonWrapperCSS = css`
     display: flex;
     flex-direction: column;
-
-    > .wps-component-products-add-button {
-      margin-top: 20px;
-    }
   `
 
   return usePortal(

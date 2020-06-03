@@ -30,6 +30,31 @@ function CartButton({ options }) {
     cartDispatch({ type: 'CART_LOADED', payload: true })
   }
 
+  function shouldShowCartTab() {
+    if (options.payloadSettings.type !== 'fixed') {
+      return true
+    }
+
+    if (wpshopify.settings.general.cartConditionalFixedTabLoading === 'all') {
+      return true
+    } else if (wpshopify.settings.general.cartConditionalFixedTabLoading === 'withProducts') {
+      if (cartState.productsVisible) {
+        return true
+      }
+      return false
+    } else if (wpshopify.settings.general.cartConditionalFixedTabLoading === 'manual') {
+      if (
+        wpshopify.settings.general.cartConditionalManuallySelectedPages.includes(
+          wpshopify.misc.postID.toString()
+        )
+      ) {
+        return true
+      }
+
+      return false
+    }
+  }
+
   const cartIconCSS = css`
     background-color: ${options.payloadSettings.type === 'fixed'
       ? wpshopify.settings.general.cartFixedBackgroundColor
@@ -85,24 +110,29 @@ function CartButton({ options }) {
           }
         `
 
-  return usePortal(
-    <CartButtonProvider options={options}>
-      <button
-        data-is-cart-ready={cartState.isCartReady ? '1' : '0'}
-        role='button'
-        ref={counterElement}
-        className={`wps-btn-cart wps-cart-icon-${options.payloadSettings.type} ${
-          isCartEmpty(cartState.checkoutCache.lineItems) ? 'wps-cart-is-empty' : ''
-        }`}
-        onClick={onClick}
-        onMouseOver={onMouseOver}
-        css={[cartIconCSS, cartIconFixedCSS]}>
-        {options.payloadSettings.showCounter && <CartCounter />}
+  console.log('options.payloadSettings.type', options.payloadSettings.type)
 
-        <CartIcon />
-      </button>
-    </CartButtonProvider>,
-    options.componentElement
+  return (
+    shouldShowCartTab() &&
+    usePortal(
+      <CartButtonProvider options={options}>
+        <button
+          data-is-cart-ready={cartState.isCartReady ? '1' : '0'}
+          role='button'
+          ref={counterElement}
+          className={`wps-btn-cart wps-cart-icon-${options.payloadSettings.type} ${
+            isCartEmpty(cartState.checkoutCache.lineItems) ? 'wps-cart-is-empty' : ''
+          }`}
+          onClick={onClick}
+          onMouseOver={onMouseOver}
+          css={[cartIconCSS, cartIconFixedCSS]}>
+          {options.payloadSettings.showCounter && <CartCounter />}
+
+          <CartIcon />
+        </button>
+      </CartButtonProvider>,
+      options.componentElement
+    )
   )
 }
 

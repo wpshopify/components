@@ -16,6 +16,8 @@ function Item({ children, limit = false, infiniteScroll = false }) {
   const { Notice } = wp.components
 
   async function getNewItems(itemsState) {
+    wp.hooks.doAction('before.payload.update', itemsState)
+
     itemsDispatch({
       type: 'SET_IS_LOADING',
       payload: true,
@@ -90,8 +92,6 @@ function Item({ children, limit = false, infiniteScroll = false }) {
       return
     }
 
-    wp.hooks.doAction('before.payload.update', itemsState)
-
     if (itemsState.beforeLoading) {
       itemsState.beforeLoading()
     }
@@ -121,6 +121,10 @@ function Item({ children, limit = false, infiniteScroll = false }) {
       },
     })
   }, [limit, infiniteScroll])
+
+  useEffect(() => {
+    wp.hooks.doAction('after.payload.update', itemsState)
+  }, [itemsState.payload])
 
   return !itemsState.payload ? (
     <ProductPlaceholder />

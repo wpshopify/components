@@ -29,7 +29,7 @@ function CartIcon() {
     height: 28px;
 
     &:hover {
-      opacity: 0.6;
+      opacity: ${cartButtonState.payloadSettings.type === 'fixed' ? 0.6 : 1};
     }
   `
 

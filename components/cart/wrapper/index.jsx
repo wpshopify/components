@@ -151,31 +151,6 @@ function CartWrapper() {
     cartDispatch({ type: 'TOGGLE_CART', payload: false })
   }
 
-  function shouldShowCartTab() {
-    console.log(
-      'cartConditionalManuallySelectedPages',
-      wpshopify.settings.general.cartConditionalManuallySelectedPages
-    )
-
-    if (wpshopify.settings.general.cartConditionalFixedTabLoading === 'all') {
-      return true
-    }
-
-    if (wpshopify.settings.general.cartConditionalFixedTabLoading === 'manual') {
-      if (
-        wpshopify.settings.general.cartConditionalManuallySelectedPages.includes(
-          wpshopify.misc.postID.toString()
-        )
-      ) {
-        return true
-      }
-
-      return false
-    }
-
-    return true
-  }
-
   useEffect(() => {
     if (!cartState.isCartReady) {
       wp.hooks.doAction('before.cart.ready', cartState)
@@ -243,7 +218,7 @@ function CartWrapper() {
 
   return (
     <section ref={cartElement} className='wps-cart'>
-      {shouldShowCartTab() && <CartButtons buttons={cartState.buttons} />}
+      {<CartButtons buttons={cartState.buttons} />}
 
       <Suspense fallback={<Spinner />}>
         {cartState.isCartLoaded && (

@@ -7,6 +7,7 @@ const { useEffect, useContext, useState } = wp.element
 function ProductQuantityInput({ minQuantity, maxQuantity, addedToCart }) {
   const [buyButtonState, buyButtonDispatch] = useContext(ProductBuyButtonContext)
   const [quantityValue, setQuantityValue] = useState(() => minQuantity)
+  const customStep = wp.hooks.applyFilters('buyButton.quantityStep', false, buyButtonState)
 
   const inputStyles = css`
     margin: 15px 0 25px 7px;
@@ -26,11 +27,33 @@ function ProductQuantityInput({ minQuantity, maxQuantity, addedToCart }) {
 
   function handleQuantityChange(event = false) {
     if (!event) {
-      buyButtonDispatch({ type: 'UPDATE_QUANTITY', payload: Number(minQuantity) })
-      setQuantityValue(minQuantity)
+      let quantityAmount = Number(minQuantity)
+      buyButtonDispatch({ type: 'UPDATE_QUANTITY', payload: quantityAmount })
+      setQuantityValue(quantityAmount)
     } else {
-      buyButtonDispatch({ type: 'UPDATE_QUANTITY', payload: Number(event.target.value) })
-      setQuantityValue(event.target.value)
+      let quantityAmount = Number(event.target.value)
+      console.log('quantityAmount', quantityAmount)
+      console.log('customStep', customStep)
+      console.log('quantityValue', quantityValue)
+
+      if (customStep) {
+        if (quantityValue === 1 && customStep !== 1) {
+          quantityAmount = customStep
+        } else {
+          if (quantityAmount > quantityValue) {
+            quantityAmount = quantityValue + customStep
+          } else {
+            quantityAmount = quantityValue - customStep
+          }
+        }
+      }
+
+      if (quantityAmount === 0) {
+        quantityAmount = 1
+      }
+
+      buyButtonDispatch({ type: 'UPDATE_QUANTITY', payload: quantityAmount })
+      setQuantityValue(quantityAmount)
     }
   }
 
