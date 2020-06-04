@@ -18,10 +18,6 @@ function isLiteSync() {
   return wpshopify.settings.general.is_lite_sync
 }
 
-function isSyncingPosts() {
-  return wpshopify.settings.general.is_syncing_posts
-}
-
 function isDisablingDefaultPages() {
   return wpshopify.settings.general.disable_default_pages
 }
@@ -42,38 +38,38 @@ function hasSinglePage() {
   return true
 }
 
-function onSinglePage(itemsState) {
-  return itemsState.payloadSettings.isSingular
+function onSinglePage(payloadSettings) {
+  return payloadSettings.isSingular
 }
 
-function hasLink(itemsState) {
-  if (!itemsState) {
+function hasLink(payloadSettings) {
+  if (!payloadSettings) {
     return false
   }
 
-  if (itemsState.payloadSettings.linkTo === 'none') {
+  if (payloadSettings.linkTo === 'none') {
     return false
   }
 
-  if (itemsState.payloadSettings.linkTo === 'shopify') {
+  if (payloadSettings.linkTo === 'shopify') {
     return true
   }
 
-  if (liteSyncAndWordPressLink(itemsState)) {
+  if (liteSyncAndWordPressLink(payloadSettings.linkTo)) {
     return false
   }
 
-  return hasSinglePage() && !onSinglePage(itemsState)
+  return hasSinglePage() && !onSinglePage(payloadSettings)
 }
 
-function hasCustomButtonText(itemsState) {
-  if (!itemsState.payloadSettings.addToCartButtonText) {
+function hasCustomButtonText(payloadSettings) {
+  if (!payloadSettings.addToCartButtonText) {
     return false
   }
   if (
-    itemsState.payloadSettings.addToCartButtonText != 'Checkout' ||
-    itemsState.payloadSettings.addToCartButtonText != 'Add to cart' ||
-    itemsState.payloadSettings.addToCartButtonText != 'View product'
+    payloadSettings.addToCartButtonText != 'Checkout' ||
+    payloadSettings.addToCartButtonText != 'Add to cart' ||
+    payloadSettings.addToCartButtonText != 'View product'
   ) {
     return true
   }
@@ -81,24 +77,24 @@ function hasCustomButtonText(itemsState) {
   return false
 }
 
-function getButtonText(itemsState, isDirectCheckout) {
-  if (hasCustomButtonText(itemsState)) {
-    return wp.i18n.__(itemsState.payloadSettings.addToCartButtonText, 'wpshopify')
+function getButtonText(payloadSettings, isDirectCheckout) {
+  if (hasCustomButtonText(payloadSettings)) {
+    return payloadSettings.addToCartButtonText
   }
 
   if (isDirectCheckout) {
     return wp.i18n.__('Checkout', 'wpshopify')
   }
 
-  if (hasLink(itemsState)) {
+  if (hasLink(payloadSettings)) {
     return wp.i18n.__('View product', 'wpshopify')
   }
 
-  if (itemsState.payloadSettings.addToCartButtonText === 'View product') {
+  if (payloadSettings.addToCartButtonText === 'View product') {
     return wp.i18n.__('View product', 'wpshopify')
   }
 
-  if (itemsState.payloadSettings.addToCartButtonText === 'Checkout') {
+  if (payloadSettings.addToCartButtonText === 'Checkout') {
     return wp.i18n.__('Checkout', 'wpshopify')
   }
 
@@ -161,8 +157,8 @@ function getItemLink(payload, type, linkTo) {
   }
 }
 
-function liteSyncAndWordPressLink(itemsState) {
-  return wpshopify.settings.general.isLiteSync && itemsState.payloadSettings.linkTo == 'wordpress'
+function liteSyncAndWordPressLink(linkTo) {
+  return wpshopify.settings.general.isLiteSync && linkTo == 'wordpress'
 }
 
 export {

@@ -1,15 +1,13 @@
 import has from 'lodash/has'
 import { ProductContext } from '../../_state/context'
 import { ProductGalleryContext } from './_state/context'
-import { ItemsContext } from '../../../../items/_state/context'
-import { ProductThumbnailImages } from '../thumbnails'
+import ProductThumbnailImages from '../thumbnails'
 import { ProductFeaturedImage } from '../featured'
 import { hasLink } from '../../../../../common/settings'
 
 const { useEffect, useContext, useRef } = wp.element
 
-function ProductGallery() {
-  const [itemsState] = useContext(ItemsContext)
+function ProductGallery({ payloadSettings }) {
   const [productState] = useContext(ProductContext)
   const [galleryState, galleryDispatch] = useContext(ProductGalleryContext)
   const isFirstRender = useRef(true)
@@ -24,15 +22,15 @@ function ProductGallery() {
   }
 
   function isFeaturedOnly() {
-    if (hasLink(itemsState)) {
+    if (hasLink(payloadSettings)) {
       return true
     }
 
-    if (!has(itemsState.payloadSettings, 'showFeaturedOnly')) {
+    if (!has(payloadSettings, 'showFeaturedOnly')) {
       return false
     }
 
-    return itemsState.payloadSettings.showFeaturedOnly
+    return payloadSettings.showFeaturedOnly
   }
 
   useEffect(() => {
@@ -57,14 +55,14 @@ function ProductGallery() {
   return (
     <>
       {isFeaturedOnly() ? (
-        <ProductFeaturedImage />
+        <ProductFeaturedImage payloadSettings={payloadSettings} />
       ) : hasManyImages() ? (
         <>
-          <ProductFeaturedImage />
-          <ProductThumbnailImages product={product} />
+          <ProductFeaturedImage payloadSettings={payloadSettings} />
+          <ProductThumbnailImages product={product} payloadSettings={payloadSettings} />
         </>
       ) : (
-        <ProductFeaturedImage />
+        <ProductFeaturedImage payloadSettings={payloadSettings} />
       )}
     </>
   )

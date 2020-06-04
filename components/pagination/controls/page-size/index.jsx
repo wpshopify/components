@@ -5,7 +5,8 @@ import {
 import { PaginationContext } from '../../_state/context'
 import { ItemsContext } from '../../../items/_state/context'
 import { usePortal } from '../../../../common/hooks'
-
+/** @jsx jsx */
+import { jsx, css } from '@emotion/core'
 import to from 'await-to-js'
 const { useContext, useState } = wp.element
 
@@ -80,6 +81,10 @@ function PaginationPageSize() {
     itemsDispatch({ type: 'SET_IS_LOADING', payload: false })
   }
 
+  const sortingSelectorCSS = css`
+    width: 100%;
+  `
+
   return usePortal(
     <>
       {itemsState.payloadSettings.paginationPageSize && (
@@ -89,6 +94,7 @@ function PaginationPageSize() {
           </label>
 
           <select
+            css={sortingSelectorCSS}
             className='wps-input'
             value={pageSize}
             id='wps-sorting'

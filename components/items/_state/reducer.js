@@ -117,8 +117,6 @@ function updatePayload(state, newPayload, skipCache, replace) {
 }
 
 function checkHasMore(payloadSettings, payload) {
-  console.log('checkHasMore', payload)
-
   if (!payload || !payloadSettings.pageSize || !payloadSettings.pagination) {
     return false
   }
@@ -184,6 +182,13 @@ function ItemsReducer(state, action) {
       return {
         ...state,
         isLoading: update(state.isLoading, { $set: action.payload }),
+      }
+    }
+
+    case 'SET_IS_BOOTSTRAPPING': {
+      return {
+        ...state,
+        isBootstrapping: update(state.isBootstrapping, { $set: action.payload }),
       }
     }
 

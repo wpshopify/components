@@ -1,7 +1,6 @@
 import { ProductContext } from '../../_state/context'
-import { ItemsContext } from '../../../../items/_state/context'
 import { ProductGalleryContext } from '../gallery/_state/context'
-import { ProductImage } from '../image'
+import ProductImage from '../image'
 import isNull from 'lodash/isNull'
 import Drift from 'drift-zoom'
 
@@ -20,11 +19,9 @@ function destroyDrift(drift) {
   drift = null
 }
 
-function ProductFeaturedImage() {
+function ProductFeaturedImage({ payloadSettings }) {
   const paneElement = useRef()
   const isFirstRender = useRef(true)
-
-  const [itemsState] = useContext(ItemsContext)
   const [productState] = useContext(ProductContext)
   const [galleryState] = useContext(ProductGalleryContext)
   const [featImage, setFeatImage] = useState(() => galleryState.featImage)
@@ -40,11 +37,11 @@ function ProductFeaturedImage() {
   }
 
   function showZoom() {
-    if (isNull(itemsState.payloadSettings.showZoom)) {
+    if (isNull(payloadSettings.showZoom)) {
       return wpshopify.settings.general.productsImagesShowZoom
     }
 
-    return itemsState.payloadSettings.showZoom
+    return payloadSettings.showZoom
   }
 
   function hasFeatImage() {
@@ -87,9 +84,13 @@ function ProductFeaturedImage() {
     <div className='wps-gallery-featured-wrapper' css={ProductFeaturedImageCSS} ref={paneElement}>
       <div className='wps-product-image-wrapper'>
         {featImage ? (
-          <ProductImage isFeatured={true} image={featImage} />
+          <ProductImage payloadSettings={payloadSettings} isFeatured={true} image={featImage} />
         ) : (
-          <ProductImage isFeatured={true} image={galleryState.featImagePlaceholder} />
+          <ProductImage
+            payloadSettings={payloadSettings}
+            isFeatured={true}
+            image={galleryState.featImagePlaceholder}
+          />
         )}
       </div>
     </div>

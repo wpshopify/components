@@ -12,9 +12,6 @@ function ProductBuyButtonLeftInStock({ payload, selectedVariant, isTouched }) {
   const isMounted = useIsMounted()
 
   useEffect(() => {
-    console.log('isTouched', isTouched)
-    console.log('status', status)
-
     if (isTouched && status === 'idle') {
       fetchVariantInventoryManagement()
     }

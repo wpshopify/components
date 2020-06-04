@@ -6,6 +6,7 @@ function ItemsInitialState({
   beforeLoading = false,
   customQueryParams = false,
   payload = false,
+  isParentLoading = false,
 }) {
   if (component.componentType === 'collections') {
     var connectionParams = {
@@ -48,7 +49,8 @@ function ItemsInitialState({
     noResultsText: component.payloadSettings.noResultsText
       ? component.payloadSettings.noResultsText
       : wp.i18n.__('No items left', 'wpshopify'),
-    isLoading: false,
+    isLoading: isParentLoading ? isParentLoading : false,
+    isBootstrapping: true,
     hasMoreItems: false,
     notices: [],
     variantsInventory: [],
@@ -57,8 +59,6 @@ function ItemsInitialState({
     afterLoading: afterLoading,
     beforeLoading: beforeLoading,
   }
-
-  wp.hooks.doAction('items.init', itemsState)
 
   return itemsState
 }

@@ -60,7 +60,7 @@ const containerFluidCSS = css`
 const buttonCSS = css`
   border-radius: 7px;
   padding: 14px 0 15px 0;
-  transition: background-color 180ms ease;
+  transition: background 180ms ease;
   height: auto;
   font-weight: normal;
   position: relative;
@@ -73,7 +73,7 @@ const buttonCSS = css`
   width: 100%;
   max-width: 100%;
   white-space: normal;
-  background-color: #415aff;
+  background: #415aff;
   font-size: 18px;
 
   ${mq('small')} {
@@ -85,19 +85,10 @@ const buttonCSS = css`
     cursor: pointer;
   }
 
-  &:disabled {
-    background-color: #d4d4d4 !important;
-    box-shadow: none;
-  }
-
   &:focus {
     outline: none;
     border: none;
   }
 `
 
-const loadMoreButtonCSS = css`
-  max-width: 150px;
-`
-
-export { rowCSS, flexRowCSS, flexColSmallCSS, containerFluidCSS, buttonCSS, loadMoreButtonCSS, mq }
+export { rowCSS, flexRowCSS, flexColSmallCSS, containerFluidCSS, buttonCSS, mq }

@@ -277,4 +277,4 @@ function AddButtonText({ buttonText, addedToCart }) {
   )
 }
 
-export { ProductAddButton }
+export default wp.element.memo(ProductAddButton)

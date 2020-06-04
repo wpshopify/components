@@ -39,7 +39,9 @@ function ProductWrapper() {
   return (
     <div css={ProductWrapperCSS} className={'wps-item'} onMouseOver={onMouseOver}>
       {isShowingComponent(itemsState, 'images') && <ProductImages />}
-      {isShowingComponent(itemsState, 'title') && <ProductTitle />}
+      {isShowingComponent(itemsState, 'title') && (
+        <ProductTitle payloadSettings={itemsState.payloadSettings} />
+      )}
       {isShowingComponent(itemsState, 'pricing') && <ProductPricing />}
       {isShowingComponent(itemsState, 'description') && <ProductDescription />}
       {isShowingComponent(itemsState, 'buy-button') && <ProductBuyButton />}

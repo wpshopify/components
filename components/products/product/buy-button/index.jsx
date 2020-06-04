@@ -1,6 +1,6 @@
 import ProductQuantity from './quantity'
 import ProductOptions from './options'
-import { ProductAddButton } from './add-button'
+import ProductAddButton from './add-button'
 
 import { ProductBuyButtonProvider } from './_state/provider'
 import { ProductContext } from '../_state/context'
@@ -60,7 +60,7 @@ function ProductBuyButton() {
               isDirectCheckout={isDirectCheckout}
               hasManyVariants={productState.hasManyVariants}
               productDispatch={productDispatch}
-              buttonText={getButtonText(itemsState, isDirectCheckout)}
+              buttonText={getButtonText(itemsState.payloadSettings, isDirectCheckout)}
               selectedVariant={productState.selectedVariant}
             />
           </>

@@ -7,33 +7,32 @@ import { hasLink } from '../../../../common/settings'
 
 const { useContext } = wp.element
 
-function CollectionTitle() {
-  const [collectionState] = useContext(CollectionContext)
-  const [itemsState] = useContext(ItemsContext)
+function Title({ title }) {
+  return (
+    <h2 itemProp='name' className='wps-collection-title'>
+      {title}
+    </h2>
+  )
+}
 
-  function Title() {
-    return (
-      <h2 itemProp='name' className='wps-collection-title'>
-        {collectionState.payload.title}
-      </h2>
-    )
-  }
+function CollectionTitle({ payloadSettings }) {
+  const [collectionState] = useContext(CollectionContext)
 
   return usePortal(
     <div className='wps-component wps-component-collection-title'>
-      {hasLink(itemsState) ? (
+      {hasLink(payloadSettings) ? (
         <Link
           type='collections'
           payload={collectionState.payload}
-          linkTo={itemsState.payloadSettings.linkTo}
-          target={itemsState.payloadSettings.linkTarget}>
-          <Title />
+          linkTo={payloadSettings.linkTo}
+          target={payloadSettings.linkTarget}>
+          <Title title={collectionState.payload.title} />
         </Link>
       ) : (
-        <Title />
+        <Title title={collectionState.payload.title} />
       )}
     </div>,
-    findPortalElement(collectionState.element, itemsState.payloadSettings.dropzoneCollectionTitle)
+    findPortalElement(collectionState.element, payloadSettings.dropzoneCollectionTitle)
   )
 }
 

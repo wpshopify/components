@@ -51,20 +51,15 @@ function ProductPrice({ compareAt, prices, currencyCode, showPriceRange, selecte
   const animeFadeInRightSlow = useAnime(fadeInRightSlow)
 
   function isRegAndCompareSame() {
-    console.log('isRegAndCompareSame 1', prices)
-
     if (!showPriceRange && compareAt) {
-      console.log('isRegAndCompareSame 2')
-
       var firstCompare = firstPriceCompareAt(prices)
       var firstReg = firstRegPrice(prices)
 
       if (firstCompare === firstReg) {
-        console.log('isRegAndCompareSame 3', prices)
         return true
       }
     }
-    console.log('isRegAndCompareSame 4')
+
     return false
   }
 
@@ -85,7 +80,6 @@ function ProductPrice({ compareAt, prices, currencyCode, showPriceRange, selecte
       }
     } else {
       if (showPriceRange) {
-        console.log('prices.regPrices', prices.regPrices)
         return min(prices.regPrices)
       } else {
         return firstRegPrice(prices)

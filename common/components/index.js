@@ -1,7 +1,7 @@
 import isEmpty from 'lodash/isEmpty'
 
-const isShowingComponent = (state, type) => {
-  if (!state.payloadSettings.excludes || isEmpty(state.payloadSettings.excludes)) {
+const isShowingComponent = (payloadSettings, type) => {
+  if (!payloadSettings.excludes || isEmpty(payloadSettings.excludes)) {
     if (type === 'description') {
       return wpshopify.settings.general.productsPlpDescriptionsToggle
     }
@@ -9,7 +9,7 @@ const isShowingComponent = (state, type) => {
     return true
   }
 
-  return !state.payloadSettings.excludes.includes(type)
+  return !payloadSettings.excludes.includes(type)
 }
 
 export { isShowingComponent }

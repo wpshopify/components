@@ -2,38 +2,31 @@ import update from 'immutability-helper'
 
 function StorefrontReducer(state, action) {
   switch (action.type) {
-    case 'SET_IS_LOADING': {
-      return {
-        ...state,
-        isLoading: update(state.isLoading, { $set: action.payload })
-      }
-    }
-
     case 'CLEAR_SELECTIONS': {
       return {
         ...state,
-        selections: update(state.selections, { $set: {} })
+        selections: update(state.selections, { $set: {} }),
       }
     }
 
     case 'CLEAR_SELECTED_VENDORS': {
       return {
         ...state,
-        selectedVendors: update(state.selectedVendors, { $set: [] })
+        selectedVendors: update(state.selectedVendors, { $set: [] }),
       }
     }
 
     case 'CLEAR_SELECTED_TAGS': {
       return {
         ...state,
-        selectedTags: update(state.selectedTags, { $set: [] })
+        selectedTags: update(state.selectedTags, { $set: [] }),
       }
     }
 
     case 'CLEAR_SELECTED_TYPES': {
       return {
         ...state,
-        selectedTypes: update(state.selectedTypes, { $set: [] })
+        selectedTypes: update(state.selectedTypes, { $set: [] }),
       }
     }
 
@@ -44,7 +37,7 @@ function StorefrontReducer(state, action) {
 
       return {
         ...state,
-        selections: update(state.selections, { $merge: action.payload })
+        selections: update(state.selections, { $merge: action.payload }),
       }
     }
 
@@ -52,7 +45,7 @@ function StorefrontReducer(state, action) {
     case 'SET_SELECTED_TAGS': {
       return {
         ...state,
-        selectedTags: update(state.selectedTags, { $set: action.payload })
+        selectedTags: update(state.selectedTags, { $set: action.payload }),
       }
     }
 
@@ -60,7 +53,7 @@ function StorefrontReducer(state, action) {
     case 'SET_SELECTED_TYPES': {
       return {
         ...state,
-        selectedTypes: update(state.selectedTypes, { $set: action.payload })
+        selectedTypes: update(state.selectedTypes, { $set: action.payload }),
       }
     }
 
@@ -68,7 +61,7 @@ function StorefrontReducer(state, action) {
     case 'SET_SELECTED_VENDORS': {
       return {
         ...state,
-        selectedVendors: update(state.selectedVendors, { $set: action.payload })
+        selectedVendors: update(state.selectedVendors, { $set: action.payload }),
       }
     }
 
@@ -82,7 +75,7 @@ function StorefrontReducer(state, action) {
 
       return {
         ...state,
-        selectedAvailableForSale: update(state.selectedAvailableForSale, { $set: newVal })
+        selectedAvailableForSale: update(state.selectedAvailableForSale, { $set: newVal }),
       }
     }
 

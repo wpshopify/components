@@ -16,6 +16,8 @@ function StorefrontSelectionsType({ selectionType }) {
     text-align: right;
     padding-right: 10px;
     text-transform: capitalize;
+    display: flex;
+    align-items: center;
   `
 
   return (

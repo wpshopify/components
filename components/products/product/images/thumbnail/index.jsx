@@ -1,9 +1,9 @@
-import { ProductImage } from '../image'
+import ProductImage from '../image'
 import { ProductGalleryContext } from '../gallery/_state/context'
 
 const { useEffect, useContext, useState } = wp.element
 
-const ProductThumbnailImage = wp.element.memo(function ProductThumbnailImage({ image }) {
+function ProductThumbnailImage({ image, payloadSettings }) {
   const [galleryState, galleryDispatch] = useContext(ProductGalleryContext)
 
   const [isActive, setIsActive] = useState(() => false)
@@ -32,9 +32,9 @@ const ProductThumbnailImage = wp.element.memo(function ProductThumbnailImage({ i
       className='wps-component wps-component-products-images-thumbnail'
       onClick={onClick}
       data-wps-is-active={isActive}>
-      <ProductImage isFeatured={false} image={image} />
+      <ProductImage payloadSettings={payloadSettings} isFeatured={false} image={image} />
     </div>
   )
-})
+}
 
-export { ProductThumbnailImage }
+export default wp.element.memo(ProductThumbnailImage)

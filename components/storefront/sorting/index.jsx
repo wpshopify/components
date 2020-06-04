@@ -1,8 +1,9 @@
+/** @jsx jsx */
+import { jsx, css } from '@emotion/core'
 import { StorefrontContext } from '../_state/context'
 import { ItemsContext } from '../../items/_state/context'
 import { usePortal } from '../../../common/hooks'
 import { FilterHook } from '../../../common/utils'
-
 const { useContext, useState } = wp.element
 
 function getSelectedOption(select) {
@@ -49,6 +50,10 @@ function StorefrontSorting() {
     })
   }
 
+  const sortingSelectorCSS = css`
+    width: 100%;
+  `
+
   return usePortal(
     <div className='wps-component wps-component-sorting'>
       <label className='wps-sorting-heading wps-mr-2' htmlFor='wps-sorting'>
@@ -61,7 +66,8 @@ function StorefrontSorting() {
         value={sortValue}
         id='wps-sorting'
         onChange={onChange}
-        disabled={itemsState.isLoading}>
+        disabled={itemsState.isLoading}
+        css={sortingSelectorCSS}>
         <option value='DEFAULT' disabled='disabled'>
           {wp.hooks.applyFilters(
             'storefront.sorting.default.text',

@@ -11,7 +11,10 @@ function ProductImages() {
   const [itemsState] = useContext(ItemsContext)
 
   return usePortal(
-    <ProductGalleryWrapper productState={productState} />,
+    <ProductGalleryWrapper
+      payloadSettings={itemsState.payloadSettings}
+      productState={productState}
+    />,
     findPortalElement(productState.element, itemsState.payloadSettings.dropzoneProductGallery)
   )
 }

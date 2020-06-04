@@ -15,7 +15,11 @@ function Item({ children, limit = false, infiniteScroll = false }) {
   const isFirstRender = useIsFirstRender()
   const { Notice } = wp.components
 
+  console.log('<Item>')
+
   async function getNewItems(itemsState) {
+    console.log('aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa')
+
     wp.hooks.doAction('before.payload.update', itemsState)
 
     itemsDispatch({
@@ -47,6 +51,10 @@ function Item({ children, limit = false, infiniteScroll = false }) {
     }
 
     itemsDispatch({ type: 'SET_IS_LOADING', payload: false })
+
+    if (itemsState.isBootstrapping) {
+      itemsDispatch({ type: 'SET_IS_BOOTSTRAPPING', payload: false })
+    }
 
     if (!newItems || !newItems.length) {
       itemsDispatch({
@@ -89,6 +97,9 @@ function Item({ children, limit = false, infiniteScroll = false }) {
 
   useEffect(() => {
     if (itemsState.hasParentPayload) {
+      if (itemsState.isBootstrapping) {
+        itemsDispatch({ type: 'SET_IS_BOOTSTRAPPING', payload: false })
+      }
       return
     }
 
@@ -98,6 +109,10 @@ function Item({ children, limit = false, infiniteScroll = false }) {
 
     getNewItems(itemsState)
   }, [itemsState.queryParams])
+
+  useEffect(() => {
+    wp.hooks.doAction('after.payload.update', itemsState)
+  }, [itemsState.payload])
 
   /*
   
@@ -122,11 +137,7 @@ function Item({ children, limit = false, infiniteScroll = false }) {
     })
   }, [limit, infiniteScroll])
 
-  useEffect(() => {
-    wp.hooks.doAction('after.payload.update', itemsState)
-  }, [itemsState.payload])
-
-  return !itemsState.payload ? (
+  return !itemsState.hasParentPayload && itemsState.isBootstrapping ? (
     <ProductPlaceholder />
   ) : !itemsState.payload.length ? (
     <Notice status='info' isDismissible={false}>

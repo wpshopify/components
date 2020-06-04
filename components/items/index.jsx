@@ -22,7 +22,8 @@ function ItemWrapper(props) {
       customQueryParams={props.customQueryParams && props.customQueryParams}
       payload={props.payload && props.payload}
       afterLoading={props.afterLoading && props.afterLoading}
-      beforeLoading={props.beforeLoading && props.beforeLoading}>
+      beforeLoading={props.beforeLoading && props.beforeLoading}
+      isParentLoading={props.isParentLoading}>
       {usePortal(
         <Item limit={props.limit} infiniteScroll={props.infiniteScroll}>
           {props.children}

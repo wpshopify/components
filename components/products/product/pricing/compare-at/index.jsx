@@ -21,8 +21,6 @@ function ProductPricesCompareAt({
     }
   `
 
-  console.log('compareAt', compareAt)
-
   return (
     <div className='wps-pricing-compare-at' css={styles}>
       <ProductPrice
@@ -58,4 +56,4 @@ function ProductPricesCompareAt({
   )
 }
 
-export default ProductPricesCompareAt
+export default wp.element.memo(ProductPricesCompareAt)

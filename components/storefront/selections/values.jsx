@@ -2,7 +2,6 @@
 import { jsx, css } from '@emotion/core'
 import { IconRemove } from '../../../common/icons/icon-remove.jsx'
 import { StorefrontContext } from '../_state/context'
-import { useTransition, animated } from 'react-spring'
 import { createSelectionsOfType, buildNewSelection } from '../../../common/selections'
 import { FilterHook } from '../../../common/utils'
 
@@ -40,21 +39,22 @@ function StorefrontSelectionsValue({ selectionType, val }) {
       opacity: 0.8;
     }
 
-    .icon {
+    .wps-icon {
       width: 10px;
       height: 10px;
       display: inline-block;
       right: 0;
-      top: calc(50% - 5px);
+      top: calc(50% - 11px);
       margin-left: 10px;
     }
 
-    .icon svg {
+    .wps-icon svg {
       width: 10px;
       height: 10px;
       display: inline-block;
       position: relative;
       position: absolute;
+      top: -1px;
     }
   `
 
@@ -76,22 +76,10 @@ function StorefrontSelectionsValue({ selectionType, val }) {
 }
 
 function StorefrontSelectionsValues({ selectionType, vals }) {
-  const transitions = useTransition(vals, (item) => item, {
-    from: { transform: 'translateX(40px)' },
-    enter: { transform: 'translateX(0)' },
-    leave: { opacity: '0' },
-  })
-
-  return transitions.map(
-    ({ item, props, key }) =>
-      item && (
-        <animated.div key={item} style={props}>
-          <StorefrontSelectionsValue key={item} selectionType={selectionType} val={item} />
-        </animated.div>
-      )
+  return vals.map(
+    (item) =>
+      item && <StorefrontSelectionsValue key={item} selectionType={selectionType} val={item} />
   )
-
-  // return vals.map(val => <StorefrontSelectionsValue key={val} selectionType={selectionType} val={val} />)
 }
 
 export { StorefrontSelectionsValues }

@@ -1,4 +1,4 @@
-import { ProductThumbnailImage } from '../thumbnail'
+import ProductThumbnailImage from '../thumbnail'
 import { doFeaturedSizing } from '../../../../../common/images'
 import { v4 as uuidv4 } from 'uuid'
 import isEmpty from 'lodash/isEmpty'
@@ -6,7 +6,7 @@ import isEmpty from 'lodash/isEmpty'
 /** @jsx jsx */
 import { jsx, css } from '@emotion/core'
 
-const ProductThumbnailImages = wp.element.memo(function ProductThumbnailImages({ product }) {
+function ProductThumbnailImages({ product, payloadSettings }) {
   const { useState } = wp.element
   const [didPreload, setDidPreload] = useState(false)
 
@@ -38,11 +38,11 @@ const ProductThumbnailImages = wp.element.memo(function ProductThumbnailImages({
         css={thumbnailsWrapperCSS}
         onMouseEnter={onMouseEnter}>
         {product.images.map((image) => (
-          <ProductThumbnailImage key={uuidv4()} image={image} />
+          <ProductThumbnailImage key={uuidv4()} image={image} payloadSettings={payloadSettings} />
         ))}
       </div>
     )
   )
-})
+}
 
-export { ProductThumbnailImages }
+export default wp.element.memo(ProductThumbnailImages)

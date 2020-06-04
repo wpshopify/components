@@ -1,6 +1,5 @@
 import { PaginationContext } from '../_state/context'
-import { ItemsContext } from '../../items/_state/context'
-import { v4 as uuidv4 } from 'uuid'
+import PaginationItemsMap from './map'
 
 /** @jsx jsx */
 import { jsx, css } from '@emotion/core'
@@ -8,19 +7,9 @@ import { jsx, css } from '@emotion/core'
 const { useContext } = wp.element
 const { Notice } = wp.components
 
-function PaginationItems({ children }) {
-  const [itemsState] = useContext(ItemsContext)
+function PaginationItems({ children, itemsState }) {
+  console.log('::::: PaginationItems 1 :::::')
   const [paginationState] = useContext(PaginationContext)
-
-  function displayItems() {
-    return itemsState.payload.map((item) => {
-      return wp.element.cloneElement(children, {
-        payload: item,
-        key: uuidv4(),
-        itemsState: itemsState,
-      })
-    })
-  }
 
   const itemsListCSS = css`
     display: grid;
@@ -29,13 +18,20 @@ function PaginationItems({ children }) {
     grid-row-gap: 40px;
     max-width: 775px;
     margin: 0 auto;
+    opacity: ${itemsState.isLoading ? 0.4 : 1};
   `
 
   return (
     itemsState.payload && (
       <section className='wps-items-wrapper'>
         <section className='wps-items wps-items-list' css={itemsListCSS}>
-          {itemsState.payload && itemsState.payload.length ? displayItems() : ''}
+          {itemsState.payload && itemsState.payload.length && (
+            <PaginationItemsMap
+              payload={itemsState.payload}
+              payloadSettings={itemsState.payloadSettings}>
+              {children}
+            </PaginationItemsMap>
+          )}
         </section>
 
         {paginationState.controlsTouched && !itemsState.hasMoreItems && (
@@ -48,4 +44,4 @@ function PaginationItems({ children }) {
   )
 }
 
-export { PaginationItems }
+export default wp.element.memo(PaginationItems)

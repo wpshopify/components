@@ -20,29 +20,20 @@ function checkHasResults(items) {
   return !isEmpty(items)
 }
 
-function isHidingPagination(itemsState) {
+function isHidingPagination(payloadSettings, hasMoreItems) {
   if (wpshopify.settings.general.hidePagination) {
     return true
   }
 
-  console.log(
-    'itemsState.payloadSettings.pagination',
-    itemsState.payloadSettings.pagination,
-    itemsState
-  )
-
-  if (!itemsState.payloadSettings.pagination) {
+  if (!payloadSettings.pagination) {
     return true
   }
 
-  if (
-    itemsState.payloadSettings.limit &&
-    itemsState.payloadSettings.limit <= itemsState.payloadSettings.pageSize
-  ) {
+  if (payloadSettings.limit && payloadSettings.limit <= payloadSettings.pageSize) {
     return true
   }
 
-  if (!itemsState.hasMoreItems) {
+  if (!hasMoreItems) {
     return true
   }
 

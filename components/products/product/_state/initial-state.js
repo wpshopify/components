@@ -16,7 +16,7 @@ function hasManyVariants(payload) {
   return true
 }
 
-function ProductInitialState({ payload, itemsState }) {
+function ProductInitialState({ payload, payloadSettings }) {
   return {
     payload: payload,
     element: false,
@@ -25,7 +25,7 @@ function ProductInitialState({ payload, itemsState }) {
     isTouched: false,
     hasManyImages: payload.images && payload.images.length > 1 ? true : false,
     hasManyVariants: hasManyVariants(payload),
-    hasLink: hasLink(itemsState),
+    hasLink: hasLink(payloadSettings),
   }
 }
 
