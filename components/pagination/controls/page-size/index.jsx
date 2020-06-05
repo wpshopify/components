@@ -10,17 +10,17 @@ import { jsx, css } from '@emotion/core'
 import to from 'await-to-js'
 const { useContext, useState } = wp.element
 
-function PaginationPageSize() {
-  const [paginationState, paginationDispatch] = useContext(PaginationContext)
-  const [itemsState, itemsDispatch] = useContext(ItemsContext)
+function PaginationPageSize({ isLoading, payloadSettings, queryParams, dataType }) {
+  const [, paginationDispatch] = useContext(PaginationContext)
+  const [, itemsDispatch] = useContext(ItemsContext)
   const [pageSize, setPageSize] = useState(() => defaultPageSize())
 
   function defaultPageSize() {
-    if (itemsState.queryParams.first < 10) {
+    if (queryParams.first < 10) {
       return 'DEFAULT'
     }
 
-    return itemsState.queryParams.first
+    return queryParams.first
   }
 
   function updatedFirstQueryParams(event) {
@@ -51,7 +51,7 @@ function PaginationPageSize() {
     setLoadingStates(true)
 
     // Calls Shopify
-    const [shopifyError, shopifyResponse] = await to(graphQuery(itemsState.dataType, updatedParams))
+    const [shopifyError, shopifyResponse] = await to(graphQuery(dataType, updatedParams))
 
     if (shopifyError) {
       itemsDispatch({
@@ -62,7 +62,7 @@ function PaginationPageSize() {
       return
     }
 
-    setAfterCursorQueryParams(findLastCursorId(shopifyResponse, itemsState.dataType))
+    setAfterCursorQueryParams(findLastCursorId(shopifyResponse, dataType))
 
     itemsDispatch({
       type: 'UPDATE_TOTAL_SHOWN',
@@ -87,7 +87,7 @@ function PaginationPageSize() {
 
   return usePortal(
     <>
-      {itemsState.payloadSettings.paginationPageSize && (
+      {payloadSettings.paginationPageSize && (
         <div className='wps-component wps-component-sorting'>
           <label className='wps-sorting-heading wps-mr-2' htmlFor='wps-sorting'>
             {wp.i18n.__('Page size:', 'wpshopify')}
@@ -99,7 +99,7 @@ function PaginationPageSize() {
             value={pageSize}
             id='wps-sorting'
             onChange={(e) => onChange(e)}
-            disabled={itemsState.isLoading}>
+            disabled={isLoading}>
             <option value='DEFAULT' disabled='disabled'>
               {wp.i18n.__('Choose a size', 'wpshopify')}
             </option>
@@ -112,7 +112,7 @@ function PaginationPageSize() {
         </div>
       )}
     </>,
-    document.querySelector(itemsState.payloadSettings.dropzonePageSize)
+    document.querySelector(payloadSettings.dropzonePageSize)
   )
 }
 

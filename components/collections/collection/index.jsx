@@ -8,13 +8,17 @@ import { itemWidthClass } from '../../../common/utils'
 
 function Collection({ payload, payloadSettings }) {
   return (
-    <div className={`${itemWidthClass(payloadSettings.itemsPerRow)} wps-item p-3`}>
+    <div className={`${itemWidthClass(payloadSettings.itemsPerRow)} wps-item`}>
       <CollectionProvider payloadSettings={payloadSettings} payload={payload}>
-        {isShowingComponent(payloadSettings, 'image') && <CollectionImage />}
-        {isShowingComponent(payloadSettings, 'title') && (
+        {isShowingComponent(payloadSettings, 'image') && !payloadSettings.single && (
+          <CollectionImage />
+        )}
+        {isShowingComponent(payloadSettings, 'title') && !payloadSettings.single && (
           <CollectionTitle payloadSettings={payloadSettings} />
         )}
-        {isShowingComponent(payloadSettings, 'description') && <CollectionDescription />}
+        {isShowingComponent(payloadSettings, 'description') && !payloadSettings.single && (
+          <CollectionDescription />
+        )}
         {isShowingComponent(payloadSettings, 'products') && payloadSettings.single && (
           <CollectionProducts />
         )}

@@ -9,13 +9,12 @@ function ProductBuyButtonTextNotice({ quantityLeft }) {
 
   const textNoticeCSS = css`
     text-align: center;
-    margin-top: 5px;
+    margin: 5px auto 2.4em auto;
     font-size: 15px;
     padding: 10px;
     color: red;
     width: 100%;
     font-weight: normal;
-    margin: 0 auto;
     display: block;
   `
 

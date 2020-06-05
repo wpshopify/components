@@ -17,6 +17,14 @@ function Item({ children, limit = false, infiniteScroll = false }) {
 
   console.log('<Item>')
 
+  function showGlobalNotice(dataType) {
+    if (dataType === 'storefront' || dataType === 'search') {
+      return false
+    }
+
+    return true
+  }
+
   async function getNewItems(itemsState) {
     console.log('aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa')
 
@@ -139,7 +147,7 @@ function Item({ children, limit = false, infiniteScroll = false }) {
 
   return !itemsState.hasParentPayload && itemsState.isBootstrapping ? (
     <ProductPlaceholder />
-  ) : !itemsState.payload.length ? (
+  ) : !itemsState.payload.length && showGlobalNotice(itemsState.dataType) ? (
     <Notice status='info' isDismissible={false}>
       {itemsState.noResultsText}
     </Notice>

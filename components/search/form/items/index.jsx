@@ -1,14 +1,14 @@
-import { SearchContext } from '../../_state/context'
-import { ItemsContext } from '../../../items/_state/context'
 import { Products } from '../../../products'
 import { usePortal } from '../../../../common/hooks'
+import { SearchContext } from '../../_state/context'
 
-const { useEffect, useContext, useRef } = wp.element
-
-function SearchItems() {
+function SearchItems({ payload, payloadSettings, queryParams, noResultsText }) {
+  const { useEffect, useContext, useRef } = wp.element
   const [searchState] = useContext(SearchContext)
-  const [itemsState] = useContext(ItemsContext)
   const initialRender = useRef(true)
+  const { Notice } = wp.components
+  console.log('SEARCH itemsState.payload', payload)
+  console.log('searchState.searchTerm', searchState.searchTerm)
 
   useEffect(() => {
     if (initialRender.current) {
@@ -19,10 +19,10 @@ function SearchItems() {
 
   function buildOptions() {
     return {
-      payload: itemsState.payload,
+      payload: payload,
       products:
-        itemsState.payload &&
-        itemsState.payload.map((product) => {
+        payload &&
+        payload.map((product) => {
           return {
             product: product,
             element: false,
@@ -35,23 +35,32 @@ function SearchItems() {
             },
           }
         }),
-      dataType: itemsState.payloadSettings.dataType,
+      dataType: payloadSettings.dataType,
       originalParams: {
-        type: itemsState.payloadSettings.dataType,
-        queryParams: itemsState.queryParams,
+        type: payloadSettings.dataType,
+        queryParams: queryParams,
         connectionParams: false,
       },
-      queryParams: itemsState.queryParams,
-      type: itemsState.payloadSettings.dataType,
-      payloadSettings: itemsState.payloadSettings,
-      noResultsText: itemsState.payloadSettings.noResultsText,
+      queryParams: queryParams,
+      type: payloadSettings.dataType,
+      payloadSettings: payloadSettings,
+      noResultsText: payloadSettings.noResultsText,
     }
   }
 
   return usePortal(
-    <>{!initialRender.current && <Products options={buildOptions()} />}</>,
-    document.querySelector(searchState.payloadSettings.dropzonePayload)
+    <>
+      {!initialRender.current &&
+        (!payload.length ? (
+          <Notice status='info' isDismissible={false}>
+            {noResultsText}
+          </Notice>
+        ) : (
+          searchState.searchTerm && <Products options={buildOptions()} />
+        ))}
+    </>,
+    document.querySelector(payloadSettings.dropzonePayload)
   )
 }
 
-export { SearchItems }
+export default SearchItems

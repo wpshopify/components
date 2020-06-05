@@ -20,9 +20,13 @@ function StorefrontSelectionsType({ selectionType }) {
     align-items: center;
   `
 
+  const filterSelectionTypeCSS = css`
+    margin-top: 10px;
+  `
+
   return (
     !isEmpty(storefrontState.selections[selectionType]) && (
-      <div className='wps-filter-selection-type row mb-2'>
+      <div className='wps-filter-selection-type row mb-2' css={filterSelectionTypeCSS}>
         <div className='wps-selections-group align-items-center'>
           {selectionType !== 'available_for_sale' && (
             <span className='wps-filter-selection-type-heading' css={selectionTypeHeadingCSS}>

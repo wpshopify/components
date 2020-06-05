@@ -1,8 +1,8 @@
-function StorefrontInitialState(options = {}) {
+function StorefrontInitialState({ element, payloadSettings }) {
   return {
-    element: options.element ? options.element : false,
-    renderFromServer: options.payloadSettings ? options.payloadSettings.renderFromServer : false,
-    payloadSettings: options.payloadSettings ? options.payloadSettings : false,
+    element: element ? element : false,
+    renderFromServer: payloadSettings ? payloadSettings.renderFromServer : false,
+    payloadSettings: payloadSettings ? payloadSettings : false,
     selections: {},
     selectedTags: [],
     selectedTypes: [],

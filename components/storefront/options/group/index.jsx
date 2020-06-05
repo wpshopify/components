@@ -1,28 +1,14 @@
 import { StorefrontFilter } from '../../filter'
 import { StorefrontOptionsContext } from '../_state/context'
-import { StorefrontFilterOptionsGroupItem } from '../group-item'
+import StorefrontFilterOptionsGroupItems from '../group-items'
 import { FilterHook } from '../../../../common/utils'
 import isEmpty from 'lodash/isEmpty'
 
 const { Notice } = wp.components
 const { useContext } = wp.element
 
-function sortAndCleanValues(values) {
-  if (!values) {
-    return
-  }
-
-  return values
-    .sort((a, b) => a.localeCompare(b))
-    .filter(function (e) {
-      return e === 0 || e
-    })
-}
-
-function StorefrontFilterOptionsGroup({ groupType, displayStyle, heading }) {
+function StorefrontFilterOptionsGroup({ groupType, displayStyle, heading, filterOptions }) {
   const [storefrontOptionsState] = useContext(StorefrontOptionsContext)
-
-  const filterOptions = sortAndCleanValues(storefrontOptionsState.filterOptions[groupType])
 
   return (
     <StorefrontFilter heading={heading}>
@@ -44,14 +30,11 @@ function StorefrontFilterOptionsGroup({ groupType, displayStyle, heading }) {
           </Notice>
         ) : (
           <ul className={'wps-' + groupType}>
-            {filterOptions.map((item) => (
-              <StorefrontFilterOptionsGroupItem
-                key={item}
-                itemValue={item}
-                itemType={groupType}
-                displayStyle={displayStyle}
-              />
-            ))}
+            <StorefrontFilterOptionsGroupItems
+              filterOptions={filterOptions}
+              displayStyle={displayStyle}
+              groupType={groupType}
+            />
           </ul>
         )}
       </div>

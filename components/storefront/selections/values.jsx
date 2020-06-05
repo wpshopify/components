@@ -54,7 +54,7 @@ function StorefrontSelectionsValue({ selectionType, val }) {
       display: inline-block;
       position: relative;
       position: absolute;
-      top: -1px;
+      top: -2px;
     }
   `
 

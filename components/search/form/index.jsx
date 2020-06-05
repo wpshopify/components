@@ -1,18 +1,22 @@
+/** @jsx jsx */
+import { jsx, css } from '@emotion/core'
 import { queryBuilder } from '/Users/andrew/www/devil/devilbox-new/data/www/wpshopify-api'
 import { SearchContext } from '../_state/context'
 import { ItemsContext } from '../../items/_state/context'
-
 import { usePortal } from '../../../common/hooks'
 import { SearchInput } from './input'
-import { SearchButton } from './button'
 import { SearchNotices } from './notices'
 
-const { useEffect, useContext, useRef } = wp.element
-
-function SearchForm() {
-  const [itemsState, itemsDispatch] = useContext(ItemsContext)
+function SearchForm({ isLoading, payloadSettings }) {
+  const { useEffect, useContext, useRef } = wp.element
+  const [, itemsDispatch] = useContext(ItemsContext)
   const [searchState] = useContext(SearchContext)
   const isFirstRender = useRef(true)
+
+  const searchWrapperCSS = css`
+    max-width: 775px;
+    margin: 0 auto;
+  `
 
   useEffect(() => {
     if (isFirstRender.current) {
@@ -20,31 +24,28 @@ function SearchForm() {
       return
     }
 
-    var hi = queryBuilder({
-      filter: itemsState.payloadSettings.sortBy,
-      phrase: wpshopify.settings.general.searchExactMatch,
-      value: searchState.searchTerm,
-    })
-
     itemsDispatch({
       type: 'MERGE_QUERY_PARAMS',
       payload: {
-        query: hi,
+        query: queryBuilder({
+          filter: payloadSettings.sortBy,
+          phrase: wpshopify.settings.general.searchExactMatch,
+          value: searchState.searchTerm,
+        }),
       },
     })
   }, [searchState.searchTerm])
 
   return usePortal(
-    <form role='search' className='wps-search-form'>
+    <form role='search' className='wps-search-form' css={searchWrapperCSS}>
       <SearchNotices />
 
       <div className='wps-search-wrapper'>
-        <SearchInput />
-        <SearchButton />
+        <SearchInput isLoading={isLoading} payloadSettings={payloadSettings} />
       </div>
     </form>,
     document.querySelector(searchState.payloadSettings.dropzoneForm)
   )
 }
 
-export { SearchForm }
+export default wp.element.memo(SearchForm)

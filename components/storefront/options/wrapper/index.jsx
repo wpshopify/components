@@ -3,8 +3,10 @@ import assign from 'lodash/assign'
 import mapValues from 'lodash/mapValues'
 import map from 'lodash/map'
 import { usePortal } from '../../../../common/hooks'
-import { FilterHook } from '../../../../common/utils'
 
+import TypesHeading from '../heading-types'
+import VendorsHeading from '../heading-vendors'
+import TagsHeading from '../heading-tags'
 import { getFilterData } from '/Users/andrew/www/devil/devilbox-new/data/www/wpshopify-api'
 import { StorefrontContext } from '../../_state/context'
 import { StorefrontFilterOptionsGroup } from '../group'
@@ -31,10 +33,21 @@ function lowercaseFilterOptions(allFilteredData) {
   })
 }
 
-function StorefrontOptionsWrapper() {
+function sortAndCleanValues(values) {
+  if (!values) {
+    return
+  }
+
+  return values
+    .sort((a, b) => a.localeCompare(b))
+    .filter(function (e) {
+      return e === 0 || e
+    })
+}
+
+function StorefrontOptionsWrapper({ payloadSettings }) {
   const [storefrontOptionsState, storefrontOptionsDispatch] = useContext(StorefrontOptionsContext)
-  const [storefrontState] = useContext(StorefrontContext)
-  const [itemsState, itemsDispatch] = useContext(ItemsContext)
+  const [, itemsDispatch] = useContext(ItemsContext)
 
   async function getAllFilterOptions() {
     var [respError, respData] = await to(getFilterData())
@@ -71,51 +84,37 @@ function StorefrontOptionsWrapper() {
     getAllFilterOptions()
   }, [])
 
-  function TagsHeading() {
-    return (
-      <FilterHook name='default.storefront.tags.heading'>
-        {wp.i18n.__('Tags', 'wpshopify')}
-      </FilterHook>
-    )
-  }
-
-  function VendorsHeading() {
-    return (
-      <FilterHook name='default.storefront.vendors.heading'>
-        {wp.i18n.__('Vendors', 'wpshopify')}
-      </FilterHook>
-    )
-  }
-
-  function TypesHeading() {
-    return (
-      <FilterHook name='default.storefront.types.heading'>
-        {wp.i18n.__('Types', 'wpshopify')}
-      </FilterHook>
-    )
-  }
+  const tagsFilterOptions = sortAndCleanValues(storefrontOptionsState.filterOptions.tags)
+  const vendorsFilterOptions = sortAndCleanValues(storefrontOptionsState.filterOptions.vendors)
+  const typesFilterOptions = sortAndCleanValues(storefrontOptionsState.filterOptions.types)
 
   return usePortal(
     <>
-      {storefrontState.payloadSettings.showOptionsHeading ? <StorefrontFilterOptionsHeading /> : ''}
+      {payloadSettings.showOptionsHeading ? <StorefrontFilterOptionsHeading /> : ''}
       <aside className='wps-storefront'>
-        {storefrontState.payloadSettings.showTags ? (
-          <StorefrontFilterOptionsGroup heading={TagsHeading()} groupType='tags' />
-        ) : (
-          ''
-        )}
-        {storefrontState.payloadSettings.showVendors ? (
+        {payloadSettings.showTags ? (
           <StorefrontFilterOptionsGroup
-            heading={VendorsHeading()}
-            groupType='vendors'
-            displayStyle='checkbox'
+            filterOptions={tagsFilterOptions}
+            heading={<TagsHeading />}
+            groupType='tags'
           />
         ) : (
           ''
         )}
-        {storefrontState.payloadSettings.showTypes ? (
+        {payloadSettings.showVendors ? (
           <StorefrontFilterOptionsGroup
-            heading={TypesHeading()}
+            heading={<VendorsHeading />}
+            groupType='vendors'
+            displayStyle='checkbox'
+            filterOptions={vendorsFilterOptions}
+          />
+        ) : (
+          ''
+        )}
+        {payloadSettings.showTypes ? (
+          <StorefrontFilterOptionsGroup
+            typesFilterOptions={typesFilterOptions}
+            heading={<TypesHeading />}
             groupType='types'
             displayStyle='checkbox'
           />
@@ -124,8 +123,8 @@ function StorefrontOptionsWrapper() {
         )}
       </aside>
     </>,
-    document.querySelector(storefrontState.payloadSettings.dropzoneOptions)
+    document.querySelector(payloadSettings.dropzoneOptions)
   )
 }
 
-export { StorefrontOptionsWrapper }
+export default wp.element.memo(StorefrontOptionsWrapper)

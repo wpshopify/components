@@ -3,10 +3,7 @@ import { StorefrontInitialState } from './initial-state'
 import { StorefrontContext } from './context'
 
 function StorefrontProvider(props) {
-  const [state, dispatch] = wp.element.useReducer(
-    StorefrontReducer,
-    StorefrontInitialState(props.options)
-  )
+  const [state, dispatch] = wp.element.useReducer(StorefrontReducer, StorefrontInitialState(props))
 
   const value = wp.element.useMemo(() => [state, dispatch], [state])
 

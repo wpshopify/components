@@ -9,8 +9,6 @@ function PaginationControlsWrapper({ itemsState, itemsDispatch }) {
   const [paginationState, paginationDispatch] = useContext(PaginationContext)
 
   function onNextPage() {
-    console.log('onNextPage 1')
-
     paginationDispatch({ type: 'SET_CONTROLS_TOUCHED', payload: true })
     fetchNextItems(itemsState, itemsDispatch)
   }
@@ -22,7 +20,7 @@ function PaginationControlsWrapper({ itemsState, itemsDispatch }) {
         dataType={itemsState.dataType}
         isLoading={itemsState.isLoading}
         payloadSettings={itemsState.payloadSettings}
-        hasMoreItems={paginationState.hasMoreItems}
+        hasMoreItems={itemsState.hasMoreItems}
         onNextPage={onNextPage}
       />
     )

@@ -1,10 +1,10 @@
 import { StorefrontOptionsProvider } from './_state/provider'
-import { StorefrontOptionsWrapper } from './wrapper'
+import StorefrontOptionsWrapper from './wrapper'
 
-function StorefrontOptions() {
+function StorefrontOptions({ payloadSettings }) {
   return (
     <StorefrontOptionsProvider>
-      <StorefrontOptionsWrapper />
+      <StorefrontOptionsWrapper payloadSettings={payloadSettings} />
     </StorefrontOptionsProvider>
   )
 }

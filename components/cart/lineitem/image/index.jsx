@@ -29,9 +29,9 @@ function CartLineItemImage({ lineItem, cartState }) {
 
   const lineItemImgCSS = css`
     background-image: url(${lineItem.image ? actualImageUrl() : placeholderImageUrl()});
-    width: 100px;
-    height: 100px;
-    border-radius: 5px;
+    width: 90px;
+    height: 90px;
+    border-radius: 0;
     background-size: cover;
     background-repeat: no-repeat;
     background-position: center center;

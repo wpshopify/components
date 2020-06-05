@@ -1,5 +1,4 @@
 import { ProductContext } from '../_state/context'
-import { ItemsContext } from '../../../items/_state/context'
 import { isShowingComponent } from '../../../../common/components'
 
 /** @jsx jsx */
@@ -13,8 +12,7 @@ import { ProductImages } from '../images'
 
 const { useContext } = wp.element
 
-function ProductWrapper() {
-  const [itemsState] = useContext(ItemsContext)
+function ProductWrapper({ payloadSettings }) {
   const [productState, productDispatch] = useContext(ProductContext)
 
   const ProductWrapperCSS = css`
@@ -33,18 +31,22 @@ function ProductWrapper() {
   }
 
   function isAlignHeight() {
-    return wpshopify.settings.general.alignHeight || itemsState.payloadSettings.alignHeight
+    return wpshopify.settings.general.alignHeight || payloadSettings.alignHeight
   }
 
   return (
-    <div css={ProductWrapperCSS} className={'wps-item'} onMouseOver={onMouseOver}>
-      {isShowingComponent(itemsState, 'images') && <ProductImages />}
-      {isShowingComponent(itemsState, 'title') && (
-        <ProductTitle payloadSettings={itemsState.payloadSettings} />
+    <div
+      css={ProductWrapperCSS}
+      className={'wps-item'}
+      onMouseOver={onMouseOver}
+      data-wpshopify-is-available-for-sale={productState.payload.availableForSale}>
+      {isShowingComponent(payloadSettings, 'images') && <ProductImages />}
+      {isShowingComponent(payloadSettings, 'title') && (
+        <ProductTitle payloadSettings={payloadSettings} />
       )}
-      {isShowingComponent(itemsState, 'pricing') && <ProductPricing />}
-      {isShowingComponent(itemsState, 'description') && <ProductDescription />}
-      {isShowingComponent(itemsState, 'buy-button') && <ProductBuyButton />}
+      {isShowingComponent(payloadSettings, 'pricing') && <ProductPricing />}
+      {isShowingComponent(payloadSettings, 'description') && <ProductDescription />}
+      {isShowingComponent(payloadSettings, 'buy-button') && <ProductBuyButton />}
     </div>
   )
 }

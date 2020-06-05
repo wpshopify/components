@@ -1,36 +1,40 @@
 import { usePortal } from '../../../common/hooks'
-import { ItemsContext } from '../../items/_state/context'
-import { StorefrontContext } from '../_state/context'
 import { Products } from '../../products'
-import { animeStaggerFadeIn } from '../../../common/animations'
+// import { animeStaggerFadeIn } from '../../../common/animations'
+/** @jsx jsx */
+import { jsx, css } from '@emotion/core'
 
-const { useEffect, useContext } = wp.element
+function StorefrontItems({ noResultsText, payloadSettings, payload, queryParams, isLoading }) {
+  //   useEffect(
+  //     function () {
+  //       if (isLoading) {
+  //         return
+  //       }
 
-function StorefrontItems() {
-  const [itemsState] = useContext(ItemsContext)
-  const [storefrontState] = useContext(StorefrontContext)
+  //       animeStaggerFadeIn(
+  //         document.querySelectorAll(
+  //           '.wps-item[data-is-first-item="true"], .wps-item[data-is-first-item="true"] ~ div'
+  //         )
+  //       )
+  //     },
+  //     [isLoading]
+  //   )
 
-  useEffect(
-    function () {
-      if (itemsState.isLoading) {
-        return
-      }
+  const { Spinner, Notice } = wp.components
 
-      animeStaggerFadeIn(
-        document.querySelectorAll(
-          '.wps-item[data-is-first-item="true"], .wps-item[data-is-first-item="true"] ~ div'
-        )
-      )
-    },
-    [itemsState.isLoading]
-  )
+  const noticeCSS = css`
+    && {
+      margin-left: 40px;
+      margin-top: 0;
+    }
+  `
 
   function buildOptions() {
     return {
-      payload: itemsState.payload,
+      payload: payload,
       products:
-        itemsState.payload &&
-        itemsState.payload.map((product) => {
+        payload &&
+        payload.map((product) => {
           return {
             product: product,
             element: false,
@@ -46,19 +50,43 @@ function StorefrontItems() {
       dataType: 'products',
       originalParams: {
         type: 'products',
-        queryParams: itemsState.queryParams,
+        queryParams: queryParams,
         connectionParams: false,
       },
       type: 'storefront',
-      payloadSettings: itemsState.payloadSettings,
-      noResultsText: itemsState.payloadSettings.noResultsText,
+      payloadSettings: payloadSettings,
+      noResultsText: payloadSettings.noResultsText,
     }
   }
 
+  const spinnerCSS = css`
+    position: absolute;
+    top: -45px;
+    left: 50px;
+  `
+
+  const storefrontItemsWrapperCSS = css`
+    position: relative;
+  `
+
   return usePortal(
-    <Products options={buildOptions()} />,
-    document.querySelector(storefrontState.payloadSettings.dropzonePayload)
+    <div css={storefrontItemsWrapperCSS}>
+      {isLoading && (
+        <div css={spinnerCSS}>
+          <Spinner />
+        </div>
+      )}
+
+      {payload.length ? (
+        <Products options={buildOptions()} />
+      ) : (
+        <Notice css={noticeCSS} status='info' isDismissible={false}>
+          {noResultsText}
+        </Notice>
+      )}
+    </div>,
+    document.querySelector(payloadSettings.dropzonePayload)
   )
 }
 
-export { StorefrontItems }
+export default StorefrontItems

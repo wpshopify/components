@@ -1,20 +1,14 @@
+/** @jsx jsx */
+import { jsx, css } from '@emotion/core'
 import { SearchContext } from '../../_state/context'
-import { FilterHook } from '../../../../common/utils'
-import { ItemsContext } from '../../../items/_state/context'
 import { useDebounce } from 'use-debounce'
-import { Loader } from '../../../loader'
 
-/*
-
-Component: SearchInput
-
-*/
-function SearchInput() {
+function SearchInput({ isLoading, payloadSettings }) {
   const { useEffect, useContext, useRef, useState } = wp.element
+  const { Spinner } = wp.components
   const [localTerm, setLocalTerm] = useState(() => '')
-  const [searchState, searchDispatch] = useContext(SearchContext)
-  const [itemsState] = useContext(ItemsContext)
-  const [debouncedSearchTerm] = useDebounce(localTerm, 250)
+  const [, searchDispatch] = useContext(SearchContext)
+  const [debouncedSearchTerm] = useDebounce(localTerm, 350)
   const isFirstRender = useRef(true)
 
   function setSearchTerm(value) {
@@ -30,9 +24,20 @@ function SearchInput() {
     searchDispatch({ type: 'SET_SEARCH_TERM', payload: debouncedSearchTerm })
   }, [debouncedSearchTerm])
 
-  function placeholderText() {
-    return wp.i18n.__('Search the store', 'wpshopify')
-  }
+  const spinnerCSS = css`
+    position: absolute;
+    top: 11px;
+    right: 10px;
+  `
+
+  const searchInputCSS = css`
+    &::-webkit-search-cancel-button {
+      display: ${isLoading ? 'none' : 'block'};
+      &:hover {
+        cursor: pointer;
+      }
+    }
+  `
 
   return (
     <div className='wps-search-input-wrapper'>
@@ -42,16 +47,22 @@ function SearchInput() {
         className='wps-search-input'
         name='search'
         val={localTerm}
-        placeholder={<FilterHook name='search.placeholder.text'>{placeholderText()}</FilterHook>}
-        aria-label={<FilterHook name='search.placeholder.text'>{placeholderText()}</FilterHook>}
+        placeholder={wp.hooks.applyFilters(
+          'search.placeholder.text',
+          wp.i18n.__('Search the store', 'wpshopify')
+        )}
+        aria-label={wp.hooks.applyFilters(
+          'search.placeholder.text',
+          wp.i18n.__('Search the store', 'wpshopify')
+        )}
+        css={searchInputCSS}
         onChange={(e) => setSearchTerm(e.target.value)}
       />
-
-      <Loader
-        isLoading={itemsState.isLoading}
-        dropzone={itemsState.payloadSettings.dropzoneLoader}
-        color='#ddd'
-      />
+      {isLoading && (
+        <div css={spinnerCSS}>
+          <Spinner />
+        </div>
+      )}
     </div>
   )
 }

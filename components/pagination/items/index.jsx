@@ -16,7 +16,7 @@ function PaginationItems({ children, itemsState }) {
     grid-template-columns: repeat(${itemsState.payloadSettings.itemsPerRow}, 1fr);
     grid-column-gap: 20px;
     grid-row-gap: 40px;
-    max-width: 775px;
+    max-width: ${itemsState.payload.length === 1 ? '300px' : '775px'};
     margin: 0 auto;
     opacity: ${itemsState.isLoading ? 0.4 : 1};
   `
