@@ -19,8 +19,8 @@ function CartNote() {
       isFirstRender.current = false
       return
     }
-
-    wpshopify.misc.isPro && cartDispatch({ type: 'SET_CHECKOUT_NOTE', payload: debouncedValue })
+    wp.hooks.doAction('on.checkout.note', debouncedValue)
+    cartDispatch({ type: 'SET_CHECKOUT_NOTE', payload: debouncedValue })
   }, [debouncedValue])
 
   return (

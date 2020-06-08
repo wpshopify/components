@@ -186,7 +186,8 @@ function CartWrapper() {
   }, [setCheckoutAttributes])
 
   useEffect(() => {
-    wpshopify.misc.isPro && cartDispatch({ type: 'SET_CHECKOUT_NOTE', payload: setCheckoutNotes })
+    wp.hooks.doAction('on.checkout.note', setCheckoutNotes)
+    cartDispatch({ type: 'SET_CHECKOUT_NOTE', payload: setCheckoutNotes })
   }, [setCheckoutNotes])
 
   useEffect(() => {

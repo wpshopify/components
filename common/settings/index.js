@@ -18,12 +18,12 @@ function isLiteSync() {
   return wpshopify.settings.general.is_lite_sync
 }
 
-function isDisablingDefaultPages() {
-  return wpshopify.settings.general.disable_default_pages
+function enableDefaultPages() {
+  return wpshopify.settings.general.enable_default_pages
 }
 
 function hasSinglePage() {
-  if (isDisablingDefaultPages()) {
+  if (!enableDefaultPages()) {
     return false
   }
 
@@ -149,11 +149,11 @@ function getItemLink(payload, type, linkTo) {
   }
   // Manual links
   if (linkTo === 'shopify') {
-    return getShopifySingleLink(payload, type)
+    return encodeURI(getShopifySingleLink(payload, type))
   }
 
   if (linkTo === 'wordpress') {
-    return getWordPressSingleLink(payload)
+    return encodeURI(getWordPressSingleLink(payload))
   }
 }
 

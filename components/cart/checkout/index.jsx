@@ -1,5 +1,7 @@
+import { ErrorBoundary } from 'react-error-boundary'
 import { CartContext } from '../_state/context'
 import { Loader } from '../../loader'
+import ErrorFallback from '../../error-fallback'
 import { FilterHook } from '../../../common/utils'
 import { hasCustomCheckoutAttributes } from '../../../common/checkout'
 
@@ -114,7 +116,7 @@ function decorateCheckoutUrl(link) {
 
 function redirect(checkoutUrl, target) {
   // window.location.href = url; (open in same window)
-  window.open(checkoutUrl, target)
+  window.open(encodeURI(checkoutUrl), target)
 }
 
 function customDomainRedirect(checkout, primaryDomain, target) {
@@ -153,6 +155,8 @@ function CartCheckout() {
   const checkoutButton = useRef()
 
   async function onCheckout() {
+    console.log('onCheckout')
+
     cartDispatch({ type: 'UPDATE_NOTICES', payload: [] })
     cartDispatch({ type: 'SET_IS_CHECKING_OUT', payload: true })
 
@@ -239,11 +243,13 @@ function CartCheckout() {
     <>
       <FilterHook name='before.cart.checkout.button' args={[cartState]} />
 
-      <CartCheckoutButton
-        onCheckout={onCheckout}
-        buttonStyle={buttonStyle}
-        buttonRef={checkoutButton}
-      />
+      <ErrorBoundary FallbackComponent={ErrorFallback}>
+        <CartCheckoutButton
+          onCheckout={onCheckout}
+          buttonStyle={buttonStyle}
+          buttonRef={checkoutButton}
+        />
+      </ErrorBoundary>
 
       <FilterHook name='after.cart.checkout.button' args={[cartState]} />
     </>
@@ -257,7 +263,9 @@ function CartCheckoutButton({ buttonStyle, onCheckout, buttonRef }) {
     font-size: 22px;
     margin-top: 0.5em;
     margin-bottom: 0;
-    background-color: ${wpshopify.settings.general.checkoutColor};
+    background-color: ${cartState.isCheckingOut || !cartState.termsAccepted || cartState.isCartEmpty
+      ? '#cfcfcf'
+      : wpshopify.settings.general.checkoutColor};
     padding: 16px 0 20px 0;
   `
 

@@ -83,6 +83,10 @@ function PaginationPageSize({ isLoading, payloadSettings, queryParams, dataType 
 
   const sortingSelectorCSS = css`
     width: 100%;
+
+    &:hover {
+      cursor: pointer;
+    }
   `
 
   return usePortal(

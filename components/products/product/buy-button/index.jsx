@@ -1,12 +1,11 @@
 import ProductQuantity from './quantity'
 import ProductOptions from './options'
 import ProductAddButton from './add-button'
-
 import { ProductBuyButtonProvider } from './_state/provider'
 import { ProductContext } from '../_state/context'
 import { ItemsContext } from '../../../items/_state/context'
 import { usePortal } from '../../../../common/hooks'
-import { hasLink, getButtonText } from '../../../../common/settings'
+import { getButtonText } from '../../../../common/settings'
 import { onlyAvailableOptionsFromVariants } from '../../../../common/variants'
 import { findPortalElement, FilterHook } from '../../../../common/utils'
 

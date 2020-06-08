@@ -52,6 +52,9 @@ function StorefrontSorting() {
 
   const sortingSelectorCSS = css`
     width: 100%;
+    &:hover {
+      cursor: pointer;
+    }
   `
 
   return usePortal(

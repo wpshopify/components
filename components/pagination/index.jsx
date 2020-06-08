@@ -12,7 +12,14 @@ function Pagination({ children }) {
     <PaginationProvider
       payloadSettings={itemsState.payloadSettings}
       hasMoreItems={itemsState.hasMoreItems}>
-      <PaginationItems itemsState={itemsState}>{children}</PaginationItems>
+      <PaginationItems
+        payload={itemsState.payload}
+        payloadSettings={itemsState.payloadSettings}
+        isLoading={itemsState.isLoading}
+        hasMoreItems={itemsState.hasMoreItems}
+        noResultsText={itemsState.noResultsText}>
+        {children}
+      </PaginationItems>
       <PaginationControlsWrapper itemsState={itemsState} itemsDispatch={itemsDispatch} />
     </PaginationProvider>
   )

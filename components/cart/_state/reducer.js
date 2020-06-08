@@ -376,8 +376,6 @@ function CartReducer(state, action) {
     }
 
     case 'SET_CHECKOUT_NOTE': {
-      wp.hooks.doAction('on.checkout.note', action.payload)
-
       return {
         ...state,
         note: update(state.note, { $set: action.payload }),

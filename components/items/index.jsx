@@ -14,7 +14,6 @@ options, children, afterLoading, beforeLoading
 <Item> - Represents one or more products
 
 */
-
 function ItemWrapper(props) {
   return (
     <ItemsProvider

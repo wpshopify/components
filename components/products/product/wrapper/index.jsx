@@ -1,5 +1,7 @@
 import { ProductContext } from '../_state/context'
 import { isShowingComponent } from '../../../../common/components'
+import { ErrorBoundary } from 'react-error-boundary'
+import ErrorFallback from '../../../error-fallback'
 
 /** @jsx jsx */
 import { jsx, css } from '@emotion/core'
@@ -40,13 +42,27 @@ function ProductWrapper({ payloadSettings }) {
       className={'wps-item'}
       onMouseOver={onMouseOver}
       data-wpshopify-is-available-for-sale={productState.payload.availableForSale}>
-      {isShowingComponent(payloadSettings, 'images') && <ProductImages />}
-      {isShowingComponent(payloadSettings, 'title') && (
-        <ProductTitle payloadSettings={payloadSettings} />
-      )}
-      {isShowingComponent(payloadSettings, 'pricing') && <ProductPricing />}
-      {isShowingComponent(payloadSettings, 'description') && <ProductDescription />}
-      {isShowingComponent(payloadSettings, 'buy-button') && <ProductBuyButton />}
+      <ErrorBoundary FallbackComponent={ErrorFallback}>
+        {isShowingComponent(payloadSettings, 'images') && <ProductImages />}
+      </ErrorBoundary>
+
+      <ErrorBoundary FallbackComponent={ErrorFallback}>
+        {isShowingComponent(payloadSettings, 'title') && (
+          <ProductTitle payloadSettings={payloadSettings} />
+        )}
+      </ErrorBoundary>
+
+      <ErrorBoundary FallbackComponent={ErrorFallback}>
+        {isShowingComponent(payloadSettings, 'pricing') && <ProductPricing />}
+      </ErrorBoundary>
+
+      <ErrorBoundary FallbackComponent={ErrorFallback}>
+        {isShowingComponent(payloadSettings, 'description') && <ProductDescription />}
+      </ErrorBoundary>
+
+      <ErrorBoundary FallbackComponent={ErrorFallback}>
+        {isShowingComponent(payloadSettings, 'buy-button') && <ProductBuyButton />}
+      </ErrorBoundary>
     </div>
   )
 }
