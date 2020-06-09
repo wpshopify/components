@@ -1,8 +1,14 @@
 import { ProductBuyButtonTextNotice } from '../notice'
-import { getVariantInventoryManagement } from '/Users/andrew/www/devil/devilbox-new/data/www/wpshopify-api'
+import { findTotalInventoryQuantity } from '../../../../../common/variants'
+import {
+  getVariantInventoryManagement,
+  setCache,
+  getCache,
+} from '/Users/andrew/www/devil/devilbox-new/data/www/wpshopify-api'
 import { useIsMounted } from '/Users/andrew/www/devil/devilbox-new/data/www/wpshopify-hooks'
 import to from 'await-to-js'
 import find from 'lodash/find'
+import unionBy from 'lodash/unionBy'
 
 function ProductBuyButtonLeftInStock({ payload, selectedVariant, isTouched }) {
   const { useEffect, useState } = wp.element
@@ -36,71 +42,59 @@ function ProductBuyButtonLeftInStock({ payload, selectedVariant, isTouched }) {
     })
   }
 
-  async function fetchVariantInventoryManagement() {
-    console.log('fetchVariantInventoryManagement')
+  function findNonCachedVariants(cachedInventory, variantIDs) {
+    return variantIDs.filter((variantId) => {
+      return !find(cachedInventory, ['id', variantId])
+    })
+  }
 
-    const variantIDs = getVariantIds(payload)
-    console.log('fetchVariantInventoryManagement', variantIDs)
+  async function fetchVariantInventoryManagement() {
+    var cachedInventory = getCache('wps-inventory-levels')
+    var variantIDs = getVariantIds(payload)
+
     if (!variantIDs.length) {
       console.warn('WP Shopify warning: No variant ids found for fetchVariantInventoryManagement')
       return
     }
 
-    setStatus('pending')
-    console.log('variantIDs', variantIDs)
+    if (cachedInventory) {
+      cachedInventory = JSON.parse(cachedInventory)
 
-    const [error, resp] = await to(getVariantInventoryManagement({ ids: variantIDs }))
-    console.log('getVariantInventoryManagement -- resp', resp)
-    console.log('getVariantInventoryManagement -- error', error)
+      var variantIDs = findNonCachedVariants(cachedInventory, variantIDs)
+
+      // Everything is cached, lets go
+      if (!variantIDs.length) {
+        setStatus('resolved')
+        setVariantInventory(cachedInventory)
+        return
+      }
+    }
+
+    setStatus('pending')
+
+    const [error, response] = await to(getVariantInventoryManagement({ ids: variantIDs }))
 
     if (isMounted.current) {
-      if (error || resp.data.type === 'error') {
+      if (error || response.data.type === 'error') {
         setStatus('error')
 
         if (error) {
           console.error('WP Shopify error: ', error)
         }
 
-        console.error('WP Shopify error: ', resp.data.message)
+        console.error('WP Shopify error: ', response.data.message)
 
         return
       }
 
       setStatus('resolved')
 
-      var variantInventoryResp = sanitizeInventoryResponse(resp)
+      var variantInventoryResp = sanitizeInventoryResponse(response)
+      var combinedInventoryData = unionBy(variantInventoryResp, cachedInventory, 'id')
+
+      setCache('wps-inventory-levels', JSON.stringify(combinedInventoryData))
 
       setVariantInventory(variantInventoryResp)
-    }
-  }
-
-  function findAvailableQuantityByLocations(variant) {
-    if (variant.inventoryLevels.length === 1) {
-      return variant.inventoryLevels[0].node.available
-    }
-
-    const varianttwo = variant.inventoryLevels.reduce((accumulator, currentValue) => {
-      return accumulator.node.available + currentValue.node.available
-    })
-
-    return varianttwo
-  }
-
-  function findSelectedVariant(selectedVariantId) {
-    return find(variantInventory, { id: selectedVariantId })
-  }
-
-  function findInventoryFromVariantId(selectedVariant) {
-    if (!variantInventory) {
-      return false
-    }
-
-    let totalAvailableQuantity = findAvailableQuantityByLocations(selectedVariant)
-
-    if (totalAvailableQuantity > 0 && totalAvailableQuantity < 10) {
-      return totalAvailableQuantity
-    } else {
-      return false
     }
   }
 
@@ -110,28 +104,7 @@ function ProductBuyButtonLeftInStock({ payload, selectedVariant, isTouched }) {
     }
 
     if (selectedVariant.availableForSale) {
-      console.log('selectedVariant.id', selectedVariant.id)
-
-      let selectedVariantFound = findSelectedVariant(selectedVariant.id)
-      console.log('selectedVariantFound', selectedVariantFound)
-
-      if (!selectedVariantFound) {
-        console.warn(
-          'WP Shopify warning: could not find selected variant within <ProductBuyButton>'
-        )
-        return
-      }
-
-      if (!selectedVariantFound.tracked) {
-        return
-      }
-
-      if (selectedVariantFound.inventoryPolicy === 'CONTINUE') {
-        return
-      }
-      console.log('selectedVariantFound :: ', selectedVariantFound)
-
-      var totalAvailableQuantity = findInventoryFromVariantId(selectedVariantFound)
+      var totalAvailableQuantity = findTotalInventoryQuantity(variantInventory, selectedVariant.id)
 
       if (!totalAvailableQuantity) {
         return

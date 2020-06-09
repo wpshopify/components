@@ -7,13 +7,10 @@ import isEmpty from 'lodash/isEmpty'
 import {
   getProductsFromLineItems,
   buildInstances,
+  getCache,
 } from '/Users/andrew/www/devil/devilbox-new/data/www/wpshopify-api'
 import { CartButtons } from '../buttons'
 import to from 'await-to-js'
-
-const { useContext, useRef, useEffect } = wp.element
-const { Spinner } = wp.components
-const { Suspense } = wp.element
 
 const CartHeader = wp.element.lazy(() =>
   import(/* webpackChunkName: 'CartHeader-public' */ '../header')
@@ -26,6 +23,8 @@ const CartFooter = wp.element.lazy(() =>
 )
 
 function CartWrapper() {
+  const { useContext, useRef, useEffect, Suspense } = wp.element
+  const { Spinner } = wp.components
   const cartElement = useRef()
   const [cartState, cartDispatch] = useContext(CartContext)
   const updateCheckoutAttributes = useAction('update.checkout.attributes')
@@ -107,6 +106,8 @@ function CartWrapper() {
     })
 
     let [productsError, products] = await to(getProductsFromLineItems())
+
+    console.log('................. getProductsFromLineItems', products)
 
     if (productsError) {
       cartDispatch({

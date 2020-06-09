@@ -1,4 +1,5 @@
 import { PaginationContext } from '../_state/context'
+import { mq } from '../../../common/css'
 import PaginationItemsMap from './map'
 
 /** @jsx jsx */
@@ -25,6 +26,16 @@ function PaginationItems({
     max-width: ${payload.length === 1 || payloadSettings.itemsPerRow === 1 ? '300px' : '775px'};
     margin: 0;
     opacity: ${isLoading ? 0.4 : 1};
+    transition: opacity ease 0.18s;
+    padding: 0 1em;
+
+    ${mq('medium')} {
+      grid-template-columns: repeat(2, 1fr);
+    }
+
+    ${mq('small')} {
+      grid-template-columns: repeat(1, 1fr);
+    }
   `
 
   return (

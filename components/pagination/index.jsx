@@ -4,7 +4,6 @@ import { PaginationProvider } from './_state/provider'
 import { ItemsContext } from '../items/_state/context'
 
 function Pagination({ children }) {
-  console.log('::::: Pagination 1 :::::')
   const { useContext } = wp.element
   const [itemsState, itemsDispatch] = useContext(ItemsContext)
 

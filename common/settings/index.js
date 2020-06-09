@@ -7,19 +7,19 @@ hasEnableCustomCheckoutDomain
 
 */
 function hasEnableCustomCheckoutDomain() {
-  return wpshopify.settings.general.enable_custom_checkout_domain
+  return wpshopify.settings.general.enableCustomCheckoutDomain
 }
 
 function productsLinkTo() {
-  return wpshopify.settings.general.products_link_to
+  return wpshopify.settings.general.productsLinkTo
 }
 
 function isLiteSync() {
-  return wpshopify.settings.general.is_lite_sync
+  return wpshopify.settings.general.isLiteSync
 }
 
 function enableDefaultPages() {
-  return wpshopify.settings.general.enable_default_pages
+  return wpshopify.settings.general.enableDefaultPages
 }
 
 function hasSinglePage() {
@@ -59,7 +59,11 @@ function hasLink(payloadSettings) {
     return false
   }
 
-  return hasSinglePage() && !onSinglePage(payloadSettings)
+  if (hasSinglePage() && !onSinglePage(payloadSettings)) {
+    return true
+  } else {
+    return false
+  }
 }
 
 function hasCustomButtonText(payloadSettings) {

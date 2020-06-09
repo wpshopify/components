@@ -3,6 +3,7 @@ import { jsx, css } from '@emotion/core'
 
 const bp = {
   small: 600,
+  medium: 800,
 }
 
 const mq = (n) => {

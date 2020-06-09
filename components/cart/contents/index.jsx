@@ -2,11 +2,27 @@
 import { jsx, css } from '@emotion/core'
 import { CartLineItems } from '../lineitems'
 import { FilterHook } from '../../../common/utils'
+import { getCache } from '/Users/andrew/www/devil/devilbox-new/data/www/wpshopify-api'
+
+function filterEmptyLineItems(lineItems) {
+  return lineItems.filter(Boolean)
+}
 
 function CartContents(props) {
-  function filterEmptyLineItems(lineItems) {
-    return lineItems.filter(Boolean)
-  }
+  const { useState } = wp.element
+
+  const [inventory] = useState(() => {
+    console.log('11111111111111111111111111111111111111')
+
+    var inv = getCache('wps-inventory-levels')
+    if (inv) {
+      return JSON.parse(inv)
+    }
+
+    return false
+  })
+
+  console.log('CartContentsCartContentsCartContentsCartContentsCartContents', inventory)
 
   const styles = css`
     top: 38%;
@@ -29,7 +45,10 @@ function CartContents(props) {
           </FilterHook>
         </h2>
       ) : (
-        <CartLineItems lineItems={filterEmptyLineItems(props.checkoutCache.variants)} />
+        <CartLineItems
+          inventory={inventory}
+          lineItems={filterEmptyLineItems(props.checkoutCache.variants)}
+        />
       )}
     </section>
   )

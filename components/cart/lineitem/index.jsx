@@ -7,6 +7,7 @@ import { CartLineItemOutOfStock } from './out-of-stock'
 import { CartLineItemTitle } from './title'
 import { CartLineItemRemove } from './remove'
 import CartLineItemVariantTitle from './variant-title'
+import CartLineItemLeftInStock from './left-in-stock'
 
 import { calcLineItemTotal, isAvailable } from '../../../common/products'
 import { containerFluidCSS, flexRowCSS, flexColSmallCSS } from '../../../common/css'
@@ -18,11 +19,12 @@ import find from 'lodash/find'
 
 const { useContext, useState, useRef, useEffect } = wp.element
 
-function CartLineItem({ lineItem }) {
+function CartLineItem({ lineItem, inventory }) {
   const [cartState, cartDispatch] = useContext(CartContext)
   const [isUpdating] = useState(() => false)
   const [lineItemQuantity, setLineItemQuantity] = useState(() => 0)
   const [lineItemTotal, setLineItemTotal] = useState(() => 0)
+  console.log('lineItem', lineItem)
 
   const variantId = useRef(false)
   const lineItemElement = useRef()
@@ -91,7 +93,7 @@ function CartLineItem({ lineItem }) {
         <div
           className='wps-cart-lineitem-title col-12 p-0'
           data-wps-is-empty={hasRealVariant() ? 'false' : 'true'}>
-          <div className='p-0' css={containerFluidCSS}>
+          <div className='p-0 wps-cart-lineitem-title-wrapper' css={containerFluidCSS}>
             <div css={flexRowCSS}>
               <CartLineItemTitle lineItem={lineItem} />
               <CartLineItemRemove onRemove={onRemove} />
@@ -104,7 +106,8 @@ function CartLineItem({ lineItem }) {
         {!isAvailable(lineItem) ? (
           <CartLineItemOutOfStock />
         ) : (
-          <div className='p-0' css={containerFluidCSS}>
+          <div className='p-0 wps-cart-lineitem-quantity-wrapper' css={containerFluidCSS}>
+            <CartLineItemLeftInStock lineItemId={lineItem.id} inventory={inventory} />
             <div css={[flexRowCSS, flexColSmallCSS]}>
               <CartLineItemQuantity
                 lineItem={lineItem}

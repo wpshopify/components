@@ -5,7 +5,7 @@ import ErrorFallback from '../../error-fallback'
 import { FilterHook } from '../../../common/utils'
 import { hasCustomCheckoutAttributes } from '../../../common/checkout'
 
-import { buttonCSS } from '../../../common/css'
+import { buttonCSS, mq } from '../../../common/css'
 
 /** @jsx jsx */
 import { jsx, css } from '@emotion/core'
@@ -267,6 +267,10 @@ function CartCheckoutButton({ buttonStyle, onCheckout, buttonRef }) {
       ? '#cfcfcf'
       : wpshopify.settings.general.checkoutColor};
     padding: 16px 0 20px 0;
+
+    ${mq('small')} {
+      font-size: 22px;
+    }
   `
 
   return (
