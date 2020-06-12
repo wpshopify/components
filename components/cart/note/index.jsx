@@ -1,6 +1,7 @@
+/** @jsx jsx */
+import { jsx, css } from '@emotion/core'
 import { CartContext } from '../_state/context'
 import { useDebounce } from 'use-debounce'
-import { FilterHook } from '../../../common/utils'
 
 const { useContext, useState, useRef, useEffect } = wp.element
 
@@ -23,23 +24,44 @@ function CartNote() {
     cartDispatch({ type: 'SET_CHECKOUT_NOTE', payload: debouncedValue })
   }, [debouncedValue])
 
+  const CartNotesCSS = css`
+    margin-bottom: 0.5em;
+
+    .wps-input {
+      width: 100%;
+      display: block;
+      font-size: 16px;
+      padding: 1em;
+      border-color: #ddd;
+      appearance: none;
+    }
+
+    label {
+      font-size: 20px;
+    }
+  `
+
   return (
-    <section className='wps-cart-notes'>
+    <section className='wps-cart-notes' css={CartNotesCSS}>
       <label
-        value={
-          <FilterHook name='cart.note.label'>
-            {wp.i18n.__('Checkout notes', 'wpshopify')}
-          </FilterHook>
-        }
+        value={wp.hooks.applyFilters(
+          'cart.note.label',
+          wp.i18n.__('Checkout notes', 'wpshopify'),
+          cartState
+        )}
         htmlFor='wps-input-notes'>
-        <FilterHook name='default.cart.notes.label'>{wp.i18n.__('Notes:', 'wpshopify')}</FilterHook>
+        {wp.hooks.applyFilters(
+          'default.cart.notes.label',
+          wp.i18n.__('Checkout notes', 'wpshopify'),
+          cartState
+        )}
       </label>
       <textarea
-        placeholder={
-          <FilterHook name='cart.note.placeholder'>
-            {wpshopify.settings.general.cartNotesPlaceholder}
-          </FilterHook>
-        }
+        placeholder={wp.hooks.applyFilters(
+          'cart.note.placeholder',
+          wpshopify.settings.general.cartNotesPlaceholder,
+          cartState
+        )}
         id='wps-input-notes'
         className='wps-input wps-input-textarea'
         onChange={onChange}

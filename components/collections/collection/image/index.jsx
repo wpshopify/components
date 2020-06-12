@@ -1,3 +1,5 @@
+/** @jsx jsx */
+import { jsx, css } from '@emotion/core'
 import { CollectionContext } from '../_state/context'
 import { ItemsContext } from '../../../items/_state/context'
 import { usePortal } from '../../../../common/hooks'
@@ -32,9 +34,14 @@ function CollectionImage() {
     }
   }, [])
 
+  const CollectionImageCSS = css`
+    margin-bottom: 20px;
+    max-width: 400px;
+  `
+
   return usePortal(
     imageSrc && (
-      <div className='wps-component wps-component-collection-image' data-wps-component-order='0'>
+      <div className='wps-component wps-component-collection-image' css={CollectionImageCSS}>
         <Link
           type='collections'
           payload={collectionState.payload}

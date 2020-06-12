@@ -110,8 +110,6 @@ function CartButton({ options }) {
           }
         `
 
-  console.log('options.payloadSettings.type', options.payloadSettings.type)
-
   return (
     shouldShowCartTab() &&
     usePortal(

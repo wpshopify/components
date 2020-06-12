@@ -15,6 +15,7 @@ function PaginationControls({
   const paginationControlsCSS = css`
     margin-top: 60px;
     margin-bottom: 60px;
+    text-align: center;
   `
 
   return (

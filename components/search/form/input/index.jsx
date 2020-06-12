@@ -31,6 +31,13 @@ function SearchInput({ isLoading, payloadSettings }) {
   `
 
   const searchInputCSS = css`
+    padding: 1em;
+    font-size: 1em;
+    border: none;
+    border: 1px solid #ddd;
+    outline: none;
+    width: 100%;
+
     &::-webkit-search-cancel-button {
       display: ${isLoading ? 'none' : 'block'};
       &:hover {
@@ -38,9 +45,12 @@ function SearchInput({ isLoading, payloadSettings }) {
       }
     }
   `
+  const searchInputWrapperCSS = css`
+    width: 100%;
+  `
 
   return (
-    <div className='wps-search-input-wrapper'>
+    <div className='wps-search-input-wrapper' css={searchInputWrapperCSS}>
       <input
         type='search'
         id='wps-search-input'

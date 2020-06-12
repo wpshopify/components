@@ -124,8 +124,12 @@ function ProductPrice({ compareAt, prices, currencyCode, showPriceRange, selecte
 
   const priceWrapperCSS = css`
     line-height: 1;
-    margin: ${!selectedVariant && compareAt && showPriceRange ? '-15px 0 10px 0' : '0 0 10px 0'};
+    margin: 0;
     display: block;
+
+    &[data-show-price-range='true'] + .wps-product-prices-compare-at {
+      margin-top: 10px;
+    }
   `
 
   return (
@@ -135,6 +139,7 @@ function ProductPrice({ compareAt, prices, currencyCode, showPriceRange, selecte
         itemProp='offers'
         itemType='https://schema.org/Offer'
         className='wps-products-price wps-product-pricing wps-products-price-one'
+        data-show-price-range={showPriceRange}
         css={priceWrapperCSS}>
         {showPriceRange && !selectedVariant ? (
           <ProductPricingRange

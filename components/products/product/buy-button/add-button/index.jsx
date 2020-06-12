@@ -14,6 +14,7 @@ import {
   createUniqueCheckout,
   addLineItemsAPI,
   getCache,
+  buildClient,
 } from '/Users/andrew/www/devil/devilbox-new/data/www/wpshopify-api'
 import to from 'await-to-js'
 
@@ -48,45 +49,6 @@ function buildLineItemParams(variant, quantity) {
       quantity: quantity,
     },
   ]
-}
-
-function ProductAddButton({
-  hasLink,
-  payload,
-  linkTarget,
-  linkTo,
-  addToCartButtonColor,
-  isDirectCheckout,
-  hasManyVariants,
-  productDispatch,
-  buttonText,
-  selectedVariant,
-  addedToCart,
-  isTouched,
-}) {
-  return (
-    <div
-      className='wps-component wps-component-products-add-button wps-btn-wrapper'
-      data-wps-is-component-wrapper
-      data-wps-post-id=''>
-      <AddButtonWrapper hasLink={hasLink} payload={payload} linkTarget={linkTarget} linkTo={linkTo}>
-        <AddButton
-          addToCartButtonColor={addToCartButtonColor}
-          loader={<Loader />}
-          isDirectCheckout={isDirectCheckout}
-          hasManyVariants={hasManyVariants}
-          productDispatch={productDispatch}
-          buttonText={buttonText}
-          addedToCart={addedToCart}
-        />
-      </AddButtonWrapper>
-      <ProductBuyButtonLeftInStock
-        isTouched={isTouched}
-        payload={payload}
-        selectedVariant={selectedVariant}
-      />
-    </div>
-  )
 }
 
 function AddButtonWrapper({ hasLink, payload, children, linkTo, linkTarget }) {
@@ -154,6 +116,8 @@ function AddButton({
     const lineItems = buildLineItemParams(variant, buyButtonState.quantity)
 
     if (isDirectCheckout) {
+      const client = buildClient()
+
       setIsCheckingOut(true)
 
       const [err, checkout] = await to(createUniqueCheckout(client))
@@ -274,6 +238,46 @@ function AddButtonText({ buttonText, addedToCart }) {
         {text}
       </span>
     </FilterHook>
+  )
+}
+
+function ProductAddButton({
+  hasLink,
+  payload,
+  linkTarget,
+  linkTo,
+  addToCartButtonColor,
+  isDirectCheckout,
+  hasManyVariants,
+  productDispatch,
+  buttonText,
+  selectedVariant,
+  addedToCart,
+  isTouched,
+}) {
+  return (
+    <div
+      className='wps-component wps-component-products-add-button wps-btn-wrapper'
+      data-wps-is-component-wrapper
+      data-wps-post-id=''>
+      <AddButtonWrapper hasLink={hasLink} payload={payload} linkTarget={linkTarget} linkTo={linkTo}>
+        <AddButton
+          hasLink={hasLink}
+          addToCartButtonColor={addToCartButtonColor}
+          loader={<Loader />}
+          isDirectCheckout={isDirectCheckout}
+          hasManyVariants={hasManyVariants}
+          productDispatch={productDispatch}
+          buttonText={buttonText}
+          addedToCart={addedToCart}
+        />
+      </AddButtonWrapper>
+      <ProductBuyButtonLeftInStock
+        isTouched={isTouched}
+        payload={payload}
+        selectedVariant={selectedVariant}
+      />
+    </div>
   )
 }
 

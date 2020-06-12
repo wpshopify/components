@@ -10,19 +10,28 @@ function ProductPricesCompareAt({
   selectedVariant,
   showPriceRange,
 }) {
-  const styles = css`
+  const ProductPricesCompareAtCSS = css`
     display: flex;
     flex-direction: ${showPriceRange && !selectedVariant ? 'column' : 'row'};
     align-items: baseline;
     position: relative;
+    margin-bottom: ${compareAt ? '0' : '25px'};
 
     + .wps-buy-button-wrapper > .wps-product-quantity-wrapper {
       margin-top: 1.7em;
     }
   `
 
+  const ProductPricesCompareAtWrapperCSS = css`
+    display: flex;
+    align-items: center;
+    margin-top: 0;
+    margin-bottom: 30px;
+    margin-left: ${showPriceRange ? '0' : '10px'};
+  `
+
   return (
-    <div className='wps-pricing-compare-at' css={styles}>
+    <div className='wps-pricing-compare-at' css={ProductPricesCompareAtCSS}>
       <ProductPrice
         selectedVariant={selectedVariant}
         compareAt={false}
@@ -32,10 +41,7 @@ function ProductPricesCompareAt({
       />
 
       {compareAt && (
-        <>
-          {console.log('prices.compareAtPrices[0]', prices.compareAtPrices[0])}
-          {console.log('selectedVariant')}
-
+        <div className='wps-product-prices-compare-at' css={ProductPricesCompareAtWrapperCSS}>
           {(prices.compareAtPrices[0] || selectedVariant.compareAtPriceV2) && (
             <ProductPriceSaleNotice
               showPriceRange={showPriceRange}
@@ -50,7 +56,7 @@ function ProductPricesCompareAt({
             showPriceRange={showPriceRange}
             currencyCode={currencyCode}
           />
-        </>
+        </div>
       )}
     </div>
   )

@@ -1,14 +1,11 @@
+/** @jsx jsx */
+import { jsx, css } from '@emotion/core'
 import { ProductBuyButtonContext } from '../../_state/context'
 import { useAnime, pulse } from '../../../../../../common/animations'
 import { FilterHook } from '../../../../../../common/utils'
 import { buttonCSS } from '../../../../../../common/css'
 import { ItemsContext } from '../../../../../items/_state/context'
 import { ProductOptionContext } from '../_state/context'
-
-/** @jsx jsx */
-import { jsx, css } from '@emotion/core'
-
-const { useEffect, useContext, useRef } = wp.element
 
 function TriggerIcon() {
   return (
@@ -22,6 +19,7 @@ function TriggerIcon() {
 }
 
 function ProductOptionTrigger() {
+  const { useEffect, useContext, useRef } = wp.element
   const [itemsState] = useContext(ItemsContext)
   const [buyButtonState] = useContext(ProductBuyButtonContext)
   const [productOptionState, productOptionDispatch] = useContext(ProductOptionContext)
@@ -36,11 +34,6 @@ function ProductOptionTrigger() {
     productOptionDispatch({ type: 'TOGGLE_DROPDOWN', payload: !productOptionState.isDropdownOpen })
   }
 
-  /*
-
-   When buyButtonState.missingSelections changes ...
-
-   */
   useEffect(() => {
     if (isFirstRender.current) {
       isFirstRender.current = false

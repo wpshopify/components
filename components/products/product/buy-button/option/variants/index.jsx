@@ -1,3 +1,5 @@
+/** @jsx jsx */
+import { jsx, css } from '@emotion/core'
 import ProductVariant from './variant'
 import ProductVariantDropdownValue from '../dropdown-value'
 import { ProductOptionContext } from '../_state/context'
@@ -5,8 +7,6 @@ import { useOnClickOutside } from '../../../../../../common/hooks'
 import { createObj, isPairMatch } from '../../../../../../common/utils'
 import { v4 as uuidv4 } from 'uuid'
 import isEmpty from 'lodash/isEmpty'
-
-const { useContext } = wp.element
 
 function ProductVariantsDropdown({
   buyButtonDispatch,
@@ -17,6 +17,7 @@ function ProductVariantsDropdown({
   option,
   isOptionSelected,
 }) {
+  const { useContext } = wp.element
   const [productOptionState, productOptionDispatch] = useContext(ProductOptionContext)
 
   function isAvail(variant) {
@@ -32,8 +33,21 @@ function ProductVariantsDropdown({
     isDropdownOpen
   )
 
+  const modalCSS = css`
+    && {
+      list-style: none;
+      padding: 0;
+      margin: 0;
+      background-color: #fff;
+      width: 100%;
+      max-width: 100%;
+      border-bottom-left-radius: 5px;
+      border-bottom-right-radius: 5px;
+    }
+  `
+
   return (
-    <ul className='wps-modal wps-variants'>
+    <ul className='wps-modal wps-variants' css={modalCSS}>
       {option &&
         option.values.length &&
         option.values.map(

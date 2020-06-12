@@ -10,8 +10,11 @@ function ProductVariantButtonValue({ variant, onSelection, selectedOptions, isAv
   const backgroundColor = isSelected ? '#415aff' : 'transparent'
   const opacity = isSelected || isAvailableToSelect ? 1 : 0.4
 
-  var defaultStyles = css`
-    margin: 0 10px 10px 0;
+  const colorSwatchNames = wp.hooks.applyFilters('product.variant.styles.colorSwatch.names', [
+    'color',
+  ])
+
+  const defaultVariantStyles = `margin: 0 10px 10px 0;
     outline: none;
     border: 1px solid ${border};
     font-size: 1em;
@@ -24,11 +27,47 @@ function ProductVariantButtonValue({ variant, onSelection, selectedOptions, isAv
     &:hover {
       cursor: ${!isSelected ? 'pointer' : 'auto'};
       opacity: ${!isSelected ? 0.6 : 1};
+    }`
+
+  function maybeColorSwatches(variant, defaultCustomStyles) {
+    if (!colorSwatchNames.map((v) => v.toLowerCase()).includes(variant.name.toLowerCase())) {
+      return defaultCustomStyles
     }
 
+    let variantValue = wp.hooks.applyFilters(
+      'product.variant.styles.colorSwatch.value',
+      variant.value
+    )
+
+    return `
+         margin: 0 10px 10px 0;
+         outline: none;
+         padding: 10px;
+         background-color: ${variantValue};
+         text-indent: 100%;
+         white-space: nowrap;
+         overflow: hidden;
+         width: 40px;
+         height: 40px;
+         font-size: 0;
+         opacity: ${isAvailableToSelect ? 1 : 0.1};
+         border-radius: 50%;
+         border: ${isSelected ? '1px solid ' + variantValue : 'none'};
+         box-shadow: ${isSelected ? 'inset 0 0 0px 4px white' : 'none'};
+         transition: 100ms transform ease;
+
+         &:hover {
+            transform: scale(1.2);
+            cursor: ${!isSelected ? 'pointer' : 'auto'};
+            opacity: 1 !important;
+         }      
+      `
+  }
+
+  var defaultStyles = css`
     ${wp.hooks.applyFilters(
       'product.variant.styles',
-      defaultStyles,
+      maybeColorSwatches(variant, defaultVariantStyles),
       variant,
       isSelected,
       isAvailableToSelect

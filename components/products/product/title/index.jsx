@@ -21,12 +21,19 @@ function ProductTitle({ payloadSettings }) {
     }
   `
 
+  const titleStylesWrapper = css`
+    margin-bottom: 15px;
+  `
+
   function getTitleClass() {
     return wp.hooks.applyFilters('product.title.class', 'wps-products-title')
   }
 
   return usePortal(
-    <div className='wps-component wps-component-products-title' data-wps-component-order='0'>
+    <div
+      className='wps-component wps-component-products-title'
+      data-wps-component-order='0'
+      css={titleStylesWrapper}>
       {hasLink(payloadSettings) ? (
         <Link
           type='products'

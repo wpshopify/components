@@ -48,18 +48,14 @@ Fetch NEXT items
 
 */
 function fetchNextItems(itemsState, itemsDispatch) {
-  console.log('fetchNextItems 1')
-
   return new Promise(async (resolve, reject) => {
     if (isEmpty(itemsState.payload)) {
       return
     }
-    console.log('SET_IS_LOADING')
 
     itemsDispatch({ type: 'SET_IS_LOADING', payload: true })
 
     if (itemsState.beforeLoading) {
-      console.log('fetchNextItems 2')
       itemsState.beforeLoading(itemsState)
     }
 
@@ -76,11 +72,9 @@ function fetchNextItems(itemsState, itemsDispatch) {
 
    */
     if (!hasNextPageQueryAndPath(itemsState.payload)) {
-      console.log('fetchNextItems 3')
       const [resendInitialError, resendInitialResp] = await to(resendInitialQuery(itemsState))
-      console.log('fetchNextItems 4')
+
       if (resendInitialError) {
-        console.log('fetchNextItems 5')
         itemsDispatch({
           type: 'UPDATE_NOTICES',
           payload: { type: 'error', message: resendInitialError },
@@ -93,18 +87,15 @@ function fetchNextItems(itemsState, itemsDispatch) {
 
       var productsExisting = sanitizeQueryResponse(resendInitialResp, itemsState.dataType)
     } else {
-      console.log('fetchNextItems 6')
       var productsExisting = itemsState.payload
     }
-    console.log('fetchNextItems 7')
+
     const [resultsError, results] = await to(fetchNextPage(productsExisting))
-    console.log('fetchNextItems 8')
+
     if (resultsError) {
-      console.log('fetchNextItems 9')
       const [initialError, initialResponse] = await to(resendInitialQuery(itemsState))
-      console.log('fetchNextItems 10')
+
       if (initialError) {
-        console.log('fetchNextItems 13')
         itemsDispatch({
           type: 'UPDATE_NOTICES',
           payload: { type: 'error', message: initialError },
@@ -113,31 +104,29 @@ function fetchNextItems(itemsState, itemsDispatch) {
 
         return reject(initialError)
       } else {
-        console.log('fetchNextItems 14')
         if (
           itemsState.dataType === 'collections' ||
           itemsState.originalParams.type === 'collections'
         ) {
-          console.log('fetchNextItems 15')
           if (!itemsState.originalParams) {
-            console.log('fetchNextItems 16')
             var nextPayload = sanitizeQueryResponse(initialResponse, itemsState.dataType)
           } else {
-            console.log('fetchNextItems 17')
-            var nextPayload = sanitizeQueryResponse(
-              initialResponse,
-              itemsState.originalParams.type
-            )[0][itemsState.originalParams.type]
+            var nextPayload = sanitizeQueryResponse(initialResponse, itemsState.originalParams.type)
+
+            if (!nextPayload.length) {
+              itemsDispatch({ type: 'SET_IS_LOADING', payload: false })
+              return
+            }
+
+            nextPayload = nextPayload[0][itemsState.originalParams.type]
           }
         } else {
-          console.log('fetchNextItems 18')
           var nextPayload = sanitizeQueryResponse(initialResponse, itemsState.dataType)
         }
-        console.log('fetchNextItems 19')
+
         var [finalResultsError, finalResults] = await to(fetchNextPage(nextPayload))
-        console.log('fetchNextItems 20')
+
         if (finalResultsError) {
-          console.log('fetchNextItems 21')
           itemsDispatch({
             type: 'UPDATE_NOTICES',
             payload: { type: 'error', message: finalResultsError },
@@ -146,12 +135,10 @@ function fetchNextItems(itemsState, itemsDispatch) {
 
           return reject(initialError)
         } else {
-          console.log('fetchNextItems 22')
           var nextItems = finalResults.model
         }
       }
     } else {
-      console.log('fetchNextItems 11')
       var nextItems = results.model
     }
 
@@ -159,7 +146,6 @@ function fetchNextItems(itemsState, itemsDispatch) {
       type: 'UPDATE_TOTAL_SHOWN',
       payload: nextItems.length,
     })
-    console.log('UPDATE_PAYLOAD 11111')
 
     itemsDispatch({
       type: 'UPDATE_PAYLOAD',
@@ -184,7 +170,7 @@ function updatePayloadState(newItems) {
     type: 'UPDATE_TOTAL_SHOWN',
     payload: newItems.length,
   })
-  console.log('UPDATE_PAYLOAD 222222')
+
   itemsDispatch({
     type: 'UPDATE_PAYLOAD',
     payload: {

@@ -32,9 +32,6 @@ function ProductQuantityInput({ minQuantity, maxQuantity, addedToCart }) {
       setQuantityValue(quantityAmount)
     } else {
       let quantityAmount = Number(event.target.value)
-      console.log('quantityAmount', quantityAmount)
-      console.log('customStep', customStep)
-      console.log('quantityValue', quantityValue)
 
       if (customStep) {
         if (quantityValue === 1 && customStep !== 1) {
@@ -57,8 +54,13 @@ function ProductQuantityInput({ minQuantity, maxQuantity, addedToCart }) {
     }
   }
 
+  const quantityInputWrapperCSS = css`
+    display: inline-block;
+    margin: 0;
+  `
+
   return (
-    <div className='wps-quantity-input wps-quantity-input-wrapper'>
+    <div className='wps-quantity-input wps-quantity-input-wrapper' css={quantityInputWrapperCSS}>
       <input
         css={inputStyles}
         type='number'

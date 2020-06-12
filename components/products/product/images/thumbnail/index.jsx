@@ -1,11 +1,9 @@
 import ProductImage from '../image'
 import { ProductGalleryContext } from '../gallery/_state/context'
 
-const { useEffect, useContext, useState } = wp.element
-
 function ProductThumbnailImage({ image, payloadSettings }) {
+  const { useEffect, useContext, useState } = wp.element
   const [galleryState, galleryDispatch] = useContext(ProductGalleryContext)
-
   const [isActive, setIsActive] = useState(() => false)
 
   useEffect(

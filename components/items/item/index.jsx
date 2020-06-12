@@ -15,8 +15,6 @@ function Item({ children, limit = false, infiniteScroll = false }) {
   const isFirstRender = useIsFirstRender()
   const { Notice } = wp.components
 
-  console.log('<Item>')
-
   function showGlobalNotice(dataType) {
     if (dataType === 'storefront' || dataType === 'search') {
       return false
@@ -26,8 +24,6 @@ function Item({ children, limit = false, infiniteScroll = false }) {
   }
 
   async function getNewItems(itemsState) {
-    console.log('aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa')
-
     wp.hooks.doAction('before.payload.update', itemsState)
 
     itemsDispatch({

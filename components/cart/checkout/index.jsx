@@ -120,7 +120,6 @@ function redirect(checkoutUrl, target) {
 }
 
 function customDomainRedirect(checkout, primaryDomain, target) {
-  console.log('checkout.webUrl', checkout.webUrl)
   if (hasGaLoaded()) {
     var checkoutUrl = decorateCheckoutUrl(
       checkoutUrlWithCustomDomain(primaryDomain, checkout.webUrl)
@@ -128,8 +127,6 @@ function customDomainRedirect(checkout, primaryDomain, target) {
   } else {
     var checkoutUrl = checkoutUrlWithCustomDomain(primaryDomain, checkout.webUrl)
   }
-
-  console.log('checkoutUrl', checkoutUrl)
 
   redirect(checkoutUrl, target)
 }
@@ -155,8 +152,6 @@ function CartCheckout() {
   const checkoutButton = useRef()
 
   async function onCheckout() {
-    console.log('onCheckout')
-
     cartDispatch({ type: 'UPDATE_NOTICES', payload: [] })
     cartDispatch({ type: 'SET_IS_CHECKING_OUT', payload: true })
 
@@ -169,7 +164,6 @@ function CartCheckout() {
     )
 
     const [shopInfoErrors, shopInfo] = await to(maybeFetchShop())
-    console.log('shopInfo', shopInfo)
 
     if (shopInfoErrors) {
       cartDispatch({ type: 'SET_IS_CHECKING_OUT', payload: false })

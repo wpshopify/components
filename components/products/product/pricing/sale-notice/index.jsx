@@ -1,17 +1,18 @@
 /** @jsx jsx */
 import { jsx, css } from '@emotion/core'
 
-function ProductPriceSaleNotice({ showPriceRange, selectedVariant }) {
-  const styles = css`
+function ProductPriceSaleNotice() {
+  const ProductPriceSaleNoticeCSS = css`
     && {
       color: red;
-      margin: ${showPriceRange && !selectedVariant ? '0 10px 14px 0' : '0px 7px 14px 15px'};
+      margin: 0 10px 0 0;
       font-size: 15px;
+      line-height: 1;
     }
   `
 
   return (
-    <small className='wps-pricing-sale-notice' css={styles}>
+    <small className='wps-pricing-sale-notice' css={ProductPriceSaleNoticeCSS}>
       {wp.i18n.__('Sale!', 'wpshopify')}
     </small>
   )

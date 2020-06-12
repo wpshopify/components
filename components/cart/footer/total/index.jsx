@@ -1,8 +1,7 @@
-import { formatPriceToCurrency } from '../../../../common/pricing/formatting'
-import { fadeInRightSlow, useAnime } from '../../../../common/animations'
-import { CartContext } from '../../_state/context'
 /** @jsx jsx */
 import { jsx, css } from '@emotion/core'
+import { fadeInRightSlow, useAnime } from '../../../../common/animations'
+import { CartContext } from '../../_state/context'
 import { FilterHook } from '../../../../common/utils'
 import { getCurrencyCodeFromPayload } from '../../../../common/pricing/data'
 import PrettyPrice from '../../../../common/pricing/pretty'
@@ -47,8 +46,14 @@ function CartFooterSubtotalLabel() {
 }
 
 function CartFooterSubtotalAmount({ total, currencyCode, totalElement }) {
+  const CartFooterSubtotalAmountCSS = css`
+    font-weight: bold;
+    text-align: right;
+    font-size: 28px;
+  `
+
   return (
-    <p className='wps-total-amount col p-0' ref={totalElement}>
+    <p className='wps-total-amount' ref={totalElement} css={CartFooterSubtotalAmountCSS}>
       <PrettyPrice price={total} currencyCode={currencyCode} />
     </p>
   )

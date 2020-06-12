@@ -1,4 +1,4 @@
-import { getItemLink, liteSyncAndWordPressLink } from '../../common/settings'
+import { getItemLink } from '../../common/settings'
 
 /** @jsx jsx */
 import { jsx, css } from '@emotion/core'
@@ -9,7 +9,7 @@ function Link({
   classNames = '',
   target,
   children,
-  linkTo,
+  linkTo = 'none',
   manualLink,
   disableLink,
 }) {
@@ -17,6 +17,12 @@ function Link({
 
   const linkCSS = css`
     text-decoration: none;
+
+    .wps-product-image {
+      &:hover {
+        cursor: pointer;
+      }
+    }
   `
 
   function getTarget(target) {
@@ -30,7 +36,7 @@ function Link({
 
   return (
     <>
-      {disableLink || linkTo === 'none' || liteSyncAndWordPressLink(linkTo) ? (
+      {disableLink || linkTo === 'none' ? (
         children
       ) : (
         <a

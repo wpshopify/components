@@ -15,7 +15,10 @@ function ProductPricingRange({
   const showPriceRangeStyles = css`
     margin-top: 0;
     position: ${showPriceRange && compareAt ? 'relative' : 'static'};
-    display: block;
+    display: flex;
+    align-items: baseline;
+    height: 100%;
+    line-height: 1;
   `
 
   return (

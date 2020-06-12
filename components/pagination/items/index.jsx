@@ -1,12 +1,8 @@
+/** @jsx jsx */
+import { jsx, css } from '@emotion/core'
 import { PaginationContext } from '../_state/context'
 import { mq } from '../../../common/css'
 import PaginationItemsMap from './map'
-
-/** @jsx jsx */
-import { jsx, css } from '@emotion/core'
-
-const { useContext } = wp.element
-const { Notice } = wp.components
 
 function PaginationItems({
   children,
@@ -16,6 +12,8 @@ function PaginationItems({
   hasMoreItems,
   noResultsText,
 }) {
+  const { useContext } = wp.element
+  const { Notice } = wp.components
   const [paginationState] = useContext(PaginationContext)
 
   const PaginationItemsCSS = css`
@@ -27,10 +25,10 @@ function PaginationItems({
     margin: 0;
     opacity: ${isLoading ? 0.4 : 1};
     transition: opacity ease 0.18s;
-    padding: 0 1em;
+    padding: 0;
 
     ${mq('medium')} {
-      grid-template-columns: repeat(2, 1fr);
+      grid-template-columns: ${payload.length === 1 ? 'repeat(1, 1fr)' : 'repeat(2, 1fr)'};
     }
 
     ${mq('small')} {

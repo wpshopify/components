@@ -1,3 +1,5 @@
+/** @jsx jsx */
+import { jsx, css } from '@emotion/core'
 import ProductQuantity from './quantity'
 import ProductOptions from './options'
 import ProductAddButton from './add-button'
@@ -9,13 +11,9 @@ import { getButtonText } from '../../../../common/settings'
 import { onlyAvailableOptionsFromVariants } from '../../../../common/variants'
 import { findPortalElement, FilterHook } from '../../../../common/utils'
 
-/** @jsx jsx */
-import { jsx, css } from '@emotion/core'
-
-const { Notice } = wp.components
-const { useContext } = wp.element
-
 function ProductBuyButton() {
+  const { Notice } = wp.components
+  const { useContext } = wp.element
   const [itemsState] = useContext(ItemsContext)
   const [productState, productDispatch] = useContext(ProductContext)
   const isDirectCheckout =
@@ -33,21 +31,25 @@ function ProductBuyButton() {
       <ProductBuyButtonProvider productState={productState}>
         {productState.payload.availableForSale ? (
           <>
-            {!itemsState.payloadSettings.hideQuantity && (
-              <ProductQuantity
-                addedToCart={productState.addedToCart}
-                minQuantity={itemsState.payloadSettings.minQuantity}
-                maxQuantity={itemsState.payloadSettings.maxQuantity}
-                showLabel={itemsState.payloadSettings.showQuantityLabel}
-                labelText={itemsState.payloadSettings.quantityLabelText}
-              />
-            )}
-            {productState.hasManyVariants && (
-              <ProductOptions
-                variantStyle={itemsState.payloadSettings.variantStyle}
-                availableOptions={onlyAvailableOptionsFromVariants(productState.payload.variants)}
-              />
-            )}
+            {!itemsState.payloadSettings.hideQuantity &&
+              itemsState.payloadSettings.linkTo !== 'shopify' &&
+              itemsState.payloadSettings.linkTo !== 'wordpress' && (
+                <ProductQuantity
+                  addedToCart={productState.addedToCart}
+                  minQuantity={itemsState.payloadSettings.minQuantity}
+                  maxQuantity={itemsState.payloadSettings.maxQuantity}
+                  showLabel={itemsState.payloadSettings.showQuantityLabel}
+                  labelText={itemsState.payloadSettings.quantityLabelText}
+                />
+              )}
+            {productState.hasManyVariants &&
+              itemsState.payloadSettings.linkTo !== 'shopify' &&
+              itemsState.payloadSettings.linkTo !== 'wordpress' && (
+                <ProductOptions
+                  variantStyle={itemsState.payloadSettings.variantStyle}
+                  availableOptions={onlyAvailableOptionsFromVariants(productState.payload.variants)}
+                />
+              )}
             <ProductAddButton
               addedToCart={productState.addedToCart}
               isTouched={productState.isTouched}

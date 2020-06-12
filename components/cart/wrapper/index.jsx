@@ -1,3 +1,5 @@
+/** @jsx jsx */
+import { jsx, css } from '@emotion/core'
 import { CartContext } from '../_state/context'
 import { useAction, useCartToggle } from '../../../common/hooks'
 import { findTotalCartQuantities } from '../../../common/cart'
@@ -7,7 +9,6 @@ import isEmpty from 'lodash/isEmpty'
 import {
   getProductsFromLineItems,
   buildInstances,
-  getCache,
 } from '/Users/andrew/www/devil/devilbox-new/data/www/wpshopify-api'
 import { CartButtons } from '../buttons'
 import to from 'await-to-js'
@@ -41,7 +42,6 @@ function CartWrapper() {
 
   async function cartBootstrap() {
     var [error, instances] = await to(buildInstances())
-    console.log('cartBootstrap', instances)
 
     if (error) {
       cartDispatch({
@@ -106,8 +106,6 @@ function CartWrapper() {
     })
 
     let [productsError, products] = await to(getProductsFromLineItems())
-
-    console.log('................. getProductsFromLineItems', products)
 
     if (productsError) {
       cartDispatch({
@@ -218,8 +216,38 @@ function CartWrapper() {
     cartDispatch({ type: 'SET_IS_CART_EMPTY', payload: false })
   }, [lineItemsAdded])
 
+  const cartCSS = css`
+    width: 100%;
+    padding: 1em;
+    position: fixed;
+    height: 100%;
+    right: 0;
+    top: 0;
+    margin-top: 0;
+    max-width: 400px;
+    background: white;
+    box-shadow: -17px 0 35px rgba(0, 0, 0, 0.1);
+    z-index: 99999999;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    transition: transform 320ms ease;
+    transform: translateX(110%);
+    box-sizing: border-box;
+
+    input[type='number']::-webkit-inner-spin-button,
+    input[type='number']::-webkit-outer-spin-button {
+      -webkit-appearance: none;
+      margin: 0;
+    }
+
+    &.wps-cart-is-showing {
+      transform: translateX(0%);
+    }
+  `
+
   return (
-    <section ref={cartElement} className='wps-cart'>
+    <section ref={cartElement} className='wps-cart' css={cartCSS}>
       {<CartButtons buttons={cartState.buttons} />}
 
       <Suspense fallback={<Spinner />}>

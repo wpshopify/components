@@ -205,8 +205,6 @@ $settings is an array with this structure:
    'scale'		=> 0
 ]
 
-TODO: Just pass the $settings instead
-
 */
 function addCustomSizingToImageUrl(settings) {
   if (settings.src && isPlaceholder(settings.src)) {

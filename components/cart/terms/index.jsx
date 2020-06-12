@@ -43,9 +43,13 @@ function CartTerms() {
     font-size: 16px;
   `
 
+  const termsWrapperCSS = css`
+    align-items: center;
+  `
+
   return (
     <section className='wps-cart-terms' css={containerCSS}>
-      <div className='wps-input-row' css={flexRowCSS}>
+      <div className='wps-input-row' css={[flexRowCSS, termsWrapperCSS]}>
         <input
           onChange={onChange}
           id='wps-input-terms'

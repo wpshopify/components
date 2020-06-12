@@ -24,7 +24,6 @@ function CartLineItem({ lineItem, inventory }) {
   const [isUpdating] = useState(() => false)
   const [lineItemQuantity, setLineItemQuantity] = useState(() => 0)
   const [lineItemTotal, setLineItemTotal] = useState(() => 0)
-  console.log('lineItem', lineItem)
 
   const variantId = useRef(false)
   const lineItemElement = useRef()

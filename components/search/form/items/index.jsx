@@ -7,8 +7,6 @@ function SearchItems({ payload, payloadSettings, queryParams, noResultsText }) {
   const [searchState] = useContext(SearchContext)
   const initialRender = useRef(true)
   const { Notice } = wp.components
-  console.log('SEARCH itemsState.payload', payload)
-  console.log('searchState.searchTerm', searchState.searchTerm)
 
   useEffect(() => {
     if (initialRender.current) {

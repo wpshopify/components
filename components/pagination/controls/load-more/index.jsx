@@ -22,8 +22,6 @@ function PaginationLoadMore({ isLoading, hasMoreItems, payloadSettings, onNextPa
     max-width: 150px;
   `
 
-  console.log('hasMoreItems', hasMoreItems)
-
   return usePortal(
     hasMoreItems && (
       <InView rootMargin='10px 0px 0px 0px' as='div' onChange={onViewChange}>

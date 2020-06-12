@@ -1,4 +1,3 @@
-import { formatPriceToCurrency } from '../../../../common/pricing/formatting'
 import { FilterHook } from '../../../../common/utils'
 import PrettyPrice from '../../../../common/pricing/pretty'
 import { mq } from '../../../../common/css'

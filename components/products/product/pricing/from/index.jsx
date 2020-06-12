@@ -10,18 +10,14 @@ function ProductPriceFrom({ compareAt, showPriceRange, selectedVariant }) {
     font-size: 15px;
   `
 
-  return compareAt ? (
-    <ProductPriceSaleNotice
-      compareAt={compareAt}
-      showPriceRange={showPriceRange}
-      selectedVariant={selectedVariant}
-    />
-  ) : (
-    <small css={fromCSS} className='wps-product-from-price'>
-      <FilterHook name='product.pricing.from.text' args={[compareAt]}>
-        {wp.i18n.__('Price:', 'wpshopify')}
-      </FilterHook>
-    </small>
+  return (
+    !compareAt && (
+      <small css={fromCSS} className='wps-product-from-price'>
+        <FilterHook name='product.pricing.from.text' args={[compareAt]}>
+          {wp.i18n.__('Price:', 'wpshopify')}
+        </FilterHook>
+      </small>
+    )
   )
 }
 

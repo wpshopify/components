@@ -26,8 +26,13 @@ function Img(props) {
 
     &:focus,
     &:active {
-      outline: 1px dashed #000000;
-      outline-offset: 3px;
+      outline: ${props.isFeatured ? 'none' : '1px dashed #000000'};
+      outline-offset: ${props.isFeatured ? 'none' : '3px'};
+    }
+
+    &:hover {
+      opacity: ${props.isFeatured ? 1 : 0.85};
+      cursor: ${props.isFeatured ? 'default' : 'pointer'};
     }
   `
 

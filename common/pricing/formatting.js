@@ -42,11 +42,6 @@ function formatPrice(config) {
   return formatNumber(config)
 }
 
-/*
-
-"price" should always be preformatted
-
-*/
 function formatPriceToCurrency(price, currencyCode) {
   return formatPrice({
     countryCode: currencyCode, // getLocalCurrencyCodeCache(), maybeConvertPriceToLocalCurrency
