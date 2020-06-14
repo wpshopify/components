@@ -29,6 +29,7 @@ function CartWrapper() {
   const { useContext, useRef, useEffect, Suspense } = wp.element
   const { Spinner } = wp.components
   const cartElement = useRef()
+  const isFirstRender = useRef(true)
   const [cartState, cartDispatch] = useContext(CartContext)
   const updateCheckoutAttributes = useAction('update.checkout.attributes')
   const setCheckoutAttributes = useAction('set.checkout.attributes')
@@ -112,12 +113,14 @@ function CartWrapper() {
       instances = newInstances
     }
 
+    /* @if NODE_ENV='pro' */
     if (instances.checkout.discountApplications.length) {
       cartDispatch({
         type: 'SET_DISCOUNT_CODE',
         payload: instances.checkout.discountApplications[0].code,
       })
     }
+    /* @endif */
 
     cartDispatch({
       type: 'SET_CHECKOUT_ID',
@@ -169,6 +172,7 @@ function CartWrapper() {
     cartDispatch({ type: 'TOGGLE_CART', payload: false })
   }
 
+  /* @if NODE_ENV='pro' */
   async function addDiscountCodeWrapper(discountCode) {
     cartDispatch({ type: 'SET_IS_UPDATING', payload: true })
 
@@ -196,7 +200,9 @@ function CartWrapper() {
     //  cartDispatch({ type: 'UPDATE_CHECKOUT_TOTAL', payload: checkout.subtotalPriceV2.amount })
     cartDispatch({ type: 'SET_DISCOUNT_CODE', payload: discountCode })
   }
+  /* @endif */
 
+  /* @if NODE_ENV='pro' */
   async function updateCheckoutWhenDiscount() {
     cartDispatch({ type: 'SET_IS_UPDATING', payload: true })
 
@@ -204,7 +210,10 @@ function CartWrapper() {
       replaceLineItems(cartState.checkoutCache.lineItems)
     )
 
-    cartDispatch({ type: 'SET_CART_TOTAL', payload: updatedCheckout.subtotalPriceV2.amount })
+    cartDispatch({
+      type: 'SET_CART_TOTAL',
+      payload: updatedCheckout.subtotalPriceV2.amount,
+    })
     cartDispatch({
       type: 'SET_BEFORE_DISCOUNT_TOTAL',
       payload: updatedCheckout.lineItemsSubtotalPrice.amount,
@@ -221,12 +230,15 @@ function CartWrapper() {
 
     cartDispatch({ type: 'SET_IS_UPDATING', payload: false })
   }
+  /* @endif */
 
+  /* @if NODE_ENV='pro' */
   useEffect(() => {
     if (discountCode) {
       addDiscountCodeWrapper(discountCode)
     }
   }, [discountCode])
+  /* @endif */
 
   useEffect(() => {
     if (!cartState.isCartReady) {
@@ -247,9 +259,11 @@ function CartWrapper() {
   useEffect(() => {
     wp.hooks.doAction('on.checkout.update', cartState)
 
+    /* @if NODE_ENV='pro' */
     if (cartState.discountCode) {
       updateCheckoutWhenDiscount()
     }
+    /* @endif */
   }, [cartState.totalLineItems])
 
   useEffect(() => {
@@ -272,6 +286,11 @@ function CartWrapper() {
   }, [setCheckoutNotes])
 
   useEffect(() => {
+    if (isFirstRender.current) {
+      isFirstRender.current = false
+      return
+    }
+
     if (isCartOpen) {
       openCart()
       return
@@ -321,10 +340,6 @@ function CartWrapper() {
     input[type='number']::-webkit-outer-spin-button {
       -webkit-appearance: none;
       margin: 0;
-    }
-
-    &.wps-cart-is-showing {
-      transform: translateX(0%);
     }
   `
 

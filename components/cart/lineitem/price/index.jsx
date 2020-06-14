@@ -41,7 +41,9 @@ function CartLineItemPrice({ lineItem, currencyCode, lineItemTotal, lineItemTota
         <PrettyPrice price={lineItemTotal} currencyCode={currencyCode} />
       </div>
 
-      {lineItem.compareAtPriceV2 && <CartLineItemPriceSaleNotice lineItem={lineItem} />}
+      {lineItem.compareAtPriceV2 && wpshopify.misc.isPro && (
+        <CartLineItemPriceSaleNotice lineItem={lineItem} />
+      )}
     </div>
   )
 }

@@ -7,7 +7,10 @@ import { CartLineItemOutOfStock } from './out-of-stock'
 import { CartLineItemTitle } from './title'
 import { CartLineItemRemove } from './remove'
 import CartLineItemVariantTitle from './variant-title'
-import CartLineItemLeftInStock from './left-in-stock'
+
+const CartLineItemLeftInStock = wp.element.lazy(() =>
+  import(/* webpackChunkName: 'CartLineItemLeftInStock-public' */ './left-in-stock')
+)
 
 import { calcLineItemTotal, isAvailable } from '../../../common/products'
 import { containerFluidCSS, flexRowCSS, flexColSmallCSS } from '../../../common/css'
@@ -17,9 +20,8 @@ import { getCurrencyCodeFromPayload } from '../../../common/pricing/data'
 import { jsx, css } from '@emotion/core'
 import find from 'lodash/find'
 
-const { useContext, useState, useRef, useEffect } = wp.element
-
 function CartLineItem({ lineItem, inventory }) {
+  const { useContext, useState, useRef, useEffect } = wp.element
   const [cartState, cartDispatch] = useContext(CartContext)
   const [isUpdating] = useState(() => false)
   const [lineItemQuantity, setLineItemQuantity] = useState(() => 0)
@@ -125,7 +127,9 @@ function CartLineItem({ lineItem, inventory }) {
               />
             </div>
 
-            <CartLineItemLeftInStock lineItemId={lineItem.id} inventory={inventory} />
+            {wpshopify.misc.isPro && (
+              <CartLineItemLeftInStock lineItemId={lineItem.id} inventory={inventory} />
+            )}
           </div>
         )}
       </div>

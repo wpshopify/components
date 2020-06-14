@@ -1,6 +1,5 @@
 import { ProductBuyButtonContext } from '../_state/context'
 import ProductBuyButtonLeftInStock from '../left-in-stock'
-
 import { Loader } from '../../../../loader'
 import { useAnime, pulse, fadeInBottomSlow } from '../../../../../common/animations'
 import { FilterHook } from '../../../../../common/utils'
@@ -272,11 +271,14 @@ function ProductAddButton({
           addedToCart={addedToCart}
         />
       </AddButtonWrapper>
-      <ProductBuyButtonLeftInStock
-        isTouched={isTouched}
-        payload={payload}
-        selectedVariant={selectedVariant}
-      />
+
+      {wpshopify.misc.isPro && (
+        <ProductBuyButtonLeftInStock
+          isTouched={isTouched}
+          payload={payload}
+          selectedVariant={selectedVariant}
+        />
+      )}
     </div>
   )
 }

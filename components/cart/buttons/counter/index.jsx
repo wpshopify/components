@@ -45,7 +45,7 @@ function CartCounter() {
   const counterCSS = css`
     position: ${cartButtonState.payloadSettings.type === 'fixed' ? 'relative' : 'absolute'};
     font-weight: normal;
-    top: ${cartButtonState.payloadSettings.type === 'fixed' ? '-8px' : '-12px'};
+    top: ${cartButtonState.payloadSettings.type === 'fixed' ? '-4px' : '-12px'};
     right: -12px;
     left: ${cartButtonState.payloadSettings.type === 'fixed' ? '1px' : 'auto'};
     background: ${cartButtonState.payloadSettings.type === 'fixed' ? 'none' : '#6ae06a'};
@@ -54,9 +54,9 @@ function CartCounter() {
     text-align: center;
     color: ${cartButtonState.payloadSettings.type === 'fixed' ? 'white' : 'black'};
     font-size: ${cartButtonState.payloadSettings.type === 'fixed' ? '18px' : '13px'};
-    line-height: 1.9;
+    line-height: 1.7;
     z-index: 3;
-    width: ${cartButtonState.payloadSettings.type === 'fixed' ? 'auto' : '25px'};
+    width: ${cartButtonState.payloadSettings.type === 'fixed' ? '40px' : '25px'};
     height: 25px;
     max-height: 25px;
     padding: ${totalItems > 9 ? '1px 1px 0px 0px' : '1px 0px 0px 0px;'};
@@ -68,9 +68,23 @@ function CartCounter() {
     color: ${getColor()};
   `
 
+  const counterTextCSS = css`
+    display: block;
+    position: absolute;
+    top: 46%;
+    left: 49%;
+    transform: translate(-50%, -50%);
+    width: 100%;
+    line-height: 1;
+    overflow: hidden;
+    max-height: 17px;
+  `
+
   return (
     <span css={[counterCSS, customCounterCSS]} className='wps-cart-counter' ref={element}>
-      {!cartState.isCartReady ? <Loader isLoading={true} /> : totalItems}
+      <span css={counterTextCSS}>
+        {!cartState.isCartReady ? <Loader isLoading={true} /> : totalItems}
+      </span>
     </span>
   )
 }

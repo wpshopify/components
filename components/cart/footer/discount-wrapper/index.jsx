@@ -97,7 +97,9 @@ function CartFooterDiscountWrapper({ discountCode }) {
   }
 
   function onRemoval() {
+    /* @if NODE_ENV='pro' */
     removeDiscountCode(cartDispatch)
+    /* @endif */
   }
 
   const discountNoticeCSS = css`

@@ -37,6 +37,7 @@ function SearchInput({ isLoading, payloadSettings }) {
     border: 1px solid #ddd;
     outline: none;
     width: 100%;
+    -webkit-appearance: none;
 
     &::-webkit-search-cancel-button {
       display: ${isLoading ? 'none' : 'block'};

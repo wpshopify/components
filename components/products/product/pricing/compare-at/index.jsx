@@ -42,12 +42,13 @@ function ProductPricesCompareAt({
 
       {compareAt && (
         <div className='wps-product-prices-compare-at' css={ProductPricesCompareAtWrapperCSS}>
-          {(prices.compareAtPrices[0] || selectedVariant.compareAtPriceV2) && (
-            <ProductPriceSaleNotice
-              showPriceRange={showPriceRange}
-              selectedVariant={selectedVariant}
-            />
-          )}
+          {(prices.compareAtPrices[0] || selectedVariant.compareAtPriceV2) &&
+            wpshopify.misc.isPro && (
+              <ProductPriceSaleNotice
+                showPriceRange={showPriceRange}
+                selectedVariant={selectedVariant}
+              />
+            )}
 
           <ProductPrice
             selectedVariant={selectedVariant}

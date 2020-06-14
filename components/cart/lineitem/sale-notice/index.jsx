@@ -34,6 +34,7 @@ function CartLineItemPriceSaleNotice({ lineItem }) {
       <span className='wps-cart-lineitem-price-sale' css={CartLineItemPriceSaleNoticeStyles}>
         <FilterHook name='cart.lineItem.price.sale'>{wp.i18n.__('Sale!', 'wpshopify')}</FilterHook>
       </span>
+
       {lineItem.compareAtPriceV2 && (
         <span css={priceWasCSS}>
           {wp.i18n.__('Was:', 'wpshopify')}
