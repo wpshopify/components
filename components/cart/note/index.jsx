@@ -32,12 +32,14 @@ function CartNote() {
       display: block;
       font-size: 16px;
       padding: 1em;
-      border-color: #ddd;
+      border-color: #848484;
       appearance: none;
+      font-family: inherit;
+      border-radius: 5px;
     }
 
     label {
-      font-size: 20px;
+      font-size: 16px;
     }
   `
 

@@ -5,7 +5,7 @@ import { CartCheckout } from '../checkout'
 import { CartNote } from '../note'
 import { CartTerms } from '../terms'
 import { Notices } from '../../notices'
-import { CartFooterTotal } from './total'
+import CartFooterTotal from './total'
 
 import isEmpty from 'lodash/isEmpty'
 

@@ -10,6 +10,9 @@ function CartInitialState(cartOptions, productOptions) {
     isCartReady: false,
     buttons: cartOptions,
     notices: [],
+    discountCode: false,
+    total: 0,
+    beforeDiscountTotal: false,
     checkoutCache: {
       lineItems: [],
       variants: [],

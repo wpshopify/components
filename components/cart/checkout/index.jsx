@@ -13,9 +13,9 @@ import { jsx, css } from '@emotion/core'
 import {
   replaceLineItems,
   updateCheckoutAttributes,
-  addDiscount,
   maybeFetchShop,
 } from '/Users/andrew/www/devil/devilbox-new/data/www/wpshopify-api'
+
 import isEmpty from 'lodash/isEmpty'
 import to from 'await-to-js'
 
@@ -44,43 +44,8 @@ function checkoutRedirectOnly(checkout, primaryDomain) {
   return managedDomainRedirect(checkout, target)
 }
 
-function hasDiscount(checkout) {
-  /* @if NODE_ENV='pro' */
-  var hasCustomDiscount = wp.hooks.applyFilters('set.checkout.discount', false, checkout)
-
-  if (hasCustomDiscount) {
-    return hasCustomDiscount
-  }
-  /* @endif */
-
-  return false
-}
-
-async function checkoutRedirect(checkout, componentDispatch, primaryDomain) {
-  const discountCode = hasDiscount(checkout)
-
+async function checkoutRedirect(checkout, primaryDomain) {
   wp.hooks.doAction('before.checkout.redirect', checkout)
-
-  if (discountCode) {
-    var [err, resp] = await to(addDiscount(discountCode, checkout))
-
-    if (err) {
-      componentDispatch({
-        type: 'UPDATE_NOTICES',
-        payload: {
-          type: 'error',
-          message: err,
-        },
-      })
-
-      componentDispatch({ type: 'SET_IS_CHECKING_OUT', payload: false })
-      return
-    }
-
-    checkoutRedirectOnly(resp, primaryDomain)
-
-    return
-  }
 
   checkoutRedirectOnly(checkout, primaryDomain)
 }
@@ -115,7 +80,6 @@ function decorateCheckoutUrl(link) {
 }
 
 function redirect(checkoutUrl, target) {
-  // window.location.href = url; (open in same window)
   window.open(encodeURI(checkoutUrl), target)
 }
 
@@ -221,16 +185,10 @@ function CartCheckout() {
         })
       }
 
-      return checkoutRedirect(checkoutWithAttrs, cartDispatch, shopInfo.primaryDomain)
+      return checkoutRedirect(checkoutWithAttrs, shopInfo.primaryDomain)
     }
 
-    checkoutRedirect(checkoutWithLineitems, cartDispatch, shopInfo.primaryDomain)
-  }
-
-  function buttonStyle() {
-    return {
-      backgroundColor: wpshopify.settings.general.checkoutColor,
-    }
+    checkoutRedirect(checkoutWithLineitems, shopInfo.primaryDomain)
   }
 
   return (
@@ -238,11 +196,7 @@ function CartCheckout() {
       <FilterHook name='before.cart.checkout.button' args={[cartState]} />
 
       <ErrorBoundary FallbackComponent={ErrorFallback}>
-        <CartCheckoutButton
-          onCheckout={onCheckout}
-          buttonStyle={buttonStyle}
-          buttonRef={checkoutButton}
-        />
+        <CartCheckoutButton onCheckout={onCheckout} buttonRef={checkoutButton} />
       </ErrorBoundary>
 
       <FilterHook name='after.cart.checkout.button' args={[cartState]} />
@@ -250,7 +204,7 @@ function CartCheckout() {
   )
 }
 
-function CartCheckoutButton({ buttonStyle, onCheckout, buttonRef }) {
+function CartCheckoutButton({ onCheckout, buttonRef }) {
   const [cartState] = useContext(CartContext)
 
   const checkoutButtonCSS = css`
@@ -261,6 +215,13 @@ function CartCheckoutButton({ buttonStyle, onCheckout, buttonRef }) {
       ? '#cfcfcf'
       : wpshopify.settings.general.checkoutColor};
     padding: 16px 0 20px 0;
+
+    &:disabled {
+      &:hover {
+        cursor: not-allowed;
+        color: #fff;
+      }
+    }
 
     ${mq('small')} {
       font-size: 22px;

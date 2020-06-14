@@ -1,6 +1,7 @@
 /** @jsx jsx */
 import { jsx, css } from '@emotion/core'
 import { CartContext } from '../_state/context'
+import { addDiscountCode, removeDiscountCode } from '../_common'
 import { useAction, useCartToggle } from '../../../common/hooks'
 import { findTotalCartQuantities } from '../../../common/cart'
 
@@ -9,6 +10,7 @@ import isEmpty from 'lodash/isEmpty'
 import {
   getProductsFromLineItems,
   buildInstances,
+  replaceLineItems,
 } from '/Users/andrew/www/devil/devilbox-new/data/www/wpshopify-api'
 import { CartButtons } from '../buttons'
 import to from 'await-to-js'
@@ -32,6 +34,7 @@ function CartWrapper() {
   const setCheckoutAttributes = useAction('set.checkout.attributes')
   const setCheckoutNotes = useAction('set.checkout.note')
   const lineItemsAdded = useAction('product.addToCart')
+  const discountCode = useAction('set.checkout.discount')
   const animeSlideInRight = useAnime(slideInCart)
   const animeSlideOutRight = useAnime(slideOutCart)
   const isCartOpen = useCartToggle(cartElement)
@@ -39,6 +42,15 @@ function CartWrapper() {
   useEffect(() => {
     cartBootstrap()
   }, [])
+
+  function setEmptyCheckout() {
+    cartDispatch({
+      type: 'SET_CHECKOUT_ID',
+      payload: false,
+    })
+
+    cartDispatch({ type: 'IS_CART_READY', payload: true })
+  }
 
   async function cartBootstrap() {
     var [error, instances] = await to(buildInstances())
@@ -52,7 +64,7 @@ function CartWrapper() {
         },
       })
 
-      return setShopAndCheckoutId()
+      return setEmptyCheckout()
     }
 
     // If no checkout was found ...
@@ -65,7 +77,7 @@ function CartWrapper() {
         },
       })
 
-      return setShopAndCheckoutId()
+      return setEmptyCheckout()
     }
 
     // If checkout was completed ...
@@ -81,7 +93,7 @@ function CartWrapper() {
           },
         })
 
-        return setShopAndCheckoutId()
+        return setEmptyCheckout()
       }
 
       if (!newInstances) {
@@ -93,11 +105,18 @@ function CartWrapper() {
           },
         })
 
-        return setShopAndCheckoutId()
+        return setEmptyCheckout()
       }
 
       // Responsible for creating the new checkout instance
       instances = newInstances
+    }
+
+    if (instances.checkout.discountApplications.length) {
+      cartDispatch({
+        type: 'SET_DISCOUNT_CODE',
+        payload: instances.checkout.discountApplications[0].code,
+      })
     }
 
     cartDispatch({
@@ -150,6 +169,65 @@ function CartWrapper() {
     cartDispatch({ type: 'TOGGLE_CART', payload: false })
   }
 
+  async function addDiscountCodeWrapper(discountCode) {
+    cartDispatch({ type: 'SET_IS_UPDATING', payload: true })
+
+    const [error, checkout] = await to(addDiscountCode(cartState, cartDispatch, discountCode))
+
+    cartDispatch({ type: 'SET_IS_UPDATING', payload: false })
+
+    if (error || !checkout) {
+      cartDispatch({
+        type: 'UPDATE_NOTICES',
+        payload: {
+          type: 'error',
+          message: error,
+        },
+      })
+
+      return
+    }
+
+    cartDispatch({
+      type: 'SET_CHECKOUT_CACHE',
+      payload: { checkoutId: checkout.id },
+    })
+
+    //  cartDispatch({ type: 'UPDATE_CHECKOUT_TOTAL', payload: checkout.subtotalPriceV2.amount })
+    cartDispatch({ type: 'SET_DISCOUNT_CODE', payload: discountCode })
+  }
+
+  async function updateCheckoutWhenDiscount() {
+    cartDispatch({ type: 'SET_IS_UPDATING', payload: true })
+
+    const [updatedCheckoutError, updatedCheckout] = await to(
+      replaceLineItems(cartState.checkoutCache.lineItems)
+    )
+
+    cartDispatch({ type: 'SET_CART_TOTAL', payload: updatedCheckout.subtotalPriceV2.amount })
+    cartDispatch({
+      type: 'SET_BEFORE_DISCOUNT_TOTAL',
+      payload: updatedCheckout.lineItemsSubtotalPrice.amount,
+    })
+
+    if (
+      cartState.totalLineItems === 0 ||
+      !updatedCheckout.discountApplications.length ||
+      !updatedCheckout.discountApplications[0].applicable
+    ) {
+      removeDiscountCode(cartDispatch)
+      cartDispatch({ type: 'SET_DISCOUNT_CODE', payload: false })
+    }
+
+    cartDispatch({ type: 'SET_IS_UPDATING', payload: false })
+  }
+
+  useEffect(() => {
+    if (discountCode) {
+      addDiscountCodeWrapper(discountCode)
+    }
+  }, [discountCode])
+
   useEffect(() => {
     if (!cartState.isCartReady) {
       wp.hooks.doAction('before.cart.ready', cartState)
@@ -168,6 +246,10 @@ function CartWrapper() {
 
   useEffect(() => {
     wp.hooks.doAction('on.checkout.update', cartState)
+
+    if (cartState.discountCode) {
+      updateCheckoutWhenDiscount()
+    }
   }, [cartState.totalLineItems])
 
   useEffect(() => {
@@ -246,8 +328,41 @@ function CartWrapper() {
     }
   `
 
+  const updatingOverlay = css`
+    display: ${cartState.isUpdating ? 'block' : 'none'};
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(255, 255, 255, 0.6);
+    z-index: 2;
+
+    .components-spinner {
+      z-index: 9999;
+      position: absolute;
+      top: 40%;
+      left: 50%;
+      margin: 0;
+      width: 26px;
+      height: 26px;
+
+      &:before {
+        top: 4px;
+        left: 4px;
+        width: 7px;
+        height: 7px;
+        border-radius: 100%;
+        transform-origin: 9px 9px;
+      }
+    }
+  `
+
   return (
     <section ref={cartElement} className='wps-cart' css={cartCSS}>
+      <div css={updatingOverlay}>
+        <Spinner />
+      </div>
       {<CartButtons buttons={cartState.buttons} />}
 
       <Suspense fallback={<Spinner />}>

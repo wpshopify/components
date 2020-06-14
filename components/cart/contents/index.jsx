@@ -21,12 +21,12 @@ function CartContents(props) {
   })
 
   const CartTitleCSS = css`
-    top: 38%;
+    top: 45%;
     text-align: center;
     color: #ddd;
     position: absolute;
     margin: 0;
-    width: calc(100% - 40px);
+    width: 100%;
     font-size: 1.5em;
     margin: 0;
     text-align: center;
@@ -38,6 +38,7 @@ function CartContents(props) {
     overflow-x: hidden;
     flex-grow: 1;
     padding-top: 4.5em;
+    position: relative;
 
     > .wps-notice {
       position: relative;

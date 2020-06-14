@@ -2,9 +2,11 @@
 import { jsx, css } from '@emotion/core'
 import { fadeInRightSlow, useAnime } from '../../../../common/animations'
 import { CartContext } from '../../_state/context'
-import { FilterHook } from '../../../../common/utils'
+import CartFooterSubtotalLabel from '../subtotal'
+import CartFooterSubtotalAmount from '../subtotal-amount'
+import CartFooterDiscountWrapper from '../discount-wrapper'
+
 import { getCurrencyCodeFromPayload } from '../../../../common/pricing/data'
-import PrettyPrice from '../../../../common/pricing/pretty'
 
 function CartFooterTotal({ totalElement }) {
   const { useContext, useEffect } = wp.element
@@ -26,37 +28,23 @@ function CartFooterTotal({ totalElement }) {
   }, [cartState.total])
 
   return (
-    <div css={footerStyles}>
-      <CartFooterSubtotalLabel />
-      <CartFooterSubtotalAmount
-        total={cartState.total}
-        currencyCode={getCurrencyCodeFromPayload(cartState.checkoutCache)}
-        totalElement={totalElement}
-      />
-    </div>
+    <>
+      {wpshopify.settings.general.enableDiscountCodes && (
+        <CartFooterDiscountWrapper discountCode={cartState.discountCode} />
+      )}
+
+      <div css={footerStyles}>
+        <CartFooterSubtotalLabel />
+        <CartFooterSubtotalAmount
+          beforeDiscountTotal={cartState.beforeDiscountTotal}
+          discountCode={cartState.discountCode}
+          total={cartState.total}
+          currencyCode={getCurrencyCodeFromPayload(cartState.checkoutCache)}
+          totalElement={totalElement}
+        />
+      </div>
+    </>
   )
 }
 
-function CartFooterSubtotalLabel() {
-  return (
-    <p className='wps-total-prefix'>
-      <FilterHook name='cart.subtotal.text'>{wp.i18n.__('Subtotal:', 'wpshopify')}</FilterHook>
-    </p>
-  )
-}
-
-function CartFooterSubtotalAmount({ total, currencyCode, totalElement }) {
-  const CartFooterSubtotalAmountCSS = css`
-    font-weight: bold;
-    text-align: right;
-    font-size: 28px;
-  `
-
-  return (
-    <p className='wps-total-amount' ref={totalElement} css={CartFooterSubtotalAmountCSS}>
-      <PrettyPrice price={total} currencyCode={currencyCode} />
-    </p>
-  )
-}
-
-export { CartFooterTotal }
+export default wp.element.memo(CartFooterTotal)

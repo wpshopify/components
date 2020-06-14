@@ -235,6 +235,20 @@ function CartReducer(state, action) {
       }
     }
 
+    case 'SET_CART_TOTAL': {
+      return {
+        ...state,
+        total: update(state.total, { $set: action.payload }),
+      }
+    }
+
+    case 'SET_BEFORE_DISCOUNT_TOTAL': {
+      return {
+        ...state,
+        beforeDiscountTotal: update(state.beforeDiscountTotal, { $set: action.payload }),
+      }
+    }
+
     case 'SET_CHECKOUT_CACHE': {
       const checkoutCache = getCheckoutCache(action.payload.checkoutId)
 
@@ -300,7 +314,7 @@ function CartReducer(state, action) {
           removeLineItemsAndVariants(checkoutCache, action.payload.lineItem),
       })
 
-      setCheckoutCache(action.payload.checkoutId, newCheckoutCache)
+      setCheckoutCache(action.payload.checkoutId)
 
       return {
         ...state,
@@ -318,12 +332,18 @@ function CartReducer(state, action) {
 
       setCheckoutCache(action.payload.checkoutId, checkoutCacheUpdated)
 
+      if (state.discountCode) {
+        var newTotal = state.total
+      } else {
+        var newTotal = update(state.total, {
+          $set: calcCheckoutTotal(checkoutCacheUpdated),
+        })
+      }
+
       return {
         ...state,
         isCartEmpty: hasCartEmpty(checkoutCacheUpdated.lineItems),
-        total: update(state.total, {
-          $set: calcCheckoutTotal(checkoutCacheUpdated),
-        }),
+        total: newTotal,
         checkoutCache: checkoutCacheUpdated,
       }
     }
@@ -348,6 +368,20 @@ function CartReducer(state, action) {
       return {
         ...state,
         shopInfo: update(state.shopInfo, { $set: action.payload }),
+      }
+    }
+
+    case 'SET_IS_UPDATING': {
+      return {
+        ...state,
+        isUpdating: update(state.isUpdating, { $set: action.payload }),
+      }
+    }
+
+    case 'SET_DISCOUNT_CODE': {
+      return {
+        ...state,
+        discountCode: update(state.discountCode, { $set: action.payload }),
       }
     }
 

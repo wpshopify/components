@@ -106,7 +106,6 @@ function CartLineItem({ lineItem, inventory }) {
           <CartLineItemOutOfStock />
         ) : (
           <div className='p-0 wps-cart-lineitem-quantity-wrapper' css={containerFluidCSS}>
-            <CartLineItemLeftInStock lineItemId={lineItem.id} inventory={inventory} />
             <div css={[flexRowCSS, flexColSmallCSS]}>
               <CartLineItemQuantity
                 lineItem={lineItem}
@@ -125,6 +124,8 @@ function CartLineItem({ lineItem, inventory }) {
                 currencyCode={getCurrencyCodeFromPayload(cartState.checkoutCache)}
               />
             </div>
+
+            <CartLineItemLeftInStock lineItemId={lineItem.id} inventory={inventory} />
           </div>
         )}
       </div>

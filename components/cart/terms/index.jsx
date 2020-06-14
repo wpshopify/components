@@ -32,7 +32,7 @@ function CartTerms() {
   `
 
   var labelCSS = css`
-    padding-left: 10px;
+    padding-left: 7px;
     position: relative;
     width: 100%;
     text-transform: initial;
@@ -40,11 +40,19 @@ function CartTerms() {
     vertical-align: middle;
     cursor: pointer;
     margin: 0;
-    font-size: 16px;
+    font-size: 15px;
   `
 
   const termsWrapperCSS = css`
     align-items: center;
+
+    .wps-input {
+      margin: 0;
+
+      &:hover {
+        cursor: pointer;
+      }
+    }
   `
 
   return (
