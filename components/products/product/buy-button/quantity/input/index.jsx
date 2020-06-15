@@ -10,13 +10,15 @@ function ProductQuantityInput({ minQuantity, maxQuantity, addedToCart }) {
   const customStep = wp.hooks.applyFilters('buyButton.quantityStep', false, buyButtonState)
 
   const inputStyles = css`
-    margin: 15px 0 25px 7px;
-    text-align: center;
-    max-width: 60px;
-    font-size: 1em;
-    border: 1px solid #313131;
-    border-radius: 5px;
-    padding: 7px;
+    && {
+      margin: 15px 0 25px 7px;
+      text-align: center;
+      max-width: 60px;
+      font-size: 1em;
+      border: 1px solid #313131;
+      border-radius: 5px;
+      padding: 7px;
+    }
   `
 
   useEffect(() => {

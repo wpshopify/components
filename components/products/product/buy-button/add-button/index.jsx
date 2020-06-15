@@ -83,7 +83,9 @@ function AddButton({
   }, [buyButtonState.allOptionsSelected])
 
   const customBackgroundColor = css`
-    background-color: ${addToCartButtonColor};
+    && {
+      background-color: ${addToCartButtonColor};
+    }
   `
 
   async function handleClick(e) {
