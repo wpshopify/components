@@ -1,5 +1,13 @@
 import uniqid from 'uniqid'
 
+function getDefaultHasMoreItems(payload) {
+  if (!payload || !payload.length) {
+    return false
+  }
+
+  return payload[payload.length - 1].hasNextPage
+}
+
 function ItemsInitialState({
   component,
   afterLoading = false,
@@ -51,7 +59,7 @@ function ItemsInitialState({
       : wp.i18n.__('No items left', 'wpshopify'),
     isLoading: isParentLoading ? isParentLoading : false,
     isBootstrapping: true,
-    hasMoreItems: false,
+    hasMoreItems: getDefaultHasMoreItems(payload),
     notices: [],
     variantsInventory: [],
     lastQuery: component.payloadSettings.query ? component.payloadSettings.query : false,

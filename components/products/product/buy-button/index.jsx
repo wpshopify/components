@@ -31,9 +31,10 @@ function ProductBuyButton() {
       <ProductBuyButtonProvider productState={productState}>
         {productState.payload.availableForSale ? (
           <>
-            {!itemsState.payloadSettings.hideQuantity &&
+            {(!itemsState.payloadSettings.hideQuantity &&
               itemsState.payloadSettings.linkTo !== 'shopify' &&
-              itemsState.payloadSettings.linkTo !== 'wordpress' && (
+              itemsState.payloadSettings.linkTo !== 'wordpress') ||
+              (itemsState.payloadSettings.isSingular && (
                 <ProductQuantity
                   addedToCart={productState.addedToCart}
                   minQuantity={itemsState.payloadSettings.minQuantity}
@@ -41,15 +42,16 @@ function ProductBuyButton() {
                   showLabel={itemsState.payloadSettings.showQuantityLabel}
                   labelText={itemsState.payloadSettings.quantityLabelText}
                 />
-              )}
-            {productState.hasManyVariants &&
+              ))}
+            {(productState.hasManyVariants &&
               itemsState.payloadSettings.linkTo !== 'shopify' &&
-              itemsState.payloadSettings.linkTo !== 'wordpress' && (
+              itemsState.payloadSettings.linkTo !== 'wordpress') ||
+              (itemsState.payloadSettings.isSingular && (
                 <ProductOptions
                   variantStyle={itemsState.payloadSettings.variantStyle}
                   availableOptions={onlyAvailableOptionsFromVariants(productState.payload.variants)}
                 />
-              )}
+              ))}
             <ProductAddButton
               addedToCart={productState.addedToCart}
               isTouched={productState.isTouched}

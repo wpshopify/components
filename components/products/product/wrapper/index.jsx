@@ -24,6 +24,7 @@ function ProductWrapper({ payloadSettings }) {
     display: ${isAlignHeight() ? 'flex' : 'block'};
     flex-direction: column;
     justify-content: space-between;
+    min-width: 0;
   `
 
   function onMouseOver() {
@@ -39,7 +40,7 @@ function ProductWrapper({ payloadSettings }) {
   return (
     <div
       css={ProductWrapperCSS}
-      className={'wps-item'}
+      className='wps-item'
       onMouseOver={onMouseOver}
       data-wpshopify-is-available-for-sale={productState.payload.availableForSale}>
       <ErrorBoundary FallbackComponent={ErrorFallback}>

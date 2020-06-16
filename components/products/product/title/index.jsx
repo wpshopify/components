@@ -18,6 +18,7 @@ function ProductTitle({ payloadSettings }) {
       color: ${payloadSettings.titleColor};
       margin-bottom: 5px;
       margin-top: 10px;
+      white-space: normal;
     }
   `
 

@@ -41,7 +41,7 @@ function getCurrencyCodeFromPayload(payload) {
     return payload.variants[0].priceV2.currencyCode
   }
 
-  return 'USD'
+  return wp.hooks.applyFilters('misc.pricing.defaultCurrencyCode', 'USD')
 }
 
 export { getPrices, getCurrencyCodeFromPayload }
