@@ -24,6 +24,21 @@ function ProductBuyButton() {
     flex-direction: column;
   `
 
+  function isHidingControls() {
+    if (itemsState.payloadSettings.isSingular) {
+      return true
+    }
+
+    if (
+      itemsState.payloadSettings.linkTo === 'shopify' ||
+      itemsState.payloadSettings.linkTo === 'wordpress'
+    ) {
+      return true
+    }
+
+    return false
+  }
+
   return usePortal(
     <div css={buyButtonWrapperCSS} className='wps-buy-button-wrapper'>
       <FilterHook name='before.product.buyButton' args={[productState]} />
@@ -31,27 +46,21 @@ function ProductBuyButton() {
       <ProductBuyButtonProvider productState={productState}>
         {productState.payload.availableForSale ? (
           <>
-            {(!itemsState.payloadSettings.hideQuantity &&
-              itemsState.payloadSettings.linkTo !== 'shopify' &&
-              itemsState.payloadSettings.linkTo !== 'wordpress') ||
-              (itemsState.payloadSettings.isSingular && (
-                <ProductQuantity
-                  addedToCart={productState.addedToCart}
-                  minQuantity={itemsState.payloadSettings.minQuantity}
-                  maxQuantity={itemsState.payloadSettings.maxQuantity}
-                  showLabel={itemsState.payloadSettings.showQuantityLabel}
-                  labelText={itemsState.payloadSettings.quantityLabelText}
-                />
-              ))}
-            {(productState.hasManyVariants &&
-              itemsState.payloadSettings.linkTo !== 'shopify' &&
-              itemsState.payloadSettings.linkTo !== 'wordpress') ||
-              (itemsState.payloadSettings.isSingular && (
-                <ProductOptions
-                  variantStyle={itemsState.payloadSettings.variantStyle}
-                  availableOptions={onlyAvailableOptionsFromVariants(productState.payload.variants)}
-                />
-              ))}
+            {itemsState.payloadSettings.hideQuantity === false && !isHidingControls() && (
+              <ProductQuantity
+                addedToCart={productState.addedToCart}
+                minQuantity={itemsState.payloadSettings.minQuantity}
+                maxQuantity={itemsState.payloadSettings.maxQuantity}
+                showLabel={itemsState.payloadSettings.showQuantityLabel}
+                labelText={itemsState.payloadSettings.quantityLabelText}
+              />
+            )}
+            {productState.hasManyVariants && !isHidingControls() && (
+              <ProductOptions
+                variantStyle={itemsState.payloadSettings.variantStyle}
+                availableOptions={onlyAvailableOptionsFromVariants(productState.payload.variants)}
+              />
+            )}
             <ProductAddButton
               addedToCart={productState.addedToCart}
               isTouched={productState.isTouched}

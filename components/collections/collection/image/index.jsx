@@ -34,14 +34,18 @@ function CollectionImage() {
     }
   }, [])
 
-  const CollectionImageCSS = css`
+  const CollectionImageWrapperCSS = css`
     margin-bottom: 20px;
     max-width: 400px;
   `
 
+  const CollectionImageCSS = css`
+    max-width: 100%;
+  `
+
   return usePortal(
     imageSrc && (
-      <div className='wps-component wps-component-collection-image' css={CollectionImageCSS}>
+      <div className='wps-component wps-component-collection-image' css={CollectionImageWrapperCSS}>
         <Link
           type='collections'
           payload={collectionState.payload}
@@ -51,6 +55,7 @@ function CollectionImage() {
             itemProp='image'
             src={imageSrc}
             className='wps-product-image lazyload'
+            css={CollectionImageCSS}
             alt={collectionState.payload.image ? collectionState.payload.image.altText : ''}
           />
         </Link>

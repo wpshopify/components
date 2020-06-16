@@ -14,6 +14,7 @@ function Img(props) {
     outline: 1px dashed #000000;
     outline-offset: 3px;
     transition: transform 100ms ease;
+    max-width: 100%;
 
     &:hover {
       opacity: 1;
@@ -23,6 +24,7 @@ function Img(props) {
   const thumbnailStyles = css`
     display: block;
     margin-bottom: 10px;
+    max-width: 100%;
 
     &:focus,
     &:active {
