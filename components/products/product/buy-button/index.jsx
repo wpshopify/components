@@ -26,7 +26,7 @@ function ProductBuyButton() {
 
   function isHidingControls() {
     if (itemsState.payloadSettings.isSingular) {
-      return true
+      return false
     }
 
     if (

@@ -92,9 +92,9 @@ function CartLineItem({ lineItem, inventory }) {
 
       <div className='wps-cart-lineitem-content'>
         <div
-          className='wps-cart-lineitem-title col-12 p-0'
+          className='wps-cart-lineitem-title'
           data-wps-is-empty={hasRealVariant() ? 'false' : 'true'}>
-          <div className='p-0 wps-cart-lineitem-title-wrapper' css={containerFluidCSS}>
+          <div className='wps-cart-lineitem-title-wrapper' css={containerFluidCSS}>
             <div css={flexRowCSS}>
               <CartLineItemTitle lineItem={lineItem} />
               <CartLineItemRemove onRemove={onRemove} />
@@ -107,7 +107,7 @@ function CartLineItem({ lineItem, inventory }) {
         {!isAvailable(lineItem) ? (
           <CartLineItemOutOfStock />
         ) : (
-          <div className='p-0 wps-cart-lineitem-quantity-wrapper' css={containerFluidCSS}>
+          <div className='wps-cart-lineitem-quantity-wrapper' css={containerFluidCSS}>
             <div css={[flexRowCSS, flexColSmallCSS]}>
               <CartLineItemQuantity
                 lineItem={lineItem}
@@ -125,11 +125,11 @@ function CartLineItem({ lineItem, inventory }) {
                 lineItemTotalElement={lineItemTotalElement}
                 currencyCode={getCurrencyCodeFromPayload(cartState.checkoutCache)}
               />
-            </div>
 
-            {wpshopify.misc.isPro && (
-              <CartLineItemLeftInStock lineItemId={lineItem.id} inventory={inventory} />
-            )}
+              {wpshopify.misc.isPro && (
+                <CartLineItemLeftInStock lineItemId={lineItem.id} inventory={inventory} />
+              )}
+            </div>
           </div>
         )}
       </div>

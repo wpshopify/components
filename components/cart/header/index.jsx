@@ -11,7 +11,7 @@ function CartHeader({ cartState, cartDispatch }) {
 
   return (
     <section className='wps-cart-header' css={containerFluidCSS}>
-      <div className='row'>
+      <div>
         {isShowingTitle && <CartTitle cartState={cartState} />}
         {isShowingClose && <CartClose cartDispatch={cartDispatch} />}
       </div>

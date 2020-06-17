@@ -153,28 +153,26 @@ function CartLineItemQuantity({
   }
 
   return (
-    <div className='col-8'>
-      <div className='wps-cart-lineitem-quantity-container' css={containerFluidCSS}>
-        <div css={[flexRowCSS, inputStyles]}>
-          <button className='wps-quantity-decrement' type='button' onClick={handleDecrement}>
-            <span className='wps-quantity-icon wps-quantity-decrement-icon' />
-          </button>
+    <div className='wps-cart-lineitem-quantity-container' css={containerFluidCSS}>
+      <div css={[flexRowCSS, inputStyles]}>
+        <button className='wps-quantity-decrement' type='button' onClick={handleDecrement}>
+          <span className='wps-quantity-icon wps-quantity-decrement-icon' />
+        </button>
 
-          <input
-            className='wps-cart-lineitem-quantity'
-            type='number'
-            min='0'
-            aria-label='Quantity'
-            value={lineItemQuantity}
-            onChange={handleQuantityChange}
-            onBlur={handleQuantityBlur}
-            disabled={customStep}
-          />
+        <input
+          className='wps-cart-lineitem-quantity'
+          type='number'
+          min='0'
+          aria-label='Quantity'
+          value={lineItemQuantity}
+          onChange={handleQuantityChange}
+          onBlur={handleQuantityBlur}
+          disabled={customStep}
+        />
 
-          <button className='wps-quantity-increment' type='button' onClick={handleIncrement}>
-            <span className='wps-quantity-icon wps-quantity-increment-icon' />
-          </button>
-        </div>
+        <button className='wps-quantity-increment' type='button' onClick={handleIncrement}>
+          <span className='wps-quantity-icon wps-quantity-increment-icon' />
+        </button>
       </div>
     </div>
   )

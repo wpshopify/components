@@ -39,6 +39,12 @@ function ProductVariantButtonValue({ variant, onSelection, selectedOptions, isAv
       variant.value
     )
 
+    if (variantValue === 'white' || variantValue === 'White') {
+      var border = isSelected ? '3px solid #333' : '1px solid #333'
+    } else {
+      var border = isSelected ? '1px solid ' + variantValue : 'none'
+    }
+
     return `
          margin: 0 10px 10px 0;
          outline: none;
@@ -52,7 +58,7 @@ function ProductVariantButtonValue({ variant, onSelection, selectedOptions, isAv
          font-size: 0;
          opacity: ${isAvailableToSelect ? 1 : 0.1};
          border-radius: 50%;
-         border: ${isSelected ? '1px solid ' + variantValue : 'none'};
+         border: ${border};
          box-shadow: ${isSelected ? 'inset 0 0 0px 4px white' : 'none'};
          transition: 100ms transform ease;
 

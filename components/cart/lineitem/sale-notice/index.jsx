@@ -1,22 +1,10 @@
-import { FilterHook } from '../../../../common/utils'
 import PrettyPrice from '../../../../common/pricing/pretty'
-import { mq } from '../../../../common/css'
+import CartLineItemPriceSaleNoticeNotice from './notice'
 
 /** @jsx jsx */
 import { jsx, css } from '@emotion/core'
 
 function CartLineItemPriceSaleNotice({ lineItem }) {
-  const CartLineItemPriceSaleNoticeStyles = css`
-    font-size: 15px;
-    color: red;
-    margin-left: 15px;
-    margin-top: 10px;
-
-    ${mq('small')} {
-      margin-top: 0px;
-    }
-  `
-
   const priceWasCSS = css`
     display: inline-block;
     line-height: 1;
@@ -31,19 +19,15 @@ function CartLineItemPriceSaleNotice({ lineItem }) {
 
   return (
     <>
-      <span className='wps-cart-lineitem-price-sale' css={CartLineItemPriceSaleNoticeStyles}>
-        <FilterHook name='cart.lineItem.price.sale'>{wp.i18n.__('Sale!', 'wpshopify')}</FilterHook>
-      </span>
+      <CartLineItemPriceSaleNoticeNotice />
 
-      {lineItem.compareAtPriceV2 && (
-        <span css={priceWasCSS}>
-          {wp.i18n.__('Was:', 'wpshopify')}
-          <PrettyPrice
-            price={lineItem.compareAtPriceV2.amount}
-            currencyCode={lineItem.compareAtPriceV2.currencyCode}
-          />
-        </span>
-      )}
+      <span css={priceWasCSS}>
+        {wp.i18n.__('Was:', 'wpshopify')}
+        <PrettyPrice
+          price={lineItem.compareAtPriceV2.amount}
+          currencyCode={lineItem.compareAtPriceV2.currencyCode}
+        />
+      </span>
     </>
   )
 }

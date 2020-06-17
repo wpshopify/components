@@ -70,7 +70,7 @@ function ProductOptionDropdown() {
   `
 
   return (
-    <div className='row'>
+    <div className='wps-btn-dropdown-wrapper'>
       <div
         className='wps-btn-dropdown'
         css={ProductOptionDropdownCSS}

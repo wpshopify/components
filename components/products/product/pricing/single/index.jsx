@@ -1,5 +1,4 @@
 import PrettyPrice from '../../../../../common/pricing/pretty'
-import { FilterHook } from '../../../../../common/utils'
 /** @jsx jsx */
 import { jsx, css } from '@emotion/core'
 
@@ -16,12 +15,6 @@ const ProductPriceSingle = React.forwardRef((props, ref) => {
   return (
     props.price && (
       <span ref={ref} className='wps-product-individual-price' css={priceCSS}>
-        {props.compareAt && !props.showPriceRange && (
-          <FilterHook name='product.pricing.from.text' args={[props.compareAt]}>
-            {wp.i18n.__('Was: ', 'wpshopify')}
-          </FilterHook>
-        )}
-
         <PrettyPrice price={props.price} currencyCode={props.currencyCode} />
       </span>
     )

@@ -6,7 +6,7 @@ import { jsx, css } from '@emotion/core'
 function CartLineItemTitle({ lineItem }) {
   const CartLineItemTitleCSS = css`
     display: inline-block;
-    line-height: 1;
+    line-height: 1.3;
     max-width: 200px;
     margin-bottom: 5px;
 
@@ -18,7 +18,7 @@ function CartLineItemTitle({ lineItem }) {
   `
 
   return (
-    <span className='wps-cart-lineitem-title-content col-9' css={CartLineItemTitleCSS}>
+    <span className='wps-cart-lineitem-title-content' css={CartLineItemTitleCSS}>
       <FilterHook name='cart.lineItem.title.text'>{lineItem.product.title}</FilterHook>
     </span>
   )

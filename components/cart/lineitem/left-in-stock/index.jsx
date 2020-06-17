@@ -11,8 +11,8 @@ function CartLineItemLeftInStock({ lineItemId, inventory }) {
 
   const CartLineItemLeftInStockCSS = css`
     color: red;
-    position: relative;
-    top: -23px;
+    position: absolute;
+    bottom: 0;
   `
 
   return (

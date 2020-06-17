@@ -2,7 +2,7 @@ import { FilterHook } from '../../../common/utils'
 
 function CartTitle({ cartState }) {
   return (
-    <div className='wps-col-8 wps-p-0'>
+    <div className='wps-col-8'>
       <FilterHook name='before.cart.title' hasHTML={true} args={[cartState]} />
 
       <h2 className='wps-cart-title'>

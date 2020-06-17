@@ -27,7 +27,7 @@ function ProductPricesCompareAt({
     align-items: center;
     margin-top: 0;
     margin-bottom: 30px;
-    margin-left: ${showPriceRange ? '0' : '10px'};
+    margin-left: ${!showPriceRange || selectedVariant ? '10px' : '0'};
   `
 
   return (
@@ -42,19 +42,9 @@ function ProductPricesCompareAt({
 
       {compareAt && (
         <div className='wps-product-prices-compare-at' css={ProductPricesCompareAtWrapperCSS}>
-          {(prices.compareAtPrices[0] || selectedVariant.compareAtPriceV2) &&
-            wpshopify.misc.isPro && (
-              <ProductPriceSaleNotice
-                showPriceRange={showPriceRange}
-                selectedVariant={selectedVariant}
-              />
-            )}
-
-          <ProductPrice
+          <ProductPriceSaleNotice
             selectedVariant={selectedVariant}
-            compareAt={true}
             prices={prices}
-            showPriceRange={showPriceRange}
             currencyCode={currencyCode}
           />
         </div>

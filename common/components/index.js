@@ -9,6 +9,10 @@ const isShowingComponent = (payloadSettings, type) => {
     return true
   }
 
+  if (payloadSettings.isSingular) {
+    return true
+  }
+
   return !payloadSettings.excludes.includes(type)
 }
 

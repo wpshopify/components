@@ -44,4 +44,40 @@ function getCurrencyCodeFromPayload(payload) {
   return wp.hooks.applyFilters('misc.pricing.defaultCurrencyCode', 'USD')
 }
 
-export { getPrices, getCurrencyCodeFromPayload }
+function shouldShowSaleNotice(selectedVariant = false, prices = false) {
+  if (!wpshopify.misc.isPro) {
+    return false
+  }
+
+  if (!selectedVariant && prices) {
+    if (!prices.compareAtPrices[0] || !prices.regPrices[0]) {
+      return false
+    }
+
+    return prices.compareAtPrices[0] !== prices.regPrices[0]
+  }
+
+  if (!selectedVariant.compareAtPriceV2 || !selectedVariant.compareAtPriceV2.amount) {
+    return false
+  }
+
+  if (!selectedVariant.priceV2 || !selectedVariant.priceV2.amount) {
+    return false
+  }
+
+  return selectedVariant.compareAtPriceV2.amount !== selectedVariant.priceV2.amount
+}
+
+function getSalePrice(selectedVariant = false, prices = false) {
+  if (!wpshopify.misc.isPro) {
+    return false
+  }
+
+  if (!selectedVariant && prices) {
+    return prices.compareAtPrices[0]
+  }
+
+  return selectedVariant.compareAtPriceV2.amount
+}
+
+export { getPrices, getCurrencyCodeFromPayload, shouldShowSaleNotice, getSalePrice }

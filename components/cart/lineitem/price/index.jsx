@@ -1,15 +1,22 @@
 /** @jsx jsx */
 import { jsx, css } from '@emotion/core'
 import PrettyPrice from '../../../../common/pricing/pretty'
+import { shouldShowSaleNotice } from '../../../../common/pricing/data'
 import CartLineItemPriceSaleNotice from '../sale-notice'
 import { mq } from '../../../../common/css'
 
 function CartLineItemPrice({ lineItem, currencyCode, lineItemTotal, lineItemTotalElement }) {
+  const showingSaleNotice = shouldShowSaleNotice(lineItem)
+
   const priceCSS = css`
     flex: 1;
     display: flex;
     flex-direction: column;
     align-items: flex-end;
+
+    + .wps-cart-lineitem-left-in-stock {
+      bottom: ${showingSaleNotice ? 0 : '-25px'};
+    }
 
     ${mq('small')} {
       align-items: baseline;
@@ -41,9 +48,7 @@ function CartLineItemPrice({ lineItem, currencyCode, lineItemTotal, lineItemTota
         <PrettyPrice price={lineItemTotal} currencyCode={currencyCode} />
       </div>
 
-      {lineItem.compareAtPriceV2 && wpshopify.misc.isPro && (
-        <CartLineItemPriceSaleNotice lineItem={lineItem} />
-      )}
+      {showingSaleNotice && <CartLineItemPriceSaleNotice lineItem={lineItem} />}
     </div>
   )
 }
