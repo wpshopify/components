@@ -17,6 +17,7 @@ function Link({
 
   const linkCSS = css`
     text-decoration: none;
+    display: block;
 
     .wps-product-image {
       &:hover {

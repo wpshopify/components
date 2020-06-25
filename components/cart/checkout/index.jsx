@@ -21,24 +21,11 @@ import to from 'await-to-js'
 
 const { useContext, useRef } = wp.element
 
-function hasCustomDomain(checkout) {
-  if (!wpshopify.settings.general.enableCustomCheckoutDomain) {
-    return false
-  }
-
-  // If URL contains myshopify.com
-  if (hasManagedDomain(checkout.webUrl)) {
-    return false
-  }
-
-  return true
-}
-
 function checkoutRedirectOnly(checkout, primaryDomain) {
   var target = checkoutWindowTarget()
 
-  if (hasCustomDomain(checkout)) {
-    customDomainRedirect(checkout, primaryDomain, target)
+  if (wpshopify.settings.general.enableCustomCheckoutDomain) {
+    return customDomainRedirect(checkout, primaryDomain, target)
   }
 
   return managedDomainRedirect(checkout, target)

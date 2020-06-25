@@ -8,5 +8,4 @@ function ProductVariantDropdowns({ options }) {
   )
 }
 
-// export default wp.element.memo(ProductVariantDropdowns)
 export default ProductVariantDropdowns

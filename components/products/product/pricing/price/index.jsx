@@ -149,7 +149,6 @@ function ProductPrice({ compareAt, prices, currencyCode, showPriceRange, selecte
             currencyCode={currencyCode}
             compareAt={compareAt}
             showPriceRange={showPriceRange}
-            selectedVariant={selectedVariant}
           />
         ) : (
           <ProductPriceSingle

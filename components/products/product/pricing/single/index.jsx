@@ -12,12 +12,12 @@ const ProductPriceSingle = React.forwardRef((props, ref) => {
     text-decoration: ${props.compareAt ? 'line-through' : 'none'};
   `
 
-  return (
-    props.price && (
-      <span ref={ref} className='wps-product-individual-price' css={priceCSS}>
-        <PrettyPrice price={props.price} currencyCode={props.currencyCode} />
-      </span>
-    )
+  return props.price ? (
+    <span ref={ref} className='wps-product-individual-price' css={priceCSS}>
+      <PrettyPrice price={props.price} currencyCode={props.currencyCode} />
+    </span>
+  ) : (
+    ''
   )
 })
 

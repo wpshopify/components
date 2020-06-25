@@ -2,9 +2,7 @@
 import { jsx, css } from '@emotion/core'
 import { FilterHook } from '../../../../../common/utils'
 
-import ProductPriceSaleNotice from '../sale-notice'
-
-function ProductPriceFrom({ compareAt, showPriceRange, selectedVariant }) {
+function ProductPriceFrom({ compareAt }) {
   const fromCSS = css`
     margin-right: 5px;
     font-size: 15px;

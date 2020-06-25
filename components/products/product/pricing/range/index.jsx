@@ -1,5 +1,6 @@
 import ProductPriceSingle from '../single'
 import ProductPricingRangeGroup from './group'
+
 /** @jsx jsx */
 import { jsx, css } from '@emotion/core'
 
@@ -10,7 +11,6 @@ function ProductPricingRange({
   currencyCode,
   compareAt,
   showPriceRange,
-  selectedVariant,
 }) {
   const showPriceRangeStyles = css`
     margin-top: 0;
@@ -32,7 +32,6 @@ function ProductPricingRange({
         />
       ) : (
         <ProductPricingRangeGroup
-          selectedVariant={selectedVariant}
           firstPrice={firstPrice}
           lastPrice={lastPrice}
           currencyCode={currencyCode}

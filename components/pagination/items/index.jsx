@@ -22,7 +22,7 @@ function PaginationItems({
     grid-column-gap: 20px;
     grid-row-gap: 40px;
     max-width: ${payload.length === 1 || payloadSettings.itemsPerRow === 1 ? '300px' : '775px'};
-    margin: 0;
+    margin: 0 auto;
     opacity: ${isLoading ? 0.4 : 1};
     transition: opacity ease 0.18s;
     padding: 0;
@@ -32,13 +32,21 @@ function PaginationItems({
     }
 
     ${mq('small')} {
-      grid-template-columns: repeat(1, 1fr);
+      grid-template-columns: ${'repeat(' +
+      wp.hooks.applyFilters('misc.layout.mobileColumns', 1) +
+      ', 1fr)'};
+    }
+  `
+
+  const PaginationItemsContainerCSS = css`
+    ${mq('medium')} {
+      padding: 0 15px;
     }
   `
 
   return (
     payload && (
-      <section className='wps-items-wrapper'>
+      <section className='wps-items-wrapper' css={PaginationItemsContainerCSS}>
         <section className='wps-items wps-items-list' css={PaginationItemsCSS}>
           {payload && payload.length && (
             <PaginationItemsMap payload={payload} payloadSettings={payloadSettings}>

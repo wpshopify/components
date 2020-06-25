@@ -5,7 +5,6 @@ import { CartContext } from '../../_state/context'
 import CartFooterSubtotalLabel from '../subtotal'
 import CartFooterSubtotalAmount from '../subtotal-amount'
 import CartFooterDiscountWrapper from '../discount-wrapper'
-
 import { getCurrencyCodeFromPayload } from '../../../../common/pricing/data'
 
 function CartFooterTotal({ totalElement }) {

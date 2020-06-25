@@ -8,11 +8,11 @@ import TypesHeading from '../heading-types'
 import VendorsHeading from '../heading-vendors'
 import TagsHeading from '../heading-tags'
 import { getFilterData } from '/Users/andrew/www/devil/devilbox-new/data/www/wpshopify-api'
-import { StorefrontContext } from '../../_state/context'
 import { StorefrontFilterOptionsGroup } from '../group'
 import { StorefrontFilterOptionsHeading } from '../heading'
 import { StorefrontOptionsContext } from '../_state/context'
 import { ItemsContext } from '../../../items/_state/context'
+
 const { useEffect, useContext } = wp.element
 
 function combineFilterOptions(accumulator, currentValue) {

@@ -8,17 +8,10 @@ function ProductPricingRangeGroup({
   currencyCode,
   compareAt,
   showPriceRange,
-  selectedVariant,
 }) {
   return (
     <>
-      {firstPrice !== lastPrice && (
-        <ProductPriceFrom
-          compareAt={compareAt}
-          showPriceRange={showPriceRange}
-          selectedVariant={selectedVariant}
-        />
-      )}
+      {firstPrice !== lastPrice ? <ProductPriceFrom compareAt={compareAt} /> : ''}
       <ProductPriceSingle
         price={firstPrice}
         compareAt={compareAt}
