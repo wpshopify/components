@@ -12,12 +12,10 @@ function ProductDescription() {
   const [productState] = useContext(ProductContext)
   const [itemsState] = useContext(ItemsContext)
 
-  const fontSize = css`
-    font-size: ${itemsState.payloadSettings.descriptionSize};
-  `
-
-  const fontColor = css`
+  const ProductDescriptionCSS = css`
     color: ${itemsState.payloadSettings.descriptionColor};
+    font-size: ${itemsState.payloadSettings.descriptionSize};
+    margin-bottom: 20px;
   `
 
   function maybeTruncateDescription() {
@@ -35,9 +33,9 @@ function ProductDescription() {
 
   return usePortal(
     <div
-      css={[fontSize, fontColor]}
+      css={ProductDescriptionCSS}
+      className='wps-component-products-description'
       itemProp='description'
-      className='wps-products-description'
       dangerouslySetInnerHTML={{ __html: maybeTruncateDescription() }}
     />,
     findPortalElement(productState.element, itemsState.payloadSettings.dropzoneProductDescription)

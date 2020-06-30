@@ -10,28 +10,18 @@ function ProductPricesCompareAt({
   selectedVariant,
   showPriceRange,
 }) {
-  const ProductPricesCompareAtCSS = css`
-    display: flex;
-    flex-direction: ${showPriceRange && !selectedVariant ? 'column' : 'row'};
-    align-items: baseline;
-    position: relative;
-    margin-bottom: ${compareAt ? '0' : '25px'};
-
-    + .wps-buy-button-wrapper > .wps-product-quantity-wrapper {
-      margin-top: 1.7em;
-    }
-  `
-
   const ProductPricesCompareAtWrapperCSS = css`
     display: flex;
     align-items: center;
-    margin-top: 0;
-    margin-bottom: 30px;
-    margin-left: ${!showPriceRange || selectedVariant ? '10px' : '0'};
+    margin: 0;
+
+    &:empty {
+      display: none;
+    }
   `
 
   return (
-    <div className='wps-pricing-compare-at' css={ProductPricesCompareAtCSS}>
+    <>
       <ProductPrice
         selectedVariant={selectedVariant}
         compareAt={false}
@@ -49,7 +39,7 @@ function ProductPricesCompareAt({
           />
         </div>
       )}
-    </div>
+    </>
   )
 }
 

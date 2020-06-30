@@ -1,8 +1,7 @@
-import { ItemsContext } from '../../../items/_state/context'
 import { CollectionContext } from '../_state/context'
 import { Link } from '../../../link'
 import { usePortal } from '../../../../common/hooks'
-import { findPortalElement, _t } from '../../../../common/utils'
+import { findPortalElement } from '../../../../common/utils'
 import { hasLink } from '../../../../common/settings'
 
 const { useContext } = wp.element

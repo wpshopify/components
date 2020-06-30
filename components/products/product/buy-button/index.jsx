@@ -22,6 +22,7 @@ function ProductBuyButton() {
   const buyButtonWrapperCSS = css`
     display: flex;
     flex-direction: column;
+    margin-bottom: 15px;
   `
 
   function isHidingControls() {
@@ -40,7 +41,7 @@ function ProductBuyButton() {
   }
 
   return usePortal(
-    <div css={buyButtonWrapperCSS} className='wps-buy-button-wrapper'>
+    <div css={buyButtonWrapperCSS} className='wps-component-products-buy-button'>
       <FilterHook name='before.product.buyButton' args={[productState]} />
 
       <ProductBuyButtonProvider productState={productState}>

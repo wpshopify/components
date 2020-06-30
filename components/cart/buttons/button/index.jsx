@@ -110,28 +110,27 @@ function CartButton({ options }) {
           }
         `
 
-  return (
-    shouldShowCartTab() &&
-    usePortal(
-      <CartButtonProvider options={options}>
-        <button
-          data-is-cart-ready={cartState.isCartReady ? '1' : '0'}
-          role='button'
-          ref={counterElement}
-          className={`wps-btn-cart wps-cart-icon-${options.payloadSettings.type} ${
-            isCartEmpty(cartState.checkoutCache.lineItems) ? 'wps-cart-is-empty' : ''
-          }`}
-          onClick={onClick}
-          onMouseOver={onMouseOver}
-          css={[cartIconCSS, cartIconFixedCSS]}>
-          {options.payloadSettings.showCounter && <CartCounter />}
+  return shouldShowCartTab()
+    ? usePortal(
+        <CartButtonProvider options={options}>
+          <button
+            data-is-cart-ready={cartState.isCartReady ? '1' : '0'}
+            role='button'
+            ref={counterElement}
+            className={`wps-btn-cart wps-cart-icon-${options.payloadSettings.type} ${
+              isCartEmpty(cartState.checkoutCache.lineItems) ? 'wps-cart-is-empty' : ''
+            }`}
+            onClick={onClick}
+            onMouseOver={onMouseOver}
+            css={[cartIconCSS, cartIconFixedCSS]}>
+            {options.payloadSettings.showCounter && <CartCounter />}
 
-          <CartIcon />
-        </button>
-      </CartButtonProvider>,
-      options.componentElement
-    )
-  )
+            <CartIcon />
+          </button>
+        </CartButtonProvider>,
+        options.componentElement
+      )
+    : ''
 }
 
 export { CartButton }

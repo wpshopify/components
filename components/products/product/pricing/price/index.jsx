@@ -124,7 +124,7 @@ function ProductPrice({ compareAt, prices, currencyCode, showPriceRange, selecte
 
   const priceWrapperCSS = css`
     line-height: 1;
-    margin: 0;
+    margin: 0 15px 0 0;
     display: block;
 
     &[data-show-price-range='true'] + .wps-product-prices-compare-at {

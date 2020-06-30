@@ -67,7 +67,7 @@ function useAction(hookName, defaultVal = false) {
   return data
 }
 
-function usePortal(componentMarkup, containerElement = false, skipEmptyRender = false) {
+function usePortal(componentMarkup, containerElement = false) {
   function renderPortal() {
     if (containerElement) {
       containerElement.classList.add('wpshopify-has-rendered')
@@ -75,9 +75,7 @@ function usePortal(componentMarkup, containerElement = false, skipEmptyRender = 
       return wp.element.createPortal(componentMarkup, containerElement)
     }
 
-    if (!skipEmptyRender) {
-      return componentMarkup
-    }
+    return componentMarkup
   }
 
   return renderPortal()
