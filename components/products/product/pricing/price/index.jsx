@@ -5,7 +5,6 @@ import max from 'lodash/max'
 
 import ProductPricingRange from '../range'
 import ProductPriceSingle from '../single'
-import { useAction } from '../../../../../common/hooks'
 import { useAnime, fadeInRightSlow } from '../../../../../common/animations'
 
 /** @jsx jsx */

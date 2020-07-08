@@ -21,8 +21,9 @@ function PaginationItems({
     grid-template-columns: repeat(${payload.length === 1 ? 1 : payloadSettings.itemsPerRow}, 1fr);
     grid-column-gap: 20px;
     grid-row-gap: 40px;
-    max-width: ${payload.length === 1 || payloadSettings.itemsPerRow === 1 ? '300px' : '775px'};
-    margin: 0 auto;
+    max-width: ${payload.length === 1 || payloadSettings.itemsPerRow === 1
+      ? '300px'
+      : wp.hooks.applyFilters('misc.layout.containerWidth', '1100px')};
     opacity: ${isLoading ? 0.4 : 1};
     transition: opacity ease 0.18s;
     padding: 0;
@@ -39,6 +40,9 @@ function PaginationItems({
   `
 
   const PaginationItemsContainerCSS = css`
+    max-width: ${wp.hooks.applyFilters('misc.layout.containerWidth', '1100px')};
+    margin: 0 auto;
+
     ${mq('medium')} {
       padding: 0 15px;
     }

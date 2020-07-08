@@ -2,7 +2,9 @@ import find from 'lodash/find'
 import { CartContext } from '../../_state/context'
 import { calcLineItemTotal } from '../../../../common/products'
 import { useAnime, fadeInRightSlow } from '../../../../common/animations'
-import { containerFluidCSS, flexRowCSS } from '../../../../common/css'
+import { containerFluidCSS, flexRowCSS, mq } from '../../../../common/css'
+import CartLineItemQuantityIncIcon from './icon-inc'
+import CartLineItemQuantityDecIcon from './icon-dec'
 
 /** @jsx jsx */
 import { jsx, css } from '@emotion/core'
@@ -44,6 +46,28 @@ function CartLineItemQuantity({
     /* Firefox */
     input[type='number'] {
       -moz-appearance: textfield;
+    }
+  `
+
+  const lineItemQuantityCSS = css`
+    margin: 0;
+    width: 45px;
+    border: none;
+    text-align: center;
+    font-size: 16px;
+    margin-right: 0px;
+    border-top: 1px solid #ddd;
+    border-bottom: 1px solid #ddd;
+    max-height: 35px;
+    border-radius: 0;
+    appearance: none;
+    background: white;
+
+    ${mq('small')} {
+      width: 60px;
+      height: 60px;
+      max-height: 60px;
+      font-size: 24px;
     }
   `
 
@@ -152,11 +176,59 @@ function CartLineItemQuantity({
     }
   }
 
+  const cartLineItemQuantityIncDecCSS = css`
+    color: #333;
+    display: block;
+    margin-top: 0;
+    position: relative;
+    padding: 0 10px;
+    font-size: 17px;
+    font-family: monospace;
+    background: transparent;
+    box-shadow: none;
+    cursor: pointer;
+    text-align: center;
+    border: 1px solid #ddd;
+    width: 35px;
+    height: 35px;
+
+    &:hover {
+      background: #f5f5f5;
+    }
+
+    &:focus {
+      background: transparent;
+    }
+
+    ${mq('small')} {
+      font-size: 26px;
+      width: 60px;
+      height: 60px;
+    }
+  `
+
+  const cartLineItemQuantityIncCSS = css`
+    border-radius: 0 3px 3px 0;
+  `
+
+  const cartLineItemQuantityDecCSS = css`
+    border-radius: 3px 0 0 3px;
+
+    span {
+      position: relative;
+      top: -2px;
+    }
+  `
+
   return (
     <div className='wps-cart-lineitem-quantity-container' css={containerFluidCSS}>
       <div css={[flexRowCSS, inputStyles]}>
-        <button className='wps-quantity-decrement' type='button' onClick={handleDecrement}>
-          <span className='wps-quantity-icon wps-quantity-decrement-icon' />
+        <button
+          className='wps-quantity-decrement'
+          css={[cartLineItemQuantityIncDecCSS, cartLineItemQuantityDecCSS]}
+          type='button'
+          onClick={handleDecrement}>
+          <CartLineItemQuantityDecIcon />
         </button>
 
         <input
@@ -164,14 +236,19 @@ function CartLineItemQuantity({
           type='number'
           min='0'
           aria-label='Quantity'
+          css={lineItemQuantityCSS}
           value={lineItemQuantity}
           onChange={handleQuantityChange}
           onBlur={handleQuantityBlur}
           disabled={customStep}
         />
 
-        <button className='wps-quantity-increment' type='button' onClick={handleIncrement}>
-          <span className='wps-quantity-icon wps-quantity-increment-icon' />
+        <button
+          className='wps-quantity-increment'
+          css={[cartLineItemQuantityIncDecCSS, cartLineItemQuantityIncCSS]}
+          type='button'
+          onClick={handleIncrement}>
+          <CartLineItemQuantityIncIcon />
         </button>
       </div>
     </div>

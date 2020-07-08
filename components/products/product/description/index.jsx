@@ -16,6 +16,10 @@ function ProductDescription() {
     color: ${itemsState.payloadSettings.descriptionColor};
     font-size: ${itemsState.payloadSettings.descriptionSize};
     margin-bottom: 20px;
+
+    p:first-of-type {
+      margin-top: 0;
+    }
   `
 
   function maybeTruncateDescription() {

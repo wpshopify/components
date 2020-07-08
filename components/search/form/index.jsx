@@ -14,7 +14,7 @@ function SearchForm({ isLoading, payloadSettings }) {
   const isFirstRender = useRef(true)
 
   const searchWrapperCSS = css`
-    max-width: 775px;
+    max-width: ${wp.hooks.applyFilters('misc.layout.containerWidth', '1100px')};
     margin: 0 auto;
   `
 

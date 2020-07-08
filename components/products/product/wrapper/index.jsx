@@ -21,10 +21,13 @@ function ProductWrapper({ payloadSettings }) {
     padding: 0;
     position: relative;
     margin: 0;
-    display: ${isAlignHeight() ? 'flex' : 'block'};
+    display: flex;
     flex-direction: column;
-    justify-content: space-between;
     min-width: 0;
+
+    > div:nth-last-of-type(2) {
+      flex: ${isAlignHeight() ? '1' : 'none'};
+    }
   `
 
   function onMouseOver() {

@@ -34,12 +34,11 @@ function ItemWrapper(props) {
 }
 
 function Items(props) {
-  return (
-    props.options &&
-    props.options.map((component) => (
-      <ItemWrapper key={uuidv4()} component={component} {...props} />
-    ))
-  )
+  return props.options
+    ? props.options.map((component) => (
+        <ItemWrapper key={uuidv4()} component={component} {...props} />
+      ))
+    : null
 }
 
 export { Items }

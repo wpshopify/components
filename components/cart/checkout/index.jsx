@@ -202,6 +202,7 @@ function CartCheckoutButton({ onCheckout, buttonRef }) {
       ? '#cfcfcf'
       : wpshopify.settings.general.checkoutColor};
     padding: 16px 0 20px 0;
+    transition: none;
 
     &:disabled {
       &:hover {

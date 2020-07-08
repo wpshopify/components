@@ -2,16 +2,15 @@ import { ProductBuyButtonContext } from '../../_state/context'
 /** @jsx jsx */
 import { jsx, css } from '@emotion/core'
 
-const { useEffect, useContext, useState } = wp.element
-
 function ProductQuantityInput({ minQuantity, maxQuantity, addedToCart }) {
+  const { useEffect, useContext, useState } = wp.element
   const [buyButtonState, buyButtonDispatch] = useContext(ProductBuyButtonContext)
   const [quantityValue, setQuantityValue] = useState(() => minQuantity)
   const customStep = wp.hooks.applyFilters('buyButton.quantityStep', false, buyButtonState)
 
   const inputStyles = css`
     && {
-      margin: 15px 0 25px 7px;
+      margin: 0 0 25px 7px;
       text-align: center;
       max-width: 60px;
       font-size: 1em;

@@ -1,21 +1,27 @@
 /** @jsx jsx */
-import { jsx, css } from '@emotion/core'
+import { jsx, css, keyframes } from '@emotion/core'
 
 function ProductPlaceholder() {
+  const shimmer = keyframes`
+      0% {
+        background-position: -468px 0;
+      }
+
+      100% {
+        background-position: 468px 0;
+      }
+`
+
   const loader = css`
-    transition: background 0.6s ease !important;
-    color: transparent !important;
-    animation-duration: 0.7s !important;
-    animation-fill-mode: forwards !important;
-    animation-iteration-count: infinite !important;
-    animation-name: shimmer !important;
-    animation-timing-function: linear !important;
-    background: linear-gradient(to right, #ececec 8%, #f4f4f4 38%, #ececec 54%) !important;
-    background-size: 1000px 640px !important;
-    border-radius: 9px !important;
-    position: relative !important;
-    margin: 5px 20px 15px 20px !important;
-    border: none !important;
+    transition: background 1s ease;
+    color: transparent;
+    animation: ${shimmer} 1s ease-out 0s infinite normal forwards;
+    background: linear-gradient(to right, #ececec 8%, #f4f4f4 38%, #ececec 54%);
+    background-size: 1000px 640px;
+    border-radius: 9px;
+    position: relative;
+    margin: 5px 20px 15px 20px;
+    border: none;
     min-height: 20px;
     width: 100%;
     max-width: 300px;

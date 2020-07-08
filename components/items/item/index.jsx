@@ -54,41 +54,43 @@ function Item({ children, limit = false, infiniteScroll = false }) {
       return
     }
 
-    itemsDispatch({ type: 'SET_IS_LOADING', payload: false })
+    if (isMounted.current) {
+      itemsDispatch({ type: 'SET_IS_LOADING', payload: false })
 
-    if (itemsState.isBootstrapping) {
-      itemsDispatch({ type: 'SET_IS_BOOTSTRAPPING', payload: false })
-    }
+      if (itemsState.isBootstrapping) {
+        itemsDispatch({ type: 'SET_IS_BOOTSTRAPPING', payload: false })
+      }
 
-    if (!newItems || !newItems.length) {
-      itemsDispatch({
-        type: 'UPDATE_TOTAL_SHOWN',
-        payload: 0,
-      })
+      if (!newItems || !newItems.length) {
+        itemsDispatch({
+          type: 'UPDATE_TOTAL_SHOWN',
+          payload: 0,
+        })
 
-      itemsDispatch({
-        type: 'UPDATE_PAYLOAD',
-        payload: {
-          items: [],
-          replace: true,
-        },
-      })
-    } else {
-      itemsDispatch({
-        type: 'UPDATE_TOTAL_SHOWN',
-        payload: newItems.length,
-      })
+        itemsDispatch({
+          type: 'UPDATE_PAYLOAD',
+          payload: {
+            items: [],
+            replace: true,
+          },
+        })
+      } else {
+        itemsDispatch({
+          type: 'UPDATE_TOTAL_SHOWN',
+          payload: newItems.length,
+        })
 
-      itemsDispatch({
-        type: 'UPDATE_PAYLOAD',
-        payload: {
-          items: newItems,
-          replace: true,
-        },
-      })
+        itemsDispatch({
+          type: 'UPDATE_PAYLOAD',
+          payload: {
+            items: newItems,
+            replace: true,
+          },
+        })
 
-      if (itemsState.afterLoading) {
-        itemsState.afterLoading(newItems)
+        if (itemsState.afterLoading) {
+          itemsState.afterLoading(newItems)
+        }
       }
     }
   }

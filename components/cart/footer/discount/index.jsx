@@ -39,6 +39,7 @@ function CartFooterDiscount({ discountCode, onRemoval }) {
     position: absolute;
     right: 11px;
     top: 7px;
+    max-width: 9px;
   `
 
   return (

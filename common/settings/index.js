@@ -69,20 +69,16 @@ function shopHasInfo(shop) {
   return has(shop, 'info')
 }
 
-function getShopifySingleLink(payload, shopInfo, type) {
+function getShopifySingleLink(payload, type) {
   if (!payload.onlineStoreUrl) {
-    if (shopInfo) {
-      return (
-        'https://' +
-        wpshopify.settings.connection.storefront.domain +
-        '/' +
-        type +
-        '/' +
-        payload.handle
-      )
-    } else {
-      return '#!'
-    }
+    return (
+      'https://' +
+      wpshopify.settings.connection.storefront.domain +
+      '/' +
+      type +
+      '/' +
+      payload.handle
+    )
   }
 
   return payload.onlineStoreUrl

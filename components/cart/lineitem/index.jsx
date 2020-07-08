@@ -13,7 +13,7 @@ const CartLineItemLeftInStock = wp.element.lazy(() =>
 )
 
 import { calcLineItemTotal, isAvailable } from '../../../common/products'
-import { containerFluidCSS, flexRowCSS, flexColSmallCSS } from '../../../common/css'
+import { containerFluidCSS, flexRowCSS, flexColSmallCSS, mq } from '../../../common/css'
 import { getCurrencyCodeFromPayload } from '../../../common/pricing/data'
 
 /** @jsx jsx */
@@ -81,6 +81,38 @@ function CartLineItem({ lineItem, inventory }) {
     top: -50px;
   `
 
+  const lineItemTitle = css`
+    color: #313131;
+    text-decoration: none;
+    font-size: 17px;
+    position: relative;
+    margin: 0;
+
+    &[data-wps-is-empty='true'] {
+      margin-bottom: 1em;
+    }
+
+    &:hover {
+      color: #313131;
+    }
+  `
+
+  const cartLineItemContentCSS = css`
+    margin-top: 0;
+    flex: 1;
+    padding-left: 10px;
+    padding-bottom: 5px;
+
+    ${mq('small')} {
+      padding-bottom: 15px;
+
+      .col-8 {
+        flex: 0 0 100%;
+        max-width: 100%;
+      }
+    }
+  `
+
   return (
     <div
       className='wps-cart-lineitem'
@@ -90,8 +122,9 @@ function CartLineItem({ lineItem, inventory }) {
       css={lineItemStyles}>
       <CartLineItemImage lineItem={lineItem} cartState={cartState} />
 
-      <div className='wps-cart-lineitem-content'>
+      <div className='wps-cart-lineitem-content' css={cartLineItemContentCSS}>
         <div
+          css={lineItemTitle}
           className='wps-cart-lineitem-title'
           data-wps-is-empty={hasRealVariant() ? 'false' : 'true'}>
           <div className='wps-cart-lineitem-title-wrapper' css={containerFluidCSS}>
