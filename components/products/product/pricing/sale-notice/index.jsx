@@ -11,6 +11,7 @@ function ProductPriceSaleNotice({ selectedVariant, prices, currencyCode }) {
       margin: 0 7px 0 0;
       font-size: 15px;
       line-height: 1;
+      font-style: normal;
     }
   `
 
@@ -20,6 +21,7 @@ function ProductPriceSaleNotice({ selectedVariant, prices, currencyCode }) {
     line-height: 1;
     color: #848484;
     text-decoration: line-through;
+    font-style: normal;
   `
 
   return (

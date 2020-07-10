@@ -15,10 +15,6 @@ function Img(props) {
     outline-offset: 3px;
     transition: transform 100ms ease;
     max-width: 100%;
-
-    &:hover {
-      opacity: 1;
-    }
   `
 
   const thumbnailStyles = css`
@@ -33,7 +29,6 @@ function Img(props) {
     }
 
     &:hover {
-      opacity: ${props.isFeatured ? 1 : 0.85};
       cursor: ${props.isFeatured ? 'default' : 'pointer'};
     }
   `

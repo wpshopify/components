@@ -12,7 +12,7 @@ function CartLineItemPriceSaleNotice({ lineItem }) {
     font-weight: normal;
     margin: 0;
     font-size: 15px;
-    color: #848484;
+    color: #313131;
     text-decoration: line-through;
     margin-left: 10px;
   `

@@ -6,6 +6,7 @@ function ProductPriceFrom({ compareAt }) {
   const fromCSS = css`
     margin-right: 5px;
     font-size: 15px;
+    font-style: none;
   `
 
   return (

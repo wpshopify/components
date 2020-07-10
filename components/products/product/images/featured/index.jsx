@@ -27,12 +27,13 @@ function ProductFeaturedImage({ payloadSettings }) {
   const [featImage, setFeatImage] = useState(() => galleryState.featImage)
 
   const ProductFeaturedImageCSS = css`
-    position: relative;
-
     .drift-zoom-pane {
       background: rgba(0, 0, 0, 0.5);
       transform: translateZ(0);
       -webkit-transform: translateZ(0);
+      border-radius: 50%;
+      width: 300px;
+      height: 300px;
 
       img {
         max-width: none !important;
@@ -49,9 +50,9 @@ function ProductFeaturedImage({ payloadSettings }) {
     }
     .drift-zoom-pane.drift-inline {
       position: absolute;
-      width: 150px;
-      height: 150px;
-      border-radius: 75px;
+      width: ${wpshopify.misc.isMobile ? '250px' : '150px'};
+      height: ${wpshopify.misc.isMobile ? '250px' : '150px'};
+      border-radius: ${wpshopify.misc.isMobile ? '50%' : '75px'};
       box-shadow: 0 6px 18px rgba(0, 0, 0, 0.3);
       z-index: 999;
     }
@@ -94,9 +95,13 @@ function ProductFeaturedImage({ payloadSettings }) {
   `
 
   function driftOptions() {
+    console.log('.......... paneElement.current', paneElement.current)
+
     return wp.hooks.applyFilters('default.image.zoom.options', {
+      inlineContainer: paneElement.current,
       paneContainer: paneElement.current,
-      inlineOffsetX: -80,
+      inlineOffsetX: wpshopify.misc.isMobile ? -100 : 0,
+      inlineOffsetY: wpshopify.misc.isMobile ? -100 : -20,
     })
   }
 
@@ -109,7 +114,7 @@ function ProductFeaturedImage({ payloadSettings }) {
   }
 
   function hasFeatImage() {
-    return featImage && galleryState.featImageElement
+    return featImage && galleryState.featImageElement && paneElement.current
   }
 
   useEffect(() => {

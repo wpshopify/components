@@ -31,8 +31,8 @@ function CartNote() {
       width: 100%;
       display: block;
       font-size: 16px;
-      padding: 1em;
-      border-color: #848484;
+      padding: 10px;
+      border-color: #313131;
       appearance: none;
       font-family: inherit;
       border-radius: 5px;

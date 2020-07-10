@@ -19,7 +19,6 @@ function ProductWrapper({ payloadSettings }) {
 
   const ProductWrapperCSS = css`
     padding: 0;
-    position: relative;
     margin: 0;
     display: flex;
     flex-direction: column;

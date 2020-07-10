@@ -23,6 +23,10 @@ function CartLineItemPrice({ lineItem, currencyCode, lineItemTotal, lineItemTota
       flex-direction: row;
       justify-content: flex-start;
       margin-top: 10px;
+
+      + .wps-cart-lineitem-left-in-stock {
+        bottom: -10px;
+      }
     }
   `
 

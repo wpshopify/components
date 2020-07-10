@@ -40,6 +40,7 @@ function CartTerms() {
     vertical-align: middle;
     cursor: pointer;
     margin: 0;
+    font-weight: normal;
     font-size: 15px;
   `
 
@@ -55,6 +56,12 @@ function CartTerms() {
     }
   `
 
+  const termsInputCSS = css`
+    width: 13px;
+    height: 13px;
+    border-radius: none;
+  `
+
   return (
     <section className='wps-cart-terms' css={containerCSS}>
       <div className='wps-input-row' css={[flexRowCSS, termsWrapperCSS]}>
@@ -64,6 +71,7 @@ function CartTerms() {
           defaultChecked={isChecked}
           type='checkbox'
           className='wps-input wps-input-checkbox'
+          css={termsInputCSS}
         />
         <label
           dangerouslySetInnerHTML={termsLabel()}

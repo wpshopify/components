@@ -29,13 +29,16 @@ function CartFooterDiscountWrapper({ discountCode }) {
   `
 
   const discountFormInputCSS = css`
+    appearance: none;
+    background: transparent;
     flex: 1;
     font-size: 16px;
     padding: 10px;
     margin-right: 10px;
     border-radius: 5px;
-    border: 1px solid #848484;
+    border: 1px solid #313131;
     outline: none;
+    box-shadow: none;
 
     &:disabled {
       &:hover {
@@ -48,7 +51,7 @@ function CartFooterDiscountWrapper({ discountCode }) {
     width: 100px;
     font-size: 16px;
     border-radius: 5px;
-    border: 1px solid #848484;
+    border: 1px solid #313131;
     appearance: none;
     color: black;
     background: white;

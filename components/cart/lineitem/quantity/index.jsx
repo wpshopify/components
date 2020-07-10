@@ -61,6 +61,7 @@ function CartLineItemQuantity({
     max-height: 35px;
     border-radius: 0;
     appearance: none;
+    padding: 0;
     background: white;
 
     ${mq('small')} {

@@ -4,7 +4,7 @@ import {
   useIsMounted,
   useIsFirstRender,
 } from '/Users/andrew/www/devil/devilbox-new/data/www/wpshopify-hooks'
-import ProductPlaceholder from '../../products/product/placeholder'
+import Placeholder from '../../../common/placeholders'
 
 import to from 'await-to-js'
 
@@ -142,9 +142,10 @@ function Item({ children, limit = false, infiniteScroll = false }) {
       },
     })
   }, [limit, infiniteScroll])
+  console.log('itemsStateitemsStateitemsStateitemsState', itemsState)
 
   return !itemsState.hasParentPayload && itemsState.isBootstrapping ? (
-    <ProductPlaceholder />
+    <Placeholder type={itemsState.dataType} />
   ) : !itemsState.payload.length && showGlobalNotice(itemsState.dataType) ? (
     <Notice status='info' isDismissible={false}>
       {itemsState.noResultsText}

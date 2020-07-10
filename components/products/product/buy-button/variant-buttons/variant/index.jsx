@@ -61,6 +61,7 @@ function ProductVariantButtonValue({ variant, onSelection, selectedOptions, isAv
          border: ${border};
          box-shadow: ${isSelected ? 'inset 0 0 0px 4px white' : 'none'};
          transition: 100ms transform ease;
+         line-height: 1;
 
          &:hover {
             transform: scale(1.2);
