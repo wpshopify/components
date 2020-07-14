@@ -14,6 +14,12 @@ function CollectionProducts() {
   function updateCollectionProducts(payload) {
     collectionDispatch({ type: 'UPDATE_PRODUCTS', payload: payload })
   }
+  console.log(
+    'itemsState.payloadSettings.dropzoneCollectionProducts',
+    itemsState.payloadSettings.dropzoneCollectionProducts
+  )
+
+  console.log('itemsState.element', itemsState.element)
 
   return (
     collectionState.products &&

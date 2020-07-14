@@ -21,7 +21,9 @@ function PaginationItems({
     grid-template-columns: repeat(${payload.length === 1 ? 1 : payloadSettings.itemsPerRow}, 1fr);
     grid-column-gap: 20px;
     grid-row-gap: 40px;
-    max-width: ${payload.length === 1 || payloadSettings.itemsPerRow === 1
+    max-width: ${payloadSettings.dataType === 'collections'
+      ? '100%'
+      : payload.length === 1 || payloadSettings.itemsPerRow === 1
       ? '300px'
       : wp.hooks.applyFilters('misc.layout.containerWidth', '1100px')};
     opacity: ${isLoading ? 0.4 : 1};

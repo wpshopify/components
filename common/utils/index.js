@@ -79,11 +79,8 @@ function itemWidthClass(perRow) {
 function findPortalElement(element, dropzone) {
   if (dropzone) {
     return document.querySelector(dropzone)
-  } else if (element) {
-    return element
-  } else {
-    return false
   }
+  return false
 }
 
 function convertTitleToHandle(title) {

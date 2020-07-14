@@ -100,6 +100,11 @@ function getWordPressSingleLink(payload) {
     url = wpshopify.settings.general.urlProducts
   }
 
+  // Ensures proper URL
+  if (url.slice(-1) !== '/') {
+    url = url + '/'
+  }
+
   return url + itemHandle
 }
 

@@ -5,10 +5,6 @@ const isShowingComponent = (payloadSettings, type) => {
     return true
   }
 
-  if (payloadSettings.isSingular) {
-    return true
-  }
-
   if (type === 'description' && wpshopify.misc.postID === wpshopify.settings.general.pageProducts) {
     return wpshopify.settings.general.productsPlpDescriptionsToggle
   }

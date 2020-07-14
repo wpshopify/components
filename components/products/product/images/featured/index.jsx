@@ -95,8 +95,6 @@ function ProductFeaturedImage({ payloadSettings }) {
   `
 
   function driftOptions() {
-    console.log('.......... paneElement.current', paneElement.current)
-
     return wp.hooks.applyFilters('default.image.zoom.options', {
       inlineContainer: paneElement.current,
       paneContainer: paneElement.current,
