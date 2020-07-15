@@ -15,7 +15,7 @@ function ProductImages() {
       payloadSettings={itemsState.payloadSettings}
       productState={productState}
     />,
-    findPortalElement(productState.element, itemsState.payloadSettings.dropzoneProductGallery)
+    findPortalElement(itemsState.payloadSettings.dropzoneProductGallery)
   )
 }
 

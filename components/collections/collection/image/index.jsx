@@ -61,7 +61,7 @@ function CollectionImage() {
         </Link>
       </div>
     ),
-    findPortalElement(collectionState.element, itemsState.payloadSettings.dropzoneCollectionImage)
+    findPortalElement(itemsState.payloadSettings.dropzoneCollectionImage)
   )
 }
 

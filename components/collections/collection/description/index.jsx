@@ -15,10 +15,7 @@ function CollectionDescription() {
       className='wps-collections-description'
       dangerouslySetInnerHTML={{ __html: collectionState.payload.descriptionHtml }}
     />,
-    findPortalElement(
-      collectionState.element,
-      itemsState.payloadSettings.dropzoneCollectionDescription
-    )
+    findPortalElement(itemsState.payloadSettings.dropzoneCollectionDescription)
   )
 }
 

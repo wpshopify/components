@@ -1,3 +1,5 @@
+/** @jsx jsx */
+import { jsx, css } from '@emotion/core'
 import { renderToString } from 'react-dom/server'
 import { Loader } from '../loader'
 
@@ -12,8 +14,13 @@ function Form({
   beforeSubmitButton,
   afterSubmitButton,
   formType,
-  isSubmitting
+  isSubmitting,
 }) {
+  const inputCSS = css`
+    &:disabled:hover {
+      cursor: not-allowed;
+    }
+  `
   return (
     <form
       id={`wpshopify-component-customers-${formType}`}
@@ -42,7 +49,7 @@ function Form({
         <div dangerouslySetInnerHTML={{ __html: renderToString(afterSubmitButton()) }} />
       )}
 
-      <input type='hidden' className='wpshopify-input wpshopify-input-nonce' />
+      <input type='hidden' className='wpshopify-input wpshopify-input-nonce' css={inputCSS} />
     </form>
   )
 }

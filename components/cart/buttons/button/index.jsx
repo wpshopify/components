@@ -107,6 +107,7 @@ function CartButton({ options }) {
           .wps-loader {
             position: relative;
             top: 2px;
+            left: 0.01em;
           }
         `
 

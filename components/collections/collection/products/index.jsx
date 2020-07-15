@@ -14,12 +14,6 @@ function CollectionProducts() {
   function updateCollectionProducts(payload) {
     collectionDispatch({ type: 'UPDATE_PRODUCTS', payload: payload })
   }
-  console.log(
-    'itemsState.payloadSettings.dropzoneCollectionProducts',
-    itemsState.payloadSettings.dropzoneCollectionProducts
-  )
-
-  console.log('itemsState.element', itemsState.element)
 
   return (
     collectionState.products &&
@@ -30,7 +24,7 @@ function CollectionProducts() {
         afterLoading={updateCollectionProducts}>
         <Products />
       </Items>,
-      findPortalElement(itemsState.element, itemsState.payloadSettings.dropzoneCollectionProducts)
+      findPortalElement(itemsState.payloadSettings.dropzoneCollectionProducts)
     )
   )
 }

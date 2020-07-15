@@ -92,4 +92,18 @@ const buttonCSS = css`
   }
 `
 
-export { rowCSS, flexRowCSS, flexColSmallCSS, containerFluidCSS, buttonCSS, mq }
+const IconCSS = css`
+  content: '';
+  position: relative;
+  vertical-align: middle;
+
+  &.wps-btn {
+    padding-right: 2.6em;
+    text-decoration: none;
+    padding-left: 2.6em;
+    width: 100%;
+    max-width: 100%;
+  }
+`
+
+export { rowCSS, flexRowCSS, flexColSmallCSS, containerFluidCSS, buttonCSS, IconCSS, mq }

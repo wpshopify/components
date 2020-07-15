@@ -31,7 +31,7 @@ function CollectionTitle({ payloadSettings }) {
         <Title title={collectionState.payload.title} />
       )}
     </div>,
-    findPortalElement(collectionState.element, payloadSettings.dropzoneCollectionTitle)
+    findPortalElement(payloadSettings.dropzoneCollectionTitle)
   )
 }
 

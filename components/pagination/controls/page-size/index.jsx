@@ -87,6 +87,12 @@ function PaginationPageSize({ isLoading, payloadSettings, queryParams, dataType 
     &:hover {
       cursor: pointer;
     }
+
+    &:disabled {
+      &:hover {
+        cursor: not-allowed;
+      }
+    }
   `
 
   return usePortal(

@@ -93,7 +93,7 @@ function ProductBuyButton() {
 
       <FilterHook name='after.product.buyButton' args={[productState]} />
     </div>,
-    findPortalElement(productState.element, itemsState.payloadSettings.dropzoneProductBuyButton)
+    findPortalElement(itemsState.payloadSettings.dropzoneProductBuyButton)
   )
 }
 

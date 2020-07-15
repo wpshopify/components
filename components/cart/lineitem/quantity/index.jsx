@@ -221,8 +221,14 @@ function CartLineItemQuantity({
     }
   `
 
+  const lineItemQuantityContainer = css`
+    width: 115px;
+  `
+
   return (
-    <div className='wps-cart-lineitem-quantity-container' css={containerFluidCSS}>
+    <div
+      className='wps-cart-lineitem-quantity-container'
+      css={[containerFluidCSS, lineItemQuantityContainer]}>
       <div css={[flexRowCSS, inputStyles]}>
         <button
           className='wps-quantity-decrement'

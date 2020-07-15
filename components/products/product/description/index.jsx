@@ -42,7 +42,7 @@ function ProductDescription() {
       itemProp='description'
       dangerouslySetInnerHTML={{ __html: maybeTruncateDescription() }}
     />,
-    findPortalElement(productState.element, itemsState.payloadSettings.dropzoneProductDescription)
+    findPortalElement(itemsState.payloadSettings.dropzoneProductDescription)
   )
 }
 

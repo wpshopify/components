@@ -29,6 +29,7 @@ function CartTerms() {
 
   var containerCSS = css`
     margin: 0.5em 0 1em 0;
+    padding: 0;
   `
 
   var labelCSS = css`
@@ -42,6 +43,10 @@ function CartTerms() {
     margin: 0;
     font-weight: normal;
     font-size: 15px;
+
+    &:empty {
+      display: none;
+    }
   `
 
   const termsWrapperCSS = css`
@@ -60,6 +65,12 @@ function CartTerms() {
     width: 13px;
     height: 13px;
     border-radius: none;
+
+    &:disabled {
+      &:hover {
+        cursor: not-allowed;
+      }
+    }
   `
 
   return (

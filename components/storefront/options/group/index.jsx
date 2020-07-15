@@ -1,3 +1,5 @@
+/** @jsx jsx */
+import { jsx, css } from '@emotion/core'
 import { StorefrontFilter } from '../../filter'
 import { StorefrontOptionsContext } from '../_state/context'
 import StorefrontFilterOptionsGroupItems from '../group-items'
@@ -10,9 +12,23 @@ const { useContext } = wp.element
 function StorefrontFilterOptionsGroup({ groupType, displayStyle, heading, filterOptions }) {
   const [storefrontOptionsState] = useContext(StorefrontOptionsContext)
 
+  const filterContentCSS = css`
+    padding: 10px 5px;
+
+    .components-notice {
+      width: 100%;
+    }
+
+    ul {
+      list-style: none;
+      padding: 0;
+      margin: 0;
+    }
+  `
+
   return (
     <StorefrontFilter heading={heading}>
-      <div className='wps-filter-content'>
+      <div className='wps-filter-content' css={filterContentCSS}>
         {storefrontOptionsState.isBootstrapping ? (
           <FilterHook name='storefront.group.loading.text'>
             <p>

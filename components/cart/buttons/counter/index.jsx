@@ -71,7 +71,7 @@ function CartCounter() {
   const counterTextCSS = css`
     display: block;
     position: absolute;
-    top: 46%;
+    top: 49%;
     left: 49%;
     transform: translate(-50%, -50%);
     width: 100%;

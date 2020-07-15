@@ -56,7 +56,7 @@ function ProductTitle({ payloadSettings }) {
         />
       )}
     </div>,
-    findPortalElement(productState.element, payloadSettings.dropzoneProductTitle)
+    findPortalElement(payloadSettings.dropzoneProductTitle)
   )
 }
 

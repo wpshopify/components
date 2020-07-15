@@ -13,7 +13,7 @@ function ProductPricesCompareAt({
   const ProductPricesCompareAtWrapperCSS = css`
     display: flex;
     align-items: center;
-    margin: 0;
+    margin: 10px 0 0 0;
 
     &:empty {
       display: none;

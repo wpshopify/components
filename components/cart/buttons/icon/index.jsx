@@ -1,4 +1,5 @@
 import { CartButtonContext } from '../button/_state/context'
+import { IconCSS } from '../../../../common/css'
 
 /** @jsx jsx */
 import { jsx, css } from '@emotion/core'
@@ -39,10 +40,11 @@ function CartIcon() {
         <img
           src={cartButtonState.payloadSettings.icon}
           className='wps-icon wps-icon-cart lazyload'
+          css={IconCSS}
         />
       ) : (
         <svg
-          css={svgCSS}
+          css={[IconCSS, svgCSS]}
           xmlns='http://www.w3.org/2000/svg'
           className='wps-icon wps-icon-cart'
           viewBox='0 0 25 25'

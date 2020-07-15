@@ -76,7 +76,7 @@ function itemWidthClass(perRow) {
   return 'wps-w-' + perRow
 }
 
-function findPortalElement(element, dropzone) {
+function findPortalElement(dropzone) {
   if (dropzone) {
     return document.querySelector(dropzone)
   }

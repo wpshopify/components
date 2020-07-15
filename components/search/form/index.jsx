@@ -16,6 +16,22 @@ function SearchForm({ isLoading, payloadSettings }) {
   const searchWrapperCSS = css`
     max-width: ${wp.hooks.applyFilters('misc.layout.containerWidth', '1100px')};
     margin: 0 auto;
+
+    .is-loading {
+      position: absolute;
+      bottom: -30px;
+      font-size: 19px;
+    }
+
+    .components-notice {
+      margin: 0;
+      width: 100%;
+    }
+  `
+
+  const searchInputWrapperCSS = css`
+    display: flex;
+    margin-bottom: 2em;
   `
 
   useEffect(() => {
@@ -40,7 +56,7 @@ function SearchForm({ isLoading, payloadSettings }) {
     <form role='search' className='wps-search-form' css={searchWrapperCSS}>
       <SearchNotices />
 
-      <div className='wps-search-wrapper'>
+      <div className='wps-search-wrapper' css={searchInputWrapperCSS}>
         <SearchInput isLoading={isLoading} payloadSettings={payloadSettings} />
       </div>
     </form>,

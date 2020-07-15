@@ -26,6 +26,7 @@ function CartNote() {
 
   const CartNotesCSS = css`
     margin-bottom: 0.5em;
+    padding: 0;
 
     .wps-input {
       width: 100%;

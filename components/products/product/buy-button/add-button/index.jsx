@@ -257,10 +257,7 @@ function ProductAddButton({
   isTouched,
 }) {
   return (
-    <div
-      className='wps-component wps-component-products-add-button wps-btn-wrapper'
-      data-wps-is-component-wrapper
-      data-wps-post-id=''>
+    <div className='wps-component wps-component-products-add-button wps-btn-wrapper'>
       <AddButtonWrapper hasLink={hasLink} payload={payload} linkTarget={linkTarget} linkTo={linkTo}>
         <AddButton
           hasLink={hasLink}

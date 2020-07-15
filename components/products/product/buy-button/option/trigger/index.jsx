@@ -3,7 +3,7 @@ import { jsx, css } from '@emotion/core'
 import { ProductBuyButtonContext } from '../../_state/context'
 import { useAnime, pulse } from '../../../../../../common/animations'
 import { FilterHook } from '../../../../../../common/utils'
-import { buttonCSS } from '../../../../../../common/css'
+import { buttonCSS, IconCSS } from '../../../../../../common/css'
 import { ItemsContext } from '../../../../../items/_state/context'
 import { ProductOptionContext } from '../_state/context'
 
@@ -84,7 +84,7 @@ function ProductOptionTrigger() {
       className='wps-btn wps-icon wps-icon-dropdown wps-modal-trigger'
       onClick={onClick}
       ref={dropdownTrigger}
-      css={[buttonCSS, customBackgroundColor]}>
+      css={[IconCSS, buttonCSS, customBackgroundColor]}>
       <FilterHook name='products.option.title.text'>{displayOptionName()}</FilterHook>
       <TriggerIcon />
     </button>

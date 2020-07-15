@@ -55,6 +55,7 @@ function CartFooterDiscountWrapper({ discountCode }) {
     appearance: none;
     color: black;
     background: white;
+    padding: 0;
 
     &:hover {
       cursor: ${isLoading ? 'not-allowed' : 'pointer'};

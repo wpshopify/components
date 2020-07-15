@@ -7,8 +7,6 @@ import { isShowingComponent } from '../../../common/components'
 import { itemWidthClass } from '../../../common/utils'
 
 function Collection({ payload, payloadSettings }) {
-  console.log('COLLECTION payloadSettings', payloadSettings)
-
   return (
     <div className={`${itemWidthClass(payloadSettings.itemsPerRow)} wps-item`}>
       <CollectionProvider payloadSettings={payloadSettings} payload={payload}>
