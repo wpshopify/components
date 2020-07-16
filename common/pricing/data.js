@@ -37,11 +37,13 @@ function getPrices(product, sort = false) {
 }
 
 function getCurrencyCodeFromPayload(payload) {
+  var defaultCode = 'USD'
+
   if (payload.variants.length) {
-    return payload.variants[0].priceV2.currencyCode
+    defaultCode = payload.variants[0].priceV2.currencyCode
   }
 
-  return wp.hooks.applyFilters('misc.pricing.defaultCurrencyCode', 'USD')
+  return wp.hooks.applyFilters('misc.pricing.defaultCurrencyCode', defaultCode)
 }
 
 function shouldShowSaleNotice(selectedVariant = false, prices = false) {

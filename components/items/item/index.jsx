@@ -42,13 +42,14 @@ function Item({ children, limit = false, infiniteScroll = false }) {
       if (isMounted.current) {
         itemsDispatch({
           type: 'UPDATE_NOTICES',
-          payload: {
-            type: 'error',
-            message: error,
-          },
+          payload: error,
         })
 
         itemsDispatch({ type: 'SET_IS_LOADING', payload: false })
+
+        if (itemsState.isBootstrapping) {
+          itemsDispatch({ type: 'SET_IS_BOOTSTRAPPING', payload: false })
+        }
       }
 
       return
@@ -146,9 +147,13 @@ function Item({ children, limit = false, infiniteScroll = false }) {
   return !itemsState.hasParentPayload && itemsState.isBootstrapping ? (
     <Placeholder type={itemsState.dataType} />
   ) : !itemsState.payload.length && showGlobalNotice(itemsState.dataType) ? (
-    <Notice status='info' isDismissible={false}>
-      {itemsState.noResultsText}
-    </Notice>
+    itemsState.notices.length ? (
+      <Notice status={itemsState.notices[0].type} isDismissible={false}>
+        {itemsState.notices[0].message}
+      </Notice>
+    ) : (
+      itemsState.noResultsText
+    )
   ) : (
     children
   )

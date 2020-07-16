@@ -26,7 +26,7 @@ function ProductBuyButton() {
   `
 
   function isHidingControls() {
-    if (itemsState.payloadSettings.isSingular) {
+    if (itemsState.payloadSettings.isSingular || isDirectCheckout) {
       return false
     }
 

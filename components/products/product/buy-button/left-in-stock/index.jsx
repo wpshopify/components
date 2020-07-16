@@ -82,7 +82,7 @@ function ProductBuyButtonLeftInStock({ payload, selectedVariant, isTouched }) {
         setStatus('error')
 
         if (error) {
-          console.error('WP Shopify error: ', error)
+          console.error('WP Shopify JS error: ', error)
         }
 
         console.error('WP Shopify error: ', response.data.message)

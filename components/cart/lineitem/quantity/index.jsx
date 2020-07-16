@@ -214,15 +214,14 @@ function CartLineItemQuantity({
 
   const cartLineItemQuantityDecCSS = css`
     border-radius: 3px 0 0 3px;
-
-    span {
-      position: relative;
-      top: -2px;
-    }
   `
 
   const lineItemQuantityContainer = css`
     width: 115px;
+
+    ${mq('small')} {
+      width: 100%;
+    }
   `
 
   return (

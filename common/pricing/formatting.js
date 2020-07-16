@@ -44,7 +44,7 @@ function formatPrice(config) {
 
 function formatPriceToCurrency(price, currencyCode) {
   return formatPrice({
-    countryCode: currencyCode, // getLocalCurrencyCodeCache(), maybeConvertPriceToLocalCurrency
+    countryCode: currencyCode,
     amount: price,
     currencyDisplay: wpshopify.settings.general.currencyDisplayStyle,
   })

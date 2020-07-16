@@ -50,8 +50,8 @@ function buildLineItemParams(variant, quantity) {
   ]
 }
 
-function AddButtonWrapper({ hasLink, payload, children, linkTo, linkTarget }) {
-  return hasLink ? (
+function AddButtonWrapper({ hasLink, payload, children, linkTo, linkTarget, isDirectCheckout }) {
+  return hasLink && !isDirectCheckout ? (
     <Link type='products' payload={payload} linkTo={linkTo} target={linkTarget}>
       {children}
     </Link>
@@ -70,6 +70,8 @@ function AddButton({
   buttonText,
   addedToCart,
 }) {
+  console.log('.........isDirectCheckout', isDirectCheckout)
+
   const [buyButtonState, buyButtonDispatch] = useContext(ProductBuyButtonContext)
   const [isCheckingOut, setIsCheckingOut] = useState(false)
   const [hasNotice, setHasNotice] = useState(false)
@@ -89,6 +91,13 @@ function AddButton({
   `
 
   async function handleClick(e) {
+    console.log('handleClick 1 hasLink', hasLink)
+    console.log('handleClick 1 isDirectCheckout', isDirectCheckout)
+
+    if (hasLink && !isDirectCheckout) {
+      return
+    }
+
     e.preventDefault()
 
     // check if all options are selected
@@ -115,7 +124,7 @@ function AddButton({
     }
 
     const lineItems = buildLineItemParams(variant, buyButtonState.quantity)
-
+    console.log('handleClick 2', isDirectCheckout)
     if (isDirectCheckout) {
       const client = buildClient()
 
@@ -189,9 +198,7 @@ function AddButton({
         className='wps-btn wps-btn-secondary wps-add-to-cart'
         title={buyButtonState.product.title}
         data-wps-is-direct-checkout={isDirectCheckout ? '1' : '0'}
-        onClick={(e) => {
-          !hasLink && handleClick(e)
-        }}
+        onClick={handleClick}
         css={[buttonCSS, customBackgroundColor]}
         disabled={isCheckingOut}>
         {isCheckingOut ? (
@@ -258,7 +265,12 @@ function ProductAddButton({
 }) {
   return (
     <div className='wps-component wps-component-products-add-button wps-btn-wrapper'>
-      <AddButtonWrapper hasLink={hasLink} payload={payload} linkTarget={linkTarget} linkTo={linkTo}>
+      <AddButtonWrapper
+        hasLink={hasLink}
+        payload={payload}
+        linkTarget={linkTarget}
+        linkTo={linkTo}
+        isDirectCheckout={isDirectCheckout}>
         <AddButton
           hasLink={hasLink}
           addToCartButtonColor={addToCartButtonColor}
