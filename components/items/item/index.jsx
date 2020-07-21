@@ -152,7 +152,9 @@ function Item({ children, limit = false, infiniteScroll = false }) {
         {itemsState.notices[0].message}
       </Notice>
     ) : (
-      itemsState.noResultsText
+      <Notice status='info' isDismissible={false}>
+        {itemsState.noResultsText}
+      </Notice>
     )
   ) : (
     children

@@ -70,8 +70,6 @@ function AddButton({
   buttonText,
   addedToCart,
 }) {
-  console.log('.........isDirectCheckout', isDirectCheckout)
-
   const [buyButtonState, buyButtonDispatch] = useContext(ProductBuyButtonContext)
   const [isCheckingOut, setIsCheckingOut] = useState(false)
   const [hasNotice, setHasNotice] = useState(false)
@@ -91,9 +89,6 @@ function AddButton({
   `
 
   async function handleClick(e) {
-    console.log('handleClick 1 hasLink', hasLink)
-    console.log('handleClick 1 isDirectCheckout', isDirectCheckout)
-
     if (hasLink && !isDirectCheckout) {
       return
     }
@@ -124,7 +119,7 @@ function AddButton({
     }
 
     const lineItems = buildLineItemParams(variant, buyButtonState.quantity)
-    console.log('handleClick 2', isDirectCheckout)
+
     if (isDirectCheckout) {
       const client = buildClient()
 
