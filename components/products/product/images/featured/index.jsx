@@ -1,5 +1,6 @@
 import { ProductContext } from '../../_state/context'
 import { ProductGalleryContext } from '../gallery/_state/context'
+import ProductImageSoldOutLabel from '../sold-out-label'
 import ProductImage from '../image'
 import isNull from 'lodash/isNull'
 import Drift from 'drift-zoom'
@@ -87,6 +88,7 @@ function ProductFeaturedImage({ payloadSettings }) {
 
   return (
     <div className='wps-gallery-featured-wrapper' ref={paneElement} css={paneElementCSS}>
+      {productState.payload.availableForSale === false && <ProductImageSoldOutLabel />}
       <div className='wps-product-image-wrapper'>
         {featImage ? (
           <ProductImage payloadSettings={payloadSettings} isFeatured={true} image={featImage} />
