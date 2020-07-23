@@ -37,7 +37,7 @@ function Link({
 
   return (
     <>
-      {disableLink || linkTo === 'none' ? (
+      {!manualLink && (disableLink || linkTo) === 'none' ? (
         children
       ) : (
         <a

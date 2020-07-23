@@ -13,7 +13,7 @@ function StorefrontFilterOptionsGroup({ groupType, displayStyle, heading, filter
   const [storefrontOptionsState] = useContext(StorefrontOptionsContext)
 
   const filterContentCSS = css`
-    padding: 10px 5px;
+    padding: 10px 0;
 
     .components-notice {
       width: 100%;

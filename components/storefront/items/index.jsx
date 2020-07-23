@@ -1,25 +1,9 @@
 import { usePortal } from '../../../common/hooks'
 import { Products } from '../../products'
-// import { animeStaggerFadeIn } from '../../../common/animations'
 /** @jsx jsx */
 import { jsx, css } from '@emotion/core'
 
 function StorefrontItems({ noResultsText, payloadSettings, payload, queryParams, isLoading }) {
-  //   useEffect(
-  //     function () {
-  //       if (isLoading) {
-  //         return
-  //       }
-
-  //       animeStaggerFadeIn(
-  //         document.querySelectorAll(
-  //           '.wps-item[data-is-first-item="true"], .wps-item[data-is-first-item="true"] ~ div'
-  //         )
-  //       )
-  //     },
-  //     [isLoading]
-  //   )
-
   const { Spinner, Notice } = wp.components
 
   const noticeCSS = css`

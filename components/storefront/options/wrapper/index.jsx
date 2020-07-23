@@ -24,7 +24,9 @@ function formatFilterOptions(data) {
 }
 
 function getDataFromResponse(response) {
-  return response.map((item) => item.data)
+  return response.map((item) => {
+    return item.data
+  })
 }
 
 function lowercaseFilterOptions(allFilteredData) {
@@ -52,6 +54,9 @@ function StorefrontOptionsWrapper({ payloadSettings }) {
   async function getAllFilterOptions() {
     var [respError, respData] = await to(getFilterData())
 
+    console.log('............ respData', respData.data)
+    console.log('............ respError', respError)
+
     if (respError) {
       /* translators: %s: Error message */
       itemsDispatch({
@@ -69,6 +74,7 @@ function StorefrontOptionsWrapper({ payloadSettings }) {
       })
     } else {
       const allFilteredData = formatFilterOptions(getDataFromResponse(respData))
+      console.log('allFilteredDataallFilteredData', allFilteredData)
 
       storefrontOptionsDispatch({
         type: 'SET_FILTER_OPTIONS',
@@ -113,7 +119,7 @@ function StorefrontOptionsWrapper({ payloadSettings }) {
         )}
         {payloadSettings.showTypes ? (
           <StorefrontFilterOptionsGroup
-            typesFilterOptions={typesFilterOptions}
+            filterOptions={typesFilterOptions}
             heading={<TypesHeading />}
             groupType='types'
             displayStyle='checkbox'

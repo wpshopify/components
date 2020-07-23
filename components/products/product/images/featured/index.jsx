@@ -88,7 +88,7 @@ function ProductFeaturedImage({ payloadSettings }) {
 
   return (
     <div className='wps-gallery-featured-wrapper' ref={paneElement} css={paneElementCSS}>
-      {productState.payload.availableForSale === false && <ProductImageSoldOutLabel />}
+      {productState.payload.availableForSale === false && featImage && <ProductImageSoldOutLabel />}
       <div className='wps-product-image-wrapper'>
         {featImage ? (
           <ProductImage payloadSettings={payloadSettings} isFeatured={true} image={featImage} />

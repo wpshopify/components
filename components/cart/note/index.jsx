@@ -46,13 +46,7 @@ function CartNote() {
 
   return (
     <section className='wps-cart-notes' css={CartNotesCSS}>
-      <label
-        value={wp.hooks.applyFilters(
-          'cart.note.label',
-          wp.i18n.__('Checkout notes', 'wpshopify'),
-          cartState
-        )}
-        htmlFor='wps-input-notes'>
+      <label htmlFor='wps-input-notes'>
         {wp.hooks.applyFilters(
           'default.cart.notes.label',
           wp.i18n.__('Checkout notes', 'wpshopify'),

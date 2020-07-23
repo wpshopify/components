@@ -47,7 +47,6 @@ function CartClose({ cartDispatch }) {
 
       ${mq('small')} {
         font-size: 47px;
-        top: calc(50% - 29px);
       }
     }
   `

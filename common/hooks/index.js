@@ -112,39 +112,44 @@ function useCartToggle(cartElement) {
 
   const escEvent = (event) => {
     if (event.key === 'Escape' || event.keyCode === 27) {
+      wp.hooks.doAction('on.cart.toggle', false)
       setIsOpen(false)
     }
   }
 
-  const listener = (event) => {
+  const clickEvent = (event) => {
     var classList = event.target.classList
     var iconClicked = getClosest(event.target, '.wps-btn-cart')
 
     if (classList.contains('wps-modal-close-trigger')) {
       setIsOpen(false)
+      wp.hooks.doAction('on.cart.toggle', false)
       return
     }
 
     if (iconClicked) {
       setIsOpen(true)
+      wp.hooks.doAction('on.cart.toggle', true)
       return
     }
     if (cartElement.current.contains(event.target)) {
       setIsOpen(true)
+      wp.hooks.doAction('on.cart.toggle', true)
       return
     }
     setIsOpen(false)
+    wp.hooks.doAction('on.cart.toggle', false)
   }
 
   useEffect(() => {
-    document.addEventListener('mousedown', listener)
-    document.addEventListener('touchstart', listener)
+    document.addEventListener('mousedown', clickEvent)
+    document.addEventListener('touchstart', clickEvent)
     document.addEventListener('keydown', escEvent)
 
     // Remove event listeners on cleanup
     return () => {
-      document.removeEventListener('mousedown', listener)
-      document.removeEventListener('touchstart', listener)
+      document.removeEventListener('mousedown', clickEvent)
+      document.removeEventListener('touchstart', clickEvent)
       document.removeEventListener('keydown', escEvent)
     }
   }, [])
@@ -162,10 +167,8 @@ function useCartToggle(cartElement) {
       setIsOpen(false)
     }
 
-    wp.hooks.doAction('cart.toggle', false)
-
     return () => {
-      wp.hooks.doAction('cart.toggle', false)
+      wp.hooks.removeAction('cart.toggle', 'wpshopify')
     }
   }, [cartToggleAction])
 

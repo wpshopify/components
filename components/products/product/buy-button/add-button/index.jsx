@@ -236,7 +236,7 @@ function AddButtonText({ buttonText, addedToCart }) {
   `
 
   return (
-    <FilterHook name='product.addToCart.text'>
+    <FilterHook name='product.addToCart.text' args={[text]}>
       <span css={AddButtonTextCSS} ref={addedTest}>
         {text}
       </span>

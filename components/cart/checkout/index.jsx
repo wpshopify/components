@@ -106,7 +106,7 @@ function CartCheckout() {
     cartDispatch({ type: 'UPDATE_NOTICES', payload: [] })
     cartDispatch({ type: 'SET_IS_CHECKING_OUT', payload: true })
 
-    wp.hooks.doAction('on.checkout', cartState.checkoutCache)
+    wp.hooks.doAction('on.checkout', cartState)
 
     var lineItems = wp.hooks.applyFilters(
       'before.checkout.lineItems',
@@ -180,13 +180,13 @@ function CartCheckout() {
 
   return (
     <>
-      <FilterHook name='before.cart.checkout.button' args={[cartState]} />
+      <FilterHook name='before.cart.checkout.button' hasHTML={true} args={[cartState]} />
 
       <ErrorBoundary FallbackComponent={ErrorFallback}>
         <CartCheckoutButton onCheckout={onCheckout} buttonRef={checkoutButton} />
       </ErrorBoundary>
 
-      <FilterHook name='after.cart.checkout.button' args={[cartState]} />
+      <FilterHook name='after.cart.checkout.button' hasHTML={true} args={[cartState]} />
     </>
   )
 }
@@ -226,7 +226,7 @@ function CartCheckoutButton({ onCheckout, buttonRef }) {
       {cartState.isCheckingOut ? (
         <Loader isLoading={cartState.isCheckingOut} />
       ) : (
-        <FilterHook name='cart.checkout.text'>{cartState.checkoutText}</FilterHook>
+        cartState.checkoutText
       )}
     </button>
   )

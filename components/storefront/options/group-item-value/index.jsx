@@ -38,6 +38,36 @@ function StorefrontFilterOptionsGroupItemValue({
     }
   `
 
+  const buttonOptionCSS = css`
+    padding: 5px 10px;
+    background-color: #f2f2f2;
+    border: 1px solid #d9d8d8;
+    margin: 5px;
+    font-size: 15px;
+    text-transform: capitalize;
+    transition: opacity 0.2s ease;
+    backface-visibility: hidden;
+    will-change: opacity;
+    display: inline-block;
+
+    &:hover {
+      cursor: pointer;
+      background-color: #eee;
+      transform: scale(1.1);
+    }
+
+    &[data-wps-is-selected='true'] {
+      outline: 3px solid #04d61c;
+      outline-offset: -3px;
+
+      &:hover {
+        background: #ddfbdd;
+        transform: scale(1);
+        opacity: 1;
+      }
+    }
+  `
+
   return displayStyle === 'checkbox' ? (
     <li
       data-wps-is-current={isSelected}
@@ -69,7 +99,8 @@ function StorefrontFilterOptionsGroupItemValue({
         data-wps-filter-value={itemValue}
         data-wps-display-style={displayStyle}
         className={'wps-' + itemType + '-single wps-filter-single'}
-        onClick={onClick}>
+        onClick={onClick}
+        css={buttonOptionCSS}>
         {itemValue}
       </li>
     )

@@ -74,7 +74,7 @@ function StorefrontFilter({ heading, children }) {
         className='wps-drawer-trigger wps-filter-heading'
         css={filterHeadingCSS}
         onClick={toggleDrawer}>
-        <FilterHook name='storefront.filter.text'>{heading}</FilterHook>
+        {heading}
         <span className='wps-drawer-icon' css={drawerIconCSS} />
       </h3>
       <div className='wps-drawer-content' css={drawerContentCSS}>

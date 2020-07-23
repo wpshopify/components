@@ -12,7 +12,7 @@ function ProductPriceFrom({ compareAt }) {
   return (
     !compareAt && (
       <small css={fromCSS} className='wps-product-from-price'>
-        <FilterHook name='product.pricing.from.text' args={[compareAt]}>
+        <FilterHook name='product.pricing.from.text'>
           {wp.i18n.__('Price:', 'wpshopify')}
         </FilterHook>
       </small>

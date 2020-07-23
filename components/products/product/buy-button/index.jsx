@@ -42,7 +42,7 @@ function ProductBuyButton() {
 
   return usePortal(
     <div css={buyButtonWrapperCSS} className='wps-component-products-buy-button'>
-      <FilterHook name='before.product.buyButton' args={[productState]} />
+      <FilterHook name='before.product.buyButton' hasHTML={true} args={[productState]} />
 
       <ProductBuyButtonProvider productState={productState}>
         {productState.payload.availableForSale ? (
@@ -91,7 +91,7 @@ function ProductBuyButton() {
         )}
       </ProductBuyButtonProvider>
 
-      <FilterHook name='after.product.buyButton' args={[productState]} />
+      <FilterHook name='after.product.buyButton' hasHTML={true} args={[productState]} />
     </div>,
     findPortalElement(itemsState.payloadSettings.dropzoneProductBuyButton)
   )
