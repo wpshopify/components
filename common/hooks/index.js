@@ -60,8 +60,6 @@ function useAction(hookName, defaultVal = false) {
         setData(newData)
       })
     }
-
-    return () => wp.hooks.removeAction(hookName, 'wpshopify.' + hookName)
   }, [])
 
   return data
@@ -166,6 +164,8 @@ function useCartToggle(cartElement) {
     if (cartToggleAction === 'close') {
       setIsOpen(false)
     }
+
+    wp.hooks.doAction('cart.toggle', false)
 
     return () => {
       wp.hooks.removeAction('cart.toggle', 'wpshopify')

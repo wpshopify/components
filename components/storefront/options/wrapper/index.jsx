@@ -54,9 +54,6 @@ function StorefrontOptionsWrapper({ payloadSettings }) {
   async function getAllFilterOptions() {
     var [respError, respData] = await to(getFilterData())
 
-    console.log('............ respData', respData.data)
-    console.log('............ respError', respError)
-
     if (respError) {
       /* translators: %s: Error message */
       itemsDispatch({
@@ -73,12 +70,9 @@ function StorefrontOptionsWrapper({ payloadSettings }) {
         },
       })
     } else {
-      const allFilteredData = formatFilterOptions(getDataFromResponse(respData))
-      console.log('allFilteredDataallFilteredData', allFilteredData)
-
       storefrontOptionsDispatch({
         type: 'SET_FILTER_OPTIONS',
-        payload: lowercaseFilterOptions(allFilteredData),
+        payload: lowercaseFilterOptions(formatFilterOptions(getDataFromResponse(respData))),
       })
     }
 

@@ -15,6 +15,10 @@ function ProductPricesCompareAt({
     align-items: center;
     margin: 10px 0 0 0;
 
+    .wps-product-individual-price {
+      font-size: 15px;
+    }
+
     &:empty {
       display: none;
     }
@@ -35,8 +39,15 @@ function ProductPricesCompareAt({
           <ProductPriceSaleNotice
             selectedVariant={selectedVariant}
             prices={prices}
-            currencyCode={currencyCode}
-          />
+            showPriceRange={showPriceRange}>
+            <ProductPrice
+              selectedVariant={selectedVariant}
+              compareAt={true}
+              prices={prices}
+              showPriceRange={showPriceRange}
+              currencyCode={currencyCode}
+            />
+          </ProductPriceSaleNotice>
         </div>
       )}
     </>

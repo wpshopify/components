@@ -1,10 +1,9 @@
 /** @jsx jsx */
 import { jsx, css } from '@emotion/core'
-import { shouldShowSaleNotice, getSalePrice } from '../../../../../common/pricing/data'
+import { shouldShowSaleNotice } from '../../../../../common/pricing/data'
 import { FilterHook } from '../../../../../common/utils'
-import PrettyPrice from '../../../../../common/pricing/pretty'
 
-function ProductPriceSaleNotice({ selectedVariant, prices, currencyCode }) {
+function ProductPriceSaleNotice({ selectedVariant, prices, showPriceRange, children }) {
   const ProductPriceSaleNoticeCSS = css`
     && {
       color: red;
@@ -16,11 +15,10 @@ function ProductPriceSaleNotice({ selectedVariant, prices, currencyCode }) {
   `
 
   const ProductPriceSalePriceCSS = css`
-    margin: 0;
+    margin: 0 5px 0 0;
     font-size: 15px;
     line-height: 1;
     color: #848484;
-    text-decoration: line-through;
     font-style: normal;
   `
 
@@ -34,8 +32,9 @@ function ProductPriceSaleNotice({ selectedVariant, prices, currencyCode }) {
           <FilterHook name='product.pricing.from.text'>
             {wp.i18n.__('Was: ', 'wpshopify')}
           </FilterHook>
-          <PrettyPrice price={getSalePrice(selectedVariant, prices)} currencyCode={currencyCode} />
         </small>
+
+        {children}
       </>
     )
   )

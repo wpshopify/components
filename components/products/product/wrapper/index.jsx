@@ -1,20 +1,17 @@
+/** @jsx jsx */
+import { jsx, css } from '@emotion/core'
 import { ProductContext } from '../_state/context'
 import { isShowingComponent } from '../../../../common/components'
 import { ErrorBoundary } from 'react-error-boundary'
-import ErrorFallback from '../../../error-fallback'
-
-/** @jsx jsx */
-import { jsx, css } from '@emotion/core'
-
 import { ProductTitle } from '../title'
 import { ProductPricing } from '../pricing'
 import { ProductDescription } from '../description'
 import { ProductBuyButton } from '../buy-button'
 import { ProductImages } from '../images'
-
-const { useContext } = wp.element
+import ErrorFallback from '../../../error-fallback'
 
 function ProductWrapper({ payloadSettings }) {
+  const { useContext } = wp.element
   const [productState, productDispatch] = useContext(ProductContext)
 
   const ProductWrapperCSS = css`
