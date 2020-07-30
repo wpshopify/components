@@ -34,6 +34,7 @@ function CartLineItemPrice({ lineItem, currencyCode, lineItemTotal, lineItemTota
     line-height: 1;
     margin-top: 0;
     font-size: 15px;
+    color: #121212;
 
     ${mq('small')} {
       text-align: left;

@@ -5,6 +5,7 @@ function ProductPricingSeparator() {
   const ProductPricingSeparatorCSS = css`
     margin: 0 3px;
     display: inline-block;
+    color: #121212;
   `
 
   return (

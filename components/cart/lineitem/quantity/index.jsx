@@ -50,25 +50,28 @@ function CartLineItemQuantity({
   `
 
   const lineItemQuantityCSS = css`
-    margin: 0;
-    width: 45px;
-    border: none;
-    text-align: center;
-    font-size: 16px;
-    margin-right: 0px;
-    border-top: 1px solid #ddd;
-    border-bottom: 1px solid #ddd;
-    max-height: 35px;
-    border-radius: 0;
-    appearance: none;
-    padding: 0;
-    background: white;
+    && {
+      margin: 0;
+      width: 45px;
+      border: none;
+      text-align: center;
+      font-size: 16px;
+      margin-right: 0px;
+      border-top: 1px solid #ddd;
+      border-bottom: 1px solid #ddd;
+      max-height: 35px;
+      border-radius: 0;
+      appearance: none;
+      padding: 0;
+      color: #121212;
+      background: white;
 
-    ${mq('small')} {
-      width: 60px;
-      height: 60px;
-      max-height: 60px;
-      font-size: 24px;
+      ${mq('small')} {
+        width: 60px;
+        height: 60px;
+        max-height: 60px;
+        font-size: 24px;
+      }
     }
   `
 

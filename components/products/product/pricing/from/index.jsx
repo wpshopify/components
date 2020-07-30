@@ -7,6 +7,7 @@ function ProductPriceFrom({ compareAt }) {
     margin-right: 5px;
     font-size: 15px;
     font-style: none;
+    color: #121212;
   `
 
   return (

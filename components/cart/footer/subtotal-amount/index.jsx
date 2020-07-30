@@ -13,6 +13,7 @@ function CartFooterSubtotalAmount({
     font-weight: bold;
     text-align: right;
     font-size: 28px;
+    color: #121212;
   `
 
   const fullPriceCSS = css`

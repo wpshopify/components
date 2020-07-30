@@ -29,20 +29,23 @@ function CartFooterDiscountWrapper({ discountCode }) {
   `
 
   const discountFormInputCSS = css`
-    appearance: none;
-    background: transparent;
-    flex: 1;
-    font-size: 16px;
-    padding: 10px;
-    margin-right: 10px;
-    border-radius: 5px;
-    border: 1px solid #313131;
-    outline: none;
-    box-shadow: none;
+    && {
+      appearance: none;
+      background: transparent;
+      flex: 1;
+      font-size: 16px;
+      padding: 10px;
+      margin-right: 10px;
+      border-radius: 5px;
+      border: 1px solid #313131;
+      outline: none;
+      color: #121212;
+      box-shadow: none;
 
-    &:disabled {
-      &:hover {
-        cursor: not-allowed;
+      &:disabled {
+        &:hover {
+          cursor: not-allowed;
+        }
       }
     }
   `
@@ -60,6 +63,7 @@ function CartFooterDiscountWrapper({ discountCode }) {
     &:hover {
       cursor: ${isLoading ? 'not-allowed' : 'pointer'};
       color: rgba(0, 0, 0, 0.5);
+      background: white;
     }
 
     &:focus {

@@ -21,6 +21,7 @@ function CartFooter() {
     margin-bottom: 0;
     border-top: 1px solid #ddd;
     font-size: 26px;
+    color: #121212;
 
     p {
       margin: 0;
@@ -28,6 +29,7 @@ function CartFooter() {
 
     .wps-total-prefix {
       font-size: 20px;
+      color: #121212;
     }
   `
 

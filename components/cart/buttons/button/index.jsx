@@ -59,6 +59,15 @@ function CartButton({ options }) {
     background-color: ${options.payloadSettings.type === 'fixed'
       ? wpshopify.settings.general.cartFixedBackgroundColor
       : 'transparent'};
+
+    &:hover,
+    &:focus {
+      border: none;
+      outline: none;
+      background-color: ${options.payloadSettings.type === 'fixed'
+        ? wpshopify.settings.general.cartFixedBackgroundColor
+        : 'transparent'};
+    }
   `
 
   const cartIconFixedCSS =

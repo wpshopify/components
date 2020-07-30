@@ -204,10 +204,19 @@ function CartCheckoutButton({ onCheckout, buttonRef }) {
     padding: 16px 0 20px 0;
     transition: none;
 
+    &:hover {
+      background-color: ${cartState.isCheckingOut ||
+      !cartState.termsAccepted ||
+      cartState.isCartEmpty
+        ? '#cfcfcf'
+        : wpshopify.settings.general.checkoutColor};
+    }
+
     &:disabled {
       &:hover {
         cursor: not-allowed;
         color: #fff;
+        background-color: #cfcfcf;
       }
     }
 

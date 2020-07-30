@@ -43,6 +43,7 @@ function CartTerms() {
     margin: 0;
     font-weight: normal;
     font-size: 15px;
+    color: #121212;
 
     &:empty {
       display: none;

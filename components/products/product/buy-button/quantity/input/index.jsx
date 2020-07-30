@@ -17,6 +17,7 @@ function ProductQuantityInput({ minQuantity, maxQuantity, addedToCart }) {
       border: 1px solid #313131;
       border-radius: 5px;
       padding: 7px;
+      color: #121212;
     }
   `
 

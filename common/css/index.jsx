@@ -84,11 +84,15 @@ const buttonCSS = css`
   &:hover {
     color: rgba(255, 255, 255, 0.7);
     cursor: pointer;
+    border: none;
+    box-shadow: none;
+    outline: none;
   }
 
   &:focus {
-    outline: none;
     border: none;
+    box-shadow: none;
+    outline: none;
   }
 `
 

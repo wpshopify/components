@@ -27,9 +27,12 @@ function CartNote() {
   const CartNotesCSS = css`
     margin-bottom: 0.5em;
     padding: 0;
+    font-weight: none;
+    color: #121212;
 
     .wps-input {
       width: 100%;
+      color: #121212;
       display: block;
       font-size: 16px;
       padding: 10px;

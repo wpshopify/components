@@ -28,6 +28,9 @@ function CartClose({ cartDispatch }) {
       opacity: 0.5;
       background: transparent;
       color: #313131;
+      border: none;
+      outline: none;
+      box-shadow: none;
     }
 
     &:focus {
