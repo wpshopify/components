@@ -1,12 +1,9 @@
-import { ProductBuyButtonContext } from '../_state/context'
 /** @jsx jsx */
 import { jsx, css } from '@emotion/core'
 
 const { useContext } = wp.element
 
 function ProductBuyButtonTextNotice({ quantityLeft }) {
-  const [buyButtonState] = useContext(ProductBuyButtonContext)
-
   const textNoticeCSS = css`
     text-align: center;
     margin: 5px auto 2.4em auto;
@@ -19,15 +16,12 @@ function ProductBuyButtonTextNotice({ quantityLeft }) {
   `
 
   return (
-    buyButtonState.allOptionsSelected &&
-    quantityLeft && (
-      <span className='wps-notice-text' css={textNoticeCSS}>
-        {
-          /* translators: %s: Only 9 left */
-          wp.i18n.sprintf(wp.i18n.__('Only %s left!', 'wpshopify'), quantityLeft)
-        }
-      </span>
-    )
+    <span className='wps-notice-text' css={textNoticeCSS}>
+      {
+        /* translators: %s: Only 9 left */
+        wp.i18n.sprintf(wp.i18n.__('Only %s left!', 'wpshopify'), quantityLeft)
+      }
+    </span>
   )
 }
 

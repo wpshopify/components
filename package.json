@@ -50,6 +50,7 @@
       "react-dom": "^16.13.1",
       "react-error-boundary": "^2.2.3",
       "react-intersection-observer": "^8.26.2",
+      "react-jsx-parser": "^1.25.1",
       "react-loaders": "^3.0.1",
       "react-masonry-css": "^1.0.14",
       "react-simple-img": "^2.3.9",

@@ -9,7 +9,6 @@ import { v4 as uuidv4 } from 'uuid'
 import isEmpty from 'lodash/isEmpty'
 
 function ProductVariantsDropdown({
-  buyButtonDispatch,
   availableVariants,
   dropdownElement,
   isDropdownOpen,
@@ -56,7 +55,6 @@ function ProductVariantsDropdown({
               <ProductVariant
                 key={uuidv4()}
                 variant={variant}
-                buyButtonDispatch={buyButtonDispatch}
                 availableVariants={availableVariants}
                 selectedOptions={selectedOptions}>
                 <ProductVariantDropdownValue />

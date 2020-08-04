@@ -1,6 +1,5 @@
 /** @jsx jsx */
 import { jsx, css } from '@emotion/core'
-import { ProductBuyButtonContext } from '../../_state/context'
 import { useAnime, pulse } from '../../../../../../common/animations'
 import { FilterHook } from '../../../../../../common/utils'
 import { buttonCSS, IconCSS } from '../../../../../../common/css'
@@ -18,10 +17,9 @@ function TriggerIcon() {
   )
 }
 
-function ProductOptionTrigger() {
+function ProductOptionTrigger({ missingSelections }) {
   const { useEffect, useContext, useRef } = wp.element
   const [itemsState] = useContext(ItemsContext)
-  const [buyButtonState] = useContext(ProductBuyButtonContext)
   const [productOptionState, productOptionDispatch] = useContext(ProductOptionContext)
 
   const dropdownTrigger = useRef()
@@ -40,14 +38,14 @@ function ProductOptionTrigger() {
       return
     }
 
-    if (!buyButtonState.missingSelections) {
+    if (!missingSelections) {
       return
     }
 
     if (!isOptionSelected()) {
       animePulse(dropdownTrigger.current)
     }
-  }, [buyButtonState.missingSelections])
+  }, [missingSelections])
 
   function isOptionSelected() {
     return productOptionState.isOptionSelected

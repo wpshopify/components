@@ -1,4 +1,5 @@
-import { ProductBuyButtonContext } from '../_state/context'
+/** @jsx jsx */
+import { jsx, css } from '@emotion/core'
 import ProductBuyButtonLeftInStock from '../left-in-stock'
 import { Loader } from '../../../../loader'
 import { useAnime, pulse, fadeInBottomSlow } from '../../../../../common/animations'
@@ -17,18 +18,11 @@ import {
 } from '/Users/andrew/www/devil/devilbox-new/data/www/wpshopify-api'
 import to from 'await-to-js'
 
-/** @jsx jsx */
-import { jsx, css } from '@emotion/core'
-
 const { Notice } = wp.components
 const { useContext, useRef, useEffect, useState } = wp.element
 
-function findVariantFromSelections(buyButtonState) {
-  return findVariantFromSelectedOptions(buyButtonState.product, buyButtonState.selectedOptions)
-}
-
-function findSingleVariantFromPayload(buyButtonState) {
-  return buyButtonState.product.variants[0]
+function findSingleVariantFromPayload(payload) {
+  return payload.variants[0]
 }
 
 function buildAddToCartParams(lineItems, variants) {
@@ -69,18 +63,21 @@ function AddButton({
   loader,
   buttonText,
   addedToCart,
+  allOptionsSelected,
+  quantity,
+  selectedOptions,
+  payload,
 }) {
-  const [buyButtonState, buyButtonDispatch] = useContext(ProductBuyButtonContext)
   const [isCheckingOut, setIsCheckingOut] = useState(false)
   const [hasNotice, setHasNotice] = useState(false)
   const animePulse = useAnime(pulse)
   const button = useRef()
 
   useEffect(() => {
-    if (buyButtonState.allOptionsSelected) {
+    if (allOptionsSelected) {
       animePulse(button.current)
     }
-  }, [buyButtonState.allOptionsSelected])
+  }, [allOptionsSelected])
 
   const customBackgroundColor = css`
     && {
@@ -97,28 +94,29 @@ function AddButton({
 
     // check if all options are selected
     // if some are not selected, highlight them / shake them
-    if (!buyButtonState.allOptionsSelected && hasManyVariants) {
-      buyButtonDispatch({ type: 'SET_MISSING_SELECTIONS', payload: true })
+    if (!allOptionsSelected && hasManyVariants) {
+      productDispatch({ type: 'SET_MISSING_SELECTIONS', payload: true })
       return
     }
+    console.log('.................... payload', payload)
 
     if (hasManyVariants) {
-      var variant = findVariantFromSelections(buyButtonState)
+      var variant = findVariantFromSelectedOptions(payload, selectedOptions)
     } else {
-      var variant = findSingleVariantFromPayload(buyButtonState)
+      var variant = findSingleVariantFromPayload(payload)
     }
 
     if (!variant) {
       // TODO: Handle this better
       console.error('WP Shopify error: handleClick variant undefined ')
 
-      buyButtonDispatch({ type: 'SET_MISSING_SELECTIONS', payload: true })
-      buyButtonDispatch({ type: 'SET_ALL_SELECTED_OPTIONS', payload: false })
-      buyButtonDispatch({ type: 'REMOVE_SELECTED_OPTIONS' })
+      productDispatch({ type: 'SET_MISSING_SELECTIONS', payload: true })
+      productDispatch({ type: 'SET_ALL_SELECTED_OPTIONS', payload: false })
+      productDispatch({ type: 'REMOVE_SELECTED_OPTIONS' })
       return
     }
 
-    const lineItems = buildLineItemParams(variant, buyButtonState.quantity)
+    const lineItems = buildLineItemParams(variant, quantity)
 
     if (isDirectCheckout) {
       const client = buildClient()
@@ -129,11 +127,11 @@ function AddButton({
 
       if (err) {
         setIsCheckingOut(false)
-        buyButtonDispatch({
+        productDispatch({
           type: 'SET_ALL_SELECTED_OPTIONS',
           payload: false,
         })
-        buyButtonDispatch({ type: 'REMOVE_SELECTED_OPTIONS' })
+        productDispatch({ type: 'REMOVE_SELECTED_OPTIONS' })
 
         setHasNotice({
           type: 'error',
@@ -147,11 +145,11 @@ function AddButton({
 
       if (error) {
         setIsCheckingOut(false)
-        buyButtonDispatch({
+        productDispatch({
           type: 'SET_ALL_SELECTED_OPTIONS',
           payload: false,
         })
-        buyButtonDispatch({ type: 'REMOVE_SELECTED_OPTIONS' })
+        productDispatch({ type: 'REMOVE_SELECTED_OPTIONS' })
 
         setHasNotice({
           type: 'error',
@@ -160,21 +158,21 @@ function AddButton({
         return
       }
 
-      buyButtonDispatch({ type: 'SET_MISSING_SELECTIONS', payload: false })
+      productDispatch({ type: 'SET_MISSING_SELECTIONS', payload: false })
 
-      checkoutRedirect(respNewCheckout, buyButtonDispatch)
+      checkoutRedirect(respNewCheckout, productDispatch)
     } else {
       let addToCartParams = buildAddToCartParams(lineItems, [variant])
 
-      buyButtonDispatch({
+      productDispatch({
         type: 'SET_ALL_SELECTED_OPTIONS',
         payload: false,
       })
 
-      buyButtonDispatch({ type: 'REMOVE_SELECTED_OPTIONS' })
+      productDispatch({ type: 'REMOVE_SELECTED_OPTIONS' })
       productDispatch({ type: 'SET_ADDED_VARIANT', payload: variant })
       productDispatch({ type: 'SET_SELECTED_VARIANT', payload: false })
-      buyButtonDispatch({ type: 'SET_MISSING_SELECTIONS', payload: false })
+      productDispatch({ type: 'SET_MISSING_SELECTIONS', payload: false })
 
       wp.hooks.doAction('cart.toggle', 'open')
       wp.hooks.doAction('product.addToCart', addToCartParams)
@@ -191,7 +189,6 @@ function AddButton({
         itemScope
         itemType='https://schema.org/BuyAction'
         className='wps-btn wps-btn-secondary wps-add-to-cart'
-        title={buyButtonState.product.title}
         data-wps-is-direct-checkout={isDirectCheckout ? '1' : '0'}
         onClick={handleClick}
         css={[buttonCSS, customBackgroundColor]}
@@ -257,6 +254,9 @@ function ProductAddButton({
   selectedVariant,
   addedToCart,
   isTouched,
+  allOptionsSelected,
+  quantity,
+  selectedOptions,
 }) {
   return (
     <div className='wps-component wps-component-products-add-button wps-btn-wrapper'>
@@ -275,6 +275,10 @@ function ProductAddButton({
           productDispatch={productDispatch}
           buttonText={buttonText}
           addedToCart={addedToCart}
+          allOptionsSelected={allOptionsSelected}
+          quantity={quantity}
+          selectedOptions={selectedOptions}
+          payload={payload}
         />
       </AddButtonWrapper>
 
@@ -283,6 +287,7 @@ function ProductAddButton({
           isTouched={isTouched}
           payload={payload}
           selectedVariant={selectedVariant}
+          allOptionsSelected={allOptionsSelected}
         />
       )}
     </div>

@@ -26,6 +26,12 @@ function ProductInitialState({ payload, payloadSettings }) {
     hasManyImages: payload.images && payload.images.length > 1 ? true : false,
     hasManyVariants: hasManyVariants(payload),
     hasLink: hasLink(payloadSettings),
+    selectedOptions: {},
+    availableVariants: [],
+    notices: [],
+    allOptionsSelected: false,
+    missingSelections: false,
+    quantity: 1,
   }
 }
 

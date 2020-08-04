@@ -1,8 +1,9 @@
+/** @jsx jsx */
 import { jsx, css } from '@emotion/core'
 
 import ProductVariantButtonGroup from './variant-button-group'
 
-function ProductVariantButtons({ options }) {
+function ProductVariantButtons({ options, missingSelections, selectedOptions, availableVariants }) {
   const styles = css`
     margin: 1em 0;
   `
@@ -11,7 +12,16 @@ function ProductVariantButtons({ options }) {
     options && (
       <div className='wpshopify-products-variant-buttons' css={styles}>
         {options.map(
-          (option) => option && <ProductVariantButtonGroup key={option.name} option={option} />
+          (option) =>
+            option && (
+              <ProductVariantButtonGroup
+                key={option.name}
+                option={option}
+                missingSelections={missingSelections}
+                selectedOptions={selectedOptions}
+                availableVariants={availableVariants}
+              />
+            )
         )}
       </div>
     )

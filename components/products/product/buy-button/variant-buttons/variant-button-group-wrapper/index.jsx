@@ -1,14 +1,17 @@
 /** @jsx jsx */
 import { jsx, css } from '@emotion/core'
-import { ProductBuyButtonContext } from '../../_state/context'
 import { ProductOptionContext } from '../../option/_state/context'
 import ProductVariantMissingSelection from '../missing-selection'
 import ProductVariantsButtons from '../variants'
 
 const { useRef, useContext } = wp.element
 
-function ProductVariantButtonGroupWrapper({ option }) {
-  const [buyButtonState, buyButtonDispatch] = useContext(ProductBuyButtonContext)
+function ProductVariantButtonGroupWrapper({
+  option,
+  missingSelections,
+  selectedOptions,
+  availableVariants,
+}) {
   const [productOptionState] = useContext(ProductOptionContext)
   const variantGroup = useRef()
 
@@ -30,12 +33,11 @@ function ProductVariantButtonGroupWrapper({ option }) {
       <div className='wpshopify-variant-buttons' ref={variantGroup}>
         <ProductVariantsButtons
           option={option}
-          buyButtonDispatch={buyButtonDispatch}
-          availableVariants={buyButtonState.availableVariants}
-          selectedOptions={buyButtonState.selectedOptions}
+          availableVariants={availableVariants}
+          selectedOptions={selectedOptions}
         />
       </div>
-      {buyButtonState.missingSelections && !productOptionState.isOptionSelected && (
+      {missingSelections && !productOptionState.isOptionSelected && (
         <ProductVariantMissingSelection />
       )}
     </div>

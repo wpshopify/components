@@ -1,16 +1,12 @@
 import { ProductOptionContext } from '../../_state/context'
+import { ProductContext } from '../../../../_state/context'
 import { createObj, isPairMatch } from '../../../../../../../common/utils'
 import isEmpty from 'lodash/isEmpty'
 
-function ProductVariant({
-  variant,
-  buyButtonDispatch,
-  availableVariants,
-  selectedOptions,
-  children,
-}) {
+function ProductVariant({ variant, availableVariants, selectedOptions, children }) {
   const { useContext } = wp.element
   const [productOptionState, productOptionDispatch] = useContext(ProductOptionContext)
+  const [, productDispatch] = useContext(ProductContext)
   const selectedVariant = createObj(variant.name, variant.value)
 
   var isAvailableToSelect =
@@ -19,6 +15,8 @@ function ProductVariant({
     isEmpty(selectedOptions)
 
   function onSelection() {
+    console.log('onSelection')
+
     if (
       isPairMatch(productOptionState.selectedOption, selectedVariant) &&
       !productOptionState.isDropdownOpen
@@ -26,7 +24,7 @@ function ProductVariant({
       return
     }
 
-    buyButtonDispatch({
+    productDispatch({
       type: 'UPDATE_SELECTED_OPTIONS',
       payload: selectedVariant,
     })

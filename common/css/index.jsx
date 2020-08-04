@@ -93,6 +93,7 @@ const buttonCSS = css`
     border: none;
     box-shadow: none;
     outline: none;
+    top: auto;
   }
 `
 

@@ -1,12 +1,12 @@
-import { ProductBuyButtonContext } from '../../_state/context'
 /** @jsx jsx */
 import { jsx, css } from '@emotion/core'
+import { ProductContext } from '../../../_state/context'
 
 function ProductQuantityInput({ minQuantity, maxQuantity, addedToCart }) {
   const { useEffect, useContext, useState } = wp.element
-  const [buyButtonState, buyButtonDispatch] = useContext(ProductBuyButtonContext)
+  const [, productDispatch] = useContext(ProductContext)
   const [quantityValue, setQuantityValue] = useState(() => minQuantity)
-  const customStep = wp.hooks.applyFilters('buyButton.quantityStep', false, buyButtonState)
+  const customStep = wp.hooks.applyFilters('buyButton.quantityStep', false)
 
   const inputStyles = css`
     && {
@@ -30,7 +30,7 @@ function ProductQuantityInput({ minQuantity, maxQuantity, addedToCart }) {
   function handleQuantityChange(event = false) {
     if (!event) {
       let quantityAmount = Number(minQuantity)
-      buyButtonDispatch({ type: 'UPDATE_QUANTITY', payload: quantityAmount })
+      productDispatch({ type: 'UPDATE_QUANTITY', payload: quantityAmount })
       setQuantityValue(quantityAmount)
     } else {
       let quantityAmount = Number(event.target.value)
@@ -51,7 +51,7 @@ function ProductQuantityInput({ minQuantity, maxQuantity, addedToCart }) {
         quantityAmount = 1
       }
 
-      buyButtonDispatch({ type: 'UPDATE_QUANTITY', payload: quantityAmount })
+      productDispatch({ type: 'UPDATE_QUANTITY', payload: quantityAmount })
       setQuantityValue(quantityAmount)
     }
   }

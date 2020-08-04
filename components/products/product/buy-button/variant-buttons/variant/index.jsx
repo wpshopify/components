@@ -80,6 +80,7 @@ function ProductVariantButtonValue({ variant, onSelection, selectedOptions, isAv
       isAvailableToSelect
     )}
   `
+  console.log('isSelected', isSelected)
 
   return (
     <ProductVariantButtonValueButton

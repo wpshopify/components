@@ -4,7 +4,7 @@ import ProductOptionDropdown from './dropdown'
 
 const { useRef } = wp.element
 
-function ProductOption({ option }) {
+function ProductOption({ option, availableVariants, selectedOptions, missingSelections }) {
   const dropdownElement = useRef()
 
   return (
@@ -14,7 +14,11 @@ function ProductOption({ option }) {
         dropdownElement: dropdownElement,
       }}>
       <ProductOptionWrapper>
-        <ProductOptionDropdown />
+        <ProductOptionDropdown
+          availableVariants={availableVariants}
+          selectedOptions={selectedOptions}
+          missingSelections={missingSelections}
+        />
       </ProductOptionWrapper>
     </ProductOptionProvider>
   )

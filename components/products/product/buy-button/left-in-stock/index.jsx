@@ -10,7 +10,7 @@ import to from 'await-to-js'
 import find from 'lodash/find'
 import unionBy from 'lodash/unionBy'
 
-function ProductBuyButtonLeftInStock({ payload, selectedVariant, isTouched }) {
+function ProductBuyButtonLeftInStock({ payload, selectedVariant, isTouched, allOptionsSelected }) {
   const { useEffect, useState } = wp.element
   const [quantityLeft, setQuantityLeft] = useState(false)
   const [status, setStatus] = useState('idle')
@@ -106,8 +106,15 @@ function ProductBuyButtonLeftInStock({ payload, selectedVariant, isTouched }) {
       return
     }
 
+    console.log('selectedVariant.id', selectedVariant.id)
+    console.log('variantInventory', variantInventory)
+    console.log('selectedVariant', selectedVariant)
+    console.log('quantityLeft', quantityLeft)
+
     if (selectedVariant.availableForSale) {
       var totalAvailableQuantity = findTotalInventoryQuantity(variantInventory, selectedVariant.id)
+
+      console.log('totalAvailableQuantity', totalAvailableQuantity)
 
       if (!totalAvailableQuantity) {
         return
@@ -117,7 +124,9 @@ function ProductBuyButtonLeftInStock({ payload, selectedVariant, isTouched }) {
     }
   }, [selectedVariant])
 
-  return quantityLeft && <ProductBuyButtonTextNotice quantityLeft={quantityLeft} />
+  return (
+    quantityLeft && allOptionsSelected && <ProductBuyButtonTextNotice quantityLeft={quantityLeft} />
+  )
 }
 
 export default ProductBuyButtonLeftInStock

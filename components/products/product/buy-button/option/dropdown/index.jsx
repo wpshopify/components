@@ -1,7 +1,6 @@
 /** @jsx jsx */
 import { jsx, css } from '@emotion/core'
 import { ProductOptionContext } from '../_state/context'
-import { ProductBuyButtonContext } from '../../_state/context'
 import { mq } from '../../../../../../common/css'
 
 import 'tippy.js/dist/tippy.css'
@@ -11,10 +10,9 @@ import Tippy from '@tippyjs/react'
 import ProductOptionTrigger from '../trigger'
 import ProductVariantsDropdown from '../variants'
 
-function ProductOptionDropdown() {
+function ProductOptionDropdown({ availableVariants, selectedOptions, missingSelections }) {
   const { useContext } = wp.element
   const [productOptionState] = useContext(ProductOptionContext)
-  const [buyButtonState, buyButtonDispatch] = useContext(ProductBuyButtonContext)
 
   const ProductOptionDropdownCSS = css`
     position: relative;
@@ -94,13 +92,12 @@ function ProductOptionDropdown() {
               isDropdownOpen={productOptionState.isDropdownOpen}
               isOptionSelected={productOptionState.isOptionSelected}
               option={productOptionState.option}
-              availableVariants={buyButtonState.availableVariants}
-              selectedOptions={buyButtonState.selectedOptions}
-              buyButtonDispatch={buyButtonDispatch}
+              availableVariants={availableVariants}
+              selectedOptions={selectedOptions}
             />
           }>
           <span>
-            <ProductOptionTrigger />
+            <ProductOptionTrigger missingSelections={missingSelections} />
           </span>
         </Tippy>
       </div>

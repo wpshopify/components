@@ -1,5 +1,4 @@
 import { ProductOptionContext } from '../_state/context'
-import { ProductBuyButtonContext } from '../../_state/context'
 import { ProductContext } from '../../../_state/context'
 
 import isEmpty from 'lodash/isEmpty'
@@ -15,7 +14,6 @@ function allOptionsSelectedMatch(onlySelectedOptions, product) {
 function ProductOptionWrapper({ children }) {
   const [productState, productDispatch] = useContext(ProductContext)
   const [productOptionState, productOptionDispatch] = useContext(ProductOptionContext)
-  const [buyButtonState, buyButtonDispatch] = useContext(ProductBuyButtonContext)
   const isFirstRender = useRef(true)
 
   useEffect(() => {
@@ -24,20 +22,22 @@ function ProductOptionWrapper({ children }) {
       return
     }
 
-    if (!isPairMatch(buyButtonState.availableVariants, productOptionState.selectedOption)) {
+    if (!isPairMatch(productState.availableVariants, productOptionState.selectedOption)) {
       productOptionDispatch({
         type: 'SET_IS_OPTION_SELECTED',
         payload: false,
       })
-      buyButtonDispatch({
+      productDispatch({
         type: 'UNSET_SELECTED_OPTIONS',
         payload: productOptionState.option.name,
       })
     }
-  }, [buyButtonState.availableVariants])
+  }, [productState.availableVariants])
 
   useEffect(() => {
     if (isFirstRender.current) {
+      console.log('YEP FIRST')
+
       isFirstRender.current = false
       return
     }
@@ -46,7 +46,7 @@ function ProductOptionWrapper({ children }) {
       return
     }
 
-    buyButtonDispatch({
+    productDispatch({
       type: 'SET_AVAILABLE_VARIANTS',
       payload: productOptionState.selectedOption,
     })
@@ -58,11 +58,11 @@ function ProductOptionWrapper({ children }) {
       return
     }
 
-    if (isEmpty(buyButtonState.availableVariants) && isEmpty(buyButtonState.selectedOptions)) {
+    if (isEmpty(productState.availableVariants) && isEmpty(productState.selectedOptions)) {
       return
     }
 
-    if (isEmpty(buyButtonState.selectedOptions)) {
+    if (isEmpty(productState.selectedOptions)) {
       productOptionDispatch({
         type: 'SET_IS_OPTION_SELECTED',
         payload: false,
@@ -76,22 +76,22 @@ function ProductOptionWrapper({ children }) {
       return
     }
 
-    if (allOptionsSelectedMatch(buyButtonState.selectedOptions, buyButtonState.product)) {
-      buyButtonDispatch({ type: 'SET_ALL_SELECTED_OPTIONS', payload: true })
+    if (allOptionsSelectedMatch(productState.selectedOptions, productState.payload)) {
+      productDispatch({ type: 'SET_ALL_SELECTED_OPTIONS', payload: true })
 
       productDispatch({
         type: 'SET_SELECTED_VARIANT',
         payload: {
-          product: buyButtonState.product,
-          selectedOptions: buyButtonState.selectedOptions,
+          payload: productState.payload,
+          selectedOptions: productState.selectedOptions,
         },
       })
 
-      wp.hooks.doAction('before.product.addToCart', buyButtonState)
+      wp.hooks.doAction('before.product.addToCart', productState)
     } else {
-      buyButtonDispatch({ type: 'SET_ALL_SELECTED_OPTIONS', payload: false })
+      productDispatch({ type: 'SET_ALL_SELECTED_OPTIONS', payload: false })
     }
-  }, [buyButtonState.selectedOptions])
+  }, [productState.selectedOptions])
 
   return children
 }
