@@ -66,6 +66,7 @@ function ItemsInitialState({
     payloadCache: {},
     afterLoading: afterLoading,
     beforeLoading: beforeLoading,
+    htmlTemplate: component.payloadSettings.htmlTemplate,
   }
 
   return itemsState

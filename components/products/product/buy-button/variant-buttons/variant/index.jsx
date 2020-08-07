@@ -50,7 +50,7 @@ function ProductVariantButtonValue({ variant, onSelection, selectedOptions, isAv
          outline: none;
          padding: 10px;
          background-color: ${variantValue};
-         text-indent: 100%;
+         text-indent: 150%;
          white-space: nowrap;
          overflow: hidden;
          width: 40px;
@@ -80,7 +80,6 @@ function ProductVariantButtonValue({ variant, onSelection, selectedOptions, isAv
       isAvailableToSelect
     )}
   `
-  console.log('isSelected', isSelected)
 
   return (
     <ProductVariantButtonValueButton

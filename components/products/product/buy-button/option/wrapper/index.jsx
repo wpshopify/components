@@ -36,8 +36,6 @@ function ProductOptionWrapper({ children }) {
 
   useEffect(() => {
     if (isFirstRender.current) {
-      console.log('YEP FIRST')
-
       isFirstRender.current = false
       return
     }

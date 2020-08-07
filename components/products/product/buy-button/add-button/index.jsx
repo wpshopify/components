@@ -98,7 +98,6 @@ function AddButton({
       productDispatch({ type: 'SET_MISSING_SELECTIONS', payload: true })
       return
     }
-    console.log('.................... payload', payload)
 
     if (hasManyVariants) {
       var variant = findVariantFromSelectedOptions(payload, selectedOptions)

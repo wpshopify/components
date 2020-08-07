@@ -222,6 +222,13 @@ function ItemsReducer(state, action) {
       }
     }
 
+    case 'UPDATE_HTML_TEMPLATE': {
+      return {
+        ...state,
+        htmlTemplate: update(state.htmlTemplate, { $set: action.payload }),
+      }
+    }
+
     case 'UPDATE_VARIANTS_INVENTORY': {
       return {
         ...state,

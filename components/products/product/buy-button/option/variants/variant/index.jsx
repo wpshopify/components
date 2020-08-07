@@ -15,8 +15,6 @@ function ProductVariant({ variant, availableVariants, selectedOptions, children 
     isEmpty(selectedOptions)
 
   function onSelection() {
-    console.log('onSelection')
-
     if (
       isPairMatch(productOptionState.selectedOption, selectedVariant) &&
       !productOptionState.isDropdownOpen

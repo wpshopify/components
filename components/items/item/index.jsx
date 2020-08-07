@@ -1,12 +1,31 @@
 import { ItemsContext } from '../_state/context'
-import { fetchNewItems } from '/Users/andrew/www/devil/devilbox-new/data/www/wpshopify-api'
+import {
+  fetchNewItems,
+  getTemplate,
+  getCache,
+  setCache,
+} from '/Users/andrew/www/devil/devilbox-new/data/www/wpshopify-api'
 import {
   useIsMounted,
   useIsFirstRender,
 } from '/Users/andrew/www/devil/devilbox-new/data/www/wpshopify-hooks'
+
+import {
+  isTemplateName,
+  getLastFourChars,
+} from '/Users/andrew/www/devil/devilbox-new/data/www/wpshopify-utils'
+
 import Placeholder from '../../../common/placeholders'
 
 import to from 'await-to-js'
+
+function hasTemplateName(maybeTemplate) {
+  if (!maybeTemplate) {
+    return false
+  }
+
+  return isTemplateName(getLastFourChars(maybeTemplate))
+}
 
 function Item({ children, limit = false, infiniteScroll = false }) {
   const { useContext, useEffect } = wp.element
@@ -35,6 +54,28 @@ function Item({ children, limit = false, infiniteScroll = false }) {
       type: 'UPDATE_NOTICES',
       payload: [],
     })
+
+    if (hasTemplateName(itemsState.payloadSettings.htmlTemplate)) {
+      var resultcache = getCache('wps-template-' + itemsState.payloadSettings.htmlTemplate)
+
+      if (wp.hooks.applyFilters('wpshopify.cache.templates', true) && resultcache) {
+        itemsDispatch({
+          type: 'UPDATE_HTML_TEMPLATE',
+          payload: resultcache,
+        })
+      } else {
+        const [templateError, templateString] = await to(
+          getTemplate(itemsState.payloadSettings.htmlTemplate)
+        )
+
+        setCache('wps-template-' + itemsState.payloadSettings.htmlTemplate, templateString.data)
+
+        itemsDispatch({
+          type: 'UPDATE_HTML_TEMPLATE',
+          payload: templateString.data,
+        })
+      }
+    }
 
     const [error, newItems] = await to(fetchNewItems(itemsState))
 

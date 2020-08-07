@@ -106,15 +106,8 @@ function ProductBuyButtonLeftInStock({ payload, selectedVariant, isTouched, allO
       return
     }
 
-    console.log('selectedVariant.id', selectedVariant.id)
-    console.log('variantInventory', variantInventory)
-    console.log('selectedVariant', selectedVariant)
-    console.log('quantityLeft', quantityLeft)
-
     if (selectedVariant.availableForSale) {
       var totalAvailableQuantity = findTotalInventoryQuantity(variantInventory, selectedVariant.id)
-
-      console.log('totalAvailableQuantity', totalAvailableQuantity)
 
       if (!totalAvailableQuantity) {
         return

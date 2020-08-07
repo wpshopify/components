@@ -1,4 +1,5 @@
 import { ProductContext } from '../_state/context'
+import { ItemsContext } from '../../../items/_state/context'
 import { usePortal } from '../../../../common/hooks'
 import { findPortalElement, FilterHook } from '../../../../common/utils'
 import { Link } from '../../../link'
@@ -9,13 +10,14 @@ import { jsx, css } from '@emotion/core'
 
 const { useContext } = wp.element
 
-function ProductTitle({ payloadSettings }) {
+function ProductTitle() {
   const [productState] = useContext(ProductContext)
+  const [itemsState] = useContext(ItemsContext)
 
   const titleStyles = css`
     && {
-      font-size: ${payloadSettings.titleSize};
-      color: ${payloadSettings.titleColor};
+      font-size: ${itemsState.payloadSettings.titleSize};
+      color: ${itemsState.payloadSettings.titleColor};
       white-space: normal;
       margin: 0;
     }
@@ -34,12 +36,12 @@ function ProductTitle({ payloadSettings }) {
       className='wps-component wps-component-products-title'
       data-wps-component-order='0'
       css={titleStylesWrapper}>
-      {hasLink(payloadSettings) ? (
+      {hasLink(itemsState.payloadSettings) ? (
         <Link
           type='products'
           payload={productState.payload}
-          target={payloadSettings.linkTarget}
-          linkTo={payloadSettings.linkTo}>
+          target={itemsState.payloadSettings.linkTarget}
+          linkTo={itemsState.payloadSettings.linkTo}>
           <Title
             styles={titleStyles}
             title={productState.payload.title}
@@ -56,7 +58,7 @@ function ProductTitle({ payloadSettings }) {
         />
       )}
     </div>,
-    findPortalElement(payloadSettings.dropzoneProductTitle)
+    findPortalElement(itemsState.payloadSettings.dropzoneProductTitle)
   )
 }
 

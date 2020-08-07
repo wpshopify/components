@@ -1,4 +1,4 @@
-function ErrorFallback({ error }) {
+function ErrorFallback({ error = '' }) {
   const { Notice } = wp.components
   return (
     <Notice status='error' isDismissible={false}>

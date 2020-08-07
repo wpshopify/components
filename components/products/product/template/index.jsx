@@ -4,20 +4,29 @@ import ProductTitle from '../title'
 import ProductPricing from '../pricing'
 import ProductDescription from '../description'
 import ProductImages from '../images'
+import { ItemsContext } from '../../../items/_state/context'
+import { ErrorBoundary } from 'react-error-boundary'
+import ErrorFallback from '../../../error-fallback'
 
-function ProductCustomTemplate({ htmlTemplate }) {
+function ProductCustomTemplate() {
+  const [itemsState] = wp.element.useContext(ItemsContext)
+
   return (
-    <JsxParser
-      components={{
-        ProductBuyButton,
-        ProductTitle,
-        ProductPricing,
-        ProductDescription,
-        ProductImages,
-      }}
-      renderInWrapper={false}
-      jsx={htmlTemplate}
-    />
+    <ErrorBoundary FallbackComponent={ErrorFallback}>
+      <JsxParser
+        components={{
+          ProductBuyButton,
+          ProductTitle,
+          ProductPricing,
+          ProductDescription,
+          ProductImages,
+        }}
+        renderInWrapper={false}
+        showWarnings={true}
+        jsx={itemsState.htmlTemplate}
+        blacklistedTags={['script']}
+      />
+    </ErrorBoundary>
   )
 }
 

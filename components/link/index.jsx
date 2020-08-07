@@ -41,7 +41,11 @@ function Link({
         children
       ) : (
         <a
-          href={manualLink ? encodeURI(manualLink) : getItemLink(payload, type, linkTo)}
+          href={wp.hooks.applyFilters(
+            'misc.link.href',
+            manualLink ? encodeURI(manualLink) : getItemLink(payload, type, linkTo),
+            type
+          )}
           className={className}
           css={linkCSS}
           target={wp.hooks.applyFilters('misc.link.target', getTarget(target), type, payload)}>

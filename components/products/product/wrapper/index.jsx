@@ -44,7 +44,7 @@ function ProductWrapper({ payloadSettings }) {
       onMouseOver={onMouseOver}
       data-wpshopify-is-available-for-sale={productState.payload.availableForSale}>
       {payloadSettings.htmlTemplate ? (
-        <ProductCustomTemplate htmlTemplate={payloadSettings.htmlTemplate} />
+        <ProductCustomTemplate />
       ) : (
         <>
           <ErrorBoundary FallbackComponent={ErrorFallback}>
@@ -52,9 +52,7 @@ function ProductWrapper({ payloadSettings }) {
           </ErrorBoundary>
 
           <ErrorBoundary FallbackComponent={ErrorFallback}>
-            {isShowingComponent(payloadSettings, 'title') && (
-              <ProductTitle payloadSettings={payloadSettings} />
-            )}
+            {isShowingComponent(payloadSettings, 'title') && <ProductTitle />}
           </ErrorBoundary>
 
           <ErrorBoundary FallbackComponent={ErrorFallback}>
