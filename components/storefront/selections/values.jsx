@@ -45,7 +45,7 @@ function StorefrontSelectionsValue({ selectionType, val }) {
       display: inline-block;
       right: 0;
       position: relative;
-      top: calc(50% - 11px);
+      top: calc(50% - 16px);
       margin-left: 10px;
     }
 
