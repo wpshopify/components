@@ -15,7 +15,7 @@ function ProductDescription() {
   const ProductDescriptionCSS = css`
     color: ${itemsState.payloadSettings.descriptionColor};
     font-size: ${itemsState.payloadSettings.descriptionSize};
-    margin-bottom: 20px;
+    margin-bottom: ${itemsState.payloadSettings.isSingleComponent ? '0px' : '20px'};
 
     p:first-of-type {
       margin-top: 0;

@@ -5,7 +5,7 @@ import { ProductGalleryProvider } from '../_state/provider.jsx'
 
 function ProductGalleryWrapper({ payloadSettings, productState }) {
   const ProductGalleryWrapperCSS = css`
-    margin-bottom: 15px;
+    margin-bottom: ${payloadSettings.isSingleComponent ? '0px' : '15px'};
   `
 
   return (

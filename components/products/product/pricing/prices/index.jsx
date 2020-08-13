@@ -7,7 +7,7 @@ import ProductPricesCompareAt from '../compare-at'
 
 const { useContext } = wp.element
 
-function ProductPrices() {
+function ProductPrices({ payloadSettings }) {
   const [productPricingState] = useContext(ProductPricingContext)
   const [productState] = useContext(ProductContext)
 
@@ -16,7 +16,7 @@ function ProductPrices() {
     flex-direction: column;
     align-items: baseline;
     position: relative;
-    margin-bottom: 35px;
+    margin-bottom: ${payloadSettings.isSingleComponent ? '0px' : '35px'};
 
     + .wps-buy-button-wrapper > .wps-product-quantity-wrapper {
       margin-top: 1.7em;

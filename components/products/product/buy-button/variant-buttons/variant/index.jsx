@@ -71,7 +71,7 @@ function ProductVariantButtonValue({ variant, onSelection, selectedOptions, isAv
       `
   }
 
-  var defaultStyles = css`
+  var ProductVariantButtonValueButtonCSS = css`
     ${wp.hooks.applyFilters(
       'product.variant.styles',
       maybeColorSwatches(variant, defaultVariantStyles),
@@ -83,7 +83,7 @@ function ProductVariantButtonValue({ variant, onSelection, selectedOptions, isAv
 
   return (
     <ProductVariantButtonValueButton
-      defaultStyles={defaultStyles}
+      defaultStyles={ProductVariantButtonValueButtonCSS}
       onSelection={onSelection}
       isSelected={isSelected}
       isAvailableToSelect={isAvailableToSelect}

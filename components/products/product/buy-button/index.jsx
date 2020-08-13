@@ -21,7 +21,7 @@ function ProductBuyButton() {
   const buyButtonWrapperCSS = css`
     display: flex;
     flex-direction: column;
-    margin-bottom: 15px;
+    margin-bottom: ${itemsState.payloadSettings.isSingleComponent ? '0px' : '15px'};
   `
 
   function isHidingControls() {

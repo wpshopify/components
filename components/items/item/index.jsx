@@ -184,6 +184,7 @@ function Item({ children, limit = false, infiniteScroll = false }) {
       },
     })
   }, [limit, infiniteScroll])
+  console.log('........itemsState', itemsState)
 
   return !itemsState.hasParentPayload && itemsState.isBootstrapping ? (
     <Placeholder type={itemsState.dataType} />

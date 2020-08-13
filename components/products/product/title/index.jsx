@@ -24,7 +24,7 @@ function ProductTitle() {
   `
 
   const titleStylesWrapper = css`
-    margin-bottom: 15px;
+    margin-bottom: ${itemsState.payloadSettings.isSingleComponent ? '0px' : '15px'};
   `
 
   function getTitleClass() {

@@ -13,7 +13,7 @@ function ProductPricing() {
 
   return usePortal(
     <ProductPricingProvider productsState={itemsState} productState={productState}>
-      <ProductPrices />
+      <ProductPrices payloadSettings={itemsState.payloadSettings} />
     </ProductPricingProvider>,
     findPortalElement(itemsState.payloadSettings.dropzoneProductPricing)
   )

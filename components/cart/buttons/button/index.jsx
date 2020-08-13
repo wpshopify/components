@@ -7,7 +7,7 @@ import { usePortal } from '../../../../common/hooks'
 import { isCartEmpty } from '../../../../common/cart'
 
 /** @jsx jsx */
-import { jsx, css } from '@emotion/core'
+import { jsx, css, keyframes } from '@emotion/core'
 
 const { useContext, useRef, useEffect } = wp.element
 
@@ -70,6 +70,15 @@ function CartButton({ options }) {
     }
   `
 
+  const slideInFromRight = keyframes`
+      0% {
+         transform: translateX(100%);
+      }
+      100% {
+         transform: translateX(calc(100% - 70px));
+      }
+   `
+
   const cartIconFixedCSS =
     options.payloadSettings.type === 'fixed'
       ? css`
@@ -82,9 +91,8 @@ function CartButton({ options }) {
           flex-direction: column;
           align-items: center;
           padding: 15px 0 17px 0;
-          transform: translateX(100%);
           justify-content: center;
-          transition: translate 1s ease;
+          animation: 0.25s ease-out 0s 1 ${slideInFromRight};
           width: 70px;
           border: none;
           outline: none;
