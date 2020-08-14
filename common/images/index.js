@@ -221,23 +221,23 @@ function addCustomSizingToImageUrl(settings) {
   )
 }
 
-function doFeaturedSizing(src) {
+function doFeaturedSizing(src, payloadSettings) {
   return addCustomSizingToImageUrl({
     src: src,
-    width: wpshopify.settings.general.productsImagesSizingWidth,
-    height: wpshopify.settings.general.productsImagesSizingHeight,
-    crop: wpshopify.settings.general.productsImagesSizingCrop,
-    scale: wpshopify.settings.general.productsImagesSizingScale,
+    width: payloadSettings.imagesSizingWidth,
+    height: payloadSettings.imagesSizingHeight,
+    crop: payloadSettings.imagesSizingCrop,
+    scale: payloadSettings.imagesSizingScale,
   })
 }
 
-function doThumbnailSizing(src) {
+function doThumbnailSizing(src, payloadSettings) {
   return addCustomSizingToImageUrl({
     src: src,
-    width: wpshopify.settings.general.productsThumbnailImagesSizingWidth,
-    height: wpshopify.settings.general.productsThumbnailImagesSizingHeight,
-    crop: wpshopify.settings.general.productsThumbnailImagesSizingCrop,
-    scale: wpshopify.settings.general.productsThumbnailImagesSizingScale,
+    width: payloadSettings.thumbnailImagesSizingWidth,
+    height: payloadSettings.thumbnailImagesSizingHeight,
+    crop: payloadSettings.thumbnailImagesSizingCrop,
+    scale: payloadSettings.thumbnailImagesSizingScale,
   })
 }
 

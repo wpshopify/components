@@ -37,8 +37,6 @@ function ProductWrapper({ payloadSettings }) {
     return wpshopify.settings.general.alignHeight || payloadSettings.alignHeight
   }
 
-  console.log('payloadSettings.isSingleComponent', payloadSettings.isSingleComponent)
-
   return (
     <div
       css={ProductWrapperCSS}

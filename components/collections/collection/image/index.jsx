@@ -21,14 +21,14 @@ function CollectionImage() {
       return
     }
 
-    if (wpshopify.settings.general.collectionsImagesSizingToggle) {
+    if (collectionState.imagesSizingToggle) {
       setImageSrc(
         addCustomSizingToImageUrl({
           src: collectionState.payload.image.src,
-          width: wpshopify.settings.general.collectionsImagesSizingWidth,
-          height: wpshopify.settings.general.collectionsImagesSizingHeight,
-          crop: wpshopify.settings.general.collectionsImagesSizingCrop,
-          scale: wpshopify.settings.general.collectionsImagesSizingScale,
+          width: collectionState.imagesSizingWidth,
+          height: collectionState.imagesSizingHeight,
+          crop: collectionState.imagesSizingCrop,
+          scale: collectionState.imagesSizingScale,
         })
       )
     }

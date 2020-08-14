@@ -11,17 +11,18 @@ function ProductImage({ image, isFeatured, payloadSettings }) {
   const [productState] = useContext(ProductContext)
   const [galleryState, galleryDispatch] = useContext(ProductGalleryContext)
   const [productImageSrc, setProductImageSrc] = useState(() => applyImageSizing())
+  console.log('payloadSettings', payloadSettings)
 
   function applyImageSizing() {
     if (isFeatured) {
-      if (wpshopify.settings.general.productsImagesSizingToggle) {
-        return doFeaturedSizing(image.src)
+      if (payloadSettings.imagesSizingToggle) {
+        return doFeaturedSizing(image.src, payloadSettings)
       }
 
       return image.src
     } else {
-      if (wpshopify.settings.general.productsThumbnailImagesSizingToggle) {
-        return doThumbnailSizing(image.src)
+      if (payloadSettings.thumbnailImagesSizingToggle) {
+        return doThumbnailSizing(image.src, payloadSettings)
       }
       return image.src
     }
