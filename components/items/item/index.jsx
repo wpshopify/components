@@ -184,10 +184,9 @@ function Item({ children, limit = false, infiniteScroll = false }) {
       },
     })
   }, [limit, infiniteScroll])
-  console.log('........itemsState', itemsState)
 
   return !itemsState.hasParentPayload && itemsState.isBootstrapping ? (
-    <Placeholder type={itemsState.dataType} />
+    <Placeholder type={itemsState.payloadSettings.componentType} />
   ) : !itemsState.payload.length && showGlobalNotice(itemsState.dataType) ? (
     itemsState.notices.length ? (
       <Notice status={itemsState.notices[0].type} isDismissible={false}>
