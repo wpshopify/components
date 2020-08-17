@@ -50,25 +50,23 @@ function PaginationItems({
     }
   `
 
-  return (
-    payload && (
-      <section className='wps-items-wrapper' css={PaginationItemsContainerCSS}>
-        <section className='wps-items wps-items-list' css={PaginationItemsCSS}>
-          {payload && payload.length && (
-            <PaginationItemsMap payload={payload} payloadSettings={payloadSettings}>
-              {children}
-            </PaginationItemsMap>
-          )}
-        </section>
-
-        {paginationState.controlsTouched && !hasMoreItems && (
-          <Notice status='info' isDismissible={false}>
-            {noResultsText}
-          </Notice>
+  return payload ? (
+    <section className='wps-items-wrapper' css={PaginationItemsContainerCSS}>
+      <section className='wps-items wps-items-list' css={PaginationItemsCSS}>
+        {payload.length && (
+          <PaginationItemsMap payload={payload} payloadSettings={payloadSettings}>
+            {children}
+          </PaginationItemsMap>
         )}
       </section>
-    )
-  )
+
+      {paginationState.controlsTouched && !hasMoreItems && (
+        <Notice status='info' isDismissible={false}>
+          {noResultsText}
+        </Notice>
+      )}
+    </section>
+  ) : null
 }
 
 export default wp.element.memo(PaginationItems)

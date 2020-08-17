@@ -44,7 +44,7 @@ function CollectionImage() {
   `
 
   return usePortal(
-    imageSrc && (
+    imageSrc ? (
       <div className='wps-component wps-component-collection-image' css={CollectionImageWrapperCSS}>
         <Link
           type='collections'
@@ -60,7 +60,7 @@ function CollectionImage() {
           />
         </Link>
       </div>
-    ),
+    ) : null,
     findPortalElement(itemsState.payloadSettings.dropzoneCollectionImage)
   )
 }

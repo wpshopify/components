@@ -78,21 +78,19 @@ function AccountAddressControls({ address }) {
     }
   }
 
-  return (
-    !customerState.selectedAddress && (
-      <div className='wps-account-address-controls' css={stylesControlWrapper}>
-        <A
-          href={'/' + wpshopify.settings.general.accountPageAccount + '/addresses/edit'}
-          onClick={onEdit}
-          css={stylesControl}>
-          Edit
-        </A>
-        <a href='#!' onClick={onDelete} css={stylesControl}>
-          Delete
-        </a>
-      </div>
-    )
-  )
+  return !customerState.selectedAddress ? (
+    <div className='wps-account-address-controls' css={stylesControlWrapper}>
+      <A
+        href={'/' + wpshopify.settings.general.accountPageAccount + '/addresses/edit'}
+        onClick={onEdit}
+        css={stylesControl}>
+        Edit
+      </A>
+      <a href='#!' onClick={onDelete} css={stylesControl}>
+        Delete
+      </a>
+    </div>
+  ) : null
 }
 
 export { AccountAddressControls }

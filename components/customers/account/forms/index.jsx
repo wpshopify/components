@@ -9,16 +9,14 @@ const { useContext } = wp.element
 function CustomersForms() {
   const [customerState] = useContext(CustomersContext)
 
-  return (
-    !customerState.isAccountPage && (
-      <>
-        <CustomerFormLogin />
-        <CustomerFormRegister />
-        <CustomerFormForgotPassword />
-        <CustomerFormSetPassword />
-      </>
-    )
-  )
+  return !customerState.isAccountPage ? (
+    <>
+      <CustomerFormLogin />
+      <CustomerFormRegister />
+      <CustomerFormForgotPassword />
+      <CustomerFormSetPassword />
+    </>
+  ) : null
 }
 
 export { CustomersForms }

@@ -97,7 +97,7 @@ function PaginationPageSize({ isLoading, payloadSettings, queryParams, dataType 
 
   return usePortal(
     <>
-      {payloadSettings.paginationPageSize && (
+      {payloadSettings.paginationPageSize ? (
         <div className='wps-component wps-component-sorting'>
           <label className='wps-sorting-heading wps-mr-2' htmlFor='wps-sorting'>
             {wp.i18n.__('Page size:', 'wpshopify')}
@@ -120,7 +120,7 @@ function PaginationPageSize({ isLoading, payloadSettings, queryParams, dataType 
             <option value='250'>250</option>
           </select>
         </div>
-      )}
+      ) : null}
     </>,
     document.querySelector(payloadSettings.dropzonePageSize)
   )

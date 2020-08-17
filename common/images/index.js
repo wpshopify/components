@@ -222,6 +222,9 @@ function addCustomSizingToImageUrl(settings) {
 }
 
 function doFeaturedSizing(src, payloadSettings) {
+  if (!payloadSettings) {
+    return src
+  }
   return addCustomSizingToImageUrl({
     src: src,
     width: payloadSettings.imagesSizingWidth,
@@ -232,6 +235,9 @@ function doFeaturedSizing(src, payloadSettings) {
 }
 
 function doThumbnailSizing(src, payloadSettings) {
+  if (!payloadSettings) {
+    return src
+  }
   return addCustomSizingToImageUrl({
     src: src,
     width: payloadSettings.thumbnailImagesSizingWidth,

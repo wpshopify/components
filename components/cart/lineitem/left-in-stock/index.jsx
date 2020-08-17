@@ -15,13 +15,11 @@ function CartLineItemLeftInStock({ lineItemId, inventory }) {
     bottom: 0;
   `
 
-  return (
-    quantityLeft && (
-      <small className='wps-cart-lineitem-left-in-stock' css={CartLineItemLeftInStockCSS}>
-        Only {quantityLeft} left!
-      </small>
-    )
-  )
+  return quantityLeft ? (
+    <small className='wps-cart-lineitem-left-in-stock' css={CartLineItemLeftInStockCSS}>
+      Only {quantityLeft} left!
+    </small>
+  ) : null
 }
 
 export default CartLineItemLeftInStock

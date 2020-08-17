@@ -90,11 +90,12 @@ function fetchNextItems(itemsState, itemsDispatch) {
       var productsExisting = itemsState.payload
     }
 
-    const [resultsError, results] = await to(fetchNextPage(productsExisting))
-
+    var [resultsError, results] = await to(fetchNextPage(productsExisting))
+    console.log('resultsError', resultsError)
+    resultsError = true
     if (resultsError) {
       const [initialError, initialResponse] = await to(resendInitialQuery(itemsState))
-
+      console.log('initialError', initialError)
       if (initialError) {
         itemsDispatch({
           type: 'UPDATE_NOTICES',
@@ -113,7 +114,7 @@ function fetchNextItems(itemsState, itemsDispatch) {
           } else {
             var nextPayload = sanitizeQueryResponse(initialResponse, itemsState.originalParams.type)
 
-            if (!nextPayload.length) {
+            if (!nextPayload || !nextPayload.length) {
               itemsDispatch({ type: 'SET_IS_LOADING', payload: false })
               return
             }
@@ -125,6 +126,7 @@ function fetchNextItems(itemsState, itemsDispatch) {
         }
 
         var [finalResultsError, finalResults] = await to(fetchNextPage(nextPayload))
+        console.log('finalResultsError', finalResultsError)
 
         if (finalResultsError) {
           itemsDispatch({
@@ -147,6 +149,8 @@ function fetchNextItems(itemsState, itemsDispatch) {
       payload: nextItems.length,
     })
 
+    console.log('..........nextItems', nextItems)
+
     itemsDispatch({
       type: 'UPDATE_PAYLOAD',
       payload: {
@@ -163,25 +167,6 @@ function fetchNextItems(itemsState, itemsDispatch) {
 
     resolve(results)
   })
-}
-
-function updatePayloadState(newItems) {
-  itemsDispatch({
-    type: 'UPDATE_TOTAL_SHOWN',
-    payload: newItems.length,
-  })
-
-  itemsDispatch({
-    type: 'UPDATE_PAYLOAD',
-    payload: {
-      items: newItems,
-      replace: true,
-    },
-  })
-
-  if (itemsState.afterLoading) {
-    itemsState.afterLoading(newItems)
-  }
 }
 
 export { fetchNextItems }

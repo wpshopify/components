@@ -82,14 +82,12 @@ function AccountWrapper() {
     <Notice status={customerState.notices.type} isDismissible={false}>
       {customerState.notices.message}
     </Notice>
-  ) : (
-    customerState.isAccountPage && (
-      <div css={styles}>
-        <Orders />
-        <AccountDetails />
-      </div>
-    )
-  )
+  ) : customerState.isAccountPage ? (
+    <div css={styles}>
+      <Orders />
+      <AccountDetails />
+    </div>
+  ) : null
 }
 
 export { AccountWrapper }

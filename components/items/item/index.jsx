@@ -197,9 +197,9 @@ function Item({ children, limit = false, infiniteScroll = false }) {
         {itemsState.noResultsText}
       </Notice>
     )
-  ) : (
+  ) : children ? (
     children
-  )
+  ) : null
 }
 
 export default wp.element.memo(Item)

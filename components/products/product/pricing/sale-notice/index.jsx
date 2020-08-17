@@ -22,22 +22,18 @@ function ProductPriceSaleNotice({ selectedVariant, prices, showPriceRange, child
     font-style: normal;
   `
 
-  return (
-    shouldShowSaleNotice(selectedVariant, prices) && (
-      <>
-        <small className='wps-pricing-sale-notice' css={ProductPriceSaleNoticeCSS}>
-          {wp.i18n.__('Sale!', 'wpshopify')}
-        </small>
-        <small className='wps-pricing-sale-price' css={ProductPriceSalePriceCSS}>
-          <FilterHook name='product.pricing.from.text'>
-            {wp.i18n.__('Was: ', 'wpshopify')}
-          </FilterHook>
-        </small>
+  return shouldShowSaleNotice(selectedVariant, prices) ? (
+    <>
+      <small className='wps-pricing-sale-notice' css={ProductPriceSaleNoticeCSS}>
+        {wp.i18n.__('Sale!', 'wpshopify')}
+      </small>
+      <small className='wps-pricing-sale-price' css={ProductPriceSalePriceCSS}>
+        <FilterHook name='product.pricing.from.text'>{wp.i18n.__('Was: ', 'wpshopify')}</FilterHook>
+      </small>
 
-        {children}
-      </>
-    )
-  )
+      {children}
+    </>
+  ) : null
 }
 
 export default wp.element.memo(ProductPriceSaleNotice)

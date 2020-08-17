@@ -131,36 +131,34 @@ function ProductPrice({ compareAt, prices, currencyCode, showPriceRange, selecte
     }
   `
 
-  return (
-    !isRegAndCompareSame() && (
-      <span
-        itemScope
-        itemProp='offers'
-        itemType='https://schema.org/Offer'
-        className='wps-products-price wps-product-pricing wps-products-price-one'
-        data-show-price-range={showPriceRange}
-        css={priceWrapperCSS}>
-        {showPriceRange && !selectedVariant ? (
-          <ProductPricingRange
-            firstPrice={getFirstPrice()}
-            lastPrice={getLastPrice()}
-            isFirstAndLastSame={isFirstAndLastSame()}
-            currencyCode={currencyCode}
-            compareAt={compareAt}
-            showPriceRange={showPriceRange}
-          />
-        ) : (
-          <ProductPriceSingle
-            currencyCode={currencyCode}
-            ref={singlePriceElement}
-            price={compareAt ? comparePrice : regPrice}
-            compareAt={compareAt}
-            showPriceRange={showPriceRange}
-          />
-        )}
-      </span>
-    )
-  )
+  return !isRegAndCompareSame() ? (
+    <span
+      itemScope
+      itemProp='offers'
+      itemType='https://schema.org/Offer'
+      className='wps-products-price wps-product-pricing wps-products-price-one'
+      data-show-price-range={showPriceRange}
+      css={priceWrapperCSS}>
+      {showPriceRange && !selectedVariant ? (
+        <ProductPricingRange
+          firstPrice={getFirstPrice()}
+          lastPrice={getLastPrice()}
+          isFirstAndLastSame={isFirstAndLastSame()}
+          currencyCode={currencyCode}
+          compareAt={compareAt}
+          showPriceRange={showPriceRange}
+        />
+      ) : (
+        <ProductPriceSingle
+          currencyCode={currencyCode}
+          ref={singlePriceElement}
+          price={compareAt ? comparePrice : regPrice}
+          compareAt={compareAt}
+          showPriceRange={showPriceRange}
+        />
+      )}
+    </span>
+  ) : null
 }
 
 export default ProductPrice

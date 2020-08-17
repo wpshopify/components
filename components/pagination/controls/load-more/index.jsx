@@ -23,7 +23,7 @@ function PaginationLoadMore({ isLoading, hasMoreItems, payloadSettings, onNextPa
   `
 
   return usePortal(
-    hasMoreItems && (
+    hasMoreItems ? (
       <InView rootMargin='10px 0px 0px 0px' as='div' onChange={onViewChange}>
         <button
           css={[buttonCSS, loadMoreButtonCSS]}
@@ -40,7 +40,7 @@ function PaginationLoadMore({ isLoading, hasMoreItems, payloadSettings, onNextPa
           )}
         </button>
       </InView>
-    ),
+    ) : null,
     document.querySelector(payloadSettings.dropzoneLoadMore)
   )
 }

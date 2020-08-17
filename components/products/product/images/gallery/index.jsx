@@ -22,18 +22,14 @@ function ProductGallery({ payloadSettings }) {
   }
 
   function isFeaturedOnly() {
-    console.log('isFeaturedOnly 1')
-
     if (hasLink(payloadSettings)) {
-      console.log('isFeaturedOnly 2')
       return true
     }
-    console.log('isFeaturedOnly 3')
+
     if (!has(payloadSettings, 'showFeaturedOnly')) {
-      console.log('isFeaturedOnly 4')
       return false
     }
-    console.log('isFeaturedOnly 5')
+
     return payloadSettings.showFeaturedOnly
   }
 

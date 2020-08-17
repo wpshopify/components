@@ -19,7 +19,7 @@ import {
 import to from 'await-to-js'
 
 const { Notice } = wp.components
-const { useContext, useRef, useEffect, useState } = wp.element
+const { useRef, useEffect, useState } = wp.element
 
 function findSingleVariantFromPayload(payload) {
   return payload.variants[0]

@@ -10,7 +10,7 @@ const { useContext } = wp.element
 function StorefrontSelectionsValue({ selectionType, val }) {
   const [storefrontState, storefrontDispatch] = useContext(StorefrontContext)
 
-  function onClick(val) {
+  function onClick(e) {
     const newList = buildNewSelection(val, selectionType, true, storefrontState.selections)
 
     storefrontDispatch({
@@ -60,10 +60,7 @@ function StorefrontSelectionsValue({ selectionType, val }) {
   `
 
   return (
-    <span
-      className='wps-filter-selection-value wps-mr-2'
-      onClick={(e) => onClick(val)}
-      css={selectionValueCSS}>
+    <span className='wps-filter-selection-value wps-mr-2' onClick={onClick} css={selectionValueCSS}>
       {selectionType === 'available_for_sale' ? (
         <FilterHook name='storefront.selections.available.text'>
           {wp.i18n.__('Available for sale', 'wpshopify')}

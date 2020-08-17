@@ -91,20 +91,18 @@ function StorefrontFilterOptionsGroupItemValue({
         </label>
       )}
     </li>
-  ) : (
-    itemValue && (
-      <li
-        data-wps-is-current={isSelected}
-        data-wps-is-selected={isSelected}
-        data-wps-filter-value={itemValue}
-        data-wps-display-style={displayStyle}
-        className={'wps-' + itemType + '-single wps-filter-single'}
-        onClick={onClick}
-        css={buttonOptionCSS}>
-        {itemValue}
-      </li>
-    )
-  )
+  ) : itemValue ? (
+    <li
+      data-wps-is-current={isSelected}
+      data-wps-is-selected={isSelected}
+      data-wps-filter-value={itemValue}
+      data-wps-display-style={displayStyle}
+      className={'wps-' + itemType + '-single wps-filter-single'}
+      onClick={onClick}
+      css={buttonOptionCSS}>
+      {itemValue}
+    </li>
+  ) : null
 }
 
 export default wp.element.memo(StorefrontFilterOptionsGroupItemValue)

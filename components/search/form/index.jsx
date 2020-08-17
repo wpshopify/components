@@ -52,8 +52,12 @@ function SearchForm({ isLoading, payloadSettings }) {
     })
   }, [searchState.searchTerm])
 
+  function onSubmit(e) {
+    e.preventDefault()
+  }
+
   return usePortal(
-    <form role='search' className='wps-search-form' css={searchWrapperCSS}>
+    <form role='search' className='wps-search-form' css={searchWrapperCSS} onSubmit={onSubmit}>
       <SearchNotices />
 
       <div className='wps-search-wrapper' css={searchInputWrapperCSS}>

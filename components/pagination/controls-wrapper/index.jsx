@@ -13,18 +13,16 @@ function PaginationControlsWrapper({ itemsState, itemsDispatch }) {
     fetchNextItems(itemsState, itemsDispatch)
   }
 
-  return (
-    !paginationState.isHidingPagination && (
-      <PaginationControls
-        queryParams={itemsState.queryParams}
-        dataType={itemsState.dataType}
-        isLoading={itemsState.isLoading}
-        payloadSettings={itemsState.payloadSettings}
-        hasMoreItems={itemsState.hasMoreItems}
-        onNextPage={onNextPage}
-      />
-    )
-  )
+  return !paginationState.isHidingPagination ? (
+    <PaginationControls
+      queryParams={itemsState.queryParams}
+      dataType={itemsState.dataType}
+      isLoading={itemsState.isLoading}
+      payloadSettings={itemsState.payloadSettings}
+      hasMoreItems={itemsState.hasMoreItems}
+      onNextPage={onNextPage}
+    />
+  ) : null
 }
 
 export default PaginationControlsWrapper

@@ -31,18 +31,13 @@ function ProductThumbnailImages({ product, payloadSettings }) {
     }
   }
 
-  return (
-    hasImages() && (
-      <div
-        className='wps-thumbnails-wrapper'
-        css={thumbnailsWrapperCSS}
-        onMouseEnter={onMouseEnter}>
-        {product.images.map((image) => (
-          <ProductThumbnailImage key={uuidv4()} image={image} payloadSettings={payloadSettings} />
-        ))}
-      </div>
-    )
-  )
+  return hasImages() ? (
+    <div className='wps-thumbnails-wrapper' css={thumbnailsWrapperCSS} onMouseEnter={onMouseEnter}>
+      {product.images.map((image) => (
+        <ProductThumbnailImage key={uuidv4()} image={image} payloadSettings={payloadSettings} />
+      ))}
+    </div>
+  ) : null
 }
 
 export default wp.element.memo(ProductThumbnailImages)

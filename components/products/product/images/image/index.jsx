@@ -11,7 +11,6 @@ function ProductImage({ image, isFeatured, payloadSettings }) {
   const [productState] = useContext(ProductContext)
   const [galleryState, galleryDispatch] = useContext(ProductGalleryContext)
   const [productImageSrc, setProductImageSrc] = useState(() => applyImageSizing())
-  console.log('payloadSettings', payloadSettings)
 
   function applyImageSizing() {
     if (isFeatured) {
@@ -42,23 +41,13 @@ function ProductImage({ image, isFeatured, payloadSettings }) {
    the image tag into a resuable component. Probably something to do with ref forwarding.
 
    */
-  return hasLink(payloadSettings)
-    ? productImageSrc && (
-        <Link
-          payload={productState.payload}
-          type='products'
-          linkTo={payloadSettings.linkTo}
-          target={payloadSettings.linkTarget}>
-          <Img
-            imageRef={imageRef}
-            image={image}
-            productImageSrc={productImageSrc}
-            galleryState={galleryState}
-            isFeatured={isFeatured}
-          />
-        </Link>
-      )
-    : productImageSrc && (
+  return hasLink(payloadSettings) ? (
+    productImageSrc ? (
+      <Link
+        payload={productState.payload}
+        type='products'
+        linkTo={payloadSettings.linkTo}
+        target={payloadSettings.linkTarget}>
         <Img
           imageRef={imageRef}
           image={image}
@@ -66,7 +55,17 @@ function ProductImage({ image, isFeatured, payloadSettings }) {
           galleryState={galleryState}
           isFeatured={isFeatured}
         />
-      )
+      </Link>
+    ) : null
+  ) : productImageSrc ? (
+    <Img
+      imageRef={imageRef}
+      image={image}
+      productImageSrc={productImageSrc}
+      galleryState={galleryState}
+      isFeatured={isFeatured}
+    />
+  ) : null
 }
 
 export default wp.element.memo(ProductImage)

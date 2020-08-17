@@ -14,15 +14,11 @@ function StorefrontFilterOptionsGroupItem({ itemValue, itemType, displayStyle })
   const [storefrontState, storefrontDispatch] = useContext(StorefrontContext)
   const [isSelected, setIsSelected] = useState(() => false)
 
-  console.log('StorefrontFilterOptionsGroupItem')
-
   useEffect(() => {
     setIsSelected(isCurrentlySelected(storefrontState.selections, itemValue, itemType))
   }, [storefrontState['selected' + capitalizeFirstLetter(itemType)]])
 
   function onClick() {
-    console.log('onClick')
-
     setIsSelected(!isSelected)
 
     const newList = buildNewSelection(itemValue, itemType, isSelected, storefrontState.selections)
