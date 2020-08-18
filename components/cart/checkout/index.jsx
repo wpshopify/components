@@ -67,7 +67,7 @@ function decorateCheckoutUrl(link) {
 }
 
 function redirect(checkoutUrl, target) {
-  window.open(encodeURI(checkoutUrl), target)
+  window.open(wp.hooks.applyFilters('checkout.url', encodeURI(checkoutUrl)), target)
 }
 
 function customDomainRedirect(checkout, primaryDomain, target) {
