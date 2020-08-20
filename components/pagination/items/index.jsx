@@ -59,12 +59,6 @@ function PaginationItems({
           </PaginationItemsMap>
         )}
       </section>
-
-      {paginationState.controlsTouched && !hasMoreItems && (
-        <Notice status='info' isDismissible={false}>
-          {noResultsText}
-        </Notice>
-      )}
     </section>
   ) : null
 }

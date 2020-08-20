@@ -1,57 +1,61 @@
-import { CartContext } from '../../_state/context'
-import { CartCounter } from '../counter'
-import { CartIcon } from '../icon'
-import { CartButtonProvider } from './_state/provider'
-import { useAnime, slideInRight } from '../../../../common/animations'
-import { usePortal } from '../../../../common/hooks'
-import { isCartEmpty } from '../../../../common/cart'
+import { CartContext } from '../../_state/context';
+import { CartCounter } from '../counter';
+import { CartIcon } from '../icon';
+import { CartButtonProvider } from './_state/provider';
+import { useAnime, slideInRight } from '../../../../common/animations';
+import { usePortal } from '../../../../common/hooks';
+import { isCartEmpty } from '../../../../common/cart';
 
 /** @jsx jsx */
-import { jsx, css, keyframes } from '@emotion/core'
+import { jsx, css, keyframes } from '@emotion/core';
 
-const { useContext, useRef, useEffect } = wp.element
+const { useContext, useRef, useEffect } = wp.element;
 
 function CartButton({ options }) {
-  const [cartState, cartDispatch] = useContext(CartContext)
-  const counterElement = useRef()
-  const animeSlideInRight = useAnime(slideInRight)
+  const [cartState, cartDispatch] = useContext(CartContext);
+  const counterElement = useRef();
+  const animeSlideInRight = useAnime(slideInRight);
 
   useEffect(() => {
     if (options.payloadSettings.type === 'fixed' && wpshopify.settings.general.showFixedCartTab) {
-      animeSlideInRight(counterElement.current)
+      animeSlideInRight(counterElement.current);
     }
-  }, [])
+  }, []);
 
   function onClick() {
-    cartDispatch({ type: 'TOGGLE_CART', payload: true })
+    cartDispatch({ type: 'TOGGLE_CART', payload: true });
   }
 
   function onMouseOver() {
-    cartDispatch({ type: 'CART_LOADED', payload: true })
+    cartDispatch({ type: 'CART_LOADED', payload: true });
   }
 
   function shouldShowCartTab() {
+    if (!wpshopify.settings.general.showFixedCartTab) {
+      return false;
+    }
+
     if (options.payloadSettings.type !== 'fixed') {
-      return true
+      return true;
     }
 
     if (wpshopify.settings.general.cartConditionalFixedTabLoading === 'all') {
-      return true
+      return true;
     } else if (wpshopify.settings.general.cartConditionalFixedTabLoading === 'withProducts') {
       if (cartState.productsVisible) {
-        return true
+        return true;
       }
-      return false
+
+      return false;
     } else if (wpshopify.settings.general.cartConditionalFixedTabLoading === 'manual') {
       if (
         wpshopify.settings.general.cartConditionalManuallySelectedPages.includes(
           wpshopify.misc.postID.toString()
         )
       ) {
-        return true
+        return true;
       }
-
-      return false
+      return false;
     }
   }
 
@@ -68,7 +72,7 @@ function CartButton({ options }) {
         ? wpshopify.settings.general.cartFixedBackgroundColor
         : 'transparent'};
     }
-  `
+  `;
 
   const slideInFromRight = keyframes`
       0% {
@@ -77,7 +81,7 @@ function CartButton({ options }) {
       100% {
          transform: translateX(calc(100% - 70px));
       }
-   `
+   `;
 
   const cartIconFixedCSS =
     options.payloadSettings.type === 'fixed'
@@ -126,7 +130,7 @@ function CartButton({ options }) {
             top: 2px;
             left: 0.01em;
           }
-        `
+        `;
 
   return shouldShowCartTab()
     ? usePortal(
@@ -148,7 +152,7 @@ function CartButton({ options }) {
         </CartButtonProvider>,
         options.componentElement
       )
-    : ''
+    : '';
 }
 
-export { CartButton }
+export { CartButton };

@@ -91,11 +91,10 @@ function fetchNextItems(itemsState, itemsDispatch) {
     }
 
     var [resultsError, results] = await to(fetchNextPage(productsExisting))
-    console.log('resultsError', resultsError)
-    resultsError = true
+
     if (resultsError) {
       const [initialError, initialResponse] = await to(resendInitialQuery(itemsState))
-      console.log('initialError', initialError)
+
       if (initialError) {
         itemsDispatch({
           type: 'UPDATE_NOTICES',
@@ -126,7 +125,6 @@ function fetchNextItems(itemsState, itemsDispatch) {
         }
 
         var [finalResultsError, finalResults] = await to(fetchNextPage(nextPayload))
-        console.log('finalResultsError', finalResultsError)
 
         if (finalResultsError) {
           itemsDispatch({
@@ -148,8 +146,6 @@ function fetchNextItems(itemsState, itemsDispatch) {
       type: 'UPDATE_TOTAL_SHOWN',
       payload: nextItems.length,
     })
-
-    console.log('..........nextItems', nextItems)
 
     itemsDispatch({
       type: 'UPDATE_PAYLOAD',

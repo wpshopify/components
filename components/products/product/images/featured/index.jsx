@@ -1,31 +1,31 @@
-import { ProductContext } from '../../_state/context'
-import { ProductGalleryContext } from '../gallery/_state/context'
-import ProductImageSoldOutLabel from '../sold-out-label'
-import ProductImage from '../image'
-import isNull from 'lodash/isNull'
-import Drift from 'drift-zoom'
+import { ProductContext } from '../../_state/context';
+import { ProductGalleryContext } from '../gallery/_state/context';
+import ProductImageSoldOutLabel from '../sold-out-label';
+import ProductImage from '../image';
+import isNull from 'lodash/isNull';
+import Drift from 'drift-zoom';
 
 /** @jsx jsx */
-import { jsx, css } from '@emotion/core'
+import { jsx, css } from '@emotion/core';
 
-const { useEffect, useContext, useRef, useState } = wp.element
+const { useEffect, useContext, useRef, useState } = wp.element;
 
 function getVariantImage(variant) {
-  return variant.image
+  return variant.image;
 }
 
 function destroyDrift(drift) {
-  drift.destroy()
-  window.Drift = null
-  drift = null
+  drift.destroy();
+  window.Drift = null;
+  drift = null;
 }
 
 function ProductFeaturedImage({ payloadSettings }) {
-  const paneElement = useRef()
-  const isFirstRender = useRef(true)
-  const [productState] = useContext(ProductContext)
-  const [galleryState] = useContext(ProductGalleryContext)
-  const [featImage, setFeatImage] = useState(() => galleryState.featImage)
+  const paneElement = useRef();
+  const isFirstRender = useRef(true);
+  const [productState] = useContext(ProductContext);
+  const [galleryState] = useContext(ProductGalleryContext);
+  const [featImage, setFeatImage] = useState(() => galleryState.featImage);
 
   function driftOptions() {
     return wp.hooks.applyFilters('default.image.zoom.options', {
@@ -35,61 +35,70 @@ function ProductFeaturedImage({ payloadSettings }) {
       inlineOffsetX: wpshopify.misc.isMobile ? -100 : 0,
       inlineOffsetY: wpshopify.misc.isMobile ? -100 : 0,
       touchDelay: 100,
-    })
+    });
   }
 
   function showZoom() {
     if (isNull(payloadSettings.showZoom)) {
-      return wpshopify.settings.general.productsImagesShowZoom
+      return wpshopify.settings.general.productsImagesShowZoom;
     }
 
-    return payloadSettings.showZoom
+    return payloadSettings.showZoom;
   }
 
   function hasFeatImage() {
-    return featImage && galleryState.featImageElement && paneElement.current
+    return featImage && galleryState.featImageElement && paneElement.current;
   }
 
   useEffect(() => {
     if (isFirstRender.current) {
-      isFirstRender.current = false
-      return
+      isFirstRender.current = false;
+      return;
     }
 
     if (galleryState.featImage) {
-      setFeatImage(galleryState.featImage)
+      setFeatImage(galleryState.featImage);
     }
-  }, [galleryState.featImage])
+  }, [galleryState.featImage]);
 
   useEffect(() => {
     if (isFirstRender.current) {
-      isFirstRender.current = false
-      return
+      isFirstRender.current = false;
+      return;
     }
 
     if (hasFeatImage() && showZoom()) {
-      var drift = new Drift(galleryState.featImageElement, driftOptions())
+      var drift = new Drift(galleryState.featImageElement, driftOptions());
 
       return () => {
-        destroyDrift(drift)
-      }
+        destroyDrift(drift);
+      };
     }
-  }, [galleryState.featImageElement])
+  }, [galleryState.featImageElement]);
 
   useEffect(() => {
     if (productState.selectedVariant) {
-      setFeatImage(getVariantImage(productState.selectedVariant))
+      setFeatImage(getVariantImage(productState.selectedVariant));
     }
-  }, [productState.selectedVariant])
+  }, [productState.selectedVariant]);
 
   const paneElementCSS = css`
     position: relative;
-  `
+  `;
+
+  const ProductImageFeaturedWrapperCSS = css`
+    display: flex;
+    justify-content: ${payloadSettings.imagesAlign === 'left'
+      ? 'flex-start'
+      : payloadSettings.imagesAlign === 'right'
+      ? 'flex-end'
+      : payloadSettings.imagesAlign};
+  `;
 
   return (
     <div className='wps-gallery-featured-wrapper' ref={paneElement} css={paneElementCSS}>
       {productState.payload.availableForSale === false && featImage && <ProductImageSoldOutLabel />}
-      <div className='wps-product-image-wrapper'>
+      <div className='wps-product-image-wrapper' css={ProductImageFeaturedWrapperCSS}>
         {featImage ? (
           <ProductImage payloadSettings={payloadSettings} isFeatured={true} image={featImage} />
         ) : (
@@ -101,7 +110,7 @@ function ProductFeaturedImage({ payloadSettings }) {
         )}
       </div>
     </div>
-  )
+  );
 }
 
-export { ProductFeaturedImage }
+export { ProductFeaturedImage };

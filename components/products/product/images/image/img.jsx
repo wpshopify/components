@@ -1,13 +1,13 @@
 /** @jsx jsx */
-import { jsx, css } from '@emotion/core'
+import { jsx, css } from '@emotion/core';
 
 function Img(props) {
   function isSelectedImage() {
     if (props.isFeatured) {
-      return
+      return;
     }
 
-    return props.galleryState.featImage.src === props.image.src
+    return props.galleryState.featImage.src === props.image.src;
   }
 
   const featThumbStyles = css`
@@ -15,11 +15,11 @@ function Img(props) {
     outline-offset: 3px;
     transition: transform 100ms ease;
     max-width: 100%;
-  `
+  `;
 
   const thumbnailStyles = css`
     display: block;
-    margin-bottom: 10px;
+    margin-bottom: ${props.isFeatured ? '0px' : '10px'};
     max-width: 100%;
 
     &:focus,
@@ -31,7 +31,7 @@ function Img(props) {
     &:hover {
       cursor: ${props.isFeatured ? 'default' : 'pointer'};
     }
-  `
+  `;
 
   return (
     <img
@@ -43,7 +43,7 @@ function Img(props) {
       alt={props.image.altText}
       data-zoom={props.image.src}
     />
-  )
+  );
 }
 
-export default wp.element.memo(Img)
+export default wp.element.memo(Img);

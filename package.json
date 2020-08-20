@@ -55,6 +55,7 @@
       "react-masonry-css": "^1.0.14",
       "react-simple-img": "^2.3.9",
       "react-spring": "^8.0.27",
+      "slug": "^3.3.4",
       "store": "^2.0.12",
       "tippy.js": "^6.2.6",
       "uniqid": "^5.2.0",

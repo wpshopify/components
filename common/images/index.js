@@ -225,6 +225,7 @@ function doFeaturedSizing(src, payloadSettings) {
   if (!payloadSettings) {
     return src
   }
+
   return addCustomSizingToImageUrl({
     src: src,
     width: payloadSettings.imagesSizingWidth,

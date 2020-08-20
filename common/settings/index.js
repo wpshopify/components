@@ -1,5 +1,5 @@
 import has from 'lodash/has'
-import { convertTitleToHandle } from '../utils'
+import { createSlug } from '../utils'
 
 function hasEnableCustomCheckoutDomain() {
   return wpshopify.settings.general.enableCustomCheckoutDomain
@@ -89,9 +89,9 @@ function getWordPressSingleLink(payload) {
   let url = ''
 
   if (has(payload, 'handle')) {
-    itemHandle = payload.handle
+    itemHandle = createSlug(payload.handle)
   } else if (has(payload, 'productTitle')) {
-    itemHandle = convertTitleToHandle(payload.productTitle)
+    itemHandle = createSlug(payload.productTitle)
   }
 
   if (payload.type.name === 'Collection') {
