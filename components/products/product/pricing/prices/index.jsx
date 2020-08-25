@@ -1,15 +1,15 @@
 /** @jsx jsx */
-import { jsx, css } from '@emotion/core'
-import { ProductPricingContext } from '../_state/context'
-import { ProductContext } from '../../_state/context'
-import ProductPrice from '../price'
-import ProductPricesCompareAt from '../compare-at'
+import { jsx, css } from '@emotion/core';
+import { ProductPricingContext } from '../_state/context';
+import { ProductContext } from '../../_state/context';
+import ProductPrice from '../price';
+import ProductPricesCompareAt from '../compare-at';
 
-const { useContext } = wp.element
+const { useContext } = wp.element;
 
 function ProductPrices({ payloadSettings }) {
-  const [productPricingState] = useContext(ProductPricingContext)
-  const [productState] = useContext(ProductContext)
+  const [productPricingState] = useContext(ProductPricingContext);
+  const [productState] = useContext(ProductContext);
 
   const ProductPricesCompareAtCSS = css`
     display: flex;
@@ -21,7 +21,7 @@ function ProductPrices({ payloadSettings }) {
     + .wps-buy-button-wrapper > .wps-product-quantity-wrapper {
       margin-top: 1.7em;
     }
-  `
+  `;
 
   return (
     <div className='wps-component-products-pricing' css={ProductPricesCompareAtCSS}>
@@ -33,6 +33,7 @@ function ProductPrices({ payloadSettings }) {
           currencyCode={productPricingState.currencyCode}
           showPriceRange={productPricingState.showPriceRange}
           compareAt={productPricingState.showCompareAt}
+          payloadSettings={payloadSettings}
         />
       ) : (
         <ProductPrice
@@ -41,10 +42,11 @@ function ProductPrices({ payloadSettings }) {
           prices={productPricingState.prices}
           currencyCode={productPricingState.currencyCode}
           showPriceRange={productPricingState.showPriceRange}
+          payloadSettings={payloadSettings}
         />
       )}
     </div>
-  )
+  );
 }
 
-export { ProductPrices }
+export { ProductPrices };

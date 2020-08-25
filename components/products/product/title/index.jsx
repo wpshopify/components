@@ -1,34 +1,40 @@
-import { ProductContext } from '../_state/context'
-import { ItemsContext } from '../../../items/_state/context'
-import { usePortal } from '../../../../common/hooks'
-import { findPortalElement, FilterHook } from '../../../../common/utils'
-import { Link } from '../../../link'
-import { hasLink } from '../../../../common/settings'
+import { ProductContext } from '../_state/context';
+import { ItemsContext } from '../../../items/_state/context';
+import { usePortal } from '../../../../common/hooks';
+import { findPortalElement, FilterHook } from '../../../../common/utils';
+import { Link } from '../../../link';
+import { hasLink } from '../../../../common/settings';
 
 /** @jsx jsx */
-import { jsx, css } from '@emotion/core'
+import { jsx, css } from '@emotion/core';
 
-const { useContext } = wp.element
+const { useContext } = wp.element;
 
 function ProductTitle() {
-  const [productState] = useContext(ProductContext)
-  const [itemsState] = useContext(ItemsContext)
+  const [productState] = useContext(ProductContext);
+  const [itemsState] = useContext(ItemsContext);
 
   const titleStyles = css`
     && {
       font-size: ${itemsState.payloadSettings.titleSize};
+      font-family: ${itemsState.payloadSettings.titleFont
+        ? itemsState.payloadSettings.titleFont
+        : 'inherit'};
+      font-weight: ${itemsState.payloadSettings.titleFontWeight
+        ? itemsState.payloadSettings.titleFontWeight
+        : 'inherit'};
       color: ${itemsState.payloadSettings.titleColor};
       white-space: normal;
       margin: 0;
     }
-  `
+  `;
 
   const titleStylesWrapper = css`
     margin-bottom: ${itemsState.payloadSettings.isSingleComponent ? '0px' : '15px'};
-  `
+  `;
 
   function getTitleClass() {
-    return wp.hooks.applyFilters('product.title.class', 'wps-products-title')
+    return wp.hooks.applyFilters('product.title.class', 'wps-products-title');
   }
 
   return usePortal(
@@ -59,7 +65,7 @@ function ProductTitle() {
       )}
     </div>,
     findPortalElement(itemsState.payloadSettings.dropzoneProductTitle)
-  )
+  );
 }
 
 function Title(props) {
@@ -73,7 +79,7 @@ function Title(props) {
 
       <FilterHook name='after.product.title' hasHTML={true} args={[props.product]} />
     </>
-  )
+  );
 }
 
-export default ProductTitle
+export default ProductTitle;

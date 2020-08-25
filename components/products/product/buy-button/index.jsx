@@ -1,42 +1,42 @@
 /** @jsx jsx */
-import { jsx, css } from '@emotion/core'
-import ProductQuantity from './quantity'
-import ProductOptions from './options'
-import ProductAddButton from './add-button'
-import { ProductContext } from '../_state/context'
-import { ItemsContext } from '../../../items/_state/context'
-import { usePortal } from '../../../../common/hooks'
-import { getButtonText } from '../../../../common/settings'
-import { onlyAvailableOptionsFromVariants } from '../../../../common/variants'
-import { findPortalElement, FilterHook } from '../../../../common/utils'
+import { jsx, css } from '@emotion/core';
+import ProductQuantity from './quantity';
+import ProductOptions from './options';
+import ProductAddButton from './add-button';
+import { ProductContext } from '../_state/context';
+import { ItemsContext } from '../../../items/_state/context';
+import { usePortal } from '../../../../common/hooks';
+import { getButtonText } from '../../../../common/settings';
+import { onlyAvailableOptionsFromVariants } from '../../../../common/variants';
+import { findPortalElement, FilterHook } from '../../../../common/utils';
 
 function ProductBuyButton() {
-  const { Notice } = wp.components
-  const { useContext } = wp.element
-  const [itemsState] = useContext(ItemsContext)
-  const [productState, productDispatch] = useContext(ProductContext)
+  const { Notice } = wp.components;
+  const { useContext } = wp.element;
+  const [itemsState] = useContext(ItemsContext);
+  const [productState, productDispatch] = useContext(ProductContext);
   const isDirectCheckout =
-    itemsState.payloadSettings.directCheckout || wpshopify.settings.general.directCheckout
+    itemsState.payloadSettings.directCheckout || wpshopify.settings.general.directCheckout;
 
   const buyButtonWrapperCSS = css`
     display: flex;
     flex-direction: column;
     margin-bottom: ${itemsState.payloadSettings.isSingleComponent ? '0px' : '15px'};
-  `
+  `;
 
   function isHidingControls() {
     if (itemsState.payloadSettings.isSingular || isDirectCheckout) {
-      return false
+      return false;
     }
 
     if (
       itemsState.payloadSettings.linkTo === 'shopify' ||
       itemsState.payloadSettings.linkTo === 'wordpress'
     ) {
-      return true
+      return true;
     }
 
-    return false
+    return false;
   }
 
   return usePortal(
@@ -64,6 +64,8 @@ function ProductBuyButton() {
             />
           )}
           <ProductAddButton
+            font={itemsState.payloadSettings.addToCartButtonFont}
+            fontWeight={itemsState.payloadSettings.addToCartButtonFontWeight}
             addedToCart={productState.addedToCart}
             isTouched={productState.isTouched}
             hasLink={productState.hasLink}
@@ -94,7 +96,7 @@ function ProductBuyButton() {
       <FilterHook name='after.product.buyButton' hasHTML={true} args={[productState]} />
     </div>,
     findPortalElement(itemsState.payloadSettings.dropzoneProductBuyButton)
-  )
+  );
 }
 
-export default wp.element.memo(ProductBuyButton)
+export default wp.element.memo(ProductBuyButton);

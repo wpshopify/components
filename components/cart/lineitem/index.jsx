@@ -1,36 +1,36 @@
-import { CartContext } from '../../cart/_state/context'
+import { CartContext } from '../../cart/_state/context';
 
-import { CartLineItemQuantity } from './quantity'
-import CartLineItemPrice from './price'
-import { CartLineItemImage } from './image'
-import { CartLineItemOutOfStock } from './out-of-stock'
-import { CartLineItemTitle } from './title'
-import { CartLineItemRemove } from './remove'
-import CartLineItemVariantTitle from './variant-title'
+import { CartLineItemQuantity } from './quantity';
+import CartLineItemPrice from './price';
+import { CartLineItemImage } from './image';
+import { CartLineItemOutOfStock } from './out-of-stock';
+import { CartLineItemTitle } from './title';
+import { CartLineItemRemove } from './remove';
+import CartLineItemVariantTitle from './variant-title';
 
 const CartLineItemLeftInStock = wp.element.lazy(() =>
   import(/* webpackChunkName: 'CartLineItemLeftInStock-public' */ './left-in-stock')
-)
+);
 
-import { calcLineItemTotal, isAvailable } from '../../../common/products'
-import { containerFluidCSS, flexRowCSS, flexColSmallCSS, mq } from '../../../common/css'
-import { getCurrencyCodeFromPayload } from '../../../common/pricing/data'
+import { calcLineItemTotal, isAvailable } from '../../../common/products';
+import { containerFluidCSS, flexRowCSS, flexColSmallCSS, mq } from '../../../common/css';
+import { getCurrencyCodeFromPayload } from '../../../common/pricing/data';
 
 /** @jsx jsx */
-import { jsx, css } from '@emotion/core'
-import find from 'lodash/find'
+import { jsx, css } from '@emotion/core';
+import find from 'lodash/find';
 
 function CartLineItem({ lineItem, inventory }) {
-  const { useContext, useState, useRef, useEffect } = wp.element
-  const [cartState, cartDispatch] = useContext(CartContext)
-  const [isUpdating] = useState(() => false)
-  const [lineItemQuantity, setLineItemQuantity] = useState(() => 0)
-  const [lineItemTotal, setLineItemTotal] = useState(() => 0)
+  const { useContext, useState, useRef, useEffect } = wp.element;
+  const [cartState, cartDispatch] = useContext(CartContext);
+  const [isUpdating] = useState(() => false);
+  const [lineItemQuantity, setLineItemQuantity] = useState(() => 0);
+  const [lineItemTotal, setLineItemTotal] = useState(() => 0);
 
-  const variantId = useRef(false)
-  const lineItemElement = useRef()
-  const isFirstRender = useRef(true)
-  const lineItemTotalElement = useRef()
+  const variantId = useRef(false);
+  const lineItemElement = useRef();
+  const isFirstRender = useRef(true);
+  const lineItemTotalElement = useRef();
 
   function onRemove(e) {
     cartDispatch({
@@ -39,7 +39,7 @@ function CartLineItem({ lineItem, inventory }) {
         lineItem: variantId.current,
         checkoutId: cartState.checkoutId,
       },
-    })
+    });
 
     cartDispatch({
       type: 'UPDATE_LINE_ITEM_QUANTITY',
@@ -50,27 +50,29 @@ function CartLineItem({ lineItem, inventory }) {
         },
         checkoutId: cartState.checkoutId,
       },
-    })
+    });
+
+    wp.hooks.doAction('after.cart.lineItem.remove', lineItem, variantId.current);
   }
 
   function getLineItemFromState() {
-    return find(cartState.checkoutCache.lineItems, { variantId: lineItem.id })
+    return find(cartState.checkoutCache.lineItems, { variantId: lineItem.id });
   }
 
   function hasRealVariant() {
-    return lineItem.title !== 'Default Title'
+    return lineItem.title !== 'Default Title';
   }
 
   useEffect(() => {
-    let lineItemFound = getLineItemFromState()
+    let lineItemFound = getLineItemFromState();
 
     if (lineItemFound) {
-      variantId.current = lineItemFound.variantId
+      variantId.current = lineItemFound.variantId;
 
-      setLineItemQuantity(lineItemFound.quantity)
-      setLineItemTotal(calcLineItemTotal(lineItem.price, lineItemFound.quantity))
+      setLineItemQuantity(lineItemFound.quantity);
+      setLineItemTotal(calcLineItemTotal(lineItem.price, lineItemFound.quantity));
     }
-  }, [cartState.checkoutCache.lineItems])
+  }, [cartState.checkoutCache.lineItems]);
 
   const lineItemStyles = css`
     margin-top: 0;
@@ -79,7 +81,7 @@ function CartLineItem({ lineItem, inventory }) {
     position: relative;
     display: flex;
     top: -50px;
-  `
+  `;
 
   const lineItemTitle = css`
     color: #313131;
@@ -95,7 +97,7 @@ function CartLineItem({ lineItem, inventory }) {
     &:hover {
       color: #313131;
     }
-  `
+  `;
 
   const cartLineItemContentCSS = css`
     margin-top: 0;
@@ -111,7 +113,7 @@ function CartLineItem({ lineItem, inventory }) {
         max-width: 100%;
       }
     }
-  `
+  `;
 
   return (
     <div
@@ -167,7 +169,7 @@ function CartLineItem({ lineItem, inventory }) {
         )}
       </div>
     </div>
-  )
+  );
 }
 
-export { CartLineItem }
+export { CartLineItem };

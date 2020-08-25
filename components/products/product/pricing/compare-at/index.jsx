@@ -1,7 +1,7 @@
 /** @jsx jsx */
-import { jsx, css } from '@emotion/core'
-import ProductPrice from '../price'
-import ProductPriceSaleNotice from '../sale-notice'
+import { jsx, css } from '@emotion/core';
+import ProductPrice from '../price';
+import ProductPriceSaleNotice from '../sale-notice';
 
 function ProductPricesCompareAt({
   prices,
@@ -9,6 +9,7 @@ function ProductPricesCompareAt({
   currencyCode,
   selectedVariant,
   showPriceRange,
+  payloadSettings,
 }) {
   const ProductPricesCompareAtWrapperCSS = css`
     display: flex;
@@ -22,7 +23,7 @@ function ProductPricesCompareAt({
     &:empty {
       display: none;
     }
-  `
+  `;
 
   return (
     <>
@@ -32,6 +33,7 @@ function ProductPricesCompareAt({
         prices={prices}
         showPriceRange={showPriceRange}
         currencyCode={currencyCode}
+        payloadSettings={payloadSettings}
       />
 
       {compareAt && (
@@ -46,12 +48,13 @@ function ProductPricesCompareAt({
               prices={prices}
               showPriceRange={showPriceRange}
               currencyCode={currencyCode}
+              payloadSettings={payloadSettings}
             />
           </ProductPriceSaleNotice>
         </div>
       )}
     </>
-  )
+  );
 }
 
-export default wp.element.memo(ProductPricesCompareAt)
+export default wp.element.memo(ProductPricesCompareAt);

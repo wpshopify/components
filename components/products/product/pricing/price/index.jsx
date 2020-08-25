@@ -1,87 +1,94 @@
-import isEmpty from 'lodash/isEmpty'
-import last from 'lodash/last'
-import min from 'lodash/min'
-import max from 'lodash/max'
+import isEmpty from 'lodash/isEmpty';
+import last from 'lodash/last';
+import min from 'lodash/min';
+import max from 'lodash/max';
 
-import ProductPricingRange from '../range'
-import ProductPriceSingle from '../single'
-import { useAnime, fadeInRightSlow } from '../../../../../common/animations'
+import ProductPricingRange from '../range';
+import ProductPriceSingle from '../single';
+import { useAnime, fadeInRightSlow } from '../../../../../common/animations';
 
 /** @jsx jsx */
-import { jsx, css } from '@emotion/core'
+import { jsx, css } from '@emotion/core';
 
-const { useEffect, useRef, useState } = wp.element
+const { useEffect, useRef, useState } = wp.element;
 
 function lastPrice(prices, type) {
   if (isEmpty(prices)) {
-    return 0
+    return 0;
   }
-  return last(prices[type])
+  return last(prices[type]);
 }
 
 function firstRegPrice(prices) {
   if (isEmpty(prices)) {
-    return 0
+    return 0;
   }
 
-  return prices.regPrices[0]
+  return prices.regPrices[0];
 }
 
 function firstPriceCompareAt(prices) {
   if (isEmpty(prices)) {
-    return 0
+    return 0;
   }
 
-  return prices.compareAtPrices[0]
+  return prices.compareAtPrices[0];
 }
 
 function lastRegPrice(prices) {
-  return lastPrice(prices, 'regPrices')
+  return lastPrice(prices, 'regPrices');
 }
 
 function lastPriceCompareAt(prices) {
-  return lastPrice(prices, 'compareAtPrices')
+  return lastPrice(prices, 'compareAtPrices');
 }
 
-function ProductPrice({ compareAt, prices, currencyCode, showPriceRange, selectedVariant }) {
-  const singlePriceElement = useRef()
-  const [regPrice, setRegPrice] = useState(() => getFirstPrice())
-  const [comparePrice, setComparePrice] = useState(() => firstPriceCompareAt(prices))
-  const animeFadeInRightSlow = useAnime(fadeInRightSlow)
+function ProductPrice({
+  compareAt,
+  prices,
+  currencyCode,
+  showPriceRange,
+  selectedVariant,
+  payloadSettings,
+}) {
+  const singlePriceElement = useRef();
+  const [regPrice, setRegPrice] = useState(() => getFirstPrice());
+  const [comparePrice, setComparePrice] = useState(() => firstPriceCompareAt(prices));
+  const animeFadeInRightSlow = useAnime(fadeInRightSlow);
 
   function isRegAndCompareSame() {
     if (!showPriceRange && compareAt) {
-      var firstCompare = firstPriceCompareAt(prices)
-      var firstReg = firstRegPrice(prices)
+      var firstCompare = firstPriceCompareAt(prices);
+      var firstReg = firstRegPrice(prices);
 
       if (firstCompare === firstReg) {
-        return true
+        return true;
       }
     }
 
-    return false
+    return false;
   }
 
   function isFirstAndLastSame() {
     if (getFirstPrice() === getLastPrice()) {
-      return true
+      return true;
     }
 
-    return false
+    return false;
   }
 
   function getFirstPrice() {
     if (compareAt) {
       if (showPriceRange) {
-        return min(prices.compareAtPrices)
+        return min(prices.compareAtPrices);
       } else {
-        return firstPriceCompareAt(prices)
+        return firstPriceCompareAt(prices);
       }
     } else {
       if (showPriceRange) {
-        return min(prices.regPrices)
+        return min(prices.regPrices);
       } else {
-        return firstRegPrice(prices)
+        return firstRegPrice(prices);
       }
     }
   }
@@ -89,15 +96,15 @@ function ProductPrice({ compareAt, prices, currencyCode, showPriceRange, selecte
   function getLastPrice() {
     if (compareAt) {
       if (showPriceRange) {
-        return max(prices.compareAtPrices)
+        return max(prices.compareAtPrices);
       } else {
-        return lastPriceCompareAt(prices)
+        return lastPriceCompareAt(prices);
       }
     } else {
       if (showPriceRange) {
-        return max(prices.regPrices)
+        return max(prices.regPrices);
       } else {
-        return lastRegPrice(prices)
+        return lastRegPrice(prices);
       }
     }
   }
@@ -105,31 +112,35 @@ function ProductPrice({ compareAt, prices, currencyCode, showPriceRange, selecte
   useEffect(() => {
     if (selectedVariant) {
       if (selectedVariant.compareAtPriceV2) {
-        setComparePrice(selectedVariant.compareAtPriceV2.amount)
+        setComparePrice(selectedVariant.compareAtPriceV2.amount);
       } else {
-        setComparePrice(false)
+        setComparePrice(false);
       }
 
-      setRegPrice(selectedVariant.priceV2.amount)
+      setRegPrice(selectedVariant.priceV2.amount);
 
       if (!compareAt) {
-        animeFadeInRightSlow(singlePriceElement.current)
+        animeFadeInRightSlow(singlePriceElement.current);
       }
     } else {
-      setComparePrice(firstPriceCompareAt(prices))
-      setRegPrice(getFirstPrice())
+      setComparePrice(firstPriceCompareAt(prices));
+      setRegPrice(getFirstPrice());
     }
-  }, [selectedVariant])
+  }, [selectedVariant]);
 
   const priceWrapperCSS = css`
     line-height: 1;
     margin: 0 15px 0 0;
     display: block;
+    font-family: ${payloadSettings.pricingFont ? payloadSettings.pricingFont : 'inherit'};
+    font-weight: ${payloadSettings.pricingFontWeight
+      ? payloadSettings.pricingFontWeight
+      : 'inherit'};
 
     &[data-show-price-range='true'] + .wps-product-prices-compare-at {
       margin-top: 10px;
     }
-  `
+  `;
 
   return !isRegAndCompareSame() ? (
     <span
@@ -158,7 +169,7 @@ function ProductPrice({ compareAt, prices, currencyCode, showPriceRange, selecte
         />
       )}
     </span>
-  ) : null
+  ) : null;
 }
 
-export default ProductPrice
+export default ProductPrice;

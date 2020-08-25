@@ -1,6 +1,6 @@
-import PrettyPrice from '../../../../../common/pricing/pretty'
+import PrettyPrice from '../../../../../common/pricing/pretty';
 /** @jsx jsx */
-import { jsx, css } from '@emotion/core'
+import { jsx, css } from '@emotion/core';
 
 const ProductPriceSingle = React.forwardRef((props, ref) => {
   const priceCSS = css`
@@ -10,7 +10,7 @@ const ProductPriceSingle = React.forwardRef((props, ref) => {
     font-size: ${props.compareAt ? '15px' : '18px'};
     color: ${props.compareAt ? '#848484' : '#121212'};
     text-decoration: ${props.compareAt ? 'line-through' : 'none'};
-  `
+  `;
 
   return props.price !== false || props.price !== null ? (
     <span
@@ -22,7 +22,7 @@ const ProductPriceSingle = React.forwardRef((props, ref) => {
     </span>
   ) : (
     ''
-  )
-})
+  );
+});
 
-export default wp.element.memo(ProductPriceSingle)
+export default wp.element.memo(ProductPriceSingle);

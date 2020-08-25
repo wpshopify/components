@@ -1,18 +1,18 @@
 /** @jsx jsx */
-import { jsx, css } from '@emotion/core'
-import { ProductOptionContext } from '../_state/context'
-import { mq } from '../../../../../../common/css'
+import { jsx, css } from '@emotion/core';
+import { ProductOptionContext } from '../_state/context';
+import { mq } from '../../../../../../common/css';
 
-import 'tippy.js/dist/tippy.css'
-import 'tippy.js/animations/shift-away.css'
-import Tippy from '@tippyjs/react'
+import 'tippy.js/dist/tippy.css';
+import 'tippy.js/animations/shift-away.css';
+import Tippy from '@tippyjs/react';
 
-import ProductOptionTrigger from '../trigger'
-import ProductVariantsDropdown from '../variants'
+import ProductOptionTrigger from '../trigger';
+import ProductVariantsDropdown from '../variants';
 
 function ProductOptionDropdown({ availableVariants, selectedOptions, missingSelections }) {
-  const { useContext } = wp.element
-  const [productOptionState] = useContext(ProductOptionContext)
+  const { useContext } = wp.element;
+  const [productOptionState] = useContext(ProductOptionContext);
 
   const ProductOptionDropdownCSS = css`
     position: relative;
@@ -65,7 +65,7 @@ function ProductOptionDropdown({ availableVariants, selectedOptions, missingSele
       max-width: 100%;
       padding-right: 0;
     }
-  `
+  `;
 
   return (
     <div className='wps-btn-dropdown-wrapper'>
@@ -102,7 +102,7 @@ function ProductOptionDropdown({ availableVariants, selectedOptions, missingSele
         </Tippy>
       </div>
     </div>
-  )
+  );
 }
 
-export default ProductOptionDropdown
+export default ProductOptionDropdown;

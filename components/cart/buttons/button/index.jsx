@@ -30,13 +30,13 @@ function CartButton({ options }) {
     cartDispatch({ type: 'CART_LOADED', payload: true });
   }
 
-  function shouldShowCartTab() {
-    if (!wpshopify.settings.general.showFixedCartTab) {
-      return false;
-    }
-
+  function shouldShowCartButton() {
     if (options.payloadSettings.type !== 'fixed') {
       return true;
+    }
+
+    if (!wpshopify.settings.general.showFixedCartTab) {
+      return false;
     }
 
     if (wpshopify.settings.general.cartConditionalFixedTabLoading === 'all') {
@@ -132,7 +132,7 @@ function CartButton({ options }) {
           }
         `;
 
-  return shouldShowCartTab()
+  return shouldShowCartButton()
     ? usePortal(
         <CartButtonProvider options={options}>
           <button
