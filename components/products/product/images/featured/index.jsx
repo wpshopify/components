@@ -88,6 +88,7 @@ function ProductFeaturedImage({ payloadSettings }) {
 
   const ProductImageFeaturedWrapperCSS = css`
     display: flex;
+    align-items: flex-start;
     justify-content: ${payloadSettings.imagesAlign === 'left'
       ? 'flex-start'
       : payloadSettings.imagesAlign === 'right'

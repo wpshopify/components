@@ -33,6 +33,10 @@ function ProductBuyButton() {
       itemsState.payloadSettings.linkTo === 'shopify' ||
       itemsState.payloadSettings.linkTo === 'wordpress'
     ) {
+      if (itemsState.payloadSettings.linkWithBuyButton) {
+        return false;
+      }
+
       return true;
     }
 
@@ -73,11 +77,17 @@ function ProductBuyButton() {
             payload={productState.payload}
             linkTarget={itemsState.payloadSettings.linkTarget}
             linkTo={itemsState.payloadSettings.linkTo}
+            linkWithBuyButton={itemsState.payloadSettings.linkWithBuyButton}
             addToCartButtonColor={itemsState.payloadSettings.addToCartButtonColor}
+            addToCartButtonTextColor={itemsState.payloadSettings.addToCartButtonTextColor}
             isDirectCheckout={isDirectCheckout}
             hasManyVariants={productState.hasManyVariants}
             productDispatch={productDispatch}
-            buttonText={getButtonText(itemsState.payloadSettings, isDirectCheckout)}
+            buttonText={getButtonText(
+              itemsState.payloadSettings,
+              isDirectCheckout,
+              itemsState.payloadSettings.linkWithBuyButton
+            )}
             selectedVariant={productState.selectedVariant}
             quantity={productState.quantity}
             selectedOptions={productState.selectedOptions}

@@ -1,32 +1,32 @@
-import has from 'lodash/has'
-import { createSlug } from '../utils'
+import has from 'lodash/has';
+import { createSlug } from '../utils';
 
 function hasEnableCustomCheckoutDomain() {
-  return wpshopify.settings.general.enableCustomCheckoutDomain
+  return wpshopify.settings.general.enableCustomCheckoutDomain;
 }
 
 function productsLinkTo() {
-  return wpshopify.settings.general.productsLinkTo
+  return wpshopify.settings.general.productsLinkTo;
 }
 
 function hasLink(payloadSettings) {
   if (!payloadSettings) {
-    return false
+    return false;
   }
 
   if (payloadSettings.linkTo === 'none') {
-    return false
+    return false;
   }
 
   if (payloadSettings.linkTo === 'shopify') {
-    return true
+    return true;
   }
 
   if (wpshopify.settings.general.enableDefaultPages && !payloadSettings.isSingular) {
-    return true
+    return true;
   }
 
-  return false
+  return false;
 }
 
 function hasCustomButtonText(payloadSettings) {
@@ -35,38 +35,42 @@ function hasCustomButtonText(payloadSettings) {
     payloadSettings.addToCartButtonText != 'Add to cart' &&
     payloadSettings.addToCartButtonText != 'View product'
   ) {
-    return true
+    return true;
   }
 
-  return false
+  return false;
 }
 
-function getButtonText(payloadSettings, isDirectCheckout) {
+function getButtonText(payloadSettings, isDirectCheckout, linkWithBuyButton) {
   if (hasCustomButtonText(payloadSettings)) {
-    return payloadSettings.addToCartButtonText
+    return payloadSettings.addToCartButtonText;
   }
 
   if (isDirectCheckout) {
-    return wp.i18n.__('Checkout', 'wpshopify')
+    return wp.i18n.__('Checkout', 'wpshopify');
+  }
+
+  if (linkWithBuyButton) {
+    return wp.i18n.__('Add to cart', 'wpshopify');
   }
 
   if (hasLink(payloadSettings)) {
-    return wp.i18n.__('View product', 'wpshopify')
+    return wp.i18n.__('View product', 'wpshopify');
   }
 
   if (payloadSettings.addToCartButtonText === 'View product') {
-    return wp.i18n.__('View product', 'wpshopify')
+    return wp.i18n.__('View product', 'wpshopify');
   }
 
   if (payloadSettings.addToCartButtonText === 'Checkout') {
-    return wp.i18n.__('Checkout', 'wpshopify')
+    return wp.i18n.__('Checkout', 'wpshopify');
   }
 
-  return wp.i18n.__('Add to cart', 'wpshopify')
+  return wp.i18n.__('Add to cart', 'wpshopify');
 }
 
 function shopHasInfo(shop) {
-  return has(shop, 'info')
+  return has(shop, 'info');
 }
 
 function getShopifySingleLink(payload, type) {
@@ -78,48 +82,48 @@ function getShopifySingleLink(payload, type) {
       type +
       '/' +
       payload.handle
-    )
+    );
   }
 
-  return payload.onlineStoreUrl
+  return payload.onlineStoreUrl;
 }
 
 function getWordPressSingleLink(payload) {
-  let itemHandle = ''
-  let url = ''
+  let itemHandle = '';
+  let url = '';
 
   if (has(payload, 'handle')) {
-    itemHandle = createSlug(payload.handle)
+    itemHandle = createSlug(payload.handle);
   } else if (has(payload, 'productTitle')) {
-    itemHandle = createSlug(payload.productTitle)
+    itemHandle = createSlug(payload.productTitle);
   }
 
   if (payload.type.name === 'Collection') {
-    url = wpshopify.settings.general.urlCollections
+    url = wpshopify.settings.general.urlCollections;
   } else if (payload.type.name === 'Product' || payload.type.name === 'ProductVariant') {
-    url = wpshopify.settings.general.urlProducts
+    url = wpshopify.settings.general.urlProducts;
   }
 
   // Ensures proper URL
   if (url.slice(-1) !== '/') {
-    url = url + '/'
+    url = url + '/';
   }
 
-  return url + itemHandle
+  return url + itemHandle;
 }
 
 function getItemLink(payload, type, linkTo) {
   if (linkTo === 'none') {
-    return false
+    return false;
   }
 
   // Manual links
   if (linkTo === 'shopify') {
-    return encodeURI(getShopifySingleLink(payload, type))
+    return encodeURI(getShopifySingleLink(payload, type));
   }
 
   if (linkTo === 'wordpress') {
-    return encodeURI(getWordPressSingleLink(payload))
+    return encodeURI(getWordPressSingleLink(payload));
   }
 }
 
@@ -133,4 +137,4 @@ export {
   shopHasInfo,
   hasCustomButtonText,
   getButtonText,
-}
+};

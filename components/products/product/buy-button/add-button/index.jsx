@@ -44,8 +44,16 @@ function buildLineItemParams(variant, quantity) {
   ];
 }
 
-function AddButtonWrapper({ hasLink, payload, children, linkTo, linkTarget, isDirectCheckout }) {
-  return hasLink && !isDirectCheckout ? (
+function AddButtonWrapper({
+  hasLink,
+  payload,
+  children,
+  linkTo,
+  linkTarget,
+  isDirectCheckout,
+  linkWithBuyButton,
+}) {
+  return hasLink && !isDirectCheckout && !linkWithBuyButton ? (
     <Link type='products' payload={payload} linkTo={linkTo} target={linkTarget}>
       {children}
     </Link>
@@ -56,7 +64,9 @@ function AddButtonWrapper({ hasLink, payload, children, linkTo, linkTarget, isDi
 
 function AddButton({
   addToCartButtonColor,
+  addToCartButtonTextColor,
   hasLink,
+  linkWithBuyButton,
   isDirectCheckout,
   productDispatch,
   hasManyVariants,
@@ -91,7 +101,7 @@ function AddButton({
   `;
 
   async function handleClick(e) {
-    if (hasLink && !isDirectCheckout) {
+    if (hasLink && !isDirectCheckout && !linkWithBuyButton) {
       return;
     }
 
@@ -200,7 +210,11 @@ function AddButton({
         {isCheckingOut ? (
           loader
         ) : (
-          <AddButtonText addedToCart={addedToCart} buttonText={buttonText} />
+          <AddButtonText
+            addedToCart={addedToCart}
+            buttonText={buttonText}
+            addToCartButtonTextColor={addToCartButtonTextColor}
+          />
         )}
       </button>
 
@@ -213,7 +227,7 @@ function AddButton({
   );
 }
 
-function AddButtonText({ buttonText, addedToCart }) {
+function AddButtonText({ buttonText, addedToCart, addToCartButtonTextColor }) {
   const [originalText] = useState(buttonText);
   const [text, setText] = useState(buttonText);
   const animeFadeInBottomSlow = useAnime(fadeInBottomSlow);
@@ -229,11 +243,13 @@ function AddButtonText({ buttonText, addedToCart }) {
       }, 2000);
     }
   }, [addedToCart]);
+  console.log('addToCartButtonTextColor', addToCartButtonTextColor);
 
   const AddButtonTextCSS = css`
     display: block;
     margin: 0;
     padding: 0;
+    color: ${addToCartButtonTextColor ? addToCartButtonTextColor : 'inherit'};
   `;
 
   return (
@@ -250,7 +266,9 @@ function ProductAddButton({
   payload,
   linkTarget,
   linkTo,
+  linkWithBuyButton,
   addToCartButtonColor,
+  addToCartButtonTextColor,
   isDirectCheckout,
   hasManyVariants,
   productDispatch,
@@ -271,10 +289,13 @@ function ProductAddButton({
         payload={payload}
         linkTarget={linkTarget}
         linkTo={linkTo}
+        linkWithBuyButton={linkWithBuyButton}
         isDirectCheckout={isDirectCheckout}>
         <AddButton
           hasLink={hasLink}
+          linkWithBuyButton={linkWithBuyButton}
           addToCartButtonColor={addToCartButtonColor}
+          addToCartButtonTextColor={addToCartButtonTextColor}
           loader={<Loader />}
           isDirectCheckout={isDirectCheckout}
           hasManyVariants={hasManyVariants}
