@@ -1,5 +1,5 @@
 /** @jsx jsx */
-import { jsx, css } from '@emotion/core'
+import { jsx, css } from '@emotion/core';
 
 function CartFooterDiscount({ discountCode, onRemoval }) {
   const discountCodeWrapperCSS = css`
@@ -8,7 +8,7 @@ function CartFooterDiscount({ discountCode, onRemoval }) {
     width: 100%;
     justify-content: flex-end;
     margin-bottom: 10px;
-  `
+  `;
 
   const discountLabelCSS = css`
     && {
@@ -17,7 +17,7 @@ function CartFooterDiscount({ discountCode, onRemoval }) {
       top: 2px;
       margin-right: 15px;
     }
-  `
+  `;
 
   const discountCodeCSS = css`
     font-size: 15px;
@@ -33,19 +33,19 @@ function CartFooterDiscount({ discountCode, onRemoval }) {
       cursor: pointer;
       background: #f1c952;
     }
-  `
+  `;
 
   const discountCodeIconCSS = css`
     position: absolute;
     right: 11px;
     top: 7px;
     max-width: 9px;
-  `
+  `;
 
   return (
     <div css={discountCodeWrapperCSS}>
       <p css={discountLabelCSS} className='wps-cart-discount-label'>
-        Discount:
+        {wp.i18n.__('Discount:', 'wpshopify')}
       </p>
       <p className='wps-cart-discount-code' css={discountCodeCSS} onClick={onRemoval}>
         {discountCode}
@@ -66,7 +66,7 @@ function CartFooterDiscount({ discountCode, onRemoval }) {
         </svg>
       </p>
     </div>
-  )
+  );
 }
 
-export default CartFooterDiscount
+export default CartFooterDiscount;

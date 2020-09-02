@@ -243,7 +243,6 @@ function AddButtonText({ buttonText, addedToCart, addToCartButtonTextColor }) {
       }, 2000);
     }
   }, [addedToCart]);
-  console.log('addToCartButtonTextColor', addToCartButtonTextColor);
 
   const AddButtonTextCSS = css`
     display: block;

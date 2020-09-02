@@ -1,32 +1,32 @@
 /** @jsx jsx */
-import { jsx, css } from '@emotion/core'
-import { CartContext } from '../../_state/context'
-import { addDiscountCode, removeDiscountCode } from '../../_common'
-import CartFooterDiscount from '../discount'
-import { Loader } from '../../../loader'
-import to from 'await-to-js'
+import { jsx, css } from '@emotion/core';
+import { CartContext } from '../../_state/context';
+import { addDiscountCode, removeDiscountCode } from '../../_common';
+import CartFooterDiscount from '../discount';
+import { Loader } from '../../../loader';
+import to from 'await-to-js';
 
 function CartFooterDiscountWrapper({ discountCode }) {
-  const { useRef, useState, useContext } = wp.element
-  const { Notice } = wp.components
-  const [cartState, cartDispatch] = useContext(CartContext)
-  const discountInputRef = useRef(false)
-  const [isLoading, setIsLoading] = useState(false)
+  const { useRef, useState, useContext } = wp.element;
+  const { Notice } = wp.components;
+  const [cartState, cartDispatch] = useContext(CartContext);
+  const discountInputRef = useRef(false);
+  const [isLoading, setIsLoading] = useState(false);
 
-  const [notice, setNotice] = useState()
+  const [notice, setNotice] = useState();
 
   const footerStyles = css`
     display: flex;
     align-items: flex-end;
     justify-content: space-between;
     margin: 0;
-  `
+  `;
 
   const discountFormCSS = css`
     display: flex;
     width: 100%;
     margin-bottom: 20px;
-  `
+  `;
 
   const discountFormInputCSS = css`
     && {
@@ -48,7 +48,7 @@ function CartFooterDiscountWrapper({ discountCode }) {
         }
       }
     }
-  `
+  `;
 
   const discountFormButtonCSS = css`
     width: 100px;
@@ -83,37 +83,37 @@ function CartFooterDiscountWrapper({ discountCode }) {
       width: 8px !important;
       height: 8px !important;
     }
-  `
+  `;
 
   async function addDiscountCodeWrapper() {
-    setNotice(false)
-    setIsLoading(true)
+    setNotice(false);
+    setIsLoading(true);
 
     const [error, success] = await to(
       addDiscountCode(cartState, cartDispatch, discountInputRef.current.value)
-    )
+    );
 
-    setIsLoading(false)
+    setIsLoading(false);
 
     if (error) {
-      setNotice(error)
+      setNotice(error);
     }
   }
 
   function onClick(e) {
-    addDiscountCodeWrapper()
+    addDiscountCodeWrapper();
   }
 
   function onRemoval() {
     /* @if NODE_ENV='pro' */
-    removeDiscountCode(cartDispatch)
+    removeDiscountCode(cartDispatch);
     /* @endif */
   }
 
   const discountNoticeCSS = css`
     margin-bottom: 1em;
     margin-top: -10px;
-  `
+  `;
 
   return (
     <>
@@ -122,7 +122,7 @@ function CartFooterDiscountWrapper({ discountCode }) {
           <div css={discountFormCSS}>
             <input
               type='text'
-              placeholder='Discount code'
+              placeholder={wp.i18n.__('Discount code', 'wpshopify')}
               ref={discountInputRef}
               css={discountFormInputCSS}
               disabled={isLoading || cartState.isCartEmpty}
@@ -131,7 +131,7 @@ function CartFooterDiscountWrapper({ discountCode }) {
               css={discountFormButtonCSS}
               onClick={onClick}
               disabled={isLoading || cartState.isCartEmpty}>
-              {!isLoading && <span>Apply</span>}
+              {!isLoading && <span>{wp.i18n.__('Apply', 'wpshopify')}</span>}
               {isLoading && <Loader />}
             </button>
           </div>
@@ -148,7 +148,7 @@ function CartFooterDiscountWrapper({ discountCode }) {
         </div>
       )}
     </>
-  )
+  );
 }
 
-export default CartFooterDiscountWrapper
+export default CartFooterDiscountWrapper;

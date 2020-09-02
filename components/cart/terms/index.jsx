@@ -1,36 +1,36 @@
-import { CartContext } from '../_state/context'
+import { CartContext } from '../_state/context';
 /** @jsx jsx */
-import { jsx, css } from '@emotion/core'
-import { flexRowCSS } from '../../../common/css'
+import { jsx, css } from '@emotion/core';
+import { flexRowCSS } from '../../../common/css';
 
-const { useContext, useState, useEffect } = wp.element
+const { useContext, useState, useEffect } = wp.element;
 
 function CartTerms() {
-  const [cartState, cartDispatch] = useContext(CartContext)
-  const [isChecked, setIsChecked] = useState(() => false)
+  const [cartState, cartDispatch] = useContext(CartContext);
+  const [isChecked, setIsChecked] = useState(() => false);
 
   useEffect(() => {
-    cartDispatch({ type: 'SET_TERMS_ACCEPTED', payload: false })
-  }, [])
+    cartDispatch({ type: 'SET_TERMS_ACCEPTED', payload: false });
+  }, []);
 
   function termsLabel() {
     return {
       __html: wpshopify.settings.general.cartTermsContent,
-    }
+    };
   }
 
   function onChange(e) {
-    setIsChecked(!isChecked)
+    setIsChecked(!isChecked);
 
     if (wpshopify.misc.isPro) {
-      cartDispatch({ type: 'SET_TERMS_ACCEPTED', payload: !isChecked })
+      cartDispatch({ type: 'SET_TERMS_ACCEPTED', payload: !isChecked });
     }
   }
 
   var containerCSS = css`
     margin: 0.5em 0 1em 0;
     padding: 0;
-  `
+  `;
 
   var labelCSS = css`
     padding-left: 7px;
@@ -48,19 +48,20 @@ function CartTerms() {
     &:empty {
       display: none;
     }
-  `
+  `;
 
   const termsWrapperCSS = css`
     align-items: center;
 
     .wps-input {
       margin: 0;
+      width: auto;
 
       &:hover {
         cursor: pointer;
       }
     }
-  `
+  `;
 
   const termsInputCSS = css`
     width: 13px;
@@ -72,7 +73,7 @@ function CartTerms() {
         cursor: not-allowed;
       }
     }
-  `
+  `;
 
   return (
     <section className='wps-cart-terms' css={containerCSS}>
@@ -93,7 +94,7 @@ function CartTerms() {
         />
       </div>
     </section>
-  )
+  );
 }
 
-export { CartTerms }
+export { CartTerms };

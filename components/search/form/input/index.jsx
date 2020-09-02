@@ -1,34 +1,34 @@
 /** @jsx jsx */
-import { jsx, css } from '@emotion/core'
-import { SearchContext } from '../../_state/context'
-import { useDebounce } from 'use-debounce'
+import { jsx, css } from '@emotion/core';
+import { SearchContext } from '../../_state/context';
+import { useDebounce } from 'use-debounce';
 
-function SearchInput({ isLoading, payloadSettings }) {
-  const { useEffect, useContext, useRef, useState } = wp.element
-  const { Spinner } = wp.components
-  const [localTerm, setLocalTerm] = useState(() => '')
-  const [, searchDispatch] = useContext(SearchContext)
-  const [debouncedSearchTerm] = useDebounce(localTerm, 350)
-  const isFirstRender = useRef(true)
+function SearchInput({ isLoading }) {
+  const { useEffect, useContext, useRef, useState } = wp.element;
+  const { Spinner } = wp.components;
+  const [localTerm, setLocalTerm] = useState(() => '');
+  const [, searchDispatch] = useContext(SearchContext);
+  const [debouncedSearchTerm] = useDebounce(localTerm, 350);
+  const isFirstRender = useRef(true);
 
   function setSearchTerm(value) {
-    setLocalTerm(value)
+    setLocalTerm(value);
   }
 
   useEffect(() => {
     if (isFirstRender.current) {
-      isFirstRender.current = false
-      return
+      isFirstRender.current = false;
+      return;
     }
 
-    searchDispatch({ type: 'SET_SEARCH_TERM', payload: debouncedSearchTerm })
-  }, [debouncedSearchTerm])
+    searchDispatch({ type: 'SET_SEARCH_TERM', payload: debouncedSearchTerm });
+  }, [debouncedSearchTerm]);
 
   const spinnerCSS = css`
     position: absolute;
     top: 11px;
     right: 10px;
-  `
+  `;
 
   const searchInputCSS = css`
     padding: 1em;
@@ -45,10 +45,10 @@ function SearchInput({ isLoading, payloadSettings }) {
         cursor: pointer;
       }
     }
-  `
+  `;
   const searchInputWrapperCSS = css`
     width: 100%;
-  `
+  `;
 
   return (
     <div className='wps-search-input-wrapper' css={searchInputWrapperCSS}>
@@ -75,7 +75,7 @@ function SearchInput({ isLoading, payloadSettings }) {
         </div>
       )}
     </div>
-  )
+  );
 }
 
-export { SearchInput }
+export { SearchInput };
