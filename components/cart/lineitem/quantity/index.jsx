@@ -1,23 +1,23 @@
-import find from 'lodash/find'
-import { CartContext } from '../../_state/context'
-import { calcLineItemTotal } from '../../../../common/products'
-import { useAnime, fadeInRightSlow } from '../../../../common/animations'
-import { containerFluidCSS, flexRowCSS, mq } from '../../../../common/css'
-import CartLineItemQuantityIncIcon from './icon-inc'
-import CartLineItemQuantityDecIcon from './icon-dec'
+import find from 'lodash/find';
+import { CartContext } from '../../_state/context';
+import { calcLineItemTotal } from '../../../../common/products';
+import { useAnime, fadeInRightSlow } from '../../../../common/animations';
+import { containerFluidCSS, flexRowCSS, mq } from '../../../../common/css';
+import CartLineItemQuantityIncIcon from './icon-inc';
+import CartLineItemQuantityDecIcon from './icon-dec';
 
 /** @jsx jsx */
-import { jsx, css } from '@emotion/core'
+import { jsx, css } from '@emotion/core';
 
-const { useContext } = wp.element
+const { useContext } = wp.element;
 
 // 1 is the previous value before decrementing _again_
 function isRemovingLineItem(quantity) {
-  return Number(quantity) === 0
+  return Number(quantity) === 0;
 }
 
 function getLineItemFromState(lineItem, lineItemsFromState) {
-  return find(lineItemsFromState, { variantId: lineItem.id })
+  return find(lineItemsFromState, { variantId: lineItem.id });
 }
 
 function CartLineItemQuantity({
@@ -29,12 +29,12 @@ function CartLineItemQuantity({
   setLineItemTotal,
   lineItemTotalElement,
 }) {
-  const [cartState, cartDispatch] = useContext(CartContext)
-  const animeFadeInRightSlow = useAnime(fadeInRightSlow)
+  const [cartState, cartDispatch] = useContext(CartContext);
+  const animeFadeInRightSlow = useAnime(fadeInRightSlow);
 
-  const maxQuantity = wp.hooks.applyFilters('cart.lineItems.maxQuantity', false, cartState)
-  const minQuantity = wp.hooks.applyFilters('cart.lineItems.minQuantity', false, cartState)
-  const customStep = wp.hooks.applyFilters('cart.lineItems.quantityStep', false, cartState)
+  const maxQuantity = wp.hooks.applyFilters('cart.lineItems.maxQuantity', false, cartState);
+  const minQuantity = wp.hooks.applyFilters('cart.lineItems.minQuantity', false, cartState);
+  const customStep = wp.hooks.applyFilters('cart.lineItems.quantityStep', false, cartState);
 
   const inputStyles = css`
     input::-webkit-outer-spin-button,
@@ -47,7 +47,7 @@ function CartLineItemQuantity({
     input[type='number'] {
       -moz-appearance: textfield;
     }
-  `
+  `;
 
   const lineItemQuantityCSS = css`
     && {
@@ -73,19 +73,19 @@ function CartLineItemQuantity({
         font-size: 24px;
       }
     }
-  `
+  `;
 
   function changeQuantity(newQuantity) {
-    let lineItemFound = getLineItemFromState(lineItem, cartState.checkoutCache.lineItems)
+    let lineItemFound = getLineItemFromState(lineItem, cartState.checkoutCache.lineItems);
 
     if (lineItemFound && isFirstRender.current) {
-      variantId.current = lineItemFound.variantId
+      variantId.current = lineItemFound.variantId;
     }
 
-    animeFadeInRightSlow(lineItemTotalElement.current)
+    animeFadeInRightSlow(lineItemTotalElement.current);
 
-    setLineItemQuantity(newQuantity)
-    setLineItemTotal(calcLineItemTotal(newQuantity, lineItem.price))
+    setLineItemQuantity(newQuantity);
+    setLineItemTotal(calcLineItemTotal(newQuantity, lineItem.price));
 
     if (isRemovingLineItem(newQuantity)) {
       cartDispatch({
@@ -94,7 +94,7 @@ function CartLineItemQuantity({
           lineItem: variantId.current,
           checkoutId: cartState.checkoutId,
         },
-      })
+      });
     }
 
     cartDispatch({
@@ -106,17 +106,17 @@ function CartLineItemQuantity({
         },
         checkoutId: cartState.checkoutId,
       },
-    })
+    });
   }
 
   function handleQuantityChange(e) {
     if (e.target.value || e.target.value === 0) {
       if (maxQuantity && e.target.value >= maxQuantity) {
-        setLineItemQuantity(maxQuantity)
+        setLineItemQuantity(maxQuantity);
       } else if (minQuantity && e.target.value <= minQuantity) {
-        setLineItemQuantity(minQuantity)
+        setLineItemQuantity(minQuantity);
       } else {
-        setLineItemQuantity(e.target.value)
+        setLineItemQuantity(e.target.value);
       }
     }
   }
@@ -130,7 +130,7 @@ function CartLineItemQuantity({
             lineItem: variantId.current,
             checkoutId: cartState.checkoutId,
           },
-        })
+        });
       }
 
       cartDispatch({
@@ -142,7 +142,7 @@ function CartLineItemQuantity({
           },
           checkoutId: cartState.checkoutId,
         },
-      })
+      });
     }
   }
 
@@ -153,12 +153,12 @@ function CartLineItemQuantity({
    */
   function handleDecrement() {
     if (minQuantity && lineItemQuantity <= minQuantity) {
-      changeQuantity(minQuantity)
+      changeQuantity(minQuantity);
     } else {
       if (!customStep) {
-        changeQuantity(lineItemQuantity - 1)
+        changeQuantity(lineItemQuantity - 1);
       } else {
-        changeQuantity(lineItemQuantity - customStep)
+        changeQuantity(lineItemQuantity - customStep);
       }
     }
   }
@@ -170,12 +170,12 @@ function CartLineItemQuantity({
    */
   function handleIncrement() {
     if (maxQuantity && lineItemQuantity >= maxQuantity) {
-      changeQuantity(maxQuantity)
+      changeQuantity(maxQuantity);
     } else {
       if (!customStep) {
-        changeQuantity(lineItemQuantity + 1)
+        changeQuantity(lineItemQuantity + 1);
       } else {
-        changeQuantity(lineItemQuantity + customStep)
+        changeQuantity(lineItemQuantity + customStep);
       }
     }
   }
@@ -209,15 +209,15 @@ function CartLineItemQuantity({
       width: 60px;
       height: 60px;
     }
-  `
+  `;
 
   const cartLineItemQuantityIncCSS = css`
     border-radius: 0 3px 3px 0;
-  `
+  `;
 
   const cartLineItemQuantityDecCSS = css`
     border-radius: 3px 0 0 3px;
-  `
+  `;
 
   const lineItemQuantityContainer = css`
     width: 115px;
@@ -225,7 +225,7 @@ function CartLineItemQuantity({
     ${mq('small')} {
       width: 100%;
     }
-  `
+  `;
 
   return (
     <div
@@ -244,6 +244,7 @@ function CartLineItemQuantity({
           className='wps-cart-lineitem-quantity'
           type='number'
           min='0'
+          onFocus={(e) => e.currentTarget.select()}
           aria-label='Quantity'
           css={lineItemQuantityCSS}
           value={lineItemQuantity}
@@ -261,7 +262,7 @@ function CartLineItemQuantity({
         </button>
       </div>
     </div>
-  )
+  );
 }
 
-export { CartLineItemQuantity }
+export { CartLineItemQuantity };

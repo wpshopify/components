@@ -1,12 +1,12 @@
 /** @jsx jsx */
-import { jsx, css } from '@emotion/core'
-import { ProductContext } from '../../../_state/context'
+import { jsx, css } from '@emotion/core';
+import { ProductContext } from '../../../_state/context';
 
 function ProductQuantityInput({ minQuantity, maxQuantity, addedToCart }) {
-  const { useEffect, useContext, useState } = wp.element
-  const [, productDispatch] = useContext(ProductContext)
-  const [quantityValue, setQuantityValue] = useState(() => minQuantity)
-  const customStep = wp.hooks.applyFilters('buyButton.quantityStep', false)
+  const { useEffect, useContext, useState } = wp.element;
+  const [, productDispatch] = useContext(ProductContext);
+  const [quantityValue, setQuantityValue] = useState(() => minQuantity);
+  const customStep = wp.hooks.applyFilters('buyButton.quantityStep', false);
 
   const inputStyles = css`
     && {
@@ -19,47 +19,47 @@ function ProductQuantityInput({ minQuantity, maxQuantity, addedToCart }) {
       padding: 7px;
       color: #121212;
     }
-  `
+  `;
 
   useEffect(() => {
     if (addedToCart) {
-      handleQuantityChange()
+      handleQuantityChange();
     }
-  }, [addedToCart])
+  }, [addedToCart]);
 
   function handleQuantityChange(event = false) {
     if (!event) {
-      let quantityAmount = Number(minQuantity)
-      productDispatch({ type: 'UPDATE_QUANTITY', payload: quantityAmount })
-      setQuantityValue(quantityAmount)
+      let quantityAmount = Number(minQuantity);
+      productDispatch({ type: 'UPDATE_QUANTITY', payload: quantityAmount });
+      setQuantityValue(quantityAmount);
     } else {
-      let quantityAmount = Number(event.target.value)
+      let quantityAmount = Number(event.target.value);
 
       if (customStep) {
         if (quantityValue === 1 && customStep !== 1) {
-          quantityAmount = customStep
+          quantityAmount = customStep;
         } else {
           if (quantityAmount > quantityValue) {
-            quantityAmount = quantityValue + customStep
+            quantityAmount = quantityValue + customStep;
           } else {
-            quantityAmount = quantityValue - customStep
+            quantityAmount = quantityValue - customStep;
           }
         }
       }
 
       if (quantityAmount === 0) {
-        quantityAmount = 1
+        quantityAmount = 1;
       }
 
-      productDispatch({ type: 'UPDATE_QUANTITY', payload: quantityAmount })
-      setQuantityValue(quantityAmount)
+      productDispatch({ type: 'UPDATE_QUANTITY', payload: quantityAmount });
+      setQuantityValue(quantityAmount);
     }
   }
 
   const quantityInputWrapperCSS = css`
     display: inline-block;
     margin: 0;
-  `
+  `;
 
   return (
     <div className='wps-quantity-input wps-quantity-input-wrapper' css={quantityInputWrapperCSS}>
@@ -70,11 +70,12 @@ function ProductQuantityInput({ minQuantity, maxQuantity, addedToCart }) {
         className='wps-product-quantity wps-form-input'
         value={quantityValue}
         onChange={handleQuantityChange}
-        min={minQuantity}
+        onFocus={(e) => e.currentTarget.select()}
+        min={minQuantity ? minQuantity : undefined}
         max={maxQuantity ? maxQuantity : undefined}
       />
     </div>
-  )
+  );
 }
 
-export { ProductQuantityInput }
+export { ProductQuantityInput };
