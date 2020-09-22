@@ -1,113 +1,150 @@
-import { ItemsContext } from '../_state/context'
+import { ItemsContext } from '../_state/context';
 import {
   fetchNewItems,
   getTemplate,
   getCache,
   setCache,
-} from '/Users/andrew/www/devil/devilbox-new/data/www/wpshopify-api'
+  isWordPressError,
+  getWordPressErrorMessage,
+} from '/Users/andrew/www/devil/devilbox-new/data/www/wpshopify-api';
+
 import {
   useIsMounted,
   useIsFirstRender,
-} from '/Users/andrew/www/devil/devilbox-new/data/www/wpshopify-hooks'
+} from '/Users/andrew/www/devil/devilbox-new/data/www/wpshopify-hooks';
 
 import {
   isTemplateName,
   getLastFourChars,
-} from '/Users/andrew/www/devil/devilbox-new/data/www/wpshopify-utils'
+} from '/Users/andrew/www/devil/devilbox-new/data/www/wpshopify-utils';
 
-import Placeholder from '../../../common/placeholders'
+import Placeholder from '../../../common/placeholders';
 
-import to from 'await-to-js'
+import to from 'await-to-js';
 
 function hasTemplateName(maybeTemplate) {
   if (!maybeTemplate) {
-    return false
+    return false;
   }
 
-  return isTemplateName(getLastFourChars(maybeTemplate))
+  return isTemplateName(getLastFourChars(maybeTemplate));
 }
 
 function Item({ children, limit = false, infiniteScroll = false }) {
-  const { useContext, useEffect } = wp.element
-  const [itemsState, itemsDispatch] = useContext(ItemsContext)
-  const isMounted = useIsMounted()
-  const isFirstRender = useIsFirstRender()
-  const { Notice } = wp.components
+  const { useContext, useEffect } = wp.element;
+  const [itemsState, itemsDispatch] = useContext(ItemsContext);
+  const isMounted = useIsMounted();
+  const isFirstRender = useIsFirstRender();
+  const { Notice } = wp.components;
 
   function showGlobalNotice(dataType) {
     if (dataType === 'storefront' || dataType === 'search') {
-      return false
+      return false;
     }
 
-    return true
+    return true;
   }
 
   async function getNewItems(itemsState) {
-    wp.hooks.doAction('before.payload.update', itemsState)
+    wp.hooks.doAction('before.payload.update', itemsState);
 
     itemsDispatch({
       type: 'SET_IS_LOADING',
       payload: true,
-    })
+    });
 
     itemsDispatch({
       type: 'UPDATE_NOTICES',
       payload: [],
-    })
+    });
 
     if (hasTemplateName(itemsState.payloadSettings.htmlTemplate)) {
-      var resultcache = getCache('wps-template-' + itemsState.payloadSettings.htmlTemplate)
+      var resultcache = getCache('wps-template-' + itemsState.payloadSettings.htmlTemplate);
 
       if (wp.hooks.applyFilters('wpshopify.cache.templates', true) && resultcache) {
         itemsDispatch({
           type: 'UPDATE_HTML_TEMPLATE',
           payload: resultcache,
-        })
+        });
       } else {
         const [templateError, templateString] = await to(
           getTemplate(itemsState.payloadSettings.htmlTemplate)
-        )
+        );
 
-        setCache('wps-template-' + itemsState.payloadSettings.htmlTemplate, templateString.data)
+        if (templateError) {
+          itemsDispatch({
+            type: 'UPDATE_NOTICES',
+            payload: {
+              type: 'error',
+              message: templateError,
+            },
+          });
+
+          itemsDispatch({ type: 'SET_IS_LOADING', payload: false });
+          if (itemsState.isBootstrapping) {
+            itemsDispatch({ type: 'SET_IS_BOOTSTRAPPING', payload: false });
+          }
+          return;
+        }
+
+        if (isWordPressError(templateString)) {
+          itemsDispatch({ type: 'SET_IS_LOADING', payload: false });
+
+          itemsDispatch({
+            type: 'UPDATE_NOTICES',
+            payload: {
+              type: 'error',
+              message: getWordPressErrorMessage(templateString),
+            },
+          });
+
+          if (itemsState.isBootstrapping) {
+            itemsDispatch({ type: 'SET_IS_BOOTSTRAPPING', payload: false });
+          }
+
+          return;
+        }
+
+        setCache('wps-template-' + itemsState.payloadSettings.htmlTemplate, templateString.data);
 
         itemsDispatch({
           type: 'UPDATE_HTML_TEMPLATE',
           payload: templateString.data,
-        })
+        });
       }
     }
 
-    const [error, newItems] = await to(fetchNewItems(itemsState))
+    const [error, newItems] = await to(fetchNewItems(itemsState));
 
     if (error) {
       if (isMounted.current) {
         itemsDispatch({
           type: 'UPDATE_NOTICES',
           payload: error,
-        })
+        });
 
-        itemsDispatch({ type: 'SET_IS_LOADING', payload: false })
+        itemsDispatch({ type: 'SET_IS_LOADING', payload: false });
 
         if (itemsState.isBootstrapping) {
-          itemsDispatch({ type: 'SET_IS_BOOTSTRAPPING', payload: false })
+          itemsDispatch({ type: 'SET_IS_BOOTSTRAPPING', payload: false });
         }
       }
 
-      return
+      return;
     }
 
     if (isMounted.current) {
-      itemsDispatch({ type: 'SET_IS_LOADING', payload: false })
+      itemsDispatch({ type: 'SET_IS_LOADING', payload: false });
 
       if (itemsState.isBootstrapping) {
-        itemsDispatch({ type: 'SET_IS_BOOTSTRAPPING', payload: false })
+        itemsDispatch({ type: 'SET_IS_BOOTSTRAPPING', payload: false });
       }
 
       if (!newItems || !newItems.length) {
         itemsDispatch({
           type: 'UPDATE_TOTAL_SHOWN',
           payload: 0,
-        })
+        });
 
         itemsDispatch({
           type: 'UPDATE_PAYLOAD',
@@ -115,12 +152,12 @@ function Item({ children, limit = false, infiniteScroll = false }) {
             items: [],
             replace: true,
           },
-        })
+        });
       } else {
         itemsDispatch({
           type: 'UPDATE_TOTAL_SHOWN',
           payload: newItems.length,
-        })
+        });
 
         itemsDispatch({
           type: 'UPDATE_PAYLOAD',
@@ -128,10 +165,10 @@ function Item({ children, limit = false, infiniteScroll = false }) {
             items: newItems,
             replace: true,
           },
-        })
+        });
 
         if (itemsState.afterLoading) {
-          itemsState.afterLoading(newItems)
+          itemsState.afterLoading(newItems);
         }
       }
     }
@@ -146,21 +183,21 @@ function Item({ children, limit = false, infiniteScroll = false }) {
   useEffect(() => {
     if (itemsState.hasParentPayload) {
       if (itemsState.isBootstrapping) {
-        itemsDispatch({ type: 'SET_IS_BOOTSTRAPPING', payload: false })
+        itemsDispatch({ type: 'SET_IS_BOOTSTRAPPING', payload: false });
       }
-      return
+      return;
     }
 
     if (itemsState.beforeLoading) {
-      itemsState.beforeLoading()
+      itemsState.beforeLoading();
     }
 
-    getNewItems(itemsState)
-  }, [itemsState.queryParams])
+    getNewItems(itemsState);
+  }, [itemsState.queryParams]);
 
   useEffect(() => {
-    wp.hooks.doAction('after.payload.update', itemsState)
-  }, [itemsState.payload])
+    wp.hooks.doAction('after.payload.update', itemsState);
+  }, [itemsState.payload]);
 
   /*
   
@@ -169,11 +206,11 @@ function Item({ children, limit = false, infiniteScroll = false }) {
   */
   useEffect(() => {
     if (itemsState.isLoading || isFirstRender.current) {
-      return
+      return;
     }
 
     if (!itemsState.payload) {
-      return
+      return;
     }
 
     itemsDispatch({
@@ -182,8 +219,8 @@ function Item({ children, limit = false, infiniteScroll = false }) {
         items: itemsState.payload,
         replace: false,
       },
-    })
-  }, [limit, infiniteScroll])
+    });
+  }, [limit, infiniteScroll]);
 
   return !itemsState.hasParentPayload && itemsState.isBootstrapping ? (
     <Placeholder type={itemsState.payloadSettings.componentType} />
@@ -199,7 +236,7 @@ function Item({ children, limit = false, infiniteScroll = false }) {
     )
   ) : children ? (
     children
-  ) : null
+  ) : null;
 }
 
-export default wp.element.memo(Item)
+export default wp.element.memo(Item);

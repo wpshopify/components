@@ -10,6 +10,7 @@ import { Link } from '../../../../link';
 import { checkoutRedirect } from '../../../../cart/checkout';
 
 import {
+  maybeFetchShop,
   findVariantFromSelectedOptions,
   createUniqueCheckout,
   addLineItemsAPI,
@@ -137,6 +138,19 @@ function AddButton({
 
       setIsCheckingOut(true);
 
+      const [shopInfoErrors, shopInfo] = await to(maybeFetchShop());
+
+      if (shopInfoErrors) {
+        setIsCheckingOut(false);
+
+        setHasNotice({
+          type: 'error',
+          message: shopInfoErrors,
+        });
+
+        return;
+      }
+
       const [err, checkout] = await to(createUniqueCheckout(client));
 
       if (err) {
@@ -174,7 +188,9 @@ function AddButton({
 
       productDispatch({ type: 'SET_MISSING_SELECTIONS', payload: false });
 
-      checkoutRedirect(respNewCheckout, productDispatch);
+      checkoutRedirect(respNewCheckout, shopInfo.primaryDomain.url, function () {
+        setIsCheckingOut(false);
+      });
     } else {
       let addToCartParams = buildAddToCartParams(lineItems, [variant]);
 
