@@ -95,6 +95,7 @@ function AddButton({
   const addToCartCSS = css`
     font-family: ${font ? font : 'inherit'};
     font-weight: ${fontWeight ? fontWeight : 'inherit'};
+    overflow-y: hidden;
 
     && {
       background-color: ${addToCartButtonColor};

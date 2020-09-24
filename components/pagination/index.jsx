@@ -1,11 +1,12 @@
-import PaginationControlsWrapper from './controls-wrapper'
-import PaginationItems from './items'
-import { PaginationProvider } from './_state/provider'
-import { ItemsContext } from '../items/_state/context'
+import PaginationControlsWrapper from './controls-wrapper';
+import PaginationItems from './items';
+import { PaginationProvider } from './_state/provider';
+import { ItemsContext } from '../items/_state/context';
 
 function Pagination({ children }) {
-  const { useContext } = wp.element
-  const [itemsState, itemsDispatch] = useContext(ItemsContext)
+  const { useContext } = wp.element;
+  const [itemsState, itemsDispatch] = useContext(ItemsContext);
+  console.log('>> itemsState.isLoading', itemsState.isLoading);
 
   return (
     <PaginationProvider
@@ -14,14 +15,12 @@ function Pagination({ children }) {
       <PaginationItems
         payload={itemsState.payload}
         payloadSettings={itemsState.payloadSettings}
-        isLoading={itemsState.isLoading}
-        hasMoreItems={itemsState.hasMoreItems}
-        noResultsText={itemsState.noResultsText}>
+        isLoading={itemsState.isLoading}>
         {children}
       </PaginationItems>
       <PaginationControlsWrapper itemsState={itemsState} itemsDispatch={itemsDispatch} />
     </PaginationProvider>
-  )
+  );
 }
 
-export default Pagination
+export default Pagination;

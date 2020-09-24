@@ -1,20 +1,13 @@
 /** @jsx jsx */
-import { jsx, css } from '@emotion/core'
-import { PaginationContext } from '../_state/context'
-import { mq } from '../../../common/css'
-import PaginationItemsMap from './map'
+import { jsx, css } from '@emotion/core';
+import { PaginationContext } from '../_state/context';
+import { mq } from '../../../common/css';
+import PaginationItemsMap from './map';
 
-function PaginationItems({
-  children,
-  payload,
-  payloadSettings,
-  isLoading,
-  hasMoreItems,
-  noResultsText,
-}) {
-  const { useContext } = wp.element
-  const { Notice } = wp.components
-  const [paginationState] = useContext(PaginationContext)
+function PaginationItems({ children, payload, payloadSettings, isLoading }) {
+  const { useContext } = wp.element;
+  const { Notice } = wp.components;
+  const [paginationState] = useContext(PaginationContext);
 
   const PaginationItemsCSS = css`
     display: grid;
@@ -39,7 +32,7 @@ function PaginationItems({
       wp.hooks.applyFilters('misc.layout.mobileColumns', 1) +
       ', 1fr)'};
     }
-  `
+  `;
 
   const PaginationItemsContainerCSS = css`
     max-width: ${wp.hooks.applyFilters('misc.layout.containerWidth', '1100px')};
@@ -48,7 +41,7 @@ function PaginationItems({
     ${mq('medium')} {
       padding: 0 15px;
     }
-  `
+  `;
 
   return payload ? (
     <section className='wps-items-wrapper' css={PaginationItemsContainerCSS}>
@@ -60,7 +53,7 @@ function PaginationItems({
         )}
       </section>
     </section>
-  ) : null
+  ) : null;
 }
 
-export default wp.element.memo(PaginationItems)
+export default wp.element.memo(PaginationItems);
