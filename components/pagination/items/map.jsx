@@ -29,7 +29,7 @@ function PaginationItemsMap({ children, payload, payloadSettings }) {
 
   return payloadSettings.carousel ? (
     <Suspense fallback={<Placeholder type={payloadSettings.componentType} />}>
-      <Carousel>
+      <Carousel payloadSettings={payloadSettings}>
         {payload.map((item) => (
           <CarouselMapped
             key={uuidv4()}

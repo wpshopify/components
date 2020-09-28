@@ -23,8 +23,6 @@ const { useContext, useRef } = wp.element;
 
 function checkoutRedirectOnly(checkout, primaryDomain, cb = false) {
   var target = checkoutWindowTarget();
-  console.log('target', target);
-  console.log('checkout', checkout);
 
   if (wpshopify.settings.general.enableCustomCheckoutDomain) {
     return customDomainRedirect(checkout, primaryDomain, target, cb);
@@ -84,7 +82,6 @@ function customDomainRedirect(checkout, primaryDomain, target, cb = false) {
   } else {
     var checkoutUrl = checkoutUrlWithCustomDomain(primaryDomain, checkout.webUrl);
   }
-  console.log('checkoutUrl', checkoutUrl);
 
   redirect(checkoutUrl, target, cb);
 }
@@ -168,7 +165,7 @@ function CartCheckout() {
         },
       });
     }
-    console.log('shopInfo', shopInfo);
+
     if (hasCustomCheckoutAttributes(cartState)) {
       const [checkoutWithAttrsError, checkoutWithAttrs] = await to(
         updateCheckoutAttributes({

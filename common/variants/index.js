@@ -1,19 +1,19 @@
-import groupBy from 'lodash/groupBy'
-import map from 'lodash/map'
-import uniqBy from 'lodash/uniqBy'
-import filter from 'lodash/filter'
-import flatMap from 'lodash/flatMap'
-import find from 'lodash/find'
+import groupBy from 'lodash/groupBy';
+import map from 'lodash/map';
+import uniqBy from 'lodash/uniqBy';
+import filter from 'lodash/filter';
+import flatMap from 'lodash/flatMap';
+import find from 'lodash/find';
 
 function onlyAvailableVariantsOptions(variants) {
   return groupBy(
     flatMap(variants, (variant) => variant.selectedOptions),
     'name'
-  )
+  );
 }
 
 function onlyUniqueOptionValues(optionValues) {
-  return uniqBy(optionValues, 'value').filter((item) => item.value)
+  return uniqBy(optionValues, 'value').filter((item) => item.value);
 }
 
 function formatAvailableOptions(availOptions) {
@@ -21,75 +21,77 @@ function formatAvailableOptions(availOptions) {
     return {
       name: optionName,
       values: onlyUniqueOptionValues(optionValues),
-    }
-  })
+    };
+  });
 }
 
 function filterOnlyAvailableVariants(variants) {
   return filter(variants, function (v) {
-    return v.availableForSale
-  })
+    return v.availableForSale;
+  });
 }
 
 function onlyAvailableOptionsFromVariants(variants) {
   if (!variants.length) {
-    return false
+    return false;
   }
 
-  return formatAvailableOptions(onlyAvailableVariantsOptions(filterOnlyAvailableVariants(variants)))
+  return formatAvailableOptions(
+    onlyAvailableVariantsOptions(filterOnlyAvailableVariants(variants))
+  );
 }
 
 function findSelectedVariant(variantInventory, selectedVariantId) {
-  return find(variantInventory, { id: selectedVariantId })
+  return find(variantInventory, { id: selectedVariantId });
 }
 
 function findTotalInventoryQuantity(inventory, variantId) {
-  let selectedVariantFound = findSelectedVariant(inventory, variantId)
+  let selectedVariantFound = findSelectedVariant(inventory, variantId);
 
   if (!selectedVariantFound) {
-    console.warn('WP Shopify warning: could not find selected variant within <ProductBuyButton>')
-    return false
+    console.warn('WP Shopify warning: could not find selected variant within <ProductBuyButton>');
+    return false;
   }
 
   if (!selectedVariantFound.tracked) {
-    return false
+    return false;
   }
 
   if (selectedVariantFound.inventoryPolicy === 'CONTINUE') {
-    return false
+    return false;
   }
-  var totalAvailableQuantity = findInventoryFromVariantId(inventory, selectedVariantFound)
+  var totalAvailableQuantity = findInventoryFromVariantId(inventory, selectedVariantFound);
 
   if (!totalAvailableQuantity) {
-    return false
+    return false;
   }
 
-  return totalAvailableQuantity
+  return totalAvailableQuantity;
 }
 
 function findInventoryFromVariantId(inventory, selectedVariant) {
   if (!inventory) {
-    return false
+    return false;
   }
 
-  let totalAvailableQuantity = findAvailableQuantityByLocations(selectedVariant)
-  let leftInStockTotal = parseInt(wp.hooks.applyFilters('misc.inventory.leftInStock.total', 10))
+  let totalAvailableQuantity = findAvailableQuantityByLocations(selectedVariant);
+  let leftInStockTotal = parseInt(wp.hooks.applyFilters('misc.inventory.leftInStock.total', 10));
 
   if (totalAvailableQuantity > 0 && totalAvailableQuantity < leftInStockTotal) {
-    return totalAvailableQuantity
+    return totalAvailableQuantity;
   } else {
-    return false
+    return false;
   }
 }
 
 function findAvailableQuantityByLocations(variant) {
   if (variant.inventoryLevels.length === 1) {
-    return variant.inventoryLevels[0].node.available
+    return variant.inventoryLevels[0].node.available;
   }
 
   return variant.inventoryLevels.reduce((accumulator, currentValue) => {
-    return accumulator.node.available + currentValue.node.available
-  })
+    return accumulator.node.available + currentValue.node.available;
+  });
 }
 
-export { onlyAvailableOptionsFromVariants, findSelectedVariant, findTotalInventoryQuantity }
+export { onlyAvailableOptionsFromVariants, findSelectedVariant, findTotalInventoryQuantity };

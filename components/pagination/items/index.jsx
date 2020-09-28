@@ -10,7 +10,7 @@ function PaginationItems({ children, payload, payloadSettings, isLoading }) {
   const [paginationState] = useContext(PaginationContext);
 
   const PaginationItemsCSS = css`
-    display: grid;
+    display: ${payloadSettings.carousel ? 'block' : 'grid'};
     grid-template-columns: repeat(${payload.length === 1 ? 1 : payloadSettings.itemsPerRow}, 1fr);
     grid-column-gap: 20px;
     grid-row-gap: ${payloadSettings.isSingleComponent ? '0px' : '40px'};

@@ -1,31 +1,32 @@
 /** @jsx jsx */
-import { jsx, css } from '@emotion/core'
+import { jsx, css } from '@emotion/core';
 
 const bp = {
   small: 600,
   medium: 800,
-}
+  large: 1100,
+};
 
 const mq = (n) => {
-  const bpArray = Object.keys(bp).map((key) => [key, bp[key]])
+  const bpArray = Object.keys(bp).map((key) => [key, bp[key]]);
 
   const [result] = bpArray.reduce((acc, [name, size]) => {
-    if (n === name) return [...acc, `@media (max-width: ${size}px)`]
-    return acc
-  }, [])
+    if (n === name) return [...acc, `@media (max-width: ${size}px)`];
+    return acc;
+  }, []);
 
-  return result
-}
+  return result;
+};
 
 const flexRowCSS = css`
   display: flex;
-`
+`;
 
 const flexColSmallCSS = css`
   ${mq('small')} {
     flex-direction: column;
   }
-`
+`;
 
 const rowCSS = css`
   && {
@@ -48,7 +49,7 @@ const rowCSS = css`
       }
     }
   }
-`
+`;
 
 const containerFluidCSS = css`
   width: 100%;
@@ -56,7 +57,7 @@ const containerFluidCSS = css`
   margin-right: auto;
   margin-left: auto;
   box-sizing: border-box;
-`
+`;
 
 const buttonCSS = css`
   border-radius: 7px;
@@ -95,7 +96,7 @@ const buttonCSS = css`
     outline: none;
     top: auto;
   }
-`
+`;
 
 const IconCSS = css`
   content: '';
@@ -109,6 +110,6 @@ const IconCSS = css`
     width: 100%;
     max-width: 100%;
   }
-`
+`;
 
-export { rowCSS, flexRowCSS, flexColSmallCSS, containerFluidCSS, buttonCSS, IconCSS, mq }
+export { rowCSS, flexRowCSS, flexColSmallCSS, containerFluidCSS, buttonCSS, IconCSS, mq };
