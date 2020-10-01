@@ -27,7 +27,7 @@ function CarouselMapped({ item, childrenItems, payloadSettings }) {
 function PaginationItemsMap({ children, payload, payloadSettings }) {
   const { Suspense } = wp.element;
 
-  return payloadSettings.carousel ? (
+  return payloadSettings.carousel && wpshopify.misc.isPro ? (
     <Suspense fallback={<Placeholder type={payloadSettings.componentType} />}>
       <Carousel payloadSettings={payloadSettings}>
         {payload.map((item) => (

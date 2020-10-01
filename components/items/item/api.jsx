@@ -1,45 +1,45 @@
 import {
   fetchNextPage,
   graphQuery,
-} from '/Users/andrew/www/devil/devilbox-new/data/www/wpshopify-api'
+} from '/Users/andrew/www/devil/devilbox-new/data/www/wpshopify-api';
 
-import to from 'await-to-js'
-import isEmpty from 'lodash/isEmpty'
-import has from 'lodash/has'
+import to from 'await-to-js';
+import isEmpty from 'lodash/isEmpty';
+import has from 'lodash/has';
 
 function sanitizeQueryResponse(response, type) {
   if (type === 'storefront' || type === 'search') {
-    type = 'products'
+    type = 'products';
   }
 
   if (!response.model) {
-    return []
+    return [];
   }
 
-  return response.model[type]
+  return response.model[type];
 }
 
 function resendInitialQuery(state) {
   var originalDataType = has(state.originalParams, 'type')
     ? state.originalParams.type
-    : state.dataType
+    : state.dataType;
   var originalQueryParams = state.originalParams
     ? state.originalParams.queryParams
-    : state.queryParams
+    : state.queryParams;
   var connectionParams = has(state.originalParams, 'connectionParams')
     ? state.originalParams.connectionParams
-    : false
+    : false;
 
-  return graphQuery(originalDataType, originalQueryParams, connectionParams)
+  return graphQuery(originalDataType, originalQueryParams, connectionParams);
 }
 
 function hasNextPageQueryAndPath(payload) {
   if (!payload || isEmpty(payload)) {
-    return false
+    return false;
   }
 
   // Checks if the latest item in the payload has the nextPageQueryAndPath method
-  return has(payload[payload.length - 1], 'nextPageQueryAndPath')
+  return has(payload[payload.length - 1], 'nextPageQueryAndPath');
 }
 
 /*
@@ -50,13 +50,13 @@ Fetch NEXT items
 function fetchNextItems(itemsState, itemsDispatch) {
   return new Promise(async (resolve, reject) => {
     if (isEmpty(itemsState.payload)) {
-      return
+      return;
     }
 
-    itemsDispatch({ type: 'SET_IS_LOADING', payload: true })
+    itemsDispatch({ type: 'SET_IS_LOADING', payload: true });
 
     if (itemsState.beforeLoading) {
-      itemsState.beforeLoading(itemsState)
+      itemsState.beforeLoading(itemsState);
     }
 
     /*
@@ -72,80 +72,83 @@ function fetchNextItems(itemsState, itemsDispatch) {
 
    */
     if (!hasNextPageQueryAndPath(itemsState.payload)) {
-      const [resendInitialError, resendInitialResp] = await to(resendInitialQuery(itemsState))
+      const [resendInitialError, resendInitialResp] = await to(resendInitialQuery(itemsState));
 
       if (resendInitialError) {
         itemsDispatch({
           type: 'UPDATE_NOTICES',
           payload: { type: 'error', message: resendInitialError },
-        })
+        });
 
-        itemsDispatch({ type: 'SET_IS_LOADING', payload: false })
+        itemsDispatch({ type: 'SET_IS_LOADING', payload: false });
 
-        return reject(resendInitialError)
+        return reject(resendInitialError);
       }
 
-      var productsExisting = sanitizeQueryResponse(resendInitialResp, itemsState.dataType)
+      var productsExisting = sanitizeQueryResponse(resendInitialResp, itemsState.dataType);
     } else {
-      var productsExisting = itemsState.payload
+      var productsExisting = itemsState.payload;
     }
 
-    var [resultsError, results] = await to(fetchNextPage(productsExisting))
+    var [resultsError, results] = await to(fetchNextPage(productsExisting));
 
     if (resultsError) {
-      const [initialError, initialResponse] = await to(resendInitialQuery(itemsState))
+      const [initialError, initialResponse] = await to(resendInitialQuery(itemsState));
 
       if (initialError) {
         itemsDispatch({
           type: 'UPDATE_NOTICES',
           payload: { type: 'error', message: initialError },
-        })
-        itemsDispatch({ type: 'SET_IS_LOADING', payload: false })
+        });
+        itemsDispatch({ type: 'SET_IS_LOADING', payload: false });
 
-        return reject(initialError)
+        return reject(initialError);
       } else {
         if (
           itemsState.dataType === 'collections' ||
           itemsState.originalParams.type === 'collections'
         ) {
           if (!itemsState.originalParams) {
-            var nextPayload = sanitizeQueryResponse(initialResponse, itemsState.dataType)
+            var nextPayload = sanitizeQueryResponse(initialResponse, itemsState.dataType);
           } else {
-            var nextPayload = sanitizeQueryResponse(initialResponse, itemsState.originalParams.type)
+            var nextPayload = sanitizeQueryResponse(
+              initialResponse,
+              itemsState.originalParams.type
+            );
 
             if (!nextPayload || !nextPayload.length) {
-              itemsDispatch({ type: 'SET_IS_LOADING', payload: false })
-              return
+              itemsDispatch({ type: 'SET_IS_LOADING', payload: false });
+              return;
             }
 
-            nextPayload = nextPayload[0][itemsState.originalParams.type]
+            nextPayload = nextPayload[0][itemsState.originalParams.type];
           }
         } else {
-          var nextPayload = sanitizeQueryResponse(initialResponse, itemsState.dataType)
+          var nextPayload = sanitizeQueryResponse(initialResponse, itemsState.dataType);
         }
 
-        var [finalResultsError, finalResults] = await to(fetchNextPage(nextPayload))
+        var [finalResultsError, finalResults] = await to(fetchNextPage(nextPayload));
 
         if (finalResultsError) {
           itemsDispatch({
             type: 'UPDATE_NOTICES',
             payload: { type: 'error', message: finalResultsError },
-          })
-          itemsDispatch({ type: 'SET_IS_LOADING', payload: false })
+          });
+          itemsDispatch({ type: 'SET_IS_LOADING', payload: false });
 
-          return reject(initialError)
+          return reject(initialError);
         } else {
-          var nextItems = finalResults.model
+          var nextItems = finalResults.model;
         }
       }
     } else {
-      var nextItems = results.model
+      var nextItems = results.model;
     }
 
     itemsDispatch({
       type: 'UPDATE_TOTAL_SHOWN',
       payload: nextItems.length,
-    })
+    });
 
     itemsDispatch({
       type: 'UPDATE_PAYLOAD',
@@ -154,15 +157,15 @@ function fetchNextItems(itemsState, itemsDispatch) {
         skipCache: true,
         replace: false,
       },
-    })
-    itemsDispatch({ type: 'SET_IS_LOADING', payload: false })
+    });
+    itemsDispatch({ type: 'SET_IS_LOADING', payload: false });
 
     if (itemsState.afterLoading) {
-      itemsState.afterLoading(nextItems)
+      itemsState.afterLoading(nextItems);
     }
 
-    resolve(results)
-  })
+    resolve(results);
+  });
 }
 
-export { fetchNextItems }
+export { fetchNextItems };

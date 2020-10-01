@@ -61,7 +61,7 @@ function Item({ children, limit = false, infiniteScroll = false }) {
     if (hasTemplateName(itemsState.payloadSettings.htmlTemplate)) {
       var resultcache = getCache('wps-template-' + itemsState.payloadSettings.htmlTemplate);
 
-      if (wp.hooks.applyFilters('wpshopify.cache.templates', true) && resultcache) {
+      if (wp.hooks.applyFilters('wpshopify.cache.templates', false) && resultcache) {
         itemsDispatch({
           type: 'UPDATE_HTML_TEMPLATE',
           payload: resultcache,

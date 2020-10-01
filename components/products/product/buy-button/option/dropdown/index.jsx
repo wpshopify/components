@@ -28,6 +28,13 @@ function ProductOptionDropdown({ availableVariants, selectedOptions, missingSele
       *:focus {
         outline: none;
       }
+
+      .tippy-box {
+        border-bottom-left-radius: 5px;
+        border-bottom-right-radius: 5px;
+        border-top-left-radius: 0;
+        border-top-right-radius: 0;
+      }
     }
 
     .tippy-box {
