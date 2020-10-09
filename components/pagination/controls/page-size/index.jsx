@@ -1,73 +1,73 @@
 import {
   graphQuery,
   findLastCursorId,
-} from '/Users/andrew/www/devil/devilbox-new/data/www/wpshopify-api'
-import { PaginationContext } from '../../_state/context'
-import { ItemsContext } from '../../../items/_state/context'
-import { usePortal } from '../../../../common/hooks'
+} from '/Users/andrew/www/devil/devilbox-new/data/www/wpshopify-api';
+import { PaginationContext } from '../../_state/context';
+import { ItemsContext } from '../../../items/_state/context';
+import { usePortal } from '../../../../common/hooks';
 /** @jsx jsx */
-import { jsx, css } from '@emotion/core'
-import to from 'await-to-js'
-const { useContext, useState } = wp.element
+import { jsx, css } from '@emotion/core';
+import to from 'await-to-js';
+const { useContext, useState } = wp.element;
 
 function PaginationPageSize({ isLoading, payloadSettings, queryParams, dataType }) {
-  const [, paginationDispatch] = useContext(PaginationContext)
-  const [, itemsDispatch] = useContext(ItemsContext)
-  const [pageSize, setPageSize] = useState(() => defaultPageSize())
+  const [, paginationDispatch] = useContext(PaginationContext);
+  const [, itemsDispatch] = useContext(ItemsContext);
+  const [pageSize, setPageSize] = useState(() => defaultPageSize());
 
   function defaultPageSize() {
     if (queryParams.first < 10) {
-      return 'DEFAULT'
+      return 'DEFAULT';
     }
 
-    return queryParams.first
+    return queryParams.first;
   }
 
   function updatedFirstQueryParams(event) {
     return {
       first: parseInt(event.target.value),
-    }
+    };
   }
 
   function setLoadingStates(isLoading) {
-    itemsDispatch({ type: 'SET_IS_LOADING', payload: isLoading })
+    itemsDispatch({ type: 'SET_IS_LOADING', payload: isLoading });
   }
 
   function setAfterCursorQueryParams(params) {
-    itemsDispatch({ type: 'MERGE_QUERY_PARAMS', payload: params })
+    itemsDispatch({ type: 'MERGE_QUERY_PARAMS', payload: params });
   }
   function setControlsTouched(touched) {
-    paginationDispatch({ type: 'SET_CONTROLS_TOUCHED', payload: touched })
+    paginationDispatch({ type: 'SET_CONTROLS_TOUCHED', payload: touched });
   }
 
   async function onChange(event) {
-    setControlsTouched(true)
-    setPageSize(event.target.value)
+    setControlsTouched(true);
+    setPageSize(event.target.value);
 
-    let updatedParams = updatedFirstQueryParams(event)
+    let updatedParams = updatedFirstQueryParams(event);
 
-    setAfterCursorQueryParams(updatedParams)
+    setAfterCursorQueryParams(updatedParams);
 
-    setLoadingStates(true)
+    setLoadingStates(true);
 
     // Calls Shopify
-    const [shopifyError, shopifyResponse] = await to(graphQuery(dataType, updatedParams))
+    const [shopifyError, shopifyResponse] = await to(graphQuery(dataType, updatedParams));
 
     if (shopifyError) {
       itemsDispatch({
         type: 'UPDATE_NOTICES',
         payload: { type: 'error', message: shopifyError },
-      })
-      itemsDispatch({ type: 'SET_IS_LOADING', payload: false })
-      return
+      });
+      itemsDispatch({ type: 'SET_IS_LOADING', payload: false });
+      return;
     }
 
-    setAfterCursorQueryParams(findLastCursorId(shopifyResponse, dataType))
+    setAfterCursorQueryParams(findLastCursorId(shopifyResponse, dataType));
 
     itemsDispatch({
       type: 'UPDATE_TOTAL_SHOWN',
       payload: shopifyResponse.model.products.length,
-    })
+    });
 
     itemsDispatch({
       type: 'UPDATE_PAYLOAD',
@@ -76,9 +76,9 @@ function PaginationPageSize({ isLoading, payloadSettings, queryParams, dataType 
         skipCache: true,
         replace: true,
       },
-    })
+    });
 
-    itemsDispatch({ type: 'SET_IS_LOADING', payload: false })
+    itemsDispatch({ type: 'SET_IS_LOADING', payload: false });
   }
 
   const sortingSelectorCSS = css`
@@ -93,7 +93,7 @@ function PaginationPageSize({ isLoading, payloadSettings, queryParams, dataType 
         cursor: not-allowed;
       }
     }
-  `
+  `;
 
   return usePortal(
     <>
@@ -123,7 +123,7 @@ function PaginationPageSize({ isLoading, payloadSettings, queryParams, dataType 
       ) : null}
     </>,
     document.querySelector(payloadSettings.dropzonePageSize)
-  )
+  );
 }
 
-export { PaginationPageSize }
+export { PaginationPageSize };

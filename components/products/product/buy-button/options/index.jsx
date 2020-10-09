@@ -1,5 +1,5 @@
-import ProductVariantDropdowns from '../variant-dropdowns'
-import ProductVariantButtons from '../variant-buttons'
+import ProductVariantDropdowns from '../variant-dropdowns';
+import ProductVariantButtons from '../variant-buttons';
 
 function ProductOptions({
   variantStyle,
@@ -15,16 +15,14 @@ function ProductOptions({
       availableVariants={availableVariants}
       selectedOptions={selectedOptions}
     />
-  ) : (
-    wpshopify.misc.isPro && (
-      <ProductVariantButtons
-        options={availableOptions}
-        missingSelections={missingSelections}
-        availableVariants={availableVariants}
-        selectedOptions={selectedOptions}
-      />
-    )
-  )
+  ) : wpshopify.misc.isPro ? (
+    <ProductVariantButtons
+      options={availableOptions}
+      missingSelections={missingSelections}
+      availableVariants={availableVariants}
+      selectedOptions={selectedOptions}
+    />
+  ) : null;
 }
 
-export default ProductOptions
+export default ProductOptions;
