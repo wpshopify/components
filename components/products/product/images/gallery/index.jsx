@@ -1,46 +1,46 @@
-import has from 'lodash/has'
-import { ProductContext } from '../../_state/context'
-import { ProductGalleryContext } from './_state/context'
-import ProductThumbnailImages from '../thumbnails'
-import { ProductFeaturedImage } from '../featured'
-import { hasLink } from '../../../../../common/settings'
+import has from 'lodash/has';
+import { ProductContext } from '../../_state/context';
+import { ProductGalleryContext } from './_state/context';
+import ProductThumbnailImages from '../thumbnails';
+import { ProductFeaturedImage } from '../featured';
+import { hasLink } from '../../../../../common/settings';
 
-const { useEffect, useContext, useRef } = wp.element
+const { useEffect, useContext, useRef } = wp.element;
 
 function ProductGallery({ payloadSettings }) {
-  const [productState] = useContext(ProductContext)
-  const [galleryState, galleryDispatch] = useContext(ProductGalleryContext)
-  const isFirstRender = useRef(true)
-  const product = productState.payload
+  const [productState] = useContext(ProductContext);
+  const [galleryState, galleryDispatch] = useContext(ProductGalleryContext);
+  const isFirstRender = useRef(true);
+  const product = productState.payload;
 
   function hasManyImages() {
     if (!productState) {
-      return false
+      return false;
     }
 
-    return productState.hasManyImages
+    return productState.hasManyImages;
   }
 
   function isFeaturedOnly() {
     if (hasLink(payloadSettings)) {
-      return true
+      if (payloadSettings.showFeaturedOnly) {
+        return true;
+      } else {
+        return false;
+      }
     }
 
-    if (!has(payloadSettings, 'showFeaturedOnly')) {
-      return false
-    }
-
-    return payloadSettings.showFeaturedOnly
+    return payloadSettings.showFeaturedOnly;
   }
 
   useEffect(() => {
     if (isFirstRender.current) {
-      isFirstRender.current = false
-      return
+      isFirstRender.current = false;
+      return;
     }
 
     if (productState.selectedVariant) {
-      galleryDispatch({ type: 'SET_FEAT_IMAGE', payload: productState.selectedVariant.image })
+      galleryDispatch({ type: 'SET_FEAT_IMAGE', payload: productState.selectedVariant.image });
     } else {
       galleryDispatch({
         type: 'SET_FEAT_IMAGE',
@@ -48,9 +48,9 @@ function ProductGallery({ payloadSettings }) {
           productState.payload && productState.payload.images
             ? productState.payload.images[0]
             : false,
-      })
+      });
     }
-  }, [productState.selectedVariant])
+  }, [productState.selectedVariant]);
 
   return (
     <>
@@ -65,7 +65,7 @@ function ProductGallery({ payloadSettings }) {
         <ProductFeaturedImage payloadSettings={payloadSettings} />
       )}
     </>
-  )
+  );
 }
 
-export { ProductGallery }
+export { ProductGallery };

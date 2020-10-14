@@ -15,6 +15,7 @@ function ProductBuyButton() {
   const { useContext } = wp.element;
   const [itemsState] = useContext(ItemsContext);
   const [productState, productDispatch] = useContext(ProductContext);
+
   const isDirectCheckout =
     itemsState.payloadSettings.directCheckout || wpshopify.settings.general.directCheckout;
 

@@ -139,6 +139,11 @@ function ProductPrice({
 
     &[data-show-price-range='true'] + .wps-product-prices-compare-at {
       margin-top: 10px;
+
+      font-family: ${payloadSettings.pricingFont ? payloadSettings.pricingFont : 'inherit'};
+      font-weight: ${payloadSettings.pricingFontWeight
+        ? payloadSettings.pricingFontWeight
+        : 'inherit'};
     }
   `;
 
