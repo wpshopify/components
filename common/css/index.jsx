@@ -77,6 +77,8 @@ const buttonCSS = css`
   white-space: normal;
   background: #415aff;
   font-size: 18px;
+  outline: none;
+  outline-offset: 0;
 
   ${mq('small')} {
     font-size: 16px;
@@ -88,6 +90,10 @@ const buttonCSS = css`
     border: none;
     box-shadow: none;
     outline: none;
+
+    > svg {
+      opacity: 0.7;
+    }
   }
 
   &:focus {

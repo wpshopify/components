@@ -132,18 +132,61 @@ function ProductPrice({
     line-height: 1;
     margin: 0 15px 0 0;
     display: block;
-    font-family: ${payloadSettings.pricingFont ? payloadSettings.pricingFont : 'inherit'};
-    font-weight: ${payloadSettings.pricingFontWeight
-      ? payloadSettings.pricingFontWeight
+
+    font-family: ${payloadSettings.pricingTypeFontFamily
+      ? payloadSettings.pricingTypeFontFamily
+      : payloadSettings.pricingFont
+      ? payloadSettings.pricingFont
       : 'inherit'};
+    font-weight: ${payloadSettings.pricingTypeFontWeight
+      ? payloadSettings.pricingTypeFontWeight
+      : payloadSettings.pricingFontWeight
+      ? payloadSettings.pricingFontWeight
+      : 'initial'};
+    font-size: ${payloadSettings.pricingTypeFontSize
+      ? payloadSettings.pricingTypeFontSize
+      : 'initial'};
+    letter-spacing: ${payloadSettings.pricingTypeLetterSpacing
+      ? payloadSettings.pricingTypeLetterSpacing
+      : 'initial'};
+    line-height: ${payloadSettings.pricingTypeLineHeight
+      ? payloadSettings.pricingTypeLineHeight
+      : 'initial'};
+    text-decoration: ${payloadSettings.pricingTypeTextDecoration
+      ? payloadSettings.pricingTypeTextDecoration
+      : 'initial'};
+    text-transform: ${payloadSettings.pricingTypeTextTransform
+      ? payloadSettings.pricingTypeTextTransform
+      : 'initial'};
 
     &[data-show-price-range='true'] + .wps-product-prices-compare-at {
       margin-top: 10px;
 
-      font-family: ${payloadSettings.pricingFont ? payloadSettings.pricingFont : 'inherit'};
-      font-weight: ${payloadSettings.pricingFontWeight
-        ? payloadSettings.pricingFontWeight
+      font-family: ${payloadSettings.pricingTypeFontFamily
+        ? payloadSettings.pricingTypeFontFamily
+        : payloadSettings.pricingFont
+        ? payloadSettings.pricingFont
         : 'inherit'};
+      font-weight: ${payloadSettings.pricingTypeFontWeight
+        ? payloadSettings.pricingTypeFontWeight
+        : payloadSettings.pricingFontWeight
+        ? payloadSettings.pricingFontWeight
+        : 'initial'};
+      font-size: ${payloadSettings.pricingTypeFontSize
+        ? payloadSettings.pricingTypeFontSize
+        : 'initial'};
+      letter-spacing: ${payloadSettings.pricingTypeLetterSpacing
+        ? payloadSettings.pricingTypeLetterSpacing
+        : 'initial'};
+      line-height: ${payloadSettings.pricingTypeLineHeight
+        ? payloadSettings.pricingTypeLineHeight
+        : 'initial'};
+      text-decoration: ${payloadSettings.pricingTypeTextDecoration
+        ? payloadSettings.pricingTypeTextDecoration
+        : 'initial'};
+      text-transform: ${payloadSettings.pricingTypeTextTransform
+        ? payloadSettings.pricingTypeTextTransform
+        : 'initial'};
     }
   `;
 
@@ -163,6 +206,7 @@ function ProductPrice({
           currencyCode={currencyCode}
           compareAt={compareAt}
           showPriceRange={showPriceRange}
+          pricingColor={payloadSettings.pricingColor}
         />
       ) : (
         <ProductPriceSingle
@@ -171,6 +215,7 @@ function ProductPrice({
           price={compareAt ? comparePrice : regPrice}
           compareAt={compareAt}
           showPriceRange={showPriceRange}
+          pricingColor={payloadSettings.pricingColor}
         />
       )}
     </span>

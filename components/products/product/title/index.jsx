@@ -16,13 +16,28 @@ function ProductTitle() {
 
   const titleStyles = css`
     && {
-      font-size: ${itemsState.payloadSettings.titleSize};
-      font-family: ${itemsState.payloadSettings.titleFont
-        ? itemsState.payloadSettings.titleFont
+      font-family: ${itemsState.payloadSettings.titleTypeFontFamily
+        ? itemsState.payloadSettings.titleTypeFontFamily
         : 'inherit'};
-      font-weight: ${itemsState.payloadSettings.titleFontWeight
-        ? itemsState.payloadSettings.titleFontWeight
-        : 'inherit'};
+      font-weight: ${itemsState.payloadSettings.titleTypeFontWeight
+        ? itemsState.payloadSettings.titleTypeFontWeight
+        : 'initial'};
+      font-size: ${itemsState.payloadSettings.titleTypeFontSize
+        ? itemsState.payloadSettings.titleTypeFontSize
+        : itemsState.payloadSettings.titleSize};
+      letter-spacing: ${itemsState.payloadSettings.titleTypeLetterSpacing
+        ? itemsState.payloadSettings.titleTypeLetterSpacing
+        : 'initial'};
+      line-height: ${itemsState.payloadSettings.titleTypeLineHeight
+        ? itemsState.payloadSettings.titleTypeLineHeight
+        : 'initial'};
+      text-decoration: ${itemsState.payloadSettings.titleTypeTextDecoration
+        ? itemsState.payloadSettings.titleTypeTextDecoration
+        : 'initial'};
+      text-transform: ${itemsState.payloadSettings.titleTypeTextTransform
+        ? itemsState.payloadSettings.titleTypeTextTransform
+        : 'initial'};
+
       color: ${itemsState.payloadSettings.titleColor};
       white-space: normal;
       margin: 0;

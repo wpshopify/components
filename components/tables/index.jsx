@@ -1,5 +1,5 @@
 /** @jsx jsx */
-import { jsx, css, keyframes } from '@emotion/core'
+import { jsx, css, keyframes } from '@emotion/core';
 
 function Table({ children, extraCSS }) {
   const slide = keyframes`
@@ -11,7 +11,7 @@ function Table({ children, extraCSS }) {
       100% {
          transform: translateX(0);
          opacity: 1;
-      }`
+      }`;
 
   const stylesTable = {
     width: '100%',
@@ -19,14 +19,14 @@ function Table({ children, extraCSS }) {
     borderCollapse: 'collapse',
     borderSpacing: 0,
     opacity: 1,
-    animation: slide + ' 0.3s ease'
-  }
+    animation: slide + ' 0.3s ease',
+  };
 
   return (
     <table css={[stylesTable, extraCSS]} className='wpshopify-table'>
       {children}
     </table>
-  )
+  );
 }
 
-export { Table }
+export { Table };

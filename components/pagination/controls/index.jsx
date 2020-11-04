@@ -1,8 +1,8 @@
 /** @jsx jsx */
-import { jsx, css } from '@emotion/core'
-import { PaginationPageSize } from './page-size'
-import PaginationLoadMore from './load-more'
-import { containerFluidCSS } from '../../../common/css'
+import { jsx, css } from '@emotion/core';
+import { PaginationPageSize } from './page-size';
+import PaginationLoadMore from './load-more';
+import { containerFluidCSS } from '../../../common/css';
 
 function PaginationControls({
   payloadSettings,
@@ -16,7 +16,8 @@ function PaginationControls({
     margin-top: 60px;
     margin-bottom: 60px;
     text-align: center;
-  `
+    display: block;
+  `;
 
   return (
     <section className='wps-pagination-controls' css={[containerFluidCSS, paginationControlsCSS]}>
@@ -33,7 +34,7 @@ function PaginationControls({
         onNextPage={onNextPage}
       />
     </section>
-  )
+  );
 }
 
-export default wp.element.memo(PaginationControls)
+export default wp.element.memo(PaginationControls);

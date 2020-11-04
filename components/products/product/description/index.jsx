@@ -14,13 +14,36 @@ function ProductDescription() {
 
   const ProductDescriptionCSS = css`
     color: ${itemsState.payloadSettings.descriptionColor};
-    font-size: ${itemsState.payloadSettings.descriptionSize};
-    font-family: ${itemsState.payloadSettings.descriptionFont
+
+    font-family: ${itemsState.payloadSettings.descriptionTypeFontFamily
+      ? itemsState.payloadSettings.descriptionTypeFontFamily
+      : itemsState.payloadSettings.descriptionFont
       ? itemsState.payloadSettings.descriptionFont
       : 'inherit'};
-    font-weight: ${itemsState.payloadSettings.descriptionFontWeight
+
+    font-weight: ${itemsState.payloadSettings.descriptionTypeFontWeight
+      ? itemsState.payloadSettings.descriptionTypeFontWeight
+      : itemsState.payloadSettings.descriptionFontWeight
       ? itemsState.payloadSettings.descriptionFontWeight
-      : 'inherit'};
+      : 'initial'};
+
+    font-size: ${itemsState.payloadSettings.descriptionTypeFontSize
+      ? itemsState.payloadSettings.descriptionTypeFontSize
+      : itemsState.payloadSettings.descriptionSize};
+
+    letter-spacing: ${itemsState.payloadSettings.descriptionTypeLetterSpacing
+      ? itemsState.payloadSettings.descriptionTypeLetterSpacing
+      : 'initial'};
+    line-height: ${itemsState.payloadSettings.descriptionTypeLineHeight
+      ? itemsState.payloadSettings.descriptionTypeLineHeight
+      : 'initial'};
+    text-decoration: ${itemsState.payloadSettings.descriptionTypeTextDecoration
+      ? itemsState.payloadSettings.descriptionTypeTextDecoration
+      : 'initial'};
+    text-transform: ${itemsState.payloadSettings.descriptionTypeTextTransform
+      ? itemsState.payloadSettings.descriptionTypeTextTransform
+      : 'initial'};
+
     margin-bottom: ${itemsState.payloadSettings.isSingleComponent ? '0px' : '20px'};
 
     p:first-of-type {

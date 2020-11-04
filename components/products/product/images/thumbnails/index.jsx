@@ -1,14 +1,14 @@
-import ProductThumbnailImage from '../thumbnail'
-import { doFeaturedSizing } from '../../../../../common/images'
-import { v4 as uuidv4 } from 'uuid'
-import isEmpty from 'lodash/isEmpty'
+import ProductThumbnailImage from '../thumbnail';
+import { doFeaturedSizing } from '../../../../../common/images';
+import { v4 as uuidv4 } from 'uuid';
+import isEmpty from 'lodash/isEmpty';
 
 /** @jsx jsx */
-import { jsx, css } from '@emotion/core'
+import { jsx, css } from '@emotion/core';
 
 function ProductThumbnailImages({ product, payloadSettings }) {
-  const { useState } = wp.element
-  const [didPreload, setDidPreload] = useState(false)
+  const { useState } = wp.element;
+  const [didPreload, setDidPreload] = useState(false);
 
   const thumbnailsWrapperCSS = css`
     display: grid;
@@ -17,17 +17,18 @@ function ProductThumbnailImages({ product, payloadSettings }) {
     grid-column-gap: 15px;
     grid-row-gap: 0px;
     margin-top: 12px;
-  `
+    max-width: 410px;
+  `;
 
   function hasImages() {
-    return product && !isEmpty(product.images)
+    return product && !isEmpty(product.images);
   }
 
   function onMouseEnter() {
     if (!didPreload) {
-      product.images.map((img) => (new Image().src = doFeaturedSizing(img.src)))
+      product.images.map((img) => (new Image().src = doFeaturedSizing(img.src)));
 
-      setDidPreload(true)
+      setDidPreload(true);
     }
   }
 
@@ -37,7 +38,7 @@ function ProductThumbnailImages({ product, payloadSettings }) {
         <ProductThumbnailImage key={uuidv4()} image={image} payloadSettings={payloadSettings} />
       ))}
     </div>
-  ) : null
+  ) : null;
 }
 
-export default wp.element.memo(ProductThumbnailImages)
+export default wp.element.memo(ProductThumbnailImages);

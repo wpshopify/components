@@ -12,7 +12,7 @@ function PaginationItems({ children, payload, payloadSettings, isLoading }) {
   const PaginationItemsCSS = css`
     display: ${payloadSettings.carousel && wpshopify.misc.isPro ? 'block' : 'grid'};
     grid-template-columns: repeat(${payload.length === 1 ? 1 : payloadSettings.itemsPerRow}, 1fr);
-    grid-column-gap: 20px;
+    grid-column-gap: ${payloadSettings.gridColumnGap ? payloadSettings.gridColumnGap : '20px'};
     grid-row-gap: ${payloadSettings.isSingleComponent ? '0px' : '40px'};
     max-width: ${payloadSettings.dataType === 'collections' || payloadSettings.fullWidth
       ? '100%'

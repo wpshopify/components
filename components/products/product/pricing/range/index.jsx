@@ -1,8 +1,8 @@
-import ProductPriceSingle from '../single'
-import ProductPricingRangeGroup from './group'
+import ProductPriceSingle from '../single';
+import ProductPricingRangeGroup from './group';
 
 /** @jsx jsx */
-import { jsx, css } from '@emotion/core'
+import { jsx, css } from '@emotion/core';
 
 function ProductPricingRange({
   firstPrice,
@@ -11,6 +11,7 @@ function ProductPricingRange({
   currencyCode,
   compareAt,
   showPriceRange,
+  pricingColor,
 }) {
   const showPriceRangeStyles = css`
     margin-top: 0;
@@ -19,7 +20,7 @@ function ProductPricingRange({
     align-items: baseline;
     height: 100%;
     line-height: 1;
-  `
+  `;
 
   return (
     <span className='wps-pricing-range-wrapper' css={showPriceRangeStyles}>
@@ -29,6 +30,7 @@ function ProductPricingRange({
           price={firstPrice}
           currencyCode={currencyCode}
           compareAt={compareAt}
+          pricingColor={pricingColor}
         />
       ) : (
         <ProductPricingRangeGroup
@@ -37,10 +39,11 @@ function ProductPricingRange({
           currencyCode={currencyCode}
           compareAt={compareAt}
           showPriceRange={showPriceRange}
+          pricingColor={pricingColor}
         />
       )}
     </span>
-  )
+  );
 }
 
-export default wp.element.memo(ProductPricingRange)
+export default wp.element.memo(ProductPricingRange);

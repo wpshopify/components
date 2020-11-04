@@ -1,44 +1,44 @@
-import { CartContext } from '../../_state/context'
-import { CartButtonContext } from '../button/_state/context'
-import { Loader } from '../../../loader'
-import { findTotalCartQuantities } from '../../../../common/cart'
+import { CartContext } from '../../_state/context';
+import { CartButtonContext } from '../button/_state/context';
+import { Loader } from '../../../loader';
+import { findTotalCartQuantities } from '../../../../common/cart';
 
 /** @jsx jsx */
-import { jsx, css } from '@emotion/core'
+import { jsx, css } from '@emotion/core';
 
-const { useContext, useState, useRef, useEffect } = wp.element
+const { useContext, useState, useRef, useEffect } = wp.element;
 
 function CartCounter() {
-  const [cartState, cartDispatch] = useContext(CartContext)
+  const [cartState, cartDispatch] = useContext(CartContext);
   const [totalItems, setTotalItems] = useState(() =>
     findTotalCartQuantities(cartState.checkoutCache.lineItems)
-  )
-  const [cartButtonState] = useContext(CartButtonContext)
-  const element = useRef()
+  );
+  const [cartButtonState] = useContext(CartButtonContext);
+  const element = useRef();
 
   useEffect(() => {
-    const total = findTotalCartQuantities(cartState.checkoutCache.lineItems)
+    const total = findTotalCartQuantities(cartState.checkoutCache.lineItems);
 
-    setTotalItems(total)
-  }, [cartState.totalLineItems])
+    setTotalItems(total);
+  }, [cartState.totalLineItems]);
 
   function getColor() {
     if (cartButtonState.payloadSettings.type === 'fixed') {
-      return cartButtonState.payloadSettings.fixedCounterColor
+      return cartButtonState.payloadSettings.fixedCounterColor;
     }
 
     if (cartButtonState.payloadSettings.type === 'inline') {
-      return cartButtonState.payloadSettings.inlineCartCounterTextColor
+      return cartButtonState.payloadSettings.inlineCartCounterTextColor;
     }
   }
 
   function getBackgroundColor() {
     if (cartButtonState.payloadSettings.type === 'fixed') {
-      return cartButtonState.payloadSettings.fixedBackgroundColor
+      return cartButtonState.payloadSettings.fixedBackgroundColor;
     }
 
     if (cartButtonState.payloadSettings.type === 'inline') {
-      return cartButtonState.payloadSettings.inlineBackgroundColor
+      return cartButtonState.payloadSettings.inlineBackgroundColor;
     }
   }
 
@@ -62,11 +62,11 @@ function CartCounter() {
     padding: ${totalItems > 9 ? '1px 1px 0px 0px' : '1px 0px 0px 0px;'};
     font-weight: bold;
     overflow: ${cartButtonState.payloadSettings.type === 'fixed' ? 'visible' : 'hidden'};
-  `
+  `;
   const customCounterCSS = css`
     background-color: ${getBackgroundColor()};
     color: ${getColor()};
-  `
+  `;
 
   const counterTextCSS = css`
     display: block;
@@ -78,7 +78,7 @@ function CartCounter() {
     line-height: 1;
     overflow: hidden;
     max-height: 17px;
-  `
+  `;
 
   return (
     <span css={[counterCSS, customCounterCSS]} className='wps-cart-counter' ref={element}>
@@ -86,7 +86,7 @@ function CartCounter() {
         {!cartState.isCartReady ? <Loader isLoading={true} /> : totalItems}
       </span>
     </span>
-  )
+  );
 }
 
-export { CartCounter }
+export { CartCounter };

@@ -1,6 +1,6 @@
-import ProductPriceSingle from '../../single'
-import ProductPriceFrom from '../../from'
-import { ProductPricingSeparator } from '../../separator'
+import ProductPriceSingle from '../../single';
+import ProductPriceFrom from '../../from';
+import { ProductPricingSeparator } from '../../separator';
 
 function ProductPricingRangeGroup({
   firstPrice,
@@ -8,6 +8,7 @@ function ProductPricingRangeGroup({
   currencyCode,
   compareAt,
   showPriceRange,
+  pricingColor,
 }) {
   return (
     <>
@@ -17,6 +18,7 @@ function ProductPricingRangeGroup({
         compareAt={compareAt}
         currencyCode={currencyCode}
         showPriceRange={showPriceRange}
+        pricingColor={pricingColor}
       />
       <ProductPricingSeparator />
       <ProductPriceSingle
@@ -24,9 +26,10 @@ function ProductPricingRangeGroup({
         compareAt={compareAt}
         currencyCode={currencyCode}
         showPriceRange={showPriceRange}
+        pricingColor={pricingColor}
       />
     </>
-  )
+  );
 }
 
-export default wp.element.memo(ProductPricingRangeGroup)
+export default wp.element.memo(ProductPricingRangeGroup);

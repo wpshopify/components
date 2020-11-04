@@ -78,8 +78,7 @@ function AddButton({
   quantity,
   selectedOptions,
   payload,
-  font,
-  fontWeight,
+  payloadSettings,
 }) {
   const [isCheckingOut, setIsCheckingOut] = useState(false);
   const [hasNotice, setHasNotice] = useState(false);
@@ -93,8 +92,27 @@ function AddButton({
   }, [allOptionsSelected]);
 
   const addToCartCSS = css`
-    font-family: ${font ? font : 'inherit'};
-    font-weight: ${fontWeight ? fontWeight : 'inherit'};
+    font-family: ${payloadSettings.addToCartButtonTypeFontFamily
+      ? payloadSettings.addToCartButtonTypeFontFamily
+      : 'inherit'};
+    font-weight: ${payloadSettings.addToCartButtonTypeFontWeight
+      ? payloadSettings.addToCartButtonTypeFontWeight
+      : 'initial'};
+    font-size: ${payloadSettings.addToCartButtonTypeFontSize
+      ? payloadSettings.addToCartButtonTypeFontSize
+      : 'initial'};
+    letter-spacing: ${payloadSettings.addToCartButtonTypeLetterSpacing
+      ? payloadSettings.addToCartButtonTypeLetterSpacing
+      : 'initial'};
+    line-height: ${payloadSettings.addToCartButtonTypeLineHeight
+      ? payloadSettings.addToCartButtonTypeLineHeight
+      : 'initial'};
+    text-decoration: ${payloadSettings.addToCartButtonTypeTextDecoration
+      ? payloadSettings.addToCartButtonTypeTextDecoration
+      : 'initial'};
+    text-transform: ${payloadSettings.addToCartButtonTypeTextTransform
+      ? payloadSettings.addToCartButtonTypeTextTransform
+      : 'initial'};
     overflow-y: hidden;
 
     && {
@@ -295,8 +313,7 @@ function ProductAddButton({
   allOptionsSelected,
   quantity,
   selectedOptions,
-  font,
-  fontWeight,
+  payloadSettings,
 }) {
   return (
     <div className='wps-component wps-component-products-add-button wps-btn-wrapper'>
@@ -322,8 +339,7 @@ function ProductAddButton({
           quantity={quantity}
           selectedOptions={selectedOptions}
           payload={payload}
-          font={font}
-          fontWeight={fontWeight}
+          payloadSettings={payloadSettings}
         />
       </AddButtonWrapper>
 

@@ -31,6 +31,7 @@ function CartLineItemQuantity({
 }) {
   const [cartState, cartDispatch] = useContext(CartContext);
   const animeFadeInRightSlow = useAnime(fadeInRightSlow);
+  console.log('lineItem', lineItem);
 
   const maxQuantity = wp.hooks.applyFilters('cart.lineItems.maxQuantity', false, cartState);
   const minQuantity = wp.hooks.applyFilters('cart.lineItems.minQuantity', false, cartState);
@@ -195,6 +196,8 @@ function CartLineItemQuantity({
     border: 1px solid #ddd;
     width: 35px;
     height: 35px;
+    outline: none;
+    outline-offset: 0;
 
     &:hover {
       background: #f5f5f5;

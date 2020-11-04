@@ -69,8 +69,7 @@ function ProductBuyButton() {
             />
           )}
           <ProductAddButton
-            font={itemsState.payloadSettings.addToCartButtonFont}
-            fontWeight={itemsState.payloadSettings.addToCartButtonFontWeight}
+            payloadSettings={itemsState.payloadSettings}
             addedToCart={productState.addedToCart}
             isTouched={productState.isTouched}
             hasLink={productState.hasLink}

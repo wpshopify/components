@@ -42,7 +42,9 @@ function ProductVariantsDropdown({
       max-width: 100%;
       border-bottom-left-radius: 5px;
       border-bottom-right-radius: 5px;
-      overflow: hidden;
+      overflow-x: hidden;
+      overflow-y: scroll;
+      max-height: 400px;
     }
   `;
 

@@ -77,6 +77,10 @@ function findInventoryFromVariantId(inventory, selectedVariant) {
   let totalAvailableQuantity = findAvailableQuantityByLocations(selectedVariant);
   let leftInStockTotal = parseInt(wp.hooks.applyFilters('misc.inventory.leftInStock.total', 10));
 
+  if (totalAvailableQuantity === false || leftInStockTotal === false) {
+    return false;
+  }
+
   if (totalAvailableQuantity > 0 && totalAvailableQuantity < leftInStockTotal) {
     return totalAvailableQuantity;
   } else {
@@ -85,11 +89,23 @@ function findInventoryFromVariantId(inventory, selectedVariant) {
 }
 
 function findAvailableQuantityByLocations(variant) {
+  if (!variant) {
+    return false;
+  }
+
+  if (variant.inventoryLevels.length === 0) {
+    return false;
+  }
+
   if (variant.inventoryLevels.length === 1) {
     return variant.inventoryLevels[0].node.available;
   }
 
   return variant.inventoryLevels.reduce((accumulator, currentValue) => {
+    if (!accumulator.node) {
+      return accumulator;
+    }
+
     return accumulator.node.available + currentValue.node.available;
   });
 }

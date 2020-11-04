@@ -1,10 +1,10 @@
 /** @jsx jsx */
-import { jsx, css } from '@emotion/core'
-import { mq } from '../../../common/css'
+import { jsx, css } from '@emotion/core';
+import { mq } from '../../../common/css';
 
 function CartClose({ cartDispatch }) {
   function onClose(e) {
-    cartDispatch({ type: 'TOGGLE_CART', payload: false })
+    cartDispatch({ type: 'TOGGLE_CART', payload: false });
   }
 
   const CartCloseButtonCSS = css`
@@ -23,6 +23,8 @@ function CartClose({ cartDispatch }) {
     font-size: 36px;
     text-align: center;
     white-space: normal;
+    outline: none;
+    outline-offset: 0;
 
     &:hover {
       opacity: 0.5;
@@ -52,7 +54,7 @@ function CartClose({ cartDispatch }) {
         font-size: 47px;
       }
     }
-  `
+  `;
 
   return (
     <button
@@ -62,7 +64,7 @@ function CartClose({ cartDispatch }) {
       onClick={onClose}>
       <span className='wps-modal-close-trigger'>×</span>
     </button>
-  )
+  );
 }
 
-export { CartClose }
+export { CartClose };

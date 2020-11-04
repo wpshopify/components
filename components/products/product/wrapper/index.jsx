@@ -1,19 +1,19 @@
 /** @jsx jsx */
-import { jsx, css } from '@emotion/core'
-import { ProductContext } from '../_state/context'
-import { isShowingComponent } from '../../../../common/components'
-import { ErrorBoundary } from 'react-error-boundary'
-import ProductTitle from '../title'
-import ProductPricing from '../pricing'
-import ProductDescription from '../description'
-import ProductImages from '../images'
-import ProductBuyButton from '../buy-button'
-import ErrorFallback from '../../../error-fallback'
-import ProductCustomTemplate from '../template'
+import { jsx, css } from '@emotion/core';
+import { ProductContext } from '../_state/context';
+import { isShowingComponent } from '../../../../common/components';
+import { ErrorBoundary } from 'react-error-boundary';
+import ProductTitle from '../title';
+import ProductPricing from '../pricing';
+import ProductDescription from '../description';
+import ProductImages from '../images';
+import ProductBuyButton from '../buy-button';
+import ErrorFallback from '../../../error-fallback';
+import ProductCustomTemplate from '../template';
 
 function ProductWrapper({ payloadSettings }) {
-  const { useContext } = wp.element
-  const [productState, productDispatch] = useContext(ProductContext)
+  const { useContext } = wp.element;
+  const [productState, productDispatch] = useContext(ProductContext);
 
   const ProductWrapperCSS = css`
     padding: 0;
@@ -25,16 +25,16 @@ function ProductWrapper({ payloadSettings }) {
     > div:nth-last-of-type(2) {
       flex: ${isAlignHeight() ? '1' : 'none'};
     }
-  `
+  `;
 
   function onMouseOver() {
     if (!productState.isTouched) {
-      productDispatch({ type: 'SET_IS_TOUCHED', payload: true })
+      productDispatch({ type: 'SET_IS_TOUCHED', payload: true });
     }
   }
 
   function isAlignHeight() {
-    return wpshopify.settings.general.alignHeight || payloadSettings.alignHeight
+    return wpshopify.settings.general.alignHeight || payloadSettings.alignHeight;
   }
 
   return (
@@ -69,7 +69,7 @@ function ProductWrapper({ payloadSettings }) {
         </>
       )}
     </div>
-  )
+  );
 }
 
-export { ProductWrapper }
+export { ProductWrapper };
