@@ -31,11 +31,25 @@ function CartLineItemQuantity({
 }) {
   const [cartState, cartDispatch] = useContext(CartContext);
   const animeFadeInRightSlow = useAnime(fadeInRightSlow);
-  console.log('lineItem', lineItem);
 
-  const maxQuantity = wp.hooks.applyFilters('cart.lineItems.maxQuantity', false, cartState);
-  const minQuantity = wp.hooks.applyFilters('cart.lineItems.minQuantity', false, cartState);
-  const customStep = wp.hooks.applyFilters('cart.lineItems.quantityStep', false, cartState);
+  const maxQuantity = wp.hooks.applyFilters(
+    'cart.lineItems.maxQuantity',
+    false,
+    cartState,
+    lineItem
+  );
+  const minQuantity = wp.hooks.applyFilters(
+    'cart.lineItems.minQuantity',
+    false,
+    cartState,
+    lineItem
+  );
+  const customStep = wp.hooks.applyFilters(
+    'cart.lineItems.quantityStep',
+    false,
+    cartState,
+    lineItem
+  );
 
   const inputStyles = css`
     input::-webkit-outer-spin-button,
