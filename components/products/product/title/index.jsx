@@ -6,7 +6,7 @@ import { Link } from '../../../link';
 import { hasLink } from '../../../../common/settings';
 
 /** @jsx jsx */
-import { jsx, css } from '@emotion/core';
+import { jsx, css } from '@emotion/react';
 
 const { useContext } = wp.element;
 

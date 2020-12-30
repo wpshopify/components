@@ -1,13 +1,13 @@
 /** @jsx jsx */
-import { jsx, css } from '@emotion/core'
-import { FilterHook } from '../../../common/utils'
+import { jsx, css } from '@emotion/react';
+import { FilterHook } from '../../../common/utils';
 
 function StorefrontFilter({ heading, children }) {
-  const { useState } = wp.element
-  const [drawerToggle, setDrawerToggle] = useState(() => false)
+  const { useState } = wp.element;
+  const [drawerToggle, setDrawerToggle] = useState(() => false);
 
   function toggleDrawer() {
-    setDrawerToggle(!drawerToggle)
+    setDrawerToggle(!drawerToggle);
   }
 
   const filterHeadingCSS = css`
@@ -23,7 +23,7 @@ function StorefrontFilter({ heading, children }) {
       cursor: pointer;
       background-color: #d1d1d1;
     }
-  `
+  `;
 
   const drawerIconCSS = css`
     position: absolute;
@@ -57,16 +57,16 @@ function StorefrontFilter({ heading, children }) {
       height: 3px;
       margin-top: -1px;
     }
-  `
+  `;
 
   const FilterCSS = css`
     margin-bottom: 5px;
-  `
+  `;
 
   const drawerContentCSS = css`
     max-height: ${drawerToggle ? '350px' : '0'};
     overflow: ${drawerToggle ? 'scroll' : 'hidden'};
-  `
+  `;
 
   return (
     <div className='wps-filter' css={FilterCSS} data-wps-drawer-toggle={drawerToggle}>
@@ -81,7 +81,7 @@ function StorefrontFilter({ heading, children }) {
         {children}
       </div>
     </div>
-  )
+  );
 }
 
-export { StorefrontFilter }
+export { StorefrontFilter };

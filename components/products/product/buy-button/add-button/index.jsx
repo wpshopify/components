@@ -1,5 +1,5 @@
 /** @jsx jsx */
-import { jsx, css } from '@emotion/core';
+import { jsx, css } from '@emotion/react';
 import ProductBuyButtonLeftInStock from '../left-in-stock';
 import { Loader } from '../../../../loader';
 import { useAnime, pulse, fadeInBottomSlow } from '../../../../../common/animations';
@@ -213,14 +213,20 @@ function AddButton({
     } else {
       let addToCartParams = buildAddToCartParams(lineItems, [variant]);
 
-      productDispatch({
-        type: 'SET_ALL_SELECTED_OPTIONS',
-        payload: false,
-      });
+      const resetAfter = wp.hooks.applyFilters('product.buyButton.resetVariantsAfterAdding', true);
 
-      productDispatch({ type: 'REMOVE_SELECTED_OPTIONS' });
-      productDispatch({ type: 'SET_ADDED_VARIANT', payload: variant });
-      productDispatch({ type: 'SET_SELECTED_VARIANT', payload: false });
+      if (resetAfter) {
+        productDispatch({
+          type: 'SET_ALL_SELECTED_OPTIONS',
+          payload: false,
+        });
+
+        productDispatch({ type: 'REMOVE_SELECTED_OPTIONS' });
+
+        productDispatch({ type: 'SET_ADDED_VARIANT', payload: variant });
+        productDispatch({ type: 'SET_SELECTED_VARIANT', payload: false });
+      }
+
       productDispatch({ type: 'SET_MISSING_SELECTIONS', payload: false });
 
       wp.hooks.doAction('cart.toggle', 'open');

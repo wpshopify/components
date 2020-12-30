@@ -1,15 +1,15 @@
 /** @jsx jsx */
-import { jsx, css } from '@emotion/core'
-import { StorefrontSelectionsValues } from './values'
-import { StorefrontContext } from '../_state/context'
-import { getSelectionTypes } from '../../../common/selections'
-import { FilterHook } from '../../../common/utils'
-import isEmpty from 'lodash/isEmpty'
+import { jsx, css } from '@emotion/react';
+import { StorefrontSelectionsValues } from './values';
+import { StorefrontContext } from '../_state/context';
+import { getSelectionTypes } from '../../../common/selections';
+import { FilterHook } from '../../../common/utils';
+import isEmpty from 'lodash/isEmpty';
 
-const { useContext } = wp.element
+const { useContext } = wp.element;
 
 function StorefrontSelectionsType({ selectionType }) {
-  const [storefrontState] = useContext(StorefrontContext)
+  const [storefrontState] = useContext(StorefrontContext);
 
   const selectionTypeHeadingCSS = css`
     min-width: 75px;
@@ -18,15 +18,15 @@ function StorefrontSelectionsType({ selectionType }) {
     text-transform: capitalize;
     display: flex;
     align-items: center;
-  `
+  `;
 
   const filterSelectionTypeCSS = css`
     margin-top: 10px;
-  `
+  `;
 
   const filterSelectionGroupCSS = css`
     display: flex;
-  `
+  `;
 
   return !isEmpty(storefrontState.selections[selectionType]) ? (
     <div className='wps-filter-selection-type' css={filterSelectionTypeCSS}>
@@ -43,17 +43,17 @@ function StorefrontSelectionsType({ selectionType }) {
         />
       </div>
     </div>
-  ) : null
+  ) : null;
 }
 
 function StorefrontSelectionsTypes() {
-  const [storefrontState] = useContext(StorefrontContext)
+  const [storefrontState] = useContext(StorefrontContext);
 
-  const selectionTypes = getSelectionTypes(storefrontState.selections)
+  const selectionTypes = getSelectionTypes(storefrontState.selections);
 
   return selectionTypes.map((selectionType, index) => (
     <StorefrontSelectionsType key={index} selectionType={selectionType} />
-  ))
+  ));
 }
 
-export { StorefrontSelectionsTypes }
+export { StorefrontSelectionsTypes };

@@ -1,5 +1,5 @@
 /** @jsx jsx */
-import { jsx, css, keyframes } from '@emotion/core'
+import { jsx, css, keyframes } from '@emotion/react';
 
 function SearchPlaceholder() {
   const shimmer = keyframes`
@@ -10,7 +10,7 @@ function SearchPlaceholder() {
       100% {
         background-position: 468px 0;
       }
-`
+`;
 
   const loader = css`
     transition: background 1s ease;
@@ -25,13 +25,13 @@ function SearchPlaceholder() {
     min-height: 50px;
     width: 100%;
     max-width: 300px;
-  `
+  `;
 
   const title = css`
     max-width: 100%;
-  `
+  `;
 
-  return <div css={[loader, title]}></div>
+  return <div css={[loader, title]}></div>;
 }
 
-export default SearchPlaceholder
+export default SearchPlaceholder;

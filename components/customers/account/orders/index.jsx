@@ -1,27 +1,27 @@
-import { Order } from './order'
-import { CustomersContext } from '../../_state/context'
-import { OrderDetails } from './details'
-import { v4 as uuidv4 } from 'uuid'
-import ContentLoader from 'react-content-loader'
-import isEmpty from 'lodash/isEmpty'
+import { Order } from './order';
+import { CustomersContext } from '../../_state/context';
+import { OrderDetails } from './details';
+import { v4 as uuidv4 } from 'uuid';
+import ContentLoader from 'react-content-loader';
+import isEmpty from 'lodash/isEmpty';
 
-import { Table } from '../../../tables'
-import { TableHeader } from '../../../tables/header'
-import { Th } from '../../../tables/header/th'
-import { TableBody } from '../../../tables/body'
+import { Table } from '../../../tables';
+import { TableHeader } from '../../../tables/header';
+import { Th } from '../../../tables/header/th';
+import { TableBody } from '../../../tables/body';
 
 /** @jsx jsx */
-import { jsx, css } from '@emotion/core'
+import { jsx, css } from '@emotion/react';
 
-const { useContext, useEffect, useState } = wp.element
+const { useContext, useEffect, useState } = wp.element;
 
 function Orders() {
-  const [customerState, customerDispatch] = useContext(CustomersContext)
-  const [hasEmptyOrders, setHasEmptyOrder] = useState(() => false)
+  const [customerState, customerDispatch] = useContext(CustomersContext);
+  const [hasEmptyOrders, setHasEmptyOrder] = useState(() => false);
 
   const stylesOrders = {
     width: '65%',
-  }
+  };
 
   function hasOrders() {
     if (
@@ -29,17 +29,17 @@ function Orders() {
       isEmpty(customerState.customer.orders) ||
       isEmpty(customerState.customer.orders.edges)
     ) {
-      return false
+      return false;
     }
 
-    return true
+    return true;
   }
 
   useEffect(() => {
     if (!hasOrders()) {
-      setHasEmptyOrder(true)
+      setHasEmptyOrder(true);
     }
-  }, [])
+  }, []);
 
   return (
     <section css={stylesOrders}>
@@ -83,7 +83,7 @@ function Orders() {
       )}
       {customerState.onInnerPage && <OrderDetails />}
     </section>
-  )
+  );
 }
 
-export { Orders }
+export { Orders };

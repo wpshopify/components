@@ -1,7 +1,7 @@
-import update from 'immutability-helper'
-import { findVariantFromSelectedOptions } from '/Users/andrew/www/devil/devilbox-new/data/www/wpshopify-api'
-import { filterAvailableVariantsBySelectedOption } from '../../../../common/products'
-import { updateNoticesState } from '../../../../common/state'
+import update from 'immutability-helper';
+import { findVariantFromSelectedOptions } from '/Users/andrew/www/devil/devilbox-new/data/www/wpshopify-api';
+import { filterAvailableVariantsBySelectedOption } from '../../../../common/products';
+import { updateNoticesState } from '../../../../common/state';
 
 function ProductReducer(state, action) {
   switch (action.type) {
@@ -10,7 +10,7 @@ function ProductReducer(state, action) {
         return {
           ...state,
           selectedVariant: false,
-        }
+        };
       }
 
       return {
@@ -19,14 +19,7 @@ function ProductReducer(state, action) {
           action.payload.payload,
           action.payload.selectedOptions
         ),
-      }
-    }
-
-    case 'SET_HAS_MANY_IMAGES': {
-      return {
-        ...state,
-        hasManyImages: update(state.hasManyImages, { $set: action.payload }),
-      }
+      };
     }
 
     case 'SET_ADDED_VARIANT': {
@@ -35,7 +28,7 @@ function ProductReducer(state, action) {
         addedToCart: update(state.addedToCart, {
           $set: { variant: action.payload, at: new Date() },
         }),
-      }
+      };
     }
 
     case 'SET_IS_TOUCHED': {
@@ -44,38 +37,38 @@ function ProductReducer(state, action) {
         isTouched: update(state.isTouched, {
           $set: action.payload,
         }),
-      }
+      };
     }
 
     case 'SET_ALL_SELECTED_OPTIONS':
       return {
         ...state,
         allOptionsSelected: update(state.allOptionsSelected, { $set: action.payload }),
-      }
+      };
 
     case 'UNSET_SELECTED_OPTIONS':
       return {
         ...state,
         selectedOptions: update(state.selectedOptions, { $unset: [action.payload] }),
-      }
+      };
 
     case 'UPDATE_SELECTED_OPTIONS':
       return {
         ...state,
         selectedOptions: update(state.selectedOptions, { $merge: action.payload }),
-      }
+      };
 
     case 'REMOVE_SELECTED_OPTIONS':
       return {
         ...state,
         selectedOptions: update(state.selectedOptions, { $set: {} }),
-      }
+      };
 
     case 'SET_MISSING_SELECTIONS':
       return {
         ...state,
         missingSelections: update(state.missingSelections, { $set: action.payload }),
-      }
+      };
 
     case 'SET_AVAILABLE_VARIANTS':
       return {
@@ -83,31 +76,31 @@ function ProductReducer(state, action) {
         availableVariants: update(state.payload, {
           $apply: (payload) => filterAvailableVariantsBySelectedOption(payload, action.payload),
         }),
-      }
+      };
 
     case 'UPDATE_QUANTITY':
       return {
         ...state,
         quantity: update(state.quantity, { $set: action.payload }),
-      }
+      };
 
     case 'UPDATE_NOTICES':
       return {
         ...state,
         notices: updateNoticesState(state.notices, action.payload),
-      }
+      };
 
     case 'SET_IS_CHECKING_OUT': {
       return {
         ...state,
         isCheckingOut: update(state.isCheckingOut, { $set: action.payload }),
-      }
+      };
     }
 
     default: {
-      throw new Error(`Unhandled action type: ${action.type} in ProductReducer`)
+      throw new Error(`Unhandled action type: ${action.type} in ProductReducer`);
     }
   }
 }
 
-export { ProductReducer }
+export { ProductReducer };

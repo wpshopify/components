@@ -1,41 +1,41 @@
-import { CustomersContext } from '../../_state/context'
-import { stylesSlideIn } from '../../_styles'
-import { A } from 'hookrouter'
-import { AccountDetailsDefaultAddress } from './address/default-address'
-import { Facebook } from 'react-content-loader'
+import { CustomersContext } from '../../_state/context';
+import { stylesSlideIn } from '../../_styles';
+import { A } from 'hookrouter';
+import { AccountDetailsDefaultAddress } from './address/default-address';
+import { Facebook } from 'react-content-loader';
 
 /** @jsx jsx */
-import { jsx, css } from '@emotion/core'
+import { jsx, css } from '@emotion/react';
 
-const { useContext } = wp.element
+const { useContext } = wp.element;
 
 function AccountDetails() {
-  const [customerState, customerDispatch] = useContext(CustomersContext)
+  const [customerState, customerDispatch] = useContext(CustomersContext);
 
   const stylesDetails = css`
     width: 32%;
-  `
+  `;
 
   const stylesName = css`
     font-size: 1em;
     font-weight: normal;
-  `
+  `;
 
   const stylesAddressLine = css`
     && {
       margin: 0;
     }
-  `
+  `;
 
   const stylesViewAddresses = css`
     && {
       margin-top: 1em;
       display: block;
     }
-  `
+  `;
 
   function onClick() {
-    customerDispatch({ type: 'SET_INNER_PAGE', payload: true })
+    customerDispatch({ type: 'SET_INNER_PAGE', payload: true });
   }
 
   return (
@@ -64,7 +64,7 @@ function AccountDetails() {
         <Facebook />
       )}
     </section>
-  )
+  );
 }
 
-export { AccountDetails }
+export { AccountDetails };

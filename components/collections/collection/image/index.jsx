@@ -1,24 +1,24 @@
 /** @jsx jsx */
-import { jsx, css } from '@emotion/core'
-import { CollectionContext } from '../_state/context'
-import { ItemsContext } from '../../../items/_state/context'
-import { usePortal } from '../../../../common/hooks'
-import { addCustomSizingToImageUrl } from '../../../../common/images'
-import { findPortalElement } from '../../../../common/utils'
-import { Link } from '../../../link'
+import { jsx, css } from '@emotion/react';
+import { CollectionContext } from '../_state/context';
+import { ItemsContext } from '../../../items/_state/context';
+import { usePortal } from '../../../../common/hooks';
+import { addCustomSizingToImageUrl } from '../../../../common/images';
+import { findPortalElement } from '../../../../common/utils';
+import { Link } from '../../../link';
 
-const { useContext, useState, useEffect } = wp.element
+const { useContext, useState, useEffect } = wp.element;
 
 function CollectionImage() {
-  const [collectionState] = useContext(CollectionContext)
-  const [itemsState] = useContext(ItemsContext)
+  const [collectionState] = useContext(CollectionContext);
+  const [itemsState] = useContext(ItemsContext);
   const [imageSrc, setImageSrc] = useState(() =>
     collectionState.payload.image ? collectionState.payload.image.src : false
-  )
+  );
 
   useEffect(() => {
     if (!imageSrc) {
-      return
+      return;
     }
 
     if (collectionState.imagesSizingToggle) {
@@ -30,18 +30,18 @@ function CollectionImage() {
           crop: collectionState.imagesSizingCrop,
           scale: collectionState.imagesSizingScale,
         })
-      )
+      );
     }
-  }, [])
+  }, []);
 
   const CollectionImageWrapperCSS = css`
     margin-bottom: 20px;
     max-width: 400px;
-  `
+  `;
 
   const CollectionImageCSS = css`
     max-width: 100%;
-  `
+  `;
 
   return usePortal(
     imageSrc ? (
@@ -62,7 +62,7 @@ function CollectionImage() {
       </div>
     ) : null,
     findPortalElement(itemsState.payloadSettings.dropzoneCollectionImage)
-  )
+  );
 }
 
-export { CollectionImage }
+export { CollectionImage };

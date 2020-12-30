@@ -1,5 +1,5 @@
 /** @jsx jsx */
-import { jsx, css, keyframes } from '@emotion/core'
+import { jsx, css, keyframes } from '@emotion/react';
 
 function StorefrontPlaceholder() {
   const shimmer = keyframes`
@@ -10,7 +10,7 @@ function StorefrontPlaceholder() {
       100% {
         background-position: 468px 0;
       }
-`
+`;
 
   const loader = css`
     transition: background 1s ease;
@@ -25,30 +25,30 @@ function StorefrontPlaceholder() {
     min-height: 50px;
     width: 100%;
     max-width: 300px;
-  `
+  `;
 
   const content = css`
     flex: 1;
     max-width: 100%;
     min-height: 80px;
-  `
+  `;
 
   const sidebar = css`
     flex: 0 0 30%;
     width: 30%;
     padding-right: 20px;
-  `
+  `;
 
   const sidebarContent = css`
     min-height: 20px;
     margin-bottom: 10px;
     width: 100%;
-  `
+  `;
 
   const rowCSS = css`
     display: flex;
     width: 100%;
-  `
+  `;
 
   return (
     <div css={rowCSS}>
@@ -59,7 +59,7 @@ function StorefrontPlaceholder() {
       </div>
       <div css={[loader, content]}></div>
     </div>
-  )
+  );
 }
 
-export default StorefrontPlaceholder
+export default StorefrontPlaceholder;

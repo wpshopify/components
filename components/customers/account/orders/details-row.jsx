@@ -1,22 +1,22 @@
-import PrettyPrice from '../../../../common/pricing/pretty'
-import { addCustomSizingToImageUrl } from '../../../../common/images'
-import { ShopContext } from '../../../shop/_state/context'
+import PrettyPrice from '../../../../common/pricing/pretty';
+import { addCustomSizingToImageUrl } from '../../../../common/images';
+import { ShopContext } from '../../../shop/_state/context';
 
 /** @jsx jsx */
-import { jsx, css } from '@emotion/core'
-import { Td } from '../../../tables/body/td'
+import { jsx, css } from '@emotion/react';
+import { Td } from '../../../tables/body/td';
 
-const { useContext } = wp.element
+const { useContext } = wp.element;
 
 function OrderDetailsRow({ lineItem }) {
-  const [shopState] = useContext(ShopContext)
+  const [shopState] = useContext(ShopContext);
 
   const sdfasdf = css`
     display: flex;
-  `
+  `;
   const asdasd = css`
     padding-left: 1em;
-  `
+  `;
 
   return (
     <tr>
@@ -50,7 +50,7 @@ function OrderDetailsRow({ lineItem }) {
         />
       </Td>
     </tr>
-  )
+  );
 }
 
-export { OrderDetailsRow }
+export { OrderDetailsRow };

@@ -1,5 +1,5 @@
 /** @jsx jsx */
-import { jsx, css } from '@emotion/core';
+import { jsx, css } from '@emotion/react';
 import { ProductPricingContext } from '../_state/context';
 import { ProductContext } from '../../_state/context';
 import ProductPrice from '../price';

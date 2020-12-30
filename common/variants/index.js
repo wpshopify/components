@@ -60,6 +60,7 @@ function findTotalInventoryQuantity(inventory, variantId) {
   if (selectedVariantFound.inventoryPolicy === 'CONTINUE') {
     return false;
   }
+
   var totalAvailableQuantity = findInventoryFromVariantId(inventory, selectedVariantFound);
 
   if (!totalAvailableQuantity) {

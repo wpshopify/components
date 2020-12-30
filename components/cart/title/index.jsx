@@ -1,6 +1,6 @@
-import { FilterHook } from '../../../common/utils'
+import { FilterHook } from '../../../common/utils';
 /** @jsx jsx */
-import { jsx, css } from '@emotion/core'
+import { jsx, css } from '@emotion/react';
 
 function CartTitle({ cartState }) {
   const cartTitleCSS = css`
@@ -18,7 +18,7 @@ function CartTitle({ cartState }) {
     &:after {
       display: none;
     }
-  `
+  `;
 
   return (
     <div className='wps-col-8'>
@@ -30,7 +30,7 @@ function CartTitle({ cartState }) {
 
       <FilterHook name='after.cart.title' hasHTML={true} args={[cartState]} />
     </div>
-  )
+  );
 }
 
-export { CartTitle }
+export { CartTitle };

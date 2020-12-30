@@ -1,9 +1,9 @@
 /** @jsx jsx */
-import { jsx, css } from '@emotion/core'
-import { renderToString } from 'react-dom/server'
-import { Loader } from '../loader'
+import { jsx, css } from '@emotion/react';
+import { renderToString } from 'react-dom/server';
+import { Loader } from '../loader';
 
-const { Notice } = wp.components
+const { Notice } = wp.components;
 
 function Form({
   children,
@@ -20,7 +20,7 @@ function Form({
     &:disabled:hover {
       cursor: not-allowed;
     }
-  `
+  `;
   return (
     <form
       id={`wpshopify-component-customers-${formType}`}
@@ -51,7 +51,7 @@ function Form({
 
       <input type='hidden' className='wpshopify-input wpshopify-input-nonce' css={inputCSS} />
     </form>
-  )
+  );
 }
 
-export { Form }
+export { Form };

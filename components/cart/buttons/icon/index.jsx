@@ -1,19 +1,19 @@
-import { CartButtonContext } from '../button/_state/context'
-import { IconCSS } from '../../../../common/css'
+import { CartButtonContext } from '../button/_state/context';
+import { IconCSS } from '../../../../common/css';
 
 /** @jsx jsx */
-import { jsx, css } from '@emotion/core'
-const { useContext } = wp.element
+import { jsx, css } from '@emotion/react';
+const { useContext } = wp.element;
 
 function CartIcon() {
-  const [cartButtonState] = useContext(CartButtonContext)
+  const [cartButtonState] = useContext(CartButtonContext);
 
   function getIconColor() {
     if (cartButtonState.payloadSettings.type === 'fixed') {
-      return cartButtonState.payloadSettings.fixedIconColor
+      return cartButtonState.payloadSettings.fixedIconColor;
     }
 
-    return cartButtonState.payloadSettings.inlineIconColor
+    return cartButtonState.payloadSettings.inlineIconColor;
   }
 
   const pathCSS = css`
@@ -23,7 +23,7 @@ function CartIcon() {
     max-width: 28px;
     position: relative;
     left: 1px;
-  `
+  `;
 
   const svgCSS = css`
     width: 28px;
@@ -32,7 +32,7 @@ function CartIcon() {
     &:hover {
       opacity: ${cartButtonState.payloadSettings.type === 'fixed' ? 0.6 : 1};
     }
-  `
+  `;
 
   return (
     <>
@@ -57,7 +57,7 @@ function CartIcon() {
         </svg>
       )}
     </>
-  )
+  );
 }
 
-export { CartIcon }
+export { CartIcon };

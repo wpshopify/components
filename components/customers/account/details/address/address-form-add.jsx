@@ -1,9 +1,9 @@
-import { AddressForm } from './address-form'
-import { AccountReturn } from '../../return'
-import { stylesSlideIn } from '../../../_styles'
+import { AddressForm } from './address-form';
+import { AccountReturn } from '../../return';
+import { stylesSlideIn } from '../../../_styles';
 
 /** @jsx jsx */
-import { jsx, css } from '@emotion/core'
+import { jsx, css } from '@emotion/react';
 
 function AddressFormAdd() {
   return (
@@ -14,7 +14,7 @@ function AddressFormAdd() {
 
       <AddressForm type='add' />
     </section>
-  )
+  );
 }
 
-export { AddressFormAdd }
+export { AddressFormAdd };

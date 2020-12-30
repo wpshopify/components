@@ -1,7 +1,5 @@
 /** @jsx jsx */
-import { jsx, css } from '@emotion/core'
-
-const { useContext } = wp.element
+import { jsx, css } from '@emotion/react';
 
 function ProductBuyButtonTextNotice({ quantityLeft }) {
   const textNoticeCSS = css`
@@ -13,7 +11,7 @@ function ProductBuyButtonTextNotice({ quantityLeft }) {
     width: 100%;
     font-weight: normal;
     display: block;
-  `
+  `;
 
   return (
     <span className='wps-notice-text' css={textNoticeCSS}>
@@ -22,7 +20,7 @@ function ProductBuyButtonTextNotice({ quantityLeft }) {
         wp.i18n.sprintf(wp.i18n.__('Only %s left!', 'wpshopify'), quantityLeft)
       }
     </span>
-  )
+  );
 }
 
-export { ProductBuyButtonTextNotice }
+export { ProductBuyButtonTextNotice };

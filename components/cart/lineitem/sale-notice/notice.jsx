@@ -1,8 +1,8 @@
-import { FilterHook } from '../../../../common/utils'
-import { mq } from '../../../../common/css'
+import { FilterHook } from '../../../../common/utils';
+import { mq } from '../../../../common/css';
 
 /** @jsx jsx */
-import { jsx, css } from '@emotion/core'
+import { jsx, css } from '@emotion/react';
 
 function CartLineItemPriceSaleNoticeNotice() {
   const CartLineItemPriceSaleNoticeStyles = css`
@@ -14,13 +14,13 @@ function CartLineItemPriceSaleNoticeNotice() {
     ${mq('small')} {
       margin-top: 0px;
     }
-  `
+  `;
 
   return (
     <span className='wps-cart-lineitem-price-sale' css={CartLineItemPriceSaleNoticeStyles}>
       <FilterHook name='cart.lineItem.price.sale'>{wp.i18n.__('Sale!', 'wpshopify')}</FilterHook>
     </span>
-  )
+  );
 }
 
-export default CartLineItemPriceSaleNoticeNotice
+export default CartLineItemPriceSaleNoticeNotice;

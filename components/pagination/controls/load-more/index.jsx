@@ -1,26 +1,26 @@
-import { usePortal } from '../../../../common/hooks'
-import { FilterHook } from '../../../../common/utils'
-import { buttonCSS } from '../../../../common/css'
-import { Loader } from '../../../loader'
-import { InView } from 'react-intersection-observer'
+import { usePortal } from '../../../../common/hooks';
+import { FilterHook } from '../../../../common/utils';
+import { buttonCSS } from '../../../../common/css';
+import { Loader } from '../../../loader';
+import { InView } from 'react-intersection-observer';
 
 /** @jsx jsx */
-import { jsx, css } from '@emotion/core'
+import { jsx, css } from '@emotion/react';
 
 function PaginationLoadMore({ isLoading, hasMoreItems, payloadSettings, onNextPage }) {
   function onViewChange(inView, entry) {
-    if (!payloadSettings.infiniteScroll) {
-      return
+    if (!wpshopify.misc.isPro || !payloadSettings.infiniteScroll) {
+      return;
     }
 
     if (inView) {
-      onNextPage()
+      onNextPage();
     }
   }
 
   const loadMoreButtonCSS = css`
     max-width: 150px;
-  `
+  `;
 
   return usePortal(
     hasMoreItems ? (
@@ -42,7 +42,7 @@ function PaginationLoadMore({ isLoading, hasMoreItems, payloadSettings, onNextPa
       </InView>
     ) : null,
     document.querySelector(payloadSettings.dropzoneLoadMore)
-  )
+  );
 }
 
-export default wp.element.memo(PaginationLoadMore)
+export default wp.element.memo(PaginationLoadMore);

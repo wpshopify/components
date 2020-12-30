@@ -1,6 +1,6 @@
 /** @jsx jsx */
-import { jsx, css } from '@emotion/core'
-import PrettyPrice from '../../../../common/pricing/pretty'
+import { jsx, css } from '@emotion/react';
+import PrettyPrice from '../../../../common/pricing/pretty';
 
 function CartFooterSubtotalAmount({
   total,
@@ -14,7 +14,7 @@ function CartFooterSubtotalAmount({
     text-align: right;
     font-size: 28px;
     color: #121212;
-  `
+  `;
 
   const fullPriceCSS = css`
     font-size: 20px;
@@ -22,7 +22,7 @@ function CartFooterSubtotalAmount({
     text-decoration: line-through;
     color: #b4b4b4;
     margin-right: 10px;
-  `
+  `;
 
   return (
     <p className='wps-total-amount' ref={totalElement} css={CartFooterSubtotalAmountCSS}>
@@ -34,7 +34,7 @@ function CartFooterSubtotalAmount({
 
       <PrettyPrice price={total} currencyCode={currencyCode} />
     </p>
-  )
+  );
 }
 
-export default CartFooterSubtotalAmount
+export default CartFooterSubtotalAmount;

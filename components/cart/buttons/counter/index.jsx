@@ -4,7 +4,7 @@ import { Loader } from '../../../loader';
 import { findTotalCartQuantities } from '../../../../common/cart';
 
 /** @jsx jsx */
-import { jsx, css } from '@emotion/core';
+import { jsx, css } from '@emotion/react';
 
 const { useContext, useState, useRef, useEffect } = wp.element;
 

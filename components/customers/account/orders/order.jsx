@@ -1,24 +1,24 @@
-import PrettyPrice from '../../../../common/pricing/pretty'
-import { prettyDate } from '../../../../common/utils'
-import { CustomersContext } from '../../_state/context'
-import { A } from 'hookrouter'
-import { Td } from '../../../tables/body/td'
-import { FulfillmentStatus } from '../details/fulfillment-status'
-import { OrderStatus } from '../details/order-status'
+import PrettyPrice from '../../../../common/pricing/pretty';
+import { prettyDate } from '../../../../common/utils';
+import { CustomersContext } from '../../_state/context';
+import { A } from 'hookrouter';
+import { Td } from '../../../tables/body/td';
+import { FulfillmentStatus } from '../details/fulfillment-status';
+import { OrderStatus } from '../details/order-status';
 
 /** @jsx jsx */
-import { jsx, css } from '@emotion/core'
+import { jsx, css } from '@emotion/react';
 
-const { useContext } = wp.element
+const { useContext } = wp.element;
 
 function Order({ order }) {
-  const [customersState, customerDispatch] = useContext(CustomersContext)
+  const [customersState, customerDispatch] = useContext(CustomersContext);
 
   const stylesthtd = {
     textAlign: 'left',
     padding: '15px',
     border: '1px solid #e7e7e7',
-  }
+  };
 
   const stylesOrderLink = {
     textDecoration: 'underline',
@@ -26,21 +26,21 @@ function Order({ order }) {
     ':hover': {
       cursor: 'pointer',
     },
-  }
+  };
 
   const cellLinkStyles = css`
     padding: 1em;
     width: 100%;
     display: block;
-  `
+  `;
 
   const tableTdLink = css`
     padding: 0;
-  `
+  `;
 
   function onClick() {
-    customerDispatch({ type: 'SET_INNER_PAGE', payload: true })
-    customerDispatch({ type: 'SET_SELECTED_ORDER_DETAILS', payload: order.node })
+    customerDispatch({ type: 'SET_INNER_PAGE', payload: true });
+    customerDispatch({ type: 'SET_SELECTED_ORDER_DETAILS', payload: order.node });
   }
 
   return (
@@ -67,7 +67,7 @@ function Order({ order }) {
         />
       </Td>
     </tr>
-  )
+  );
 }
 
-export { Order }
+export { Order };

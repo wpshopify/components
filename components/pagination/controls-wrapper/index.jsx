@@ -1,16 +1,16 @@
 /** @jsx jsx */
-import { jsx, css } from '@emotion/core'
-import { PaginationContext } from '../_state/context'
-import PaginationControls from '../controls'
-import { fetchNextItems } from '../../items/item/api'
+import { jsx, css } from '@emotion/react';
+import { PaginationContext } from '../_state/context';
+import PaginationControls from '../controls';
+import { fetchNextItems } from '../../items/item/api';
 
 function PaginationControlsWrapper({ itemsState, itemsDispatch }) {
-  const { useContext } = wp.element
-  const [paginationState, paginationDispatch] = useContext(PaginationContext)
+  const { useContext } = wp.element;
+  const [paginationState, paginationDispatch] = useContext(PaginationContext);
 
   function onNextPage() {
-    paginationDispatch({ type: 'SET_CONTROLS_TOUCHED', payload: true })
-    fetchNextItems(itemsState, itemsDispatch)
+    paginationDispatch({ type: 'SET_CONTROLS_TOUCHED', payload: true });
+    fetchNextItems(itemsState, itemsDispatch);
   }
 
   return !paginationState.isHidingPagination ? (
@@ -22,7 +22,7 @@ function PaginationControlsWrapper({ itemsState, itemsDispatch }) {
       hasMoreItems={itemsState.hasMoreItems}
       onNextPage={onNextPage}
     />
-  ) : null
+  ) : null;
 }
 
-export default PaginationControlsWrapper
+export default PaginationControlsWrapper;

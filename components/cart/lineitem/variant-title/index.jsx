@@ -1,6 +1,6 @@
-import { FilterHook } from '../../../../common/utils'
+import { FilterHook } from '../../../../common/utils';
 /** @jsx jsx */
-import { jsx, css } from '@emotion/core'
+import { jsx, css } from '@emotion/react';
 
 function CartLineItemVariantTitle({ lineItem }) {
   const badgeCSS = css`
@@ -21,13 +21,13 @@ function CartLineItemVariantTitle({ lineItem }) {
     letter-spacing: 0.02em;
     line-height: 1.4;
     margin: 5px 0 15px 0;
-  `
+  `;
 
   return (
     <div css={badgeCSS} className='wps-cart-lineitem-variant-title'>
       <FilterHook name='cart.lineItem.variant.title'>{lineItem.title}</FilterHook>
     </div>
-  )
+  );
 }
 
-export default wp.element.memo(CartLineItemVariantTitle)
+export default wp.element.memo(CartLineItemVariantTitle);

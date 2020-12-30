@@ -1,9 +1,11 @@
 /** @jsx jsx */
-import { jsx, css } from '@emotion/core';
+import { jsx, css } from '@emotion/react';
 import { mq } from '../../../common/css';
 
 function CartClose({ cartDispatch }) {
   function onClose(e) {
+    console.log('onClose', e);
+
     cartDispatch({ type: 'TOGGLE_CART', payload: false });
   }
 

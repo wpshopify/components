@@ -1,13 +1,13 @@
 /** @jsx jsx */
-import { jsx, css } from '@emotion/core'
-import { CartTitle } from '../title'
-import { CartClose } from '../close'
-import { useAction } from '../../../common/hooks'
-import { containerFluidCSS } from '../../../common/css'
+import { jsx, css } from '@emotion/react';
+import { CartTitle } from '../title';
+import { CartClose } from '../close';
+import { useAction } from '../../../common/hooks';
+import { containerFluidCSS } from '../../../common/css';
 
 function CartHeader({ cartState, cartDispatch }) {
-  const isShowingTitle = useAction('show.cart.title', true)
-  const isShowingClose = useAction('show.cart.close', true)
+  const isShowingTitle = useAction('show.cart.title', true);
+  const isShowingClose = useAction('show.cart.close', true);
 
   return (
     <section className='wps-cart-header' css={containerFluidCSS}>
@@ -16,7 +16,7 @@ function CartHeader({ cartState, cartDispatch }) {
         {isShowingClose && <CartClose cartDispatch={cartDispatch} />}
       </div>
     </section>
-  )
+  );
 }
 
-export default CartHeader
+export default CartHeader;

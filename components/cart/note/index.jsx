@@ -1,28 +1,28 @@
 /** @jsx jsx */
-import { jsx, css } from '@emotion/core'
-import { CartContext } from '../_state/context'
-import { useDebounce } from 'use-debounce'
+import { jsx, css } from '@emotion/react';
+import { CartContext } from '../_state/context';
+import { useDebounce } from 'use-debounce';
 
-const { useContext, useState, useRef, useEffect } = wp.element
+const { useContext, useState, useRef, useEffect } = wp.element;
 
 function CartNote() {
-  const [cartState, cartDispatch] = useContext(CartContext)
-  const [noteValue, setNoteValue] = useState(() => '')
-  const [debouncedValue] = useDebounce(noteValue, 250)
-  const isFirstRender = useRef(true)
+  const [cartState, cartDispatch] = useContext(CartContext);
+  const [noteValue, setNoteValue] = useState(() => '');
+  const [debouncedValue] = useDebounce(noteValue, 250);
+  const isFirstRender = useRef(true);
 
   function onChange(e) {
-    setNoteValue(e.target.value)
+    setNoteValue(e.target.value);
   }
 
   useEffect(() => {
     if (isFirstRender.current) {
-      isFirstRender.current = false
-      return
+      isFirstRender.current = false;
+      return;
     }
-    wp.hooks.doAction('on.checkout.note', debouncedValue)
-    cartDispatch({ type: 'SET_CHECKOUT_NOTE', payload: debouncedValue })
-  }, [debouncedValue])
+    wp.hooks.doAction('on.checkout.note', debouncedValue);
+    cartDispatch({ type: 'SET_CHECKOUT_NOTE', payload: debouncedValue });
+  }, [debouncedValue]);
 
   const CartNotesCSS = css`
     margin-bottom: 0.5em;
@@ -45,7 +45,7 @@ function CartNote() {
     label {
       font-size: 16px;
     }
-  `
+  `;
 
   return (
     <section className='wps-cart-notes' css={CartNotesCSS}>
@@ -67,7 +67,7 @@ function CartNote() {
         onChange={onChange}
       />
     </section>
-  )
+  );
 }
 
-export { CartNote }
+export { CartNote };

@@ -1,13 +1,20 @@
 /** @jsx jsx */
-import { jsx, css } from '@emotion/core';
+import { jsx, css, keyframes } from '@emotion/react';
 import { PaginationContext } from '../_state/context';
 import { mq } from '../../../common/css';
 import PaginationItemsMap from './map';
 
-function PaginationItems({ children, payload, payloadSettings, isLoading }) {
-  const { useContext } = wp.element;
-  const { Notice } = wp.components;
-  const [paginationState] = useContext(PaginationContext);
+function PaginationItems({ children, payload, payloadSettings }) {
+  const fadeIn = keyframes`
+
+      0% {
+         opacity: 0;
+      }
+
+      100% {
+         opacity: 1;
+      }
+   `;
 
   const PaginationItemsCSS = css`
     display: ${payloadSettings.carousel && wpshopify.misc.isPro ? 'block' : 'grid'};
@@ -19,8 +26,7 @@ function PaginationItems({ children, payload, payloadSettings, isLoading }) {
       : payload.length === 1 || payloadSettings.itemsPerRow === 1
       ? '300px'
       : wp.hooks.applyFilters('misc.layout.containerWidth', '1100px')};
-    opacity: ${isLoading ? 0.4 : 1};
-    transition: opacity ease 0.18s;
+    animation: ${fadeIn} 0.3s;
     padding: 0;
 
     ${mq('medium')} {

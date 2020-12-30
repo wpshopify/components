@@ -1,21 +1,21 @@
 /** @jsx jsx */
-import { jsx, css } from '@emotion/core'
-import { mq } from '../../../../common/css'
-import { addCustomSizingToImageUrl } from '../../../../common/images'
-import { Link } from '../../../link'
+import { jsx, css } from '@emotion/react';
+import { mq } from '../../../../common/css';
+import { addCustomSizingToImageUrl } from '../../../../common/images';
+import { Link } from '../../../link';
 
 function CartLineItemImage({ lineItem, cartState }) {
-  const manualLink = wp.hooks.applyFilters('cart.lineItems.link', false, lineItem, cartState)
+  const manualLink = wp.hooks.applyFilters('cart.lineItems.link', false, lineItem, cartState);
 
   const disableLink = wp.hooks.applyFilters(
     'cart.lineItems.disableLink',
     false,
     lineItem,
     cartState
-  )
+  );
 
   function placeholderImageUrl() {
-    return wpshopify.misc.pluginsDirURL + 'public/imgs/placeholder.png'
+    return wpshopify.misc.pluginsDirURL + 'public/imgs/placeholder.png';
   }
 
   function actualImageUrl() {
@@ -24,7 +24,7 @@ function CartLineItemImage({ lineItem, cartState }) {
       width: 300,
       height: 300,
       crop: 'center',
-    })
+    });
   }
 
   const lineItemImgCSS = css`
@@ -41,7 +41,7 @@ function CartLineItemImage({ lineItem, cartState }) {
       width: 60px;
       height: 60px;
     }
-  `
+  `;
 
   return (
     <Link
@@ -53,7 +53,7 @@ function CartLineItemImage({ lineItem, cartState }) {
       disableLink={disableLink}>
       <div className='wps-cart-lineitem-img' css={[lineItemImgCSS]} />
     </Link>
-  )
+  );
 }
 
-export { CartLineItemImage }
+export { CartLineItemImage };

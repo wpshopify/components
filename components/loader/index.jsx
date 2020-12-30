@@ -1,7 +1,7 @@
 /** @jsx jsx */
-import { jsx, css, keyframes } from '@emotion/core'
-import LoaderSpinner from 'react-loaders'
-import { usePortal } from '../../common/hooks'
+import { jsx, css, keyframes } from '@emotion/react';
+import LoaderSpinner from 'react-loaders';
+import { usePortal } from '../../common/hooks';
 
 function Loader({ isLoading, dropzone, color }) {
   const LoaderPulseCSS = css`
@@ -45,7 +45,7 @@ function Loader({ isLoading, dropzone, color }) {
       animation-fill-mode: both;
       display: inline-block;
     }
-  `
+  `;
 
   return usePortal(
     <div className='wps-loader-wrapper' css={LoaderPulseCSS}>
@@ -57,7 +57,7 @@ function Loader({ isLoading, dropzone, color }) {
       />
     </div>,
     document.querySelector(dropzone)
-  )
+  );
 }
 
-export { Loader }
+export { Loader };

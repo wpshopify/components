@@ -1,48 +1,48 @@
 import {
   getCustomer,
   isWordPressError,
-} from '/Users/andrew/www/devil/devilbox-new/data/www/wpshopify-api'
-import to from 'await-to-js'
-import isEmpty from 'lodash/isEmpty'
+} from '/Users/andrew/www/devil/devilbox-new/data/www/wpshopify-api';
+import to from 'await-to-js';
+import isEmpty from 'lodash/isEmpty';
 
 /** @jsx jsx */
-import { jsx, css } from '@emotion/core'
-import { CustomersContext } from '../_state/context'
-import { Orders } from './orders'
-import { AccountDetails } from './details'
+import { jsx, css } from '@emotion/react';
+import { CustomersContext } from '../_state/context';
+import { Orders } from './orders';
+import { AccountDetails } from './details';
 
-const { Notice } = wp.components
+const { Notice } = wp.components;
 
-const { useContext, useEffect } = wp.element
+const { useContext, useEffect } = wp.element;
 
 function findDefaultAddress(addressLookup, addresses) {
   var found = find(addresses.edges, function (o) {
-    return o.node.address1 === addressLookup
-  })
+    return o.node.address1 === addressLookup;
+  });
 
   if (found) {
-    return found.node
+    return found.node;
   }
 
-  return false
+  return false;
 }
 
 function AccountWrapper() {
-  const [customerState, customerDispatch] = useContext(CustomersContext)
-  const isMountedRef = useRef(true)
+  const [customerState, customerDispatch] = useContext(CustomersContext);
+  const isMountedRef = useRef(true);
 
   var styles = {
     display: 'flex',
     justifyContent: 'space-between',
     width: '100%',
-  }
+  };
 
   async function getCustomerInfo() {
     if (customerState.customer) {
-      return
+      return;
     }
 
-    const [errorCust, respCust] = await to(getCustomer(customerState.user.id))
+    const [errorCust, respCust] = await to(getCustomer(customerState.user.id));
 
     if (errorCust) {
       customerDispatch({
@@ -51,7 +51,7 @@ function AccountWrapper() {
           message: errorCust,
           type: 'error',
         },
-      })
+      });
     }
 
     if (isWordPressError(respCust)) {
@@ -61,22 +61,22 @@ function AccountWrapper() {
           message: respCust.data.message,
           type: respCust.data.type,
         },
-      })
+      });
     }
 
-    customerDispatch({ type: 'SET_CUSTOMER', payload: respCust.data.customer })
-    customerDispatch({ type: 'SET_DEFAULT_ADDRESS', payload: respCust.data.customer })
-    customerDispatch({ type: 'SET_IS_READY', payload: true })
+    customerDispatch({ type: 'SET_CUSTOMER', payload: respCust.data.customer });
+    customerDispatch({ type: 'SET_DEFAULT_ADDRESS', payload: respCust.data.customer });
+    customerDispatch({ type: 'SET_IS_READY', payload: true });
     // customerDispatch({ type: 'SET_INNER_PAGE', payload: false })
   }
 
   useEffect(() => {
     if (isMountedRef.current) {
-      getCustomerInfo()
+      getCustomerInfo();
     }
 
-    return () => (isMountedRef.current = false)
-  }, [customerState.customer])
+    return () => (isMountedRef.current = false);
+  }, [customerState.customer]);
 
   return !isEmpty(customerState.notices) ? (
     <Notice status={customerState.notices.type} isDismissible={false}>
@@ -87,7 +87,7 @@ function AccountWrapper() {
       <Orders />
       <AccountDetails />
     </div>
-  ) : null
+  ) : null;
 }
 
-export { AccountWrapper }
+export { AccountWrapper };

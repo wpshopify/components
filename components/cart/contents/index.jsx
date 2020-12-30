@@ -1,24 +1,24 @@
 /** @jsx jsx */
-import { jsx, css } from '@emotion/core'
-import { CartLineItems } from '../lineitems'
-import { FilterHook } from '../../../common/utils'
-import { getCache } from '/Users/andrew/www/devil/devilbox-new/data/www/wpshopify-api'
+import { jsx, css } from '@emotion/react';
+import { CartLineItems } from '../lineitems';
+import { FilterHook } from '../../../common/utils';
+import { getCache } from '/Users/andrew/www/devil/devilbox-new/data/www/wpshopify-api';
 
 function filterEmptyLineItems(lineItems) {
-  return lineItems.filter(Boolean)
+  return lineItems.filter(Boolean);
 }
 
 function CartContents(props) {
-  const { useState } = wp.element
+  const { useState } = wp.element;
 
   const [inventory] = useState(() => {
-    var inv = getCache('wps-inventory-levels')
+    var inv = getCache('wps-inventory-levels');
     if (inv) {
-      return JSON.parse(inv)
+      return JSON.parse(inv);
     }
 
-    return false
-  })
+    return false;
+  });
 
   const CartTitleCSS = css`
     top: 45%;
@@ -30,7 +30,7 @@ function CartContents(props) {
     font-size: 1.5em;
     margin: 0;
     text-align: center;
-  `
+  `;
 
   const CartContentsCSS = css`
     overflow-y: scroll;
@@ -50,7 +50,7 @@ function CartContents(props) {
       border: none;
       font-size: 24px;
     }
-  `
+  `;
 
   return (
     <section
@@ -70,7 +70,7 @@ function CartContents(props) {
         />
       )}
     </section>
-  )
+  );
 }
 
-export default CartContents
+export default CartContents;

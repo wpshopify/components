@@ -1,5 +1,5 @@
 /** @jsx jsx */
-import { jsx, css } from '@emotion/core';
+import { jsx, css } from '@emotion/react';
 import { queryBuilder } from '/Users/andrew/www/devil/devilbox-new/data/www/wpshopify-api';
 import { SearchContext } from '../_state/context';
 import { ItemsContext } from '../../items/_state/context';

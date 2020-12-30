@@ -1,17 +1,17 @@
-import { usePortal } from '../../../common/hooks'
-import { Products } from '../../products'
+import { usePortal } from '../../../common/hooks';
+import { Products } from '../../products';
 /** @jsx jsx */
-import { jsx, css } from '@emotion/core'
+import { jsx, css } from '@emotion/react';
 
 function StorefrontItems({ noResultsText, payloadSettings, payload, queryParams, isLoading }) {
-  const { Spinner, Notice } = wp.components
+  const { Spinner, Notice } = wp.components;
 
   const noticeCSS = css`
     && {
       margin-left: 40px;
       margin-top: 0;
     }
-  `
+  `;
 
   function buildOptions() {
     return {
@@ -29,7 +29,7 @@ function StorefrontItems({ noResultsText, payloadSettings, payload, queryParams,
             payloadSettings: {
               pagination: true,
             },
-          }
+          };
         }),
       dataType: 'products',
       originalParams: {
@@ -40,18 +40,18 @@ function StorefrontItems({ noResultsText, payloadSettings, payload, queryParams,
       type: 'storefront',
       payloadSettings: payloadSettings,
       noResultsText: payloadSettings.noResultsText,
-    }
+    };
   }
 
   const spinnerCSS = css`
     position: absolute;
     top: -45px;
     left: 50px;
-  `
+  `;
 
   const storefrontItemsWrapperCSS = css`
     position: relative;
-  `
+  `;
 
   return usePortal(
     <div css={storefrontItemsWrapperCSS}>
@@ -70,7 +70,7 @@ function StorefrontItems({ noResultsText, payloadSettings, payload, queryParams,
       )}
     </div>,
     document.querySelector(payloadSettings.dropzonePayload)
-  )
+  );
 }
 
-export default StorefrontItems
+export default StorefrontItems;

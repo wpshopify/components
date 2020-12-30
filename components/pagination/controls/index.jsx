@@ -1,5 +1,5 @@
 /** @jsx jsx */
-import { jsx, css } from '@emotion/core';
+import { jsx, css } from '@emotion/react';
 import { PaginationPageSize } from './page-size';
 import PaginationLoadMore from './load-more';
 import { containerFluidCSS } from '../../../common/css';

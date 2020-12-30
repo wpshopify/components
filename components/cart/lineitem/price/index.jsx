@@ -1,12 +1,18 @@
 /** @jsx jsx */
-import { jsx, css } from '@emotion/core'
-import PrettyPrice from '../../../../common/pricing/pretty'
-import { shouldShowSaleNotice } from '../../../../common/pricing/data'
-import CartLineItemPriceSaleNotice from '../sale-notice'
-import { mq } from '../../../../common/css'
+import { jsx, css } from '@emotion/react';
+import PrettyPrice from '../../../../common/pricing/pretty';
+import { shouldShowSaleNotice } from '../../../../common/pricing/data';
+import CartLineItemPriceSaleNotice from '../sale-notice';
+import { mq } from '../../../../common/css';
 
-function CartLineItemPrice({ lineItem, currencyCode, lineItemTotal, lineItemTotalElement }) {
-  const showingSaleNotice = shouldShowSaleNotice(lineItem)
+function CartLineItemPrice({
+  lineItem,
+  currencyCode,
+  lineItemTotal,
+  lineItemTotalElement,
+  lineItemQuantity,
+}) {
+  const showingSaleNotice = shouldShowSaleNotice(lineItem);
 
   const priceCSS = css`
     flex: 1;
@@ -28,7 +34,7 @@ function CartLineItemPrice({ lineItem, currencyCode, lineItemTotal, lineItemTota
         bottom: -10px;
       }
     }
-  `
+  `;
 
   const lineItemPriceCSS = css`
     line-height: 1;
@@ -42,7 +48,7 @@ function CartLineItemPrice({ lineItem, currencyCode, lineItemTotal, lineItemTota
       margin-left: 0;
       left: 0;
     }
-  `
+  `;
 
   return (
     <div className='wps-cart-lineitem-price-total-wrapper' css={priceCSS}>
@@ -53,9 +59,11 @@ function CartLineItemPrice({ lineItem, currencyCode, lineItemTotal, lineItemTota
         <PrettyPrice price={lineItemTotal} currencyCode={currencyCode} />
       </div>
 
-      {showingSaleNotice && <CartLineItemPriceSaleNotice lineItem={lineItem} />}
+      {showingSaleNotice && (
+        <CartLineItemPriceSaleNotice lineItem={lineItem} lineItemQuantity={lineItemQuantity} />
+      )}
     </div>
-  )
+  );
 }
 
-export default wp.element.memo(CartLineItemPrice)
+export default wp.element.memo(CartLineItemPrice);

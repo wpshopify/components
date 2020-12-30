@@ -1,5 +1,5 @@
 /** @jsx jsx */
-import { jsx, css } from '@emotion/core';
+import { jsx, css } from '@emotion/react';
 import { CartContext } from '../../_state/context';
 import { addDiscountCode, removeDiscountCode } from '../../_common';
 import CartFooterDiscount from '../discount';
@@ -105,9 +105,7 @@ function CartFooterDiscountWrapper({ discountCode }) {
   }
 
   function onRemoval() {
-    /* @if NODE_ENV='pro' */
     removeDiscountCode(cartDispatch);
-    /* @endif */
   }
 
   const discountNoticeCSS = css`

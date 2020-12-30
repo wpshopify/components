@@ -1,6 +1,6 @@
 /** @jsx jsx */
-import { jsx, css } from '@emotion/core'
-import { FilterHook } from '../../../../common/utils'
+import { jsx, css } from '@emotion/react';
+import { FilterHook } from '../../../../common/utils';
 
 function SearchButton() {
   const SearchButtonCSS = css`
@@ -16,13 +16,13 @@ function SearchButton() {
       cursor: pointer;
       background: #c5c5c5;
     }
-  `
+  `;
 
   return (
     <button className='wps-search-submit' css={SearchButtonCSS}>
       <FilterHook name='search.button.text'>{wp.i18n.__('Search', 'wpshopify')}</FilterHook>
     </button>
-  )
+  );
 }
 
-export default SearchButton
+export default SearchButton;

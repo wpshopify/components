@@ -6,7 +6,7 @@ import { PaginationContext } from '../../_state/context';
 import { ItemsContext } from '../../../items/_state/context';
 import { usePortal } from '../../../../common/hooks';
 /** @jsx jsx */
-import { jsx, css } from '@emotion/core';
+import { jsx, css } from '@emotion/react';
 import to from 'await-to-js';
 const { useContext, useState } = wp.element;
 

@@ -1,5 +1,5 @@
 /** @jsx jsx */
-import { jsx, css } from '@emotion/core';
+import { jsx, css } from '@emotion/react';
 import { ProductOptionContext } from '../_state/context';
 import { mq } from '../../../../../../common/css';
 
@@ -64,6 +64,10 @@ function ProductOptionDropdown({ availableVariants, selectedOptions, missingSele
     [aria-expanded='true'] .wps-modal-trigger {
       border-bottom-right-radius: 0;
       border-bottom-left-radius: 0;
+    }
+
+    [aria-expanded='true'] + [data-tippy-root] .tippy-box[data-animation] {
+      opacity: 1 !important;
     }
 
     ${mq('medium')} {

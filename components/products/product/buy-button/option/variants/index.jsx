@@ -1,5 +1,5 @@
 /** @jsx jsx */
-import { jsx, css } from '@emotion/core';
+import { jsx, css } from '@emotion/react';
 import ProductVariant from './variant';
 import ProductVariantDropdownValue from '../dropdown-value';
 import { ProductOptionContext } from '../_state/context';

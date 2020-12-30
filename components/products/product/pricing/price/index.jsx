@@ -8,7 +8,7 @@ import ProductPriceSingle from '../single';
 import { useAnime, fadeInRightSlow } from '../../../../../common/animations';
 
 /** @jsx jsx */
-import { jsx, css } from '@emotion/core';
+import { jsx, css } from '@emotion/react';
 
 const { useEffect, useRef, useState } = wp.element;
 

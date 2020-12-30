@@ -1,23 +1,23 @@
-import { CustomersContext } from '../../../_state/context'
-import to from 'await-to-js'
+import { CustomersContext } from '../../../_state/context';
+import to from 'await-to-js';
 import {
   updateCustomerAddress,
   addCustomerAddress,
-} from '/Users/andrew/www/devil/devilbox-new/data/www/wpshopify-api'
-import { Form } from '../../../../forms'
-import { Input } from '../../../../forms/input'
-import isEmpty from 'lodash/isEmpty'
+} from '/Users/andrew/www/devil/devilbox-new/data/www/wpshopify-api';
+import { Form } from '../../../../forms';
+import { Input } from '../../../../forms/input';
+import isEmpty from 'lodash/isEmpty';
 
 /** @jsx jsx */
-import { jsx, css } from '@emotion/core'
+import { jsx, css } from '@emotion/react';
 
-const { useContext, useEffect, useState } = wp.element
+const { useContext, useEffect, useState } = wp.element;
 
 function AddressForm({ address, type }) {
-  const [customerState, customerDispatch] = useContext(CustomersContext)
-  const [hasChanged, setHasChangedState] = useState(() => false)
-  const [noticeState, setNoticeState] = useState(() => false)
-  const [isSubmitting, setIsSubmitting] = useState(() => false)
+  const [customerState, customerDispatch] = useContext(CustomersContext);
+  const [hasChanged, setHasChangedState] = useState(() => false);
+  const [noticeState, setNoticeState] = useState(() => false);
+  const [isSubmitting, setIsSubmitting] = useState(() => false);
 
   const [formState, setFormState] = useState(() => {
     return {
@@ -32,23 +32,23 @@ function AddressForm({ address, type }) {
       country: '',
       city: '',
       setDefault: false,
-    }
-  })
+    };
+  });
 
   function onChange(name, event) {
     var newState = {
       ...formState,
-    }
+    };
 
     if (name === 'setDefault') {
-      var newVal = event.target.checked
+      var newVal = event.target.checked;
     } else {
-      var newVal = event.target.value
+      var newVal = event.target.value;
     }
 
-    newState[name] = newVal
+    newState[name] = newVal;
 
-    setFormState(newState)
+    setFormState(newState);
   }
 
   useEffect(() => {
@@ -64,18 +64,18 @@ function AddressForm({ address, type }) {
       country: address && address.country ? address.country : '',
       city: address && address.city ? address.city : '',
       setDefault: false,
-    })
-  }, [])
+    });
+  }, []);
 
   function isDefaultAddress() {
-    return customerState.defaultAddress.address1 === customerState.selectedAddress.address1
+    return customerState.defaultAddress.address1 === customerState.selectedAddress.address1;
   }
 
   const cssWrapper = css`
     display: flex;
     flex-direction: row-reverse;
     justify-content: flex-end;
-  `
+  `;
 
   const cssInput = css`
     && {
@@ -88,37 +88,37 @@ function AddressForm({ address, type }) {
     &:disabled:hover {
       cursor: not-allowed;
     }
-  `
+  `;
 
   async function updateAddress() {
-    setIsSubmitting(true)
+    setIsSubmitting(true);
 
     const [addressUpdateError, addressUpdateSuccess] = await to(
       updateCustomerAddress({
         address: formState,
         addressId: customerState.selectedAddress.id,
       })
-    )
+    );
 
-    setIsSubmitting(false)
+    setIsSubmitting(false);
 
     if (addressUpdateSuccess.data.type === 'error') {
       setNoticeState({
         message: addressUpdateSuccess.data.message,
         type: addressUpdateSuccess.data.type,
-      })
+      });
 
-      return
+      return;
     }
 
     if (addressUpdateError) {
-      console.error('WP Shopify error: ', addressUpdateError)
-      return
+      console.error('WP Shopify error: ', addressUpdateError);
+      return;
     }
 
     if (isEmpty(addressUpdateSuccess.data)) {
-      console.error('WP Shopify error: ', addressUpdateSuccess)
-      return
+      console.error('WP Shopify error: ', addressUpdateSuccess);
+      return;
     }
 
     customerDispatch({
@@ -127,20 +127,20 @@ function AddressForm({ address, type }) {
         oldAddressId: customerState.selectedAddress.id,
         newAddress: addressUpdateSuccess.data.updateAddress.customerAddressUpdate.customerAddress,
       },
-    })
+    });
 
     if (addressUpdateSuccess.data.updateDefaultAddress) {
       customerDispatch({
         type: 'SET_DEFAULT_ADDRESS',
         payload:
           addressUpdateSuccess.data.updateDefaultAddress.customerDefaultAddressUpdate.customer,
-      })
+      });
     }
 
     setNoticeState({
       message: 'Successfully updated address',
       type: 'success',
-    })
+    });
   }
 
   async function addAddress() {
@@ -148,54 +148,54 @@ function AddressForm({ address, type }) {
       addCustomerAddress({
         address: formState,
       })
-    )
+    );
 
     if (addSuccess.data.type === 'error') {
       setNoticeState({
         message: addSuccess.data.message,
         type: addSuccess.data.type,
-      })
+      });
 
-      return
+      return;
     }
 
     if (addError) {
-      console.error('WP Shopify error: ', addError)
-      return
+      console.error('WP Shopify error: ', addError);
+      return;
     }
 
     if (isEmpty(addSuccess.data)) {
-      console.error('WP Shopify error: ', addSuccess)
-      return
+      console.error('WP Shopify error: ', addSuccess);
+      return;
     }
 
     customerDispatch({
       type: 'ADD_CUSTOMER_ADDRESS',
       payload: addSuccess.data.addAddress.customerAddressCreate.customerAddress,
-    })
+    });
 
     if (addSuccess.data.addDefaultAddress) {
       customerDispatch({
         type: 'SET_DEFAULT_ADDRESS',
         payload: addSuccess.data.addDefaultAddress.customerDefaultAddressUpdate.customer,
-      })
+      });
     }
 
     setNoticeState({
       message: 'Successfully added address',
       type: 'success',
-    })
+    });
   }
 
   function onSubmit(e) {
-    e.preventDefault()
+    e.preventDefault();
 
     if (type === 'edit') {
-      updateAddress()
+      updateAddress();
     }
 
     if (type === 'add') {
-      addAddress()
+      addAddress();
     }
   }
 
@@ -320,7 +320,7 @@ function AddressForm({ address, type }) {
         />
       )}
     </Form>
-  )
+  );
 }
 
-export { AddressForm }
+export { AddressForm };

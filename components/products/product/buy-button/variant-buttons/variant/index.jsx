@@ -1,5 +1,5 @@
 /** @jsx jsx */
-import { jsx, css } from '@emotion/core';
+import { jsx, css } from '@emotion/react';
 import { createObj, isPairMatch } from '../../../../../../common/utils';
 
 function ProductVariantButtonValue({ variant, onSelection, selectedOptions, isAvailableToSelect }) {
@@ -80,6 +80,8 @@ function ProductVariantButtonValue({ variant, onSelection, selectedOptions, isAv
       isAvailableToSelect
     )}
   `;
+
+  console.log('variant', variant);
 
   return (
     <ProductVariantButtonValueButton

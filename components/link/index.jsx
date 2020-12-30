@@ -1,7 +1,7 @@
-import { getItemLink } from '../../common/settings'
+import { getItemLink } from '../../common/settings';
 
 /** @jsx jsx */
-import { jsx, css } from '@emotion/core'
+import { jsx, css } from '@emotion/react';
 
 function Link({
   type,
@@ -13,7 +13,7 @@ function Link({
   manualLink,
   disableLink,
 }) {
-  const className = 'wps-' + type + '-link' + ' ' + classNames
+  const className = 'wps-' + type + '-link' + ' ' + classNames;
 
   const linkCSS = css`
     text-decoration: none;
@@ -24,15 +24,15 @@ function Link({
         cursor: pointer;
       }
     }
-  `
+  `;
 
   function getTarget(target) {
     if (target) {
-      return target
+      return target;
     }
 
     // Fallback in case we forget to pass target to <Link>
-    return '_blank'
+    return '_blank';
   }
 
   return (
@@ -53,7 +53,7 @@ function Link({
         </a>
       )}
     </>
-  )
+  );
 }
 
-export { Link }
+export { Link };

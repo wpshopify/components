@@ -1,6 +1,6 @@
 /** @jsx jsx */
-import { jsx, css } from '@emotion/core'
-import { FilterHook } from '../../../../../../common/utils'
+import { jsx, css } from '@emotion/react';
+import { FilterHook } from '../../../../../../common/utils';
 
 function ProductVariantDropdownValue({ onSelection, variant }) {
   const ProductVariantDropdownValueCSS = css`
@@ -21,7 +21,7 @@ function ProductVariantDropdownValue({ onSelection, variant }) {
       background-color: #f3f3f3;
       cursor: pointer;
     }
-  `
+  `;
   return (
     <li
       itemProp='category'
@@ -30,7 +30,7 @@ function ProductVariantDropdownValue({ onSelection, variant }) {
       css={ProductVariantDropdownValueCSS}>
       <FilterHook name='products.variant.title.text'>{variant.value}</FilterHook>
     </li>
-  )
+  );
 }
 
-export default wp.element.memo(ProductVariantDropdownValue)
+export default wp.element.memo(ProductVariantDropdownValue);

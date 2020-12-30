@@ -1,6 +1,6 @@
 import { CartContext } from '../_state/context';
 /** @jsx jsx */
-import { jsx, css } from '@emotion/core';
+import { jsx, css } from '@emotion/react';
 import { flexRowCSS } from '../../../common/css';
 
 const { useContext, useState, useEffect } = wp.element;

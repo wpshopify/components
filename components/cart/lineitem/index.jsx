@@ -17,7 +17,7 @@ import { containerFluidCSS, flexRowCSS, flexColSmallCSS, mq } from '../../../com
 import { getCurrencyCodeFromPayload } from '../../../common/pricing/data';
 
 /** @jsx jsx */
-import { jsx, css } from '@emotion/core';
+import { jsx, css } from '@emotion/react';
 import find from 'lodash/find';
 
 function CartLineItem({ lineItem, inventory }) {
@@ -158,6 +158,7 @@ function CartLineItem({ lineItem, inventory }) {
                 lineItem={lineItem}
                 lineItemTotal={lineItemTotal}
                 lineItemTotalElement={lineItemTotalElement}
+                lineItemQuantity={lineItemQuantity}
                 currencyCode={getCurrencyCodeFromPayload(cartState.checkoutCache)}
               />
 

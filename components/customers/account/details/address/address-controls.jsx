@@ -1,40 +1,40 @@
-import { A } from 'hookrouter'
-import { CustomersContext } from '../../../_state/context'
-import { AddressesContext } from '../../addresses/_state/context'
-import { deleteCustomerAddress } from '/Users/andrew/www/devil/devilbox-new/data/www/wpshopify-api'
-import to from 'await-to-js'
+import { A } from 'hookrouter';
+import { CustomersContext } from '../../../_state/context';
+import { AddressesContext } from '../../addresses/_state/context';
+import { deleteCustomerAddress } from '/Users/andrew/www/devil/devilbox-new/data/www/wpshopify-api';
+import to from 'await-to-js';
 
 /** @jsx jsx */
-import { jsx, css } from '@emotion/core'
+import { jsx, css } from '@emotion/react';
 
-const { useContext } = wp.element
+const { useContext } = wp.element;
 
 function AccountAddressControls({ address }) {
-  const [customerState, customerDispatch] = useContext(CustomersContext)
-  const [addressesState, addressesDispatch] = useContext(AddressesContext)
+  const [customerState, customerDispatch] = useContext(CustomersContext);
+  const [addressesState, addressesDispatch] = useContext(AddressesContext);
 
   const stylesAddressLine = css`
     && {
       margin: 0;
     }
-  `
+  `;
 
   const stylesAddress = css`
     margin-bottom: 1em;
-  `
+  `;
 
   const stylesControl = css`
     padding: 0.5em;
-  `
+  `;
 
   const stylesControlWrapper = css`
     position: relative;
     left: -0.5em;
     margin-top: 0.8em;
-  `
+  `;
 
   function onEdit() {
-    customerDispatch({ type: 'SET_SELECTED_ADDRESS', payload: address })
+    customerDispatch({ type: 'SET_SELECTED_ADDRESS', payload: address });
   }
 
   async function deleteAddress() {
@@ -42,23 +42,23 @@ function AccountAddressControls({ address }) {
       deleteCustomerAddress({
         addressId: address.id,
       })
-    )
+    );
 
     if (error) {
       setNoticeState({
         message: error,
         type: 'error',
-      })
+      });
 
-      return
+      return;
     }
     if (success.data.type === 'error') {
       setNoticeState({
         message: success.data.message,
         type: success.data.type,
-      })
+      });
 
-      return
+      return;
     }
 
     addressesDispatch({
@@ -67,14 +67,14 @@ function AccountAddressControls({ address }) {
         message: 'Successfully deleted address',
         type: 'success',
       },
-    })
+    });
 
-    customerDispatch({ type: 'DELETE_CUSTOMER_ADDRESS', payload: address.id })
+    customerDispatch({ type: 'DELETE_CUSTOMER_ADDRESS', payload: address.id });
   }
 
   function onDelete() {
     if (window.confirm('Do you really want to delete this address?')) {
-      deleteAddress()
+      deleteAddress();
     }
   }
 
@@ -90,7 +90,7 @@ function AccountAddressControls({ address }) {
         Delete
       </a>
     </div>
-  ) : null
+  ) : null;
 }
 
-export { AccountAddressControls }
+export { AccountAddressControls };

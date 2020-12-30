@@ -1,6 +1,6 @@
 /** @jsx jsx */
-import { jsx, css } from '@emotion/core'
-import { FilterHook } from '../../../../../common/utils'
+import { jsx, css } from '@emotion/react';
+import { FilterHook } from '../../../../../common/utils';
 
 function ProductImageSoldOutLabel() {
   const ProductImageSoldOutLabelCSS = css`
@@ -10,7 +10,7 @@ function ProductImageSoldOutLabel() {
     text-transform: uppercase;
     font-size: 13px;
     padding: 4px 10px;
-  `
+  `;
 
   return (
     <span className='wps-product-image-sold-out-label' css={ProductImageSoldOutLabelCSS}>
@@ -18,7 +18,7 @@ function ProductImageSoldOutLabel() {
         {wp.i18n.__('Sold out', 'wpshopify')}
       </FilterHook>
     </span>
-  )
+  );
 }
 
-export default wp.element.memo(ProductImageSoldOutLabel)
+export default wp.element.memo(ProductImageSoldOutLabel);

@@ -1,14 +1,14 @@
-import { v4 as uuidv4 } from 'uuid'
+import { v4 as uuidv4 } from 'uuid';
 
 /** @jsx jsx */
-import { jsx, css } from '@emotion/core'
+import { jsx, css } from '@emotion/react';
 
 function AccountDetailsAddress({ address }) {
   const stylesAddressLine = css`
     && {
       margin: 0;
     }
-  `
+  `;
 
   const stylesAddress = css`
     margin-bottom: 1.1em;
@@ -19,7 +19,7 @@ function AccountDetailsAddress({ address }) {
       border-bottom: 0;
       padding-bottom: 0;
     }
-  `
+  `;
 
   return (
     <div className='wps-account-address' css={stylesAddress}>
@@ -31,7 +31,7 @@ function AccountDetailsAddress({ address }) {
           </p>
         ))}
     </div>
-  )
+  );
 }
 
-export { AccountDetailsAddress }
+export { AccountDetailsAddress };

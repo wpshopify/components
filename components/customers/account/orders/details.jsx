@@ -1,52 +1,52 @@
-import PrettyPrice from '../../../../common/pricing/pretty'
-import { prettyDate } from '../../../../common/utils'
-import { CustomersContext } from '../../_state/context'
-import { ShopContext } from '../../../shop/_state/context'
-import { AccountReturn } from '../return'
-import { stylesSlideIn } from '../../_styles'
-import { OrderDetailsRow } from './details-row'
-import { v4 as uuidv4 } from 'uuid'
+import PrettyPrice from '../../../../common/pricing/pretty';
+import { prettyDate } from '../../../../common/utils';
+import { CustomersContext } from '../../_state/context';
+import { ShopContext } from '../../../shop/_state/context';
+import { AccountReturn } from '../return';
+import { stylesSlideIn } from '../../_styles';
+import { OrderDetailsRow } from './details-row';
+import { v4 as uuidv4 } from 'uuid';
 
-import { Table } from '../../../tables'
-import { TableHeader } from '../../../tables/header'
-import { Th } from '../../../tables/header/th'
-import { TableFooter } from '../../../tables/footer'
-import { TableBody } from '../../../tables/body'
-import { Td } from '../../../tables/body/td'
-import { AccountDetailsAddress } from '../details/address/address'
-import { FulfillmentStatus } from '../details/fulfillment-status'
-import { OrderStatus } from '../details/order-status'
+import { Table } from '../../../tables';
+import { TableHeader } from '../../../tables/header';
+import { Th } from '../../../tables/header/th';
+import { TableFooter } from '../../../tables/footer';
+import { TableBody } from '../../../tables/body';
+import { Td } from '../../../tables/body/td';
+import { AccountDetailsAddress } from '../details/address/address';
+import { FulfillmentStatus } from '../details/fulfillment-status';
+import { OrderStatus } from '../details/order-status';
 
 /** @jsx jsx */
-import { jsx, css } from '@emotion/core'
+import { jsx, css } from '@emotion/react';
 
-const { useContext } = wp.element
+const { useContext } = wp.element;
 
 function OrderDetails() {
-  const [shopState] = useContext(ShopContext)
+  const [shopState] = useContext(ShopContext);
 
   var stylesLeft = css`
     border-left: 0;
-  `
+  `;
 
   var stylesRight = css`
     border-right: 0;
-  `
+  `;
 
   var row = css`
     display: flex;
     justify-content: space-between;
-  `
+  `;
 
   var shippingAddressStyles = css`
     width: 32%;
-  `
+  `;
 
   var tableStyles = css`
     width: 65%;
-  `
+  `;
 
-  const [customersState, customersDispatch] = useContext(CustomersContext)
+  const [customersState, customersDispatch] = useContext(CustomersContext);
 
   return (
     <section css={stylesSlideIn}>
@@ -119,7 +119,7 @@ function OrderDetails() {
         </div>
       </div>
     </section>
-  )
+  );
 }
 
-export { OrderDetails }
+export { OrderDetails };

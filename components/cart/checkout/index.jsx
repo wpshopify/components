@@ -8,7 +8,7 @@ import { hasCustomCheckoutAttributes } from '../../../common/checkout';
 import { buttonCSS, mq } from '../../../common/css';
 
 /** @jsx jsx */
-import { jsx, css } from '@emotion/core';
+import { jsx, css } from '@emotion/react';
 
 import {
   replaceLineItems,

@@ -1,5 +1,5 @@
 /** @jsx jsx */
-import { jsx, css } from '@emotion/core';
+import { jsx, css } from '@emotion/react';
 import ProductQuantity from './quantity';
 import ProductOptions from './options';
 import ProductAddButton from './add-button';
@@ -17,7 +17,8 @@ function ProductBuyButton() {
   const [productState, productDispatch] = useContext(ProductContext);
 
   const isDirectCheckout =
-    itemsState.payloadSettings.directCheckout || wpshopify.settings.general.directCheckout;
+    (itemsState.payloadSettings.directCheckout || wpshopify.settings.general.directCheckout) &&
+    wpshopify.misc.isPro;
 
   const buyButtonWrapperCSS = css`
     display: flex;
@@ -26,6 +27,10 @@ function ProductBuyButton() {
   `;
 
   function isHidingControls() {
+    if (itemsState.payloadSettings.linkTo === 'none') {
+      return false;
+    }
+
     if (itemsState.payloadSettings.isSingular || isDirectCheckout) {
       return false;
     }

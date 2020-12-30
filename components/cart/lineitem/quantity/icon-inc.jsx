@@ -1,7 +1,7 @@
-import { mq } from '../../../../common/css'
+import { mq } from '../../../../common/css';
 
 /** @jsx jsx */
-import { jsx, css } from '@emotion/core'
+import { jsx, css } from '@emotion/react';
 
 function CartLineItemQuantityIncIcon() {
   const cartLineItemQuantityIncIconCSS = css`
@@ -35,14 +35,14 @@ function CartLineItemQuantityIncIcon() {
         left: calc(50% - 10px);
       }
     }
-  `
+  `;
 
   return (
     <span
       css={cartLineItemQuantityIncIconCSS}
       className='wps-quantity-icon wps-quantity-increment-icon'
     />
-  )
+  );
 }
 
-export default CartLineItemQuantityIncIcon
+export default CartLineItemQuantityIncIcon;

@@ -1,5 +1,5 @@
 /** @jsx jsx */
-import { jsx, css, keyframes } from '@emotion/core'
+import { jsx, css, keyframes } from '@emotion/react';
 
 function ProductTitlePlaceholder() {
   const shimmer = keyframes`
@@ -10,7 +10,7 @@ function ProductTitlePlaceholder() {
       100% {
         background-position: 468px 0;
       }
-`
+`;
 
   const loader = css`
     transition: background 1s ease;
@@ -25,13 +25,13 @@ function ProductTitlePlaceholder() {
     min-height: 20px;
     width: 100%;
     max-width: 300px;
-  `
+  `;
 
   const title = css`
     max-width: 200px;
-  `
+  `;
 
-  return <div css={[loader, title]}></div>
+  return <div css={[loader, title]}></div>;
 }
 
-export default ProductTitlePlaceholder
+export default ProductTitlePlaceholder;

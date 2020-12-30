@@ -1,6 +1,6 @@
 import PrettyPrice from '../../../../../common/pricing/pretty';
 /** @jsx jsx */
-import { jsx, css } from '@emotion/core';
+import { jsx, css } from '@emotion/react';
 
 const ProductPriceSingle = React.forwardRef((props, ref) => {
   const priceCSS = css`

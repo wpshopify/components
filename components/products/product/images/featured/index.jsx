@@ -6,7 +6,7 @@ import isNull from 'lodash/isNull';
 import Drift from 'drift-zoom';
 
 /** @jsx jsx */
-import { jsx, css } from '@emotion/core';
+import { jsx, css } from '@emotion/react';
 
 const { useEffect, useContext, useRef, useState } = wp.element;
 
@@ -62,6 +62,10 @@ function ProductFeaturedImage({ payloadSettings }) {
   }, [galleryState.featImage]);
 
   useEffect(() => {
+    if (!wpshopify.misc.isPro) {
+      return;
+    }
+
     if (isFirstRender.current) {
       isFirstRender.current = false;
       return;

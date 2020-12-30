@@ -1,5 +1,5 @@
 /** @jsx jsx */
-import { jsx, css } from '@emotion/core'
+import { jsx, css } from '@emotion/react';
 
 function Input({
   label,
@@ -11,7 +11,7 @@ function Input({
   placeholder,
   cssWrapper,
   cssInput,
-  isSubmitting
+  isSubmitting,
 }) {
   return (
     <div className='wpshopify-input-wrapper' css={cssWrapper}>
@@ -29,7 +29,7 @@ function Input({
         disabled={isSubmitting}
       />
     </div>
-  )
+  );
 }
 
-export { Input }
+export { Input };

@@ -1,5 +1,5 @@
 /** @jsx jsx */
-import { jsx, css } from '@emotion/core';
+import { jsx, css } from '@emotion/react';
 import ProductPrice from '../price';
 import ProductPriceSaleNotice from '../sale-notice';
 

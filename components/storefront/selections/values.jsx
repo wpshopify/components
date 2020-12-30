@@ -1,27 +1,27 @@
 /** @jsx jsx */
-import { jsx, css } from '@emotion/core'
-import { IconRemove } from '../../../common/icons/icon-remove.jsx'
-import { StorefrontContext } from '../_state/context'
-import { createSelectionsOfType, buildNewSelection } from '../../../common/selections'
-import { FilterHook } from '../../../common/utils'
+import { jsx, css } from '@emotion/react';
+import { IconRemove } from '../../../common/icons/icon-remove.jsx';
+import { StorefrontContext } from '../_state/context';
+import { createSelectionsOfType, buildNewSelection } from '../../../common/selections';
+import { FilterHook } from '../../../common/utils';
 
-const { useContext } = wp.element
+const { useContext } = wp.element;
 
 function StorefrontSelectionsValue({ selectionType, val }) {
-  const [storefrontState, storefrontDispatch] = useContext(StorefrontContext)
+  const [storefrontState, storefrontDispatch] = useContext(StorefrontContext);
 
   function onClick(e) {
-    const newList = buildNewSelection(val, selectionType, true, storefrontState.selections)
+    const newList = buildNewSelection(val, selectionType, true, storefrontState.selections);
 
     storefrontDispatch({
       type: 'SET_SELECTIONS',
       payload: createSelectionsOfType(selectionType, newList),
-    })
+    });
 
     storefrontDispatch({
       type: 'SET_SELECTED_' + selectionType.toUpperCase(),
       payload: newList,
-    })
+    });
   }
 
   const selectionValueCSS = css`
@@ -57,7 +57,7 @@ function StorefrontSelectionsValue({ selectionType, val }) {
       position: absolute;
       top: -2px;
     }
-  `
+  `;
 
   return (
     <span className='wps-filter-selection-value wps-mr-2' onClick={onClick} css={selectionValueCSS}>
@@ -70,14 +70,14 @@ function StorefrontSelectionsValue({ selectionType, val }) {
       )}
       <IconRemove />
     </span>
-  )
+  );
 }
 
 function StorefrontSelectionsValues({ selectionType, vals }) {
   return vals.map(
     (item) =>
       item && <StorefrontSelectionsValue key={item} selectionType={selectionType} val={item} />
-  )
+  );
 }
 
-export { StorefrontSelectionsValues }
+export { StorefrontSelectionsValues };

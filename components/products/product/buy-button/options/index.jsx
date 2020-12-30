@@ -22,7 +22,14 @@ function ProductOptions({
       availableVariants={availableVariants}
       selectedOptions={selectedOptions}
     />
-  ) : null;
+  ) : (
+    <ProductVariantDropdowns
+      options={availableOptions}
+      missingSelections={missingSelections}
+      availableVariants={availableVariants}
+      selectedOptions={selectedOptions}
+    />
+  );
 }
 
 export default ProductOptions;

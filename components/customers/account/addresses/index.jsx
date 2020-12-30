@@ -1,36 +1,36 @@
-import { CustomersContext } from '../../_state/context'
-import { stylesSlideIn } from '../../_styles'
-import { A } from 'hookrouter'
-import { AccountDetailsDefaultAddress } from '../details/address/default-address'
-import { AccountDetailsAddresses } from '../details/address/addresses'
-import { AccountAddressControls } from '../details/address/address-controls'
-import { AddressesProvider } from './_state/provider'
-import { AddressesHeader } from './header'
+import { CustomersContext } from '../../_state/context';
+import { stylesSlideIn } from '../../_styles';
+import { A } from 'hookrouter';
+import { AccountDetailsDefaultAddress } from '../details/address/default-address';
+import { AccountDetailsAddresses } from '../details/address/addresses';
+import { AccountAddressControls } from '../details/address/address-controls';
+import { AddressesProvider } from './_state/provider';
+import { AddressesHeader } from './header';
 
 /** @jsx jsx */
-import { jsx, css } from '@emotion/core'
+import { jsx, css } from '@emotion/react';
 
-const { useContext, useEffect } = wp.element
+const { useContext, useEffect } = wp.element;
 
 function withoutDefault(addresses, lookup) {
-  return addresses.filter((address) => address.node.address1 !== lookup)
+  return addresses.filter((address) => address.node.address1 !== lookup);
 }
 
 function Addresses() {
-  const [customerState, customersDispatch] = useContext(CustomersContext)
+  const [customerState, customersDispatch] = useContext(CustomersContext);
 
   const stylesWrap = css`
     display: flex;
     margin-bottom: 2em;
-  `
+  `;
 
   const stylesInner = css`
     margin-right: 2em;
-  `
+  `;
 
   useEffect(() => {
-    customersDispatch({ type: 'SET_SELECTED_ADDRESS', payload: false })
-  }, [customerState.customer.addresses])
+    customersDispatch({ type: 'SET_SELECTED_ADDRESS', payload: false });
+  }, [customerState.customer.addresses]);
 
   return (
     <AddressesProvider>
@@ -65,7 +65,7 @@ function Addresses() {
         </A>
       </section>
     </AddressesProvider>
-  )
+  );
 }
 
-export { Addresses }
+export { Addresses };

@@ -1,17 +1,17 @@
 /** @jsx jsx */
-import { jsx, css } from '@emotion/core'
-import { FilterHook } from '../../../../../../common/utils'
+import { jsx, css } from '@emotion/react';
+import { FilterHook } from '../../../../../../common/utils';
 
 function ProductQuantityLabel({ showLabel, labelText }) {
   const ProductQuantityLabelWrapperCSS = css`
     display: inline-block;
     margin: 0;
-  `
+  `;
 
   const ProductQuantityLabelCSS = css`
     font-weight: normal;
     color: #121212;
-  `
+  `;
 
   return showLabel ? (
     <div
@@ -21,7 +21,7 @@ function ProductQuantityLabel({ showLabel, labelText }) {
         <FilterHook name='products.quantity.label.text'>{labelText}</FilterHook>
       </label>
     </div>
-  ) : null
+  ) : null;
 }
 
-export default wp.element.memo(ProductQuantityLabel)
+export default wp.element.memo(ProductQuantityLabel);

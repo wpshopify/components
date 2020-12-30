@@ -1,5 +1,5 @@
 /** @jsx jsx */
-import { jsx, css, keyframes } from '@emotion/core';
+import { jsx, css, keyframes } from '@emotion/react';
 
 function Table({ children, extraCSS }) {
   const slide = keyframes`

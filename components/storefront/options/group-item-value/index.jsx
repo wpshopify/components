@@ -1,5 +1,5 @@
 /** @jsx jsx */
-import { jsx, css } from '@emotion/core'
+import { jsx, css } from '@emotion/react';
 
 function StorefrontFilterOptionsGroupItemValue({
   itemValue,
@@ -16,14 +16,14 @@ function StorefrontFilterOptionsGroupItemValue({
     position: static;
     width: 16px;
     height: 16px;
-  `
+  `;
 
   const labelCSS = css`
     display: block;
     position: static;
     flex: 1;
     text-transform: capitalize;
-  `
+  `;
 
   const checkboxWrapperCSS = css`
     display: flex;
@@ -36,7 +36,7 @@ function StorefrontFilterOptionsGroupItemValue({
         cursor: pointer;
       }
     }
-  `
+  `;
 
   const buttonOptionCSS = css`
     padding: 5px 10px;
@@ -66,7 +66,7 @@ function StorefrontFilterOptionsGroupItemValue({
         opacity: 1;
       }
     }
-  `
+  `;
 
   return displayStyle === 'checkbox' ? (
     <li
@@ -102,7 +102,7 @@ function StorefrontFilterOptionsGroupItemValue({
       css={buttonOptionCSS}>
       {itemValue}
     </li>
-  ) : null
+  ) : null;
 }
 
-export default wp.element.memo(StorefrontFilterOptionsGroupItemValue)
+export default wp.element.memo(StorefrontFilterOptionsGroupItemValue);

@@ -1,5 +1,5 @@
 /** @jsx jsx */
-import { jsx, css, keyframes } from '@emotion/core'
+import { jsx, css, keyframes } from '@emotion/react';
 
 function ProductBuyButtonPlaceholder() {
   const shimmer = keyframes`
@@ -10,7 +10,7 @@ function ProductBuyButtonPlaceholder() {
       100% {
         background-position: 468px 0;
       }
-`
+`;
 
   const loader = css`
     transition: background 1s ease;
@@ -25,24 +25,24 @@ function ProductBuyButtonPlaceholder() {
     min-height: 20px;
     width: 100%;
     max-width: 300px;
-  `
+  `;
 
   const variants = css`
     max-width: 250px;
     display: flex;
     justify-content: space-between;
     background: transparent !important;
-  `
+  `;
 
   const variant = css`
     max-width: 55px;
     margin: 0 !important;
-  `
+  `;
 
   const buyButton = css`
     max-width: 250px;
     min-height: 40px;
-  `
+  `;
 
   return (
     <div>
@@ -54,7 +54,7 @@ function ProductBuyButtonPlaceholder() {
       </div>
       <div css={[loader, buyButton]}></div>
     </div>
-  )
+  );
 }
 
-export default ProductBuyButtonPlaceholder
+export default ProductBuyButtonPlaceholder;

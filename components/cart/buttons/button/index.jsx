@@ -7,7 +7,7 @@ import { usePortal } from '../../../../common/hooks';
 import { isCartEmpty } from '../../../../common/cart';
 
 /** @jsx jsx */
-import { jsx, css, keyframes } from '@emotion/core';
+import { jsx, css, keyframes } from '@emotion/react';
 
 const { useContext, useRef, useEffect } = wp.element;
 
@@ -17,16 +17,23 @@ function CartButton({ options }) {
   const animeSlideInRight = useAnime(slideInRight);
 
   useEffect(() => {
+    console.log('counterElement', counterElement);
+
+    console.log('options.payloadSettings.type', options.payloadSettings.type);
+    console.log('options.payloadSettings.type', wpshopify.settings.general.showFixedCartTab);
     if (options.payloadSettings.type === 'fixed' && wpshopify.settings.general.showFixedCartTab) {
       animeSlideInRight(counterElement.current);
     }
   }, []);
 
   function onClick() {
+    console.log('TOGGLE_CART');
+
     cartDispatch({ type: 'TOGGLE_CART', payload: true });
   }
 
   function onMouseOver() {
+    console.log('CART_LOADED');
     cartDispatch({ type: 'CART_LOADED', payload: true });
   }
 
@@ -37,6 +44,10 @@ function CartButton({ options }) {
 
     if (!wpshopify.settings.general.showFixedCartTab) {
       return false;
+    }
+
+    if (!wpshopify.misc.isPro) {
+      return true;
     }
 
     if (wpshopify.settings.general.cartConditionalFixedTabLoading === 'all') {
@@ -63,6 +74,7 @@ function CartButton({ options }) {
     background-color: ${options.payloadSettings.type === 'fixed'
       ? wpshopify.settings.general.cartFixedBackgroundColor
       : 'transparent'};
+    cursor: 'pointer';
 
     &:hover,
     &:focus {

@@ -1,7 +1,7 @@
-import { FilterHook } from '../../../../common/utils'
-import { mq } from '../../../../common/css'
+import { FilterHook } from '../../../../common/utils';
+import { mq } from '../../../../common/css';
 /** @jsx jsx */
-import { jsx, css } from '@emotion/core'
+import { jsx, css } from '@emotion/react';
 
 function CartLineItemTitle({ lineItem }) {
   const CartLineItemTitleCSS = css`
@@ -15,13 +15,13 @@ function CartLineItemTitle({ lineItem }) {
       line-height: 1.4;
       margin-top: -3px;
     }
-  `
+  `;
 
   return (
     <span className='wps-cart-lineitem-title-content' css={CartLineItemTitleCSS}>
       <FilterHook name='cart.lineItem.title.text'>{lineItem.product.title}</FilterHook>
     </span>
-  )
+  );
 }
 
-export { CartLineItemTitle }
+export { CartLineItemTitle };

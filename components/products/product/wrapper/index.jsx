@@ -1,5 +1,5 @@
 /** @jsx jsx */
-import { jsx, css } from '@emotion/core';
+import { jsx, css } from '@emotion/react';
 import { ProductContext } from '../_state/context';
 import { isShowingComponent } from '../../../../common/components';
 import { ErrorBoundary } from 'react-error-boundary';

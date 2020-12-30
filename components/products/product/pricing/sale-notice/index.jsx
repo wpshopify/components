@@ -1,7 +1,7 @@
 /** @jsx jsx */
-import { jsx, css } from '@emotion/core'
-import { shouldShowSaleNotice } from '../../../../../common/pricing/data'
-import { FilterHook } from '../../../../../common/utils'
+import { jsx, css } from '@emotion/react';
+import { shouldShowSaleNotice } from '../../../../../common/pricing/data';
+import { FilterHook } from '../../../../../common/utils';
 
 function ProductPriceSaleNotice({ selectedVariant, prices, showPriceRange, children }) {
   const ProductPriceSaleNoticeCSS = css`
@@ -12,7 +12,7 @@ function ProductPriceSaleNotice({ selectedVariant, prices, showPriceRange, child
       line-height: 1;
       font-style: normal;
     }
-  `
+  `;
 
   const ProductPriceSalePriceCSS = css`
     margin: 0 5px 0 0;
@@ -20,7 +20,7 @@ function ProductPriceSaleNotice({ selectedVariant, prices, showPriceRange, child
     line-height: 1;
     color: #848484;
     font-style: normal;
-  `
+  `;
 
   return shouldShowSaleNotice(selectedVariant, prices) ? (
     <>
@@ -33,7 +33,7 @@ function ProductPriceSaleNotice({ selectedVariant, prices, showPriceRange, child
 
       {children}
     </>
-  ) : null
+  ) : null;
 }
 
-export default wp.element.memo(ProductPriceSaleNotice)
+export default wp.element.memo(ProductPriceSaleNotice);

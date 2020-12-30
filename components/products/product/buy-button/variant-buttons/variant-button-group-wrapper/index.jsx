@@ -1,10 +1,10 @@
 /** @jsx jsx */
-import { jsx, css } from '@emotion/core'
-import { ProductOptionContext } from '../../option/_state/context'
-import ProductVariantMissingSelection from '../missing-selection'
-import ProductVariantsButtons from '../variants'
+import { jsx, css } from '@emotion/react';
+import { ProductOptionContext } from '../../option/_state/context';
+import ProductVariantMissingSelection from '../missing-selection';
+import ProductVariantsButtons from '../variants';
 
-const { useRef, useContext } = wp.element
+const { useRef, useContext } = wp.element;
 
 function ProductVariantButtonGroupWrapper({
   option,
@@ -12,20 +12,20 @@ function ProductVariantButtonGroupWrapper({
   selectedOptions,
   availableVariants,
 }) {
-  const [productOptionState] = useContext(ProductOptionContext)
-  const variantGroup = useRef()
+  const [productOptionState] = useContext(ProductOptionContext);
+  const variantGroup = useRef();
 
   const labelStyles = css`
     margin-bottom: 5px;
     font-weight: bold;
     font-size: 15px;
-  `
+  `;
 
   const groupStyles = css`
     display: flex;
     flex-direction: column;
     margin-bottom: 1em;
-  `
+  `;
 
   return (
     <div className='wpshopify-variant-buttons-group' css={groupStyles}>
@@ -41,7 +41,7 @@ function ProductVariantButtonGroupWrapper({
         <ProductVariantMissingSelection />
       )}
     </div>
-  )
+  );
 }
 
-export default ProductVariantButtonGroupWrapper
+export default ProductVariantButtonGroupWrapper;

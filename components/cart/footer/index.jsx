@@ -1,18 +1,18 @@
 /** @jsx jsx */
-import { jsx, css } from '@emotion/core'
-import { CartContext } from '../_state/context'
-import { CartCheckout } from '../checkout'
-import { CartNote } from '../note'
-import { CartTerms } from '../terms'
-import { Notices } from '../../notices'
-import CartFooterTotal from './total'
+import { jsx, css } from '@emotion/react';
+import { CartContext } from '../_state/context';
+import { CartCheckout } from '../checkout';
+import { CartNote } from '../note';
+import { CartTerms } from '../terms';
+import { Notices } from '../../notices';
+import CartFooterTotal from './total';
 
-import isEmpty from 'lodash/isEmpty'
+import isEmpty from 'lodash/isEmpty';
 
 function CartFooter() {
-  const { useContext, useRef } = wp.element
-  const [cartState] = useContext(CartContext)
-  const totalElement = useRef()
+  const { useContext, useRef } = wp.element;
+  const [cartState] = useContext(CartContext);
+  const totalElement = useRef();
 
   const CartFooterCSS = css`
     padding: 1em 0 0 0;
@@ -31,19 +31,19 @@ function CartFooter() {
       font-size: 20px;
       color: #121212;
     }
-  `
+  `;
 
   return (
     <>
       <section className='wps-cart-footer' css={CartFooterCSS}>
-        {wpshopify.settings.general.enableCartNotes && <CartNote />}
-        {wpshopify.settings.general.enableCartTerms && <CartTerms />}
+        {wpshopify.misc.isPro && wpshopify.settings.general.enableCartNotes && <CartNote />}
+        {wpshopify.misc.isPro && wpshopify.settings.general.enableCartTerms && <CartTerms />}
         {!isEmpty(cartState.notices) && <Notices notices={cartState.notices} noticeGroup='cart' />}
         <CartFooterTotal totalElement={totalElement} />
         <CartCheckout />
       </section>
     </>
-  )
+  );
 }
 
-export default CartFooter
+export default CartFooter;

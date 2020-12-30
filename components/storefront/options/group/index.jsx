@@ -1,16 +1,16 @@
 /** @jsx jsx */
-import { jsx, css } from '@emotion/core'
-import { StorefrontFilter } from '../../filter'
-import { StorefrontOptionsContext } from '../_state/context'
-import StorefrontFilterOptionsGroupItems from '../group-items'
-import { FilterHook } from '../../../../common/utils'
-import isEmpty from 'lodash/isEmpty'
+import { jsx, css } from '@emotion/react';
+import { StorefrontFilter } from '../../filter';
+import { StorefrontOptionsContext } from '../_state/context';
+import StorefrontFilterOptionsGroupItems from '../group-items';
+import { FilterHook } from '../../../../common/utils';
+import isEmpty from 'lodash/isEmpty';
 
-const { Notice } = wp.components
-const { useContext } = wp.element
+const { Notice } = wp.components;
+const { useContext } = wp.element;
 
 function StorefrontFilterOptionsGroup({ groupType, displayStyle, heading, filterOptions }) {
-  const [storefrontOptionsState] = useContext(StorefrontOptionsContext)
+  const [storefrontOptionsState] = useContext(StorefrontOptionsContext);
 
   const filterContentCSS = css`
     padding: 10px 0;
@@ -24,7 +24,7 @@ function StorefrontFilterOptionsGroup({ groupType, displayStyle, heading, filter
       padding: 0;
       margin: 0;
     }
-  `
+  `;
 
   return (
     <StorefrontFilter heading={heading}>
@@ -55,7 +55,7 @@ function StorefrontFilterOptionsGroup({ groupType, displayStyle, heading, filter
         )}
       </div>
     </StorefrontFilter>
-  )
+  );
 }
 
-export { StorefrontFilterOptionsGroup }
+export { StorefrontFilterOptionsGroup };

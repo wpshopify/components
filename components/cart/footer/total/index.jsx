@@ -1,34 +1,34 @@
 /** @jsx jsx */
-import { jsx, css } from '@emotion/core'
-import { fadeInRightSlow, useAnime } from '../../../../common/animations'
-import { CartContext } from '../../_state/context'
-import CartFooterSubtotalLabel from '../subtotal'
-import CartFooterSubtotalAmount from '../subtotal-amount'
-import CartFooterDiscountWrapper from '../discount-wrapper'
-import { getCurrencyCodeFromPayload } from '../../../../common/pricing/data'
+import { jsx, css } from '@emotion/react';
+import { fadeInRightSlow, useAnime } from '../../../../common/animations';
+import { CartContext } from '../../_state/context';
+import CartFooterSubtotalLabel from '../subtotal';
+import CartFooterSubtotalAmount from '../subtotal-amount';
+import CartFooterDiscountWrapper from '../discount-wrapper';
+import { getCurrencyCodeFromPayload } from '../../../../common/pricing/data';
 
 function CartFooterTotal({ totalElement }) {
-  const { useContext, useEffect } = wp.element
-  const animeFadeInRightSlow = useAnime(fadeInRightSlow)
-  const [cartState] = useContext(CartContext)
+  const { useContext, useEffect } = wp.element;
+  const animeFadeInRightSlow = useAnime(fadeInRightSlow);
+  const [cartState] = useContext(CartContext);
 
   const footerStyles = css`
     display: flex;
     align-items: flex-end;
     justify-content: space-between;
     margin: 0;
-  `
+  `;
 
   useEffect(() => {
     if (!cartState.total) {
-      return
+      return;
     }
-    animeFadeInRightSlow(totalElement.current)
-  }, [cartState.total])
+    animeFadeInRightSlow(totalElement.current);
+  }, [cartState.total]);
 
   return (
     <>
-      {wpshopify.settings.general.enableDiscountCodes && (
+      {wpshopify.misc.isPro && wpshopify.settings.general.enableDiscountCodes && (
         <CartFooterDiscountWrapper discountCode={cartState.discountCode} />
       )}
 
@@ -43,7 +43,7 @@ function CartFooterTotal({ totalElement }) {
         />
       </div>
     </>
-  )
+  );
 }
 
-export default wp.element.memo(CartFooterTotal)
+export default wp.element.memo(CartFooterTotal);

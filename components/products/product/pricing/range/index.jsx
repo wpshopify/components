@@ -2,7 +2,7 @@ import ProductPriceSingle from '../single';
 import ProductPricingRangeGroup from './group';
 
 /** @jsx jsx */
-import { jsx, css } from '@emotion/core';
+import { jsx, css } from '@emotion/react';
 
 function ProductPricingRange({
   firstPrice,

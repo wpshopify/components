@@ -4,7 +4,7 @@ import { v4 as uuidv4 } from 'uuid';
 import isEmpty from 'lodash/isEmpty';
 
 /** @jsx jsx */
-import { jsx, css } from '@emotion/core';
+import { jsx, css } from '@emotion/react';
 
 function ProductThumbnailImages({ product, payloadSettings }) {
   const { useState } = wp.element;

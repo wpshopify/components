@@ -1,5 +1,5 @@
 /** @jsx jsx */
-import { jsx, css } from '@emotion/core';
+import { jsx, css } from '@emotion/react';
 import { useAnime, pulse } from '../../../../../../common/animations';
 import { FilterHook } from '../../../../../../common/utils';
 import { buttonCSS, IconCSS } from '../../../../../../common/css';

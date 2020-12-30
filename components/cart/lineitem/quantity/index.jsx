@@ -7,7 +7,7 @@ import CartLineItemQuantityIncIcon from './icon-inc';
 import CartLineItemQuantityDecIcon from './icon-dec';
 
 /** @jsx jsx */
-import { jsx, css } from '@emotion/core';
+import { jsx, css } from '@emotion/react';
 
 const { useContext } = wp.element;
 

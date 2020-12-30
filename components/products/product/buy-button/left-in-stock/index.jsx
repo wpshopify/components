@@ -107,6 +107,7 @@ function ProductBuyButtonLeftInStock({ payload, selectedVariant, isTouched, allO
 
   useEffect(() => {
     if (!isMounted.current || !selectedVariant) {
+      setQuantityLeft(false);
       return;
     }
 
@@ -114,7 +115,7 @@ function ProductBuyButtonLeftInStock({ payload, selectedVariant, isTouched, allO
       var totalAvailableQuantity = findTotalInventoryQuantity(variantInventory, selectedVariant.id);
 
       if (!totalAvailableQuantity) {
-        return;
+        setQuantityLeft(false);
       }
 
       setQuantityLeft(totalAvailableQuantity);

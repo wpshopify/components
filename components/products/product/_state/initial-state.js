@@ -1,19 +1,19 @@
-import { hasLink } from '../../../../common/settings'
+import { hasLink } from '../../../../common/settings';
 
 function hasManyVariants(payload) {
   if (!payload.variants) {
-    return false
+    return false;
   }
 
   if (!payload.variants.length) {
-    return false
+    return false;
   }
 
   if (payload.variants.length === 1 && payload.variants[0].title === 'Default Title') {
-    return false
+    return false;
   }
 
-  return true
+  return true;
 }
 
 function ProductInitialState({ payload, payloadSettings }) {
@@ -32,7 +32,7 @@ function ProductInitialState({ payload, payloadSettings }) {
     allOptionsSelected: false,
     missingSelections: false,
     quantity: 1,
-  }
+  };
 }
 
-export { ProductInitialState }
+export { ProductInitialState };

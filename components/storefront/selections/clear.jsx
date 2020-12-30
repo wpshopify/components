@@ -1,18 +1,18 @@
-import { StorefrontContext } from '../_state/context'
-import { FilterHook } from '../../../common/utils'
+import { StorefrontContext } from '../_state/context';
+import { FilterHook } from '../../../common/utils';
 /** @jsx jsx */
-import { jsx, css } from '@emotion/core'
+import { jsx, css } from '@emotion/react';
 
-const { useContext } = wp.element
+const { useContext } = wp.element;
 
 function StorefrontSelectionsClear() {
-  const [storefrontState, storefrontDispatch] = useContext(StorefrontContext)
+  const [storefrontState, storefrontDispatch] = useContext(StorefrontContext);
 
   function clearAllSelections() {
-    storefrontDispatch({ type: 'CLEAR_SELECTIONS' })
-    storefrontDispatch({ type: 'CLEAR_SELECTED_VENDORS' })
-    storefrontDispatch({ type: 'CLEAR_SELECTED_TAGS' })
-    storefrontDispatch({ type: 'CLEAR_SELECTED_TYPES' })
+    storefrontDispatch({ type: 'CLEAR_SELECTIONS' });
+    storefrontDispatch({ type: 'CLEAR_SELECTED_VENDORS' });
+    storefrontDispatch({ type: 'CLEAR_SELECTED_TAGS' });
+    storefrontDispatch({ type: 'CLEAR_SELECTED_TYPES' });
   }
 
   const clearAllCSS = css`
@@ -25,7 +25,7 @@ function StorefrontSelectionsClear() {
       opacity: 0.8;
       cursor: pointer;
     }
-  `
+  `;
 
   return (
     <div className='wps-filter-selections-clear' onClick={clearAllSelections} css={clearAllCSS}>
@@ -33,7 +33,7 @@ function StorefrontSelectionsClear() {
         {wp.i18n.__('Clear all', 'wpshopify')}
       </FilterHook>
     </div>
-  )
+  );
 }
 
-export { StorefrontSelectionsClear }
+export { StorefrontSelectionsClear };

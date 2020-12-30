@@ -1,12 +1,12 @@
 /** @jsx jsx */
-import { jsx, css } from '@emotion/core'
+import { jsx, css } from '@emotion/react';
 
-import ProductVariantButtonGroup from './variant-button-group'
+import ProductVariantButtonGroup from './variant-button-group';
 
 function ProductVariantButtons({ options, missingSelections, selectedOptions, availableVariants }) {
   const styles = css`
     margin: 1em 0;
-  `
+  `;
 
   return options ? (
     <div className='wpshopify-products-variant-buttons' css={styles}>
@@ -23,7 +23,7 @@ function ProductVariantButtons({ options, missingSelections, selectedOptions, av
           )
       )}
     </div>
-  ) : null
+  ) : null;
 }
 
-export default wp.element.memo(ProductVariantButtons)
+export default wp.element.memo(ProductVariantButtons);

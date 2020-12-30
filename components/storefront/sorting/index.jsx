@@ -1,53 +1,53 @@
 /** @jsx jsx */
-import { jsx, css } from '@emotion/core'
-import { StorefrontContext } from '../_state/context'
-import { ItemsContext } from '../../items/_state/context'
-import { usePortal } from '../../../common/hooks'
-import { FilterHook } from '../../../common/utils'
-const { useContext, useState } = wp.element
+import { jsx, css } from '@emotion/react';
+import { StorefrontContext } from '../_state/context';
+import { ItemsContext } from '../../items/_state/context';
+import { usePortal } from '../../../common/hooks';
+import { FilterHook } from '../../../common/utils';
+const { useContext, useState } = wp.element;
 
 function getSelectedOption(select) {
-  return select.options[select.selectedIndex]
+  return select.options[select.selectedIndex];
 }
 
 function hasReverse(select) {
-  var selectedOption = getSelectedOption(select)
+  var selectedOption = getSelectedOption(select);
 
-  return selectedOption.hasAttribute('data-wps-reverse')
+  return selectedOption.hasAttribute('data-wps-reverse');
 }
 
 function StorefrontSorting() {
-  const [storefrontState] = useContext(StorefrontContext)
-  const [itemsState, itemsDispatch] = useContext(ItemsContext)
+  const [storefrontState] = useContext(StorefrontContext);
+  const [itemsState, itemsDispatch] = useContext(ItemsContext);
 
-  const [sortValue, setSortValue] = useState(() => storefrontState.payloadSettings.sortBy)
+  const [sortValue, setSortValue] = useState(() => storefrontState.payloadSettings.sortBy);
 
   function updateFetchParams(event) {
-    let reverse = false
+    let reverse = false;
 
     if (hasReverse(event.target)) {
-      reverse = true
+      reverse = true;
     }
 
-    let sortKey = event.target.value
+    let sortKey = event.target.value;
 
     if (sortKey.includes('-REVERSE')) {
-      sortKey = sortKey.replace('-REVERSE', '')
+      sortKey = sortKey.replace('-REVERSE', '');
     }
 
     return {
       reverse: reverse,
       sortKey: sortKey,
-    }
+    };
   }
 
   function onChange(event) {
-    setSortValue(event.target.value)
+    setSortValue(event.target.value);
 
     itemsDispatch({
       type: 'MERGE_QUERY_PARAMS',
       payload: updateFetchParams(event),
-    })
+    });
   }
 
   const sortingSelectorCSS = css`
@@ -55,7 +55,7 @@ function StorefrontSorting() {
     &:hover {
       cursor: pointer;
     }
-  `
+  `;
 
   return usePortal(
     <div className='wps-component wps-component-sorting'>
@@ -123,7 +123,7 @@ function StorefrontSorting() {
       </select>
     </div>,
     document.querySelector(storefrontState.payloadSettings.dropzoneSorting)
-  )
+  );
 }
 
-export { StorefrontSorting }
+export { StorefrontSorting };

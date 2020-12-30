@@ -1,14 +1,14 @@
-import { v4 as uuidv4 } from 'uuid'
-import { AccountDetailsAddress } from './address'
-import { AccountAddressControls } from './address-controls'
+import { v4 as uuidv4 } from 'uuid';
+import { AccountDetailsAddress } from './address';
+import { AccountAddressControls } from './address-controls';
 
 /** @jsx jsx */
-import { jsx, css } from '@emotion/core'
+import { jsx, css } from '@emotion/react';
 
 function AccountDetailsAddresses({ addresses }) {
   const style = css`
     margin-bottom: 2em;
-  `
+  `;
 
   return (
     addresses &&
@@ -18,7 +18,7 @@ function AccountDetailsAddresses({ addresses }) {
         <AccountAddressControls address={address.node} />
       </div>
     ))
-  )
+  );
 }
 
-export { AccountDetailsAddresses }
+export { AccountDetailsAddresses };

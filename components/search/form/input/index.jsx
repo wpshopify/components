@@ -1,5 +1,5 @@
 /** @jsx jsx */
-import { jsx, css } from '@emotion/core';
+import { jsx, css } from '@emotion/react';
 import { SearchContext } from '../../_state/context';
 import { useDebounce } from 'use-debounce';
 
