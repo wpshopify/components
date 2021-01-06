@@ -17,23 +17,16 @@ function CartButton({ options }) {
   const animeSlideInRight = useAnime(slideInRight);
 
   useEffect(() => {
-    console.log('counterElement', counterElement);
-
-    console.log('options.payloadSettings.type', options.payloadSettings.type);
-    console.log('options.payloadSettings.type', wpshopify.settings.general.showFixedCartTab);
     if (options.payloadSettings.type === 'fixed' && wpshopify.settings.general.showFixedCartTab) {
       animeSlideInRight(counterElement.current);
     }
   }, []);
 
   function onClick() {
-    console.log('TOGGLE_CART');
-
     cartDispatch({ type: 'TOGGLE_CART', payload: true });
   }
 
   function onMouseOver() {
-    console.log('CART_LOADED');
     cartDispatch({ type: 'CART_LOADED', payload: true });
   }
 

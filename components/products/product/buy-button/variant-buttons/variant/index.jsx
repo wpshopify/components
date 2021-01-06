@@ -81,8 +81,6 @@ function ProductVariantButtonValue({ variant, onSelection, selectedOptions, isAv
     )}
   `;
 
-  console.log('variant', variant);
-
   return (
     <ProductVariantButtonValueButton
       defaultStyles={ProductVariantButtonValueButtonCSS}

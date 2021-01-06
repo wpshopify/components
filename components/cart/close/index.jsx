@@ -4,8 +4,6 @@ import { mq } from '../../../common/css';
 
 function CartClose({ cartDispatch }) {
   function onClose(e) {
-    console.log('onClose', e);
-
     cartDispatch({ type: 'TOGGLE_CART', payload: false });
   }
 

@@ -14,8 +14,6 @@ function ProductGallery({ payloadSettings }) {
   const product = productState.payload;
 
   function hasManyImages() {
-    console.log('productState', productState);
-
     if (!productState) {
       return false;
     }
