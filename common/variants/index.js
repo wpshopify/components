@@ -49,7 +49,9 @@ function findTotalInventoryQuantity(inventory, variantId) {
   let selectedVariantFound = findSelectedVariant(inventory, variantId);
 
   if (!selectedVariantFound) {
-    console.warn('WP Shopify warning: could not find selected variant within <ProductBuyButton>');
+    console.warn(
+      'WP Shopify warning: could not find selected variant for findTotalInventoryQuantity()'
+    );
     return false;
   }
 

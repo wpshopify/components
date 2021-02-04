@@ -4,7 +4,7 @@ import { CartContext } from '../_state/context';
 import { addDiscountCode, removeDiscountCode } from '../_common';
 import { useAction, useCartToggle } from '../../../common/hooks';
 import { findTotalCartQuantities } from '../../../common/cart';
-
+import { mq } from '../../../common/css';
 import { useAnime, slideOutCart, slideInCart } from '../../../common/animations';
 import isEmpty from 'lodash/isEmpty';
 import {
@@ -285,6 +285,7 @@ function CartWrapper() {
       openCart();
       return;
     }
+
     closeCart();
   }, [isCartOpen]);
 
@@ -308,14 +309,13 @@ function CartWrapper() {
   }, [lineItemsAdded]);
 
   const cartCSS = css`
-    width: 100%;
+    width: 400px;
     padding: 1em;
     position: fixed;
     height: 100%;
     right: 0;
     top: 0;
     margin-top: 0;
-    max-width: 400px;
     background: white;
     box-shadow: -17px 0 35px rgba(0, 0, 0, 0.1);
     z-index: 99999999;
@@ -325,6 +325,10 @@ function CartWrapper() {
     transition: transform 320ms ease;
     transform: translateX(110%);
     box-sizing: border-box;
+
+    ${mq('xsmall')} {
+      width: 100%;
+    }
 
     input[type='number']::-webkit-inner-spin-button,
     input[type='number']::-webkit-outer-spin-button {

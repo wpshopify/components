@@ -22,7 +22,7 @@ function CartButton({ options }) {
     }
   }, []);
 
-  function onClick() {
+  function onClick(e) {
     cartDispatch({ type: 'TOGGLE_CART', payload: true });
   }
 
@@ -67,7 +67,8 @@ function CartButton({ options }) {
     background-color: ${options.payloadSettings.type === 'fixed'
       ? wpshopify.settings.general.cartFixedBackgroundColor
       : 'transparent'};
-    cursor: 'pointer';
+    cursor: pointer;
+    pointer-events: auto;
 
     &:hover,
     &:focus {
@@ -107,8 +108,16 @@ function CartButton({ options }) {
           outline: none;
           overflow-y: visible;
 
+          &:focus,
+          &:active {
+            position: fixed;
+            top: calc(50% - 80px);
+          }
+
           &:hover {
             cursor: pointer;
+            position: fixed;
+            top: calc(50% - 80px);
 
             span,
             svg {

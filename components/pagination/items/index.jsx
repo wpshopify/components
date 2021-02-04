@@ -43,6 +43,7 @@ function PaginationItems({ children, payload, payloadSettings }) {
   const PaginationItemsContainerCSS = css`
     max-width: ${wp.hooks.applyFilters('misc.layout.containerWidth', '1100px')};
     margin: 0 auto;
+    padding: 0;
 
     ${mq('medium')} {
       padding: 0 15px;

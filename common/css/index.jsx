@@ -2,6 +2,7 @@
 import { jsx, css } from '@emotion/react';
 
 const bp = {
+  xsmall: 400,
   small: 600,
   medium: 800,
   large: 1100,
@@ -108,6 +109,7 @@ const IconCSS = css`
   content: '';
   position: relative;
   vertical-align: middle;
+  pointer-events: auto;
 
   &.wps-btn {
     padding-right: 2.6em;

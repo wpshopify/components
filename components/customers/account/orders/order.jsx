@@ -14,20 +14,6 @@ const { useContext } = wp.element;
 function Order({ order }) {
   const [customersState, customerDispatch] = useContext(CustomersContext);
 
-  const stylesthtd = {
-    textAlign: 'left',
-    padding: '15px',
-    border: '1px solid #e7e7e7',
-  };
-
-  const stylesOrderLink = {
-    textDecoration: 'underline',
-    color: '#3ba9fc',
-    ':hover': {
-      cursor: 'pointer',
-    },
-  };
-
   const cellLinkStyles = css`
     padding: 1em;
     width: 100%;

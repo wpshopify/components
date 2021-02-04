@@ -1,7 +1,5 @@
-import ProductPlaceholder from './components/products/product/placeholder';
-
 export { decodeComponentPayloadSettings, underscoreToCamel } from './common/utils';
-export { ProductPlaceholder };
+export { ProductPlaceholder } from './components/products/product/placeholder';
 export { Product } from './components/products/product';
 export { Products } from './components/products';
 export { Cart } from './components/cart';
