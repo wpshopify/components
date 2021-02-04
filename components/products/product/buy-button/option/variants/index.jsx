@@ -59,7 +59,8 @@ function ProductVariantsDropdown({
                 key={uuidv4()}
                 variant={variant}
                 availableVariants={availableVariants}
-                selectedOptions={selectedOptions}>
+                selectedOptions={selectedOptions}
+                variants={productOptionState.variants}>
                 <ProductVariantDropdownValue />
               </ProductVariant>
             )

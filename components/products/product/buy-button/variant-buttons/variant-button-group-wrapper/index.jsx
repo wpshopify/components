@@ -35,6 +35,9 @@ function ProductVariantButtonGroupWrapper({
           option={option}
           availableVariants={availableVariants}
           selectedOptions={selectedOptions}
+          variants={productOptionState.variants}
+          totalOptions={productOptionState.totalOptions}
+          showPriceUnderVariantButton={productOptionState.showPriceUnderVariantButton}
         />
       </div>
       {missingSelections && !productOptionState.isOptionSelected && (

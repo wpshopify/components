@@ -1,14 +1,33 @@
 /** @jsx jsx */
 import { jsx, css } from '@emotion/react';
-import { createObj, isPairMatch } from '../../../../../../common/utils';
+import {
+  createObj,
+  isPairMatch,
+  findVariantFromOptionObject,
+} from '../../../../../../common/utils';
+import PrettyPrice from '../../../../../../common/pricing/pretty';
 
-function ProductVariantButtonValue({ variant, onSelection, selectedOptions, isAvailableToSelect }) {
+function ProductVariantButtonValue({
+  variant,
+  onSelection,
+  selectedOptions,
+  isAvailableToSelect,
+  variants,
+  totalOptions,
+  showPriceUnderVariantButton,
+}) {
   const variantObj = createObj(variant.name, variant.value);
   const isSelected = isPairMatch(selectedOptions, variantObj);
   const border = isSelected ? '#415aff' : 'black';
   const color = isSelected ? 'white' : 'black';
   const backgroundColor = isSelected ? '#415aff' : 'transparent';
   const opacity = isSelected || isAvailableToSelect ? 1 : 0.4;
+
+  if (showPriceUnderVariantButton && totalOptions === 1) {
+    var variantObject = findVariantFromOptionObject(variant, variants);
+  } else {
+    var variantObject = false;
+  }
 
   const colorSwatchNames = wp.hooks.applyFilters('product.variant.styles.colorSwatch.names', [
     'color',
@@ -88,6 +107,7 @@ function ProductVariantButtonValue({ variant, onSelection, selectedOptions, isAv
       isSelected={isSelected}
       isAvailableToSelect={isAvailableToSelect}
       variantValue={variant.value}
+      variantObject={variantObject}
     />
   );
 }
@@ -98,6 +118,7 @@ function ProductVariantButtonValueButton({
   isSelected,
   isAvailableToSelect,
   variantValue,
+  variantObject,
 }) {
   return (
     <button
@@ -106,7 +127,26 @@ function ProductVariantButtonValueButton({
       data-is-variant-selected={isSelected}
       data-is-available={isAvailableToSelect}>
       {variantValue}
+
+      {variantObject && <ProductVariantButtonPrice variantObject={variantObject} />}
     </button>
+  );
+}
+
+function ProductVariantButtonPrice({ variantObject }) {
+  const variantObjectCSS = css`
+    font-size: 15px;
+    margin-top: 5px;
+    margin-bottom: 0;
+  `;
+
+  return (
+    <p css={variantObjectCSS} className='wps-variant-button-price'>
+      <PrettyPrice
+        price={variantObject[0].priceV2.amount}
+        currencyCode={variantObject[0].priceV2.currencyCode}
+      />
+    </p>
   );
 }
 

@@ -7,6 +7,8 @@ function ProductOptions({
   missingSelections,
   selectedOptions,
   availableVariants,
+  variants,
+  showPriceUnderVariantButton,
 }) {
   return variantStyle === 'dropdown' ? (
     <ProductVariantDropdowns
@@ -21,6 +23,8 @@ function ProductOptions({
       missingSelections={missingSelections}
       availableVariants={availableVariants}
       selectedOptions={selectedOptions}
+      variants={variants}
+      showPriceUnderVariantButton={showPriceUnderVariantButton}
     />
   ) : (
     <ProductVariantDropdowns

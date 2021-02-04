@@ -16,6 +16,16 @@ function hasManyVariants(payload) {
   return true;
 }
 
+function isOnSale(payload) {
+  const onSaleVariants = payload.variants.filter((variant) => variant.compareAtPriceV2);
+
+  if (onSaleVariants === undefined || onSaleVariants.length == 0) {
+    return false;
+  }
+
+  return true;
+}
+
 function ProductInitialState({ payload, payloadSettings }) {
   return {
     payload: payload,
@@ -25,6 +35,7 @@ function ProductInitialState({ payload, payloadSettings }) {
     isTouched: false,
     hasManyImages: payload.images && payload.images.length > 1 ? true : false,
     hasManyVariants: hasManyVariants(payload),
+    isOnSale: isOnSale(payload),
     hasLink: hasLink(payloadSettings),
     selectedOptions: {},
     availableVariants: [],

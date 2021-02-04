@@ -1,53 +1,54 @@
-import isEmpty from 'lodash/isEmpty'
-import forOwn from 'lodash/forOwn'
-import without from 'lodash/without'
-import mapKeys from 'lodash/mapKeys'
-import isString from 'lodash/isString'
-import isObject from 'lodash/isObject'
-import isArray from 'lodash/isArray'
-import isMatch from 'lodash/isMatch'
-import md5 from 'js-md5'
-import { format } from 'date-fns'
+import isEmpty from 'lodash/isEmpty';
+import forOwn from 'lodash/forOwn';
+import without from 'lodash/without';
+import mapKeys from 'lodash/mapKeys';
+import isString from 'lodash/isString';
+import isObject from 'lodash/isObject';
+import isArray from 'lodash/isArray';
+import isMatch from 'lodash/isMatch';
+import some from 'lodash/some';
+import md5 from 'js-md5';
+import { format } from 'date-fns';
 
-import { decodePayloadSettings } from '/Users/andrew/www/devil/devilbox-new/data/www/wpshopify-api'
+import { decodePayloadSettings } from '/Users/andrew/www/devil/devilbox-new/data/www/wpshopify-api';
 
 function removeFrom(array, valueToRemove) {
-  return without(array, valueToRemove)
+  return without(array, valueToRemove);
 }
 
 function objectIsEmpty(object) {
   if (isEmpty(object)) {
-    return true
+    return true;
   }
 
-  var foundNone = true
+  var foundNone = true;
 
   forOwn(object, function (value, key) {
     if (!isEmpty(value)) {
-      foundNone = false
+      foundNone = false;
     }
-  })
+  });
 
-  return foundNone
+  return foundNone;
 }
 
 function createObj(name, value) {
-  const newObbj = {}
+  const newObbj = {};
 
-  newObbj[name] = value
+  newObbj[name] = value;
 
-  return newObbj
+  return newObbj;
 }
 
 function isPairMatch(compareAgaisnt, pairToMatch) {
   if (isEmpty(pairToMatch)) {
-    return false
+    return false;
   }
 
   if (isArray(compareAgaisnt)) {
-    return !isEmpty(compareAgaisnt.filter((obj) => isMatch(obj, pairToMatch)))
+    return !isEmpty(compareAgaisnt.filter((obj) => isMatch(obj, pairToMatch)));
   } else {
-    return isMatch(compareAgaisnt, pairToMatch)
+    return isMatch(compareAgaisnt, pairToMatch);
   }
 }
 
@@ -57,57 +58,57 @@ Lowercase Object Keys
 
 */
 function lowercaseObjKeys(obj) {
-  return mapKeys(obj, (value, key) => key.toLowerCase())
+  return mapKeys(obj, (value, key) => key.toLowerCase());
 }
 
 function capitalizeFirstLetter(string) {
-  return string.toLowerCase().replace(/^\w/, (c) => c.toUpperCase())
+  return string.toLowerCase().replace(/^\w/, (c) => c.toUpperCase());
 }
 
 function itemWidthClass(perRow) {
   if (perRow > 12) {
-    perRow = 12
+    perRow = 12;
   } else if (!perRow) {
-    perRow = 1
+    perRow = 1;
   }
 
-  return 'wps-w-' + perRow
+  return 'wps-w-' + perRow;
 }
 
 function findPortalElement(dropzone) {
   if (dropzone) {
-    return document.querySelector(dropzone)
+    return document.querySelector(dropzone);
   }
-  return false
+  return false;
 }
 
 function createStringFromQueryParams(queryParams) {
   if (!queryParams.sortKey) {
-    var sortKey = ''
+    var sortKey = '';
   } else {
     if (isString(queryParams.sortKey)) {
-      var sortKey = queryParams.sortKey
+      var sortKey = queryParams.sortKey;
     } else {
-      var sortKey = queryParams.sortKey.key
+      var sortKey = queryParams.sortKey.key;
     }
   }
 
   if (!queryParams.reverse) {
-    var reverse = ''
+    var reverse = '';
   } else {
-    var reverse = queryParams.reverse
+    var reverse = queryParams.reverse;
   }
 
-  return queryParams.first + queryParams.query + reverse + sortKey
+  return queryParams.first + queryParams.query + reverse + sortKey;
 }
 
 function getHashFromQueryParams(queryParams) {
-  return md5(createStringFromQueryParams(queryParams))
+  return md5(createStringFromQueryParams(queryParams));
 }
 
 function FilterHook({ name, children, hasHTML = false, args = [] }) {
   if (!wp.hooks.hasFilter(name, 'wpshopify')) {
-    return <>{children}</>
+    return <>{children}</>;
   }
 
   if (hasHTML) {
@@ -117,42 +118,42 @@ function FilterHook({ name, children, hasHTML = false, args = [] }) {
           __html: wp.hooks.applyFilters(name, false, ...args),
         }}
       />
-    )
+    );
   }
 
-  return wp.hooks.applyFilters(name, children, ...args)
+  return wp.hooks.applyFilters(name, children, ...args);
 }
 
 function prettyDate(rawDate, formatting) {
-  return format(new Date(rawDate), formatting)
+  return format(new Date(rawDate), formatting);
 }
 
 function toCamel(s) {
   return s.replace(/([-_][a-z])/gi, ($1) => {
-    return $1.toUpperCase().replace('-', '').replace('_', '')
-  })
+    return $1.toUpperCase().replace('-', '').replace('_', '');
+  });
 }
 
 function underscoreToCamel(o) {
   if (isArray(o)) {
-    return o
+    return o;
   }
 
   if (isObject(o)) {
-    const n = {}
+    const n = {};
 
     Object.keys(o).forEach((k) => {
-      n[toCamel(k)] = underscoreToCamel(o[k])
-    })
+      n[toCamel(k)] = underscoreToCamel(o[k]);
+    });
 
-    return n
+    return n;
   }
 
-  return o
+  return o;
 }
 
 function decodeComponentPayloadSettings(payloadSettingsId) {
-  return underscoreToCamel(decodePayloadSettings(payloadSettingsId))
+  return underscoreToCamel(decodePayloadSettings(payloadSettingsId));
 }
 
 /**
@@ -170,7 +171,21 @@ function decodeComponentPayloadSettings(payloadSettingsId) {
  * @return string The sanitized string.
  */
 function createSlug(title) {
-  var diacriticsMap
+  var locale = wpshopify.misc.locale;
+
+  if (locale === 'en_US' || locale === 'en_AU' || locale === 'en_CA' || locale === 'en_GB') {
+    var shouldSanitizeDefault = true;
+  } else {
+    var shouldSanitizeDefault = false;
+  }
+
+  const sanitizeTitle = wp.hooks.applyFilters('product.title.sanitize', shouldSanitizeDefault);
+
+  if (!sanitizeTitle) {
+    return title;
+  }
+
+  var diacriticsMap;
 
   return removeSingleTrailingDash(
     replaceSpacesWithDash(
@@ -192,7 +207,7 @@ function createSlug(title) {
         // with an empty string (i.e. remove it).
         .replace(/[^\w\s-]+/g, '')
     )
-  )
+  );
 
   /**
    * Replace all HTML Entities.
@@ -206,7 +221,7 @@ function createSlug(title) {
    * @return String with HTML entities removed.
    */
   function removeHTMLEntities(str) {
-    return str.replace(/&.*?;/g, '')
+    return str.replace(/&.*?;/g, '');
   }
 
   /**
@@ -222,7 +237,7 @@ function createSlug(title) {
         .replace(/ +/g, '-')
         // Replace two or more dashes (-) with a single dash (-).
         .replace(/-{2,}/g, '-')
-    )
+    );
   }
 
   /**
@@ -233,9 +248,9 @@ function createSlug(title) {
    */
   function removeSingleTrailingDash(str) {
     if ('-' === str.substr(str.length - 1)) {
-      return str.substr(0, str.length - 1)
+      return str.substr(0, str.length - 1);
     }
-    return str
+    return str;
   }
 
   /* Remove accents/diacritics in a string in JavaScript
@@ -257,7 +272,7 @@ function createSlug(title) {
    */
   function getDiacriticsRemovalMap() {
     if (diacriticsMap) {
-      return diacriticsMap
+      return diacriticsMap;
     }
     var defaultDiacriticsRemovalMap = [
       { base: '-', letters: '\u2013\u2014\u00A0' },
@@ -481,25 +496,29 @@ function createSlug(title) {
         letters:
           '\u007A\u24E9\uFF5A\u017A\u1E91\u017C\u017E\u1E93\u1E95\u01B6\u0225\u0240\u2C6C\uA763',
       },
-    ]
+    ];
 
-    diacriticsMap = {}
+    diacriticsMap = {};
     for (var i = 0; i < defaultDiacriticsRemovalMap.length; i++) {
-      var letters = defaultDiacriticsRemovalMap[i].letters
+      var letters = defaultDiacriticsRemovalMap[i].letters;
       for (var j = 0; j < letters.length; j++) {
-        diacriticsMap[letters[j]] = defaultDiacriticsRemovalMap[i].base
+        diacriticsMap[letters[j]] = defaultDiacriticsRemovalMap[i].base;
       }
     }
-    return diacriticsMap
+    return diacriticsMap;
   }
 
   // Remove accent characters/diacritics from the string.
   function removeAccents(str) {
-    diacriticsMap = getDiacriticsRemovalMap()
+    diacriticsMap = getDiacriticsRemovalMap();
     return str.replace(/[^\u0000-\u007E]/g, function (a) {
-      return diacriticsMap[a] || a
-    })
+      return diacriticsMap[a] || a;
+    });
   }
+}
+
+function findVariantFromOptionObject(optionObject, variants) {
+  return variants.filter((variant) => some(variant.selectedOptions, optionObject));
 }
 
 export {
@@ -517,4 +536,5 @@ export {
   decodeComponentPayloadSettings,
   isPairMatch,
   createSlug,
-}
+  findVariantFromOptionObject,
+};

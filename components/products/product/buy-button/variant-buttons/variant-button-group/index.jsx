@@ -1,18 +1,24 @@
-import { ProductOptionProvider } from '../../option/_state/provider'
+import { ProductOptionProvider } from '../../option/_state/provider';
 
-import ProductOptionWrapper from '../../option/wrapper'
-import ProductVariantButtonGroupWrapper from '../variant-button-group-wrapper'
+import ProductOptionWrapper from '../../option/wrapper';
+import ProductVariantButtonGroupWrapper from '../variant-button-group-wrapper';
 
 function ProductVariantButtonGroup({
   option,
   missingSelections,
   availableVariants,
   selectedOptions,
+  variants,
+  totalOptions,
+  showPriceUnderVariantButton,
 }) {
   return option ? (
     <ProductOptionProvider
       options={{
         option: option,
+        variants: variants,
+        totalOptions: totalOptions,
+        showPriceUnderVariantButton: showPriceUnderVariantButton,
       }}>
       <ProductOptionWrapper option={option}>
         <ProductVariantButtonGroupWrapper
@@ -25,7 +31,7 @@ function ProductVariantButtonGroup({
     </ProductOptionProvider>
   ) : (
     ''
-  )
+  );
 }
 
-export default ProductVariantButtonGroup
+export default ProductVariantButtonGroup;

@@ -3,7 +3,15 @@ import { ProductContext } from '../../../../_state/context';
 import { createObj, isPairMatch } from '../../../../../../../common/utils';
 import isEmpty from 'lodash/isEmpty';
 
-function ProductVariant({ variant, availableVariants, selectedOptions, children }) {
+function ProductVariant({
+  variant,
+  availableVariants,
+  selectedOptions,
+  variants = false,
+  totalOptions = false,
+  showPriceUnderVariantButton = false,
+  children,
+}) {
   const { useContext } = wp.element;
   const [productOptionState, productOptionDispatch] = useContext(ProductOptionContext);
   const [, productDispatch] = useContext(ProductContext);
@@ -50,6 +58,9 @@ function ProductVariant({ variant, availableVariants, selectedOptions, children 
     variant: variant,
     isAvailableToSelect: isAvailableToSelect,
     selectedOptions: selectedOptions,
+    variants: variants,
+    totalOptions: totalOptions,
+    showPriceUnderVariantButton: showPriceUnderVariantButton,
   });
 }
 

@@ -3,7 +3,14 @@ import { jsx, css } from '@emotion/react';
 
 import ProductVariantButtonGroup from './variant-button-group';
 
-function ProductVariantButtons({ options, missingSelections, selectedOptions, availableVariants }) {
+function ProductVariantButtons({
+  options,
+  missingSelections,
+  selectedOptions,
+  availableVariants,
+  variants,
+  showPriceUnderVariantButton,
+}) {
   const styles = css`
     margin: 1em 0;
   `;
@@ -19,6 +26,9 @@ function ProductVariantButtons({ options, missingSelections, selectedOptions, av
               missingSelections={missingSelections}
               selectedOptions={selectedOptions}
               availableVariants={availableVariants}
+              variants={variants}
+              totalOptions={options.length}
+              showPriceUnderVariantButton={showPriceUnderVariantButton}
             />
           )
       )}

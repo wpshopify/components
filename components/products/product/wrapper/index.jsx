@@ -42,7 +42,12 @@ function ProductWrapper({ payloadSettings }) {
       css={ProductWrapperCSS}
       className='wps-item'
       onMouseOver={onMouseOver}
-      data-wpshopify-is-available-for-sale={productState.payload.availableForSale}>
+      data-wpshopify-is-available-for-sale={
+        productState.payload.availableForSale ? productState.payload.availableForSale : 'false'
+      }
+      data-wpshopify-is-on-sale={
+        productState.payload.isOnSale ? productState.payload.isOnSale : 'false'
+      }>
       {payloadSettings.htmlTemplate ? (
         <ProductCustomTemplate />
       ) : (

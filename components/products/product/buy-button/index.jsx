@@ -71,6 +71,8 @@ function ProductBuyButton() {
               selectedOptions={productState.selectedOptions}
               availableVariants={productState.availableVariants}
               availableOptions={onlyAvailableOptionsFromVariants(productState.payload.variants)}
+              variants={productState.payload.variants}
+              showPriceUnderVariantButton={itemsState.payloadSettings.showPriceUnderVariantButton}
             />
           )}
           <ProductAddButton

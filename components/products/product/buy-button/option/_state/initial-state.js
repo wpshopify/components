@@ -4,8 +4,13 @@ function ProductOptionInitialState(options) {
     option: options.option ? options.option : false,
     dropdownElement: options.dropdownElement ? options.dropdownElement : false,
     selectedOption: {},
-    isDropdownOpen: false
-  }
+    isDropdownOpen: false,
+    variants: options.variants ? options.variants : false,
+    totalOptions: options.totalOptions ? options.totalOptions : false,
+    showPriceUnderVariantButton: options.showPriceUnderVariantButton
+      ? options.showPriceUnderVariantButton
+      : false,
+  };
 }
 
-export { ProductOptionInitialState }
+export { ProductOptionInitialState };

@@ -88,6 +88,24 @@ function getShopifySingleLink(payload, type) {
   return payload.onlineStoreUrl;
 }
 
+function maybeAddSlashAtStart(string) {
+  // Ensure first character is forward slash
+  if (string.charAt(0) !== '/') {
+    string = '/' + string;
+  }
+
+  return string;
+}
+
+function maybeAddSlashAtEnd(string) {
+  // Ensure last character is forward slash
+  if (string.charAt(string.length - 1) !== '/') {
+    string = string + '/';
+  }
+
+  return string;
+}
+
 function getWordPressSingleLink(payload) {
   let itemHandle = '';
   let url = '';
@@ -104,12 +122,11 @@ function getWordPressSingleLink(payload) {
     url = wpshopify.settings.general.urlProducts;
   }
 
-  // Ensures proper URL
-  if (url.slice(-1) !== '/') {
-    url = url + '/';
-  }
+  url = maybeAddSlashAtEnd(maybeAddSlashAtStart(url));
 
-  return url + itemHandle;
+  const finalURL = url + itemHandle;
+
+  return finalURL;
 }
 
 function getItemLink(payload, type, linkTo) {
