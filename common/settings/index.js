@@ -75,7 +75,7 @@ function shopHasInfo(shop) {
 
 function getShopifySingleLink(payload, type) {
   if (!payload.onlineStoreUrl) {
-    let handle = encodeURI(payload.handle);
+    const handle = encodeURI(payload.handle);
     return (
       'https://' +
       wpshopify.settings.connection.storefront.domain +
