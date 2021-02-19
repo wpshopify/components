@@ -30,7 +30,7 @@ function ItemsInitialState({
   var itemsState = {
     payloadSettings: component.payloadSettings,
     element: component.componentElement,
-    payload: payload,
+    payload: payload ? [payload] : false,
     queryParams: {
       query: customQueryParams ? customQueryParams.query : component.payloadSettings.query,
       sortKey: customQueryParams ? customQueryParams.sortKey : component.payloadSettings.sortBy,
@@ -39,7 +39,7 @@ function ItemsInitialState({
     },
     connectionParams: connectionParams,
     originalParams: {
-      type: component.componentType,
+      type: component.componentType ? component.componentType : 'products',
       queryParams: {
         query: component.payloadSettings.query,
         sortKey: component.payloadSettings.sortBy,
@@ -50,7 +50,7 @@ function ItemsInitialState({
     },
     hasParentPayload: payload ? true : false,
     customQueryParams: customQueryParams,
-    dataType: component.componentType,
+    dataType: component.componentType ? component.componentType : 'products',
     lastCursorId: false,
     totalShown: 0,
     uniqueId: shortid.generate(),

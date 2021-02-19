@@ -13,12 +13,16 @@ function ProductReducer(state, action) {
         };
       }
 
+      const variant = findVariantFromSelectedOptions(
+        action.payload.payload,
+        action.payload.selectedOptions
+      );
+
+      wp.hooks.doAction('after.variants.selection', variant);
+
       return {
         ...state,
-        selectedVariant: findVariantFromSelectedOptions(
-          action.payload.payload,
-          action.payload.selectedOptions
-        ),
+        selectedVariant: variant,
       };
     }
 
@@ -96,6 +100,12 @@ function ProductReducer(state, action) {
         isCheckingOut: update(state.isCheckingOut, { $set: action.payload }),
       };
     }
+
+    case 'TOGGLE_MODAL':
+      return {
+        ...state,
+        isModalOpen: update(state.isModalOpen, { $set: action.payload }),
+      };
 
     default: {
       throw new Error(`Unhandled action type: ${action.type} in ProductReducer`);

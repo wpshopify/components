@@ -21,10 +21,28 @@ function ProductBuyButtonLeftInStock({ payload, selectedVariant, isTouched, allO
     if (!isMounted.current) {
       return;
     }
+
     if (isTouched && status === 'idle') {
       fetchVariantInventoryManagement();
     }
   }, [isTouched]);
+
+  useEffect(() => {
+    if (!isMounted.current || !selectedVariant) {
+      setQuantityLeft(false);
+      return;
+    }
+
+    if (selectedVariant.availableForSale) {
+      var totalAvailableQuantity = findTotalInventoryQuantity(variantInventory, selectedVariant.id);
+
+      if (!totalAvailableQuantity) {
+        setQuantityLeft(false);
+      }
+
+      setQuantityLeft(totalAvailableQuantity);
+    }
+  }, [selectedVariant]);
 
   function getVariantIds(payload) {
     if (!payload.variants) {
@@ -104,23 +122,6 @@ function ProductBuyButtonLeftInStock({ payload, selectedVariant, isTouched, allO
       setVariantInventory(variantInventoryResp);
     }
   }
-
-  useEffect(() => {
-    if (!isMounted.current || !selectedVariant) {
-      setQuantityLeft(false);
-      return;
-    }
-
-    if (selectedVariant.availableForSale) {
-      var totalAvailableQuantity = findTotalInventoryQuantity(variantInventory, selectedVariant.id);
-
-      if (!totalAvailableQuantity) {
-        setQuantityLeft(false);
-      }
-
-      setQuantityLeft(totalAvailableQuantity);
-    }
-  }, [selectedVariant]);
 
   return (
     quantityLeft && allOptionsSelected && <ProductBuyButtonTextNotice quantityLeft={quantityLeft} />

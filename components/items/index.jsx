@@ -1,7 +1,7 @@
-import { ItemsProvider } from './_state/provider'
-import Item from './item'
-import { usePortal } from '../../common/hooks'
-import { v4 as uuidv4 } from 'uuid'
+import { ItemsProvider } from './_state/provider';
+import Item from './item';
+import { usePortal } from '../../common/hooks';
+import { v4 as uuidv4 } from 'uuid';
 
 /*
 
@@ -19,7 +19,7 @@ function ItemWrapper(props) {
     <ItemsProvider
       component={props.component}
       customQueryParams={props.customQueryParams && props.customQueryParams}
-      payload={props.payload && props.payload}
+      payload={props.component.payload && props.component.payload}
       afterLoading={props.afterLoading && props.afterLoading}
       beforeLoading={props.beforeLoading && props.beforeLoading}
       isParentLoading={props.isParentLoading}>
@@ -30,7 +30,7 @@ function ItemWrapper(props) {
         props.component.componentElement
       )}
     </ItemsProvider>
-  )
+  );
 }
 
 function Items(props) {
@@ -38,7 +38,7 @@ function Items(props) {
     ? props.options.map((component) => (
         <ItemWrapper key={uuidv4()} component={component} {...props} />
       ))
-    : null
+    : null;
 }
 
-export { Items }
+export { Items };

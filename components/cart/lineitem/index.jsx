@@ -162,7 +162,7 @@ function CartLineItem({ lineItem, inventory }) {
                 currencyCode={getCurrencyCodeFromPayload(cartState.checkoutCache)}
               />
 
-              {wpshopify.misc.isPro && (
+              {wpshopify.misc.isPro && wp.hooks.applyFilters('misc.show.inventoryLevels', true) && (
                 <CartLineItemLeftInStock lineItemId={lineItem.id} inventory={inventory} />
               )}
             </div>

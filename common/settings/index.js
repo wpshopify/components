@@ -81,7 +81,7 @@ function getShopifySingleLink(payload, type) {
       '/' +
       type +
       '/' +
-      payload.handle
+      encodeURI(payload.handle)
     );
   }
 
@@ -89,6 +89,10 @@ function getShopifySingleLink(payload, type) {
 }
 
 function maybeAddSlashAtStart(string) {
+  if (string.startsWith('http')) {
+    return string;
+  }
+
   // Ensure first character is forward slash
   if (string.charAt(0) !== '/') {
     string = '/' + string;
@@ -136,7 +140,7 @@ function getItemLink(payload, type, linkTo) {
 
   // Manual links
   if (linkTo === 'shopify') {
-    return encodeURI(getShopifySingleLink(payload, type));
+    return getShopifySingleLink(payload, type);
   }
 
   if (linkTo === 'wordpress') {
