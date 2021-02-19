@@ -54,6 +54,11 @@ function hasReachedMaxQuantity(addToCartParams, maxQuantity, variant) {
   var checkoutCache = getCheckoutCache(addToCartParams.checkoutId);
   var foundLineItem = findLineItemByVariantId(checkoutCache.lineItems, variant.id);
 
+  // Not found if variant is missing from the cart
+  if (foundLineItem.length <= 0) {
+    return false;
+  }
+
   return foundLineItem[0].quantity >= maxQuantity;
 }
 
@@ -233,6 +238,7 @@ function AddButton({
     } else {
       const resetAfter = wp.hooks.applyFilters('product.buyButton.resetVariantsAfterAdding', true);
       let addToCartParams = buildAddToCartParams(lineItems, [variant]);
+      console.log('hey right here');
 
       if (maxQuantity && hasReachedMaxQuantity(addToCartParams, maxQuantity, variant)) {
         wp.hooks.doAction('cart.toggle', 'open');

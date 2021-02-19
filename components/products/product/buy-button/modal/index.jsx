@@ -72,7 +72,8 @@ function ProductModal() {
       isOpen={productState.isModalOpen}
       onRequestClose={onModalClose}
       contentLabel='Example Modal'
-      style={customStyles}>
+      style={customStyles}
+      bodyOpenClassName='wps-modal-open'>
       <ProductModalContent payload={productState.payload} payloadSettings={payloadSettings} />
     </Modal>
   );
@@ -128,9 +129,10 @@ function ProductModalContent({ payload, payloadSettings }) {
   `;
 
   const ProductModalContentInnerCSS = css`
-    overflow: hidden;
+    overflow: scroll;
     height: 100%;
   `;
+
   return (
     <div className='wps-modal' css={ProductModalCSS}>
       <ProductModalCloseIcon />
