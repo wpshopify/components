@@ -137,7 +137,7 @@ function getItemLink(payload, type, linkTo) {
 
   // Manual links
   if (linkTo === 'shopify') {
-    return encodeURI(getShopifySingleLink(payload, type));
+    return getShopifySingleLink(payload, type);
   }
 
   if (linkTo === 'wordpress') {
