@@ -53,6 +53,7 @@
     "react-jsx-parser": "^1.28.1",
     "react-loaders": "^3.0.1",
     "react-masonry-css": "^1.0.14",
+    "react-modal": "^3.12.1",
     "react-simple-img": "^2.3.9",
     "react-slick": "^0.28.0",
     "react-spring": "^8.0.27",

@@ -9,12 +9,18 @@ import { usePortal } from '../../../../common/hooks';
 import { getButtonText } from '../../../../common/settings';
 import { onlyAvailableOptionsFromVariants } from '../../../../common/variants';
 import { findPortalElement, FilterHook } from '../../../../common/utils';
+import size from 'lodash/size';
+
+function allOptionsSelectedMatch(onlySelectedOptions, product) {
+  return size(onlySelectedOptions) === product.options.length;
+}
 
 function ProductBuyButton() {
   const { Notice } = wp.components;
-  const { useContext } = wp.element;
+  const { useContext, useEffect, useRef } = wp.element;
   const [itemsState] = useContext(ItemsContext);
   const [productState, productDispatch] = useContext(ProductContext);
+  const isFirstRender = useRef(true);
 
   const isDirectCheckout =
     (itemsState.payloadSettings.directCheckout || wpshopify.settings.general.directCheckout) &&
@@ -37,7 +43,8 @@ function ProductBuyButton() {
 
     if (
       itemsState.payloadSettings.linkTo === 'shopify' ||
-      itemsState.payloadSettings.linkTo === 'wordpress'
+      itemsState.payloadSettings.linkTo === 'wordpress' ||
+      itemsState.payloadSettings.linkTo === 'modal'
     ) {
       if (itemsState.payloadSettings.linkWithBuyButton) {
         return false;
@@ -48,6 +55,29 @@ function ProductBuyButton() {
 
     return false;
   }
+
+  useEffect(() => {
+    if (isFirstRender.current) {
+      isFirstRender.current = false;
+      return;
+    }
+
+    if (allOptionsSelectedMatch(productState.selectedOptions, productState.payload)) {
+      productDispatch({ type: 'SET_ALL_SELECTED_OPTIONS', payload: true });
+
+      productDispatch({
+        type: 'SET_SELECTED_VARIANT',
+        payload: {
+          payload: productState.payload,
+          selectedOptions: productState.selectedOptions,
+        },
+      });
+
+      wp.hooks.doAction('before.product.addToCart', productState);
+    } else {
+      productDispatch({ type: 'SET_ALL_SELECTED_OPTIONS', payload: false });
+    }
+  }, [productState.selectedOptions]);
 
   return usePortal(
     <div css={buyButtonWrapperCSS} className='wps-component-products-buy-button'>
@@ -75,6 +105,7 @@ function ProductBuyButton() {
               showPriceUnderVariantButton={itemsState.payloadSettings.showPriceUnderVariantButton}
             />
           )}
+
           <ProductAddButton
             payloadSettings={itemsState.payloadSettings}
             addedToCart={productState.addedToCart}

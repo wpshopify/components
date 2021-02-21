@@ -16,6 +16,7 @@ import {
   addLineItemsAPI,
   getCache,
   buildClient,
+  getCheckoutCache,
 } from '/Users/andrew/www/devil/devilbox-new/data/www/wpshopify-api';
 import to from 'await-to-js';
 
@@ -43,6 +44,22 @@ function buildLineItemParams(variant, quantity) {
       quantity: quantity,
     },
   ];
+}
+
+function findLineItemByVariantId(lineItems, variantId) {
+  return lineItems.filter((lineItem) => lineItem.variantId === variantId);
+}
+
+function hasReachedMaxQuantity(addToCartParams, maxQuantity, variant) {
+  var checkoutCache = getCheckoutCache(addToCartParams.checkoutId);
+  var foundLineItem = findLineItemByVariantId(checkoutCache.lineItems, variant.id);
+
+  // Not found if variant is missing from the cart
+  if (foundLineItem.length <= 0) {
+    return false;
+  }
+
+  return foundLineItem[0].quantity >= maxQuantity;
 }
 
 function AddButtonWrapper({
@@ -79,11 +96,14 @@ function AddButton({
   selectedOptions,
   payload,
   payloadSettings,
+  linkTo,
 }) {
   const [isCheckingOut, setIsCheckingOut] = useState(false);
   const [hasNotice, setHasNotice] = useState(false);
   const animePulse = useAnime(pulse);
   const button = useRef();
+
+  const maxQuantity = wp.hooks.applyFilters('cart.lineItems.maxQuantity');
 
   useEffect(() => {
     if (allOptionsSelected) {
@@ -121,6 +141,11 @@ function AddButton({
   `;
 
   async function handleClick(e) {
+    if (linkTo === 'modal' && wpshopify.misc.isPro) {
+      productDispatch({ type: 'TOGGLE_MODAL', payload: true });
+      return;
+    }
+
     if (hasLink && !isDirectCheckout && !linkWithBuyButton) {
       return;
     }
@@ -211,27 +236,38 @@ function AddButton({
         setIsCheckingOut(false);
       });
     } else {
-      let addToCartParams = buildAddToCartParams(lineItems, [variant]);
-
       const resetAfter = wp.hooks.applyFilters('product.buyButton.resetVariantsAfterAdding', true);
+      let addToCartParams = buildAddToCartParams(lineItems, [variant]);
+      console.log('hey right here');
 
-      if (resetAfter) {
+      if (maxQuantity && hasReachedMaxQuantity(addToCartParams, maxQuantity, variant)) {
+        wp.hooks.doAction('cart.toggle', 'open');
         productDispatch({
           type: 'SET_ALL_SELECTED_OPTIONS',
           payload: false,
         });
 
         productDispatch({ type: 'REMOVE_SELECTED_OPTIONS' });
+        productDispatch({ type: 'SET_MISSING_SELECTIONS', payload: false });
+        return;
+      } else {
+        if (resetAfter) {
+          productDispatch({
+            type: 'SET_ALL_SELECTED_OPTIONS',
+            payload: false,
+          });
 
-        productDispatch({ type: 'SET_ADDED_VARIANT', payload: variant });
-        productDispatch({ type: 'SET_SELECTED_VARIANT', payload: false });
+          productDispatch({ type: 'REMOVE_SELECTED_OPTIONS' });
+          productDispatch({ type: 'SET_ADDED_VARIANT', payload: variant });
+          productDispatch({ type: 'SET_SELECTED_VARIANT', payload: false });
+        }
+
+        productDispatch({ type: 'SET_MISSING_SELECTIONS', payload: false });
+
+        wp.hooks.doAction('cart.toggle', 'open');
+        wp.hooks.doAction('product.addToCart', addToCartParams);
+        wp.hooks.doAction('after.product.addToCart', lineItems, variant);
       }
-
-      productDispatch({ type: 'SET_MISSING_SELECTIONS', payload: false });
-
-      wp.hooks.doAction('cart.toggle', 'open');
-      wp.hooks.doAction('product.addToCart', addToCartParams);
-      wp.hooks.doAction('after.product.addToCart', lineItems, variant);
     }
   }
 
@@ -346,10 +382,11 @@ function ProductAddButton({
           selectedOptions={selectedOptions}
           payload={payload}
           payloadSettings={payloadSettings}
+          linkTo={linkTo}
         />
       </AddButtonWrapper>
 
-      {wpshopify.misc.isPro && (
+      {wpshopify.misc.isPro && wp.hooks.applyFilters('misc.show.inventoryLevels', true) && (
         <ProductBuyButtonLeftInStock
           isTouched={isTouched}
           payload={payload}

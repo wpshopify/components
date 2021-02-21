@@ -43,6 +43,7 @@ function ProductInitialState({ payload, payloadSettings }) {
     allOptionsSelected: false,
     missingSelections: false,
     quantity: 1,
+    isModalOpen: false,
   };
 }
 

@@ -11,8 +11,12 @@ import ProductBuyButton from '../buy-button';
 import ErrorFallback from '../../../error-fallback';
 import ProductCustomTemplate from '../template';
 
+const ProductModal = wp.element.lazy(() =>
+  import(/* webpackChunkName: 'ProductModal-public' */ '../buy-button/modal')
+);
+
 function ProductWrapper({ payloadSettings }) {
-  const { useContext } = wp.element;
+  const { useContext, Suspense } = wp.element;
   const [productState, productDispatch] = useContext(ProductContext);
 
   const ProductWrapperCSS = css`
@@ -72,6 +76,12 @@ function ProductWrapper({ payloadSettings }) {
             {isShowingComponent(payloadSettings, 'buy-button') && <ProductBuyButton />}
           </ErrorBoundary>
         </>
+      )}
+
+      {productState.isModalOpen && wpshopify.misc.isPro && (
+        <Suspense fallback='Loading product ..'>
+          <ProductModal />
+        </Suspense>
       )}
     </div>
   );

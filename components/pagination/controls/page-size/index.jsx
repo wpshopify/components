@@ -62,7 +62,11 @@ function PaginationPageSize({ isLoading, payloadSettings, queryParams, dataType 
       return;
     }
 
-    setAfterCursorQueryParams(findLastCursorId(shopifyResponse, dataType));
+    var cursorId = findLastCursorId(shopifyResponse, dataType);
+
+    if (cursorId) {
+      setAfterCursorQueryParams(cursorId);
+    }
 
     itemsDispatch({
       type: 'UPDATE_TOTAL_SHOWN',

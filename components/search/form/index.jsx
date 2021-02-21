@@ -9,7 +9,7 @@ import { SearchNotices } from './notices';
 
 function SearchForm({ isLoading, payloadSettings }) {
   const { useEffect, useContext, useRef } = wp.element;
-  const [, itemsDispatch] = useContext(ItemsContext);
+  const [itemsState, itemsDispatch] = useContext(ItemsContext);
   const [searchState] = useContext(SearchContext);
   const isFirstRender = useRef(true);
 

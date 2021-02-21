@@ -181,4 +181,18 @@ function useCartToggle(cartElement) {
   return isOpen;
 }
 
-export { useOnClickOutside, usePortal, useAction, useCartToggle };
+function usePayloadSettings(itemsState, customSettings) {
+  const { useState } = wp.element;
+
+  const [pSettings, setPSettings] = useState(() => {
+    if (!customSettings) {
+      return itemsState.payloadSettings;
+    } else {
+      return { ...itemsState.payloadSettings, ...customSettings };
+    }
+  });
+
+  return pSettings;
+}
+
+export { useOnClickOutside, usePortal, useAction, useCartToggle, usePayloadSettings };

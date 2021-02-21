@@ -90,6 +90,10 @@ function getShopifySingleLink(payload, type) {
 }
 
 function maybeAddSlashAtStart(string) {
+  if (string.startsWith('http')) {
+    return string;
+  }
+
   // Ensure first character is forward slash
   if (string.charAt(0) !== '/') {
     string = '/' + string;
