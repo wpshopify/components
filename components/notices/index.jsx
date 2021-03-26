@@ -8,9 +8,11 @@ import isObject from 'lodash/isObject';
 /** @jsx jsx */
 import { jsx, css } from '@emotion/react';
 
-function Notices({ notices, dropzone = false, noticeGroup = '' }) {
-  const { Notice } = wp.components;
+function Notice({ children }) {
+  return <p>{children}</p>;
+}
 
+function Notices({ notices, dropzone = false, noticeGroup = '' }) {
   function checkForErrorObj(maybeError) {
     if (maybeError instanceof Error) {
       return maybeError.message;
@@ -56,4 +58,4 @@ function Notices({ notices, dropzone = false, noticeGroup = '' }) {
   );
 }
 
-export { Notices };
+export { Notices, Notice };

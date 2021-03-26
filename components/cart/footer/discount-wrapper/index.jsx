@@ -4,11 +4,11 @@ import { CartContext } from '../../_state/context';
 import { addDiscountCode, removeDiscountCode } from '../../_common';
 import CartFooterDiscount from '../discount';
 import { Loader } from '../../../loader';
+import { Notice } from '../../../notices';
 import to from 'await-to-js';
 
 function CartFooterDiscountWrapper({ discountCode }) {
   const { useRef, useState, useContext } = wp.element;
-  const { Notice } = wp.components;
   const [cartState, cartDispatch] = useContext(CartContext);
   const discountInputRef = useRef(false);
   const [isLoading, setIsLoading] = useState(false);

@@ -5,7 +5,7 @@ import Img from './img';
 import { Link } from '../../../../link';
 import { hasLink } from '../../../../../common/settings';
 
-function ProductImage({ image, isFeatured, payloadSettings }) {
+function ProductImage({ image, isFeatured, payloadSettings, placeholder = false }) {
   const { useEffect, useContext, useRef, useState } = wp.element;
   const imageRef = useRef();
   const [productState] = useContext(ProductContext);
@@ -13,6 +13,10 @@ function ProductImage({ image, isFeatured, payloadSettings }) {
   const [productImageSrc, setProductImageSrc] = useState(() => applyImageSizing());
 
   function applyImageSizing() {
+    if (placeholder) {
+      return image.src;
+    }
+
     if (isFeatured) {
       if (payloadSettings.imagesSizingToggle) {
         return doFeaturedSizing(image.src, payloadSettings);
@@ -41,9 +45,8 @@ function ProductImage({ image, isFeatured, payloadSettings }) {
    the image tag into a resuable component. Probably something to do with ref forwarding.
 
    */
-
   return productImageSrc ? (
-    hasLink(payloadSettings) && payloadSettings.linkTo !== 'modal' ? (
+    hasLink(payloadSettings) ? (
       <Link
         payload={productState.payload}
         type='products'
@@ -55,6 +58,7 @@ function ProductImage({ image, isFeatured, payloadSettings }) {
           productImageSrc={productImageSrc}
           galleryState={galleryState}
           isFeatured={isFeatured}
+          linkTo={payloadSettings.linkTo}
         />
       </Link>
     ) : (
@@ -64,6 +68,7 @@ function ProductImage({ image, isFeatured, payloadSettings }) {
         productImageSrc={productImageSrc}
         galleryState={galleryState}
         isFeatured={isFeatured}
+        linkTo={payloadSettings.linkTo}
       />
     )
   ) : null;

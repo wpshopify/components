@@ -7,6 +7,7 @@ import { CartLineItemOutOfStock } from './out-of-stock';
 import { CartLineItemTitle } from './title';
 import { CartLineItemRemove } from './remove';
 import CartLineItemVariantTitle from './variant-title';
+import { removeLineItems } from '../_common';
 
 const CartLineItemLeftInStock = wp.element.lazy(() =>
   import(/* webpackChunkName: 'CartLineItemLeftInStock-public' */ './left-in-stock')
@@ -33,24 +34,7 @@ function CartLineItem({ lineItem, inventory }) {
   const lineItemTotalElement = useRef();
 
   function onRemove(e) {
-    cartDispatch({
-      type: 'REMOVE_LINE_ITEM',
-      payload: {
-        lineItem: variantId.current,
-        checkoutId: cartState.checkoutId,
-      },
-    });
-
-    cartDispatch({
-      type: 'UPDATE_LINE_ITEM_QUANTITY',
-      payload: {
-        lineItem: {
-          variantId: variantId.current,
-          lineItemNewQuantity: 0,
-        },
-        checkoutId: cartState.checkoutId,
-      },
-    });
+    removeLineItems([variantId.current], cartState, cartDispatch);
 
     wp.hooks.doAction('after.cart.lineItem.remove', lineItem, variantId.current);
   }

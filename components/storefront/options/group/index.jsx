@@ -4,12 +4,17 @@ import { StorefrontFilter } from '../../filter';
 import { StorefrontOptionsContext } from '../_state/context';
 import StorefrontFilterOptionsGroupItems from '../group-items';
 import { FilterHook } from '../../../../common/utils';
+import { Notice } from '../../../notices';
 import isEmpty from 'lodash/isEmpty';
 
-const { Notice } = wp.components;
-const { useContext } = wp.element;
-
-function StorefrontFilterOptionsGroup({ groupType, displayStyle, heading, filterOptions }) {
+function StorefrontFilterOptionsGroup({
+  groupType,
+  displayStyle,
+  heading,
+  filterOptions,
+  onSelectionChange,
+}) {
+  const { useContext } = wp.element;
   const [storefrontOptionsState] = useContext(StorefrontOptionsContext);
 
   const filterContentCSS = css`
@@ -47,6 +52,7 @@ function StorefrontFilterOptionsGroup({ groupType, displayStyle, heading, filter
         ) : (
           <ul className={'wps-' + groupType}>
             <StorefrontFilterOptionsGroupItems
+              onSelectionChange={onSelectionChange}
               filterOptions={filterOptions}
               displayStyle={displayStyle}
               groupType={groupType}

@@ -111,6 +111,7 @@ function ProductFeaturedImage({ payloadSettings }) {
             payloadSettings={payloadSettings}
             isFeatured={true}
             image={galleryState.featImagePlaceholder}
+            placeholder={true}
           />
         )}
       </div>

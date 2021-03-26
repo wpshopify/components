@@ -40,6 +40,7 @@ function CartNote() {
       appearance: none;
       font-family: inherit;
       border-radius: 5px;
+      min-height: 100px;
     }
 
     label {

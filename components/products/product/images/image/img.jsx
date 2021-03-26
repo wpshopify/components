@@ -29,7 +29,7 @@ function Img(props) {
     }
 
     &:hover {
-      cursor: ${props.isFeatured ? 'default' : 'pointer'};
+      cursor: ${props.isFeatured ? 'default' && props.linkTo !== 'modal' : 'pointer'};
     }
   `;
 

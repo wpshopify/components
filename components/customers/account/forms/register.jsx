@@ -1,58 +1,58 @@
-import { registerCustomer } from '/Users/andrew/www/devil/devilbox-new/data/www/wpshopify-api'
-import to from 'await-to-js'
-import isEmpty from 'lodash/isEmpty'
-import { usePortal } from '../../../../common/hooks'
-import { CustomersContext } from '../../_state/context'
-import { Form } from '../../../forms'
-import { Input } from '../../../forms/input'
+import { registerCustomer } from '/Users/andrew/www/devil/devilbox-new/data/www/wpshopify-api';
+import to from 'await-to-js';
+import isEmpty from 'lodash/isEmpty';
+import { usePortal } from '../../../../common/hooks';
+import { CustomersContext } from '../../_state/context';
+import { Form } from '../../../forms';
+import { Input } from '../../../forms/input';
+import { Notice } from '../../notices';
 
-const { useContext, useRef, useState } = wp.element
-const { Notice } = wp.components
+const { useContext, useRef, useState } = wp.element;
 
 function CustomerFormRegister() {
-  const [customersState] = useContext(CustomersContext)
-  const [isSubmitting, setIsSubmitting] = useState(() => false)
-  const emailRef = useRef()
+  const [customersState] = useContext(CustomersContext);
+  const [isSubmitting, setIsSubmitting] = useState(() => false);
+  const emailRef = useRef();
 
   const [formState, setFormState] = useState(() => {
     return {
       email: '',
       username: '',
       password: '',
-    }
-  })
+    };
+  });
 
-  const [noticeState, setNoticeState] = useState(() => false)
+  const [noticeState, setNoticeState] = useState(() => false);
 
-  const [hasChanged, setHasChangedState] = useState(() => false)
+  const [hasChanged, setHasChangedState] = useState(() => false);
 
   async function register() {
-    setIsSubmitting(true)
+    setIsSubmitting(true);
 
-    const [registerError, registerSuccess] = await to(registerCustomer(formState))
+    const [registerError, registerSuccess] = await to(registerCustomer(formState));
 
-    setIsSubmitting(false)
+    setIsSubmitting(false);
 
     if (registerSuccess.data.type === 'error') {
       setNoticeState({
         message: registerSuccess.data.message,
         type: registerSuccess.data.type,
-      })
+      });
 
-      setFormState({ username: '', email: '', password: '' })
+      setFormState({ username: '', email: '', password: '' });
 
       // emailRef.current.focus()
 
-      return
+      return;
     }
 
     if (registerError) {
-      console.error('WP Shopify error: ', registerError)
-      return
+      console.error('WP Shopify error: ', registerError);
+      return;
     }
 
     if (isEmpty(registerSuccess.data)) {
-      return
+      return;
     }
 
     setNoticeState({
@@ -61,29 +61,29 @@ function CustomerFormRegister() {
         wpshopify.settings.general.accountPageLogin +
         '">Login</a>.',
       type: 'success',
-    })
+    });
 
-    setHasChangedState(true)
+    setHasChangedState(true);
 
-    setFormState({ username: '', email: '', password: '' })
+    setFormState({ username: '', email: '', password: '' });
   }
 
   function onSubmit(e) {
-    e.preventDefault()
+    e.preventDefault();
 
-    register()
+    register();
   }
 
   function onEmailChange(event) {
-    setFormState({ ...formState, email: event.target.value })
+    setFormState({ ...formState, email: event.target.value });
   }
 
   function onUsernameChange(event) {
-    setFormState({ ...formState, username: event.target.value })
+    setFormState({ ...formState, username: event.target.value });
   }
 
   function onPasswordChange(event) {
-    setFormState({ ...formState, password: event.target.value })
+    setFormState({ ...formState, password: event.target.value });
   }
 
   return hasChanged ? (
@@ -101,7 +101,7 @@ function CustomerFormRegister() {
       customersState={customersState}
       isSubmitting={isSubmitting}
     />
-  )
+  );
 }
 
 function LoginLink({ noticeState }) {
@@ -117,7 +117,7 @@ function LoginLink({ noticeState }) {
         Login to your account
       </a>
     </>
-  )
+  );
 }
 
 function RegisterForm({
@@ -132,7 +132,7 @@ function RegisterForm({
   customersState,
   isSubmitting,
 }) {
-  const element = document.querySelector(customersState.dropzones.formRegister)
+  const element = document.querySelector(customersState.dropzones.formRegister);
 
   return (
     element &&
@@ -177,7 +177,7 @@ function RegisterForm({
       </Form>,
       element
     )
-  )
+  );
 }
 
-export { CustomerFormRegister }
+export { CustomerFormRegister };

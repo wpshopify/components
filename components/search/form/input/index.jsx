@@ -5,7 +5,6 @@ import { useDebounce } from 'use-debounce';
 
 function SearchInput({ isLoading }) {
   const { useEffect, useContext, useRef, useState } = wp.element;
-  const { Spinner } = wp.components;
   const [localTerm, setLocalTerm] = useState(() => '');
   const [, searchDispatch] = useContext(SearchContext);
   const [debouncedSearchTerm] = useDebounce(localTerm, 350);
@@ -69,11 +68,7 @@ function SearchInput({ isLoading }) {
         css={searchInputCSS}
         onChange={(e) => setSearchTerm(e.target.value)}
       />
-      {isLoading && (
-        <div css={spinnerCSS}>
-          <Spinner />
-        </div>
-      )}
+      {isLoading && <div css={spinnerCSS}>Loading ...</div>}
     </div>
   );
 }

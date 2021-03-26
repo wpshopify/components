@@ -4,6 +4,7 @@ function CollectionInitialState({ payload, payloadSettings }) {
     products: payload.products ? payload.products : false,
     productOptions: [
       {
+        payload: payload.products ? payload.products : false,
         componentType: 'products',
         noResultsText: wp.i18n.__('No products left to show', 'wpshopify'),
         payloadSettings: payloadSettings.products,
@@ -17,7 +18,7 @@ function CollectionInitialState({ payload, payloadSettings }) {
     ],
     element: false,
     selectedVariant: false,
-  }
+  };
 }
 
-export { CollectionInitialState }
+export { CollectionInitialState };

@@ -10,10 +10,7 @@ import { jsx, css } from '@emotion/react';
 import { CustomersContext } from '../_state/context';
 import { Orders } from './orders';
 import { AccountDetails } from './details';
-
-const { Notice } = wp.components;
-
-const { useContext, useEffect } = wp.element;
+import { Notice } from '../../notices';
 
 function findDefaultAddress(addressLookup, addresses) {
   var found = find(addresses.edges, function (o) {
@@ -28,6 +25,7 @@ function findDefaultAddress(addressLookup, addresses) {
 }
 
 function AccountWrapper() {
+  const { useContext, useEffect } = wp.element;
   const [customerState, customerDispatch] = useContext(CustomersContext);
   const isMountedRef = useRef(true);
 

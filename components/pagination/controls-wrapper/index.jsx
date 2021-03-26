@@ -9,8 +9,10 @@ function PaginationControlsWrapper({ itemsState, itemsDispatch }) {
   const [paginationState, paginationDispatch] = useContext(PaginationContext);
 
   function onNextPage() {
-    paginationDispatch({ type: 'SET_CONTROLS_TOUCHED', payload: true });
-    fetchNextItems(itemsState, itemsDispatch);
+    if (!itemsState.isLoading) {
+      paginationDispatch({ type: 'SET_CONTROLS_TOUCHED', payload: true });
+      fetchNextItems(itemsState, itemsDispatch);
+    }
   }
 
   return !paginationState.isHidingPagination ? (

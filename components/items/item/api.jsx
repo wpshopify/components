@@ -158,6 +158,7 @@ function fetchNextItems(itemsState, itemsDispatch) {
         replace: false,
       },
     });
+
     itemsDispatch({ type: 'SET_IS_LOADING', payload: false });
 
     if (itemsState.afterLoading) {

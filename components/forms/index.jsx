@@ -3,7 +3,7 @@ import { jsx, css } from '@emotion/react';
 import { renderToString } from 'react-dom/server';
 import { Loader } from '../loader';
 
-const { Notice } = wp.components;
+import { Notice } from '../notices';
 
 function Form({
   children,

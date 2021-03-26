@@ -18,7 +18,7 @@ function hasLink(payloadSettings) {
     return false;
   }
 
-  if (payloadSettings.linkTo === 'shopify') {
+  if (payloadSettings.linkTo === 'shopify' || payloadSettings.linkTo === 'modal') {
     return true;
   }
 

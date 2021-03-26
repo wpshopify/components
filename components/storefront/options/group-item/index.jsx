@@ -1,41 +1,34 @@
-import { StorefrontContext } from '../../_state/context'
+import { StorefrontContext } from '../../_state/context';
 import {
   isCurrentlySelected,
   createSelectionsOfType,
   buildNewSelection,
-} from '../../../../common/selections'
-import { capitalizeFirstLetter } from '../../../../common/utils'
+} from '../../../../common/selections';
+import { capitalizeFirstLetter } from '../../../../common/utils';
 
-import StorefrontFilterOptionsGroupItemValue from '../group-item-value'
+import StorefrontFilterOptionsGroupItemValue from '../group-item-value';
 
-const { useEffect, useContext, useState } = wp.element
+function StorefrontFilterOptionsGroupItem({
+  itemValue,
+  itemType,
+  displayStyle,
+  onSelectionChange,
+}) {
+  const { useEffect, useContext, useState } = wp.element;
+  const [storefrontState, storefrontDispatch] = useContext(StorefrontContext);
+  const [isSelected, setIsSelected] = useState(() => false);
 
-function StorefrontFilterOptionsGroupItem({ itemValue, itemType, displayStyle }) {
-  const [storefrontState, storefrontDispatch] = useContext(StorefrontContext)
-  const [isSelected, setIsSelected] = useState(() => false)
+  //   useEffect(() => {
+  //     console.log('useEffectuseEffect');
 
-  useEffect(() => {
-    setIsSelected(isCurrentlySelected(storefrontState.selections, itemValue, itemType))
-  }, [storefrontState['selected' + capitalizeFirstLetter(itemType)]])
+  //     setIsSelected(isCurrentlySelected(storefrontState.selections, itemValue, itemType));
+  //   }, [storefrontState['selected' + capitalizeFirstLetter(itemType)]]);
 
   function onClick() {
-    setIsSelected(!isSelected)
+    setIsSelected(!isSelected);
 
-    const newList = buildNewSelection(itemValue, itemType, isSelected, storefrontState.selections)
-
-    if (newList) {
-      storefrontDispatch({
-        type: 'SET_SELECTIONS',
-        payload: createSelectionsOfType(itemType, newList),
-      })
-
-      storefrontDispatch({
-        type: 'SET_SELECTED_' + itemType.toUpperCase(),
-        payload: newList,
-      })
-    }
+    onSelectionChange(itemValue, itemType, isSelected);
   }
-
   return (
     <StorefrontFilterOptionsGroupItemValue
       displayStyle={displayStyle}
@@ -44,7 +37,7 @@ function StorefrontFilterOptionsGroupItem({ itemValue, itemType, displayStyle })
       itemValue={itemValue}
       onClick={onClick}
     />
-  )
+  );
 }
 
-export { StorefrontFilterOptionsGroupItem }
+export { StorefrontFilterOptionsGroupItem };

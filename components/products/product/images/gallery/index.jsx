@@ -1,4 +1,3 @@
-import has from 'lodash/has';
 import { ProductContext } from '../../_state/context';
 import { ProductGalleryContext } from './_state/context';
 import ProductThumbnailImages from '../thumbnails';
@@ -9,7 +8,7 @@ const { useEffect, useContext, useRef } = wp.element;
 
 function ProductGallery({ payloadSettings }) {
   const [productState] = useContext(ProductContext);
-  const [galleryState, galleryDispatch] = useContext(ProductGalleryContext);
+  const [, galleryDispatch] = useContext(ProductGalleryContext);
   const isFirstRender = useRef(true);
   const product = productState.payload;
 

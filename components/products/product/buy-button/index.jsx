@@ -9,6 +9,7 @@ import { usePortal } from '../../../../common/hooks';
 import { getButtonText } from '../../../../common/settings';
 import { onlyAvailableOptionsFromVariants } from '../../../../common/variants';
 import { findPortalElement, FilterHook } from '../../../../common/utils';
+import { Notice } from '../../../notices';
 import size from 'lodash/size';
 
 function allOptionsSelectedMatch(onlySelectedOptions, product) {
@@ -16,7 +17,6 @@ function allOptionsSelectedMatch(onlySelectedOptions, product) {
 }
 
 function ProductBuyButton() {
-  const { Notice } = wp.components;
   const { useContext, useEffect, useRef } = wp.element;
   const [itemsState] = useContext(ItemsContext);
   const [productState, productDispatch] = useContext(ProductContext);

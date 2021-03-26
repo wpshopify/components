@@ -1,11 +1,10 @@
-import { AddressesContext } from '../_state/context'
-import { AccountReturn } from '../../return'
-
-const { Notice } = wp.components
-const { useContext } = wp.element
+import { AddressesContext } from '../_state/context';
+import { AccountReturn } from '../../return';
+import { Notice } from '../../../notices';
 
 function AddressesHeader() {
-  const [addressesState] = useContext(AddressesContext)
+  const { useContext } = wp.element;
+  const [addressesState] = useContext(AddressesContext);
 
   return (
     <header>
@@ -18,7 +17,7 @@ function AddressesHeader() {
         </Notice>
       )}
     </header>
-  )
+  );
 }
 
-export { AddressesHeader }
+export { AddressesHeader };

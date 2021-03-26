@@ -2,6 +2,7 @@
 import { jsx, css } from '@emotion/react';
 import ProductImage from '../image';
 import { ProductGalleryContext } from '../gallery/_state/context';
+import { FilterHook } from '../../../../../common/utils';
 
 function ProductThumbnailImage({ image, payloadSettings }) {
   const { useEffect, useContext, useState } = wp.element;
@@ -45,6 +46,11 @@ function ProductThumbnailImage({ image, payloadSettings }) {
       onClick={onClick}
       data-wps-is-active={isActive}>
       <ProductImage payloadSettings={payloadSettings} isFeatured={false} image={image} />
+      <FilterHook
+        name='after.product.thumbnail'
+        hasHTML={true}
+        args={[image, galleryState, payloadSettings]}
+      />
     </div>
   );
 }

@@ -1,7 +1,5 @@
-import { getItemLink } from '../../common/settings';
-
-/** @jsx jsx */
-import { jsx, css } from '@emotion/react';
+import LinkModal from '../link-modal';
+import LinkNormal from '../link-normal';
 
 function Link({
   type,
@@ -13,47 +11,33 @@ function Link({
   manualLink,
   disableLink,
 }) {
-  const className = 'wps-' + type + '-link' + ' ' + classNames;
-
-  const linkCSS = css`
-    text-decoration: none;
-    display: block;
-
-    .wps-product-image {
-      &:hover {
-        cursor: pointer;
-      }
-    }
-  `;
-
-  function getTarget(target) {
-    if (target) {
-      return target;
+  function renderLink() {
+    if (disableLink) {
+      return children;
     }
 
-    // Fallback in case we forget to pass target to <Link>
-    return '_blank';
+    if (linkTo === 'none' && !manualLink) {
+      return children;
+    }
+
+    if (linkTo === 'modal') {
+      return <LinkModal>{children}</LinkModal>;
+    }
+
+    return (
+      <LinkNormal
+        type={type}
+        payload={payload}
+        linkTo={linkTo}
+        manualLink={manualLink}
+        target={target}
+        classNames={classNames}>
+        {children}
+      </LinkNormal>
+    );
   }
 
-  return (
-    <>
-      {!manualLink && (disableLink || linkTo) === 'none' ? (
-        children
-      ) : (
-        <a
-          href={wp.hooks.applyFilters(
-            'misc.link.href',
-            manualLink ? encodeURI(manualLink) : getItemLink(payload, type, linkTo),
-            type
-          )}
-          className={className}
-          css={linkCSS}
-          target={wp.hooks.applyFilters('misc.link.target', getTarget(target), type, payload)}>
-          {children}
-        </a>
-      )}
-    </>
-  );
+  return renderLink();
 }
 
 export { Link };

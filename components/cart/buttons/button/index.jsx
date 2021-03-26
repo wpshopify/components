@@ -129,6 +129,8 @@ function CartButton({ options }) {
           border: none;
           outline: none;
           position: relative;
+          top: -5px;
+          right: 0px;
 
           &:hover {
             cursor: pointer;
@@ -169,4 +171,4 @@ function CartButton({ options }) {
     : '';
 }
 
-export { CartButton };
+export default CartButton;

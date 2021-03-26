@@ -11,9 +11,12 @@ import {
   getProductsFromLineItems,
   buildInstances,
   replaceLineItems,
+  queryProductsFromIds,
 } from '/Users/andrew/www/devil/devilbox-new/data/www/wpshopify-api';
 import { CartButtons } from '../buttons';
 import to from 'await-to-js';
+
+import { removeLineItems } from '../_common';
 
 const CartHeader = wp.element.lazy(() =>
   import(/* webpackChunkName: 'CartHeader-public' */ '../header')
@@ -27,22 +30,19 @@ const CartFooter = wp.element.lazy(() =>
 
 function CartWrapper() {
   const { useContext, useRef, useEffect, Suspense } = wp.element;
-  const { Spinner } = wp.components;
   const cartElement = useRef();
   const isFirstRender = useRef(true);
   const [cartState, cartDispatch] = useContext(CartContext);
   const updateCheckoutAttributes = useAction('update.checkout.attributes');
-  const setCheckoutAttributes = useAction('set.checkout.attributes');
-  const setCheckoutNotes = useAction('set.checkout.note');
+  const addCheckoutLineItems = useAction('add.checkout.lineItems');
+  const removeCheckoutLineItems = useAction('remove.checkout.lineItems');
+  const setCheckoutAttributes = useAction('set.checkout.attributes', null);
+  const setCheckoutNotes = useAction('set.checkout.note', null);
   const lineItemsAdded = useAction('product.addToCart');
-  const discountCode = useAction('set.checkout.discount');
+  const discountCode = useAction('set.checkout.discount', null);
   const animeSlideInRight = useAnime(slideInCart);
   const animeSlideOutRight = useAnime(slideOutCart);
   const isCartOpen = useCartToggle(cartElement);
-
-  useEffect(() => {
-    cartBootstrap();
-  }, []);
 
   function setEmptyCheckout() {
     cartDispatch({
@@ -226,7 +226,70 @@ function CartWrapper() {
     cartDispatch({ type: 'SET_IS_UPDATING', payload: false });
   }
 
+  async function addLineItems(lineItemsAndVariants) {
+    cartDispatch({ type: 'SET_IS_UPDATING', payload: true });
+
+    const checkoutId = cartState.checkoutId;
+    const productIds = getProductIdsFromLineItems(lineItemsAndVariants);
+    const arrayOfVariantIds = getVariantIdFromLineItems(lineItemsAndVariants);
+
+    const [productsIdError, productsResp] = await to(queryProductsFromIds(productIds));
+
+    if (productsIdError) {
+      console.error('WP Shopify Error: ', productsIdError);
+      return;
+    }
+
+    const arrayOfVariants = getVariantsFromProducts(productsResp, arrayOfVariantIds);
+
+    wp.hooks.doAction('product.addToCart', {
+      variants: arrayOfVariants,
+      lineItems: lineItemsAndVariants.lineItems,
+      checkoutId: checkoutId,
+    });
+    wp.hooks.doAction('cart.toggle', 'open');
+    cartDispatch({ type: 'SET_IS_UPDATING', payload: false });
+  }
+
+  function decodeProductId(id) {
+    var decoded = atob(id);
+
+    var splitted = decoded.split('gid://shopify/Product/');
+
+    return splitted[1];
+  }
+
+  function getProductIdsFromLineItems(lineItemsAndVariants) {
+    return lineItemsAndVariants.productIds.map((id) => decodeProductId(id));
+  }
+
+  function getVariantIdFromLineItems(lineItemsAndVariants) {
+    return lineItemsAndVariants.lineItems.reduce((acc, lineItem) => {
+      acc.push(lineItem.variantId);
+
+      return acc;
+    }, []);
+  }
+
+  function getVariantsFromProducts(productsResp, arrayOfVariantIds) {
+    return productsResp.model.products.map((product) => {
+      var foundVariant = product.variants.filter((variant) => {
+        return arrayOfVariantIds.includes(variant.id);
+      });
+
+      return foundVariant[0];
+    });
+  }
+
   useEffect(() => {
+    cartBootstrap();
+  }, []);
+
+  useEffect(() => {
+    if (discountCode === null) {
+      return;
+    }
+
     if (wpshopify.misc.isPro && discountCode) {
       addDiscountCodeWrapper(discountCode);
     }
@@ -257,6 +320,10 @@ function CartWrapper() {
   }, [cartState.totalLineItems]);
 
   useEffect(() => {
+    if (!updateCheckoutAttributes) {
+      return;
+    }
+
     cartDispatch({
       type: 'UPDATE_CHECKOUT_ATTRIBUTES',
       payload: updateCheckoutAttributes,
@@ -264,6 +331,26 @@ function CartWrapper() {
   }, [updateCheckoutAttributes]);
 
   useEffect(() => {
+    if (!addCheckoutLineItems) {
+      return;
+    }
+
+    addLineItems(addCheckoutLineItems);
+  }, [addCheckoutLineItems]);
+
+  useEffect(() => {
+    if (!removeCheckoutLineItems) {
+      return;
+    }
+
+    removeLineItems(removeCheckoutLineItems, cartState, cartDispatch);
+  }, [removeCheckoutLineItems]);
+
+  useEffect(() => {
+    if (setCheckoutAttributes === null) {
+      return;
+    }
+
     cartDispatch({
       type: 'SET_CHECKOUT_ATTRIBUTES',
       payload: setCheckoutAttributes,
@@ -271,6 +358,10 @@ function CartWrapper() {
   }, [setCheckoutAttributes]);
 
   useEffect(() => {
+    if (setCheckoutAttributes === null) {
+      return;
+    }
+
     wp.hooks.doAction('on.checkout.note', setCheckoutNotes);
     cartDispatch({ type: 'SET_CHECKOUT_NOTE', payload: setCheckoutNotes });
   }, [setCheckoutNotes]);
@@ -368,13 +459,11 @@ function CartWrapper() {
   `;
 
   return (
-    <section ref={cartElement} className='wps-cart' css={cartCSS}>
-      <div css={updatingOverlay}>
-        <Spinner />
-      </div>
+    <div ref={cartElement} className='wps-cart' css={cartCSS}>
+      <div css={updatingOverlay}>Loading cart ...</div>
       {<CartButtons buttons={cartState.buttons} />}
 
-      <Suspense fallback={<Spinner />}>
+      <Suspense fallback='Loading cart ...'>
         {cartState.isCartLoaded && (
           <>
             <CartHeader cartState={cartState} cartDispatch={cartDispatch} />
@@ -386,8 +475,8 @@ function CartWrapper() {
           </>
         )}
       </Suspense>
-    </section>
+    </div>
   );
 }
 
-export { CartWrapper };
+export { CartWrapper, removeLineItems };

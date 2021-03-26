@@ -3,13 +3,28 @@ import { jsx, css } from '@emotion/react';
 import { ProductContext } from '../_state/context';
 import { isShowingComponent } from '../../../../common/components';
 import { ErrorBoundary } from 'react-error-boundary';
-import ProductTitle from '../title';
-import ProductPricing from '../pricing';
-import ProductDescription from '../description';
-import ProductImages from '../images';
-import ProductBuyButton from '../buy-button';
 import ErrorFallback from '../../../error-fallback';
 import ProductCustomTemplate from '../template';
+
+const ProductTitle = wp.element.lazy(() =>
+  import(/* webpackChunkName: 'ProductTitle-public' */ '../title')
+);
+
+const ProductPricing = wp.element.lazy(() =>
+  import(/* webpackChunkName: 'ProductPricing-public' */ '../pricing')
+);
+
+const ProductDescription = wp.element.lazy(() =>
+  import(/* webpackChunkName: 'ProductDescription-public' */ '../description')
+);
+
+const ProductImages = wp.element.lazy(() =>
+  import(/* webpackChunkName: 'ProductImages-public' */ '../images')
+);
+
+const ProductBuyButton = wp.element.lazy(() =>
+  import(/* webpackChunkName: 'ProductBuyButton-public' */ '../buy-button')
+);
 
 const ProductModal = wp.element.lazy(() =>
   import(/* webpackChunkName: 'ProductModal-public' */ '../buy-button/modal')
@@ -57,29 +72,39 @@ function ProductWrapper({ payloadSettings }) {
       ) : (
         <>
           <ErrorBoundary FallbackComponent={ErrorFallback}>
-            {isShowingComponent(payloadSettings, 'images') && <ProductImages />}
+            <Suspense fallback='Loading product images ...'>
+              {isShowingComponent(payloadSettings, 'images') && <ProductImages />}
+            </Suspense>
           </ErrorBoundary>
 
           <ErrorBoundary FallbackComponent={ErrorFallback}>
-            {isShowingComponent(payloadSettings, 'title') && <ProductTitle />}
+            <Suspense fallback='Loading product title ...'>
+              {isShowingComponent(payloadSettings, 'title') && <ProductTitle />}
+            </Suspense>
           </ErrorBoundary>
 
           <ErrorBoundary FallbackComponent={ErrorFallback}>
-            {isShowingComponent(payloadSettings, 'pricing') && <ProductPricing />}
+            <Suspense fallback='Loading product pricing ...'>
+              {isShowingComponent(payloadSettings, 'pricing') && <ProductPricing />}
+            </Suspense>
           </ErrorBoundary>
 
           <ErrorBoundary FallbackComponent={ErrorFallback}>
-            {isShowingComponent(payloadSettings, 'description') && <ProductDescription />}
+            <Suspense fallback='Loading product description ...'>
+              {isShowingComponent(payloadSettings, 'description') && <ProductDescription />}
+            </Suspense>
           </ErrorBoundary>
 
           <ErrorBoundary FallbackComponent={ErrorFallback}>
-            {isShowingComponent(payloadSettings, 'buy-button') && <ProductBuyButton />}
+            <Suspense fallback='Loading product buy button ...'>
+              {isShowingComponent(payloadSettings, 'buy-button') && <ProductBuyButton />}
+            </Suspense>
           </ErrorBoundary>
         </>
       )}
 
       {productState.isModalOpen && wpshopify.misc.isPro && (
-        <Suspense fallback='Loading product ..'>
+        <Suspense fallback='Loading product ...'>
           <ProductModal />
         </Suspense>
       )}

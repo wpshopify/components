@@ -1,11 +1,11 @@
 import { usePortal } from '../../../common/hooks';
 import { Products } from '../../products';
+import { Notice } from '../../notices';
+
 /** @jsx jsx */
 import { jsx, css } from '@emotion/react';
 
 function StorefrontItems({ noResultsText, payloadSettings, payload, queryParams, isLoading }) {
-  const { Spinner, Notice } = wp.components;
-
   const noticeCSS = css`
     && {
       margin-left: 40px;
@@ -55,11 +55,7 @@ function StorefrontItems({ noResultsText, payloadSettings, payload, queryParams,
 
   return usePortal(
     <div css={storefrontItemsWrapperCSS}>
-      {isLoading && (
-        <div css={spinnerCSS}>
-          <Spinner />
-        </div>
-      )}
+      {isLoading && <div css={spinnerCSS}>Loading ...</div>}
 
       {payload.length ? (
         <Products options={buildOptions()} />

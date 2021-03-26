@@ -19,6 +19,7 @@ import {
 } from '/Users/andrew/www/devil/devilbox-new/data/www/wpshopify-utils';
 
 import Placeholder from '../../../common/placeholders';
+import { Notice } from '../../notices';
 
 import to from 'await-to-js';
 
@@ -35,7 +36,6 @@ function Item({ children, limit = false, infiniteScroll = false }) {
   const [itemsState, itemsDispatch] = useContext(ItemsContext);
   const isMounted = useIsMounted();
   const isFirstRender = useIsFirstRender();
-  const { Notice } = wp.components;
 
   function showGlobalNotice(dataType) {
     if (dataType === 'storefront' || dataType === 'search') {

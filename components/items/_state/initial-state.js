@@ -1,4 +1,5 @@
 import shortid from 'shortid';
+import isArray from 'lodash/isArray';
 
 function getDefaultHasMoreItems(payload) {
   if (!payload || !payload.length) {
@@ -27,10 +28,20 @@ function ItemsInitialState({
     var connectionParams = false;
   }
 
+  var payloadFinal = payload;
+
+  if (payload && !isArray(payload)) {
+    var payloadFinal = [payload];
+  }
+
+  if (payload && isArray(payload)) {
+    var payloadFinal = payload;
+  }
+
   var itemsState = {
     payloadSettings: component.payloadSettings,
     element: component.componentElement,
-    payload: payload ? [payload] : false,
+    payload: payloadFinal,
     queryParams: {
       query: customQueryParams ? customQueryParams.query : component.payloadSettings.query,
       sortKey: customQueryParams ? customQueryParams.sortKey : component.payloadSettings.sortBy,

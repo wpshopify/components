@@ -5,6 +5,7 @@ import { Loader } from '../../../../loader';
 import { useAnime, pulse, fadeInBottomSlow } from '../../../../../common/animations';
 import { FilterHook } from '../../../../../common/utils';
 import { buttonCSS } from '../../../../../common/css';
+import { Notice } from '../../../../notices';
 import { Link } from '../../../../link';
 
 import { checkoutRedirect } from '../../../../cart/checkout';
@@ -20,7 +21,6 @@ import {
 } from '/Users/andrew/www/devil/devilbox-new/data/www/wpshopify-api';
 import to from 'await-to-js';
 
-const { Notice } = wp.components;
 const { useRef, useEffect, useState } = wp.element;
 
 function findSingleVariantFromPayload(payload) {
@@ -238,7 +238,6 @@ function AddButton({
     } else {
       const resetAfter = wp.hooks.applyFilters('product.buyButton.resetVariantsAfterAdding', true);
       let addToCartParams = buildAddToCartParams(lineItems, [variant]);
-      console.log('hey right here');
 
       if (maxQuantity && hasReachedMaxQuantity(addToCartParams, maxQuantity, variant)) {
         wp.hooks.doAction('cart.toggle', 'open');

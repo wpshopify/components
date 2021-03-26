@@ -1,5 +1,6 @@
+import { Notice } from '../notices';
+
 function ErrorFallback({ error = '' }) {
-  const { Notice } = wp.components
   return (
     <Notice status='error' isDismissible={false}>
       {wp.i18n.__(
@@ -8,7 +9,7 @@ function ErrorFallback({ error = '' }) {
       )}
       {error.message}
     </Notice>
-  )
+  );
 }
 
-export default ErrorFallback
+export default ErrorFallback;

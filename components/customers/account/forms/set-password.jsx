@@ -1,14 +1,14 @@
-import { setPasswordCustomer } from '/Users/andrew/www/devil/devilbox-new/data/www/wpshopify-api'
-import to from 'await-to-js'
-import isEmpty from 'lodash/isEmpty'
+import { setPasswordCustomer } from '/Users/andrew/www/devil/devilbox-new/data/www/wpshopify-api';
+import to from 'await-to-js';
+import isEmpty from 'lodash/isEmpty';
 
-import { usePortal } from '../../../../common/hooks'
-import { CustomersContext } from '../../_state/context'
-import { Form } from '../../../forms'
-import { Input } from '../../../forms/input'
+import { usePortal } from '../../../../common/hooks';
+import { CustomersContext } from '../../_state/context';
+import { Form } from '../../../forms';
+import { Input } from '../../../forms/input';
 
-const { Notice } = wp.components
-const { useContext, useEffect, useState } = wp.element
+import { Notice } from '../../notices';
+const { useContext, useEffect, useState } = wp.element;
 
 function ResetForm({
   noticeState,
@@ -19,7 +19,7 @@ function ResetForm({
   customersState,
   isSubmitting,
 }) {
-  const element = document.querySelector(customersState.dropzones.formSetPassword)
+  const element = document.querySelector(customersState.dropzones.formSetPassword);
 
   return (
     element &&
@@ -52,7 +52,7 @@ function ResetForm({
       </Form>,
       element
     )
-  )
+  );
 }
 
 function LoginLink({ noticeState }) {
@@ -67,27 +67,27 @@ function LoginLink({ noticeState }) {
         Login
       </a>
     </>
-  )
+  );
 }
 
 function CustomerFormSetPassword() {
-  const [customersState] = useContext(CustomersContext)
-  const [isSubmitting, setIsSubmitting] = useState(() => false)
+  const [customersState] = useContext(CustomersContext);
+  const [isSubmitting, setIsSubmitting] = useState(() => false);
   const [formState, setFormState] = useState(() => {
     return {
       password: '',
       confirmPassword: '',
       customerId: '',
       resetToken: '',
-    }
-  })
+    };
+  });
 
-  const [noticeState, setNoticeState] = useState(() => false)
+  const [noticeState, setNoticeState] = useState(() => false);
 
-  const [hasChanged, setHasChangedState] = useState(() => false)
+  const [hasChanged, setHasChangedState] = useState(() => false);
 
   useEffect(() => {
-    var urlParams = new URLSearchParams(window.location.search)
+    var urlParams = new URLSearchParams(window.location.search);
 
     if (!window.location.search || !urlParams.get('token')) {
       setFormState({
@@ -95,70 +95,70 @@ function CustomerFormSetPassword() {
         confirmPassword: '',
         customerId: '',
         resetToken: '',
-      })
+      });
 
       setNoticeState({
         message: 'No token found',
         type: 'error',
-      })
+      });
     } else {
-      var token = urlParams.get('token')
-      var [customerId, resetToken] = token.split('/')
-      var encodedCustomerId = btoa('gid://shopify/Customer/' + customerId)
+      var token = urlParams.get('token');
+      var [customerId, resetToken] = token.split('/');
+      var encodedCustomerId = btoa('gid://shopify/Customer/' + customerId);
 
-      setFormState({ ...formState, customerId: encodedCustomerId, resetToken: resetToken })
+      setFormState({ ...formState, customerId: encodedCustomerId, resetToken: resetToken });
     }
-  }, [])
+  }, []);
 
   async function resetPassword() {
-    setIsSubmitting(true)
+    setIsSubmitting(true);
 
-    const [resetError, resetSuccess] = await to(setPasswordCustomer(formState))
+    const [resetError, resetSuccess] = await to(setPasswordCustomer(formState));
 
-    setIsSubmitting(false)
+    setIsSubmitting(false);
 
     if (!resetSuccess && resetError) {
       setNoticeState({
         message: 'Error: ' + resetError.message + '. Error code: ' + resetError.statusCode,
         type: 'error',
-      })
+      });
 
       setFormState({
         password: '',
         confirmPassword: '',
         customerId: '',
         resetToken: '',
-      })
+      });
 
-      return
+      return;
     }
 
     if (resetSuccess.data.type === 'error') {
-      setNoticeState({ message: 'Error: ' + resetSuccess.data.message, type: 'error' })
+      setNoticeState({ message: 'Error: ' + resetSuccess.data.message, type: 'error' });
 
       setFormState({
         password: '',
         confirmPassword: '',
         customerId: '',
         resetToken: '',
-      })
+      });
 
-      return
+      return;
     }
 
     if (!isEmpty(resetSuccess.data.customerReset.customerUserErrors)) {
-      var errorObj = resetSuccess.data.customerReset.customerUserErrors[0]
+      var errorObj = resetSuccess.data.customerReset.customerUserErrors[0];
       setNoticeState({
         message: 'Error: ' + errorObj.message + '. Error code: ' + errorObj.code,
         type: 'error',
-      })
+      });
 
       setFormState({
         password: '',
         confirmPassword: '',
         customerId: '',
         resetToken: '',
-      })
+      });
     } else {
       if (!resetError) {
         setFormState({
@@ -166,32 +166,32 @@ function CustomerFormSetPassword() {
           confirmPassword: '',
           customerId: '',
           resetToken: '',
-        })
+        });
 
         setNoticeState({
           message:
             'Success! Your password has been changed. <a href="/login">Login to your account.</a>',
           type: 'success',
-        })
-        setHasChangedState(true)
+        });
+        setHasChangedState(true);
       } else {
-        setNoticeState({ message: 'Error: Something something', type: 'error' })
+        setNoticeState({ message: 'Error: Something something', type: 'error' });
       }
     }
   }
 
   function onSubmit(e) {
-    e.preventDefault()
+    e.preventDefault();
 
-    resetPassword()
+    resetPassword();
   }
 
   function onPasswordChange(event) {
-    setFormState({ ...formState, password: event.target.value })
+    setFormState({ ...formState, password: event.target.value });
   }
 
   function onConfirmPasswordChange(event) {
-    setFormState({ ...formState, confirmPassword: event.target.value })
+    setFormState({ ...formState, confirmPassword: event.target.value });
   }
 
   return hasChanged ? (
@@ -206,7 +206,7 @@ function CustomerFormSetPassword() {
       customersState={customersState}
       isSubmitting={isSubmitting}
     />
-  )
+  );
 }
 
-export { CustomerFormSetPassword }
+export { CustomerFormSetPassword };

@@ -1,19 +1,19 @@
-import { Products } from '../../../products'
-import { usePortal } from '../../../../common/hooks'
-import { SearchContext } from '../../_state/context'
+import { Products } from '../../../products';
+import { usePortal } from '../../../../common/hooks';
+import { SearchContext } from '../../_state/context';
+import { Notice } from '../../../notices';
 
 function SearchItems({ payload, payloadSettings, queryParams, noResultsText }) {
-  const { useEffect, useContext, useRef } = wp.element
-  const [searchState] = useContext(SearchContext)
-  const initialRender = useRef(true)
-  const { Notice } = wp.components
+  const { useEffect, useContext, useRef } = wp.element;
+  const [searchState] = useContext(SearchContext);
+  const initialRender = useRef(true);
 
   useEffect(() => {
     if (initialRender.current) {
-      initialRender.current = false
-      return
+      initialRender.current = false;
+      return;
     }
-  }, [])
+  }, []);
 
   function buildOptions() {
     return {
@@ -31,7 +31,7 @@ function SearchItems({ payload, payloadSettings, queryParams, noResultsText }) {
             payloadSettings: {
               pagination: true,
             },
-          }
+          };
         }),
       dataType: payloadSettings.dataType,
       originalParams: {
@@ -43,7 +43,7 @@ function SearchItems({ payload, payloadSettings, queryParams, noResultsText }) {
       type: payloadSettings.dataType,
       payloadSettings: payloadSettings,
       noResultsText: payloadSettings.noResultsText,
-    }
+    };
   }
 
   return usePortal(
@@ -58,7 +58,7 @@ function SearchItems({ payload, payloadSettings, queryParams, noResultsText }) {
         ))}
     </>,
     document.querySelector(payloadSettings.dropzonePayload)
-  )
+  );
 }
 
-export default SearchItems
+export default SearchItems;

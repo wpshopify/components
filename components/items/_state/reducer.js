@@ -99,7 +99,6 @@ function updatePayload(state, newPayload, skipCache, replace) {
   }
 
   // If lands here, we're not limiting, just adding
-
   if (replace) {
     var updatedPayload = update(state.payload, {
       $set: newPayload,

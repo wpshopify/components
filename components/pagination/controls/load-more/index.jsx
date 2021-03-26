@@ -13,7 +13,7 @@ function PaginationLoadMore({ isLoading, hasMoreItems, payloadSettings, onNextPa
       return;
     }
 
-    if (inView) {
+    if (inView && !isLoading) {
       onNextPage();
     }
   }

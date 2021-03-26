@@ -27,7 +27,7 @@ function StorefrontSelectionsValue({ selectionType, val }) {
   const selectionValueCSS = css`
     margin-right: 8px;
     text-transform: capitalize;
-    padding: 5px 10px;
+    padding: 5px 9px 5px 12px;
     background: #e6e6e6;
     font-size: 16px;
     position: relative;
@@ -43,9 +43,9 @@ function StorefrontSelectionsValue({ selectionType, val }) {
       width: 10px;
       height: 10px;
       display: inline-block;
-      right: 0;
+      right: 2px;
       position: relative;
-      top: calc(50% - 16px);
+      top: calc(50% - 12px);
       margin-left: 10px;
     }
 
