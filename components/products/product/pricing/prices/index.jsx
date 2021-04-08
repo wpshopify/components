@@ -3,13 +3,17 @@ import { jsx, css } from '@emotion/react';
 import { ProductPricingContext } from '../_state/context';
 import { ProductContext } from '../../_state/context';
 import ProductPrice from '../price';
-import ProductPricesCompareAt from '../compare-at';
+
+const ProductPricesCompareAt = wp.element.lazy(() =>
+  import(/* webpackChunkName: 'ProductPricesCompareAt-public' */ '../compare-at')
+);
 
 const { useContext } = wp.element;
 
 function ProductPrices({ payloadSettings }) {
   const [productPricingState] = useContext(ProductPricingContext);
   const [productState] = useContext(ProductContext);
+  const { Suspense } = wp.element;
 
   const ProductPricesCompareAtCSS = css`
     display: flex;
@@ -25,16 +29,17 @@ function ProductPrices({ payloadSettings }) {
 
   return (
     <div className='wps-component-products-pricing' css={ProductPricesCompareAtCSS}>
-      {!productState.selectedVariant ||
-      (productState.selectedVariant.compareAtPriceV2 && productPricingState.showCompareAt) ? (
-        <ProductPricesCompareAt
-          selectedVariant={productState.selectedVariant}
-          prices={productPricingState.prices}
-          currencyCode={productPricingState.currencyCode}
-          showPriceRange={productPricingState.showPriceRange}
-          compareAt={productPricingState.showCompareAt}
-          payloadSettings={payloadSettings}
-        />
+      {productPricingState.showCompareAt ? (
+        <Suspense fallback='Loading pricing ...'>
+          <ProductPricesCompareAt
+            selectedVariant={productState.selectedVariant}
+            prices={productPricingState.prices}
+            currencyCode={productPricingState.currencyCode}
+            showPriceRange={productPricingState.showPriceRange}
+            compareAt={productPricingState.showCompareAt}
+            payloadSettings={payloadSettings}
+          />
+        </Suspense>
       ) : (
         <ProductPrice
           selectedVariant={productState.selectedVariant}

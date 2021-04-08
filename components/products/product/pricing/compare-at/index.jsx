@@ -11,6 +11,8 @@ function ProductPricesCompareAt({
   showPriceRange,
   payloadSettings,
 }) {
+  console.log('<ProductPricesCompareAt />');
+
   const ProductPricesCompareAtWrapperCSS = css`
     display: flex;
     align-items: center;
