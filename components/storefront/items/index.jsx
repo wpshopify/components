@@ -51,6 +51,7 @@ function StorefrontItems({ noResultsText, payloadSettings, payload, queryParams,
 
   const storefrontItemsWrapperCSS = css`
     position: relative;
+    opacity: ${isLoading ? 0.6 : 1};
   `;
 
   return usePortal(

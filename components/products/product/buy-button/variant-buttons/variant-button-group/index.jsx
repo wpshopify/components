@@ -20,7 +20,7 @@ function ProductVariantButtonGroup({
         totalOptions: totalOptions,
         showPriceUnderVariantButton: showPriceUnderVariantButton,
       }}>
-      <ProductOptionWrapper option={option}>
+      <ProductOptionWrapper>
         <ProductVariantButtonGroupWrapper
           option={option}
           missingSelections={missingSelections}

@@ -9,11 +9,11 @@ import StorefrontItems from './items';
 const { useContext } = wp.element;
 
 function Storefront() {
-  const [itemsState] = useContext(ItemsContext);
+  const [itemsState, itemsDispatch] = useContext(ItemsContext);
 
   return (
     <StorefrontProvider element={itemsState.element} payloadSettings={itemsState.payloadSettings}>
-      <StorefrontWrapper>
+      <StorefrontWrapper itemsState={itemsState} itemsDispatch={itemsDispatch}>
         {itemsState.payloadSettings.dropzoneSelections && (
           <StorefrontSelections dropzone={itemsState.payloadSettings.dropzoneSelections} />
         )}

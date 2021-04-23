@@ -20,28 +20,8 @@ function ProductOptionWrapper({ children }) {
         type: 'SET_IS_OPTION_SELECTED',
         payload: false,
       });
-      productDispatch({
-        type: 'UNSET_SELECTED_OPTIONS',
-        payload: productOptionState.option.name,
-      });
     }
   }, [productState.availableVariants]);
-
-  useEffect(() => {
-    if (isFirstRender.current) {
-      isFirstRender.current = false;
-      return;
-    }
-
-    if (isEmpty(productOptionState.selectedOption)) {
-      return;
-    }
-
-    productDispatch({
-      type: 'SET_AVAILABLE_VARIANTS',
-      payload: productOptionState.selectedOption,
-    });
-  }, [productOptionState.selectedOption]);
 
   useEffect(() => {
     if (isFirstRender.current) {

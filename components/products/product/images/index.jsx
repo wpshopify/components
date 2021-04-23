@@ -7,8 +7,6 @@ import { findPortalElement } from '../../../../common/utils';
 const { useContext } = wp.element;
 
 function ProductImages() {
-  console.log('<ProductImages />');
-
   const [productState] = useContext(ProductContext);
   const [itemsState] = useContext(ItemsContext);
 

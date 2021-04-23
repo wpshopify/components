@@ -45,7 +45,6 @@ function ProductOptionDropdown({ availableVariants, selectedOptions, missingSele
       margin-top: -2px;
       background: white;
       border: 1px solid #313131;
-      border-top: 0;
       left: 0;
     }
 
@@ -96,7 +95,7 @@ function ProductOptionDropdown({ availableVariants, selectedOptions, missingSele
           interactive={true}
           inertia={true}
           delay={[0, 0]}
-          offset={[0, 15]}
+          offset={[0, 0]}
           content={
             <ProductVariantsDropdown
               dropdownElement={productOptionState.dropdownElement}

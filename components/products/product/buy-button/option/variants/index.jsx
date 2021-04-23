@@ -19,10 +19,10 @@ function ProductVariantsDropdown({
   const { useContext } = wp.element;
   const [productOptionState, productOptionDispatch] = useContext(ProductOptionContext);
 
-  function isAvail(variant) {
-    const selectedVariant = createObj(variant.name, variant.value);
-    return isPairMatch(availableVariants, selectedVariant) || isOptionSelected;
-  }
+  //   function isAvail(variant) {
+  //     const selectedVariant = createObj(variant.name, variant.value);
+  //     return isPairMatch(availableVariants, selectedVariant) || isOptionSelected;
+  //   }
 
   useOnClickOutside(
     dropdownElement,
@@ -50,21 +50,16 @@ function ProductVariantsDropdown({
 
   return (
     <ul className='wps-modal wps-variants' css={modalCSS}>
-      {option &&
-        option.values.length &&
-        option.values.map(
-          (variant) =>
-            (isAvail(variant) || isEmpty(selectedOptions)) && (
-              <ProductVariant
-                key={uuidv4()}
-                variant={variant}
-                availableVariants={availableVariants}
-                selectedOptions={selectedOptions}
-                variants={productOptionState.variants}>
-                <ProductVariantDropdownValue />
-              </ProductVariant>
-            )
-        )}
+      {option.values.map((variant) => (
+        <ProductVariant
+          key={uuidv4()}
+          variant={variant}
+          availableVariants={availableVariants}
+          selectedOptions={selectedOptions}
+          variants={productOptionState.variants}>
+          <ProductVariantDropdownValue />
+        </ProductVariant>
+      ))}
     </ul>
   );
 }

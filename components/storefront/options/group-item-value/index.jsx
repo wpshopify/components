@@ -85,7 +85,7 @@ function CheckboxItem({ isSelected, itemValue, itemType, onClick }) {
 function ButtonItem({ isSelected, itemValue, itemType, onClick }) {
   const buttonOptionCSS = css`
     padding: 5px 10px;
-    background-color: #f2f2f2;
+    background-color: ${isSelected ? '#ddfbdd' : '#f2f2f2'};
     border: 1px solid #d9d8d8;
     margin: 5px;
     font-size: 15px;
@@ -94,22 +94,14 @@ function ButtonItem({ isSelected, itemValue, itemType, onClick }) {
     backface-visibility: hidden;
     will-change: opacity;
     display: inline-block;
+    outline: ${isSelected ? '3px solid #04d61c' : 'none'};
+    outline-offset: ${isSelected ? '-3px' : '0'};
 
     &:hover {
       cursor: pointer;
-      background-color: #eee;
-      transform: scale(1.1);
-    }
-
-    &[data-wps-is-selected='true'] {
-      outline: 3px solid #04d61c;
-      outline-offset: -3px;
-
-      &:hover {
-        background: #ddfbdd;
-        transform: scale(1);
-        opacity: 1;
-      }
+      background-color: ${isSelected ? '#ddfbdd' : '#eee'};
+      transform: ${isSelected ? 'scale(1)' : 'scale(1.1)'};
+      opacity: ${isSelected ? '1' : '1'};
     }
   `;
 

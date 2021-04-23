@@ -16,6 +16,7 @@ function ProductOptions({
       missingSelections={missingSelections}
       availableVariants={availableVariants}
       selectedOptions={selectedOptions}
+      variants={variants}
     />
   ) : wpshopify.misc.isPro ? (
     <ProductVariantButtons
@@ -32,6 +33,7 @@ function ProductOptions({
       missingSelections={missingSelections}
       availableVariants={availableVariants}
       selectedOptions={selectedOptions}
+      variants={variants}
     />
   );
 }

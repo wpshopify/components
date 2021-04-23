@@ -15,8 +15,6 @@ options, children, afterLoading, beforeLoading
 
 */
 function ItemWrapper(props) {
-  console.log('<ItemWrapper />');
-
   return (
     <ItemsProvider
       component={props.component}

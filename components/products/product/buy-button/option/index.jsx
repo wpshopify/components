@@ -1,17 +1,24 @@
-import { ProductOptionProvider } from './_state/provider'
-import ProductOptionWrapper from './wrapper'
-import ProductOptionDropdown from './dropdown'
+import { ProductOptionProvider } from './_state/provider';
+import ProductOptionWrapper from './wrapper';
+import ProductOptionDropdown from './dropdown';
 
-const { useRef } = wp.element
+const { useRef } = wp.element;
 
-function ProductOption({ option, availableVariants, selectedOptions, missingSelections }) {
-  const dropdownElement = useRef()
+function ProductOption({
+  option,
+  availableVariants,
+  selectedOptions,
+  missingSelections,
+  variants,
+}) {
+  const dropdownElement = useRef();
 
   return (
     <ProductOptionProvider
       options={{
         option: option,
         dropdownElement: dropdownElement,
+        variants: variants,
       }}>
       <ProductOptionWrapper>
         <ProductOptionDropdown
@@ -21,7 +28,7 @@ function ProductOption({ option, availableVariants, selectedOptions, missingSele
         />
       </ProductOptionWrapper>
     </ProductOptionProvider>
-  )
+  );
 }
 
-export default wp.element.memo(ProductOption)
+export default wp.element.memo(ProductOption);

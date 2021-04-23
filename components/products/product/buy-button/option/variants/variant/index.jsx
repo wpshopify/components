@@ -1,7 +1,58 @@
 import { ProductOptionContext } from '../../_state/context';
 import { ProductContext } from '../../../../_state/context';
-import { createObj, isPairMatch } from '../../../../../../../common/utils';
+import {
+  createObj,
+  isPairMatch,
+  findVariantFromVariantsList,
+} from '../../../../../../../common/utils';
 import isEmpty from 'lodash/isEmpty';
+
+function isOptionRowSelected(productOptionState) {
+  return productOptionState.isOptionSelected;
+}
+
+function isSelectedVariantAvailableToSelect(availableVariants, selectedVariant) {
+  return isPairMatch(availableVariants, selectedVariant);
+}
+
+function isVariantAvailableToSelect(
+  selectedOptions,
+  productOptionState,
+  availableVariants,
+  selectedVariant,
+  variants
+) {
+  /*
+   
+   If nothing is selected, then everything should be available to select
+   */
+  if (isEmpty(selectedOptions)) {
+    return true;
+  }
+
+  /*
+
+   If the option row is selected, then we want to ensure the rest of the 
+   variants in that row are also available to select.
+
+   */
+  if (isOptionRowSelected(productOptionState)) {
+    return true;
+  }
+
+  if (isSelectedVariantAvailableToSelect(availableVariants, selectedVariant)) {
+    return true;
+  }
+
+  var couldSelect = { ...selectedVariant, ...selectedOptions };
+  var foundVariantFromSelectedOptions = findVariantFromVariantsList(couldSelect, variants);
+
+  if (foundVariantFromSelectedOptions.length) {
+    return foundVariantFromSelectedOptions[0].availableForSale;
+  } else {
+    return false;
+  }
+}
 
 function ProductVariant({
   variant,
@@ -17,19 +68,15 @@ function ProductVariant({
   const [, productDispatch] = useContext(ProductContext);
   const selectedVariant = createObj(variant.name, variant.value);
 
-  var isAvailableToSelect =
-    isPairMatch(availableVariants, selectedVariant) ||
-    productOptionState.isOptionSelected ||
-    isEmpty(selectedOptions);
+  const isAvailableToSelect = isVariantAvailableToSelect(
+    selectedOptions,
+    productOptionState,
+    availableVariants,
+    selectedVariant,
+    variants
+  );
 
   function onSelection() {
-    if (
-      isPairMatch(productOptionState.selectedOption, selectedVariant) &&
-      !productOptionState.isDropdownOpen
-    ) {
-      return;
-    }
-
     productDispatch({
       type: 'UPDATE_SELECTED_OPTIONS',
       payload: selectedVariant,

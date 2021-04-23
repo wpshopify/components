@@ -17,6 +17,7 @@ function ProductVariantButtonValue({
   showPriceUnderVariantButton,
 }) {
   const variantObj = createObj(variant.name, variant.value);
+
   const isSelected = isPairMatch(selectedOptions, variantObj);
   const border = isSelected ? '#415aff' : 'black';
   const color = isSelected ? 'white' : 'black';
@@ -150,4 +151,4 @@ function ProductVariantButtonPrice({ variantObject }) {
   );
 }
 
-export default wp.element.memo(ProductVariantButtonValue);
+export default ProductVariantButtonValue;

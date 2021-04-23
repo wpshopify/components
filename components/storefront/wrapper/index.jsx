@@ -1,7 +1,8 @@
 import { StorefrontContext } from '../_state/context';
 import { buildQueryStringFromSelections, getInitialSelections } from '../_common';
+import forOwn from 'lodash/forOwn';
 
-function StorefrontWrapper({ children }) {
+function StorefrontWrapper({ children, itemsState, itemsDispatch }) {
   const { useContext, useEffect, useRef } = wp.element;
   const isFirstRender = useRef(true);
   const [storefrontState, storefrontDispatch] = useContext(StorefrontContext);

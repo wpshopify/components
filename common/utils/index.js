@@ -1,4 +1,5 @@
 import isEmpty from 'lodash/isEmpty';
+import find from 'lodash/find';
 import forOwn from 'lodash/forOwn';
 import without from 'lodash/without';
 import mapKeys from 'lodash/mapKeys';
@@ -7,6 +8,7 @@ import isObject from 'lodash/isObject';
 import isArray from 'lodash/isArray';
 import isMatch from 'lodash/isMatch';
 import some from 'lodash/some';
+import merge from 'lodash/merge';
 import md5 from 'js-md5';
 import { format } from 'date-fns';
 
@@ -521,7 +523,29 @@ function findVariantFromOptionObject(optionObject, variants) {
   return variants.filter((variant) => some(variant.selectedOptions, optionObject));
 }
 
+function findVariantFromVariantsList(optionObject, variants) {
+  return variants.filter((variant) => {
+    var variantObjTotal = {};
+
+    variant.selectedOptions.forEach((option) => {
+      var variantObj = {};
+
+      variantObj[option.name] = option.value;
+
+      variantObjTotal = merge(variantObjTotal, variantObj);
+    });
+
+    if (find([variantObjTotal], optionObject)) {
+      return variant;
+    }
+
+    return false;
+    //  return some(variant.selectedOptions, optionObject);
+  });
+}
+
 export {
+  findVariantFromVariantsList,
   objectIsEmpty,
   createObj,
   removeFrom,

@@ -19,9 +19,10 @@ import {
   buildClient,
   getCheckoutCache,
 } from '/Users/andrew/www/devil/devilbox-new/data/www/wpshopify-api';
+
 import to from 'await-to-js';
 
-const { useRef, useEffect, useState } = wp.element;
+const { useRef, useEffect, useContext, useState } = wp.element;
 
 function findSingleVariantFromPayload(payload) {
   return payload.variants[0];
@@ -98,6 +99,7 @@ function AddButton({
   payloadSettings,
   linkTo,
 }) {
+  const [isDisabled, setIsDisabled] = useState(false);
   const [isCheckingOut, setIsCheckingOut] = useState(false);
   const [hasNotice, setHasNotice] = useState(false);
   const animePulse = useAnime(pulse);
@@ -105,9 +107,49 @@ function AddButton({
 
   const maxQuantity = wp.hooks.applyFilters('cart.lineItems.maxQuantity');
 
+  const NoticeCSS = css`
+    margin-top: 15px;
+  `;
+
+  useEffect(() => {
+    if (!allOptionsSelected) {
+      setIsDisabled(false);
+      setHasNotice(false);
+    } else {
+      var variant = findVariant();
+
+      if (variant && variant.availableForSale) {
+        setIsDisabled(false);
+        setHasNotice(false);
+        animePulse(button.current);
+      } else {
+        setIsDisabled(true);
+        setHasNotice({
+          type: 'warning',
+          message: 'Out of stock. Please try selecting a different variant combination.',
+        });
+      }
+    }
+  }, [selectedOptions]);
+
   useEffect(() => {
     if (allOptionsSelected) {
-      animePulse(button.current);
+      var variant = findVariant();
+
+      if (variant && variant.availableForSale) {
+        setIsDisabled(false);
+        setHasNotice(false);
+        animePulse(button.current);
+      } else {
+        setIsDisabled(true);
+        setHasNotice({
+          type: 'warning',
+          message: 'Out of stock. Please try selecting a different variant combination.',
+        });
+      }
+    } else {
+      setIsDisabled(false);
+      setHasNotice(false);
     }
   }, [allOptionsSelected]);
 
@@ -140,6 +182,14 @@ function AddButton({
     }
   `;
 
+  function findVariant() {
+    if (hasManyVariants) {
+      return findVariantFromSelectedOptions(payload, selectedOptions);
+    } else {
+      return findSingleVariantFromPayload(payload);
+    }
+  }
+
   async function handleClick(e) {
     if (linkTo === 'modal' && wpshopify.misc.isPro) {
       productDispatch({ type: 'TOGGLE_MODAL', payload: true });
@@ -159,11 +209,7 @@ function AddButton({
       return;
     }
 
-    if (hasManyVariants) {
-      var variant = findVariantFromSelectedOptions(payload, selectedOptions);
-    } else {
-      var variant = findSingleVariantFromPayload(payload);
-    }
+    var variant = findVariant();
 
     if (!variant) {
       // TODO: Handle this better
@@ -263,6 +309,18 @@ function AddButton({
 
         productDispatch({ type: 'SET_MISSING_SELECTIONS', payload: false });
 
+        productDispatch({
+          type: 'SET_AVAILABLE_VARIANTS',
+          payload: [],
+        });
+
+        productDispatch({ type: 'REMOVE_SELECTED_OPTIONS' });
+
+        //   productOptionDispatch({
+        //     type: 'SET_IS_OPTION_SELECTED',
+        //     payload: false,
+        //   });
+
         wp.hooks.doAction('cart.toggle', 'open');
         wp.hooks.doAction('product.addToCart', addToCartParams);
         wp.hooks.doAction('after.product.addToCart', lineItems, variant);
@@ -282,7 +340,7 @@ function AddButton({
         data-wps-is-direct-checkout={isDirectCheckout ? '1' : '0'}
         onClick={handleClick}
         css={[buttonCSS, addToCartCSS]}
-        disabled={isCheckingOut}>
+        disabled={isCheckingOut || isDisabled}>
         {isCheckingOut ? (
           loader
         ) : (
@@ -295,7 +353,7 @@ function AddButton({
       </button>
 
       {hasNotice && (
-        <Notice status={hasNotice.type} isDismissible={false}>
+        <Notice status={hasNotice.type} isDismissible={false} extraCSS={NoticeCSS}>
           <FilterHook name='notice.product.addToCart.text'>{hasNotice.message}</FilterHook>
         </Notice>
       )}

@@ -1,10 +1,11 @@
-import ProductOption from '../option'
+import ProductOption from '../option';
 
 function ProductVariantDropdowns({
   options,
   availableVariants,
   selectedOptions,
   missingSelections,
+  variants,
 }) {
   return (
     <div className='wps-component wps-component-products-options'>
@@ -16,10 +17,11 @@ function ProductVariantDropdowns({
             availableVariants={availableVariants}
             selectedOptions={selectedOptions}
             missingSelections={missingSelections}
+            variants={variants}
           />
         ))}
     </div>
-  )
+  );
 }
 
-export default ProductVariantDropdowns
+export default ProductVariantDropdowns;

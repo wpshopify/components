@@ -1,23 +1,11 @@
 import { StorefrontContext } from '../_state/context';
 import { StorefrontOptionsProvider } from './_state/provider';
 import StorefrontOptionsWrapper from './wrapper';
-import {
-  createSelectionsOfType,
-  buildNewSelection,
-  isCurrentlySelected,
-} from '../../../common/selections';
-
-import { capitalizeFirstLetter } from '../../../common/utils';
+import { createSelectionsOfType, buildNewSelection } from '../../../common/selections';
 
 function StorefrontOptions({ payloadSettings }) {
-  const { useContext, useEffect } = wp.element;
+  const { useContext } = wp.element;
   const [storefrontState, storefrontDispatch] = useContext(StorefrontContext);
-
-  //   useEffect(() => {
-  //     console.log('useEffectuseEffect');
-
-  //     setIsSelected(isCurrentlySelected(storefrontState.selections, itemValue, itemType));
-  //   }, [storefrontState['selected' + capitalizeFirstLetter(itemType)]]);
 
   function onSelectionChange(itemValue, itemType, isSelected) {
     const newList = buildNewSelection(itemValue, itemType, isSelected, storefrontState.selections);

@@ -6,7 +6,6 @@ import PaginationItemsMap from './map';
 
 function PaginationItems({ children, payload, payloadSettings }) {
   const fadeIn = keyframes`
-
       0% {
          opacity: 0;
       }

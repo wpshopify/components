@@ -26,9 +26,7 @@ function formatAvailableOptions(availOptions) {
 }
 
 function filterOnlyAvailableVariants(variants) {
-  return filter(variants, function (v) {
-    return v.availableForSale;
-  });
+  return filter(variants, (v) => v.availableForSale);
 }
 
 function onlyAvailableOptionsFromVariants(variants) {
@@ -36,9 +34,22 @@ function onlyAvailableOptionsFromVariants(variants) {
     return false;
   }
 
-  return formatAvailableOptions(
-    onlyAvailableVariantsOptions(filterOnlyAvailableVariants(variants))
+  const showOutOfStockVariants = wp.hooks.applyFilters(
+    'products.showOutOfStockVariants',
+    false,
+    variants
   );
+
+  if (showOutOfStockVariants) {
+    var onlyAvailableVariants = variants;
+  } else {
+    var onlyAvailableVariants = filterOnlyAvailableVariants(variants);
+  }
+
+  var groups = onlyAvailableVariantsOptions(onlyAvailableVariants);
+  var finalOptions = formatAvailableOptions(groups);
+
+  return finalOptions;
 }
 
 function findSelectedVariant(variantInventory, selectedVariantId) {
@@ -113,4 +124,9 @@ function findAvailableQuantityByLocations(variant) {
   });
 }
 
-export { onlyAvailableOptionsFromVariants, findSelectedVariant, findTotalInventoryQuantity };
+export {
+  onlyAvailableOptionsFromVariants,
+  filterOnlyAvailableVariants,
+  findSelectedVariant,
+  findTotalInventoryQuantity,
+};

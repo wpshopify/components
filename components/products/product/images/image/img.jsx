@@ -40,7 +40,11 @@ function Img(props) {
       itemProp='image'
       src={props.productImageSrc}
       className='wps-product-image lazyload'
-      alt={props.image.altText}
+      alt={
+        props.image.altText
+          ? props.image.altText
+          : 'Thumbnail for ' + props.galleryState.product.title
+      }
       data-zoom={props.image.src}
     />
   );
