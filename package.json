@@ -54,6 +54,7 @@
     "react-loaders": "^3.0.1",
     "react-masonry-css": "^1.0.16",
     "react-modal": "^3.13.1",
+    "react-query": "^3.13.12",
     "react-simple-img": "^2.3.9",
     "react-slick": "^0.28.1",
     "react-spring": "^9.1.2",

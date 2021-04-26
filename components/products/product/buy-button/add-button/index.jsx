@@ -345,6 +345,7 @@ function AddButton({
           loader
         ) : (
           <AddButtonText
+            payload={payload}
             addedToCart={addedToCart}
             buttonText={buttonText}
             addToCartButtonTextColor={addToCartButtonTextColor}
@@ -361,7 +362,7 @@ function AddButton({
   );
 }
 
-function AddButtonText({ buttonText, addedToCart, addToCartButtonTextColor }) {
+function AddButtonText({ buttonText, addedToCart, addToCartButtonTextColor, payload }) {
   const [originalText] = useState(buttonText);
   const [text, setText] = useState(buttonText);
   const animeFadeInBottomSlow = useAnime(fadeInBottomSlow);
@@ -386,7 +387,7 @@ function AddButtonText({ buttonText, addedToCart, addToCartButtonTextColor }) {
   `;
 
   return (
-    <FilterHook name='product.addToCart.text' args={[text]}>
+    <FilterHook name='product.addToCart.text' args={[text, payload]}>
       <span css={AddButtonTextCSS} ref={addedTest}>
         {text}
       </span>

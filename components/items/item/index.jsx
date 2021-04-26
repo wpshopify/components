@@ -22,6 +22,7 @@ import Placeholder from '../../../common/placeholders';
 import { Notice } from '../../notices';
 
 import to from 'await-to-js';
+import { useQuery } from 'react-query';
 
 function hasTemplateName(maybeTemplate) {
   if (!maybeTemplate) {
@@ -32,6 +33,8 @@ function hasTemplateName(maybeTemplate) {
 }
 
 function Item({ children, limit = false, infiniteScroll = false }) {
+  console.log('useQuery', useQuery);
+
   const { useContext, useEffect } = wp.element;
   const [itemsState, itemsDispatch] = useContext(ItemsContext);
   const isMounted = useIsMounted();
