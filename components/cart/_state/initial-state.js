@@ -18,6 +18,8 @@ function CartInitialState(cartOptions, productOptions) {
       variants: [],
       total: 0.0,
     },
+    percentageOff: false,
+    amountOff: false,
     productsVisible: productOptions ? productOptions.length : false,
     shopInfo: false,
     customAttributes: [],
@@ -28,7 +30,10 @@ function CartInitialState(cartOptions, productOptions) {
       'default.cart.checkout.text',
       wp.i18n.__('Begin checkout', 'wpshopify')
     ),
-  }
+    isRemovingDiscountCode: false,
+    isAddingDiscountCode: false,
+    isCalculatingTotal: false,
+  };
 }
 
-export { CartInitialState }
+export { CartInitialState };

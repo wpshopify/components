@@ -1,5 +1,5 @@
 /** @jsx jsx */
-import { jsx, css } from '@emotion/react';
+import { jsx, css, keyframes } from '@emotion/react';
 
 const bp = {
   xsmall: 400,
@@ -120,4 +120,45 @@ const IconCSS = css`
   }
 `;
 
-export { rowCSS, flexRowCSS, flexColSmallCSS, containerFluidCSS, buttonCSS, IconCSS, mq };
+const slideInFromTopKeyframes = keyframes`
+   0% {
+      opacity: 0;
+      transform: translateY(-10px);
+   }
+   100% {
+      opacity: 1;
+      transform: translateY(0);
+   }
+`;
+
+const slideInFromTop = css`
+  animation: ${slideInFromTopKeyframes} 0.3s ease;
+  animation-timing-function: cubic-bezier(0.445, 0.05, 0.55, 0.95);
+`;
+
+const fadeInKeyframes = keyframes`
+   0% {
+      opacity: 0;
+   }
+
+   100% {
+      opacity: 1;
+   }
+`;
+
+const fadeIn = css`
+  animation: ${fadeInKeyframes} 0.25s ease;
+  animation-timing-function: cubic-bezier(0.445, 0.05, 0.55, 0.95);
+`;
+
+export {
+  rowCSS,
+  flexRowCSS,
+  flexColSmallCSS,
+  containerFluidCSS,
+  buttonCSS,
+  IconCSS,
+  mq,
+  slideInFromTop,
+  fadeIn,
+};

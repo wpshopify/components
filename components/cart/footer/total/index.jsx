@@ -29,12 +29,14 @@ function CartFooterTotal({ totalElement }) {
   return (
     <>
       {wpshopify.misc.isPro && wpshopify.settings.general.enableDiscountCodes && (
-        <CartFooterDiscountWrapper discountCode={cartState.discountCode} />
+        <CartFooterDiscountWrapper />
       )}
 
       <div css={footerStyles}>
         <CartFooterSubtotalLabel />
         <CartFooterSubtotalAmount
+          percentageOff={cartState.percentageOff}
+          amountOff={cartState.amountOff}
           beforeDiscountTotal={cartState.beforeDiscountTotal}
           discountCode={cartState.discountCode}
           total={cartState.total}

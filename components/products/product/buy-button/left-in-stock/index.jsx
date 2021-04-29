@@ -9,6 +9,7 @@ import { useIsMounted } from '/Users/andrew/www/devil/devilbox-new/data/www/wpsh
 import to from 'await-to-js';
 import find from 'lodash/find';
 import unionBy from 'lodash/unionBy';
+import { useQuery } from 'react-query';
 
 function ProductBuyButtonLeftInStock({ payload, selectedVariant, isTouched, allOptionsSelected }) {
   const { useEffect, useState } = wp.element;
@@ -17,15 +18,29 @@ function ProductBuyButtonLeftInStock({ payload, selectedVariant, isTouched, allO
   const [variantInventory, setVariantInventory] = useState(false);
   const isMounted = useIsMounted();
 
-  useEffect(() => {
-    if (!isMounted.current) {
-      return;
-    }
+  const inventoryQuery = useQuery(
+    'inventory',
+    () => {
+      return getVariantInventoryManagement({ ids: getVariantIds(payload) });
+    },
+    {
+      enabled: isTouched && status === 'idle',
+      onError: (error) => {
+        setStatus('error');
+      },
+      onSuccess: (response) => {
+        console.log('prefetch onSuccess', response);
+        setStatus('resolved');
 
-    if (isTouched && status === 'idle') {
-      fetchVariantInventoryManagement();
+        var variantInventoryResp = sanitizeInventoryResponse(response);
+        // var combinedInventoryData = unionBy(variantInventoryResp, cachedInventory, 'id');
+
+        // setCache('wps-inventory-levels', JSON.stringify(combinedInventoryData));
+
+        setVariantInventory(variantInventoryResp);
+      },
     }
-  }, [isTouched]);
+  );
 
   useEffect(() => {
     if (!isMounted.current || !selectedVariant) {
@@ -73,55 +88,57 @@ function ProductBuyButtonLeftInStock({ payload, selectedVariant, isTouched, allO
     });
   }
 
-  async function fetchVariantInventoryManagement() {
-    var cachedInventory = getCache('wps-inventory-levels');
-    var variantIDs = getVariantIds(payload);
+  //   async function fetchVariantInventoryManagement() {
+  //     var cachedInventory = getCache('wps-inventory-levels');
+  //     console.log('cachedInventory', cachedInventory);
 
-    if (!variantIDs.length) {
-      console.warn('WP Shopify warning: No variant ids found for fetchVariantInventoryManagement');
-      return;
-    }
+  //     var variantIDs = getVariantIds(payload);
 
-    if (cachedInventory) {
-      cachedInventory = JSON.parse(cachedInventory);
+  //     if (!variantIDs.length) {
+  //       console.warn('WP Shopify warning: No variant ids found for fetchVariantInventoryManagement');
+  //       return;
+  //     }
 
-      var variantIDs = findNonCachedVariants(cachedInventory, variantIDs);
+  //     if (cachedInventory) {
+  //       cachedInventory = JSON.parse(cachedInventory);
 
-      // Everything is cached, lets go
-      if (!variantIDs.length) {
-        setStatus('resolved');
-        setVariantInventory(cachedInventory);
-        return;
-      }
-    }
+  //       var variantIDs = findNonCachedVariants(cachedInventory, variantIDs);
 
-    setStatus('pending');
+  //       // Everything is cached, lets go
+  //       if (!variantIDs.length) {
+  //         setStatus('resolved');
+  //         setVariantInventory(cachedInventory);
+  //         return;
+  //       }
+  //     }
 
-    const [error, response] = await to(getVariantInventoryManagement({ ids: variantIDs }));
+  //     setStatus('pending');
 
-    if (isMounted.current) {
-      if (error || response.data.type === 'error') {
-        setStatus('error');
+  //     const [error, response] = await to(getVariantInventoryManagement({ ids: variantIDs }));
 
-        if (error) {
-          console.error('WP Shopify JS error: ', error);
-        }
+  //     if (isMounted.current) {
+  //       if (error || response.data.type === 'error') {
+  //         setStatus('error');
 
-        console.error('WP Shopify error: ', response);
+  //         if (error) {
+  //           console.error('WP Shopify JS error: ', error);
+  //         }
 
-        return;
-      }
+  //         console.error('WP Shopify error: ', response);
 
-      setStatus('resolved');
+  //         return;
+  //       }
 
-      var variantInventoryResp = sanitizeInventoryResponse(response);
-      var combinedInventoryData = unionBy(variantInventoryResp, cachedInventory, 'id');
+  //       setStatus('resolved');
 
-      setCache('wps-inventory-levels', JSON.stringify(combinedInventoryData));
+  //       var variantInventoryResp = sanitizeInventoryResponse(response);
+  //       var combinedInventoryData = unionBy(variantInventoryResp, cachedInventory, 'id');
 
-      setVariantInventory(variantInventoryResp);
-    }
-  }
+  //       setCache('wps-inventory-levels', JSON.stringify(combinedInventoryData));
+
+  //       setVariantInventory(variantInventoryResp);
+  //     }
+  //   }
 
   return (
     quantityLeft && allOptionsSelected && <ProductBuyButtonTextNotice quantityLeft={quantityLeft} />

@@ -37,6 +37,7 @@ function ProductBuyButtonWrapper({ itemsState, productState, productDispatch }) 
     <>
       {itemsState.payloadSettings.hideQuantity === false && !isHidingControls() && (
         <ProductQuantity
+          excludes={itemsState.payloadSettings.excludes}
           addedToCart={productState.addedToCart}
           minQuantity={itemsState.payloadSettings.minQuantity}
           maxQuantity={itemsState.payloadSettings.maxQuantity}
@@ -53,6 +54,7 @@ function ProductBuyButtonWrapper({ itemsState, productState, productDispatch }) 
           availableOptions={onlyAvailableOptionsFromVariants(productState.payload.variants)}
           variants={productState.payload.variants}
           showPriceUnderVariantButton={itemsState.payloadSettings.showPriceUnderVariantButton}
+          productDispatch={productDispatch}
         />
       )}
 

@@ -1,6 +1,8 @@
 /** @jsx jsx */
 import { jsx, css } from '@emotion/react';
 
+import { slideInFromTop } from '../../../../../common/css';
+
 function ProductBuyButtonTextNotice({ quantityLeft }) {
   const textNoticeCSS = css`
     text-align: center;
@@ -14,7 +16,7 @@ function ProductBuyButtonTextNotice({ quantityLeft }) {
   `;
 
   return (
-    <span className='wps-notice-text' css={textNoticeCSS}>
+    <span className='wps-notice-text' css={[textNoticeCSS, slideInFromTop]}>
       {
         /* translators: %s: Only 9 left */
         wp.i18n.sprintf(wp.i18n.__('Only %s left!', 'wpshopify'), quantityLeft)

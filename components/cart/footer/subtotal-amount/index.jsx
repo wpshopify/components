@@ -1,6 +1,7 @@
 /** @jsx jsx */
 import { jsx, css } from '@emotion/react';
 import PrettyPrice from '../../../../common/pricing/pretty';
+import SavingsInline from '../../../savings-inline';
 
 function CartFooterSubtotalAmount({
   total,
@@ -8,6 +9,8 @@ function CartFooterSubtotalAmount({
   totalElement,
   discountCode,
   beforeDiscountTotal,
+  percentageOff,
+  amountOff,
 }) {
   const CartFooterSubtotalAmountCSS = css`
     font-weight: bold;
@@ -25,15 +28,23 @@ function CartFooterSubtotalAmount({
   `;
 
   return (
-    <p className='wps-total-amount' ref={totalElement} css={CartFooterSubtotalAmountCSS}>
-      {discountCode && beforeDiscountTotal && beforeDiscountTotal !== total && (
-        <span css={fullPriceCSS}>
-          <PrettyPrice price={beforeDiscountTotal} currencyCode={currencyCode} />
-        </span>
-      )}
+    <>
+      <p className='wps-total-amount' ref={totalElement} css={CartFooterSubtotalAmountCSS}>
+        {percentageOff && discountCode && (
+          <SavingsInline amount={percentageOff} type='percentage' />
+        )}
+        {amountOff && discountCode && (
+          <SavingsInline amount={amountOff} type='fixed' currencyCode={currencyCode} />
+        )}
+        {discountCode && beforeDiscountTotal && beforeDiscountTotal !== total && (
+          <span css={fullPriceCSS}>
+            <PrettyPrice price={beforeDiscountTotal} currencyCode={currencyCode} />
+          </span>
+        )}
 
-      <PrettyPrice price={total} currencyCode={currencyCode} />
-    </p>
+        <PrettyPrice price={total} currencyCode={currencyCode} />
+      </p>
+    </>
   );
 }
 

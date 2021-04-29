@@ -379,19 +379,49 @@ function CartReducer(state, action) {
     }
 
     case 'SET_DISCOUNT_CODE': {
-      return {
+      const newState = {
         ...state,
         discountCode: update(state.discountCode, { $set: action.payload }),
+      };
+
+      wp.hooks.doAction('on.checkout.update', newState);
+
+      return newState;
+    }
+
+    case 'SET_IS_REMOVING_DISCOUNT_CODE': {
+      return {
+        ...state,
+        isRemovingDiscountCode: update(state.isRemovingDiscountCode, { $set: action.payload }),
+      };
+    }
+
+    case 'SET_IS_ADDING_DISCOUNT_CODE': {
+      return {
+        ...state,
+        isAddingDiscountCode: update(state.isRemovingDiscountCode, { $set: action.payload }),
+      };
+    }
+
+    case 'SET_IS_CALCULATING_TOTAL': {
+      return {
+        ...state,
+        isCalculatingTotal: update(state.isCalculatingTotal, { $set: action.payload }),
       };
     }
 
     case 'UPDATE_CHECKOUT_ATTRIBUTES': {
-      let attributes = uniqWith(concat(state.customAttributes, [action.payload]), isEqual);
+      const attributes = uniqWith(concat(state.customAttributes, [action.payload]), isEqual);
+      const customAttributes = update(state.customAttributes, { $set: attributes });
 
-      return {
+      const newState = {
         ...state,
-        customAttributes: update(state.customAttributes, { $set: attributes }),
+        customAttributes: customAttributes,
       };
+
+      wp.hooks.doAction('on.checkout.update', newState);
+
+      return newState;
     }
 
     case 'SET_CHECKOUT_ATTRIBUTES': {
@@ -401,19 +431,27 @@ function CartReducer(state, action) {
         var newCheckoutAttributes = [action.payload];
       }
 
-      return {
+      const newState = {
         ...state,
         customAttributes: update(state.customAttributes, {
           $set: newCheckoutAttributes,
         }),
       };
+
+      wp.hooks.doAction('on.checkout.update', newState);
+
+      return newState;
     }
 
     case 'SET_CHECKOUT_NOTE': {
-      return {
+      const newState = {
         ...state,
         note: update(state.note, { $set: action.payload }),
       };
+
+      wp.hooks.doAction('on.checkout.update', newState);
+
+      return newState;
     }
 
     case 'IS_CART_READY': {
@@ -429,6 +467,20 @@ function CartReducer(state, action) {
       return {
         ...state,
         checkoutId: update(state.checkoutId, { $set: action.payload }),
+      };
+    }
+
+    case 'SET_PERCENTAGE_OFF': {
+      return {
+        ...state,
+        percentageOff: update(state.percentageOff, { $set: action.payload }),
+      };
+    }
+
+    case 'SET_AMOUNT_OFF': {
+      return {
+        ...state,
+        amountOff: update(state.amountOff, { $set: action.payload }),
       };
     }
 

@@ -1,7 +1,7 @@
 /** @jsx jsx */
 import { jsx, css } from '@emotion/react';
 
-function CartFooterDiscount({ discountCode, onRemoval }) {
+function CartFooterDiscount({ discountCode, isRemoving, onRemoval }) {
   const discountCodeWrapperCSS = css`
     display: flex;
     align-items: baseline;
@@ -47,6 +47,7 @@ function CartFooterDiscount({ discountCode, onRemoval }) {
       <p css={discountLabelCSS} className='wps-cart-discount-label'>
         {wp.i18n.__('Discount:', 'wpshopify')}
       </p>
+
       <p className='wps-cart-discount-code' css={discountCodeCSS} onClick={onRemoval}>
         {discountCode}
 

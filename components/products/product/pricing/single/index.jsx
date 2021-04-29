@@ -10,6 +10,7 @@ const ProductPriceSingle = React.forwardRef((props, ref) => {
     font-size: ${props.compareAt ? '15px' : '18px'};
     color: ${props.pricingColor ? props.pricingColor : props.compareAt ? '#848484' : '#121212'};
     text-decoration: ${props.compareAt ? 'line-through' : 'none'};
+    font-weight: bold;
   `;
 
   return props.price !== false || props.price !== null ? (

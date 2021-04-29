@@ -4,8 +4,9 @@ import 'slick-carousel/slick/slick-theme.css';
 /** @jsx jsx */
 import { jsx, css } from '@emotion/react';
 import { mq } from '../../common/css';
+import merge from 'lodash/merge';
 
-function Carousel({ children, payloadSettings }) {
+function Carousel({ children, payloadSettings, customSettings, extraCSS }) {
   const CarouselCSS = css`
     max-width: 1100px;
     margin: 0 auto;
@@ -22,9 +23,6 @@ function Carousel({ children, payloadSettings }) {
       &:hover,
       &:focus {
         opacity: 0.7;
-        background-size: contain;
-        background-position: 50% 50%;
-        background-repeat: no-repeat;
       }
 
       &:before {
@@ -42,15 +40,11 @@ function Carousel({ children, payloadSettings }) {
       right: -55px;
     }
 
-    .slick-prev,
-    .slick-prev:hover,
-    .slick-prev:focus {
+    .slick-prev {
       background-image: url(${'"' + payloadSettings.carouselPrevArrow + '"'});
     }
 
-    .slick-next,
-    .slick-next:hover,
-    .slick-next:focus {
+    .slick-next {
       background-image: url(${'"' + payloadSettings.carouselNextArrow + '"'});
     }
 
@@ -94,7 +88,7 @@ function Carousel({ children, payloadSettings }) {
     }
   `;
 
-  const settings = wp.hooks.applyFilters('wpshopify.carousel.settings', {
+  var defaults = {
     dots: payloadSettings.carouselDots,
     infinite: payloadSettings.carouselInfinite,
     speed: payloadSettings.carouselSpeed,
@@ -116,10 +110,14 @@ function Carousel({ children, payloadSettings }) {
         },
       },
     ],
-  });
+  };
+
+  var combinedSettings = merge(defaults, customSettings);
+
+  const settings = wp.hooks.applyFilters('wpshopify.carousel.settings', combinedSettings);
 
   return (
-    <Slider {...settings} css={CarouselCSS}>
+    <Slider {...settings} css={[CarouselCSS, extraCSS]}>
       {children}
     </Slider>
   );

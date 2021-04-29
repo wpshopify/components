@@ -22,7 +22,7 @@ function ProductVariantButtonValue({
   const border = isSelected ? '#415aff' : 'black';
   const color = isSelected ? 'white' : 'black';
   const backgroundColor = isSelected ? '#415aff' : 'transparent';
-  const opacity = isSelected || isAvailableToSelect ? 1 : 0.4;
+  const opacity = isAvailableToSelect ? 1 : 0.4;
 
   if (showPriceUnderVariantButton && totalOptions === 1) {
     var variantObject = findVariantFromOptionObject(variant, variants);
@@ -43,10 +43,11 @@ function ProductVariantButtonValue({
     opacity: ${opacity};
     color: ${color};
     background-color: ${backgroundColor};
+    transition: all ease 0.2s;
 
     &:hover {
       cursor: ${!isSelected ? 'pointer' : 'auto'};
-      opacity: ${!isSelected ? 0.6 : 1};
+      background-color: ${!isSelected ? '#e9e9e9' : backgroundColor};
     }`;
 
   function maybeColorSwatches(variant, defaultCustomStyles) {
@@ -80,7 +81,7 @@ function ProductVariantButtonValue({
          border-radius: 50%;
          border: ${border};
          box-shadow: ${isSelected ? 'inset 0 0 0px 4px white' : 'none'};
-         transition: 100ms transform ease;
+         transition: all ease 0.15s;
          line-height: 1;
 
          &:hover {

@@ -27,7 +27,7 @@ function CartContents(props) {
     position: absolute;
     margin: 0;
     width: 100%;
-    font-size: 1.5em;
+    font-size: 1.6em;
     margin: 0;
     text-align: center;
   `;
@@ -38,6 +38,7 @@ function CartContents(props) {
     overflow-x: hidden;
     padding-top: 4.5em;
     position: relative;
+    flex: 1;
 
     > .wps-notice {
       position: relative;
@@ -51,6 +52,13 @@ function CartContents(props) {
     }
   `;
 
+  const AddSomethingCSS = css`
+    display: block;
+    margin-top: 12px;
+    color: #ddd;
+    font-size: 20px;
+  `;
+
   return (
     <section
       className='wps-cart-contents'
@@ -59,7 +67,13 @@ function CartContents(props) {
       {props.isCartEmpty ? (
         <h2 css={CartTitleCSS}>
           <FilterHook name='cart.empty.text'>
-            {wp.i18n.__('Your cart is empty', 'wpshopify')}
+            {wp.i18n.__('Your cart is empty!', 'wpshopify')}
+          </FilterHook>
+
+          <FilterHook name='cart.empty.addSomethingText'>
+            <a href={wpshopify.settings.general.urlProducts} css={AddSomethingCSS}>
+              {wp.i18n.__('Go add something awesome', 'wpshopify')}
+            </a>
           </FilterHook>
         </h2>
       ) : (

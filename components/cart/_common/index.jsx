@@ -3,31 +3,10 @@ import {
   addDiscount,
   removeDiscount,
 } from '/Users/andrew/www/devil/devilbox-new/data/www/wpshopify-api';
+
 import to from 'await-to-js';
-
-async function removeDiscountCode(cartDispatch) {
-  cartDispatch({ type: 'SET_IS_UPDATING', payload: true });
-
-  var [err, resp] = await to(removeDiscount());
-
-  if (err) {
-    cartDispatch({
-      type: 'UPDATE_NOTICES',
-      payload: {
-        type: 'error',
-        message: err,
-      },
-    });
-  }
-
-  cartDispatch({ type: 'SET_DISCOUNT_CODE', payload: false });
-  cartDispatch({ type: 'SET_IS_UPDATING', payload: false });
-
-  cartDispatch({
-    type: 'SET_CART_TOTAL',
-    payload: resp.subtotalPriceV2.amount,
-  });
-}
+import { useQuery } from 'react-query';
+import has from 'lodash/has';
 
 function addDiscountCode(cartState, cartDispatch, discountVal) {
   return new Promise(async (resolve, reject) => {
@@ -60,6 +39,20 @@ function addDiscountCode(cartState, cartDispatch, discountVal) {
         type: 'SET_BEFORE_DISCOUNT_TOTAL',
         payload: checkout.lineItemsSubtotalPrice.amount,
       });
+
+      if (has(checkout.discountApplications[0].value, 'percentage')) {
+        cartDispatch({
+          type: 'SET_PERCENTAGE_OFF',
+          payload: checkout.discountApplications[0].value.percentage,
+        });
+      }
+
+      if (has(checkout.discountApplications[0].value, 'amount')) {
+        cartDispatch({
+          type: 'SET_AMOUNT_OFF',
+          payload: checkout.discountApplications[0].value.amount,
+        });
+      }
 
       cartDispatch({ type: 'SET_DISCOUNT_CODE', payload: discountVal });
     } else {
@@ -97,4 +90,107 @@ function removeLineItems(lineItemIds, cartState, cartDispatch) {
   });
 }
 
-export { removeDiscountCode, addDiscountCode, removeLineItems };
+function addDiscountHelper(cartDispatch, discount) {
+  cartDispatch({
+    type: 'UPDATE_NOTICES',
+    payload: [],
+  });
+
+  if (!discount) {
+    cartDispatch({ type: 'SET_IS_UPDATING', payload: false });
+
+    cartDispatch({
+      type: 'UPDATE_NOTICES',
+      payload: {
+        type: 'warning',
+        message: 'No discount found! Please enter one below.',
+      },
+    });
+    return;
+  }
+
+  cartDispatch({ type: 'SET_DISCOUNT_CODE', payload: discount });
+  cartDispatch({ type: 'SET_IS_ADDING_DISCOUNT_CODE', payload: true });
+  cartDispatch({ type: 'SET_IS_UPDATING', payload: true });
+}
+
+function useAddDiscount(cartState, cartDispatch) {
+  return useQuery(
+    'cart::addDiscount',
+    () => {
+      return addDiscountCode(cartState, cartDispatch, cartState.discountCode);
+    },
+    {
+      enabled: cartState.isAddingDiscountCode,
+      onError: (error) => {
+        cartDispatch({ type: 'SET_IS_UPDATING', payload: false });
+        cartDispatch({ type: 'SET_IS_ADDING_DISCOUNT_CODE', payload: false });
+
+        cartDispatch({
+          type: 'UPDATE_NOTICES',
+          payload: {
+            type: 'warning',
+            message: error,
+          },
+        });
+
+        cartDispatch({ type: 'SET_DISCOUNT_CODE', payload: false });
+      },
+      onSuccess: (data) => {
+        cartDispatch({ type: 'SET_IS_UPDATING', payload: false });
+        cartDispatch({ type: 'SET_IS_ADDING_DISCOUNT_CODE', payload: false });
+      },
+    }
+  );
+}
+
+function useRemoveDiscountCode(cartState, cartDispatch) {
+  return useQuery(
+    'cart::removeDiscount',
+    () => {
+      return removeDiscount();
+    },
+    {
+      enabled: cartState.isRemovingDiscountCode,
+      onError: (error) => {
+        cartDispatch({ type: 'SET_IS_REMOVING_DISCOUNT_CODE', payload: false });
+        cartDispatch({ type: 'SET_IS_UPDATING', payload: false });
+        cartDispatch({
+          type: 'UPDATE_NOTICES',
+          payload: {
+            type: 'error',
+            message: error,
+          },
+        });
+      },
+      onSuccess: (data) => {
+        cartDispatch({ type: 'SET_IS_UPDATING', payload: false });
+        cartDispatch({ type: 'SET_IS_REMOVING_DISCOUNT_CODE', payload: false });
+        cartDispatch({ type: 'SET_AMOUNT_OFF', payload: false });
+        cartDispatch({ type: 'SET_PERCENTAGE_OFF', payload: false });
+
+        cartDispatch({
+          type: 'UPDATE_NOTICES',
+          payload: {
+            type: 'success',
+            message: 'Successfully removed discount.',
+          },
+        });
+
+        cartDispatch({
+          type: 'SET_CART_TOTAL',
+          payload: data.subtotalPriceV2.amount,
+        });
+
+        cartDispatch({ type: 'SET_DISCOUNT_CODE', payload: false });
+      },
+    }
+  );
+}
+export {
+  addDiscountCode,
+  removeLineItems,
+  addDiscountHelper,
+  useAddDiscount,
+  useRemoveDiscountCode,
+};

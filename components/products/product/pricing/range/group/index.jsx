@@ -20,7 +20,7 @@ function ProductPricingRangeGroup({
         showPriceRange={showPriceRange}
         pricingColor={pricingColor}
       />
-      <ProductPricingSeparator />
+      <ProductPricingSeparator compareAt={compareAt} />
       <ProductPriceSingle
         price={lastPrice}
         compareAt={compareAt}

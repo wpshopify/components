@@ -2,6 +2,7 @@ import { ProductContext } from '../../_state/context';
 import { ProductGalleryContext } from './_state/context';
 import ProductThumbnailImages from '../thumbnails';
 import { ProductFeaturedImage } from '../featured';
+import ProductCarouselImages from '../carousel';
 import { hasLink } from '../../../../../common/settings';
 
 const { useEffect, useContext, useRef } = wp.element;
@@ -56,10 +57,14 @@ function ProductGallery({ payloadSettings }) {
       {isFeaturedOnly() ? (
         <ProductFeaturedImage payloadSettings={payloadSettings} />
       ) : hasManyImages() ? (
-        <>
-          <ProductFeaturedImage payloadSettings={payloadSettings} />
-          <ProductThumbnailImages product={product} payloadSettings={payloadSettings} />
-        </>
+        payloadSettings.showImagesCarousel ? (
+          <ProductCarouselImages payloadSettings={payloadSettings} images={product.images} />
+        ) : (
+          <>
+            <ProductFeaturedImage payloadSettings={payloadSettings} />
+            <ProductThumbnailImages product={product} payloadSettings={payloadSettings} />
+          </>
+        )
       ) : (
         <ProductFeaturedImage payloadSettings={payloadSettings} />
       )}

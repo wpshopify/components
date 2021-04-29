@@ -1,12 +1,13 @@
 /** @jsx jsx */
-import { jsx, css } from '@emotion/react';
+import { jsx, css, keyframes } from '@emotion/react';
 import { CartContext } from '../_state/context';
-import { addDiscountCode, removeDiscountCode } from '../_common';
+import { addDiscountHelper } from '../_common';
 import { useAction, useCartToggle } from '../../../common/hooks';
 import { findTotalCartQuantities } from '../../../common/cart';
-import { mq } from '../../../common/css';
+import { mq, fadeIn, slideInFromTop } from '../../../common/css';
 import { useAnime, slideOutCart, slideInCart } from '../../../common/animations';
 import isEmpty from 'lodash/isEmpty';
+import has from 'lodash/has';
 import {
   getProductsFromLineItems,
   buildInstances,
@@ -14,9 +15,10 @@ import {
   queryProductsFromIds,
 } from '/Users/andrew/www/devil/devilbox-new/data/www/wpshopify-api';
 import { CartButtons } from '../buttons';
+import { Loader } from '../../loader';
 import to from 'await-to-js';
 
-import { removeLineItems } from '../_common';
+import { removeLineItems, addDiscount } from '../_common';
 
 const CartHeader = wp.element.lazy(() =>
   import(/* webpackChunkName: 'CartHeader-public' */ '../header')
@@ -28,8 +30,10 @@ const CartFooter = wp.element.lazy(() =>
   import(/* webpackChunkName: 'CartFooter-public' */ '../footer')
 );
 
+import { useQuery } from 'react-query';
+
 function CartWrapper() {
-  const { useContext, useRef, useEffect, Suspense } = wp.element;
+  const { useContext, useRef, useEffect, useState, Suspense } = wp.element;
   const cartElement = useRef();
   const isFirstRender = useRef(true);
   const [cartState, cartDispatch] = useContext(CartContext);
@@ -43,20 +47,84 @@ function CartWrapper() {
   const animeSlideInRight = useAnime(slideInCart);
   const animeSlideOutRight = useAnime(slideOutCart);
   const isCartOpen = useCartToggle(cartElement);
+  const [buildNewCheckout, setNewCheckout] = useState(false);
 
-  function setEmptyCheckout() {
-    cartDispatch({
-      type: 'SET_CHECKOUT_ID',
-      payload: false,
-    });
+  const instancesQuery = useQuery(
+    'checkout::instances',
+    () => {
+      return buildInstances(buildNewCheckout);
+    },
+    {
+      refetchOnWindowFocus: false,
+      refetchOnReconnect: false,
+      refetchOnMount: false,
+      refetchInterval: false,
+      onError: (error) => {
+        cartDispatch({
+          type: 'UPDATE_NOTICES',
+          payload: {
+            type: 'error',
+            message: error,
+          },
+        });
 
-    cartDispatch({ type: 'IS_CART_READY', payload: true });
-  }
+        setEmptyCheckout();
+      },
+      onSuccess: (data) => {
+        if (!data || !data.checkout) {
+          cartDispatch({
+            type: 'UPDATE_NOTICES',
+            payload: {
+              type: 'error',
+              message: wp.i18n.__('No checkout instance available', 'wpshopify'),
+            },
+          });
 
-  async function cartBootstrap() {
-    var [error, instances] = await to(buildInstances());
+          return setEmptyCheckout();
+        }
 
-    if (error) {
+        // If checkout was completed ...
+        if (data.checkout.completedAt) {
+          setNewCheckout(true);
+          return;
+        }
+
+        if (wpshopify.misc.isPro && data.checkout.discountApplications.length) {
+          cartDispatch({
+            type: 'SET_DISCOUNT_CODE',
+            payload: data.checkout.discountApplications[0].code,
+          });
+
+          if (has(data.checkout.discountApplications[0].value, 'percentage')) {
+            cartDispatch({
+              type: 'SET_PERCENTAGE_OFF',
+              payload: data.checkout.discountApplications[0].value.percentage,
+            });
+          }
+
+          if (has(data.checkout.discountApplications[0].value, 'amount')) {
+            cartDispatch({
+              type: 'SET_AMOUNT_OFF',
+              payload: data.checkout.discountApplications[0].value.amount,
+            });
+          }
+        }
+
+        cartDispatch({
+          type: 'SET_CHECKOUT_ID',
+          payload: data.checkout && data.checkout.id ? data.checkout.id : false,
+        });
+      },
+    }
+  );
+
+  const productsFromLineItemsQuery = useQuery('checkout::lineitems', getProductsFromLineItems, {
+    enabled: !!instancesQuery.data,
+    refetchOnWindowFocus: false,
+    refetchOnReconnect: false,
+    refetchOnMount: false,
+    refetchInterval: false,
+    onError: (error) => {
       cartDispatch({
         type: 'UPDATE_NOTICES',
         payload: {
@@ -64,88 +132,18 @@ function CartWrapper() {
           message: error,
         },
       });
-
-      return setEmptyCheckout();
-    }
-
-    // If no checkout was found ...
-    if (!instances || !instances.checkout) {
-      cartDispatch({
-        type: 'UPDATE_NOTICES',
-        payload: {
-          type: 'error',
-          message: wp.i18n.__('No checkout instance available', 'wpshopify'),
-        },
-      });
-
-      return setEmptyCheckout();
-    }
-
-    // If checkout was completed ...
-    if (instances.checkout.completedAt) {
-      var [buildInstancesError, newInstances] = await to(buildInstances(true));
-
-      if (buildInstancesError) {
-        cartDispatch({
-          type: 'UPDATE_NOTICES',
-          payload: {
-            type: 'error',
-            message: buildInstancesError,
-          },
-        });
-
-        return setEmptyCheckout();
-      }
-
-      if (!newInstances) {
-        cartDispatch({
-          type: 'UPDATE_NOTICES',
-          payload: {
-            type: 'error',
-            message: wp.i18n.__('No store checkout or client instances were found.', 'wpshopify'),
-          },
-        });
-
-        return setEmptyCheckout();
-      }
-
-      // Responsible for creating the new checkout instance
-      instances = newInstances;
-    }
-
-    if (wpshopify.misc.isPro && instances.checkout.discountApplications.length) {
-      cartDispatch({
-        type: 'SET_DISCOUNT_CODE',
-        payload: instances.checkout.discountApplications[0].code,
-      });
-    }
-
-    cartDispatch({
-      type: 'SET_CHECKOUT_ID',
-      payload: instances.checkout && instances.checkout.id ? instances.checkout.id : false,
-    });
-
-    let [productsError, products] = await to(getProductsFromLineItems());
-
-    if (productsError) {
-      cartDispatch({
-        type: 'UPDATE_NOTICES',
-        payload: {
-          type: 'error',
-          message: productsError,
-        },
-      });
-    } else {
+    },
+    onSuccess: (products) => {
       cartDispatch({
         type: 'SET_CHECKOUT_CACHE',
-        payload: { checkoutId: instances.checkout.id },
+        payload: { checkoutId: instancesQuery.data.checkout.id },
       });
 
       cartDispatch({
         type: 'SET_LINE_ITEMS_AND_VARIANTS',
         payload: {
           lineItems: { products: products },
-          checkoutId: instances.checkout.id,
+          checkoutId: instancesQuery.data.checkout,
         },
       });
 
@@ -154,7 +152,59 @@ function CartWrapper() {
       } else {
         cartDispatch({ type: 'SET_IS_CART_EMPTY', payload: false });
       }
+
+      cartDispatch({ type: 'IS_CART_READY', payload: true });
+    },
+  });
+
+  const totalLineItemsUpdateQuery = useQuery(
+    'checkout::totalLineItemsUpdate',
+    () => {
+      return replaceLineItems(cartState.checkoutCache.lineItems);
+    },
+    {
+      enabled: cartState.isCalculatingTotal,
+      onError: (error) => {
+        cartDispatch({
+          type: 'UPDATE_NOTICES',
+          payload: {
+            type: 'error',
+            message: error,
+          },
+        });
+        cartDispatch({ type: 'SET_IS_UPDATING', payload: false });
+        cartDispatch({ type: 'SET_IS_CALCULATING_TOTAL', payload: false });
+      },
+      onSuccess: (updatedCheckout) => {
+        cartDispatch({
+          type: 'SET_CART_TOTAL',
+          payload: updatedCheckout.subtotalPriceV2.amount,
+        });
+        cartDispatch({
+          type: 'SET_BEFORE_DISCOUNT_TOTAL',
+          payload: updatedCheckout.lineItemsSubtotalPrice.amount,
+        });
+
+        if (
+          cartState.totalLineItems === 0 ||
+          !updatedCheckout.discountApplications.length ||
+          !updatedCheckout.discountApplications[0].applicable
+        ) {
+          cartDispatch({ type: 'SET_IS_REMOVING_DISCOUNT_CODE', payload: true });
+          cartDispatch({ type: 'SET_DISCOUNT_CODE', payload: false });
+        }
+
+        cartDispatch({ type: 'SET_IS_UPDATING', payload: false });
+        cartDispatch({ type: 'SET_IS_CALCULATING_TOTAL', payload: false });
+      },
     }
+  );
+
+  function setEmptyCheckout() {
+    cartDispatch({
+      type: 'SET_CHECKOUT_ID',
+      payload: false,
+    });
 
     cartDispatch({ type: 'IS_CART_READY', payload: true });
   }
@@ -168,62 +218,6 @@ function CartWrapper() {
   function closeCart() {
     animeSlideOutRight(cartElement.current);
     cartDispatch({ type: 'TOGGLE_CART', payload: false });
-  }
-
-  async function addDiscountCodeWrapper(discountCode) {
-    cartDispatch({ type: 'SET_IS_UPDATING', payload: true });
-
-    const [error, checkout] = await to(addDiscountCode(cartState, cartDispatch, discountCode));
-
-    cartDispatch({ type: 'SET_IS_UPDATING', payload: false });
-
-    if (error || !checkout) {
-      cartDispatch({
-        type: 'UPDATE_NOTICES',
-        payload: {
-          type: 'error',
-          message: error,
-        },
-      });
-
-      return;
-    }
-
-    cartDispatch({
-      type: 'SET_CHECKOUT_CACHE',
-      payload: { checkoutId: checkout.id },
-    });
-
-    //  cartDispatch({ type: 'UPDATE_CHECKOUT_TOTAL', payload: checkout.subtotalPriceV2.amount })
-    cartDispatch({ type: 'SET_DISCOUNT_CODE', payload: discountCode });
-  }
-
-  async function updateCheckoutWhenDiscount() {
-    cartDispatch({ type: 'SET_IS_UPDATING', payload: true });
-
-    const [updatedCheckoutError, updatedCheckout] = await to(
-      replaceLineItems(cartState.checkoutCache.lineItems)
-    );
-
-    cartDispatch({
-      type: 'SET_CART_TOTAL',
-      payload: updatedCheckout.subtotalPriceV2.amount,
-    });
-    cartDispatch({
-      type: 'SET_BEFORE_DISCOUNT_TOTAL',
-      payload: updatedCheckout.lineItemsSubtotalPrice.amount,
-    });
-
-    if (
-      cartState.totalLineItems === 0 ||
-      !updatedCheckout.discountApplications.length ||
-      !updatedCheckout.discountApplications[0].applicable
-    ) {
-      removeDiscountCode(cartDispatch);
-      cartDispatch({ type: 'SET_DISCOUNT_CODE', payload: false });
-    }
-
-    cartDispatch({ type: 'SET_IS_UPDATING', payload: false });
   }
 
   async function addLineItems(lineItemsAndVariants) {
@@ -282,16 +276,12 @@ function CartWrapper() {
   }
 
   useEffect(() => {
-    cartBootstrap();
-  }, []);
-
-  useEffect(() => {
     if (discountCode === null) {
       return;
     }
 
     if (wpshopify.misc.isPro && discountCode) {
-      addDiscountCodeWrapper(discountCode);
+      addDiscountHelper(cartDispatch, discountCode);
     }
   }, [discountCode]);
 
@@ -312,10 +302,9 @@ function CartWrapper() {
   }, [cartState.checkoutCache.lineItems]);
 
   useEffect(() => {
-    wp.hooks.doAction('on.checkout.update', cartState);
-
     if (wpshopify.misc.isPro && cartState.discountCode) {
-      updateCheckoutWhenDiscount();
+      cartDispatch({ type: 'SET_IS_UPDATING', payload: true });
+      cartDispatch({ type: 'SET_IS_CALCULATING_TOTAL', payload: true });
     }
   }, [cartState.totalLineItems]);
 
@@ -412,7 +401,7 @@ function CartWrapper() {
     z-index: 99999999;
     display: flex;
     flex-direction: column;
-    justify-content: space-between;
+    justify-content: flex-start;
     transition: transform 320ms ease;
     transform: translateX(110%);
     box-sizing: border-box;
@@ -435,32 +424,32 @@ function CartWrapper() {
     left: 0;
     width: 100%;
     height: 100%;
-    background: rgba(255, 255, 255, 0.6);
+    background: rgba(255, 255, 255, 0.7);
     z-index: 2;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    transiton: all 0.2s ease;
+  `;
 
-    .components-spinner {
-      z-index: 9999;
-      position: absolute;
-      top: 40%;
-      left: 50%;
-      margin: 0;
-      width: 26px;
-      height: 26px;
-
-      &:before {
-        top: 4px;
-        left: 4px;
-        width: 7px;
-        height: 7px;
-        border-radius: 100%;
-        transform-origin: 9px 9px;
-      }
-    }
+  const updatingOverlayTextCSS = css`
+    z-index: 9999;
+    margin-top: -150px;
+    font-size: 24px;
+    font-weight: bold;
+    transiton: all 0.2s ease;
   `;
 
   return (
     <div ref={cartElement} className='wps-cart' css={cartCSS}>
-      <div css={updatingOverlay}>Loading cart ...</div>
+      {cartState.isUpdating && (
+        <div css={[updatingOverlay, fadeIn]}>
+          <div css={[updatingOverlayTextCSS, slideInFromTop]}>
+            Updating cart <Loader color='#000' center={true} />
+          </div>
+        </div>
+      )}
+
       {<CartButtons buttons={cartState.buttons} />}
 
       <Suspense fallback='Loading cart ...'>

@@ -1,19 +1,18 @@
 /** @jsx jsx */
 import { jsx, css } from '@emotion/react';
 import { CartContext } from '../../_state/context';
-import { addDiscountCode, removeDiscountCode } from '../../_common';
+import { addDiscountHelper, useAddDiscount, useRemoveDiscountCode } from '../../_common';
+import { removeDiscount } from '/Users/andrew/www/devil/devilbox-new/data/www/wpshopify-api';
 import CartFooterDiscount from '../discount';
 import { Loader } from '../../../loader';
-import { Notice } from '../../../notices';
-import to from 'await-to-js';
+import { useQuery } from 'react-query';
 
-function CartFooterDiscountWrapper({ discountCode }) {
-  const { useRef, useState, useContext } = wp.element;
+function CartFooterDiscountWrapper() {
+  const { useRef, useContext } = wp.element;
   const [cartState, cartDispatch] = useContext(CartContext);
   const discountInputRef = useRef(false);
-  const [isLoading, setIsLoading] = useState(false);
 
-  const [notice, setNotice] = useState();
+  const addDiscountQuery = useAddDiscount(cartState, cartDispatch);
 
   const footerStyles = css`
     display: flex;
@@ -61,7 +60,7 @@ function CartFooterDiscountWrapper({ discountCode }) {
     padding: 0;
 
     &:hover {
-      cursor: ${isLoading ? 'not-allowed' : 'pointer'};
+      cursor: ${cartState.isUpdating ? 'not-allowed' : 'pointer'};
       color: rgba(0, 0, 0, 0.5);
       background: white;
     }
@@ -85,66 +84,52 @@ function CartFooterDiscountWrapper({ discountCode }) {
     }
   `;
 
-  async function addDiscountCodeWrapper() {
-    setNotice(false);
-    setIsLoading(true);
+  const removeDiscountQuery = useRemoveDiscountCode(cartState, cartDispatch);
 
-    const [error, success] = await to(
-      addDiscountCode(cartState, cartDispatch, discountInputRef.current.value)
-    );
+  function onAddDiscount(e) {
+    addDiscountHelper(cartDispatch, discountInputRef.current.value);
+  }
 
-    setIsLoading(false);
-
-    if (error) {
-      setNotice(error);
+  function onKeyDown(event) {
+    if (event.key === 'Enter') {
+      addDiscountHelper(cartDispatch, discountInputRef.current.value);
     }
   }
 
-  function onClick(e) {
-    addDiscountCodeWrapper();
-  }
-
   function onRemoval() {
-    removeDiscountCode(cartDispatch);
+    cartDispatch({ type: 'SET_IS_REMOVING_DISCOUNT_CODE', payload: true });
+    cartDispatch({ type: 'SET_IS_UPDATING', payload: true });
   }
-
-  const discountNoticeCSS = css`
-    margin-bottom: 1em;
-    margin-top: -10px;
-  `;
 
   return (
     <>
       <div css={footerStyles}>
-        {!discountCode && (
+        {!cartState.discountCode || cartState.isAddingDiscountCode ? (
           <div css={discountFormCSS}>
             <input
               type='text'
               placeholder={wp.i18n.__('Discount code', 'wpshopify')}
               ref={discountInputRef}
               css={discountFormInputCSS}
-              disabled={isLoading || cartState.isCartEmpty}
+              disabled={cartState.isUpdating || cartState.isCartEmpty}
+              onKeyDown={onKeyDown}
             />
             <button
               css={discountFormButtonCSS}
-              onClick={onClick}
-              disabled={isLoading || cartState.isCartEmpty}>
-              {!isLoading && <span>{wp.i18n.__('Apply', 'wpshopify')}</span>}
-              {isLoading && <Loader />}
+              onClick={onAddDiscount}
+              disabled={cartState.isUpdating || cartState.isCartEmpty}>
+              {!cartState.isUpdating && <span>{wp.i18n.__('Apply', 'wpshopify')}</span>}
+              {cartState.isUpdating && <Loader />}
             </button>
           </div>
+        ) : (
+          <CartFooterDiscount
+            isRemoving={cartState.isRemovingDiscountCode}
+            discountCode={cartState.discountCode}
+            onRemoval={onRemoval}
+          />
         )}
-
-        {discountCode && <CartFooterDiscount discountCode={discountCode} onRemoval={onRemoval} />}
       </div>
-
-      {notice && (
-        <div css={discountNoticeCSS}>
-          <Notice isDismissible={false} status='warning'>
-            {notice}
-          </Notice>
-        </div>
-      )}
     </>
   );
 }

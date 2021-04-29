@@ -8,7 +8,7 @@ import { buttonCSS } from '../../../../../common/css';
 import { Notice } from '../../../../notices';
 import { Link } from '../../../../link';
 
-import { checkoutRedirect } from '../../../../cart/checkout';
+import { checkoutRedirect } from '../../../../cart/checkout/common';
 
 import {
   maybeFetchShop,
@@ -278,9 +278,7 @@ function AddButton({
 
       productDispatch({ type: 'SET_MISSING_SELECTIONS', payload: false });
 
-      checkoutRedirect(respNewCheckout, shopInfo.primaryDomain.url, function () {
-        setIsCheckingOut(false);
-      });
+      checkoutRedirect(respNewCheckout, shopInfo.primaryDomain.url, () => setIsCheckingOut(false));
     } else {
       const resetAfter = wp.hooks.applyFilters('product.buyButton.resetVariantsAfterAdding', true);
       let addToCartParams = buildAddToCartParams(lineItems, [variant]);
@@ -370,12 +368,12 @@ function AddButtonText({ buttonText, addedToCart, addToCartButtonTextColor, payl
 
   useEffect(() => {
     if (addedToCart) {
-      setText(wp.i18n.__('Added!', 'wpshopify'));
+      setText(wp.i18n.__('We like that one too!', 'wpshopify'));
       animeFadeInBottomSlow(addedTest.current);
 
       setTimeout(function () {
         setText(originalText);
-      }, 2000);
+      }, 3000);
     }
   }, [addedToCart]);
 

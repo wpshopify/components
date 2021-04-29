@@ -3,7 +3,7 @@ import { jsx, css, keyframes } from '@emotion/react';
 import LoaderSpinner from 'react-loaders';
 import { usePortal } from '../../common/hooks';
 
-function Loader({ isLoading, dropzone, color }) {
+function Loader({ isLoading, dropzone, color, extraCSS, center = true }) {
   const LoaderPulseCSS = css`
     @keyframes scale {
       0% {
@@ -45,10 +45,14 @@ function Loader({ isLoading, dropzone, color }) {
       animation-fill-mode: both;
       display: inline-block;
     }
+
+    .loader-inner {
+      text-align: ${center ? 'center' : 'left'};
+    }
   `;
 
   return usePortal(
-    <div className='wps-loader-wrapper' css={LoaderPulseCSS}>
+    <div className='wps-loader-wrapper' css={[LoaderPulseCSS, extraCSS]}>
       <LoaderSpinner
         type='ball-pulse'
         color={color ? color : '#FFF'}
