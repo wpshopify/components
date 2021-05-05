@@ -5,9 +5,8 @@ import { ProductFeaturedImage } from '../featured';
 import ProductCarouselImages from '../carousel';
 import { hasLink } from '../../../../../common/settings';
 
-const { useEffect, useContext, useRef } = wp.element;
-
 function ProductGallery({ payloadSettings }) {
+  const { useEffect, useContext, useRef } = wp.element;
   const [productState] = useContext(ProductContext);
   const [, galleryDispatch] = useContext(ProductGalleryContext);
   const isFirstRender = useRef(true);
@@ -57,7 +56,7 @@ function ProductGallery({ payloadSettings }) {
       {isFeaturedOnly() ? (
         <ProductFeaturedImage payloadSettings={payloadSettings} />
       ) : hasManyImages() ? (
-        payloadSettings.showImagesCarousel ? (
+        payloadSettings.showImagesCarousel && wpshopify.misc.isPro ? (
           <ProductCarouselImages payloadSettings={payloadSettings} images={product.images} />
         ) : (
           <>

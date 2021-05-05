@@ -5,7 +5,7 @@ import { FilterHook } from '../../../../../common/utils';
 function ProductImageSoldOutLabel() {
   const ProductImageSoldOutLabelCSS = css`
     position: absolute;
-    background: red;
+    background: #da641c;
     color: white;
     text-transform: uppercase;
     font-size: 13px;

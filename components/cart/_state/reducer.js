@@ -470,6 +470,13 @@ function CartReducer(state, action) {
       };
     }
 
+    case 'SET_BUILD_NEW_CHECKOUT': {
+      return {
+        ...state,
+        buildNewCheckout: update(state.buildNewCheckout, { $set: action.payload }),
+      };
+    }
+
     case 'SET_PERCENTAGE_OFF': {
       return {
         ...state,
@@ -481,6 +488,13 @@ function CartReducer(state, action) {
       return {
         ...state,
         amountOff: update(state.amountOff, { $set: action.payload }),
+      };
+    }
+
+    case 'SET_IS_ADDING_LINEITEMS': {
+      return {
+        ...state,
+        isAddingLineItems: update(state.isAddingLineItems, { $set: action.payload }),
       };
     }
 

@@ -1,6 +1,8 @@
 import { v4 as uuidv4 } from 'uuid';
 
-import Placeholder from '../../../common/placeholders';
+const Placeholder = wp.element.lazy(() =>
+  import(/* webpackChunkName: 'Placeholder-public' */ '../../../common/placeholders')
+);
 
 const Carousel = wp.element.lazy(() =>
   import(/* webpackChunkName: 'Carousel-public' */ '../../carousel')

@@ -1,6 +1,9 @@
 import { AddressesContext } from '../_state/context';
 import { AccountReturn } from '../../return';
-import { Notice } from '../../../notices';
+
+const Notice = wp.element.lazy(() =>
+  import(/* webpackChunkName: 'Notice-public' */ '../../../notice')
+);
 
 function AddressesHeader() {
   const { useContext } = wp.element;

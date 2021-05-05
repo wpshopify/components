@@ -27,7 +27,7 @@ function CartContents(props) {
     position: absolute;
     margin: 0;
     width: 100%;
-    font-size: 1.6em;
+    font-size: 2em;
     margin: 0;
     text-align: center;
   `;

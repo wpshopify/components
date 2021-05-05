@@ -42,18 +42,10 @@ function ProductOptionTrigger({ missingSelections }) {
       return;
     }
 
-    if (!isOptionSelected()) {
+    if (!productOptionState.isOptionSelected) {
       animePulse(dropdownTrigger.current);
     }
   }, [missingSelections]);
-
-  function isOptionSelected() {
-    return productOptionState.isOptionSelected;
-  }
-
-  function optionName() {
-    return productOptionState.option.name;
-  }
 
   function getOptionName(selectedOption, option) {
     return selectedOption[option.name];
@@ -64,11 +56,17 @@ function ProductOptionTrigger({ missingSelections }) {
   }
 
   function optionNameWithSelect() {
-    return optionName() + ': ' + getOptionName(getSelectedOption(), productOptionState.option);
+    return (
+      productOptionState.option.name +
+      ': ' +
+      getOptionName(getSelectedOption(), productOptionState.option)
+    );
   }
 
   function displayOptionName() {
-    return isOptionSelected() ? optionNameWithSelect() : optionName();
+    return productOptionState.isOptionSelected
+      ? optionNameWithSelect()
+      : productOptionState.option.name;
   }
 
   const variantDropdownCSS = css`

@@ -1,21 +1,22 @@
-import { CollectionContext } from '../_state/context'
-import { Link } from '../../../link'
-import { usePortal } from '../../../../common/hooks'
-import { findPortalElement } from '../../../../common/utils'
-import { hasLink } from '../../../../common/settings'
+import { CollectionContext } from '../_state/context';
+import { usePortal } from '../../../../common/hooks';
+import { findPortalElement } from '../../../../common/utils';
+import { hasLink } from '../../../../common/settings';
 
-const { useContext } = wp.element
+const Link = wp.element.lazy(() => import(/* webpackChunkName: 'Link-public' */ '../../../link'));
+
+const { useContext } = wp.element;
 
 function Title({ title }) {
   return (
     <h2 itemProp='name' className='wps-collection-title'>
       {title}
     </h2>
-  )
+  );
 }
 
 function CollectionTitle({ payloadSettings }) {
-  const [collectionState] = useContext(CollectionContext)
+  const [collectionState] = useContext(CollectionContext);
 
   return usePortal(
     <div className='wps-component wps-component-collection-title'>
@@ -32,7 +33,7 @@ function CollectionTitle({ payloadSettings }) {
       )}
     </div>,
     findPortalElement(payloadSettings.dropzoneCollectionTitle)
-  )
+  );
 }
 
-export { CollectionTitle }
+export { CollectionTitle };

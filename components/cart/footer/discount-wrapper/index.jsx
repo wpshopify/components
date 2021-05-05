@@ -2,10 +2,11 @@
 import { jsx, css } from '@emotion/react';
 import { CartContext } from '../../_state/context';
 import { addDiscountHelper, useAddDiscount, useRemoveDiscountCode } from '../../_common';
-import { removeDiscount } from '/Users/andrew/www/devil/devilbox-new/data/www/wpshopify-api';
 import CartFooterDiscount from '../discount';
-import { Loader } from '../../../loader';
-import { useQuery } from 'react-query';
+
+const Loader = wp.element.lazy(() =>
+  import(/* webpackChunkName: 'Loader-public' */ '../../../loader')
+);
 
 function CartFooterDiscountWrapper() {
   const { useRef, useContext } = wp.element;

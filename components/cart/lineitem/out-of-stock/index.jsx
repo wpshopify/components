@@ -1,7 +1,10 @@
-import { FilterHook } from '../../../../common/utils';
-import { Notice } from '../../../notices';
 /** @jsx jsx */
 import { jsx, css } from '@emotion/react';
+import { FilterHook } from '../../../../common/utils';
+
+const Notice = wp.element.lazy(() =>
+  import(/* webpackChunkName: 'Notice-public' */ '../../../notice')
+);
 
 function CartLineItemOutOfStock() {
   const extraCSS = css`

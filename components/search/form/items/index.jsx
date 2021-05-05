@@ -1,7 +1,10 @@
 import { Products } from '../../../products';
 import { usePortal } from '../../../../common/hooks';
 import { SearchContext } from '../../_state/context';
-import { Notice } from '../../../notices';
+
+const Notice = wp.element.lazy(() =>
+  import(/* webpackChunkName: 'Notice-public' */ '../../../notice')
+);
 
 function SearchItems({ payload, payloadSettings, queryParams, noResultsText }) {
   const { useEffect, useContext, useRef } = wp.element;

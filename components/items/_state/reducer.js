@@ -185,6 +185,20 @@ function ItemsReducer(state, action) {
       };
     }
 
+    case 'SET_IS_FETCHING_NEXT': {
+      return {
+        ...state,
+        isFetchingNext: update(state.isFetchingNext, { $set: action.payload }),
+      };
+    }
+
+    case 'SET_IS_FETCHING_NEW': {
+      return {
+        ...state,
+        isFetchingNew: update(state.isFetchingNew, { $set: action.payload }),
+      };
+    }
+
     case 'SET_IS_BOOTSTRAPPING': {
       return {
         ...state,

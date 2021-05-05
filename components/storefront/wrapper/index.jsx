@@ -1,6 +1,8 @@
 import { StorefrontContext } from '../_state/context';
 import { buildQueryStringFromSelections, getInitialSelections } from '../_common';
+import { queryOptionsNoRefetch } from '../../../common/queries';
 import forOwn from 'lodash/forOwn';
+import { useQuery } from 'react-query';
 
 function StorefrontWrapper({ children, itemsState, itemsDispatch }) {
   const { useContext, useEffect, useRef } = wp.element;
@@ -45,6 +47,11 @@ function StorefrontWrapper({ children, itemsState, itemsDispatch }) {
     itemsDispatch({
       type: 'MERGE_QUERY_PARAMS',
       payload: updateFetchParamsQuery(),
+    });
+
+    itemsDispatch({
+      type: 'SET_IS_FETCHING_NEW',
+      payload: true,
     });
   }, [storefrontState.selections]);
 

@@ -2,7 +2,8 @@
 import { jsx, css } from '@emotion/react';
 import { mq } from '../../../../common/css';
 import { addCustomSizingToImageUrl } from '../../../../common/images';
-import { Link } from '../../../link';
+
+const Link = wp.element.lazy(() => import(/* webpackChunkName: 'Link-public' */ '../../../link'));
 
 function CartLineItemImage({ lineItem, cartState }) {
   const manualLink = wp.hooks.applyFilters('cart.lineItems.link', false, lineItem, cartState);

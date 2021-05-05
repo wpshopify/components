@@ -2,7 +2,10 @@
 import { jsx, css } from '@emotion/react';
 import { CartContext } from '../_state/context';
 import { buttonCSS, mq } from '../../../common/css';
-import { Loader } from '../../loader';
+
+const Loader = wp.element.lazy(() =>
+  import(/* webpackChunkName: 'Loader-public' */ '../../loader')
+);
 
 function CartCheckoutButton({ onCheckout }) {
   const { useContext } = wp.element;

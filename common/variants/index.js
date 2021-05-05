@@ -115,7 +115,7 @@ function findAvailableQuantityByLocations(variant) {
     return variant.inventoryLevels[0].node.available;
   }
 
-  return variant.inventoryLevels.reduce((accumulator, currentValue) => {
+  return variant.inventoryLevels.edges.reduce((accumulator, currentValue) => {
     if (!accumulator.node) {
       return accumulator;
     }

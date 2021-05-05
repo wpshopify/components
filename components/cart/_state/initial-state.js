@@ -12,6 +12,7 @@ function CartInitialState(cartOptions, productOptions) {
     notices: [],
     discountCode: false,
     total: 0,
+    buildNewCheckout: false,
     beforeDiscountTotal: false,
     checkoutCache: {
       lineItems: [],
@@ -33,6 +34,7 @@ function CartInitialState(cartOptions, productOptions) {
     isRemovingDiscountCode: false,
     isAddingDiscountCode: false,
     isCalculatingTotal: false,
+    isAddingLineItems: false,
   };
 }
 

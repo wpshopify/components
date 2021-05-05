@@ -90,7 +90,7 @@ function ButtonItem({ isSelected, itemValue, itemType, onClick }) {
     margin: 5px;
     font-size: 15px;
     text-transform: capitalize;
-    transition: opacity 0.2s ease;
+    transition: all 0.2s ease;
     backface-visibility: hidden;
     will-change: opacity;
     display: inline-block;
@@ -99,8 +99,7 @@ function ButtonItem({ isSelected, itemValue, itemType, onClick }) {
 
     &:hover {
       cursor: pointer;
-      background-color: ${isSelected ? '#ddfbdd' : '#eee'};
-      transform: ${isSelected ? 'scale(1)' : 'scale(1.1)'};
+      background-color: ${isSelected ? '#ddfbdd' : '#fcfcfc'};
       opacity: ${isSelected ? '1' : '1'};
     }
   `;

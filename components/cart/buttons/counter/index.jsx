@@ -1,12 +1,14 @@
-import { CartContext } from '../../_state/context';
-import { CartButtonContext } from '../button/_state/context';
-import { Loader } from '../../../loader';
-import { findTotalCartQuantities } from '../../../../common/cart';
-
 /** @jsx jsx */
 import { jsx, css } from '@emotion/react';
+import { CartContext } from '../../_state/context';
+import { CartButtonContext } from '../button/_state/context';
+import { findTotalCartQuantities } from '../../../../common/cart';
 
-const { useContext, useState, useRef, useEffect } = wp.element;
+const Loader = wp.element.lazy(() =>
+  import(/* webpackChunkName: 'Loader-public' */ '../../../loader')
+);
+
+const { useContext, useState, useRef, useEffect, Suspense } = wp.element;
 
 function CartCounter() {
   const [cartState, cartDispatch] = useContext(CartContext);
@@ -83,7 +85,9 @@ function CartCounter() {
   return (
     <span css={[counterCSS, customCounterCSS]} className='wps-cart-counter' ref={element}>
       <span css={counterTextCSS}>
-        {!cartState.isCartReady ? <Loader isLoading={true} /> : totalItems}
+        <Suspense fallback={false}>
+          {!cartState.isCartReady ? <Loader isLoading={true} /> : totalItems}
+        </Suspense>
       </span>
     </span>
   );

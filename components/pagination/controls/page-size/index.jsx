@@ -41,6 +41,8 @@ function PaginationPageSize({ isLoading, payloadSettings, queryParams, dataType 
   }
 
   async function onChange(event) {
+    console.log('onChange');
+
     setControlsTouched(true);
     setPageSize(event.target.value);
 
@@ -112,7 +114,7 @@ function PaginationPageSize({ isLoading, payloadSettings, queryParams, dataType 
             className='wps-input'
             value={pageSize}
             id='wps-sorting'
-            onChange={(e) => onChange(e)}
+            onChange={onChange}
             disabled={isLoading}>
             <option value='DEFAULT' disabled='disabled'>
               {wp.i18n.__('Choose a size', 'wpshopify')}

@@ -30,7 +30,7 @@ function ProductPrices({ payloadSettings }) {
   return (
     <div className='wps-component-products-pricing' css={ProductPricesCompareAtCSS}>
       {productPricingState.showCompareAt ? (
-        <Suspense fallback='Loading pricing ...'>
+        <Suspense fallback={false}>
           <ProductPricesCompareAt
             selectedVariant={productState.selectedVariant}
             prices={productPricingState.prices}

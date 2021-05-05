@@ -3,7 +3,7 @@ import { StorefrontOptionsProvider } from './_state/provider';
 import StorefrontOptionsWrapper from './wrapper';
 import { createSelectionsOfType, buildNewSelection } from '../../../common/selections';
 
-function StorefrontOptions({ payloadSettings }) {
+function StorefrontOptions({ payloadSettings, itemsDispatch }) {
   const { useContext } = wp.element;
   const [storefrontState, storefrontDispatch] = useContext(StorefrontContext);
 
@@ -11,6 +11,11 @@ function StorefrontOptions({ payloadSettings }) {
     const newList = buildNewSelection(itemValue, itemType, isSelected, storefrontState.selections);
 
     if (newList) {
+      itemsDispatch({
+        type: 'SET_IS_LOADING',
+        payload: true,
+      });
+
       storefrontDispatch({
         type: 'SET_SELECTIONS',
         payload: createSelectionsOfType(itemType, newList),
@@ -19,6 +24,11 @@ function StorefrontOptions({ payloadSettings }) {
       storefrontDispatch({
         type: 'SET_SELECTED_' + itemType.toUpperCase(),
         payload: newList,
+      });
+
+      itemsDispatch({
+        type: 'SET_IS_FETCHING_NEW',
+        payload: true,
       });
     }
   }

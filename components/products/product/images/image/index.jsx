@@ -2,8 +2,12 @@ import { ProductContext } from '../../_state/context';
 import { ProductGalleryContext } from '../gallery/_state/context';
 import { doFeaturedSizing, doThumbnailSizing } from '../../../../../common/images';
 import Img from './img';
-import { Link } from '../../../../link';
+
 import { hasLink } from '../../../../../common/settings';
+
+const Link = wp.element.lazy(() =>
+  import(/* webpackChunkName: 'Link-public' */ '../../../../link')
+);
 
 function ProductImage({ image, isFeatured, payloadSettings, placeholder = false }) {
   const { useEffect, useContext, useRef, useState } = wp.element;

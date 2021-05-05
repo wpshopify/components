@@ -1,16 +1,18 @@
+/** @jsx jsx */
+import { jsx, css } from '@emotion/react';
 import {
   getCustomer,
   isWordPressError,
 } from '/Users/andrew/www/devil/devilbox-new/data/www/wpshopify-api';
 import to from 'await-to-js';
 import isEmpty from 'lodash/isEmpty';
-
-/** @jsx jsx */
-import { jsx, css } from '@emotion/react';
 import { CustomersContext } from '../_state/context';
 import { Orders } from './orders';
 import { AccountDetails } from './details';
-import { Notice } from '../../notices';
+
+const Notice = wp.element.lazy(() =>
+  import(/* webpackChunkName: 'Notice-public' */ '../../notice')
+);
 
 function findDefaultAddress(addressLookup, addresses) {
   var found = find(addresses.edges, function (o) {

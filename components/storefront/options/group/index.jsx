@@ -4,8 +4,11 @@ import { StorefrontFilter } from '../../filter';
 import { StorefrontOptionsContext } from '../_state/context';
 import StorefrontFilterOptionsGroupItems from '../group-items';
 import { FilterHook } from '../../../../common/utils';
-import { Notice } from '../../../notices';
 import isEmpty from 'lodash/isEmpty';
+
+const Notice = wp.element.lazy(() =>
+  import(/* webpackChunkName: 'Notice-public' */ '../../../notice')
+);
 
 function StorefrontFilterOptionsGroup({
   groupType,

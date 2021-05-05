@@ -3,6 +3,8 @@ import Item from './item';
 import { usePortal } from '../../common/hooks';
 import { v4 as uuidv4 } from 'uuid';
 
+const { Suspense } = wp.element;
+
 /*
 
 Responsible for managing state of 'payload', 'queryParams', and 'isLoading'.
@@ -24,9 +26,11 @@ function ItemWrapper(props) {
       beforeLoading={props.beforeLoading && props.beforeLoading}
       isParentLoading={props.isParentLoading}>
       {usePortal(
-        <Item limit={props.limit} infiniteScroll={props.infiniteScroll}>
-          {props.children}
-        </Item>,
+        <Suspense fallback={false}>
+          <Item limit={props.limit} infiniteScroll={props.infiniteScroll}>
+            {props.children}
+          </Item>
+        </Suspense>,
         props.component.componentElement
       )}
     </ItemsProvider>

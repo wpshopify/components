@@ -1,13 +1,9 @@
 /** @jsx jsx */
 import { jsx, css } from '@emotion/react';
-import ProductBuyButtonLeftInStock from '../left-in-stock';
-import { Loader } from '../../../../loader';
+
 import { useAnime, pulse, fadeInBottomSlow } from '../../../../../common/animations';
 import { FilterHook } from '../../../../../common/utils';
 import { buttonCSS } from '../../../../../common/css';
-import { Notice } from '../../../../notices';
-import { Link } from '../../../../link';
-
 import { checkoutRedirect } from '../../../../cart/checkout/common';
 
 import {
@@ -22,7 +18,23 @@ import {
 
 import to from 'await-to-js';
 
-const { useRef, useEffect, useContext, useState } = wp.element;
+const Notice = wp.element.lazy(() =>
+  import(/* webpackChunkName: 'Notice-public' */ '../../../../notice')
+);
+
+const Link = wp.element.lazy(() =>
+  import(/* webpackChunkName: 'Link-public' */ '../../../../link')
+);
+
+const Loader = wp.element.lazy(() =>
+  import(/* webpackChunkName: 'Loader-public' */ '../../../../loader')
+);
+
+const ProductBuyButtonLeftInStock = wp.element.lazy(() =>
+  import(/* webpackChunkName: 'ProductBuyButtonLeftInStock-public' */ '../left-in-stock')
+);
+
+const { useRef, useEffect, useState } = wp.element;
 
 function findSingleVariantFromPayload(payload) {
   return payload.variants[0];
@@ -313,11 +325,6 @@ function AddButton({
         });
 
         productDispatch({ type: 'REMOVE_SELECTED_OPTIONS' });
-
-        //   productOptionDispatch({
-        //     type: 'SET_IS_OPTION_SELECTED',
-        //     payload: false,
-        //   });
 
         wp.hooks.doAction('cart.toggle', 'open');
         wp.hooks.doAction('product.addToCart', addToCartParams);

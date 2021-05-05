@@ -1,9 +1,11 @@
-import { usePortal } from '../../../common/hooks';
-import { Products } from '../../products';
-import { Notice } from '../../notices';
-
 /** @jsx jsx */
 import { jsx, css } from '@emotion/react';
+import { usePortal } from '../../../common/hooks';
+import { Products } from '../../products';
+
+const Notice = wp.element.lazy(() =>
+  import(/* webpackChunkName: 'Notice-public' */ '../../notice')
+);
 
 function StorefrontItems({ noResultsText, payloadSettings, payload, queryParams, isLoading }) {
   const noticeCSS = css`

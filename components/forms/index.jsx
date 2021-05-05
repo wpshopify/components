@@ -1,9 +1,9 @@
 /** @jsx jsx */
 import { jsx, css } from '@emotion/react';
 import { renderToString } from 'react-dom/server';
-import { Loader } from '../loader';
 
-import { Notice } from '../notices';
+const Loader = wp.element.lazy(() => import(/* webpackChunkName: 'Loader-public' */ '../loader'));
+const Notice = wp.element.lazy(() => import(/* webpackChunkName: 'Notice-public' */ '../notice'));
 
 function Form({
   children,

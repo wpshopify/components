@@ -22,7 +22,9 @@ function ProductOptions({
 
   return (
     <div className='wps-product-options' css={ProductOptionsCSS}>
-      {!isEmpty(selectedOptions) && <ClearSelections productDispatch={productDispatch} />}
+      {!isEmpty(selectedOptions) && (
+        <ClearSelections productDispatch={productDispatch} variantStyle={variantStyle} />
+      )}
       {variantStyle === 'dropdown' ? (
         <ProductVariantDropdowns
           options={availableOptions}

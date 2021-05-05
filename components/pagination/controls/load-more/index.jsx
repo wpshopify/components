@@ -1,11 +1,14 @@
 import { usePortal } from '../../../../common/hooks';
 import { FilterHook } from '../../../../common/utils';
 import { buttonCSS } from '../../../../common/css';
-import { Loader } from '../../../loader';
 import { InView } from 'react-intersection-observer';
 
 /** @jsx jsx */
 import { jsx, css } from '@emotion/react';
+
+const Loader = wp.element.lazy(() =>
+  import(/* webpackChunkName: 'Loader-public' */ '../../../loader')
+);
 
 function PaginationLoadMore({ isLoading, hasMoreItems, payloadSettings, onNextPage }) {
   function onViewChange(inView, entry) {

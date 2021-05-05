@@ -1,11 +1,25 @@
 import {
+  useIsMounted,
+  useIsFirstRender,
+} from '/Users/andrew/www/devil/devilbox-new/data/www/wpshopify-hooks';
+
+import {
   fetchNextPage,
   graphQuery,
+  fetchNewItems,
+  getTemplate,
+  getCache,
+  setCache,
+  isWordPressError,
+  getWordPressErrorMessage,
 } from '/Users/andrew/www/devil/devilbox-new/data/www/wpshopify-api';
+
+import { queryOptionsNoRefetch } from '../../../common/queries';
 
 import to from 'await-to-js';
 import isEmpty from 'lodash/isEmpty';
 import has from 'lodash/has';
+import { useQuery } from 'react-query';
 
 function sanitizeQueryResponse(response, type) {
   if (type === 'storefront' || type === 'search') {
@@ -169,4 +183,154 @@ function fetchNextItems(itemsState, itemsDispatch) {
   });
 }
 
-export { fetchNextItems };
+function useGetItemsQuery(itemsState, itemsDispatch, isMounted) {
+  return useQuery(
+    'items::new',
+    () => {
+      return fetchNewItems(itemsState);
+    },
+    {
+      enabled: itemsState.isFetchingNew,
+      onError: (error) => {
+        if (isMounted.current) {
+          itemsDispatch({
+            type: 'UPDATE_NOTICES',
+            payload: error,
+          });
+
+          itemsDispatch({ type: 'SET_IS_LOADING', payload: false });
+
+          if (itemsState.isBootstrapping) {
+            itemsDispatch({ type: 'SET_IS_BOOTSTRAPPING', payload: false });
+          }
+        }
+      },
+      onSuccess: (newItems) => {
+        if (isMounted.current) {
+          itemsDispatch({ type: 'SET_IS_LOADING', payload: false });
+
+          if (itemsState.isBootstrapping) {
+            itemsDispatch({ type: 'SET_IS_BOOTSTRAPPING', payload: false });
+          }
+
+          if (!newItems || !newItems.length) {
+            itemsDispatch({
+              type: 'UPDATE_TOTAL_SHOWN',
+              payload: 0,
+            });
+
+            itemsDispatch({
+              type: 'UPDATE_PAYLOAD',
+              payload: {
+                items: [],
+                replace: true,
+              },
+            });
+          } else {
+            itemsDispatch({
+              type: 'UPDATE_TOTAL_SHOWN',
+              payload: newItems.length,
+            });
+
+            itemsDispatch({
+              type: 'UPDATE_PAYLOAD',
+              payload: {
+                items: newItems,
+                replace: true,
+              },
+            });
+
+            if (itemsState.afterLoading) {
+              itemsState.afterLoading(newItems);
+            }
+          }
+        }
+      },
+      ...queryOptionsNoRefetch,
+    }
+  );
+}
+
+function useTemplateQuery(data = false) {
+  return useQuery(
+    'templates',
+    () => {
+      return new Promise((resolve, reject) => {
+        return resolve(data);
+      });
+    },
+    {
+      ...queryOptionsNoRefetch,
+    }
+  );
+}
+
+function useGetTemplateQuery(itemsState, itemsDispatch) {
+  var resultcache = getCache('wps-template-' + itemsState.payloadSettings.htmlTemplate);
+
+  if (!itemsState.payloadSettings.htmlTemplate) {
+    return useTemplateQuery();
+  }
+
+  if (wp.hooks.applyFilters('wpshopify.cache.templates', false) && resultcache) {
+    itemsDispatch({
+      type: 'UPDATE_HTML_TEMPLATE',
+      payload: resultcache,
+    });
+
+    return useTemplateQuery(resultcache);
+  }
+
+  return useQuery(
+    'templates',
+    () => {
+      return getTemplate(itemsState.payloadSettings.htmlTemplate);
+    },
+    {
+      onError: (error) => {
+        itemsDispatch({
+          type: 'UPDATE_NOTICES',
+          payload: {
+            type: 'error',
+            message: error,
+          },
+        });
+
+        itemsDispatch({ type: 'SET_IS_LOADING', payload: false });
+
+        if (itemsState.isBootstrapping) {
+          itemsDispatch({ type: 'SET_IS_BOOTSTRAPPING', payload: false });
+        }
+      },
+      onSuccess: (template) => {
+        if (isWordPressError(template)) {
+          itemsDispatch({ type: 'SET_IS_LOADING', payload: false });
+
+          itemsDispatch({
+            type: 'UPDATE_NOTICES',
+            payload: {
+              type: 'error',
+              message: getWordPressErrorMessage(template),
+            },
+          });
+
+          if (itemsState.isBootstrapping) {
+            itemsDispatch({ type: 'SET_IS_BOOTSTRAPPING', payload: false });
+          }
+
+          return;
+        }
+
+        setCache('wps-template-' + itemsState.payloadSettings.htmlTemplate, template.data);
+
+        itemsDispatch({
+          type: 'UPDATE_HTML_TEMPLATE',
+          payload: template.data,
+        });
+      },
+      ...queryOptionsNoRefetch,
+    }
+  );
+}
+
+export { fetchNextItems, useGetItemsQuery, useGetTemplateQuery };

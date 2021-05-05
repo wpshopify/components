@@ -1,6 +1,7 @@
 /** @jsx jsx */
 import { jsx, css } from '@emotion/react';
 import PrettyPrice from '../../../../common/pricing/pretty';
+import { mq } from '../../../../common/css';
 import SavingsInline from '../../../savings-inline';
 
 function CartFooterSubtotalAmount({
@@ -17,6 +18,10 @@ function CartFooterSubtotalAmount({
     text-align: right;
     font-size: 28px;
     color: #121212;
+
+    ${mq('small')} {
+      font-size: 42px;
+    }
   `;
 
   const fullPriceCSS = css`

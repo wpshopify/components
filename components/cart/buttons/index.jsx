@@ -8,4 +8,4 @@ function CartButtonsWrapper({ buttons }) {
 }
 const CartButtons = wp.element.memo(CartButtonsWrapper);
 
-export { CartButtons };
+export default CartButtons;

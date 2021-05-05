@@ -1,3 +1,4 @@
+import { ItemsContext } from '../../items/_state/context';
 import { StorefrontContext } from '../_state/context';
 import { FilterHook } from '../../../common/utils';
 /** @jsx jsx */
@@ -6,9 +7,11 @@ import { jsx, css } from '@emotion/react';
 const { useContext } = wp.element;
 
 function StorefrontSelectionsClear() {
+  const [, itemsDispatch] = useContext(ItemsContext);
   const [storefrontState, storefrontDispatch] = useContext(StorefrontContext);
 
   function clearAllSelections() {
+    itemsDispatch({ type: 'SET_IS_LOADING', payload: true });
     storefrontDispatch({ type: 'CLEAR_SELECTIONS' });
     storefrontDispatch({ type: 'CLEAR_SELECTED_VENDORS' });
     storefrontDispatch({ type: 'CLEAR_SELECTED_TAGS' });

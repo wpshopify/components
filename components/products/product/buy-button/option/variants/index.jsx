@@ -1,12 +1,10 @@
 /** @jsx jsx */
 import { jsx, css } from '@emotion/react';
-import ProductVariant from './variant';
-import ProductVariantDropdownValue from '../dropdown-value';
 import { ProductOptionContext } from '../_state/context';
 import { useOnClickOutside } from '../../../../../../common/hooks';
-import { createObj, isPairMatch } from '../../../../../../common/utils';
 import { v4 as uuidv4 } from 'uuid';
-import isEmpty from 'lodash/isEmpty';
+import ProductVariant from './variant';
+import ProductVariantDropdownValue from '../dropdown-value';
 
 function ProductVariantsDropdown({
   availableVariants,
@@ -14,15 +12,9 @@ function ProductVariantsDropdown({
   isDropdownOpen,
   selectedOptions,
   option,
-  isOptionSelected,
 }) {
   const { useContext } = wp.element;
   const [productOptionState, productOptionDispatch] = useContext(ProductOptionContext);
-
-  //   function isAvail(variant) {
-  //     const selectedVariant = createObj(variant.name, variant.value);
-  //     return isPairMatch(availableVariants, selectedVariant) || isOptionSelected;
-  //   }
 
   useOnClickOutside(
     dropdownElement,

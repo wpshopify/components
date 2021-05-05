@@ -7,7 +7,10 @@ import { CustomersContext } from '../../_state/context';
 import { Form } from '../../../forms';
 import { Input } from '../../../forms/input';
 
-import { Notice } from '../../notices';
+const Notice = wp.element.lazy(() =>
+  import(/* webpackChunkName: 'Notice-public' */ '../../notice')
+);
+
 const { useContext, useEffect, useState } = wp.element;
 
 function ResetForm({

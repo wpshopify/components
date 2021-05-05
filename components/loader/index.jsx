@@ -64,4 +64,4 @@ function Loader({ isLoading, dropzone, color, extraCSS, center = true }) {
   );
 }
 
-export { Loader };
+export default Loader;

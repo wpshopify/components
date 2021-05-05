@@ -70,6 +70,8 @@ function ItemsInitialState({
       : wp.i18n.__('No items left', 'wpshopify'),
     isLoading: isParentLoading ? isParentLoading : false,
     isBootstrapping: true,
+    isFetchingNew: false,
+    isFetchingNext: false,
     hasMoreItems: getDefaultHasMoreItems(payload),
     notices: [],
     variantsInventory: [],

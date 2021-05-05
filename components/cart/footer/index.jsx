@@ -4,11 +4,14 @@ import { CartContext } from '../_state/context';
 import CartCheckout from '../checkout';
 import { CartNote } from '../note';
 import { CartTerms } from '../terms';
-import { Notices } from '../../notices';
 import Expire from '../../expire';
 import CartFooterTotal from './total';
 
 import isEmpty from 'lodash/isEmpty';
+
+const Notices = wp.element.lazy(() =>
+  import(/* webpackChunkName: 'Notices-public' */ '../../notices')
+);
 
 function CartFooter() {
   const { useContext, useRef } = wp.element;

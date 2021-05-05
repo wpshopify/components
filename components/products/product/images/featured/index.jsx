@@ -1,14 +1,17 @@
+/** @jsx jsx */
+import { jsx, css } from '@emotion/react';
 import { ProductContext } from '../../_state/context';
 import { ProductGalleryContext } from '../gallery/_state/context';
-import ProductImageSoldOutLabel from '../sold-out-label';
+
 import ProductImage from '../image';
 import isNull from 'lodash/isNull';
 import Drift from 'drift-zoom';
 
-/** @jsx jsx */
-import { jsx, css } from '@emotion/react';
+const ProductImageSoldOutLabel = wp.element.lazy(() =>
+  import(/* webpackChunkName: 'ProductImageSoldOutLabel-public' */ '../sold-out-label')
+);
 
-const { useEffect, useContext, useRef, useState } = wp.element;
+const { useEffect, useContext, useRef, useState, Suspense } = wp.element;
 
 function getVariantImage(variant) {
   return variant.image;
@@ -102,7 +105,11 @@ function ProductFeaturedImage({ payloadSettings }) {
 
   return (
     <div className='wps-gallery-featured-wrapper' ref={paneElement} css={paneElementCSS}>
-      {productState.payload.availableForSale === false && featImage && <ProductImageSoldOutLabel />}
+      {productState.payload.availableForSale === false && featImage && (
+        <Suspense fallback={false}>
+          <ProductImageSoldOutLabel />
+        </Suspense>
+      )}
       <div className='wps-product-image-wrapper' css={ProductImageFeaturedWrapperCSS}>
         {featImage ? (
           <ProductImage payloadSettings={payloadSettings} isFeatured={true} image={featImage} />

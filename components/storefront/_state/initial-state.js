@@ -9,7 +9,8 @@ function StorefrontInitialState({ element, payloadSettings }) {
     selectedVendors: [],
     selectedAvailableForSale: null,
     hasResults: false,
-  }
+    isLoading: false,
+  };
 }
 
-export { StorefrontInitialState }
+export { StorefrontInitialState };

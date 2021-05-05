@@ -1,4 +1,4 @@
-import { Notice } from '../notices';
+const Notice = wp.element.lazy(() => import(/* webpackChunkName: 'Notice-public' */ '../notice'));
 
 function ErrorFallback({ error = '' }) {
   return (

@@ -544,6 +544,42 @@ function findVariantFromVariantsList(optionObject, variants) {
   });
 }
 
+function decodeProductId(id) {
+  var decoded = atob(id);
+
+  var splitted = decoded.split('gid://shopify/Product/');
+
+  return splitted[1];
+}
+
+function getProductIdsFromLineItems(lineItemsAndVariants) {
+  return lineItemsAndVariants.productIds.map((id) => decodeProductId(id));
+}
+
+function getVariantIdFromLineItems(lineItemsAndVariants) {
+  return lineItemsAndVariants.lineItems.reduce((acc, lineItem) => {
+    acc.push(lineItem.variantId);
+
+    return acc;
+  }, []);
+}
+
+function getVariantsFromProducts(productsResp, arrayOfVariantIds) {
+  return productsResp.model.products.map((product) => {
+    var foundVariant = product.variants.filter((variant) => {
+      return arrayOfVariantIds.includes(variant.id);
+    });
+
+    return foundVariant[0];
+  });
+}
+
+function findNonCachedVariants(cachedInventory, variantIDs) {
+  return variantIDs.filter((variantId) => {
+    return !find(cachedInventory, ['id', variantId]);
+  });
+}
+
 export {
   findVariantFromVariantsList,
   objectIsEmpty,
@@ -561,4 +597,9 @@ export {
   isPairMatch,
   createSlug,
   findVariantFromOptionObject,
+  decodeProductId,
+  getProductIdsFromLineItems,
+  getVariantIdFromLineItems,
+  getVariantsFromProducts,
+  findNonCachedVariants,
 };

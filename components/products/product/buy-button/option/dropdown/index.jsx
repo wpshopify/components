@@ -100,7 +100,6 @@ function ProductOptionDropdown({ availableVariants, selectedOptions, missingSele
             <ProductVariantsDropdown
               dropdownElement={productOptionState.dropdownElement}
               isDropdownOpen={productOptionState.isDropdownOpen}
-              isOptionSelected={productOptionState.isOptionSelected}
               option={productOptionState.option}
               availableVariants={availableVariants}
               selectedOptions={selectedOptions}

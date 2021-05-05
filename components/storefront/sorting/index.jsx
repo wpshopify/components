@@ -17,7 +17,7 @@ function hasReverse(select) {
 }
 
 function StorefrontSorting() {
-  const [storefrontState] = useContext(StorefrontContext);
+  const [storefrontState, storefrontDispatch] = useContext(StorefrontContext);
   const [itemsState, itemsDispatch] = useContext(ItemsContext);
 
   const [sortValue, setSortValue] = useState(() => storefrontState.payloadSettings.sortBy);
@@ -47,6 +47,11 @@ function StorefrontSorting() {
     itemsDispatch({
       type: 'MERGE_QUERY_PARAMS',
       payload: updateFetchParams(event),
+    });
+
+    itemsDispatch({
+      type: 'SET_IS_FETCHING_NEW',
+      payload: true,
     });
   }
 

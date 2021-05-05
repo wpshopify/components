@@ -4,8 +4,11 @@ import { ProductContext } from '../_state/context';
 import { ItemsContext } from '../../../items/_state/context';
 import { usePortal } from '../../../../common/hooks';
 import { findPortalElement, FilterHook } from '../../../../common/utils';
-import { Notice } from '../../../notices';
 import size from 'lodash/size';
+
+const Notice = wp.element.lazy(() =>
+  import(/* webpackChunkName: 'Notice-public' */ '../../../notice')
+);
 
 const ProductBuyButtonWrapper = wp.element.lazy(() =>
   import(/* webpackChunkName: 'ProductBuyButtonWrapper-public' */ './wrapper')
@@ -53,24 +56,26 @@ function ProductBuyButton() {
   return usePortal(
     <div css={buyButtonWrapperCSS} className='wps-component-products-buy-button'>
       <FilterHook name='before.product.buyButton' hasHTML={true} args={[productState]} />
-
-      {productState.payload.availableForSale ? (
-        <Suspense fallback='Loading buy button ...'>
+      <Suspense fallback={false}>
+        {productState.payload.availableForSale ? (
           <ProductBuyButtonWrapper
             productState={productState}
             productDispatch={productDispatch}
             itemsState={itemsState}
           />
-        </Suspense>
-      ) : (
-        <FilterHook name='products.buyButton.unavailable.html' hasHTML={true} args={[productState]}>
-          <Notice status='warning' isDismissible={false}>
-            <FilterHook name='notice.unavailable.text'>
-              {wp.i18n.__('Out of stock', 'wpshopify')}
-            </FilterHook>
-          </Notice>
-        </FilterHook>
-      )}
+        ) : (
+          <FilterHook
+            name='products.buyButton.unavailable.html'
+            hasHTML={true}
+            args={[productState]}>
+            <Notice status='warning' isDismissible={false}>
+              <FilterHook name='notice.unavailable.text'>
+                {wp.i18n.__('Out of stock', 'wpshopify')}
+              </FilterHook>
+            </Notice>
+          </FilterHook>
+        )}
+      </Suspense>
 
       <FilterHook name='after.product.buyButton' hasHTML={true} args={[productState]} />
     </div>,

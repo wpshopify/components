@@ -18,7 +18,10 @@ function Storefront() {
           <StorefrontSelections dropzone={itemsState.payloadSettings.dropzoneSelections} />
         )}
         {itemsState.payloadSettings.dropzoneSorting && <StorefrontSorting />}
-        <StorefrontOptions payloadSettings={itemsState.payloadSettings} />
+        <StorefrontOptions
+          payloadSettings={itemsState.payloadSettings}
+          itemsDispatch={itemsDispatch}
+        />
         <StorefrontItems
           noResultsText={itemsState.noResultsText}
           isLoading={itemsState.isLoading}

@@ -5,7 +5,8 @@ import { ItemsContext } from '../../../items/_state/context';
 import { usePortal } from '../../../../common/hooks';
 import { addCustomSizingToImageUrl } from '../../../../common/images';
 import { findPortalElement } from '../../../../common/utils';
-import { Link } from '../../../link';
+
+const Link = wp.element.lazy(() => import(/* webpackChunkName: 'Link-public' */ '../../../link'));
 
 const { useContext, useState, useEffect } = wp.element;
 

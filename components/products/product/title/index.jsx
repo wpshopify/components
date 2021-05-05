@@ -1,16 +1,15 @@
+/** @jsx jsx */
+import { jsx, css } from '@emotion/react';
 import { ProductContext } from '../_state/context';
 import { ItemsContext } from '../../../items/_state/context';
 import { usePortal } from '../../../../common/hooks';
 import { findPortalElement, FilterHook } from '../../../../common/utils';
-import { Link } from '../../../link';
 import { hasLink } from '../../../../common/settings';
 
-/** @jsx jsx */
-import { jsx, css } from '@emotion/react';
-
-const { useContext } = wp.element;
+const Link = wp.element.lazy(() => import(/* webpackChunkName: 'Link-public' */ '../../../link'));
 
 function ProductTitle() {
+  const { useContext } = wp.element;
   const [productState] = useContext(ProductContext);
   const [itemsState] = useContext(ItemsContext);
 

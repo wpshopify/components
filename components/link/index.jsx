@@ -40,4 +40,4 @@ function Link({
   return renderLink();
 }
 
-export { Link };
+export default Link;
