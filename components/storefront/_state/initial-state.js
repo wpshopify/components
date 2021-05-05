@@ -10,6 +10,7 @@ function StorefrontInitialState({ element, payloadSettings }) {
     selectedAvailableForSale: null,
     hasResults: false,
     isLoading: false,
+    hasSelections: false,
   };
 }
 

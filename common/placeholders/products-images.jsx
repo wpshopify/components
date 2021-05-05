@@ -24,11 +24,11 @@ function ProductPlaceholder() {
     border: none;
     min-height: 20px;
     width: 100%;
-    max-width: 300px;
+    max-width: 250px;
   `;
 
   const image = css`
-    height: 200px;
+    height: 150px;
   `;
 
   return <div css={[loader, image]}></div>;

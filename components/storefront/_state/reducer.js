@@ -6,6 +6,10 @@ function StorefrontReducer(state, action) {
       return {
         ...state,
         selections: update(state.selections, { $set: {} }),
+        selectedVendors: update(state.selectedVendors, { $set: [] }),
+        selectedTags: update(state.selectedTags, { $set: [] }),
+        selectedTypes: update(state.selectedTypes, { $set: [] }),
+        hasSelections: update(state.hasSelections, { $set: false }),
       };
     }
 
@@ -62,6 +66,14 @@ function StorefrontReducer(state, action) {
       return {
         ...state,
         selectedVendors: update(state.selectedVendors, { $set: action.payload }),
+      };
+    }
+
+    // Is called dynamically
+    case 'SET_HAS_SELECTIONS': {
+      return {
+        ...state,
+        hasSelections: update(state.hasSelections, { $set: action.payload }),
       };
     }
 

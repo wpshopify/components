@@ -1,10 +1,25 @@
 import { ItemsContext } from '../items/_state/context';
 import { StorefrontProvider } from './_state/provider';
-import { StorefrontSelections } from './selections';
-import { StorefrontOptions } from './options';
-import { StorefrontSorting } from './sorting';
-import StorefrontWrapper from './wrapper';
-import StorefrontItems from './items';
+
+const StorefrontSelections = wp.element.lazy(() =>
+  import(/* webpackChunkName: 'StorefrontSelections-public' */ './selections')
+);
+
+const StorefrontOptions = wp.element.lazy(() =>
+  import(/* webpackChunkName: 'StorefrontOptions-public' */ './options')
+);
+
+const StorefrontSorting = wp.element.lazy(() =>
+  import(/* webpackChunkName: 'StorefrontSorting-public' */ './sorting')
+);
+
+const StorefrontWrapper = wp.element.lazy(() =>
+  import(/* webpackChunkName: 'StorefrontWrapper-public' */ './wrapper')
+);
+
+const StorefrontItems = wp.element.lazy(() =>
+  import(/* webpackChunkName: 'StorefrontItems-public' */ './items')
+);
 
 const { useContext } = wp.element;
 

@@ -13,4 +13,4 @@ function StorefrontSelections({ dropzone }) {
   );
 }
 
-export { StorefrontSelections };
+export default StorefrontSelections;

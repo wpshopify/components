@@ -42,10 +42,22 @@ function Item({ children, limit = false, infiniteScroll = false }) {
       itemsState.beforeLoading();
     }
 
+    if (isFirstRender.current) {
+      console.log('itemsState.queryParams FIRST RENDER');
+
+      return;
+    }
+
+    console.log('itemsState.queryParams HAS CHANGED', itemsState.queryParams);
+
+    itemsDispatch({ type: 'SET_IS_FETCHING_NEW', payload: true });
+
     wp.hooks.doAction('before.payload.update', itemsState);
   }, [itemsState.queryParams]);
 
   useEffect(() => {
+    console.log('BOOM: new payload ', itemsState.payload);
+
     wp.hooks.doAction('after.payload.update', itemsState);
   }, [itemsState.payload]);
 

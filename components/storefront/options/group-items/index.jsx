@@ -1,4 +1,4 @@
-import { StorefrontFilterOptionsGroupItem } from '../group-item';
+import StorefrontFilterOptionsGroupItem from '../group-item';
 
 function StorefrontFilterOptionsGroupItems({
   filterOptions,
@@ -6,15 +6,19 @@ function StorefrontFilterOptionsGroupItems({
   displayStyle,
   onSelectionChange,
 }) {
-  return filterOptions.map((item) => (
-    <StorefrontFilterOptionsGroupItem
-      key={item}
-      itemValue={item}
-      itemType={groupType}
-      displayStyle={displayStyle}
-      onSelectionChange={onSelectionChange}
-    />
-  ));
+  return (
+    <ul className={'wps-' + groupType}>
+      {filterOptions.map((item) => (
+        <StorefrontFilterOptionsGroupItem
+          key={item}
+          itemValue={item}
+          itemType={groupType}
+          displayStyle={displayStyle}
+          onSelectionChange={onSelectionChange}
+        />
+      ))}
+    </ul>
+  );
 }
 
 export default wp.element.memo(StorefrontFilterOptionsGroupItems);

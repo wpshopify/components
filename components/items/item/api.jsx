@@ -187,11 +187,13 @@ function useGetItemsQuery(itemsState, itemsDispatch, isMounted) {
   return useQuery(
     'items::new',
     () => {
+      console.log('items::new');
       return fetchNewItems(itemsState);
     },
     {
       enabled: itemsState.isFetchingNew,
       onError: (error) => {
+        console.log('error', error);
         if (isMounted.current) {
           itemsDispatch({
             type: 'UPDATE_NOTICES',
@@ -204,16 +206,26 @@ function useGetItemsQuery(itemsState, itemsDispatch, isMounted) {
             itemsDispatch({ type: 'SET_IS_BOOTSTRAPPING', payload: false });
           }
         }
+
+        itemsDispatch({
+          type: 'SET_IS_FETCHING_NEW',
+          payload: false,
+        });
       },
       onSuccess: (newItems) => {
+        console.log('onSuccess 1');
+
         if (isMounted.current) {
+          console.log('onSuccess 2');
           itemsDispatch({ type: 'SET_IS_LOADING', payload: false });
 
           if (itemsState.isBootstrapping) {
+            console.log('onSuccess 3');
             itemsDispatch({ type: 'SET_IS_BOOTSTRAPPING', payload: false });
           }
 
           if (!newItems || !newItems.length) {
+            console.log('onSuccess 4');
             itemsDispatch({
               type: 'UPDATE_TOTAL_SHOWN',
               payload: 0,
@@ -227,6 +239,7 @@ function useGetItemsQuery(itemsState, itemsDispatch, isMounted) {
               },
             });
           } else {
+            console.log('onSuccess 5');
             itemsDispatch({
               type: 'UPDATE_TOTAL_SHOWN',
               payload: newItems.length,
@@ -245,6 +258,11 @@ function useGetItemsQuery(itemsState, itemsDispatch, isMounted) {
             }
           }
         }
+        console.log('onSuccess 6');
+        itemsDispatch({
+          type: 'SET_IS_FETCHING_NEW',
+          payload: false,
+        });
       },
       ...queryOptionsNoRefetch,
     }

@@ -1,8 +1,8 @@
 function StorefrontOptionsInitialState() {
-   return {
-      isBootstrapping: true,
-      filterOptions: [] // represents the all the available storefront and their values
-   }
+  return {
+    isBootstrapping: true,
+    filterOptions: [],
+  };
 }
 
-export { StorefrontOptionsInitialState }
+export { StorefrontOptionsInitialState };

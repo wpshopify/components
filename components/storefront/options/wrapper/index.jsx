@@ -1,51 +1,21 @@
 import to from 'await-to-js';
-import assign from 'lodash/assign';
-import mapValues from 'lodash/mapValues';
-import map from 'lodash/map';
-import { usePortal } from '../../../../common/hooks';
-
 import TypesHeading from '../heading-types';
 import VendorsHeading from '../heading-vendors';
 import TagsHeading from '../heading-tags';
+import StorefrontFilterOptionsGroup from '../group';
+import StorefrontFilterOptionsHeading from '../heading';
+import { usePortal } from '../../../../common/hooks';
 import { getFilterData } from '/Users/andrew/www/devil/devilbox-new/data/www/wpshopify-api';
-import { StorefrontFilterOptionsGroup } from '../group';
-import { StorefrontFilterOptionsHeading } from '../heading';
+import {
+  sortAndCleanValues,
+  lowercaseFilterOptions,
+  formatFilterOptions,
+  getDataFromResponse,
+} from '/Users/andrew/www/devil/devilbox-new/data/www/wpshopify-utils';
 import { StorefrontOptionsContext } from '../_state/context';
 import { ItemsContext } from '../../../items/_state/context';
 
 const { useEffect, useContext } = wp.element;
-
-function combineFilterOptions(accumulator, currentValue) {
-  return assign(accumulator, currentValue);
-}
-
-function formatFilterOptions(data) {
-  return data.reduce(combineFilterOptions);
-}
-
-function getDataFromResponse(response) {
-  return response.map((item) => {
-    return item.data;
-  });
-}
-
-function lowercaseFilterOptions(allFilteredData) {
-  return mapValues(allFilteredData, (value) => {
-    return map(value, (val) => val.toLowerCase());
-  });
-}
-
-function sortAndCleanValues(values) {
-  if (!values) {
-    return;
-  }
-
-  return values
-    .sort((a, b) => a.localeCompare(b))
-    .filter(function (e) {
-      return e === 0 || e;
-    });
-}
 
 function StorefrontOptionsWrapper({ payloadSettings, onSelectionChange }) {
   const [storefrontOptionsState, storefrontOptionsDispatch] = useContext(StorefrontOptionsContext);

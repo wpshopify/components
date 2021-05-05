@@ -63,10 +63,6 @@ function lowercaseObjKeys(obj) {
   return mapKeys(obj, (value, key) => key.toLowerCase());
 }
 
-function capitalizeFirstLetter(string) {
-  return string.toLowerCase().replace(/^\w/, (c) => c.toUpperCase());
-}
-
 function itemWidthClass(perRow) {
   if (perRow > 12) {
     perRow = 12;
@@ -586,7 +582,6 @@ export {
   createObj,
   removeFrom,
   lowercaseObjKeys,
-  capitalizeFirstLetter,
   itemWidthClass,
   findPortalElement,
   getHashFromQueryParams,

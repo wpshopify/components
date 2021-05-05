@@ -1,11 +1,11 @@
-import { usePortal } from '../../../../common/hooks'
-import { FilterHook } from '../../../../common/utils'
-import { StorefrontContext } from '../../_state/context'
+import { usePortal } from '../../../../common/hooks';
+import { FilterHook } from '../../../../common/utils';
+import { StorefrontContext } from '../../_state/context';
 
-const { useContext } = wp.element
+const { useContext } = wp.element;
 
 function StorefrontFilterOptionsHeading() {
-  const [storefrontState] = useContext(StorefrontContext)
+  const [storefrontState] = useContext(StorefrontContext);
 
   return usePortal(
     <h2 className='wps-storefront-heading'>
@@ -14,7 +14,7 @@ function StorefrontFilterOptionsHeading() {
       </FilterHook>
     </h2>,
     document.querySelector(storefrontState.payloadSettings.dropzoneHeading)
-  )
+  );
 }
 
-export { StorefrontFilterOptionsHeading }
+export default StorefrontFilterOptionsHeading;

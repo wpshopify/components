@@ -2,14 +2,7 @@
 import { jsx, css } from '@emotion/react';
 import { FilterHook } from '../../../common/utils';
 
-function StorefrontFilter({ heading, children }) {
-  const { useState } = wp.element;
-  const [drawerToggle, setDrawerToggle] = useState(() => false);
-
-  function toggleDrawer() {
-    setDrawerToggle(!drawerToggle);
-  }
-
+function StorefrontFilter({ heading, children, isOpen, setIsOpen }) {
   const filterHeadingCSS = css`
     font-size: 18px;
     background: blue;
@@ -47,7 +40,7 @@ function StorefrontFilter({ heading, children }) {
       width: 3px;
       height: 100%;
       margin-left: -1px;
-      transform: ${drawerToggle ? 'rotate(90deg)' : 'rotate(180deg)'};
+      transform: ${isOpen ? 'rotate(90deg)' : 'rotate(180deg)'};
     }
 
     &:after {
@@ -64,16 +57,16 @@ function StorefrontFilter({ heading, children }) {
   `;
 
   const drawerContentCSS = css`
-    max-height: ${drawerToggle ? '350px' : '0'};
-    overflow: ${drawerToggle ? 'scroll' : 'hidden'};
+    max-height: ${isOpen ? '350px' : '0'};
+    overflow: ${isOpen ? 'scroll' : 'hidden'};
   `;
 
   return (
-    <div className='wps-filter' css={FilterCSS} data-wps-drawer-toggle={drawerToggle}>
+    <div className='wps-filter' css={FilterCSS} data-wps-drawer-toggle={isOpen}>
       <h3
         className='wps-drawer-trigger wps-filter-heading'
         css={filterHeadingCSS}
-        onClick={toggleDrawer}>
+        onClick={() => setIsOpen()}>
         {heading}
         <span className='wps-drawer-icon' css={drawerIconCSS} />
       </h3>

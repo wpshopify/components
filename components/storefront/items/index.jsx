@@ -7,6 +7,10 @@ const Notice = wp.element.lazy(() =>
   import(/* webpackChunkName: 'Notice-public' */ '../../notice')
 );
 
+const Loader = wp.element.lazy(() =>
+  import(/* webpackChunkName: 'Loader-public' */ '../../loader')
+);
+
 function StorefrontItems({ noResultsText, payloadSettings, payload, queryParams, isLoading }) {
   const noticeCSS = css`
     && {
@@ -48,7 +52,7 @@ function StorefrontItems({ noResultsText, payloadSettings, payload, queryParams,
   const spinnerCSS = css`
     position: absolute;
     top: -45px;
-    left: 50px;
+    left: 0;
   `;
 
   const storefrontItemsWrapperCSS = css`
@@ -58,7 +62,11 @@ function StorefrontItems({ noResultsText, payloadSettings, payload, queryParams,
 
   return usePortal(
     <div css={storefrontItemsWrapperCSS}>
-      {isLoading && <div css={spinnerCSS}>Loading ...</div>}
+      {isLoading && (
+        <div css={spinnerCSS}>
+          <Loader color='#000' />
+        </div>
+      )}
 
       {payload.length ? (
         <Products options={buildOptions()} />

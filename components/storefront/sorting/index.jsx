@@ -48,11 +48,6 @@ function StorefrontSorting() {
       type: 'MERGE_QUERY_PARAMS',
       payload: updateFetchParams(event),
     });
-
-    itemsDispatch({
-      type: 'SET_IS_FETCHING_NEW',
-      payload: true,
-    });
   }
 
   const sortingSelectorCSS = css`
@@ -131,4 +126,4 @@ function StorefrontSorting() {
   );
 }
 
-export { StorefrontSorting };
+export default StorefrontSorting;

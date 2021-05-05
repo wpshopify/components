@@ -2,9 +2,12 @@
 import { jsx, css } from '@emotion/react';
 import { StorefrontFilter } from '../../filter';
 import { StorefrontOptionsContext } from '../_state/context';
-import StorefrontFilterOptionsGroupItems from '../group-items';
 import { FilterHook } from '../../../../common/utils';
 import isEmpty from 'lodash/isEmpty';
+
+const StorefrontFilterOptionsGroupItems = wp.element.lazy(() =>
+  import(/* webpackChunkName: 'StorefrontFilterOptionsGroupItems-public' */ '../group-items')
+);
 
 const Notice = wp.element.lazy(() =>
   import(/* webpackChunkName: 'Notice-public' */ '../../../notice')
@@ -17,8 +20,13 @@ function StorefrontFilterOptionsGroup({
   filterOptions,
   onSelectionChange,
 }) {
-  const { useContext } = wp.element;
+  const { useContext, useState, Suspense } = wp.element;
   const [storefrontOptionsState] = useContext(StorefrontOptionsContext);
+  const [isOpen, setIsOpen] = useState(() => false);
+
+  function toggleDrawer() {
+    setIsOpen(!isOpen);
+  }
 
   const filterContentCSS = css`
     padding: 10px 0;
@@ -35,7 +43,7 @@ function StorefrontFilterOptionsGroup({
   `;
 
   return (
-    <StorefrontFilter heading={heading}>
+    <StorefrontFilter heading={heading} isOpen={isOpen} setIsOpen={toggleDrawer}>
       <div className='wps-filter-content' css={filterContentCSS}>
         {storefrontOptionsState.isBootstrapping ? (
           <FilterHook name='storefront.group.loading.text'>
@@ -53,18 +61,20 @@ function StorefrontFilterOptionsGroup({
             </FilterHook>
           </Notice>
         ) : (
-          <ul className={'wps-' + groupType}>
-            <StorefrontFilterOptionsGroupItems
-              onSelectionChange={onSelectionChange}
-              filterOptions={filterOptions}
-              displayStyle={displayStyle}
-              groupType={groupType}
-            />
-          </ul>
+          <Suspense fallback={'Loading ' + groupType + ' ...'}>
+            {isOpen && (
+              <StorefrontFilterOptionsGroupItems
+                onSelectionChange={onSelectionChange}
+                filterOptions={filterOptions}
+                displayStyle={displayStyle}
+                groupType={groupType}
+              />
+            )}
+          </Suspense>
         )}
       </div>
     </StorefrontFilter>
   );
 }
 
-export { StorefrontFilterOptionsGroup };
+export default StorefrontFilterOptionsGroup;

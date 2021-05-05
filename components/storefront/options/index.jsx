@@ -26,10 +26,21 @@ function StorefrontOptions({ payloadSettings, itemsDispatch }) {
         payload: newList,
       });
 
-      itemsDispatch({
-        type: 'SET_IS_FETCHING_NEW',
-        payload: true,
-      });
+      if (newList.length) {
+        console.log('SET_HAS_SELECTIONS true');
+        storefrontDispatch({
+          type: 'SET_HAS_SELECTIONS',
+          payload: true,
+        });
+      } else {
+        console.log('SET_HAS_SELECTIONS false');
+
+        storefrontDispatch({
+          type: 'SET_HAS_SELECTIONS',
+          payload: false,
+        });
+      }
+      console.log('.........newList', newList);
     }
   }
 
@@ -43,4 +54,4 @@ function StorefrontOptions({ payloadSettings, itemsDispatch }) {
   );
 }
 
-export { StorefrontOptions };
+export default StorefrontOptions;

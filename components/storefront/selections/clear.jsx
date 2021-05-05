@@ -13,9 +13,6 @@ function StorefrontSelectionsClear() {
   function clearAllSelections() {
     itemsDispatch({ type: 'SET_IS_LOADING', payload: true });
     storefrontDispatch({ type: 'CLEAR_SELECTIONS' });
-    storefrontDispatch({ type: 'CLEAR_SELECTED_VENDORS' });
-    storefrontDispatch({ type: 'CLEAR_SELECTED_TAGS' });
-    storefrontDispatch({ type: 'CLEAR_SELECTED_TYPES' });
   }
 
   const clearAllCSS = css`
