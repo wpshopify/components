@@ -3,7 +3,7 @@ import { jsx, css } from '@emotion/react';
 import { StorefrontSelectionsClear } from './clear';
 import { StorefrontSelectionsTypes } from './types';
 
-function StorefrontSelectionsWrapper() {
+function StorefrontSelectionsWrapper({ selections }) {
   const StorefrontSelectionsWrapperCSS = css`
     display: flex;
     flex-direction: column;
@@ -12,7 +12,7 @@ function StorefrontSelectionsWrapper() {
 
   return (
     <div className='wps-filter-selections' css={StorefrontSelectionsWrapperCSS}>
-      <StorefrontSelectionsTypes />
+      <StorefrontSelectionsTypes selections={selections} />
       <StorefrontSelectionsClear />
     </div>
   );

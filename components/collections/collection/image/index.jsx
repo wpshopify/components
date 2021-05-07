@@ -1,7 +1,6 @@
 /** @jsx jsx */
 import { jsx, css } from '@emotion/react';
 import { CollectionContext } from '../_state/context';
-import { ItemsContext } from '../../../items/_state/context';
 import { usePortal } from '../../../../common/hooks';
 import { addCustomSizingToImageUrl } from '../../../../common/images';
 import { findPortalElement } from '../../../../common/utils';
@@ -10,9 +9,9 @@ const Link = wp.element.lazy(() => import(/* webpackChunkName: 'Link-public' */ 
 
 const { useContext, useState, useEffect } = wp.element;
 
-function CollectionImage() {
+function CollectionImage({ payloadSettings }) {
   const [collectionState] = useContext(CollectionContext);
-  const [itemsState] = useContext(ItemsContext);
+
   const [imageSrc, setImageSrc] = useState(() =>
     collectionState.payload.image ? collectionState.payload.image.src : false
   );
@@ -50,8 +49,8 @@ function CollectionImage() {
         <Link
           type='collections'
           payload={collectionState.payload}
-          linkTo={itemsState.payloadSettings.linkTo}
-          target={itemsState.payloadSettings.linkTarget}>
+          linkTo={payloadSettings.linkTo}
+          target={payloadSettings.linkTarget}>
           <img
             itemProp='image'
             src={imageSrc}
@@ -63,7 +62,7 @@ function CollectionImage() {
         </Link>
       </div>
     ) : null,
-    findPortalElement(itemsState.payloadSettings.dropzoneCollectionImage)
+    findPortalElement(payloadSettings.dropzoneCollectionImage)
   );
 }
 

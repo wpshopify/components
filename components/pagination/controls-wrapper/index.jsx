@@ -35,8 +35,6 @@ function PaginationControlsWrapper({ itemsState, itemsDispatch }) {
 
   function onNextPage() {
     if (!itemsState.isLoading) {
-      console.log('fetching next items');
-
       paginationDispatch({ type: 'SET_CONTROLS_TOUCHED', payload: true });
       itemsDispatch({
         type: 'SET_IS_FETCHING_NEXT',

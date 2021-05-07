@@ -4,7 +4,7 @@ import { FilterHook } from '../../../common/utils';
 
 function StorefrontFilter({ heading, children, isOpen, setIsOpen }) {
   const filterHeadingCSS = css`
-    font-size: 18px;
+    font-size: 16px;
     background: blue;
     transition: all 0.3s ease;
     background: #dfdfdf;

@@ -7,8 +7,6 @@ import isString from 'lodash/isString';
 import { objectIsEmpty } from '../utils';
 
 function lowercaseCurrentList(currentList) {
-  console.log('currentList', currentList);
-
   if (!currentList) {
     return [];
   }

@@ -13,13 +13,14 @@ import {
   getDataFromResponse,
 } from '/Users/andrew/www/devil/devilbox-new/data/www/wpshopify-utils';
 import { StorefrontOptionsContext } from '../_state/context';
-import { ItemsContext } from '../../../items/_state/context';
+import { useItemsDispatch } from '../../../items/_state/hooks';
 
 const { useEffect, useContext } = wp.element;
 
-function StorefrontOptionsWrapper({ payloadSettings, onSelectionChange }) {
+function StorefrontOptionsWrapper({ payloadSettings, onSelectionChange, dropzoneHeading }) {
   const [storefrontOptionsState, storefrontOptionsDispatch] = useContext(StorefrontOptionsContext);
-  const [, itemsDispatch] = useContext(ItemsContext);
+
+  const itemsDispatch = useItemsDispatch();
 
   async function getAllFilterOptions() {
     var [respError, respData] = await to(getFilterData());
@@ -60,7 +61,11 @@ function StorefrontOptionsWrapper({ payloadSettings, onSelectionChange }) {
 
   return usePortal(
     <>
-      {payloadSettings.showOptionsHeading ? <StorefrontFilterOptionsHeading /> : ''}
+      {payloadSettings.showOptionsHeading ? (
+        <StorefrontFilterOptionsHeading dropzone={dropzoneHeading} />
+      ) : (
+        ''
+      )}
       <aside className='wps-storefront'>
         {payloadSettings.showTags ? (
           <StorefrontFilterOptionsGroup

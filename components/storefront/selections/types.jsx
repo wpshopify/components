@@ -1,15 +1,15 @@
 /** @jsx jsx */
 import { jsx, css } from '@emotion/react';
 import { StorefrontSelectionsValues } from './values';
-import { StorefrontContext } from '../_state/context';
 import { getSelectionTypes } from '../../../common/selections';
 import { FilterHook } from '../../../common/utils';
+import { useStorefrontState } from '../_state/hooks';
 import isEmpty from 'lodash/isEmpty';
 
 const { useContext } = wp.element;
 
 function StorefrontSelectionsType({ selectionType }) {
-  const [storefrontState] = useContext(StorefrontContext);
+  const storefrontState = useStorefrontState();
 
   const selectionTypeHeadingCSS = css`
     min-width: 75px;
@@ -18,6 +18,7 @@ function StorefrontSelectionsType({ selectionType }) {
     text-transform: capitalize;
     display: flex;
     align-items: center;
+    font-size: 15px;
   `;
 
   const filterSelectionTypeCSS = css`
@@ -46,10 +47,8 @@ function StorefrontSelectionsType({ selectionType }) {
   ) : null;
 }
 
-function StorefrontSelectionsTypes() {
-  const [storefrontState] = useContext(StorefrontContext);
-
-  const selectionTypes = getSelectionTypes(storefrontState.selections);
+function StorefrontSelectionsTypes({ selections }) {
+  const selectionTypes = getSelectionTypes(selections);
 
   return selectionTypes.map((selectionType, index) => (
     <StorefrontSelectionsType key={index} selectionType={selectionType} />

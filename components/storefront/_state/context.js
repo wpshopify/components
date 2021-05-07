@@ -1,3 +1,4 @@
-const StorefrontContext = wp.element.createContext()
+const StorefrontStateContext = wp.element.createContext();
+const StorefrontDispatchContext = wp.element.createContext();
 
-export { StorefrontContext }
+export { StorefrontStateContext, StorefrontDispatchContext };

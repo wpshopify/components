@@ -1,10 +1,10 @@
 /** @jsx jsx */
 import { jsx, css } from '@emotion/react';
-import { ProductContext } from '../../../_state/context';
+import { useProductDispatch } from '../../../_state/hooks';
 
 function ProductQuantityInput({ minQuantity, maxQuantity, addedToCart }) {
-  const { useEffect, useContext, useState } = wp.element;
-  const [, productDispatch] = useContext(ProductContext);
+  const { useEffect, useState } = wp.element;
+  const productDispatch = useProductDispatch();
   const [quantityValue, setQuantityValue] = useState(() => minQuantity);
   const customStep = wp.hooks.applyFilters('buyButton.quantityStep', false);
 

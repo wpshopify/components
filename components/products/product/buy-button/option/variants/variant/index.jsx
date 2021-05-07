@@ -1,5 +1,6 @@
 import { ProductOptionContext } from '../../_state/context';
-import { ProductContext } from '../../../../_state/context';
+import { useProductDispatch } from '../../../../_state/hooks';
+
 import {
   createObj,
   isPairMatch,
@@ -65,7 +66,7 @@ function ProductVariant({
 }) {
   const { useContext } = wp.element;
   const [productOptionState, productOptionDispatch] = useContext(ProductOptionContext);
-  const [, productDispatch] = useContext(ProductContext);
+  const productDispatch = useProductDispatch();
   const selectedVariant = createObj(variant.name, variant.value);
 
   const isAvailableToSelect = isVariantAvailableToSelect(

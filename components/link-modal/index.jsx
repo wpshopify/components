@@ -1,10 +1,9 @@
-import { ProductContext } from '../products/product/_state/context';
-
 /** @jsx jsx */
 import { jsx, css } from '@emotion/react';
+import { useProductDispatch } from '../products/product/_state/hooks';
 
 function LinkModal({ children }) {
-  const [, productDispatch] = wp.element.useContext(ProductContext);
+  const productDispatch = useProductDispatch();
   const LinkModalCSS = css`
     text-decoration: none;
     display: block;

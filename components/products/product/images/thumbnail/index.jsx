@@ -4,7 +4,7 @@ import ProductImage from '../image';
 import { ProductGalleryContext } from '../gallery/_state/context';
 import { FilterHook } from '../../../../../common/utils';
 
-function ProductThumbnailImage({ image, payloadSettings }) {
+function ProductThumbnailImage({ image, payload, payloadSettings }) {
   const { useEffect, useContext, useState } = wp.element;
   const [galleryState, galleryDispatch] = useContext(ProductGalleryContext);
   const [isActive, setIsActive] = useState(() => false);
@@ -45,7 +45,12 @@ function ProductThumbnailImage({ image, payloadSettings }) {
       className='wps-component wps-component-products-images-thumbnail'
       onClick={onClick}
       data-wps-is-active={isActive}>
-      <ProductImage payloadSettings={payloadSettings} isFeatured={false} image={image} />
+      <ProductImage
+        payloadSettings={payloadSettings}
+        isFeatured={false}
+        image={image}
+        payload={payload}
+      />
       <FilterHook
         name='after.product.thumbnail'
         hasHTML={true}

@@ -1,14 +1,17 @@
-import { StorefrontContext } from '../_state/context';
 import { StorefrontSelectionsWrapper } from './wrapper';
 import { objectIsEmpty } from '../../../common/utils';
 import { usePortal } from '../../../common/hooks';
-const { useContext } = wp.element;
+import { useStorefrontState } from '../_state/hooks';
 
 function StorefrontSelections({ dropzone }) {
-  const [storefrontState] = useContext(StorefrontContext);
+  const storefrontState = useStorefrontState();
 
   return usePortal(
-    !objectIsEmpty(storefrontState.selections) ? <StorefrontSelectionsWrapper /> : '',
+    !objectIsEmpty(storefrontState.selections) ? (
+      <StorefrontSelectionsWrapper selections={storefrontState.selections} />
+    ) : (
+      ''
+    ),
     document.querySelector(dropzone)
   );
 }

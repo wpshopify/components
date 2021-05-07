@@ -1,17 +1,20 @@
 import PaginationControlsWrapper from './controls-wrapper';
 import PaginationItems from './items';
 import { PaginationProvider } from './_state/provider';
-import { ItemsContext } from '../items/_state/context';
+import { useItemsState, useItemsDispatch } from '../items/_state/hooks';
 
 function Pagination({ children }) {
-  const { useContext } = wp.element;
-  const [itemsState, itemsDispatch] = useContext(ItemsContext);
+  const itemsState = useItemsState();
+  const itemsDispatch = useItemsDispatch();
 
   return (
     <PaginationProvider
       payloadSettings={itemsState.payloadSettings}
       hasMoreItems={itemsState.hasMoreItems}>
-      <PaginationItems payload={itemsState.payload} payloadSettings={itemsState.payloadSettings}>
+      <PaginationItems
+        payload={itemsState.payload}
+        payloadSettings={itemsState.payloadSettings}
+        componentId={itemsState.componentId}>
         {children}
       </PaginationItems>
       <PaginationControlsWrapper itemsState={itemsState} itemsDispatch={itemsDispatch} />

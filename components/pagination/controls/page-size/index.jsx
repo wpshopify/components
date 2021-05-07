@@ -1,18 +1,20 @@
+/** @jsx jsx */
+import { jsx, css } from '@emotion/react';
 import {
   graphQuery,
   findLastCursorId,
 } from '/Users/andrew/www/devil/devilbox-new/data/www/wpshopify-api';
 import { PaginationContext } from '../../_state/context';
-import { ItemsContext } from '../../../items/_state/context';
+import { useItemsDispatch } from '../../../items/_state/hooks';
 import { usePortal } from '../../../../common/hooks';
-/** @jsx jsx */
-import { jsx, css } from '@emotion/react';
 import to from 'await-to-js';
 const { useContext, useState } = wp.element;
 
 function PaginationPageSize({ isLoading, payloadSettings, queryParams, dataType }) {
   const [, paginationDispatch] = useContext(PaginationContext);
-  const [, itemsDispatch] = useContext(ItemsContext);
+
+  const itemsDispatch = useItemsDispatch();
+
   const [pageSize, setPageSize] = useState(() => defaultPageSize());
 
   function defaultPageSize() {
@@ -41,8 +43,6 @@ function PaginationPageSize({ isLoading, payloadSettings, queryParams, dataType 
   }
 
   async function onChange(event) {
-    console.log('onChange');
-
     setControlsTouched(true);
     setPageSize(event.target.value);
 

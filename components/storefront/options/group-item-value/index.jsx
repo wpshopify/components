@@ -56,12 +56,6 @@ function CheckboxItem({ isSelected, itemValue, itemType, onClick }) {
     height: 16px;
   `;
 
-  function onCheckboxClick(e) {
-    console.log('onCheckboxClick isSelected', isSelected);
-
-    onClick();
-  }
-
   return (
     <li
       data-wps-is-current={isSelected}
@@ -73,7 +67,7 @@ function CheckboxItem({ isSelected, itemValue, itemType, onClick }) {
       <input
         id={'input-' + itemValue}
         type='checkbox'
-        onChange={onCheckboxClick}
+        onChange={onClick}
         checked={isSelected ? 'checked' : ''}
         className='wps-input-value'
         css={checkboxCSS}

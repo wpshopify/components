@@ -1,22 +1,15 @@
-import { ItemsContext } from '../../../items/_state/context'
-import { CollectionContext } from '../_state/context'
-import { usePortal } from '../../../../common/hooks'
-import { findPortalElement } from '../../../../common/utils'
+import { usePortal } from '../../../../common/hooks';
+import { findPortalElement } from '../../../../common/utils';
 
-const { useContext } = wp.element
-
-function CollectionDescription() {
-  const [collectionState] = useContext(CollectionContext)
-  const [itemsState] = useContext(ItemsContext)
-
+function CollectionDescription({ dropzone, description }) {
   return usePortal(
     <div
       itemProp='description'
       className='wps-collections-description'
-      dangerouslySetInnerHTML={{ __html: collectionState.payload.descriptionHtml }}
+      dangerouslySetInnerHTML={{ __html: description }}
     />,
-    findPortalElement(itemsState.payloadSettings.dropzoneCollectionDescription)
-  )
+    findPortalElement(dropzone)
+  );
 }
 
-export { CollectionDescription }
+export { CollectionDescription };

@@ -1,4 +1,4 @@
-import { ProductContext } from '../../_state/context';
+import { useProductState } from '../../_state/hooks';
 import { ProductGalleryContext } from './_state/context';
 import ProductThumbnailImages from '../thumbnails';
 import { ProductFeaturedImage } from '../featured';
@@ -7,7 +7,7 @@ import { hasLink } from '../../../../../common/settings';
 
 function ProductGallery({ payloadSettings }) {
   const { useEffect, useContext, useRef } = wp.element;
-  const [productState] = useContext(ProductContext);
+  const productState = useProductState();
   const [, galleryDispatch] = useContext(ProductGalleryContext);
   const isFirstRender = useRef(true);
   const product = productState.payload;
@@ -54,18 +54,30 @@ function ProductGallery({ payloadSettings }) {
   return (
     <>
       {isFeaturedOnly() ? (
-        <ProductFeaturedImage payloadSettings={payloadSettings} />
+        <ProductFeaturedImage
+          selectedVariant={productState.selectedVariant}
+          payload={productState.payload}
+          payloadSettings={payloadSettings}
+        />
       ) : hasManyImages() ? (
         payloadSettings.showImagesCarousel && wpshopify.misc.isPro ? (
           <ProductCarouselImages payloadSettings={payloadSettings} images={product.images} />
         ) : (
           <>
-            <ProductFeaturedImage payloadSettings={payloadSettings} />
+            <ProductFeaturedImage
+              selectedVariant={productState.selectedVariant}
+              payload={productState.payload}
+              payloadSettings={payloadSettings}
+            />
             <ProductThumbnailImages product={product} payloadSettings={payloadSettings} />
           </>
         )
       ) : (
-        <ProductFeaturedImage payloadSettings={payloadSettings} />
+        <ProductFeaturedImage
+          selectedVariant={productState.selectedVariant}
+          payload={productState.payload}
+          payloadSettings={payloadSettings}
+        />
       )}
     </>
   );

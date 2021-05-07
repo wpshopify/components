@@ -4,26 +4,26 @@ import ProductQuantity from '../quantity';
 import ProductOptions from '../options';
 import ProductAddButton from '../add-button';
 
-function ProductBuyButtonWrapper({ itemsState, productState, productDispatch }) {
+function ProductBuyButtonWrapper({ payloadSettings, productState, productDispatch }) {
   const isDirectCheckout =
-    (itemsState.payloadSettings.directCheckout || wpshopify.settings.general.directCheckout) &&
+    (payloadSettings.directCheckout || wpshopify.settings.general.directCheckout) &&
     wpshopify.misc.isPro;
 
   function isHidingControls() {
-    if (itemsState.payloadSettings.linkTo === 'none') {
+    if (payloadSettings.linkTo === 'none') {
       return false;
     }
 
-    if (itemsState.payloadSettings.isSingular || isDirectCheckout) {
+    if (payloadSettings.isSingular || isDirectCheckout) {
       return false;
     }
 
     if (
-      itemsState.payloadSettings.linkTo === 'shopify' ||
-      itemsState.payloadSettings.linkTo === 'wordpress' ||
-      itemsState.payloadSettings.linkTo === 'modal'
+      payloadSettings.linkTo === 'shopify' ||
+      payloadSettings.linkTo === 'wordpress' ||
+      payloadSettings.linkTo === 'modal'
     ) {
-      if (itemsState.payloadSettings.linkWithBuyButton) {
+      if (payloadSettings.linkWithBuyButton) {
         return false;
       }
 
@@ -33,51 +33,54 @@ function ProductBuyButtonWrapper({ itemsState, productState, productDispatch }) 
     return false;
   }
 
+  var buttonText = getButtonText(
+    payloadSettings,
+    isDirectCheckout,
+    payloadSettings.linkWithBuyButton
+  );
+
   return (
     <>
-      {itemsState.payloadSettings.hideQuantity === false && !isHidingControls() && (
+      {payloadSettings.hideQuantity === false && !isHidingControls() && (
         <ProductQuantity
-          excludes={itemsState.payloadSettings.excludes}
+          excludes={payloadSettings.excludes}
           addedToCart={productState.addedToCart}
-          minQuantity={itemsState.payloadSettings.minQuantity}
-          maxQuantity={itemsState.payloadSettings.maxQuantity}
-          showLabel={itemsState.payloadSettings.showQuantityLabel}
-          labelText={itemsState.payloadSettings.quantityLabelText}
+          minQuantity={payloadSettings.minQuantity}
+          maxQuantity={payloadSettings.maxQuantity}
+          showLabel={payloadSettings.showQuantityLabel}
+          labelText={payloadSettings.quantityLabelText}
         />
       )}
       {productState.hasManyVariants && !isHidingControls() && (
         <ProductOptions
+          payloadSettings={payloadSettings}
           missingSelections={productState.missingSelections}
-          variantStyle={itemsState.payloadSettings.variantStyle}
+          variantStyle={payloadSettings.variantStyle}
           selectedOptions={productState.selectedOptions}
           availableVariants={productState.availableVariants}
           availableOptions={onlyAvailableOptionsFromVariants(productState.payload.variants)}
           variants={productState.payload.variants}
-          showPriceUnderVariantButton={itemsState.payloadSettings.showPriceUnderVariantButton}
+          showPriceUnderVariantButton={payloadSettings.showPriceUnderVariantButton}
           productDispatch={productDispatch}
         />
       )}
 
       <ProductAddButton
-        payloadSettings={itemsState.payloadSettings}
+        payloadSettings={payloadSettings}
         addedToCart={productState.addedToCart}
         isTouched={productState.isTouched}
         hasLink={productState.hasLink}
         allOptionsSelected={productState.allOptionsSelected}
         payload={productState.payload}
-        linkTarget={itemsState.payloadSettings.linkTarget}
-        linkTo={itemsState.payloadSettings.linkTo}
-        linkWithBuyButton={itemsState.payloadSettings.linkWithBuyButton}
-        addToCartButtonColor={itemsState.payloadSettings.addToCartButtonColor}
-        addToCartButtonTextColor={itemsState.payloadSettings.addToCartButtonTextColor}
+        linkTarget={payloadSettings.linkTarget}
+        linkTo={payloadSettings.linkTo}
+        linkWithBuyButton={payloadSettings.linkWithBuyButton}
+        addToCartButtonColor={payloadSettings.addToCartButtonColor}
+        addToCartButtonTextColor={payloadSettings.addToCartButtonTextColor}
         isDirectCheckout={isDirectCheckout}
         hasManyVariants={productState.hasManyVariants}
         productDispatch={productDispatch}
-        buttonText={getButtonText(
-          itemsState.payloadSettings,
-          isDirectCheckout,
-          itemsState.payloadSettings.linkWithBuyButton
-        )}
+        buttonText={buttonText}
         selectedVariant={productState.selectedVariant}
         quantity={productState.quantity}
         selectedOptions={productState.selectedOptions}

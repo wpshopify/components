@@ -3,7 +3,6 @@ import { jsx, css } from '@emotion/react';
 import { useAnime, pulse } from '../../../../../../common/animations';
 import { FilterHook } from '../../../../../../common/utils';
 import { buttonCSS, IconCSS } from '../../../../../../common/css';
-import { ItemsContext } from '../../../../../items/_state/context';
 import { ProductOptionContext } from '../_state/context';
 
 function TriggerIcon() {
@@ -19,7 +18,6 @@ function TriggerIcon() {
 
 function ProductOptionTrigger({ missingSelections }) {
   const { useEffect, useContext, useRef } = wp.element;
-  const [itemsState] = useContext(ItemsContext);
   const [productOptionState, productOptionDispatch] = useContext(ProductOptionContext);
 
   const dropdownTrigger = useRef();
@@ -71,28 +69,28 @@ function ProductOptionTrigger({ missingSelections }) {
 
   const variantDropdownCSS = css`
     && {
-      background-color: ${itemsState.payloadSettings.variantButtonColor};
-      color: ${itemsState.payloadSettings.variantDropdownTextColor};
-      font-family: ${itemsState.variantDropdownTypeFontFamily
-        ? itemsState.variantDropdownTypeFontFamily
+      background-color: ${productOptionState.payloadSettings.variantButtonColor};
+      color: ${productOptionState.payloadSettings.variantDropdownTextColor};
+      font-family: ${productOptionState.payloadSettings.variantDropdownTypeFontFamily
+        ? productOptionState.payloadSettings.variantDropdownTypeFontFamily
         : 'inherit'};
-      font-weight: ${itemsState.variantDropdownTypeFontWeight
-        ? itemsState.variantDropdownTypeFontWeight
+      font-weight: ${productOptionState.payloadSettings.variantDropdownTypeFontWeight
+        ? productOptionState.payloadSettings.variantDropdownTypeFontWeight
         : 'initial'};
-      font-size: ${itemsState.variantDropdownTypeFontSize
-        ? itemsState.variantDropdownTypeFontSize
+      font-size: ${productOptionState.payloadSettings.variantDropdownTypeFontSize
+        ? productOptionState.payloadSettings.variantDropdownTypeFontSize
         : 'initial'};
-      letter-spacing: ${itemsState.variantDropdownTypeLetterSpacing
-        ? itemsState.variantDropdownTypeLetterSpacing
+      letter-spacing: ${productOptionState.payloadSettings.variantDropdownTypeLetterSpacing
+        ? productOptionState.payloadSettings.variantDropdownTypeLetterSpacing
         : 'initial'};
-      line-height: ${itemsState.variantDropdownTypeLineHeight
-        ? itemsState.variantDropdownTypeLineHeight
+      line-height: ${productOptionState.payloadSettings.variantDropdownTypeLineHeight
+        ? productOptionState.payloadSettings.variantDropdownTypeLineHeight
         : 'initial'};
-      text-decoration: ${itemsState.variantDropdownTypeTextDecoration
-        ? itemsState.variantDropdownTypeTextDecoration
+      text-decoration: ${productOptionState.payloadSettings.variantDropdownTypeTextDecoration
+        ? productOptionState.payloadSettings.variantDropdownTypeTextDecoration
         : 'initial'};
-      text-transform: ${itemsState.variantDropdownTypeTextTransform
-        ? itemsState.variantDropdownTypeTextTransform
+      text-transform: ${productOptionState.payloadSettings.variantDropdownTypeTextTransform
+        ? productOptionState.payloadSettings.variantDropdownTypeTextTransform
         : 'initial'};
     }
   `;

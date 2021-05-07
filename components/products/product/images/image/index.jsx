@@ -1,4 +1,3 @@
-import { ProductContext } from '../../_state/context';
 import { ProductGalleryContext } from '../gallery/_state/context';
 import { doFeaturedSizing, doThumbnailSizing } from '../../../../../common/images';
 import Img from './img';
@@ -9,10 +8,9 @@ const Link = wp.element.lazy(() =>
   import(/* webpackChunkName: 'Link-public' */ '../../../../link')
 );
 
-function ProductImage({ image, isFeatured, payloadSettings, placeholder = false }) {
+function ProductImage({ image, isFeatured, payloadSettings, payload, placeholder = false }) {
   const { useEffect, useContext, useRef, useState } = wp.element;
   const imageRef = useRef();
-  const [productState] = useContext(ProductContext);
   const [galleryState, galleryDispatch] = useContext(ProductGalleryContext);
   const [productImageSrc, setProductImageSrc] = useState(() => applyImageSizing());
 
@@ -52,7 +50,7 @@ function ProductImage({ image, isFeatured, payloadSettings, placeholder = false 
   return productImageSrc ? (
     hasLink(payloadSettings) ? (
       <Link
-        payload={productState.payload}
+        payload={payload}
         type='products'
         linkTo={payloadSettings.linkTo}
         target={payloadSettings.linkTarget}>

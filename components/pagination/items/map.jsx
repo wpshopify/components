@@ -6,25 +6,27 @@ const Carousel = wp.element.lazy(() =>
   import(/* webpackChunkName: 'Carousel-public' */ '../../carousel')
 );
 
-function PagMap({ childrenItems, payload, payloadSettings }) {
+function PagMap({ childrenItems, payload, payloadSettings, componentId }) {
   return payload.map((item) => {
     return wp.element.cloneElement(childrenItems, {
       key: item.id,
       payload: item,
       payloadSettings: payloadSettings,
+      componentId: componentId,
     });
   });
 }
 
-function CarouselMapped({ item, childrenItems, payloadSettings }) {
+function CarouselMapped({ item, childrenItems, payloadSettings, componentId }) {
   return wp.element.cloneElement(childrenItems, {
     key: item.id,
     payload: item,
     payloadSettings: payloadSettings,
+    componentId: componentId,
   });
 }
 
-function PaginationItemsMap({ children, payload, payloadSettings }) {
+function PaginationItemsMap({ children, payload, payloadSettings, componentId }) {
   const { Suspense } = wp.element;
 
   return payloadSettings.carousel && wpshopify.misc.isPro ? (
@@ -36,12 +38,18 @@ function PaginationItemsMap({ children, payload, payloadSettings }) {
             item={item}
             childrenItems={children}
             payloadSettings={payloadSettings}
+            componentId={componentId}
           />
         ))}
       </Carousel>
     </Suspense>
   ) : (
-    <PagMap childrenItems={children} payload={payload} payloadSettings={payloadSettings} />
+    <PagMap
+      childrenItems={children}
+      payload={payload}
+      payloadSettings={payloadSettings}
+      componentId={componentId}
+    />
   );
 }
 

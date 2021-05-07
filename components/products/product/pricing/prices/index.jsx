@@ -1,7 +1,7 @@
 /** @jsx jsx */
 import { jsx, css } from '@emotion/react';
 import { ProductPricingContext } from '../_state/context';
-import { ProductContext } from '../../_state/context';
+import { useProductState } from '../../_state/hooks';
 import ProductPrice from '../price';
 
 const ProductPricesCompareAt = wp.element.lazy(() =>
@@ -12,7 +12,8 @@ const { useContext } = wp.element;
 
 function ProductPrices({ payloadSettings }) {
   const [productPricingState] = useContext(ProductPricingContext);
-  const [productState] = useContext(ProductContext);
+  const productState = useProductState();
+
   const { Suspense } = wp.element;
 
   const ProductPricesCompareAtCSS = css`

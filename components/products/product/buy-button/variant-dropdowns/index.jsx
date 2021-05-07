@@ -6,6 +6,7 @@ function ProductVariantDropdowns({
   selectedOptions,
   missingSelections,
   variants,
+  payloadSettings,
 }) {
   return (
     <div className='wps-component wps-component-products-options'>
@@ -18,6 +19,7 @@ function ProductVariantDropdowns({
             selectedOptions={selectedOptions}
             missingSelections={missingSelections}
             variants={variants}
+            payloadSettings={payloadSettings}
           />
         ))}
     </div>

@@ -1,6 +1,5 @@
 /** @jsx jsx */
 import { jsx, css } from '@emotion/react';
-import { ProductContext } from '../../_state/context';
 import { ProductGalleryContext } from '../gallery/_state/context';
 
 import ProductImage from '../image';
@@ -23,10 +22,9 @@ function destroyDrift(drift) {
   drift = null;
 }
 
-function ProductFeaturedImage({ payloadSettings }) {
+function ProductFeaturedImage({ payloadSettings, selectedVariant, payload }) {
   const paneElement = useRef();
   const isFirstRender = useRef(true);
-  const [productState] = useContext(ProductContext);
   const [galleryState] = useContext(ProductGalleryContext);
   const [featImage, setFeatImage] = useState(() => galleryState.featImage);
 
@@ -84,10 +82,10 @@ function ProductFeaturedImage({ payloadSettings }) {
   }, [galleryState.featImageElement]);
 
   useEffect(() => {
-    if (productState.selectedVariant) {
-      setFeatImage(getVariantImage(productState.selectedVariant));
+    if (selectedVariant) {
+      setFeatImage(getVariantImage(selectedVariant));
     }
-  }, [productState.selectedVariant]);
+  }, [selectedVariant]);
 
   const paneElementCSS = css`
     position: relative;
@@ -105,16 +103,22 @@ function ProductFeaturedImage({ payloadSettings }) {
 
   return (
     <div className='wps-gallery-featured-wrapper' ref={paneElement} css={paneElementCSS}>
-      {productState.payload.availableForSale === false && featImage && (
+      {payload.availableForSale === false && featImage && (
         <Suspense fallback={false}>
           <ProductImageSoldOutLabel />
         </Suspense>
       )}
       <div className='wps-product-image-wrapper' css={ProductImageFeaturedWrapperCSS}>
         {featImage ? (
-          <ProductImage payloadSettings={payloadSettings} isFeatured={true} image={featImage} />
+          <ProductImage
+            payload={payload}
+            payloadSettings={payloadSettings}
+            isFeatured={true}
+            image={featImage}
+          />
         ) : (
           <ProductImage
+            payload={payload}
             payloadSettings={payloadSettings}
             isFeatured={true}
             image={galleryState.featImagePlaceholder}

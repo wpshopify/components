@@ -1,7 +1,6 @@
 /** @jsx jsx */
 import { jsx, css } from '@emotion/react';
-import { ProductContext } from '../_state/context';
-import { ItemsContext } from '../../../items/_state/context';
+import { useProductState, useProductDispatch } from '../_state/hooks';
 import { usePortal } from '../../../../common/hooks';
 import { findPortalElement, FilterHook } from '../../../../common/utils';
 import size from 'lodash/size';
@@ -18,16 +17,18 @@ function allOptionsSelectedMatch(onlySelectedOptions, product) {
   return size(onlySelectedOptions) === product.options.length;
 }
 
-function ProductBuyButton() {
-  const { useContext, useEffect, useRef, Suspense } = wp.element;
-  const [itemsState] = useContext(ItemsContext);
-  const [productState, productDispatch] = useContext(ProductContext);
+function ProductBuyButton({ payloadSettings }) {
+  const { useEffect, useRef, Suspense } = wp.element;
+
+  const productState = useProductState();
+  const productDispatch = useProductDispatch();
+
   const isFirstRender = useRef(true);
 
   const buyButtonWrapperCSS = css`
     display: flex;
     flex-direction: column;
-    margin-bottom: ${itemsState.payloadSettings.isSingleComponent ? '0px' : '15px'};
+    margin-bottom: ${payloadSettings.isSingleComponent ? '0px' : '15px'};
   `;
 
   useEffect(() => {
@@ -61,7 +62,7 @@ function ProductBuyButton() {
           <ProductBuyButtonWrapper
             productState={productState}
             productDispatch={productDispatch}
-            itemsState={itemsState}
+            payloadSettings={payloadSettings}
           />
         ) : (
           <FilterHook
@@ -79,7 +80,7 @@ function ProductBuyButton() {
 
       <FilterHook name='after.product.buyButton' hasHTML={true} args={[productState]} />
     </div>,
-    findPortalElement(itemsState.payloadSettings.dropzoneProductBuyButton)
+    findPortalElement(payloadSettings.dropzoneProductBuyButton)
   );
 }
 

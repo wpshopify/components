@@ -10,6 +10,7 @@ function ProductOptionInitialState(options) {
     showPriceUnderVariantButton: options.showPriceUnderVariantButton
       ? options.showPriceUnderVariantButton
       : false,
+    payloadSettings: options.payloadSettings,
   };
 }
 

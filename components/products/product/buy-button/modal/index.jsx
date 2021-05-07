@@ -1,46 +1,49 @@
 /** @jsx jsx */
 import { jsx, css } from '@emotion/react';
-import Modal from 'react-modal';
 import { Products } from '../../../index';
 import { Items } from '../../../../items';
-import { ProductContext } from '../../_state/context';
-import { ItemsContext } from '../../../../items/_state/context';
+import { useProductState, useProductDispatch } from '../../_state/hooks';
 import { usePayloadSettings } from '../../../../../common/hooks';
+import Modal from 'react-modal';
 
 Modal.setAppElement('#wpshopify-root');
 
-function htmlTemp() {
+function htmlTemp(payloadSettings, payload) {
   return `
       <div class="wps-modal-row" style="display: flex;">
          <div style="width: 60%;padding: 0px 3em 0px 1em;">
-            <ProductImages />
+            <ProductImages payloadSettings={payloadSettings} payload={payload} />
          </div>
          <div style="width: 40%;padding-right: 1em;">
-            <ProductTitle />
-            <ProductPricing />
-            <ProductDescription />
-            <ProductBuyButton />
+            <ProductTitle payloadSettings={payloadSettings} payload={payload} />
+            <ProductPricing payloadSettings={payloadSettings} payload={payload} />
+            <ProductDescription payloadSettings={payloadSettings} payload={payload} />
+            <ProductBuyButton payloadSettings={payloadSettings} />
          </div>
       </div>
    `;
 }
 
-function customModalSettings() {
+function customModalSettings(payloadSettings, payload) {
   return wp.hooks.applyFilters('product.modal.settings', {
+    ...payloadSettings,
     titleTypeFontSize: '32px',
     linkTo: 'none',
-    htmlTemplate: htmlTemp(),
+    htmlTemplate: htmlTemp(payloadSettings, payload),
     fullWidth: true,
     showFeaturedOnly: false,
     showZoom: true,
   });
 }
 
-function ProductModal() {
-  const { useContext } = wp.element;
-  const [productState, productDispatch] = useContext(ProductContext);
-  const [itemsState] = useContext(ItemsContext);
-  const payloadSettings = usePayloadSettings(itemsState, customModalSettings());
+function ProductModal({ payloadSettings, componentId }) {
+  const productState = useProductState();
+  const productDispatch = useProductDispatch();
+
+  const pSettings = usePayloadSettings(
+    payloadSettings,
+    customModalSettings(payloadSettings, productState.payload)
+  );
 
   const customStyles = {
     overlay: {
@@ -76,16 +79,15 @@ function ProductModal() {
       bodyOpenClassName='wps-modal-open'>
       <ProductModalContent
         payload={productState.payload}
-        payloadSettings={payloadSettings}
-        componentId={itemsState.componentId}
+        payloadSettings={pSettings}
+        componentId={componentId}
       />
     </Modal>
   );
 }
 
 function ProductModalCloseIcon() {
-  const { useContext } = wp.element;
-  const [productState, productDispatch] = useContext(ProductContext);
+  const productDispatch = useProductDispatch();
 
   const ProductModalCloseIconCSS = css`
     position: absolute;
@@ -157,8 +159,4 @@ function ProductModalContent({ payload, payloadSettings, componentId }) {
   );
 }
 
-function ProductModalButton() {
-  return <ProductModal />;
-}
-
-export default ProductModalButton;
+export default ProductModal;

@@ -4,7 +4,7 @@ import { PaginationContext } from '../_state/context';
 import { mq } from '../../../common/css';
 import PaginationItemsMap from './map';
 
-function PaginationItems({ children, payload, payloadSettings }) {
+function PaginationItems({ children, payload, payloadSettings, componentId }) {
   const fadeIn = keyframes`
       0% {
          opacity: 0;
@@ -53,7 +53,10 @@ function PaginationItems({ children, payload, payloadSettings }) {
     <section className='wps-items-wrapper' css={PaginationItemsContainerCSS}>
       <section className='wps-items wps-items-list' css={PaginationItemsCSS}>
         {payload.length && (
-          <PaginationItemsMap payload={payload} payloadSettings={payloadSettings}>
+          <PaginationItemsMap
+            payload={payload}
+            payloadSettings={payloadSettings}
+            componentId={componentId}>
             {children}
           </PaginationItemsMap>
         )}

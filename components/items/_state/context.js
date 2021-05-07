@@ -1,3 +1,4 @@
-const ItemsContext = wp.element.createContext()
+const ItemsStateContext = wp.element.createContext();
+const ItemsDispatchContext = wp.element.createContext();
 
-export { ItemsContext }
+export { ItemsStateContext, ItemsDispatchContext };

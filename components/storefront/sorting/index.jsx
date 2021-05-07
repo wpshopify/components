@@ -1,10 +1,10 @@
 /** @jsx jsx */
 import { jsx, css } from '@emotion/react';
-import { StorefrontContext } from '../_state/context';
-import { ItemsContext } from '../../items/_state/context';
+import { useItemsState, useItemsDispatch } from '../../items/_state/hooks';
 import { usePortal } from '../../../common/hooks';
 import { FilterHook } from '../../../common/utils';
-const { useContext, useState } = wp.element;
+import { useStorefrontState } from '../_state/hooks';
+const { useState } = wp.element;
 
 function getSelectedOption(select) {
   return select.options[select.selectedIndex];
@@ -17,8 +17,9 @@ function hasReverse(select) {
 }
 
 function StorefrontSorting() {
-  const [storefrontState, storefrontDispatch] = useContext(StorefrontContext);
-  const [itemsState, itemsDispatch] = useContext(ItemsContext);
+  const itemsState = useItemsState();
+  const itemsDispatch = useItemsDispatch();
+  const storefrontState = useStorefrontState();
 
   const [sortValue, setSortValue] = useState(() => storefrontState.payloadSettings.sortBy);
 

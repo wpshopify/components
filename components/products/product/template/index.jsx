@@ -4,13 +4,10 @@ import ProductTitle from '../title';
 import ProductPricing from '../pricing';
 import ProductDescription from '../description';
 import ProductImages from '../images';
-import { ItemsContext } from '../../../items/_state/context';
 import { ErrorBoundary } from 'react-error-boundary';
 import ErrorFallback from '../../../error-fallback';
 
-function ProductCustomTemplate() {
-  const [itemsState] = wp.element.useContext(ItemsContext);
-
+function ProductCustomTemplate({ payloadSettings, payload }) {
   return (
     <ErrorBoundary FallbackComponent={ErrorFallback}>
       <JsxParser
@@ -21,9 +18,13 @@ function ProductCustomTemplate() {
           ProductDescription,
           ProductImages,
         }}
+        bindings={{
+          payloadSettings: payloadSettings,
+          payload: payload,
+        }}
         renderInWrapper={false}
         showWarnings={true}
-        jsx={itemsState.htmlTemplate}
+        jsx={payloadSettings.htmlTemplate}
         blacklistedTags={['script']}
       />
     </ErrorBoundary>

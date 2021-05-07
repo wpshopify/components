@@ -36,8 +36,6 @@ function ItemWrapper(props) {
 }
 
 function Items(props) {
-  console.log('props.options', props.options);
-
   return props.options
     ? props.options.map((component) => (
         <ItemWrapper key={component.componentId} component={component} {...props} />

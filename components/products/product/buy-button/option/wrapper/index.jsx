@@ -1,11 +1,12 @@
 import { ProductOptionContext } from '../_state/context';
-import { ProductContext } from '../../../_state/context';
-import isEmpty from 'lodash/isEmpty';
+import { useProductState } from '../../../_state/hooks';
 import { isPairMatch } from '../../../../../../common/utils';
+
+import isEmpty from 'lodash/isEmpty';
 const { useContext, useEffect, useRef } = wp.element;
 
 function ProductOptionWrapper({ children }) {
-  const [productState, productDispatch] = useContext(ProductContext);
+  const productState = useProductState();
   const [productOptionState, productOptionDispatch] = useContext(ProductOptionContext);
   const isFirstRender = useRef(true);
 

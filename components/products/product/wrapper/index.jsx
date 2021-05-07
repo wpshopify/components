@@ -1,6 +1,6 @@
 /** @jsx jsx */
 import { jsx, css } from '@emotion/react';
-import { ProductContext } from '../_state/context';
+import { useProductState, useProductDispatch } from '../_state/hooks';
 import { isShowingComponent } from '../../../../common/components';
 import { ErrorBoundary } from 'react-error-boundary';
 import ErrorFallback from '../../../error-fallback';
@@ -30,9 +30,11 @@ const ProductModal = wp.element.lazy(() =>
   import(/* webpackChunkName: 'ProductModal-public' */ '../buy-button/modal')
 );
 
-function ProductWrapper({ payloadSettings }) {
-  const { useContext, Suspense } = wp.element;
-  const [productState, productDispatch] = useContext(ProductContext);
+function ProductWrapper({ payloadSettings, componentId }) {
+  const { Suspense } = wp.element;
+
+  const productState = useProductState();
+  const productDispatch = useProductDispatch();
 
   const ProductWrapperCSS = css`
     padding: 0;
@@ -68,44 +70,57 @@ function ProductWrapper({ payloadSettings }) {
         productState.payload.isOnSale ? productState.payload.isOnSale : 'false'
       }>
       {payloadSettings.htmlTemplate ? (
-        <ProductCustomTemplate />
+        <ProductCustomTemplate payloadSettings={payloadSettings} payload={productState.payload} />
       ) : (
         <>
           <ErrorBoundary FallbackComponent={ErrorFallback}>
-            <Suspense fallback='Loading product images ...'>
-              {isShowingComponent(payloadSettings, 'images') && <ProductImages />}
+            <Suspense fallback={false}>
+              {isShowingComponent(payloadSettings, 'images') && (
+                <ProductImages payloadSettings={payloadSettings} payload={productState.payload} />
+              )}
             </Suspense>
           </ErrorBoundary>
 
           <ErrorBoundary FallbackComponent={ErrorFallback}>
-            <Suspense fallback='Loading product title ...'>
-              {isShowingComponent(payloadSettings, 'title') && <ProductTitle />}
+            <Suspense fallback={false}>
+              {isShowingComponent(payloadSettings, 'title') && (
+                <ProductTitle payloadSettings={payloadSettings} payload={productState.payload} />
+              )}
             </Suspense>
           </ErrorBoundary>
 
           <ErrorBoundary FallbackComponent={ErrorFallback}>
-            <Suspense fallback='Loading product pricing ...'>
-              {isShowingComponent(payloadSettings, 'pricing') && <ProductPricing />}
+            <Suspense fallback={false}>
+              {isShowingComponent(payloadSettings, 'pricing') && (
+                <ProductPricing payloadSettings={payloadSettings} payload={productState.payload} />
+              )}
             </Suspense>
           </ErrorBoundary>
 
           <ErrorBoundary FallbackComponent={ErrorFallback}>
-            <Suspense fallback='Loading product description ...'>
-              {isShowingComponent(payloadSettings, 'description') && <ProductDescription />}
+            <Suspense fallback={false}>
+              {isShowingComponent(payloadSettings, 'description') && (
+                <ProductDescription
+                  payloadSettings={payloadSettings}
+                  payload={productState.payload}
+                />
+              )}
             </Suspense>
           </ErrorBoundary>
 
           <ErrorBoundary FallbackComponent={ErrorFallback}>
-            <Suspense fallback='Loading product buy button ...'>
-              {isShowingComponent(payloadSettings, 'buy-button') && <ProductBuyButton />}
+            <Suspense fallback={false}>
+              {isShowingComponent(payloadSettings, 'buy-button') && (
+                <ProductBuyButton payloadSettings={payloadSettings} />
+              )}
             </Suspense>
           </ErrorBoundary>
         </>
       )}
 
       {productState.isModalOpen && wpshopify.misc.isPro && (
-        <Suspense fallback='Loading product ...'>
-          <ProductModal />
+        <Suspense fallback={false}>
+          <ProductModal payloadSettings={payloadSettings} componentId={componentId} />
         </Suspense>
       )}
     </div>

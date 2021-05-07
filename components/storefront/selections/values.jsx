@@ -1,14 +1,13 @@
 /** @jsx jsx */
 import { jsx, css } from '@emotion/react';
 import { IconRemove } from '../../../common/icons/icon-remove.jsx';
-import { StorefrontContext } from '../_state/context';
 import { createSelectionsOfType, buildNewSelection } from '../../../common/selections';
 import { FilterHook } from '../../../common/utils';
-
-const { useContext } = wp.element;
+import { useStorefrontState, useStorefrontDispatch } from '../_state/hooks';
 
 function StorefrontSelectionsValue({ selectionType, val }) {
-  const [storefrontState, storefrontDispatch] = useContext(StorefrontContext);
+  const storefrontState = useStorefrontState();
+  const storefrontDispatch = useStorefrontDispatch();
 
   function onClick(e) {
     const newList = buildNewSelection(val, selectionType, true, storefrontState.selections);
@@ -29,7 +28,7 @@ function StorefrontSelectionsValue({ selectionType, val }) {
     text-transform: capitalize;
     padding: 5px 9px 5px 12px;
     background: #e6e6e6;
-    font-size: 16px;
+    font-size: 14px;
     position: relative;
     display: flex;
     align-items: center;
@@ -45,7 +44,7 @@ function StorefrontSelectionsValue({ selectionType, val }) {
       display: inline-block;
       right: 2px;
       position: relative;
-      top: calc(50% - 12px);
+      top: calc(50% - 10px);
       margin-left: 10px;
     }
 

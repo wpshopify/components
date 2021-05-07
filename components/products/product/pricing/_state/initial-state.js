@@ -1,12 +1,12 @@
-import { getPrices, getCurrencyCodeFromPayload } from '../../../../../common/pricing/data'
+import { getPrices, getCurrencyCodeFromPayload } from '../../../../../common/pricing/data';
 
 function ProductPricingInitialState(props) {
   return {
-    prices: getPrices(props.productState.payload),
-    showPriceRange: props.productsState.payloadSettings.showPriceRange,
-    showCompareAt: props.productsState.payloadSettings.showCompareAt,
-    currencyCode: getCurrencyCodeFromPayload(props.productState.payload),
-  }
+    prices: getPrices(props.payload),
+    showPriceRange: props.payloadSettings.showPriceRange,
+    showCompareAt: props.payloadSettings.showCompareAt,
+    currencyCode: getCurrencyCodeFromPayload(props.payload),
+  };
 }
 
-export { ProductPricingInitialState }
+export { ProductPricingInitialState };

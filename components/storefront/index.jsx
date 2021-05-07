@@ -1,4 +1,4 @@
-import { ItemsContext } from '../items/_state/context';
+import { useItemsState, useItemsDispatch } from '../items/_state/hooks';
 import { StorefrontProvider } from './_state/provider';
 
 const StorefrontSelections = wp.element.lazy(() =>
@@ -21,10 +21,9 @@ const StorefrontItems = wp.element.lazy(() =>
   import(/* webpackChunkName: 'StorefrontItems-public' */ './items')
 );
 
-const { useContext } = wp.element;
-
 function Storefront() {
-  const [itemsState, itemsDispatch] = useContext(ItemsContext);
+  const itemsDispatch = useItemsDispatch();
+  const itemsState = useItemsState();
 
   return (
     <StorefrontProvider element={itemsState.element} payloadSettings={itemsState.payloadSettings}>

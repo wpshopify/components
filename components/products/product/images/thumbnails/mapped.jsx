@@ -1,8 +1,13 @@
 import ProductThumbnailImage from '../thumbnail';
 
-function ThumbnailsMapped({ thumbnails, payloadSettings }) {
+function ThumbnailsMapped({ payload, thumbnails, payloadSettings }) {
   return thumbnails.map((image) => (
-    <ProductThumbnailImage key={image.src} image={image} payloadSettings={payloadSettings} />
+    <ProductThumbnailImage
+      key={image.src}
+      image={image}
+      payload={payload}
+      payloadSettings={payloadSettings}
+    />
   ));
 }
 

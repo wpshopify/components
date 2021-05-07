@@ -1,22 +1,15 @@
-import { ProductContext } from '../_state/context'
-import { ItemsContext } from '../../../items/_state/context'
-import { ProductPrices } from './prices'
-import { ProductPricingProvider } from './_state/provider'
-import { usePortal } from '../../../../common/hooks'
-import { findPortalElement } from '../../../../common/utils'
+import { ProductPrices } from './prices';
+import { ProductPricingProvider } from './_state/provider';
+import { usePortal } from '../../../../common/hooks';
+import { findPortalElement } from '../../../../common/utils';
 
-const { useContext } = wp.element
-
-function ProductPricing() {
-  const [itemsState] = useContext(ItemsContext)
-  const [productState] = useContext(ProductContext)
-
+function ProductPricing({ payloadSettings, payload }) {
   return usePortal(
-    <ProductPricingProvider productsState={itemsState} productState={productState}>
-      <ProductPrices payloadSettings={itemsState.payloadSettings} />
+    <ProductPricingProvider payloadSettings={payloadSettings} payload={payload}>
+      <ProductPrices payloadSettings={payloadSettings} />
     </ProductPricingProvider>,
-    findPortalElement(itemsState.payloadSettings.dropzoneProductPricing)
-  )
+    findPortalElement(payloadSettings.dropzoneProductPricing)
+  );
 }
 
-export default ProductPricing
+export default ProductPricing;

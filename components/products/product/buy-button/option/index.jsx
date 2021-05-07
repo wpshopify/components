@@ -10,6 +10,7 @@ function ProductOption({
   selectedOptions,
   missingSelections,
   variants,
+  payloadSettings,
 }) {
   const dropdownElement = useRef();
 
@@ -19,6 +20,7 @@ function ProductOption({
         option: option,
         dropdownElement: dropdownElement,
         variants: variants,
+        payloadSettings: payloadSettings,
       }}>
       <ProductOptionWrapper>
         <ProductOptionDropdown

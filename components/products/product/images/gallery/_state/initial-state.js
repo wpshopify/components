@@ -1,14 +1,13 @@
-function ProductGalleryInitialState(productState) {
+function ProductGalleryInitialState(props) {
   return {
-    product: productState.payload,
-    featImage:
-      productState.payload && productState.payload.images ? productState.payload.images[0] : false,
+    product: props.payload,
+    featImage: props.payload && props.payload.images ? props.payload.images[0] : false,
     featImageElement: false,
     featImagePlaceholder: {
       src: wp.hooks.applyFilters(
         'default.image.placeholder',
         wpshopify.misc.pluginsDirURL + 'public/imgs/placeholder.png',
-        productState
+        props
       ),
       alt: wp.i18n.__('WP Shopify Placeholder Image', 'wpshopify'),
     },

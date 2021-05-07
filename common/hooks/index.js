@@ -181,14 +181,14 @@ function useCartToggle(cartElement) {
   return isOpen;
 }
 
-function usePayloadSettings(itemsState, customSettings) {
+function usePayloadSettings(payloadSettings, customSettings) {
   const { useState } = wp.element;
 
   const [pSettings, setPSettings] = useState(() => {
     if (!customSettings) {
-      return itemsState.payloadSettings;
+      return payloadSettings;
     } else {
-      return { ...itemsState.payloadSettings, ...customSettings };
+      return { ...payloadSettings, ...customSettings };
     }
   });
 

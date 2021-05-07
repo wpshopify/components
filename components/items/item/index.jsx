@@ -1,4 +1,4 @@
-import { ItemsContext } from '../_state/context';
+import { useItemsState, useItemsDispatch } from '../_state/hooks';
 import {
   useIsFirstRender,
   useIsMounted,
@@ -15,8 +15,11 @@ const Notice = wp.element.lazy(() =>
 );
 
 function Item({ children, limit = false, infiniteScroll = false }) {
-  const { useContext, useEffect } = wp.element;
-  const [itemsState, itemsDispatch] = useContext(ItemsContext);
+  const { useEffect } = wp.element;
+
+  const itemsState = useItemsState();
+  const itemsDispatch = useItemsDispatch();
+
   const isMounted = useIsMounted();
   const isFirstRender = useIsFirstRender();
   const getTemplateQuery = useGetTemplateQuery(itemsState, itemsDispatch);
@@ -43,12 +46,8 @@ function Item({ children, limit = false, infiniteScroll = false }) {
     }
 
     if (isFirstRender.current) {
-      console.log('itemsState.queryParams FIRST RENDER');
-
       return;
     }
-
-    console.log('itemsState.queryParams HAS CHANGED', itemsState.queryParams);
 
     itemsDispatch({ type: 'SET_IS_FETCHING_NEW', payload: true });
 
@@ -56,8 +55,6 @@ function Item({ children, limit = false, infiniteScroll = false }) {
   }, [itemsState.queryParams]);
 
   useEffect(() => {
-    console.log('BOOM: new payload ', itemsState.payload);
-
     wp.hooks.doAction('after.payload.update', itemsState);
   }, [itemsState.payload]);
 

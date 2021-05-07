@@ -1,50 +1,42 @@
-import { ProductContext } from '../_state/context';
-import { ItemsContext } from '../../../items/_state/context';
+/** @jsx jsx */
+import { jsx, css } from '@emotion/react';
 import { usePortal } from '../../../../common/hooks';
 import { findPortalElement } from '../../../../common/utils';
 
-/** @jsx jsx */
-import { jsx, css } from '@emotion/react';
-
-const { useContext } = wp.element;
-
-function ProductDescription() {
-  const [productState] = useContext(ProductContext);
-  const [itemsState] = useContext(ItemsContext);
-
+function ProductDescription({ payloadSettings, payload }) {
   const ProductDescriptionCSS = css`
-    color: ${itemsState.payloadSettings.descriptionColor};
+    color: ${payloadSettings.descriptionColor};
 
-    font-family: ${itemsState.payloadSettings.descriptionTypeFontFamily
-      ? itemsState.payloadSettings.descriptionTypeFontFamily
-      : itemsState.payloadSettings.descriptionFont
-      ? itemsState.payloadSettings.descriptionFont
+    font-family: ${payloadSettings.descriptionTypeFontFamily
+      ? payloadSettings.descriptionTypeFontFamily
+      : payloadSettings.descriptionFont
+      ? payloadSettings.descriptionFont
       : 'inherit'};
 
-    font-weight: ${itemsState.payloadSettings.descriptionTypeFontWeight
-      ? itemsState.payloadSettings.descriptionTypeFontWeight
-      : itemsState.payloadSettings.descriptionFontWeight
-      ? itemsState.payloadSettings.descriptionFontWeight
+    font-weight: ${payloadSettings.descriptionTypeFontWeight
+      ? payloadSettings.descriptionTypeFontWeight
+      : payloadSettings.descriptionFontWeight
+      ? payloadSettings.descriptionFontWeight
       : 'initial'};
 
-    font-size: ${itemsState.payloadSettings.descriptionTypeFontSize
-      ? itemsState.payloadSettings.descriptionTypeFontSize
-      : itemsState.payloadSettings.descriptionSize};
+    font-size: ${payloadSettings.descriptionTypeFontSize
+      ? payloadSettings.descriptionTypeFontSize
+      : payloadSettings.descriptionSize};
 
-    letter-spacing: ${itemsState.payloadSettings.descriptionTypeLetterSpacing
-      ? itemsState.payloadSettings.descriptionTypeLetterSpacing
+    letter-spacing: ${payloadSettings.descriptionTypeLetterSpacing
+      ? payloadSettings.descriptionTypeLetterSpacing
       : 'initial'};
-    line-height: ${itemsState.payloadSettings.descriptionTypeLineHeight
-      ? itemsState.payloadSettings.descriptionTypeLineHeight
+    line-height: ${payloadSettings.descriptionTypeLineHeight
+      ? payloadSettings.descriptionTypeLineHeight
       : 'initial'};
-    text-decoration: ${itemsState.payloadSettings.descriptionTypeTextDecoration
-      ? itemsState.payloadSettings.descriptionTypeTextDecoration
+    text-decoration: ${payloadSettings.descriptionTypeTextDecoration
+      ? payloadSettings.descriptionTypeTextDecoration
       : 'initial'};
-    text-transform: ${itemsState.payloadSettings.descriptionTypeTextTransform
-      ? itemsState.payloadSettings.descriptionTypeTextTransform
+    text-transform: ${payloadSettings.descriptionTypeTextTransform
+      ? payloadSettings.descriptionTypeTextTransform
       : 'initial'};
 
-    margin-bottom: ${itemsState.payloadSettings.isSingleComponent ? '0px' : '20px'};
+    margin-bottom: ${payloadSettings.isSingleComponent ? '0px' : '20px'};
 
     p:first-of-type {
       margin-top: 0;
@@ -52,15 +44,10 @@ function ProductDescription() {
   `;
 
   function maybeTruncateDescription() {
-    if (!itemsState.payloadSettings.descriptionLength) {
-      return productState.payload.descriptionHtml;
+    if (!payloadSettings.descriptionLength) {
+      return payload.descriptionHtml;
     } else {
-      return (
-        productState.payload.descriptionHtml.substring(
-          0,
-          itemsState.payloadSettings.descriptionLength
-        ) + ' ...'
-      );
+      return payload.descriptionHtml.substring(0, payloadSettings.descriptionLength) + ' ...';
     }
   }
 
@@ -71,7 +58,7 @@ function ProductDescription() {
       itemProp='description'
       dangerouslySetInnerHTML={{ __html: maybeTruncateDescription() }}
     />,
-    findPortalElement(itemsState.payloadSettings.dropzoneProductDescription)
+    findPortalElement(payloadSettings.dropzoneProductDescription)
   );
 }
 

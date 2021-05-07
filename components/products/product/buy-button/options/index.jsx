@@ -15,6 +15,7 @@ function ProductOptions({
   variants,
   showPriceUnderVariantButton,
   productDispatch,
+  payloadSettings,
 }) {
   const ProductOptionsCSS = css`
     position: relative;
@@ -32,6 +33,7 @@ function ProductOptions({
           availableVariants={availableVariants}
           selectedOptions={selectedOptions}
           variants={variants}
+          payloadSettings={payloadSettings}
         />
       ) : wpshopify.misc.isPro ? (
         <ProductVariantButtons
@@ -44,6 +46,7 @@ function ProductOptions({
         />
       ) : (
         <ProductVariantDropdowns
+          payloadSettings={payloadSettings}
           options={availableOptions}
           missingSelections={missingSelections}
           availableVariants={availableVariants}
