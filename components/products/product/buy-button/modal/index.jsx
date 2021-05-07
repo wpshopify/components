@@ -74,7 +74,11 @@ function ProductModal() {
       contentLabel='Example Modal'
       style={customStyles}
       bodyOpenClassName='wps-modal-open'>
-      <ProductModalContent payload={productState.payload} payloadSettings={payloadSettings} />
+      <ProductModalContent
+        payload={productState.payload}
+        payloadSettings={payloadSettings}
+        componentId={itemsState.componentId}
+      />
     </Modal>
   );
 }
@@ -123,7 +127,7 @@ function ProductModalCloseIcon() {
   );
 }
 
-function ProductModalContent({ payload, payloadSettings }) {
+function ProductModalContent({ payload, payloadSettings, componentId }) {
   const ProductModalCSS = css`
     height: 100%;
   `;
@@ -140,6 +144,8 @@ function ProductModalContent({ payload, payloadSettings }) {
         <Items
           options={[
             {
+              componentId: `${componentId}-modal`,
+              componentType: 'products',
               payloadSettings: payloadSettings,
               payload: payload,
             },

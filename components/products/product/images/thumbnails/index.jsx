@@ -1,7 +1,6 @@
 import Thumbnails from './mapped';
 import { doFeaturedSizing } from '../../../../../common/images';
 import { mq } from '../../../../../common/css';
-import { v4 as uuidv4 } from 'uuid';
 import isEmpty from 'lodash/isEmpty';
 import to from 'await-to-js';
 

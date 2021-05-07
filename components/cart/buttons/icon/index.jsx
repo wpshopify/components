@@ -39,8 +39,9 @@ function CartIcon() {
       {cartButtonState.payloadSettings.icon ? (
         <img
           src={cartButtonState.payloadSettings.icon}
-          className='wps-icon wps-icon-cart lazyload'
+          className='wps-icon wps-icon-cart'
           css={IconCSS}
+          loading='lazy'
         />
       ) : (
         <svg

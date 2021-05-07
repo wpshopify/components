@@ -55,9 +55,10 @@ function CollectionImage() {
           <img
             itemProp='image'
             src={imageSrc}
-            className='wps-product-image lazyload'
+            className='wps-product-image'
             css={CollectionImageCSS}
             alt={collectionState.payload.image ? collectionState.payload.image.altText : ''}
+            loading='lazy'
           />
         </Link>
       </div>

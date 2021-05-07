@@ -1,6 +1,5 @@
 /** @jsx jsx */
 import { jsx, css } from '@emotion/react';
-import { v4 as uuidv4 } from 'uuid';
 import { usePortal } from '../../common/hooks';
 import { findPortalElement } from '../../common/utils';
 
@@ -43,7 +42,11 @@ function Notices({ notices, dropzone = false, noticeGroup = '' }) {
     notices && notices.length ? (
       <section className={'wps-notices-' + noticeGroup} css={noticeStyles}>
         {notices.map((notice) => (
-          <Notice key={uuidv4()} status={notice.type} isDismissible={false} css={noticeInnerStyles}>
+          <Notice
+            key={notice.message}
+            status={notice.type}
+            isDismissible={false}
+            css={noticeInnerStyles}>
             {checkForErrorObj(notice.message)}
           </Notice>
         ))}

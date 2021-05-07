@@ -39,6 +39,7 @@ function ItemsInitialState({
   }
 
   var itemsState = {
+    componentId: component.componentId,
     payloadSettings: component.payloadSettings,
     element: component.componentElement,
     payload: payloadFinal,

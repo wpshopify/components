@@ -63,8 +63,7 @@
     "slug": "^5.0.0",
     "store": "^2.0.12",
     "tippy.js": "^6.3.1",
-    "use-debounce": "^6.0.1",
-    "uuid": "^8.3.2"
+    "use-debounce": "^6.0.1"
   },
   "devDependencies": {
     "@babel/core": "^7.14.0",

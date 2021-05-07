@@ -1,5 +1,3 @@
-import { v4 as uuidv4 } from 'uuid';
-
 const Placeholder = wp.element.lazy(() =>
   import(/* webpackChunkName: 'Placeholder-public' */ '../../../common/placeholders')
 );
@@ -11,7 +9,7 @@ const Carousel = wp.element.lazy(() =>
 function PagMap({ childrenItems, payload, payloadSettings }) {
   return payload.map((item) => {
     return wp.element.cloneElement(childrenItems, {
-      key: uuidv4(),
+      key: item.id,
       payload: item,
       payloadSettings: payloadSettings,
     });
@@ -20,7 +18,7 @@ function PagMap({ childrenItems, payload, payloadSettings }) {
 
 function CarouselMapped({ item, childrenItems, payloadSettings }) {
   return wp.element.cloneElement(childrenItems, {
-    key: uuidv4(),
+    key: item.id,
     payload: item,
     payloadSettings: payloadSettings,
   });
@@ -34,7 +32,7 @@ function PaginationItemsMap({ children, payload, payloadSettings }) {
       <Carousel payloadSettings={payloadSettings}>
         {payload.map((item) => (
           <CarouselMapped
-            key={uuidv4()}
+            key={item.id}
             item={item}
             childrenItems={children}
             payloadSettings={payloadSettings}

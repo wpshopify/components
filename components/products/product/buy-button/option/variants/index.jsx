@@ -2,7 +2,6 @@
 import { jsx, css } from '@emotion/react';
 import { ProductOptionContext } from '../_state/context';
 import { useOnClickOutside } from '../../../../../../common/hooks';
-import { v4 as uuidv4 } from 'uuid';
 import ProductVariant from './variant';
 import ProductVariantDropdownValue from '../dropdown-value';
 
@@ -44,7 +43,7 @@ function ProductVariantsDropdown({
     <ul className='wps-modal wps-variants' css={modalCSS}>
       {option.values.map((variant) => (
         <ProductVariant
-          key={uuidv4()}
+          key={variant.name + variant.value}
           variant={variant}
           availableVariants={availableVariants}
           selectedOptions={selectedOptions}

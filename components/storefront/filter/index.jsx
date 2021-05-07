@@ -66,7 +66,7 @@ function StorefrontFilter({ heading, children, isOpen, setIsOpen }) {
       <h3
         className='wps-drawer-trigger wps-filter-heading'
         css={filterHeadingCSS}
-        onClick={() => setIsOpen()}>
+        onClick={setIsOpen}>
         {heading}
         <span className='wps-drawer-icon' css={drawerIconCSS} />
       </h3>

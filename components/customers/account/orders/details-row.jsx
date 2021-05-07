@@ -30,7 +30,7 @@ function OrderDetailsRow({ lineItem }) {
               crop: 'center',
             })}
             alt={lineItem.variant.image.altText}
-            className='lazyload'
+            loading='lazy'
           />
           <p css={asdasd}>{lineItem.title + '-' + lineItem.variant.title}</p>
         </div>

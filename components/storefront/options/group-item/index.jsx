@@ -14,21 +14,21 @@ function StorefrontFilterOptionsGroupItem({
 
   function onClick() {
     setIsSelected(!isSelected);
-    onSelectionChange(itemValue, itemType, isSelected);
+    // onSelectionChange(itemValue, itemType, isSelected);
   }
 
-  useEffect(() => {
-    if (!storefrontState.hasSelections) {
-      setIsSelected(false);
-    }
+  //   useEffect(() => {
+  //     if (!storefrontState.hasSelections) {
+  //       setIsSelected(false);
+  //     }
 
-    if (!storefrontState['selected' + capitalizeFirstLetter(itemType)].includes(itemValue)) {
-      setIsSelected(false);
-    }
-  }, [
-    storefrontState.hasSelections,
-    storefrontState['selected' + capitalizeFirstLetter(itemType)],
-  ]);
+  //     if (!storefrontState['selected' + capitalizeFirstLetter(itemType)].includes(itemValue)) {
+  //       setIsSelected(false);
+  //     }
+  //   }, [
+  //     storefrontState.hasSelections,
+  //     storefrontState['selected' + capitalizeFirstLetter(itemType)],
+  //   ]);
 
   return (
     <StorefrontFilterOptionsGroupItemValue

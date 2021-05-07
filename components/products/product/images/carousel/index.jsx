@@ -1,9 +1,7 @@
-import Carousel from '../../../../carousel';
-import { mq } from '../../../../../common/css';
-
-import { v4 as uuidv4 } from 'uuid';
 /** @jsx jsx */
 import { jsx, css } from '@emotion/react';
+import Carousel from '../../../../carousel';
+import { mq } from '../../../../../common/css';
 
 function ProductCarouselImages({ payloadSettings, images }) {
   const ProductCarouselImagesCSS = css`
@@ -61,7 +59,7 @@ function ProductCarouselImages({ payloadSettings, images }) {
         }}
         extraCSS={ProductCarouselSliderCSS}>
         {images.map((image) => (
-          <img key={uuidv4()} src={image.src} alt={image.altText} />
+          <img key={image.src} src={image.src} alt={image.altText} />
         ))}
       </Carousel>
     </div>

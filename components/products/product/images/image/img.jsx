@@ -39,7 +39,8 @@ function Img(props) {
       ref={props.imageRef}
       itemProp='image'
       src={props.productImageSrc}
-      className='wps-product-image lazyload'
+      className='wps-product-image'
+      loading='lazy'
       alt={
         props.image.altText
           ? props.image.altText

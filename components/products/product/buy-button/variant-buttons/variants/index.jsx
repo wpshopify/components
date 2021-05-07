@@ -1,6 +1,4 @@
 import ProductVariant from '../../option/variants/variant';
-import { v4 as uuidv4 } from 'uuid';
-
 import ProductVariantButtonValue from '../variant';
 
 function ProductVariantsButtons({
@@ -16,7 +14,7 @@ function ProductVariantsButtons({
       selectedOptions={selectedOptions}
       availableVariants={availableVariants}
       variant={variant}
-      key={uuidv4()}
+      key={variant.name + variant.value}
       variants={variants}
       totalOptions={totalOptions}
       showPriceUnderVariantButton={showPriceUnderVariantButton}>
