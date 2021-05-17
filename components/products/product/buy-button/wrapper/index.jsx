@@ -14,7 +14,7 @@ function ProductBuyButtonWrapper({ payloadSettings, payload, productState, produ
       return false;
     }
 
-    if (payloadSettings.isSingular || isDirectCheckout) {
+    if ((payloadSettings.isSingular && payloadSettings.postId) || isDirectCheckout) {
       return false;
     }
 

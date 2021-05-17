@@ -60,9 +60,7 @@ function PaginationItems({ children }) {
             componentId={itemsState.componentId}>
             {children}
           </PaginationItemsMap>
-        ) : (
-          'weeeeeeeeeeeeeee'
-        )}
+        ) : null}
       </section>
     </section>
   ) : null;

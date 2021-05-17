@@ -4,14 +4,13 @@ import { ProductOptionContext } from '../../option/_state/context';
 import ProductVariantMissingSelection from '../missing-selection';
 import ProductVariantsButtons from '../variants';
 
-const { useRef, useContext } = wp.element;
-
 function ProductVariantButtonGroupWrapper({
   option,
   missingSelections,
   selectedOptions,
   availableVariants,
 }) {
+  const { useRef, useContext } = wp.element;
   const [productOptionState] = useContext(ProductOptionContext);
   const variantGroup = useRef();
 
@@ -41,7 +40,7 @@ function ProductVariantButtonGroupWrapper({
         />
       </div>
       {missingSelections && !productOptionState.isOptionSelected && (
-        <ProductVariantMissingSelection />
+        <ProductVariantMissingSelection productOptionState={productOptionState} />
       )}
     </div>
   );

@@ -2,15 +2,16 @@
 import { jsx, css } from '@emotion/react';
 import { FilterHook } from '../../../../../../common/utils';
 
-function ProductVariantMissingSelection() {
+function ProductVariantMissingSelection({ productOptionState }) {
   const selectStyles = css`
     margin-top: 6px;
     color: red;
   `;
+
   return (
     <p css={selectStyles}>
-      <FilterHook name='product.missingSelection.text'>
-        {wp.i18n.__('Please select a variation', 'wpshopify')}
+      <FilterHook name='product.missingSelection.text' args={[productOptionState]}>
+        {wp.i18n.__('Please select a ', 'wpshopify') + productOptionState.option.name.toLowerCase()}
       </FilterHook>
     </p>
   );

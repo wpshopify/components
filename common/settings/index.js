@@ -18,7 +18,11 @@ function hasLink(payloadSettings) {
     return false;
   }
 
-  if (payloadSettings.linkTo === 'shopify' || payloadSettings.linkTo === 'modal') {
+  if (
+    payloadSettings.linkTo === 'shopify' ||
+    payloadSettings.linkTo === 'wordpress' ||
+    payloadSettings.linkTo === 'modal'
+  ) {
     return true;
   }
 
