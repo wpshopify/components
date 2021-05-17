@@ -1,14 +1,11 @@
-import { FilterHook } from '../../common/utils'
-
-function RootElement({ payloadSettingsId, loadingMsg, componentType = 'products' }) {
+function RootElement({ payloadSettingsId, componentId, componentType = 'products' }) {
   return (
     <div
       data-wpshopify-component
+      data-wpshopify-component-id={componentId}
       data-wpshopify-component-type={componentType}
-      data-wpshopify-payload-settings={payloadSettingsId}>
-      <FilterHook name='global.loading.text'>{loadingMsg}</FilterHook>
-    </div>
-  )
+      data-wpshopify-payload-settings={payloadSettingsId}></div>
+  );
 }
 
-export { RootElement }
+export { RootElement };

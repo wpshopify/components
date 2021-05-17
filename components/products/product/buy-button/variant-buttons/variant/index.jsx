@@ -17,7 +17,6 @@ function ProductVariantButtonValue({
   showPriceUnderVariantButton,
 }) {
   const variantObj = createObj(variant.name, variant.value);
-
   const isSelected = isPairMatch(selectedOptions, variantObj);
   const border = isSelected ? '#415aff' : 'black';
   const color = isSelected ? 'white' : 'black';
@@ -125,7 +124,8 @@ function ProductVariantButtonValueButton({
   return (
     <button
       css={defaultStyles}
-      onClick={onSelection}
+      type='button'
+      onMouseDown={onSelection}
       data-is-variant-selected={isSelected}
       data-is-available={isAvailableToSelect}>
       {variantValue}

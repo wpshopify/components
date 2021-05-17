@@ -1,10 +1,10 @@
+/** @jsx jsx */
+import { jsx, css } from '@emotion/react';
 import { useItemsState, useItemsDispatch } from '../_state/hooks';
 import {
   useIsFirstRender,
   useIsMounted,
 } from '/Users/andrew/www/devil/devilbox-new/data/www/wpshopify-hooks';
-
-import { useGetItemsQuery, useGetTemplateQuery } from './api';
 
 const Placeholder = wp.element.lazy(() =>
   import(/* webpackChunkName: 'Placeholder-public' */ '../../../common/placeholders')
@@ -14,14 +14,15 @@ const Notice = wp.element.lazy(() =>
   import(/* webpackChunkName: 'Notice-public' */ '../../notice')
 );
 
-function Item({ children, limit = false, infiniteScroll = false }) {
-  const { useEffect } = wp.element;
+import { useGetItemsQuery, useGetTemplateQuery } from './api';
 
+function Item({ children, customPayloadSettings, customPayload, isCustomLoading }) {
+  const { useEffect } = wp.element;
   const itemsState = useItemsState();
   const itemsDispatch = useItemsDispatch();
-
   const isMounted = useIsMounted();
   const isFirstRender = useIsFirstRender();
+
   const getTemplateQuery = useGetTemplateQuery(itemsState, itemsDispatch);
   const getItemsQuery = useGetItemsQuery(itemsState, itemsDispatch, isMounted);
 
@@ -38,6 +39,7 @@ function Item({ children, limit = false, infiniteScroll = false }) {
       if (itemsState.isBootstrapping) {
         itemsDispatch({ type: 'SET_IS_BOOTSTRAPPING', payload: false });
       }
+
       return;
     }
 
@@ -45,11 +47,9 @@ function Item({ children, limit = false, infiniteScroll = false }) {
       itemsState.beforeLoading();
     }
 
-    if (isFirstRender.current) {
-      return;
+    if (!itemsState.isFetchingNew) {
+      itemsDispatch({ type: 'SET_IS_FETCHING_NEW', payload: true });
     }
-
-    itemsDispatch({ type: 'SET_IS_FETCHING_NEW', payload: true });
 
     wp.hooks.doAction('before.payload.update', itemsState);
   }, [itemsState.queryParams]);
@@ -79,11 +79,53 @@ function Item({ children, limit = false, infiniteScroll = false }) {
         replace: false,
       },
     });
-  }, [limit, infiniteScroll]);
+  }, [itemsState.payloadSettings.limit]);
+
+  useEffect(() => {
+    if (itemsState.isLoading || isFirstRender.current) {
+      return;
+    }
+
+    if (!customPayload) {
+      return;
+    }
+
+    itemsDispatch({
+      type: 'UPDATE_PAYLOAD',
+      payload: {
+        items: customPayload,
+        skipCache: true,
+        replace: true,
+      },
+    });
+  }, [customPayload]);
+
+  useEffect(() => {
+    if (itemsState.isLoading || isFirstRender.current) {
+      return;
+    }
+
+    if (!itemsState.payload) {
+      return;
+    }
+
+    itemsDispatch({
+      type: 'UPDATE_PAYLOAD_SETTINGS',
+      payload: customPayloadSettings,
+    });
+  }, [customPayloadSettings]);
+
+  useEffect(() => {
+    if (isFirstRender.current) {
+      return;
+    }
+
+    itemsDispatch({ type: 'SET_IS_LOADING', payload: isCustomLoading });
+  }, [isCustomLoading]);
 
   return !itemsState.hasParentPayload && itemsState.isBootstrapping ? (
     <Placeholder type={itemsState.payloadSettings.componentType} />
-  ) : !itemsState.payload.length && showGlobalNotice(itemsState.dataType) ? (
+  ) : !itemsState.payload && showGlobalNotice(itemsState.dataType) ? (
     itemsState.notices.length ? (
       <Notice status={itemsState.notices[0].type} isDismissible={false}>
         {itemsState.notices[0].message}
@@ -98,4 +140,4 @@ function Item({ children, limit = false, infiniteScroll = false }) {
   ) : null;
 }
 
-export default wp.element.memo(Item);
+export default Item;

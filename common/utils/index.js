@@ -3,13 +3,11 @@ import find from 'lodash/find';
 import forOwn from 'lodash/forOwn';
 import without from 'lodash/without';
 import mapKeys from 'lodash/mapKeys';
-import isString from 'lodash/isString';
 import isObject from 'lodash/isObject';
 import isArray from 'lodash/isArray';
 import isMatch from 'lodash/isMatch';
 import some from 'lodash/some';
 import merge from 'lodash/merge';
-import md5 from 'js-md5';
 import { format } from 'date-fns';
 
 import { decodePayloadSettings } from '/Users/andrew/www/devil/devilbox-new/data/www/wpshopify-api';
@@ -78,30 +76,6 @@ function findPortalElement(dropzone) {
     return document.querySelector(dropzone);
   }
   return false;
-}
-
-function createStringFromQueryParams(queryParams) {
-  if (!queryParams.sortKey) {
-    var sortKey = '';
-  } else {
-    if (isString(queryParams.sortKey)) {
-      var sortKey = queryParams.sortKey;
-    } else {
-      var sortKey = queryParams.sortKey.key;
-    }
-  }
-
-  if (!queryParams.reverse) {
-    var reverse = '';
-  } else {
-    var reverse = queryParams.reverse;
-  }
-
-  return queryParams.first + queryParams.query + reverse + sortKey;
-}
-
-function getHashFromQueryParams(queryParams) {
-  return md5(createStringFromQueryParams(queryParams));
 }
 
 function FilterHook({ name, children, hasHTML = false, args = [] }) {
@@ -584,7 +558,6 @@ export {
   lowercaseObjKeys,
   itemWidthClass,
   findPortalElement,
-  getHashFromQueryParams,
   FilterHook,
   prettyDate,
   underscoreToCamel,

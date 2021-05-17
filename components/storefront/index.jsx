@@ -1,5 +1,5 @@
 import { useItemsState, useItemsDispatch } from '../items/_state/hooks';
-import { StorefrontProvider } from './_state/provider';
+import StorefrontProvider from './_state/provider';
 
 const StorefrontSelections = wp.element.lazy(() =>
   import(/* webpackChunkName: 'StorefrontSelections-public' */ './selections')
@@ -48,4 +48,4 @@ function Storefront() {
   );
 }
 
-export { Storefront };
+export default Storefront;

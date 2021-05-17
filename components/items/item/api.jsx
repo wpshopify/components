@@ -1,9 +1,4 @@
 import {
-  useIsMounted,
-  useIsFirstRender,
-} from '/Users/andrew/www/devil/devilbox-new/data/www/wpshopify-hooks';
-
-import {
   fetchNextPage,
   graphQuery,
   fetchNewItems,
@@ -12,9 +7,8 @@ import {
   setCache,
   isWordPressError,
   getWordPressErrorMessage,
+  queryOptionsNoRefetch,
 } from '/Users/andrew/www/devil/devilbox-new/data/www/wpshopify-api';
-
-import { queryOptionsNoRefetch } from '../../../common/queries';
 
 import to from 'await-to-js';
 import isEmpty from 'lodash/isEmpty';
@@ -57,9 +51,7 @@ function hasNextPageQueryAndPath(payload) {
 }
 
 /*
-
 Fetch NEXT items
-
 */
 function fetchNextItems(itemsState, itemsDispatch) {
   return new Promise(async (resolve, reject) => {
@@ -74,16 +66,11 @@ function fetchNextItems(itemsState, itemsDispatch) {
     }
 
     /*
-
    This check is needed because of our caching system. The "next page" of products is fetched 
    using the payload of the last page. This is using the built in Shopify buy SDK method fetchNextPage.
-
    This Shopify function calls the method hasNextPageQueryAndPath on the last payload item.
-
    Since our caching system strips all functions from the payload, we loose the ability to call these built in functions.
-
    So before loading more, we need to check whether this method exists on the last item in our payload. If it does, we can simply proceed. If not, we need to refetch the initial query first. 
-
    */
     if (!hasNextPageQueryAndPath(itemsState.payload)) {
       const [resendInitialError, resendInitialResp] = await to(resendInitialQuery(itemsState));
@@ -183,50 +170,50 @@ function fetchNextItems(itemsState, itemsDispatch) {
   });
 }
 
-function useGetItemsQuery(itemsState, itemsDispatch, isMounted) {
+function useGetItemsQuery(state, dispatch, isMounted) {
   return useQuery(
-    'items::new',
+    'items::new::' + state.newQueryId,
     () => {
-      itemsDispatch({ type: 'SET_IS_LOADING', payload: true });
+      dispatch({ type: 'SET_IS_LOADING', payload: true });
 
-      return fetchNewItems(itemsState);
+      return fetchNewItems(state);
     },
     {
-      enabled: itemsState.isFetchingNew,
+      enabled: state.isFetchingNew && !state.hasParentPayload,
       onError: (error) => {
         if (isMounted.current) {
-          itemsDispatch({
+          dispatch({
             type: 'UPDATE_NOTICES',
             payload: error,
           });
 
-          itemsDispatch({ type: 'SET_IS_LOADING', payload: false });
+          dispatch({ type: 'SET_IS_LOADING', payload: false });
 
-          if (itemsState.isBootstrapping) {
-            itemsDispatch({ type: 'SET_IS_BOOTSTRAPPING', payload: false });
+          if (state.isBootstrapping) {
+            dispatch({ type: 'SET_IS_BOOTSTRAPPING', payload: false });
           }
         }
 
-        itemsDispatch({
+        dispatch({
           type: 'SET_IS_FETCHING_NEW',
           payload: false,
         });
       },
       onSuccess: (newItems) => {
         if (isMounted.current) {
-          itemsDispatch({ type: 'SET_IS_LOADING', payload: false });
+          dispatch({ type: 'SET_IS_LOADING', payload: false });
 
-          if (itemsState.isBootstrapping) {
-            itemsDispatch({ type: 'SET_IS_BOOTSTRAPPING', payload: false });
+          if (state.isBootstrapping) {
+            dispatch({ type: 'SET_IS_BOOTSTRAPPING', payload: false });
           }
 
           if (!newItems || !newItems.length) {
-            itemsDispatch({
+            dispatch({
               type: 'UPDATE_TOTAL_SHOWN',
               payload: 0,
             });
 
-            itemsDispatch({
+            dispatch({
               type: 'UPDATE_PAYLOAD',
               payload: {
                 items: [],
@@ -234,12 +221,12 @@ function useGetItemsQuery(itemsState, itemsDispatch, isMounted) {
               },
             });
           } else {
-            itemsDispatch({
+            dispatch({
               type: 'UPDATE_TOTAL_SHOWN',
               payload: newItems.length,
             });
 
-            itemsDispatch({
+            dispatch({
               type: 'UPDATE_PAYLOAD',
               payload: {
                 items: newItems,
@@ -247,13 +234,13 @@ function useGetItemsQuery(itemsState, itemsDispatch, isMounted) {
               },
             });
 
-            if (itemsState.afterLoading) {
-              itemsState.afterLoading(newItems);
+            if (state.afterLoading) {
+              state.afterLoading(newItems);
             }
           }
         }
 
-        itemsDispatch({
+        dispatch({
           type: 'SET_IS_FETCHING_NEW',
           payload: false,
         });
@@ -277,15 +264,15 @@ function useTemplateQuery(data = false) {
   );
 }
 
-function useGetTemplateQuery(itemsState, itemsDispatch) {
-  var resultcache = getCache('wps-template-' + itemsState.payloadSettings.htmlTemplate);
+function useGetTemplateQuery(state, dispatch) {
+  var resultcache = getCache('wps-template-' + state.payloadSettings.htmlTemplate);
 
-  if (!itemsState.payloadSettings.htmlTemplate) {
+  if (!state.payloadSettings.htmlTemplate) {
     return useTemplateQuery();
   }
 
   if (wp.hooks.applyFilters('wpshopify.cache.templates', false) && resultcache) {
-    itemsDispatch({
+    dispatch({
       type: 'UPDATE_HTML_TEMPLATE',
       payload: resultcache,
     });
@@ -296,11 +283,11 @@ function useGetTemplateQuery(itemsState, itemsDispatch) {
   return useQuery(
     'templates',
     () => {
-      return getTemplate(itemsState.payloadSettings.htmlTemplate);
+      return getTemplate(state.payloadSettings.htmlTemplate);
     },
     {
       onError: (error) => {
-        itemsDispatch({
+        dispatch({
           type: 'UPDATE_NOTICES',
           payload: {
             type: 'error',
@@ -308,17 +295,17 @@ function useGetTemplateQuery(itemsState, itemsDispatch) {
           },
         });
 
-        itemsDispatch({ type: 'SET_IS_LOADING', payload: false });
+        dispatch({ type: 'SET_IS_LOADING', payload: false });
 
-        if (itemsState.isBootstrapping) {
-          itemsDispatch({ type: 'SET_IS_BOOTSTRAPPING', payload: false });
+        if (state.isBootstrapping) {
+          dispatch({ type: 'SET_IS_BOOTSTRAPPING', payload: false });
         }
       },
       onSuccess: (template) => {
         if (isWordPressError(template)) {
-          itemsDispatch({ type: 'SET_IS_LOADING', payload: false });
+          dispatch({ type: 'SET_IS_LOADING', payload: false });
 
-          itemsDispatch({
+          dispatch({
             type: 'UPDATE_NOTICES',
             payload: {
               type: 'error',
@@ -326,16 +313,16 @@ function useGetTemplateQuery(itemsState, itemsDispatch) {
             },
           });
 
-          if (itemsState.isBootstrapping) {
-            itemsDispatch({ type: 'SET_IS_BOOTSTRAPPING', payload: false });
+          if (state.isBootstrapping) {
+            dispatch({ type: 'SET_IS_BOOTSTRAPPING', payload: false });
           }
 
           return;
         }
 
-        setCache('wps-template-' + itemsState.payloadSettings.htmlTemplate, template.data);
+        setCache('wps-template-' + state.payloadSettings.htmlTemplate, template.data);
 
-        itemsDispatch({
+        dispatch({
           type: 'UPDATE_HTML_TEMPLATE',
           payload: template.data,
         });

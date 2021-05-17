@@ -2,7 +2,7 @@ import update from 'immutability-helper';
 import has from 'lodash/has';
 import uniqBy from 'lodash/uniqBy';
 import isString from 'lodash/isString';
-import { getHashFromQueryParams } from '../../../common/utils';
+import { getHashFromQueryParams } from '/Users/andrew/www/devil/devilbox-new/data/www/wpshopify-utils';
 import { updateNoticesState } from '../../../common/state';
 
 function limitReached(state) {
@@ -245,6 +245,13 @@ function ItemsReducer(state, action) {
       return {
         ...state,
         htmlTemplate: update(state.htmlTemplate, { $set: action.payload }),
+      };
+    }
+
+    case 'UPDATE_PAYLOAD_SETTINGS': {
+      return {
+        ...state,
+        payloadSettings: update(state.payloadSettings, { $set: action.payload }),
       };
     }
 

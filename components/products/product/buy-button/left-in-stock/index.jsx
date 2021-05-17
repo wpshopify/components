@@ -1,11 +1,11 @@
 import { ProductBuyButtonTextNotice } from '../notice';
 import { findNonCachedVariants } from '../../../../../common/utils';
-import { queryOptionsNoRefetch } from '../../../../../common/queries';
 import { findTotalInventoryQuantity } from '../../../../../common/variants';
 import {
   getVariantInventoryManagement,
   setCache,
   getCache,
+  queryOptionsNoRefetch,
 } from '/Users/andrew/www/devil/devilbox-new/data/www/wpshopify-api';
 import { useIsMounted } from '/Users/andrew/www/devil/devilbox-new/data/www/wpshopify-hooks';
 import unionBy from 'lodash/unionBy';
@@ -101,7 +101,7 @@ function ProductBuyButtonLeftInStock({ payload, selectedVariant, isTouched, allO
   }, [selectedVariant]);
 
   function getVariantIds(payload) {
-    if (!payload.variants) {
+    if (!payload || !payload.variants) {
       return [];
     }
 
@@ -113,6 +113,10 @@ function ProductBuyButtonLeftInStock({ payload, selectedVariant, isTouched, allO
       var data = response.data;
     } else {
       var data = response;
+    }
+
+    if (!data) {
+      return [];
     }
 
     return data.map((variant) => {

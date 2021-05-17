@@ -1,7 +1,7 @@
 import { findPortalElement } from '../../../../common/utils';
 import { usePortal } from '../../../../common/hooks';
 import { Items } from '../../../items';
-import { Products } from '../../../products';
+import Products from '../../../products';
 import { CollectionContext } from '../_state/context';
 
 function CollectionProducts({ dropzone, componentId }) {

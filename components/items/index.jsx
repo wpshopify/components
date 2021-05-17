@@ -19,13 +19,16 @@ function ItemWrapper(props) {
     <ItemsProvider
       component={props.component}
       customQueryParams={props.customQueryParams && props.customQueryParams}
-      payload={props.component.payload && props.component.payload}
+      payload={props.payload && props.payload}
       afterLoading={props.afterLoading && props.afterLoading}
       beforeLoading={props.beforeLoading && props.beforeLoading}
       isParentLoading={props.isParentLoading}>
       {usePortal(
         <Suspense fallback={false}>
-          <Item limit={props.limit} infiniteScroll={props.infiniteScroll}>
+          <Item
+            customPayload={props.payload}
+            customPayloadSettings={props.component.payloadSettings}
+            isCustomLoading={props.isParentLoading}>
             {props.children}
           </Item>
         </Suspense>,

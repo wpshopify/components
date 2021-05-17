@@ -1,4 +1,4 @@
-import { Products } from '../../../products';
+import Products from '../../../products';
 import { usePortal } from '../../../../common/hooks';
 import { SearchContext } from '../../_state/context';
 

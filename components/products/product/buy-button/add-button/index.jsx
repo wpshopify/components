@@ -203,7 +203,7 @@ function AddButton({
   }
 
   async function handleClick(e) {
-    if (linkTo === 'modal' && wpshopify.misc.isPro) {
+    if (linkTo === 'modal' && wpshopify.misc.isPro && !isDirectCheckout) {
       productDispatch({ type: 'TOGGLE_MODAL', payload: true });
       return;
     }
@@ -379,7 +379,9 @@ function AddButtonText({ buttonText, addedToCart, addToCartButtonTextColor, payl
       animeFadeInBottomSlow(addedTest.current);
 
       setTimeout(function () {
-        setText(originalText);
+        if (addedTest.current) {
+          setText(originalText);
+        }
       }, 3000);
     }
   }, [addedToCart]);

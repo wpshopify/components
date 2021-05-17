@@ -17,7 +17,7 @@ function allOptionsSelectedMatch(onlySelectedOptions, product) {
   return size(onlySelectedOptions) === product.options.length;
 }
 
-function ProductBuyButton({ payloadSettings }) {
+function ProductBuyButton({ payloadSettings, payload }) {
   const { useEffect, useRef, Suspense } = wp.element;
 
   const productState = useProductState();
@@ -37,13 +37,13 @@ function ProductBuyButton({ payloadSettings }) {
       return;
     }
 
-    if (allOptionsSelectedMatch(productState.selectedOptions, productState.payload)) {
+    if (allOptionsSelectedMatch(productState.selectedOptions, payload)) {
       productDispatch({ type: 'SET_ALL_SELECTED_OPTIONS', payload: true });
 
       productDispatch({
         type: 'SET_SELECTED_VARIANT',
         payload: {
-          payload: productState.payload,
+          payload: payload,
           selectedOptions: productState.selectedOptions,
         },
       });
@@ -58,8 +58,9 @@ function ProductBuyButton({ payloadSettings }) {
     <div css={buyButtonWrapperCSS} className='wps-component-products-buy-button'>
       <FilterHook name='before.product.buyButton' hasHTML={true} args={[productState]} />
       <Suspense fallback={false}>
-        {productState.payload.availableForSale ? (
+        {payload.availableForSale ? (
           <ProductBuyButtonWrapper
+            payload={payload}
             productState={productState}
             productDispatch={productDispatch}
             payloadSettings={payloadSettings}

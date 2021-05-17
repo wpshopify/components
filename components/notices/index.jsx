@@ -6,7 +6,7 @@ import { findPortalElement } from '../../common/utils';
 import isString from 'lodash/isString';
 import isObject from 'lodash/isObject';
 
-const Notice = wp.element.lazy(() => import(/* webpackChunkName: 'Notice-public' */ '../notice'));
+import Notice from '../notice';
 
 function Notices({ notices, dropzone = false, noticeGroup = '' }) {
   function checkForErrorObj(maybeError) {
@@ -34,8 +34,8 @@ function Notices({ notices, dropzone = false, noticeGroup = '' }) {
   `;
 
   const noticeStyles = css`
-    max-width: 600px;
-    margin: 0 auto;
+    max-width: 333px;
+    margin: 0;
   `;
 
   return usePortal(
@@ -51,9 +51,7 @@ function Notices({ notices, dropzone = false, noticeGroup = '' }) {
           </Notice>
         ))}
       </section>
-    ) : (
-      ''
-    ),
+    ) : null,
     findPortalElement(dropzone)
   );
 }

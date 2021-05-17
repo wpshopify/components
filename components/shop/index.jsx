@@ -1,6 +1,7 @@
 import { ShopProvider } from './_state/provider';
 import { ShopBootstrap } from '../bootstrap';
 import { GlobalNotices } from './notices';
+
 import { QueryClient, QueryClientProvider } from 'react-query';
 const queryClient = new QueryClient();
 import { ReactQueryDevtools } from 'react-query/devtools';

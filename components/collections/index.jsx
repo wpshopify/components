@@ -1,12 +1,12 @@
-import Collection from './collection'
-import Pagination from '../pagination'
+import Collection from './collection';
+import Pagination from '../pagination';
 
 function Collections() {
   return (
     <Pagination>
       <Collection />
     </Pagination>
-  )
+  );
 }
 
-export { Collections }
+export default Collections;

@@ -1,43 +1,47 @@
-import isEmpty from 'lodash/isEmpty'
+import isEmpty from 'lodash/isEmpty';
 
 function checkNextPage(items) {
   if (!items || items.length == 0) {
-    return false
+    return false;
   }
 
-  return items[items.length - 1].hasNextPage
+  return items[items.length - 1].hasNextPage;
 }
 
 function checkPrevPage(items) {
   if (!items || items.length == 0) {
-    return false
+    return false;
   }
 
-  return items[0].hasPreviousPage
+  return items[0].hasPreviousPage;
 }
 
 function checkHasResults(items) {
-  return !isEmpty(items)
+  return !isEmpty(items);
 }
 
-function isHidingPagination(payloadSettings, hasMoreItems) {
+function isHidingPagination(payloadSettings, hasMoreItems, isModal) {
   if (wpshopify.settings.general.hidePagination) {
-    return true
+    return true;
   }
 
   if (!payloadSettings.pagination) {
-    return true
+    return true;
+  }
+
+  if (isModal) {
+    return true;
   }
 
   if (payloadSettings.limit && payloadSettings.limit <= payloadSettings.pageSize) {
-    return true
+    return true;
   }
 
   if (!hasMoreItems) {
-    return true
+    return true;
   }
 
-  return false
+  return false;
 }
 
-export { checkNextPage, checkPrevPage, checkHasResults, isHidingPagination }
+export { checkNextPage, checkPrevPage, checkHasResults, isHidingPagination };

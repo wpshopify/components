@@ -1,12 +1,16 @@
 /** @jsx jsx */
 import { jsx, css } from '@emotion/react';
-import { Products } from '../../../index';
+import Products from '../../../index';
 import { Items } from '../../../../items';
 import { useProductState, useProductDispatch } from '../../_state/hooks';
 import { usePayloadSettings } from '../../../../../common/hooks';
 import Modal from 'react-modal';
 
-Modal.setAppElement('#wpshopify-root');
+if (wpshopify.misc.isAdmin) {
+  Modal.setAppElement('#editor');
+} else {
+  Modal.setAppElement('#wpshopify-root');
+}
 
 function htmlTemp(payloadSettings, payload) {
   return `
@@ -18,7 +22,7 @@ function htmlTemp(payloadSettings, payload) {
             <ProductTitle payloadSettings={payloadSettings} payload={payload} />
             <ProductPricing payloadSettings={payloadSettings} payload={payload} />
             <ProductDescription payloadSettings={payloadSettings} payload={payload} />
-            <ProductBuyButton payloadSettings={payloadSettings} />
+            <ProductBuyButton payloadSettings={payloadSettings} payload={payload} />
          </div>
       </div>
    `;
@@ -36,13 +40,13 @@ function customModalSettings(payloadSettings, payload) {
   });
 }
 
-function ProductModal({ payloadSettings, componentId }) {
+function ProductModal({ payloadSettings, componentId, payload }) {
   const productState = useProductState();
   const productDispatch = useProductDispatch();
 
   const pSettings = usePayloadSettings(
     payloadSettings,
-    customModalSettings(payloadSettings, productState.payload)
+    customModalSettings(payloadSettings, payload)
   );
 
   const customStyles = {
@@ -51,7 +55,7 @@ function ProductModal({ payloadSettings, componentId }) {
       transition: 'all 0.1s ease',
     },
     content: {
-      maxWidth: '1100px',
+      maxWidth: wpshopify.misc.isAdmin ? '80%' : '1100px',
       width: '1100px',
       margin: '0 auto',
       borderRadius: '10px',
@@ -62,6 +66,8 @@ function ProductModal({ payloadSettings, componentId }) {
       left: '50%',
       overflow: 'visible',
       boxShadow: '0 7px 14px 0 rgba(60,66,87,.08), 0 3px 6px 0 rgba(0,0,0,.12)',
+      top: wpshopify.misc.isAdmin ? '50%' : '40px',
+      transform: wpshopify.misc.isAdmin ? 'translate(-50%, -50%)' : 'translate(-50%, 40px)',
     },
   };
 
@@ -78,7 +84,7 @@ function ProductModal({ payloadSettings, componentId }) {
       style={customStyles}
       bodyOpenClassName='wps-modal-open'>
       <ProductModalContent
-        payload={productState.payload}
+        payload={payload}
         payloadSettings={pSettings}
         componentId={componentId}
       />
@@ -91,11 +97,11 @@ function ProductModalCloseIcon() {
 
   const ProductModalCloseIconCSS = css`
     position: absolute;
-    top: -18px;
-    width: 70px;
+    top: ${wpshopify.misc.isAdmin ? '-32px' : '-18px'};
+    width: ${wpshopify.misc.isAdmin ? '25px' : '70px'};
     padding: 15px;
     height: 70px;
-    right: -66px;
+    right: ${wpshopify.misc.isAdmin ? '-54px' : '-66px'};
     z-index: 99999999;
     opacity: 1;
     transition: opacity 0.2s ease;
@@ -149,9 +155,11 @@ function ProductModalContent({ payload, payloadSettings, componentId }) {
               componentId: `${componentId}-modal`,
               componentType: 'products',
               payloadSettings: payloadSettings,
-              payload: payload,
+              payload: [payload],
+              isModal: true,
             },
-          ]}>
+          ]}
+          payload={[payload]}>
           <Products />
         </Items>
       </div>

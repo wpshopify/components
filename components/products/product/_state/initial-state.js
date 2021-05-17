@@ -28,7 +28,6 @@ function isOnSale(payload) {
 
 function ProductInitialState({ payload, payloadSettings }) {
   return {
-    payload: payload,
     element: false,
     selectedVariant: false,
     addedToCart: false,

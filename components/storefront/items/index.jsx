@@ -1,7 +1,7 @@
 /** @jsx jsx */
 import { jsx, css } from '@emotion/react';
 import { usePortal } from '../../../common/hooks';
-import { Products } from '../../products';
+import Products from '../../products';
 
 const Notice = wp.element.lazy(() =>
   import(/* webpackChunkName: 'Notice-public' */ '../../notice')
@@ -57,7 +57,6 @@ function StorefrontItems({ noResultsText, payloadSettings, payload, queryParams,
 
   const storefrontItemsWrapperCSS = css`
     position: relative;
-    opacity: ${isLoading ? 0.6 : 1};
   `;
 
   return usePortal(

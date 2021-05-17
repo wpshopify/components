@@ -5,8 +5,6 @@ import { ItemsStateContext, ItemsDispatchContext } from './context';
 function ItemsProvider(props) {
   const [state, dispatch] = wp.element.useReducer(ItemsReducer, ItemsInitialState(props));
 
-  //   const value = wp.element.useMemo(() => [state, dispatch], [state]);
-
   return (
     <ItemsStateContext.Provider value={state}>
       <ItemsDispatchContext.Provider value={dispatch}>

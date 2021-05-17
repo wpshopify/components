@@ -4,15 +4,12 @@ import {
   graphQuery,
   findLastCursorId,
 } from '/Users/andrew/www/devil/devilbox-new/data/www/wpshopify-api';
-import { PaginationContext } from '../../_state/context';
 import { useItemsDispatch } from '../../../items/_state/hooks';
 import { usePortal } from '../../../../common/hooks';
 import to from 'await-to-js';
-const { useContext, useState } = wp.element;
 
 function PaginationPageSize({ isLoading, payloadSettings, queryParams, dataType }) {
-  const [, paginationDispatch] = useContext(PaginationContext);
-
+  const { useState } = wp.element;
   const itemsDispatch = useItemsDispatch();
 
   const [pageSize, setPageSize] = useState(() => defaultPageSize());
@@ -38,12 +35,8 @@ function PaginationPageSize({ isLoading, payloadSettings, queryParams, dataType 
   function setAfterCursorQueryParams(params) {
     itemsDispatch({ type: 'MERGE_QUERY_PARAMS', payload: params });
   }
-  function setControlsTouched(touched) {
-    paginationDispatch({ type: 'SET_CONTROLS_TOUCHED', payload: touched });
-  }
 
   async function onChange(event) {
-    setControlsTouched(true);
     setPageSize(event.target.value);
 
     let updatedParams = updatedFirstQueryParams(event);

@@ -4,6 +4,9 @@ import head from 'lodash/head';
 import { createObj } from '../utils';
 
 function getAvailableVariants(product) {
+  if (!product) {
+    return [];
+  }
   let combinations = product.variants.map((variant) => {
     return variant.selectedOptions.map((selectableOption) =>
       createObj(selectableOption.name, selectableOption.value)

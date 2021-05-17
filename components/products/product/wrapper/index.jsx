@@ -30,9 +30,8 @@ const ProductModal = wp.element.lazy(() =>
   import(/* webpackChunkName: 'ProductModal-public' */ '../buy-button/modal')
 );
 
-function ProductWrapper({ payloadSettings, componentId }) {
+function ProductWrapper({ payloadSettings, componentId, payload }) {
   const { Suspense } = wp.element;
-
   const productState = useProductState();
   const productDispatch = useProductDispatch();
 
@@ -64,19 +63,17 @@ function ProductWrapper({ payloadSettings, componentId }) {
       className='wps-item'
       onMouseOver={onMouseOver}
       data-wpshopify-is-available-for-sale={
-        productState.payload.availableForSale ? productState.payload.availableForSale : 'false'
+        payload.availableForSale ? payload.availableForSale : 'false'
       }
-      data-wpshopify-is-on-sale={
-        productState.payload.isOnSale ? productState.payload.isOnSale : 'false'
-      }>
+      data-wpshopify-is-on-sale={payload.isOnSale ? payload.isOnSale : 'false'}>
       {payloadSettings.htmlTemplate ? (
-        <ProductCustomTemplate payloadSettings={payloadSettings} payload={productState.payload} />
+        <ProductCustomTemplate payloadSettings={payloadSettings} payload={payload} />
       ) : (
         <>
           <ErrorBoundary FallbackComponent={ErrorFallback}>
             <Suspense fallback={false}>
               {isShowingComponent(payloadSettings, 'images') && (
-                <ProductImages payloadSettings={payloadSettings} payload={productState.payload} />
+                <ProductImages payloadSettings={payloadSettings} payload={payload} />
               )}
             </Suspense>
           </ErrorBoundary>
@@ -84,7 +81,7 @@ function ProductWrapper({ payloadSettings, componentId }) {
           <ErrorBoundary FallbackComponent={ErrorFallback}>
             <Suspense fallback={false}>
               {isShowingComponent(payloadSettings, 'title') && (
-                <ProductTitle payloadSettings={payloadSettings} payload={productState.payload} />
+                <ProductTitle payloadSettings={payloadSettings} payload={payload} />
               )}
             </Suspense>
           </ErrorBoundary>
@@ -92,7 +89,7 @@ function ProductWrapper({ payloadSettings, componentId }) {
           <ErrorBoundary FallbackComponent={ErrorFallback}>
             <Suspense fallback={false}>
               {isShowingComponent(payloadSettings, 'pricing') && (
-                <ProductPricing payloadSettings={payloadSettings} payload={productState.payload} />
+                <ProductPricing payloadSettings={payloadSettings} payload={payload} />
               )}
             </Suspense>
           </ErrorBoundary>
@@ -100,10 +97,7 @@ function ProductWrapper({ payloadSettings, componentId }) {
           <ErrorBoundary FallbackComponent={ErrorFallback}>
             <Suspense fallback={false}>
               {isShowingComponent(payloadSettings, 'description') && (
-                <ProductDescription
-                  payloadSettings={payloadSettings}
-                  payload={productState.payload}
-                />
+                <ProductDescription payloadSettings={payloadSettings} payload={payload} />
               )}
             </Suspense>
           </ErrorBoundary>
@@ -111,20 +105,24 @@ function ProductWrapper({ payloadSettings, componentId }) {
           <ErrorBoundary FallbackComponent={ErrorFallback}>
             <Suspense fallback={false}>
               {isShowingComponent(payloadSettings, 'buy-button') && (
-                <ProductBuyButton payloadSettings={payloadSettings} />
+                <ProductBuyButton payloadSettings={payloadSettings} payload={payload} />
               )}
             </Suspense>
           </ErrorBoundary>
         </>
       )}
 
-      {productState.isModalOpen && wpshopify.misc.isPro && (
+      {productState.isModalOpen && wpshopify.misc.isPro && payload && (
         <Suspense fallback={false}>
-          <ProductModal payloadSettings={payloadSettings} componentId={componentId} />
+          <ProductModal
+            payloadSettings={payloadSettings}
+            componentId={componentId}
+            payload={payload}
+          />
         </Suspense>
       )}
     </div>
   );
 }
 
-export { ProductWrapper };
+export default ProductWrapper;

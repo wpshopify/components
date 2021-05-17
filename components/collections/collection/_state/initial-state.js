@@ -7,7 +7,7 @@ function CollectionInitialState({ payload, payloadSettings }) {
         payload: payload.products ? payload.products : false,
         componentType: 'products',
         componentId: payload.id,
-        noResultsText: wp.i18n.__('No products left to show', 'wpshopify'),
+        noResultsText: wp.i18n.__('No products belong to this Collection', 'wpshopify'),
         payloadSettings: payloadSettings.products,
         connectionParams: {
           first: parseInt(payloadSettings.products.pageSize),

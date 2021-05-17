@@ -14,4 +14,4 @@ function ProductProvider(props) {
   );
 }
 
-export { ProductProvider };
+export default ProductProvider;

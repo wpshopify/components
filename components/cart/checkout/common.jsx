@@ -3,9 +3,9 @@ import {
   replaceLineItems,
   updateCheckoutAttributes,
   maybeFetchShop,
+  queryOptionsNoRefetch,
 } from '/Users/andrew/www/devil/devilbox-new/data/www/wpshopify-api';
 import { hasCustomCheckoutAttributes } from '../../../common/checkout';
-import { queryOptionsNoRefetch } from '../../../common/queries';
 
 import isEmpty from 'lodash/isEmpty';
 import to from 'await-to-js';

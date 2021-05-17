@@ -1,35 +1,36 @@
 /** @jsx jsx */
 import { jsx, css, keyframes } from '@emotion/react';
-import { PaginationContext } from '../_state/context';
 import { mq } from '../../../common/css';
 import PaginationItemsMap from './map';
+import { useItemsState } from '../../items/_state/hooks';
 
-function PaginationItems({ children, payload, payloadSettings, componentId }) {
-  const fadeIn = keyframes`
-      0% {
-         opacity: 0;
-      }
-
-      100% {
-         opacity: 1;
-      }
-   `;
+function PaginationItems({ children }) {
+  const itemsState = useItemsState();
 
   const PaginationItemsCSS = css`
-    display: ${payloadSettings.carousel && wpshopify.misc.isPro ? 'block' : 'grid'};
-    grid-template-columns: repeat(${payload.length === 1 ? 1 : payloadSettings.itemsPerRow}, 1fr);
-    grid-column-gap: ${payloadSettings.gridColumnGap ? payloadSettings.gridColumnGap : '20px'};
-    grid-row-gap: ${payloadSettings.isSingleComponent ? '0px' : '40px'};
-    max-width: ${payloadSettings.dataType === 'collections' || payloadSettings.fullWidth
+    display: ${itemsState.payloadSettings.carousel && wpshopify.misc.isPro ? 'block' : 'grid'};
+    grid-template-columns: repeat(
+      ${itemsState.payload.length === 1 ? 1 : itemsState.payloadSettings.itemsPerRow},
+      1fr
+    );
+    grid-column-gap: ${itemsState.payloadSettings.gridColumnGap
+      ? itemsState.payloadSettings.gridColumnGap
+      : '20px'};
+    grid-row-gap: ${itemsState.payloadSettings.isSingleComponent ? '0px' : '40px'};
+    max-width: ${itemsState.payloadSettings.dataType === 'collections' ||
+    itemsState.payloadSettings.fullWidth
       ? '100%'
-      : payload.length === 1 || payloadSettings.itemsPerRow === 1
-      ? '300px'
+      : itemsState.payload.length === 1 || itemsState.payloadSettings.itemsPerRow === 1
+      ? '333px'
       : wp.hooks.applyFilters('misc.layout.containerWidth', '1100px')};
-    animation: ${fadeIn} 0.3s;
     padding: 0;
+    transition: opacity 0.3s ease;
+    opacity: ${itemsState.isLoading ? 0.4 : 1};
 
     ${mq('medium')} {
-      grid-template-columns: ${payload.length === 1 ? 'repeat(1, 1fr)' : 'repeat(2, 1fr)'};
+      grid-template-columns: ${itemsState.payload.length === 1
+        ? 'repeat(1, 1fr)'
+        : 'repeat(2, 1fr)'};
     }
 
     ${mq('small')} {
@@ -49,20 +50,22 @@ function PaginationItems({ children, payload, payloadSettings, componentId }) {
     }
   `;
 
-  return payload ? (
+  return itemsState.payload ? (
     <section className='wps-items-wrapper' css={PaginationItemsContainerCSS}>
       <section className='wps-items wps-items-list' css={PaginationItemsCSS}>
-        {payload.length && (
+        {itemsState.payload.length ? (
           <PaginationItemsMap
-            payload={payload}
-            payloadSettings={payloadSettings}
-            componentId={componentId}>
+            payload={itemsState.payload}
+            payloadSettings={itemsState.payloadSettings}
+            componentId={itemsState.componentId}>
             {children}
           </PaginationItemsMap>
+        ) : (
+          'weeeeeeeeeeeeeee'
         )}
       </section>
     </section>
   ) : null;
 }
 
-export default wp.element.memo(PaginationItems);
+export default PaginationItems;

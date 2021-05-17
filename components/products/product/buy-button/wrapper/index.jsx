@@ -4,7 +4,7 @@ import ProductQuantity from '../quantity';
 import ProductOptions from '../options';
 import ProductAddButton from '../add-button';
 
-function ProductBuyButtonWrapper({ payloadSettings, productState, productDispatch }) {
+function ProductBuyButtonWrapper({ payloadSettings, payload, productState, productDispatch }) {
   const isDirectCheckout =
     (payloadSettings.directCheckout || wpshopify.settings.general.directCheckout) &&
     wpshopify.misc.isPro;
@@ -58,8 +58,8 @@ function ProductBuyButtonWrapper({ payloadSettings, productState, productDispatc
           variantStyle={payloadSettings.variantStyle}
           selectedOptions={productState.selectedOptions}
           availableVariants={productState.availableVariants}
-          availableOptions={onlyAvailableOptionsFromVariants(productState.payload.variants)}
-          variants={productState.payload.variants}
+          availableOptions={onlyAvailableOptionsFromVariants(payload.variants)}
+          variants={payload.variants}
           showPriceUnderVariantButton={payloadSettings.showPriceUnderVariantButton}
           productDispatch={productDispatch}
         />
@@ -71,7 +71,7 @@ function ProductBuyButtonWrapper({ payloadSettings, productState, productDispatc
         isTouched={productState.isTouched}
         hasLink={productState.hasLink}
         allOptionsSelected={productState.allOptionsSelected}
-        payload={productState.payload}
+        payload={payload}
         linkTarget={payloadSettings.linkTarget}
         linkTo={payloadSettings.linkTo}
         linkWithBuyButton={payloadSettings.linkWithBuyButton}

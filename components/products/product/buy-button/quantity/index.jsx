@@ -12,7 +12,11 @@ function ProductQuantity({
   addedToCart,
   excludes,
 }) {
-  var onlyExcludingDesc = containsOnly(excludes, ['description']);
+  if (!excludes) {
+    var onlyExcludingDesc = true;
+  } else {
+    var onlyExcludingDesc = containsOnly(excludes, ['description']);
+  }
 
   const ProductQuantityCSS = css`
     border-top: ${onlyExcludingDesc ? '1px solid #e5e5e5' : 'none'};

@@ -11,7 +11,7 @@ function ProductGalleryWrapper({ payloadSettings, payload }) {
   return (
     <div className='wps-component wps-component-products-images' css={ProductGalleryWrapperCSS}>
       <ProductGalleryProvider payload={payload}>
-        <ProductGallery payloadSettings={payloadSettings} />
+        <ProductGallery payload={payload} payloadSettings={payloadSettings} />
       </ProductGalleryProvider>
     </div>
   );

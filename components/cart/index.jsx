@@ -9,4 +9,4 @@ function Cart({ options }) {
   );
 }
 
-export { Cart };
+export default Cart;

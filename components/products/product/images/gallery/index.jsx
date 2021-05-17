@@ -5,12 +5,11 @@ import { ProductFeaturedImage } from '../featured';
 import ProductCarouselImages from '../carousel';
 import { hasLink } from '../../../../../common/settings';
 
-function ProductGallery({ payloadSettings }) {
+function ProductGallery({ payloadSettings, payload }) {
   const { useEffect, useContext, useRef } = wp.element;
   const productState = useProductState();
   const [, galleryDispatch] = useContext(ProductGalleryContext);
   const isFirstRender = useRef(true);
-  const product = productState.payload;
 
   function hasManyImages() {
     if (!productState) {
@@ -43,10 +42,7 @@ function ProductGallery({ payloadSettings }) {
     } else {
       galleryDispatch({
         type: 'SET_FEAT_IMAGE',
-        payload:
-          productState.payload && productState.payload.images
-            ? productState.payload.images[0]
-            : false,
+        payload: payload && payload.images ? payload.images[0] : false,
       });
     }
   }, [productState.selectedVariant]);
@@ -56,26 +52,26 @@ function ProductGallery({ payloadSettings }) {
       {isFeaturedOnly() ? (
         <ProductFeaturedImage
           selectedVariant={productState.selectedVariant}
-          payload={productState.payload}
+          payload={payload}
           payloadSettings={payloadSettings}
         />
       ) : hasManyImages() ? (
         payloadSettings.showImagesCarousel && wpshopify.misc.isPro ? (
-          <ProductCarouselImages payloadSettings={payloadSettings} images={product.images} />
+          <ProductCarouselImages payloadSettings={payloadSettings} images={payload.images} />
         ) : (
           <>
             <ProductFeaturedImage
               selectedVariant={productState.selectedVariant}
-              payload={productState.payload}
+              payload={payload}
               payloadSettings={payloadSettings}
             />
-            <ProductThumbnailImages product={product} payloadSettings={payloadSettings} />
+            <ProductThumbnailImages product={payload} payloadSettings={payloadSettings} />
           </>
         )
       ) : (
         <ProductFeaturedImage
           selectedVariant={productState.selectedVariant}
-          payload={productState.payload}
+          payload={payload}
           payloadSettings={payloadSettings}
         />
       )}

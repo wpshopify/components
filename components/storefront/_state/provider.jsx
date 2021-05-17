@@ -14,4 +14,4 @@ function StorefrontProvider(props) {
   );
 }
 
-export { StorefrontProvider };
+export default StorefrontProvider;

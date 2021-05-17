@@ -1,4 +1,4 @@
-import { Product } from './product';
+import Product from './product';
 import Pagination from '../pagination';
 
 function Products() {
@@ -9,4 +9,4 @@ function Products() {
   );
 }
 
-export { Products };
+export default Products;

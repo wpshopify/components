@@ -72,4 +72,4 @@ function ProductPlaceholder() {
   );
 }
 
-export { ProductPlaceholder };
+export default ProductPlaceholder;

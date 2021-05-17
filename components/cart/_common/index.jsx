@@ -5,6 +5,7 @@ import {
   getProductsFromLineItems,
   buildInstances,
   queryProductsFromIds,
+  queryOptionsNoRefetch,
 } from '/Users/andrew/www/devil/devilbox-new/data/www/wpshopify-api';
 
 import to from 'await-to-js';
@@ -13,7 +14,6 @@ import has from 'lodash/has';
 import isEmpty from 'lodash/isEmpty';
 
 import { getVariantIdFromLineItems, getVariantsFromProducts } from '../../../common/utils';
-import { queryOptionsNoRefetch } from '../../../common/queries';
 
 function addDiscountCode(cartState, cartDispatch, discountVal) {
   return new Promise(async (resolve, reject) => {
