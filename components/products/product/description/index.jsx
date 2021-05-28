@@ -2,41 +2,44 @@
 import { jsx, css } from '@emotion/react';
 import { usePortal } from '../../../../common/hooks';
 import { findPortalElement } from '../../../../common/utils';
+import { useProductState } from '../_state/hooks';
 
-function ProductDescription({ payloadSettings, payload }) {
+function ProductDescription() {
+  const productState = useProductState();
+
   const ProductDescriptionCSS = css`
-    color: ${payloadSettings.descriptionColor};
+    color: ${productState.payloadSettings.descriptionColor};
 
-    font-family: ${payloadSettings.descriptionTypeFontFamily
-      ? payloadSettings.descriptionTypeFontFamily
-      : payloadSettings.descriptionFont
-      ? payloadSettings.descriptionFont
+    font-family: ${productState.payloadSettings.descriptionTypeFontFamily
+      ? productState.payloadSettings.descriptionTypeFontFamily
+      : productState.payloadSettings.descriptionFont
+      ? productState.payloadSettings.descriptionFont
       : 'inherit'};
 
-    font-weight: ${payloadSettings.descriptionTypeFontWeight
-      ? payloadSettings.descriptionTypeFontWeight
-      : payloadSettings.descriptionFontWeight
-      ? payloadSettings.descriptionFontWeight
+    font-weight: ${productState.payloadSettings.descriptionTypeFontWeight
+      ? productState.payloadSettings.descriptionTypeFontWeight
+      : productState.payloadSettings.descriptionFontWeight
+      ? productState.payloadSettings.descriptionFontWeight
       : 'initial'};
 
-    font-size: ${payloadSettings.descriptionTypeFontSize
-      ? payloadSettings.descriptionTypeFontSize
-      : payloadSettings.descriptionSize};
+    font-size: ${productState.payloadSettings.descriptionTypeFontSize
+      ? productState.payloadSettings.descriptionTypeFontSize
+      : productState.payloadSettings.descriptionSize};
 
-    letter-spacing: ${payloadSettings.descriptionTypeLetterSpacing
-      ? payloadSettings.descriptionTypeLetterSpacing
+    letter-spacing: ${productState.payloadSettings.descriptionTypeLetterSpacing
+      ? productState.payloadSettings.descriptionTypeLetterSpacing
       : 'initial'};
-    line-height: ${payloadSettings.descriptionTypeLineHeight
-      ? payloadSettings.descriptionTypeLineHeight
+    line-height: ${productState.payloadSettings.descriptionTypeLineHeight
+      ? productState.payloadSettings.descriptionTypeLineHeight
       : 'initial'};
-    text-decoration: ${payloadSettings.descriptionTypeTextDecoration
-      ? payloadSettings.descriptionTypeTextDecoration
+    text-decoration: ${productState.payloadSettings.descriptionTypeTextDecoration
+      ? productState.payloadSettings.descriptionTypeTextDecoration
       : 'initial'};
-    text-transform: ${payloadSettings.descriptionTypeTextTransform
-      ? payloadSettings.descriptionTypeTextTransform
+    text-transform: ${productState.payloadSettings.descriptionTypeTextTransform
+      ? productState.payloadSettings.descriptionTypeTextTransform
       : 'initial'};
 
-    margin-bottom: ${payloadSettings.isSingleComponent ? '0px' : '20px'};
+    margin-bottom: ${productState.payloadSettings.isSingleComponent ? '0px' : '20px'};
 
     p:first-of-type {
       margin-top: 0;
@@ -44,10 +47,15 @@ function ProductDescription({ payloadSettings, payload }) {
   `;
 
   function maybeTruncateDescription() {
-    if (!payloadSettings.descriptionLength) {
-      return payload.descriptionHtml;
+    if (!productState.payloadSettings.descriptionLength) {
+      return productState.payload.descriptionHtml;
     } else {
-      return payload.descriptionHtml.substring(0, payloadSettings.descriptionLength) + ' ...';
+      return (
+        productState.payload.descriptionHtml.substring(
+          0,
+          productState.payloadSettings.descriptionLength
+        ) + ' ...'
+      );
     }
   }
 
@@ -58,8 +66,8 @@ function ProductDescription({ payloadSettings, payload }) {
       itemProp='description'
       dangerouslySetInnerHTML={{ __html: maybeTruncateDescription() }}
     />,
-    findPortalElement(payloadSettings.dropzoneProductDescription)
+    findPortalElement(productState.payloadSettings.dropzoneProductDescription)
   );
 }
 
-export default ProductDescription;
+export default wp.element.memo(ProductDescription);

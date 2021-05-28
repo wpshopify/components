@@ -71,7 +71,12 @@ function CartContents(props) {
           </FilterHook>
 
           <FilterHook name='cart.empty.addSomethingText'>
-            <a href={wpshopify.settings.general.urlProducts} css={AddSomethingCSS}>
+            <a
+              href={wp.hooks.applyFilters(
+                'cart.empty.addSomethingLink',
+                wpshopify.settings.general.urlProducts
+              )}
+              css={AddSomethingCSS}>
               {wp.i18n.__('Go add something awesome', 'wpshopify')}
             </a>
           </FilterHook>

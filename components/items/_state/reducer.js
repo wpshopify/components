@@ -248,6 +248,13 @@ function ItemsReducer(state, action) {
       };
     }
 
+    case 'UPDATE_HTML_TEMPLATE_DATA': {
+      return {
+        ...state,
+        htmlTemplateData: update(state.htmlTemplateData, { $set: action.payload }),
+      };
+    }
+
     case 'UPDATE_PAYLOAD_SETTINGS': {
       return {
         ...state,

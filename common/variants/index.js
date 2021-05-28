@@ -103,16 +103,18 @@ function findInventoryFromVariantId(inventory, selectedVariant) {
 }
 
 function findAvailableQuantityByLocations(variant) {
-  if (!variant) {
+  console.log('---- variant.inventoryLevels', variant.inventoryLevels);
+
+  if (!variant || !variant.inventoryLevels || !variant.inventoryLevels.hasOwnProperty('edges')) {
     return false;
   }
 
-  if (variant.inventoryLevels.length === 0) {
+  if (variant.inventoryLevels.edges.length === 0) {
     return false;
   }
 
-  if (variant.inventoryLevels.length === 1) {
-    return variant.inventoryLevels[0].node.available;
+  if (variant.inventoryLevels.edges.length === 1) {
+    return variant.inventoryLevels.edges[0].node.available;
   }
 
   return variant.inventoryLevels.edges.reduce((accumulator, currentValue) => {

@@ -20,11 +20,15 @@ function ProductBuyButtonLeftInStock({ payload, selectedVariant, isTouched, allO
   const isMounted = useIsMounted();
 
   const inventoryQuery = useQuery(
-    'inventory',
+    'inventory-' + payload.title,
     () => {
-      let cachedInventory = getCache('wps-inventory-levels');
+      console.log('Calling inventoryQuery');
 
       var variantIDs = getVariantIds(payload);
+      let cachedInventory = getCache('wps-inventory-levels');
+
+      console.log('variantIDs', variantIDs);
+      console.log('cachedInventory', cachedInventory);
 
       if (!variantIDs.length) {
         console.warn(
@@ -37,6 +41,8 @@ function ProductBuyButtonLeftInStock({ payload, selectedVariant, isTouched, allO
         cachedInventory = JSON.parse(cachedInventory);
 
         var variantIDs = findNonCachedVariants(cachedInventory, variantIDs);
+
+        console.log('findNonCachedVariants variantIDs', variantIDs);
 
         // Everything is cached, lets go
         if (!variantIDs.length) {

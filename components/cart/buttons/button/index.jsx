@@ -23,6 +23,7 @@ function CartButton({ options }) {
   }, []);
 
   function onClick(e) {
+    cartDispatch({ type: 'CART_LOADED', payload: true }); // for mobile
     cartDispatch({ type: 'TOGGLE_CART', payload: true });
   }
 

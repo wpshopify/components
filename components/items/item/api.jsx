@@ -250,11 +250,16 @@ function useGetItemsQuery(state, dispatch, isMounted) {
   );
 }
 
-function useTemplateQuery(data = false) {
+function useTemplateQuery(data = false, dispatch) {
   return useQuery(
     'templates',
     () => {
       return new Promise((resolve, reject) => {
+        dispatch({
+          type: 'UPDATE_HTML_TEMPLATE_DATA',
+          payload: data,
+        });
+
         return resolve(data);
       });
     },
@@ -268,16 +273,16 @@ function useGetTemplateQuery(state, dispatch) {
   var resultcache = getCache('wps-template-' + state.payloadSettings.htmlTemplate);
 
   if (!state.payloadSettings.htmlTemplate) {
-    return useTemplateQuery();
+    return useTemplateQuery(state.payloadSettings.htmlTemplateData, dispatch);
   }
 
   if (wp.hooks.applyFilters('wpshopify.cache.templates', false) && resultcache) {
     dispatch({
-      type: 'UPDATE_HTML_TEMPLATE',
+      type: 'UPDATE_HTML_TEMPLATE_DATA',
       payload: resultcache,
     });
 
-    return useTemplateQuery(resultcache);
+    return useTemplateQuery(resultcache, dispatch);
   }
 
   return useQuery(
@@ -286,6 +291,7 @@ function useGetTemplateQuery(state, dispatch) {
       return getTemplate(state.payloadSettings.htmlTemplate);
     },
     {
+      enabled: !!state.htmlTemplate,
       onError: (error) => {
         dispatch({
           type: 'UPDATE_NOTICES',
@@ -323,7 +329,7 @@ function useGetTemplateQuery(state, dispatch) {
         setCache('wps-template-' + state.payloadSettings.htmlTemplate, template.data);
 
         dispatch({
-          type: 'UPDATE_HTML_TEMPLATE',
+          type: 'UPDATE_HTML_TEMPLATE_DATA',
           payload: template.data,
         });
       },

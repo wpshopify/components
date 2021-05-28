@@ -1,6 +1,6 @@
-import { FilterHook } from '../../../common/utils';
 /** @jsx jsx */
 import { jsx, css } from '@emotion/react';
+import { FilterHook } from '../../../common/utils';
 
 function CartTitle({ cartState }) {
   const cartTitleCSS = css`

@@ -154,7 +154,11 @@ variants: What we use to display the correct data within the cart
 */
 function updateLineItemsAndVariants(checkoutCache, payload) {
   return {
-    lineItems: mergeCheckoutCacheLineItems(checkoutCache.lineItems, payload.lineItems),
+    lineItems: mergeCheckoutCacheLineItems(
+      checkoutCache.lineItems,
+      payload.lineItems,
+      payload.lineItemOptions
+    ),
     variants: mergeCheckoutCacheVariants(checkoutCache.variants, payload.variants),
   };
 }

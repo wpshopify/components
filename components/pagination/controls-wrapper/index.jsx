@@ -39,6 +39,8 @@ function PaginationControlsWrapper() {
         payload: true,
       });
     }
+
+    return false;
   }
 
   return !isHidingPagination(

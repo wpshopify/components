@@ -6,8 +6,11 @@ import ProductDescription from '../description';
 import ProductImages from '../images';
 import { ErrorBoundary } from 'react-error-boundary';
 import ErrorFallback from '../../../error-fallback';
+import { useItemsState } from '../../../items/_state/hooks';
 
-function ProductCustomTemplate({ payloadSettings, payload }) {
+function ProductCustomTemplate({ customHtmlData }) {
+  const itemsState = useItemsState();
+
   return (
     <ErrorBoundary FallbackComponent={ErrorFallback}>
       <JsxParser
@@ -18,13 +21,9 @@ function ProductCustomTemplate({ payloadSettings, payload }) {
           ProductDescription,
           ProductImages,
         }}
-        bindings={{
-          payloadSettings: payloadSettings,
-          payload: payload,
-        }}
         renderInWrapper={false}
         showWarnings={true}
-        jsx={payloadSettings.htmlTemplate}
+        jsx={customHtmlData ? customHtmlData : itemsState.htmlTemplateData}
         blacklistedTags={['script']}
       />
     </ErrorBoundary>

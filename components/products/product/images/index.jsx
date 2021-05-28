@@ -1,12 +1,18 @@
 import { ProductGalleryWrapper } from './gallery/wrapper';
 import { usePortal } from '../../../../common/hooks';
 import { findPortalElement } from '../../../../common/utils';
+import { useProductState } from '../_state/hooks';
 
-function ProductImages({ payloadSettings, payload }) {
+function ProductImages() {
+  const productState = useProductState();
+
   return usePortal(
-    <ProductGalleryWrapper payloadSettings={payloadSettings} payload={payload} />,
-    findPortalElement(payloadSettings.dropzoneProductGallery)
+    <ProductGalleryWrapper
+      payloadSettings={productState.payloadSettings}
+      payload={productState.payload}
+    />,
+    findPortalElement(productState.payloadSettings.dropzoneProductGallery)
   );
 }
 
-export default ProductImages;
+export default wp.element.memo(ProductImages);

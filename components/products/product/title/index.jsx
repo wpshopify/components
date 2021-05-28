@@ -3,44 +3,45 @@ import { jsx, css } from '@emotion/react';
 import { usePortal } from '../../../../common/hooks';
 import { findPortalElement, FilterHook } from '../../../../common/utils';
 import { hasLink } from '../../../../common/settings';
+import { useProductState } from '../_state/hooks';
 
 const Link = wp.element.lazy(() => import(/* webpackChunkName: 'Link-public' */ '../../../link'));
 
-function ProductTitle({ payloadSettings, payload }) {
-  const { useContext } = wp.element;
+function ProductTitle() {
+  const productState = useProductState();
 
   const titleStyles = css`
     && {
-      font-family: ${payloadSettings.titleTypeFontFamily
-        ? payloadSettings.titleTypeFontFamily
+      font-family: ${productState.payloadSettings.titleTypeFontFamily
+        ? productState.payloadSettings.titleTypeFontFamily
         : 'inherit'};
-      font-weight: ${payloadSettings.titleTypeFontWeight
-        ? payloadSettings.titleTypeFontWeight
+      font-weight: ${productState.payloadSettings.titleTypeFontWeight
+        ? productState.payloadSettings.titleTypeFontWeight
         : 'initial'};
-      font-size: ${payloadSettings.titleTypeFontSize
-        ? payloadSettings.titleTypeFontSize
-        : payloadSettings.titleSize};
-      letter-spacing: ${payloadSettings.titleTypeLetterSpacing
-        ? payloadSettings.titleTypeLetterSpacing
+      font-size: ${productState.payloadSettings.titleTypeFontSize
+        ? productState.payloadSettings.titleTypeFontSize
+        : productState.payloadSettings.titleSize};
+      letter-spacing: ${productState.payloadSettings.titleTypeLetterSpacing
+        ? productState.payloadSettings.titleTypeLetterSpacing
         : 'initial'};
-      line-height: ${payloadSettings.titleTypeLineHeight
-        ? payloadSettings.titleTypeLineHeight
+      line-height: ${productState.payloadSettings.titleTypeLineHeight
+        ? productState.payloadSettings.titleTypeLineHeight
         : 'initial'};
-      text-decoration: ${payloadSettings.titleTypeTextDecoration
-        ? payloadSettings.titleTypeTextDecoration
+      text-decoration: ${productState.payloadSettings.titleTypeTextDecoration
+        ? productState.payloadSettings.titleTypeTextDecoration
         : 'initial'};
-      text-transform: ${payloadSettings.titleTypeTextTransform
-        ? payloadSettings.titleTypeTextTransform
+      text-transform: ${productState.payloadSettings.titleTypeTextTransform
+        ? productState.payloadSettings.titleTypeTextTransform
         : 'initial'};
 
-      color: ${payloadSettings.titleColor};
+      color: ${productState.payloadSettings.titleColor};
       white-space: normal;
       margin: 0;
     }
   `;
 
   const titleStylesWrapper = css`
-    margin-bottom: ${payloadSettings.isSingleComponent ? '0px' : '15px'};
+    margin-bottom: ${productState.payloadSettings.isSingleComponent ? '0px' : '15px'};
   `;
 
   function getTitleClass() {
@@ -52,29 +53,29 @@ function ProductTitle({ payloadSettings, payload }) {
       className='wps-component wps-component-products-title'
       data-wps-component-order='0'
       css={titleStylesWrapper}>
-      {hasLink(payloadSettings) ? (
+      {hasLink(productState.payloadSettings) ? (
         <Link
           type='products'
-          payload={payload}
-          target={payloadSettings.linkTarget}
-          linkTo={payloadSettings.linkTo}>
+          payload={productState.payload}
+          target={productState.payloadSettings.linkTarget}
+          linkTo={productState.payloadSettings.linkTo}>
           <Title
             styles={titleStyles}
-            title={payload.title}
+            title={productState.payload.title}
             classList={getTitleClass()}
-            product={payload}
+            product={productState.payload}
           />
         </Link>
       ) : (
         <Title
           styles={titleStyles}
-          title={payload.title}
+          title={productState.payload.title}
           classList={getTitleClass()}
-          product={payload}
+          product={productState.payload}
         />
       )}
     </div>,
-    findPortalElement(payloadSettings.dropzoneProductTitle)
+    findPortalElement(productState.payloadSettings.dropzoneProductTitle)
   );
 }
 
@@ -92,4 +93,4 @@ function Title(props) {
   );
 }
 
-export default ProductTitle;
+export default wp.element.memo(ProductTitle);

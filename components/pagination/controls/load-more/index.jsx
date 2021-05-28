@@ -23,14 +23,16 @@ function PaginationLoadMore({ isLoading, hasMoreItems, payloadSettings, onNextPa
 
   const loadMoreButtonCSS = css`
     max-width: 150px;
+    display: flex;
+    flex-direction: column;
+    margin: 0 auto;
   `;
 
   return usePortal(
     hasMoreItems ? (
       <InView rootMargin='10px 0px 0px 0px' as='div' onChange={onViewChange}>
-        <button
+        <div
           css={[buttonCSS, loadMoreButtonCSS]}
-          type='button'
           disabled={isLoading}
           className={'wps-btn-next-page'}
           onClick={onNextPage}>
@@ -41,7 +43,7 @@ function PaginationLoadMore({ isLoading, hasMoreItems, payloadSettings, onNextPa
               {wp.i18n.__('Load more', 'wpshopify')}
             </FilterHook>
           )}
-        </button>
+        </div>
       </InView>
     ) : null,
     document.querySelector(payloadSettings.dropzoneLoadMore)

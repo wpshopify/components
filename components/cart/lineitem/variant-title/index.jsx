@@ -9,18 +9,19 @@ function CartLineItemVariantTitle({ lineItem }) {
     font-weight: 400;
     font-size: 12px;
     margin-bottom: 16px;
-    color: white;
-    background-color: #415aff;
-    border-radius: 10rem;
-    padding: 0.25em 0.6em;
-    text-align: center;
-    white-space: nowrap;
     vertical-align: baseline;
     flex: 0 0 100%;
-    max-width: 100%;
     letter-spacing: 0.02em;
     line-height: 1.4;
     margin: 5px 0 15px 0;
+    max-width: 190px;
+    white-space: break-spaces;
+    text-align: left;
+    border-radius: 5px;
+    color: black;
+    background: #f0f0f0;
+    margin-top: 0;
+    padding: 0.35em 0.7em;
   `;
 
   return (

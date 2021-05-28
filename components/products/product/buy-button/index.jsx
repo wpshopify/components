@@ -17,7 +17,7 @@ function allOptionsSelectedMatch(onlySelectedOptions, product) {
   return size(onlySelectedOptions) === product.options.length;
 }
 
-function ProductBuyButton({ payloadSettings, payload }) {
+function ProductBuyButton() {
   const { useEffect, useRef, Suspense } = wp.element;
 
   const productState = useProductState();
@@ -28,7 +28,7 @@ function ProductBuyButton({ payloadSettings, payload }) {
   const buyButtonWrapperCSS = css`
     display: flex;
     flex-direction: column;
-    margin-bottom: ${payloadSettings.isSingleComponent ? '0px' : '15px'};
+    margin-bottom: ${productState.payloadSettings.isSingleComponent ? '0px' : '15px'};
   `;
 
   useEffect(() => {
@@ -37,13 +37,13 @@ function ProductBuyButton({ payloadSettings, payload }) {
       return;
     }
 
-    if (allOptionsSelectedMatch(productState.selectedOptions, payload)) {
+    if (allOptionsSelectedMatch(productState.selectedOptions, productState.payload)) {
       productDispatch({ type: 'SET_ALL_SELECTED_OPTIONS', payload: true });
 
       productDispatch({
         type: 'SET_SELECTED_VARIANT',
         payload: {
-          payload: payload,
+          payload: productState.payload,
           selectedOptions: productState.selectedOptions,
         },
       });
@@ -58,12 +58,12 @@ function ProductBuyButton({ payloadSettings, payload }) {
     <div css={buyButtonWrapperCSS} className='wps-component-products-buy-button'>
       <FilterHook name='before.product.buyButton' hasHTML={true} args={[productState]} />
       <Suspense fallback={false}>
-        {payload.availableForSale ? (
+        {productState.payload.availableForSale ? (
           <ProductBuyButtonWrapper
-            payload={payload}
+            payload={productState.payload}
             productState={productState}
             productDispatch={productDispatch}
-            payloadSettings={payloadSettings}
+            payloadSettings={productState.payloadSettings}
           />
         ) : (
           <FilterHook
@@ -81,7 +81,7 @@ function ProductBuyButton({ payloadSettings, payload }) {
 
       <FilterHook name='after.product.buyButton' hasHTML={true} args={[productState]} />
     </div>,
-    findPortalElement(payloadSettings.dropzoneProductBuyButton)
+    findPortalElement(productState.payloadSettings.dropzoneProductBuyButton)
   );
 }
 

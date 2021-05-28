@@ -1,5 +1,6 @@
 /** @jsx jsx */
 import { jsx, css } from '@emotion/react';
+import { useDebouncedCallback } from 'use-debounce';
 import { useProductState, useProductDispatch } from '../_state/hooks';
 import { isShowingComponent } from '../../../../common/components';
 import { ErrorBoundary } from 'react-error-boundary';
@@ -30,7 +31,7 @@ const ProductModal = wp.element.lazy(() =>
   import(/* webpackChunkName: 'ProductModal-public' */ '../buy-button/modal')
 );
 
-function ProductWrapper({ payloadSettings, componentId, payload }) {
+function ProductWrapper() {
   const { Suspense } = wp.element;
   const productState = useProductState();
   const productDispatch = useProductDispatch();
@@ -47,14 +48,18 @@ function ProductWrapper({ payloadSettings, componentId, payload }) {
     }
   `;
 
-  function onMouseOver() {
+  const debouncedMouseOver = useDebouncedCallback((value) => {
     if (!productState.isTouched) {
       productDispatch({ type: 'SET_IS_TOUCHED', payload: true });
     }
+  }, 500);
+
+  function onMouseOver() {
+    debouncedMouseOver();
   }
 
   function isAlignHeight() {
-    return wpshopify.settings.general.alignHeight || payloadSettings.alignHeight;
+    return wpshopify.settings.general.alignHeight || productState.payloadSettings.alignHeight;
   }
 
   return (
@@ -63,62 +68,55 @@ function ProductWrapper({ payloadSettings, componentId, payload }) {
       className='wps-item'
       onMouseOver={onMouseOver}
       data-wpshopify-is-available-for-sale={
-        payload.availableForSale ? payload.availableForSale : 'false'
+        productState.payload.availableForSale ? productState.payload.availableForSale : 'false'
       }
-      data-wpshopify-is-on-sale={payload.isOnSale ? payload.isOnSale : 'false'}>
-      {payloadSettings.htmlTemplate ? (
-        <ProductCustomTemplate payloadSettings={payloadSettings} payload={payload} />
+      data-wpshopify-is-on-sale={
+        productState.payload.isOnSale ? productState.payload.isOnSale : 'false'
+      }>
+      {productState.payloadSettings.htmlTemplate ||
+      productState.payloadSettings.htmlTemplateData ? (
+        <ProductCustomTemplate customHtmlData={productState.payloadSettings.htmlTemplateData} />
       ) : (
         <>
           <ErrorBoundary FallbackComponent={ErrorFallback}>
             <Suspense fallback={false}>
-              {isShowingComponent(payloadSettings, 'images') && (
-                <ProductImages payloadSettings={payloadSettings} payload={payload} />
+              {isShowingComponent(productState.payloadSettings, 'images') && <ProductImages />}
+            </Suspense>
+          </ErrorBoundary>
+
+          <ErrorBoundary FallbackComponent={ErrorFallback}>
+            <Suspense fallback={false}>
+              {isShowingComponent(productState.payloadSettings, 'title') && <ProductTitle />}
+            </Suspense>
+          </ErrorBoundary>
+
+          <ErrorBoundary FallbackComponent={ErrorFallback}>
+            <Suspense fallback={false}>
+              {isShowingComponent(productState.payloadSettings, 'pricing') && <ProductPricing />}
+            </Suspense>
+          </ErrorBoundary>
+
+          <ErrorBoundary FallbackComponent={ErrorFallback}>
+            <Suspense fallback={false}>
+              {isShowingComponent(productState.payloadSettings, 'description') && (
+                <ProductDescription />
               )}
             </Suspense>
           </ErrorBoundary>
 
           <ErrorBoundary FallbackComponent={ErrorFallback}>
             <Suspense fallback={false}>
-              {isShowingComponent(payloadSettings, 'title') && (
-                <ProductTitle payloadSettings={payloadSettings} payload={payload} />
-              )}
-            </Suspense>
-          </ErrorBoundary>
-
-          <ErrorBoundary FallbackComponent={ErrorFallback}>
-            <Suspense fallback={false}>
-              {isShowingComponent(payloadSettings, 'pricing') && (
-                <ProductPricing payloadSettings={payloadSettings} payload={payload} />
-              )}
-            </Suspense>
-          </ErrorBoundary>
-
-          <ErrorBoundary FallbackComponent={ErrorFallback}>
-            <Suspense fallback={false}>
-              {isShowingComponent(payloadSettings, 'description') && (
-                <ProductDescription payloadSettings={payloadSettings} payload={payload} />
-              )}
-            </Suspense>
-          </ErrorBoundary>
-
-          <ErrorBoundary FallbackComponent={ErrorFallback}>
-            <Suspense fallback={false}>
-              {isShowingComponent(payloadSettings, 'buy-button') && (
-                <ProductBuyButton payloadSettings={payloadSettings} payload={payload} />
+              {isShowingComponent(productState.payloadSettings, 'buy-button') && (
+                <ProductBuyButton />
               )}
             </Suspense>
           </ErrorBoundary>
         </>
       )}
 
-      {productState.isModalOpen && wpshopify.misc.isPro && payload && (
+      {productState.isModalOpen && wpshopify.misc.isPro && productState.payload && (
         <Suspense fallback={false}>
-          <ProductModal
-            payloadSettings={payloadSettings}
-            componentId={componentId}
-            payload={payload}
-          />
+          <ProductModal />
         </Suspense>
       )}
     </div>

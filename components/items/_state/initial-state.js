@@ -92,6 +92,7 @@ function ItemsInitialState({
     afterLoading: afterLoading,
     beforeLoading: beforeLoading,
     htmlTemplate: component.payloadSettings.htmlTemplate,
+    htmlTemplateData: false,
   };
 
   return itemsState;

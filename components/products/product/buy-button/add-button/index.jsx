@@ -40,13 +40,21 @@ function findSingleVariantFromPayload(payload) {
   return payload.variants[0];
 }
 
-function buildAddToCartParams(lineItems, variants) {
+function defaultLineItemOptions() {
+  return {
+    minQuantity: false,
+    maxQuantity: false,
+  };
+}
+
+function buildAddToCartParams(lineItems, variants, lineItemOptions = defaultLineItemOptions()) {
   var checkoutId = getCache('wps-last-checkout-id');
 
   return {
     checkoutId: checkoutId,
     lineItems: lineItems,
     variants: variants,
+    lineItemOptions: lineItemOptions,
   };
 }
 
@@ -293,7 +301,15 @@ function AddButton({
       checkoutRedirect(respNewCheckout, shopInfo.primaryDomain.url, () => setIsCheckingOut(false));
     } else {
       const resetAfter = wp.hooks.applyFilters('product.buyButton.resetVariantsAfterAdding', true);
-      let addToCartParams = buildAddToCartParams(lineItems, [variant]);
+
+      const lineItemOptions = {
+        minQuantity: payloadSettings.minQuantity,
+        maxQuantity: payloadSettings.maxQuantity,
+      };
+
+      let addToCartParams = buildAddToCartParams(lineItems, [variant], lineItemOptions);
+
+      console.log('addToCartParams', addToCartParams);
 
       if (maxQuantity && hasReachedMaxQuantity(addToCartParams, maxQuantity, variant)) {
         wp.hooks.doAction('cart.toggle', 'open');
@@ -375,7 +391,12 @@ function AddButtonText({ buttonText, addedToCart, addToCartButtonTextColor, payl
 
   useEffect(() => {
     if (addedToCart) {
-      setText(wp.i18n.__('We like that one too!', 'wpshopify'));
+      const addedText = wp.hooks.applyFilters(
+        'product.buyButton.addedText',
+        wp.i18n.__('We like that one too!', 'wpshopify')
+      );
+
+      setText(addedText);
       animeFadeInBottomSlow(addedTest.current);
 
       setTimeout(function () {

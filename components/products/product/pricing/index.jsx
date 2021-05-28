@@ -2,14 +2,19 @@ import { ProductPrices } from './prices';
 import { ProductPricingProvider } from './_state/provider';
 import { usePortal } from '../../../../common/hooks';
 import { findPortalElement } from '../../../../common/utils';
+import { useProductState } from '../_state/hooks';
 
-function ProductPricing({ payloadSettings, payload }) {
+function ProductPricing() {
+  const productState = useProductState();
+
   return usePortal(
-    <ProductPricingProvider payloadSettings={payloadSettings} payload={payload}>
-      <ProductPrices payloadSettings={payloadSettings} />
+    <ProductPricingProvider
+      payloadSettings={productState.payloadSettings}
+      payload={productState.payload}>
+      <ProductPrices payloadSettings={productState.payloadSettings} />
     </ProductPricingProvider>,
-    findPortalElement(payloadSettings.dropzoneProductPricing)
+    findPortalElement(productState.payloadSettings.dropzoneProductPricing)
   );
 }
 
-export default ProductPricing;
+export default wp.element.memo(ProductPricing);

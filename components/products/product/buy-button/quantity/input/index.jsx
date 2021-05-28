@@ -51,6 +51,14 @@ function ProductQuantityInput({ minQuantity, maxQuantity, addedToCart }) {
         quantityAmount = 1;
       }
 
+      if (minQuantity && quantityAmount < minQuantity) {
+        quantityAmount = minQuantity;
+      }
+
+      if (maxQuantity && quantityAmount > maxQuantity) {
+        quantityAmount = maxQuantity;
+      }
+
       productDispatch({ type: 'UPDATE_QUANTITY', payload: quantityAmount });
       setQuantityValue(quantityAmount);
     }

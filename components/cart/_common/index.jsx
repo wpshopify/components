@@ -222,6 +222,10 @@ function useAddLineItems(cartState, cartDispatch, addCheckoutLineItems) {
           variants: arrayOfVariants,
           lineItems: addCheckoutLineItems.lineItems,
           checkoutId: cartState.checkoutId,
+          lineItemOptions: {
+            minQuantity: false,
+            maxQuantity: false,
+          },
         });
 
         wp.hooks.doAction('cart.toggle', 'open');
@@ -356,6 +360,8 @@ function useReplaceLineItems(cartState, cartDispatch) {
   return useQuery(
     'checkout::replaceLineItems',
     () => {
+      console.log('useReplaceLineItems');
+
       return replaceLineItems(cartState.checkoutCache.lineItems);
     },
     {

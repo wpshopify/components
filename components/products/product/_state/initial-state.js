@@ -26,7 +26,15 @@ function isOnSale(payload) {
   return true;
 }
 
-function ProductInitialState({ payload, payloadSettings }) {
+function getInitialQuantity(payloadSettings) {
+  if (!payloadSettings.minQuantity) {
+    return 1;
+  }
+
+  return payloadSettings.minQuantity;
+}
+
+function ProductInitialState({ payload, payloadSettings, componentId }) {
   return {
     element: false,
     selectedVariant: false,
@@ -41,8 +49,16 @@ function ProductInitialState({ payload, payloadSettings }) {
     notices: [],
     allOptionsSelected: false,
     missingSelections: false,
-    quantity: 1,
+    quantity: getInitialQuantity(payloadSettings),
     isModalOpen: false,
+    selectFirstVariant: wp.hooks.applyFilters(
+      'product.buyButton.selectFirstVariant',
+      false,
+      payload
+    ),
+    payloadSettings: payloadSettings, // read only
+    payload: payload, // read only
+    componentId: componentId, // read only
   };
 }
 

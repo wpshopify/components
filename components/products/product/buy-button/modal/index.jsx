@@ -12,17 +12,17 @@ if (wpshopify.misc.isAdmin) {
   Modal.setAppElement('#wpshopify-root');
 }
 
-function htmlTemp(payloadSettings, payload) {
+function htmlTemp() {
   return `
       <div class="wps-modal-row" style="display: flex;">
          <div style="width: 60%;padding: 0px 3em 0px 1em;">
-            <ProductImages payloadSettings={payloadSettings} payload={payload} />
+            <ProductImages />
          </div>
          <div style="width: 40%;padding-right: 1em;">
-            <ProductTitle payloadSettings={payloadSettings} payload={payload} />
-            <ProductPricing payloadSettings={payloadSettings} payload={payload} />
-            <ProductDescription payloadSettings={payloadSettings} payload={payload} />
-            <ProductBuyButton payloadSettings={payloadSettings} payload={payload} />
+            <ProductTitle />
+            <ProductPricing />
+            <ProductDescription />
+            <ProductBuyButton />
          </div>
       </div>
    `;
@@ -33,26 +33,25 @@ function customModalSettings(payloadSettings, payload) {
     ...payloadSettings,
     titleTypeFontSize: '32px',
     linkTo: 'none',
-    htmlTemplate: htmlTemp(payloadSettings, payload),
+    htmlTemplateData: htmlTemp(),
     fullWidth: true,
     showFeaturedOnly: false,
     showZoom: true,
   });
 }
 
-function ProductModal({ payloadSettings, componentId, payload }) {
+function ProductModal() {
   const productState = useProductState();
   const productDispatch = useProductDispatch();
 
   const pSettings = usePayloadSettings(
-    payloadSettings,
-    customModalSettings(payloadSettings, payload)
+    productState.payloadSettings,
+    customModalSettings(productState.payloadSettings, productState.payload)
   );
 
   const customStyles = {
     overlay: {
       background: 'rgb(138 138 138 / 70%)',
-      transition: 'all 0.1s ease',
     },
     content: {
       maxWidth: wpshopify.misc.isAdmin ? '80%' : '1100px',
@@ -63,11 +62,14 @@ function ProductModal({ payloadSettings, componentId, payload }) {
       padding: '30px',
       background: '#f6f9fc',
       height: '80vh',
+      opacity: '1',
+      zIndex: '99999',
       left: '50%',
       overflow: 'visible',
       boxShadow: '0 7px 14px 0 rgba(60,66,87,.08), 0 3px 6px 0 rgba(0,0,0,.12)',
       top: wpshopify.misc.isAdmin ? '50%' : '40px',
       transform: wpshopify.misc.isAdmin ? 'translate(-50%, -50%)' : 'translate(-50%, 40px)',
+      transition: 'all 0.2s ease',
     },
   };
 
@@ -84,9 +86,9 @@ function ProductModal({ payloadSettings, componentId, payload }) {
       style={customStyles}
       bodyOpenClassName='wps-modal-open'>
       <ProductModalContent
-        payload={payload}
+        payload={productState.payload}
         payloadSettings={pSettings}
-        componentId={componentId}
+        componentId={productState.componentId}
       />
     </Modal>
   );
@@ -167,4 +169,4 @@ function ProductModalContent({ payload, payloadSettings, componentId }) {
   );
 }
 
-export default ProductModal;
+export default wp.element.memo(ProductModal);

@@ -177,6 +177,7 @@ function CartWrapper() {
       cartDispatch({ type: 'SET_IS_CART_EMPTY', payload: true });
       return;
     }
+    console.log('lineItemsAdded', lineItemsAdded);
 
     cartDispatch({
       type: 'UPDATE_LINE_ITEMS_AND_VARIANTS',

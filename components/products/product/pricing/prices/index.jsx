@@ -3,6 +3,7 @@ import { jsx, css } from '@emotion/react';
 import { ProductPricingContext } from '../_state/context';
 import { useProductState } from '../../_state/hooks';
 import ProductPrice from '../price';
+import { FilterHook } from '../../../../../common/utils';
 
 const ProductPricesCompareAt = wp.element.lazy(() =>
   import(/* webpackChunkName: 'ProductPricesCompareAt-public' */ '../compare-at')
@@ -30,6 +31,12 @@ function ProductPrices({ payloadSettings }) {
 
   return (
     <div className='wps-component-products-pricing' css={ProductPricesCompareAtCSS}>
+      <FilterHook
+        name='before.product.pricing'
+        hasHTML={true}
+        args={[productState, productPricingState]}
+      />
+
       {productPricingState.showCompareAt ? (
         <Suspense fallback={false}>
           <ProductPricesCompareAt
@@ -51,6 +58,12 @@ function ProductPrices({ payloadSettings }) {
           payloadSettings={payloadSettings}
         />
       )}
+
+      <FilterHook
+        name='after.product.pricing'
+        hasHTML={true}
+        args={[productState, productPricingState]}
+      />
     </div>
   );
 }
