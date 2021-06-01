@@ -31,7 +31,6 @@ function CartLineItem({ lineItem, inventory }) {
   const variantId = useRef(false);
   const lineItemElement = useRef();
   const isFirstRender = useRef(true);
-  const lineItemTotalElement = useRef();
 
   function onRemove(e) {
     removeLineItems([variantId.current], cartState, cartDispatch);
@@ -135,13 +134,11 @@ function CartLineItem({ lineItem, inventory }) {
                 setLineItemQuantity={setLineItemQuantity}
                 isFirstRender={isFirstRender}
                 setLineItemTotal={setLineItemTotal}
-                lineItemTotalElement={lineItemTotalElement}
               />
 
               <CartLineItemPrice
                 lineItem={lineItem}
                 lineItemTotal={lineItemTotal}
-                lineItemTotalElement={lineItemTotalElement}
                 lineItemQuantity={lineItemQuantity}
                 currencyCode={getCurrencyCodeFromPayload(cartState.checkoutCache)}
               />

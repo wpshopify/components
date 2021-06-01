@@ -5,13 +5,7 @@ import { shouldShowSaleNotice } from '../../../../common/pricing/data';
 import CartLineItemPriceSaleNotice from '../sale-notice';
 import { mq } from '../../../../common/css';
 
-function CartLineItemPrice({
-  lineItem,
-  currencyCode,
-  lineItemTotal,
-  lineItemTotalElement,
-  lineItemQuantity,
-}) {
+function CartLineItemPrice({ lineItem, currencyCode, lineItemTotal, lineItemQuantity }) {
   const showingSaleNotice = shouldShowSaleNotice(lineItem);
 
   const priceCSS = css`
@@ -36,6 +30,18 @@ function CartLineItemPrice({
     }
   `;
 
+  return (
+    <div className='wps-cart-lineitem-price-total-wrapper' css={priceCSS}>
+      <LineItemPriceSingle currencyCode={currencyCode} lineItemTotal={lineItemTotal} />
+
+      {showingSaleNotice && (
+        <CartLineItemPriceSaleNotice lineItem={lineItem} lineItemQuantity={lineItemQuantity} />
+      )}
+    </div>
+  );
+}
+
+function LineItemPriceSingle({ lineItemTotal, currencyCode }) {
   const lineItemPriceCSS = css`
     line-height: 1;
     margin-top: 0;
@@ -51,17 +57,8 @@ function CartLineItemPrice({
   `;
 
   return (
-    <div className='wps-cart-lineitem-price-total-wrapper' css={priceCSS}>
-      <div
-        className='wps-cart-lineitem-price wps-cart-lineitem-price-total'
-        ref={lineItemTotalElement}
-        css={lineItemPriceCSS}>
-        <PrettyPrice price={lineItemTotal} currencyCode={currencyCode} />
-      </div>
-
-      {showingSaleNotice && (
-        <CartLineItemPriceSaleNotice lineItem={lineItem} lineItemQuantity={lineItemQuantity} />
-      )}
+    <div className='wps-cart-lineitem-price wps-cart-lineitem-price-total' css={lineItemPriceCSS}>
+      <PrettyPrice price={lineItemTotal} currencyCode={currencyCode} />
     </div>
   );
 }

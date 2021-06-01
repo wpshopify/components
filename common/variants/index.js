@@ -103,8 +103,6 @@ function findInventoryFromVariantId(inventory, selectedVariant) {
 }
 
 function findAvailableQuantityByLocations(variant) {
-  console.log('---- variant.inventoryLevels', variant.inventoryLevels);
-
   if (!variant || !variant.inventoryLevels || !variant.inventoryLevels.hasOwnProperty('edges')) {
     return false;
   }

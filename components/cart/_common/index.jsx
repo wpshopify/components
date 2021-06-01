@@ -340,7 +340,7 @@ function useGetProductsFromLineItems(cartState, cartDispatch, instancesQuery) {
         type: 'SET_LINE_ITEMS_AND_VARIANTS',
         payload: {
           lineItems: { products: products },
-          checkoutId: instancesQuery.data.checkout,
+          checkoutId: instancesQuery.data.checkout.id,
         },
       });
 
@@ -360,8 +360,6 @@ function useReplaceLineItems(cartState, cartDispatch) {
   return useQuery(
     'checkout::replaceLineItems',
     () => {
-      console.log('useReplaceLineItems');
-
       return replaceLineItems(cartState.checkoutCache.lineItems);
     },
     {

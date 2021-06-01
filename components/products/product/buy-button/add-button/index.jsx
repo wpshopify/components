@@ -309,8 +309,6 @@ function AddButton({
 
       let addToCartParams = buildAddToCartParams(lineItems, [variant], lineItemOptions);
 
-      console.log('addToCartParams', addToCartParams);
-
       if (maxQuantity && hasReachedMaxQuantity(addToCartParams, maxQuantity, variant)) {
         wp.hooks.doAction('cart.toggle', 'open');
         productDispatch({

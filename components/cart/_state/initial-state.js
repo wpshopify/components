@@ -1,5 +1,6 @@
 function CartInitialState(cartOptions, productOptions) {
   return {
+    checkoutId: false,
     isUpdating: false,
     isCheckingOut: false,
     isCartOpen: false,
@@ -16,6 +17,7 @@ function CartInitialState(cartOptions, productOptions) {
     beforeDiscountTotal: false,
     checkoutCache: {
       lineItems: [],
+      lineItemOptions: [],
       variants: [],
       total: 0.0,
     },

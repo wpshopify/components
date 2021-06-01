@@ -1,7 +1,6 @@
 import find from 'lodash/find';
 import { CartContext } from '../../_state/context';
 import { calcLineItemTotal } from '../../../../common/products';
-import { useAnime, fadeInRightSlow } from '../../../../common/animations';
 import { containerFluidCSS, flexRowCSS, mq } from '../../../../common/css';
 import CartLineItemQuantityIncIcon from './icon-inc';
 import CartLineItemQuantityDecIcon from './icon-dec';
@@ -27,10 +26,8 @@ function CartLineItemQuantity({
   setLineItemQuantity,
   isFirstRender,
   setLineItemTotal,
-  lineItemTotalElement,
 }) {
   const [cartState, cartDispatch] = useContext(CartContext);
-  const animeFadeInRightSlow = useAnime(fadeInRightSlow);
 
   const maxQuantity = wp.hooks.applyFilters(
     'cart.lineItems.maxQuantity',
@@ -90,6 +87,33 @@ function CartLineItemQuantity({
     }
   `;
 
+  function findLineItemOptionsFromLineItemId(lineItemOptions, lineItemId) {
+    if (!lineItemOptions.length) {
+      return false;
+    }
+
+    return lineItemOptions.filter((option) => option.variantId === lineItemId);
+  }
+
+  function findNewQuantityFromOptions(newQuantity, lineItemOptions) {
+    var maxQuantity = lineItemOptions[0].options.maxQuantity;
+    var minQuantity = lineItemOptions[0].options.minQuantity;
+
+    if (maxQuantity) {
+      if (newQuantity > maxQuantity) {
+        return maxQuantity;
+      }
+    }
+
+    if (minQuantity) {
+      if (newQuantity < minQuantity) {
+        return minQuantity;
+      }
+    }
+
+    return newQuantity;
+  }
+
   function changeQuantity(newQuantity) {
     let lineItemFound = getLineItemFromState(lineItem, cartState.checkoutCache.lineItems);
 
@@ -97,7 +121,14 @@ function CartLineItemQuantity({
       variantId.current = lineItemFound.variantId;
     }
 
-    animeFadeInRightSlow(lineItemTotalElement.current);
+    var lineItemOptions = findLineItemOptionsFromLineItemId(
+      cartState.checkoutCache.lineItemOptions,
+      variantId.current
+    );
+
+    if (lineItemOptions.length) {
+      newQuantity = findNewQuantityFromOptions(newQuantity, lineItemOptions);
+    }
 
     setLineItemQuantity(newQuantity);
     setLineItemTotal(calcLineItemTotal(newQuantity, lineItem.price));

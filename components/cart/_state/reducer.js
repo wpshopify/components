@@ -1,6 +1,8 @@
 import update from 'immutability-helper';
 import some from 'lodash/some';
+import unionBy from 'lodash/unionBy';
 import concat from 'lodash/concat';
+import compact from 'lodash/compact';
 import uniqWith from 'lodash/uniqWith';
 import isEqual from 'lodash/isEqual';
 import isEmpty from 'lodash/isEmpty';
@@ -144,6 +146,27 @@ function updateLineItemQuantity(state, payload) {
   return state;
 }
 
+function mergeLineItemsOptions(lineItemOptions, lineItems, checkoutCache) {
+  var newLineItemOptions = lineItems.map((lineItem) => {
+    var alreadyExists = some(checkoutCache.lineItemOptions, { variantId: lineItem.variantId });
+
+    if (alreadyExists) {
+      return false;
+    }
+
+    return {
+      variantId: lineItem.variantId,
+      options: lineItemOptions,
+    };
+  });
+
+  var unionized = unionBy(checkoutCache.lineItemOptions, newLineItemOptions);
+
+  var finalOptions = compact(unionized);
+
+  return finalOptions;
+}
+
 /*
 
 Responsible for: updating the checkout cache
@@ -155,9 +178,14 @@ variants: What we use to display the correct data within the cart
 function updateLineItemsAndVariants(checkoutCache, payload) {
   return {
     lineItems: mergeCheckoutCacheLineItems(
-      checkoutCache.lineItems,
+      checkoutCache,
       payload.lineItems,
       payload.lineItemOptions
+    ),
+    lineItemOptions: mergeLineItemsOptions(
+      payload.lineItemOptions,
+      payload.lineItems,
+      checkoutCache
     ),
     variants: mergeCheckoutCacheVariants(checkoutCache.variants, payload.variants),
   };
@@ -174,6 +202,7 @@ function setLineItemsAndVariants(checkoutCache, payload) {
   return {
     lineItems: findLineItemsFromProducts(payload.products, checkoutCache),
     variants: findVariantsFromProductIds(payload.products, checkoutCache),
+    lineItemOptions: checkoutCache.lineItemOptions,
   };
 }
 
@@ -185,6 +214,10 @@ Responsible for: removing line items and variants
 function removeLineItemsAndVariants(checkoutCache, payload) {
   checkoutCache.lineItems = filter(checkoutCache.lineItems, (o) => o.variantId !== payload);
   checkoutCache.variants = filter(checkoutCache.variants, (o) => o.id !== payload);
+  checkoutCache.lineItemOptions = filter(
+    checkoutCache.lineItemOptions,
+    (o) => o.variantId !== payload
+  );
 
   return checkoutCache;
 }
