@@ -154,7 +154,7 @@ function extractCheckoutURL(webUrl) {
 }
 
 function checkoutUrlWithCustomDomain(primaryDomain, webUrl) {
-  if (!primaryDomain || !webUrl.includes('myshopify.com')) {
+  if (!primaryDomain || (webUrl && !webUrl.includes('myshopify.com'))) {
     return webUrl;
   }
 

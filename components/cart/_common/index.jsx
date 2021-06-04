@@ -12,8 +12,9 @@ import to from 'await-to-js';
 import { useQuery } from 'react-query';
 import has from 'lodash/has';
 import isEmpty from 'lodash/isEmpty';
-
 import { getVariantIdFromLineItems, getVariantsFromProducts } from '../../../common/utils';
+
+const { useState } = wp.element;
 
 function addDiscountCode(cartState, cartDispatch, discountVal) {
   return new Promise(async (resolve, reject) => {
@@ -238,6 +239,8 @@ function useAddLineItems(cartState, cartDispatch, addCheckoutLineItems) {
 }
 
 function useInstances(cartState, cartDispatch) {
+  const [isBuildingNewCheckout, setIsBuildingNewCheckout] = useState(false);
+
   function setEmptyCheckout(cartDispatch) {
     cartDispatch({
       type: 'SET_CHECKOUT_ID',
@@ -248,9 +251,9 @@ function useInstances(cartState, cartDispatch) {
   }
 
   return useQuery(
-    'checkout::instances',
+    'checkout::instances::' + isBuildingNewCheckout,
     () => {
-      return buildInstances(cartState.buildNewCheckout);
+      return buildInstances(isBuildingNewCheckout);
     },
     {
       onError: (error) => {
@@ -277,13 +280,9 @@ function useInstances(cartState, cartDispatch) {
           return setEmptyCheckout();
         }
 
-        // If checkout was completed ...
+        // If checkout was completed, generate a new checkout session
         if (data.checkout.completedAt) {
-          cartDispatch({
-            type: 'SET_BUILD_NEW_CHECKOUT',
-            payload: true,
-          });
-
+          setIsBuildingNewCheckout(true);
           return;
         }
 

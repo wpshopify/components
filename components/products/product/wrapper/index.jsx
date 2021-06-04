@@ -6,6 +6,7 @@ import { isShowingComponent } from '../../../../common/components';
 import { ErrorBoundary } from 'react-error-boundary';
 import ErrorFallback from '../../../error-fallback';
 import ProductCustomTemplate from '../template';
+import isEqual from 'lodash/isEqual';
 
 const ProductTitle = wp.element.lazy(() =>
   import(/* webpackChunkName: 'ProductTitle-public' */ '../title')
@@ -31,10 +32,16 @@ const ProductModal = wp.element.lazy(() =>
   import(/* webpackChunkName: 'ProductModal-public' */ '../buy-button/modal')
 );
 
-function ProductWrapper() {
-  const { Suspense } = wp.element;
+function ProductWrapper({ payloadSettings }) {
+  const { Suspense, useEffect } = wp.element;
   const productState = useProductState();
   const productDispatch = useProductDispatch();
+
+  useEffect(() => {
+    if (!isEqual(productState.payloadSettings, payloadSettings)) {
+      productDispatch({ type: 'SET_PAYLOAD_SETTINGS', payload: payloadSettings });
+    }
+  }, [payloadSettings]);
 
   const ProductWrapperCSS = css`
     padding: 0;

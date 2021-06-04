@@ -54,6 +54,7 @@ function CartButton({ options }) {
       return false;
     } else if (wpshopify.settings.general.cartConditionalFixedTabLoading === 'manual') {
       if (
+        wpshopify.settings.general.cartConditionalManuallySelectedPages &&
         wpshopify.settings.general.cartConditionalManuallySelectedPages.includes(
           wpshopify.misc.postID.toString()
         )

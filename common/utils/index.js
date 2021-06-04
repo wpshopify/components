@@ -537,7 +537,9 @@ function getVariantIdFromLineItems(lineItemsAndVariants) {
 function getVariantsFromProducts(productsResp, arrayOfVariantIds) {
   return productsResp.model.products.map((product) => {
     var foundVariant = product.variants.filter((variant) => {
-      return arrayOfVariantIds.includes(variant.id);
+      if (arrayOfVariantIds) {
+        return arrayOfVariantIds.includes(variant.id);
+      }
     });
 
     return foundVariant[0];

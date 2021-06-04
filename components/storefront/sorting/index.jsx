@@ -32,7 +32,7 @@ function StorefrontSorting() {
 
     let sortKey = event.target.value;
 
-    if (sortKey.includes('-REVERSE')) {
+    if (sortKey && sortKey.includes('-REVERSE')) {
       sortKey = sortKey.replace('-REVERSE', '');
     }
 

@@ -35,6 +35,15 @@ function ProductReducer(state, action) {
       };
     }
 
+    case 'SET_PAYLOAD_SETTINGS': {
+      return {
+        ...state,
+        payloadSettings: update(state.payloadSettings, {
+          $set: action.payload,
+        }),
+      };
+    }
+
     case 'SET_IS_TOUCHED': {
       return {
         ...state,

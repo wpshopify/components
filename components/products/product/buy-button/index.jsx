@@ -85,4 +85,4 @@ function ProductBuyButton() {
   );
 }
 
-export default wp.element.memo(ProductBuyButton);
+export default ProductBuyButton;

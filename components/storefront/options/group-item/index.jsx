@@ -22,7 +22,9 @@ function StorefrontFilterOptionsGroupItem({
       setIsSelected(false);
     }
 
-    if (!storefrontState['selected' + capitalizeFirstLetter(itemType)].includes(itemValue)) {
+    var name = storefrontState['selected' + capitalizeFirstLetter(itemType)];
+
+    if (name && !name.includes(itemValue)) {
       setIsSelected(false);
     }
   }, [

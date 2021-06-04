@@ -22,16 +22,8 @@ const Loader = wp.element.lazy(() =>
   import(/* webpackChunkName: 'Loader-public' */ '../../loader')
 );
 
-const CartHeader = wp.element.lazy(() =>
-  import(/* webpackChunkName: 'CartHeader-public' */ '../header')
-);
-
-const CartContents = wp.element.lazy(() =>
-  import(/* webpackChunkName: 'CartContents-public' */ '../contents')
-);
-
-const CartFooter = wp.element.lazy(() =>
-  import(/* webpackChunkName: 'CartFooter-public' */ '../footer')
+const CartContainer = wp.element.lazy(() =>
+  import(/* webpackChunkName: 'CartContainer-public' */ '../container')
 );
 
 function CartWrapper() {
@@ -51,7 +43,7 @@ function CartWrapper() {
   const isCartOpen = useCartToggle(cartElement);
 
   const addLineItemsQuery = useAddLineItems(cartState, cartDispatch, addCheckoutLineItems);
-  const instancesQuery = useInstances(cartState, cartDispatch);
+  const instancesQuery = useInstances(cartState, cartDispatch, cartState.buildNewCheckout);
 
   const productsFromLineItemsQuery = useGetProductsFromLineItems(
     cartState,
@@ -149,7 +141,7 @@ function CartWrapper() {
   }, [setCheckoutAttributes]);
 
   useEffect(() => {
-    if (setCheckoutAttributes === null) {
+    if (setCheckoutNotes === null) {
       return;
     }
 
@@ -250,14 +242,7 @@ function CartWrapper() {
       {<CartButtons buttons={cartState.buttons} />}
       <Suspense fallback='Loading cart ...'>
         {cartState.isCartLoaded && (
-          <>
-            <CartHeader cartState={cartState} cartDispatch={cartDispatch} />
-            <CartContents
-              isCartEmpty={cartState.isCartEmpty}
-              checkoutCache={cartState.checkoutCache}
-            />
-            <CartFooter />
-          </>
+          <CartContainer cartState={cartState} cartDispatch={cartDispatch} />
         )}
       </Suspense>
     </div>

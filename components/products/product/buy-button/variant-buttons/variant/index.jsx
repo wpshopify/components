@@ -50,7 +50,9 @@ function ProductVariantButtonValue({
     }`;
 
   function maybeColorSwatches(variant, defaultCustomStyles) {
-    if (!colorSwatchNames.map((v) => v.toLowerCase()).includes(variant.name.toLowerCase())) {
+    var namesLowerCased = colorSwatchNames.map((v) => v.toLowerCase());
+
+    if (namesLowerCased && !namesLowerCased.includes(variant.name.toLowerCase())) {
       return defaultCustomStyles;
     }
 
