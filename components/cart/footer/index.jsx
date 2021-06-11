@@ -36,6 +36,7 @@ function CartFooter() {
 
     .wps-notices-cart {
       margin-bottom: 13px;
+      max-width: 100%;
     }
   `;
 

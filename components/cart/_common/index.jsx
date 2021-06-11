@@ -265,7 +265,7 @@ function useInstances(cartState, cartDispatch) {
           },
         });
 
-        setEmptyCheckout();
+        setEmptyCheckout(cartDispatch);
       },
       onSuccess: (data) => {
         if (!data || !data.checkout) {
@@ -277,7 +277,7 @@ function useInstances(cartState, cartDispatch) {
             },
           });
 
-          return setEmptyCheckout();
+          return setEmptyCheckout(cartDispatch);
         }
 
         // If checkout was completed, generate a new checkout session

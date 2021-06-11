@@ -49,6 +49,7 @@ function ProductBuyButtonWrapper({ payloadSettings, payload, productState, produ
           maxQuantity={payloadSettings.maxQuantity}
           showLabel={payloadSettings.showQuantityLabel}
           labelText={payloadSettings.quantityLabelText}
+          payload={payload}
         />
       )}
       {productState.hasManyVariants && !isHidingControls() && (

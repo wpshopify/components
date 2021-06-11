@@ -1,6 +1,6 @@
 /** @jsx jsx */
 import { jsx, css } from '@emotion/react';
-import { slideInFromTop } from '../../../../../common/css';
+import { slideInFromBottom } from '../../../../../common/css';
 
 function ClearSelections({ productDispatch, variantStyle }) {
   const ClearSelectionsCSS = css`
@@ -28,7 +28,7 @@ function ClearSelections({ productDispatch, variantStyle }) {
   }
 
   return (
-    <p css={[ClearSelectionsCSS, slideInFromTop]} onClick={onClear}>
+    <p css={[ClearSelectionsCSS, slideInFromBottom]} onClick={onClear}>
       Clear selections
     </p>
   );

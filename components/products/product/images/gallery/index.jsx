@@ -20,14 +20,19 @@ function ProductGallery({ payloadSettings, payload }) {
   }
 
   function isFeaturedOnly() {
+    console.log('isFeaturedOnly 1');
+
     if (hasLink(payloadSettings)) {
-      if (payloadSettings.showFeaturedOnly) {
+      console.log('isFeaturedOnly 2', payloadSettings);
+      if (payloadSettings.showFeaturedOnly || payloadSettings.linkTo !== 'none') {
+        console.log('isFeaturedOnly 3');
         return true;
       } else {
+        console.log('isFeaturedOnly 4');
         return false;
       }
     }
-
+    console.log('isFeaturedOnly 5');
     return payloadSettings.showFeaturedOnly;
   }
 
@@ -52,6 +57,7 @@ function ProductGallery({ payloadSettings, payload }) {
       {isFeaturedOnly() ? (
         <ProductFeaturedImage
           selectedVariant={productState.selectedVariant}
+          isOnSale={productState.isOnSale}
           payload={payload}
           payloadSettings={payloadSettings}
         />
@@ -64,6 +70,7 @@ function ProductGallery({ payloadSettings, payload }) {
               selectedVariant={productState.selectedVariant}
               payload={payload}
               payloadSettings={payloadSettings}
+              isOnSale={productState.isOnSale}
             />
             <ProductThumbnailImages product={payload} payloadSettings={payloadSettings} />
           </>
@@ -73,6 +80,7 @@ function ProductGallery({ payloadSettings, payload }) {
           selectedVariant={productState.selectedVariant}
           payload={payload}
           payloadSettings={payloadSettings}
+          isOnSale={productState.isOnSale}
         />
       )}
     </>

@@ -5,6 +5,7 @@ import { ProductQuantityInput } from './input';
 import { containsOnly } from '/Users/andrew/www/devil/devilbox-new/data/www/wpshopify-utils';
 
 function ProductQuantity({
+  payload,
   showLabel,
   labelText,
   minQuantity,
@@ -32,6 +33,7 @@ function ProductQuantity({
           minQuantity={minQuantity}
           maxQuantity={maxQuantity}
           addedToCart={addedToCart}
+          payload={payload}
         />
       </div>
     </div>

@@ -1,4 +1,4 @@
-function CartInitialState(cartOptions, productOptions) {
+function CartInitialState(cartOptions, productOptions, storefrontOptions, searchOptions) {
   return {
     checkoutId: false,
     isUpdating: false,
@@ -23,7 +23,13 @@ function CartInitialState(cartOptions, productOptions) {
     },
     percentageOff: false,
     amountOff: false,
-    productsVisible: productOptions ? productOptions.length : false,
+    productsVisible: productOptions
+      ? productOptions.length
+      : storefrontOptions
+      ? storefrontOptions.length
+      : searchOptions
+      ? searchOptions.length
+      : false,
     shopInfo: false,
     customAttributes: [],
     note: false,

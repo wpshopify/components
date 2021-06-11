@@ -1,13 +1,11 @@
+/** @jsx jsx */
+import { jsx, css } from '@emotion/react';
 import find from 'lodash/find';
 import { CartContext } from '../../_state/context';
 import { calcLineItemTotal } from '../../../../common/products';
 import { containerFluidCSS, flexRowCSS, mq } from '../../../../common/css';
 import CartLineItemQuantityIncIcon from './icon-inc';
 import CartLineItemQuantityDecIcon from './icon-dec';
-
-/** @jsx jsx */
-import { jsx, css } from '@emotion/react';
-
 const { useContext } = wp.element;
 
 // 1 is the previous value before decrementing _again_

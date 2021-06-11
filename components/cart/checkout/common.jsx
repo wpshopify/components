@@ -65,6 +65,22 @@ function useCheckout(cartState, cartDispatch, afterRedirect) {
   return useQuery(
     'cart::checkout',
     () => {
+      var isCheckingOut = wp.hooks.applyFilters(
+        'before.checkout',
+        cartState.isCheckingOut,
+        cartState
+      );
+
+      if (!isCheckingOut) {
+        return Promise.reject(
+          wp.hooks.applyFilters(
+            'before.checkout.message',
+            'Unable to checkout. Please reload the page and try again.',
+            cartState
+          )
+        );
+      }
+
       return onCheckoutQueries(cartState);
     },
     {
@@ -84,6 +100,7 @@ function useCheckout(cartState, cartDispatch, afterRedirect) {
         checkoutRedirect(data.checkout, data.shopInfo.primaryDomain.url, afterRedirect);
       },
       ...queryOptionsNoRefetch,
+      retry: false,
     }
   );
 }

@@ -84,7 +84,12 @@ function combineAllVariants(variants) {
   return reduce(
     variants,
     function (result, value, key) {
-      if (value) return result.concat(value.variants);
+      if (!result) {
+        return [];
+      }
+      if (value) {
+        return result.concat(value.variants);
+      }
     },
     []
   );

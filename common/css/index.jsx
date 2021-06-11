@@ -131,8 +131,24 @@ const slideInFromTopKeyframes = keyframes`
    }
 `;
 
+const slideInFromBottomKeyframes = keyframes`
+   0% {
+      opacity: 0;
+      transform: translateY(10px);
+   }
+   100% {
+      opacity: 1;
+      transform: translateY(0);
+   }
+`;
+
 const slideInFromTop = css`
   animation: ${slideInFromTopKeyframes} 0.3s ease;
+  animation-timing-function: cubic-bezier(0.445, 0.05, 0.55, 0.95);
+`;
+
+const slideInFromBottom = css`
+  animation: ${slideInFromBottomKeyframes} 0.3s ease;
   animation-timing-function: cubic-bezier(0.445, 0.05, 0.55, 0.95);
 `;
 
@@ -160,5 +176,6 @@ export {
   IconCSS,
   mq,
   slideInFromTop,
+  slideInFromBottom,
   fadeIn,
 };

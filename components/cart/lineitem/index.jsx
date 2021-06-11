@@ -17,6 +17,8 @@ import { calcLineItemTotal, isAvailable } from '../../../common/products';
 import { containerFluidCSS, flexRowCSS, flexColSmallCSS, mq } from '../../../common/css';
 import { getCurrencyCodeFromPayload } from '../../../common/pricing/data';
 
+import { FilterHook } from '../../../common/utils';
+
 /** @jsx jsx */
 import { jsx, css } from '@emotion/react';
 import find from 'lodash/find';
@@ -108,6 +110,8 @@ function CartLineItem({ lineItem, inventory }) {
       <CartLineItemImage lineItem={lineItem} cartState={cartState} />
 
       <div className='wps-cart-lineitem-content' css={cartLineItemContentCSS}>
+        <FilterHook name='before.lineItem.title' hasHTML={true} args={[cartState]} />
+
         <div
           css={lineItemTitle}
           className='wps-cart-lineitem-title'
@@ -119,6 +123,8 @@ function CartLineItem({ lineItem, inventory }) {
             </div>
           </div>
         </div>
+
+        <FilterHook name='after.lineItem.title' hasHTML={true} args={[cartState]} />
 
         {hasRealVariant() && <CartLineItemVariantTitle lineItem={lineItem} />}
 

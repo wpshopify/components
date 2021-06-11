@@ -4,6 +4,10 @@ import { mq } from '../../../common/css';
 import PaginationItemsMap from './map';
 import { useItemsState } from '../../items/_state/hooks';
 
+const Notice = wp.element.lazy(() =>
+  import(/* webpackChunkName: 'Notice-public' */ '../../notice')
+);
+
 function PaginationItems({ children }) {
   const itemsState = useItemsState();
 
@@ -60,7 +64,11 @@ function PaginationItems({ children }) {
             componentId={itemsState.componentId}>
             {children}
           </PaginationItemsMap>
-        ) : null}
+        ) : (
+          <Notice status='info' isDismissible={false}>
+            No items found
+          </Notice>
+        )}
       </section>
     </section>
   ) : null;

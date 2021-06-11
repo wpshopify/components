@@ -10,6 +10,10 @@ const ProductImageSoldOutLabel = wp.element.lazy(() =>
   import(/* webpackChunkName: 'ProductImageSoldOutLabel-public' */ '../sold-out-label')
 );
 
+const ProductImageOnSaleLabel = wp.element.lazy(() =>
+  import(/* webpackChunkName: 'ProductImageOnSaleLabel-public' */ '../on-sale-label')
+);
+
 const { useEffect, useContext, useRef, useState, Suspense } = wp.element;
 
 function getVariantImage(variant) {
@@ -22,7 +26,7 @@ function destroyDrift(drift) {
   drift = null;
 }
 
-function ProductFeaturedImage({ payloadSettings, selectedVariant, payload }) {
+function ProductFeaturedImage({ payloadSettings, selectedVariant, payload, isOnSale }) {
   const paneElement = useRef();
   const isFirstRender = useRef(true);
   const [galleryState] = useContext(ProductGalleryContext);
@@ -101,9 +105,17 @@ function ProductFeaturedImage({ payloadSettings, selectedVariant, payload }) {
       : payloadSettings.imagesAlign};
   `;
 
+  const isOutOfStock = payload.availableForSale === false;
+
   return (
     <div className='wps-gallery-featured-wrapper' ref={paneElement} css={paneElementCSS}>
-      {payload.availableForSale === false && featImage && (
+      {isOnSale && wp.hooks.applyFilters('product.showSaleNotice', true) && !isOutOfStock && (
+        <Suspense fallback={false}>
+          <ProductImageOnSaleLabel />
+        </Suspense>
+      )}
+
+      {isOutOfStock && featImage && wp.hooks.applyFilters('product.showOutOfStockNotice', true) && (
         <Suspense fallback={false}>
           <ProductImageSoldOutLabel />
         </Suspense>
