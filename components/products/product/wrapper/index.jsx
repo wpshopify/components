@@ -74,6 +74,7 @@ function ProductWrapper({ payloadSettings }) {
       css={ProductWrapperCSS}
       className='wps-item'
       onMouseOver={onMouseOver}
+      aria-label='Product'
       data-wpshopify-is-available-for-sale={
         productState.payload.availableForSale ? productState.payload.availableForSale : 'false'
       }

@@ -2,7 +2,7 @@
 import { jsx, css } from '@emotion/react';
 import { useItemsState, useItemsDispatch } from '../../items/_state/hooks';
 import { usePortal } from '../../../common/hooks';
-import { FilterHook } from '../../../common/utils';
+import { FilterHook } from '/Users/andrew/www/devil/devilbox-new/data/www/wpshopify-utils';
 import { useStorefrontState } from '../_state/hooks';
 const { useState } = wp.element;
 
@@ -59,7 +59,7 @@ function StorefrontSorting() {
   `;
 
   return usePortal(
-    <div className='wps-component wps-component-sorting'>
+    <div className='wps-component wps-component-sorting' aria-label='Storefront Sorting'>
       <label className='wps-sorting-heading wps-mr-2' htmlFor='wps-sorting'>
         <FilterHook name='storefront.sorting.label.text'>
           {wp.i18n.__('Sort by:', 'wpshopify')}

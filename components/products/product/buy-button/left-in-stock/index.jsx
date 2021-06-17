@@ -1,5 +1,4 @@
 import { ProductBuyButtonTextNotice } from '../notice';
-import { findNonCachedVariants } from '../../../../../common/utils';
 import { findTotalInventoryQuantity } from '../../../../../common/variants';
 import {
   getVariantInventoryManagement,
@@ -8,6 +7,7 @@ import {
   queryOptionsNoRefetch,
 } from '/Users/andrew/www/devil/devilbox-new/data/www/wpshopify-api';
 import { useIsMounted } from '/Users/andrew/www/devil/devilbox-new/data/www/wpshopify-hooks';
+import { findNonCachedVariants } from '/Users/andrew/www/devil/devilbox-new/data/www/wpshopify-utils';
 import unionBy from 'lodash/unionBy';
 import has from 'lodash/has';
 import { useQuery } from 'react-query';

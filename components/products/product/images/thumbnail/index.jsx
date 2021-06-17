@@ -2,7 +2,7 @@
 import { jsx, css } from '@emotion/react';
 import ProductImage from '../image';
 import { ProductGalleryContext } from '../gallery/_state/context';
-import { FilterHook } from '../../../../../common/utils';
+import { FilterHook } from '/Users/andrew/www/devil/devilbox-new/data/www/wpshopify-utils';
 
 function ProductThumbnailImage({ image, payload, payloadSettings }) {
   const { useEffect, useContext, useState } = wp.element;
@@ -43,6 +43,7 @@ function ProductThumbnailImage({ image, payload, payloadSettings }) {
     <div
       css={ThumbnailCSS}
       className='wps-component wps-component-products-images-thumbnail'
+      aria-label='Product Images Thumbnail'
       onClick={onClick}
       data-wps-is-active={isActive}>
       <ProductImage

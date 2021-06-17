@@ -1,7 +1,7 @@
 /** @jsx jsx */
 import { jsx, css } from '@emotion/react';
 import { usePortal } from '../../common/hooks';
-import { findPortalElement } from '../../common/utils';
+import { findPortalElement } from '/Users/andrew/www/devil/devilbox-new/data/www/wpshopify-utils';
 
 import isString from 'lodash/isString';
 import isObject from 'lodash/isObject';

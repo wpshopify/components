@@ -4,7 +4,7 @@ import difference from 'lodash/difference';
 import isEmpty from 'lodash/isEmpty';
 import hasIn from 'lodash/hasIn';
 import isString from 'lodash/isString';
-import { objectIsEmpty } from '../utils';
+import { objectIsEmpty } from '/Users/andrew/www/devil/devilbox-new/data/www/wpshopify-utils';
 
 function lowercaseCurrentList(currentList) {
   if (!currentList) {

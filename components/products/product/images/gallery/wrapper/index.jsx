@@ -9,7 +9,10 @@ function ProductGalleryWrapper({ payloadSettings, payload }) {
   `;
 
   return (
-    <div className='wps-component wps-component-products-images' css={ProductGalleryWrapperCSS}>
+    <div
+      className='wps-component wps-component-products-images'
+      aria-label='Product Images'
+      css={ProductGalleryWrapperCSS}>
       <ProductGalleryProvider payload={payload}>
         <ProductGallery payload={payload} payloadSettings={payloadSettings} />
       </ProductGalleryProvider>

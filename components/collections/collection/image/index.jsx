@@ -3,7 +3,7 @@ import { jsx, css } from '@emotion/react';
 import { CollectionContext } from '../_state/context';
 import { usePortal } from '../../../../common/hooks';
 import { addCustomSizingToImageUrl } from '../../../../common/images';
-import { findPortalElement } from '../../../../common/utils';
+import { findPortalElement } from '/Users/andrew/www/devil/devilbox-new/data/www/wpshopify-utils';
 
 const Link = wp.element.lazy(() => import(/* webpackChunkName: 'Link-public' */ '../../../link'));
 
@@ -45,7 +45,10 @@ function CollectionImage({ payloadSettings }) {
 
   return usePortal(
     imageSrc ? (
-      <div className='wps-component wps-component-collection-image' css={CollectionImageWrapperCSS}>
+      <div
+        className='wps-component wps-component-collection-image'
+        aria-label='Collection Image'
+        css={CollectionImageWrapperCSS}>
         <Link
           type='collections'
           payload={collectionState.payload}

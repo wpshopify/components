@@ -1,6 +1,6 @@
 /** @jsx jsx */
 import { jsx, css } from '@emotion/react';
-import { FilterHook } from '../../../../../../common/utils';
+import { FilterHook } from '/Users/andrew/www/devil/devilbox-new/data/www/wpshopify-utils';
 
 function ProductVariantMissingSelection({ productOptionState }) {
   const selectStyles = css`

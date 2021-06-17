@@ -1,11 +1,11 @@
 import { ProductOptionContext } from '../../_state/context';
 import { useProductDispatch } from '../../../../_state/hooks';
-
 import {
   createObj,
-  isPairMatch,
   findVariantFromVariantsList,
-} from '../../../../../../../common/utils';
+  isPairMatch,
+} from '/Users/andrew/www/devil/devilbox-new/data/www/wpshopify-utils';
+
 import isEmpty from 'lodash/isEmpty';
 
 function isOptionRowSelected(productOptionState) {

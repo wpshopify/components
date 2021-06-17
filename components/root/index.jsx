@@ -4,6 +4,7 @@ function RootElement({ payloadSettingsId, componentId, componentType = 'products
       data-wpshopify-component
       data-wpshopify-component-id={componentId}
       data-wpshopify-component-type={componentType}
+      role={componentType}
       data-wpshopify-payload-settings={payloadSettingsId}></div>
   );
 }

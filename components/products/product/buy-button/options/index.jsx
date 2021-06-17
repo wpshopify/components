@@ -22,7 +22,10 @@ function ProductOptions({
   `;
 
   return (
-    <div className='wps-product-options' css={ProductOptionsCSS}>
+    <div
+      className='wps-product-options'
+      css={ProductOptionsCSS}
+      aria-label={`Product variant ${variantStyle ? variantStyle : 'dropdown'}`}>
       {!isEmpty(selectedOptions) && (
         <ClearSelections productDispatch={productDispatch} variantStyle={variantStyle} />
       )}
@@ -35,7 +38,7 @@ function ProductOptions({
           variants={variants}
           payloadSettings={payloadSettings}
         />
-      ) : wpshopify.misc.isPro ? (
+      ) : variantStyle === 'buttons' && wpshopify.misc.isPro ? (
         <ProductVariantButtons
           options={availableOptions}
           missingSelections={missingSelections}

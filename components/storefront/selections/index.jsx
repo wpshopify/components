@@ -1,5 +1,5 @@
 import { StorefrontSelectionsWrapper } from './wrapper';
-import { objectIsEmpty } from '../../../common/utils';
+import { objectIsEmpty } from '/Users/andrew/www/devil/devilbox-new/data/www/wpshopify-utils';
 import { usePortal } from '../../../common/hooks';
 import { useStorefrontState } from '../_state/hooks';
 

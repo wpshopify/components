@@ -1,7 +1,10 @@
 /** @jsx jsx */
 import { jsx, css } from '@emotion/react';
 import { usePortal } from '../../../../common/hooks';
-import { findPortalElement, FilterHook } from '../../../../common/utils';
+import {
+  FilterHook,
+  findPortalElement,
+} from '/Users/andrew/www/devil/devilbox-new/data/www/wpshopify-utils';
 import { hasLink } from '../../../../common/settings';
 import { useProductState } from '../_state/hooks';
 
@@ -51,6 +54,7 @@ function ProductTitle() {
   return usePortal(
     <div
       className='wps-component wps-component-products-title'
+      aria-label='Product Title'
       data-wps-component-order='0'
       css={titleStylesWrapper}>
       {hasLink(productState.payloadSettings) ? (

@@ -1,0 +1,206 @@
+import React from 'react';
+import ReactDOM from 'react-dom';
+import { doAction, applyFilters, addAction, addFilter, hasFilter } from '@wordpress/hooks';
+import { __ } from '@wordpress/i18n';
+import '@testing-library/jest-dom/extend-expect';
+
+global.React = React;
+global.wp = {};
+global.wp.element = React;
+global.wp.element.createPortal = ReactDOM.createPortal;
+global.wp.hooks = {};
+global.wp.hooks.doAction = doAction;
+global.wp.hooks.applyFilters = applyFilters;
+global.wp.hooks.addAction = addAction;
+global.wp.hooks.addFilter = addFilter;
+global.wp.hooks.hasFilter = hasFilter;
+
+global.wp.i18n = {};
+global.wp.i18n.__ = __;
+
+global.wpshopify = {
+  api: {
+    namespace: 'wpshopify/v1',
+    restUrl: 'https://wpshopify.loc/wp-json/',
+    nonce: '48d6aec32b',
+  },
+  misc: {
+    postID: 2,
+    isMobile: false,
+    isSSL: true,
+    pluginsDirURL: 'https://wpshopify.loc/wp-content/plugins/wp-shopify-pro/',
+    pluginsDistURL: 'https://wpshopify.loc/wp-content/plugins/wp-shopify-pro/dist/',
+    postID: 2,
+    siteDomain: 'wpshopify.loc',
+    siteUrl: 'https://wpshopify.loc',
+    timers: {
+      syncing: false,
+    },
+  },
+  notices: [],
+  settings: {
+    connection: {
+      masked: {
+        accessToken: '',
+        apiKey: '',
+        apiPassword: '**********************************34eb',
+        domain: 'wpstest.myshopify.com',
+        id: 1,
+        nonce: '',
+        sharedSecret: '**********************************848e',
+        shopName: 'WP Shopify Sandbox 🏖️',
+        storefrontAccessToken: '****************************e3f7',
+      },
+      storefront: {
+        domain: 'wpstest.myshopify.com',
+        storefrontAccessToken: 'd35d054c212092664b0623af1c95e3f7',
+      },
+    },
+    general: {
+      accountPageAccount: '',
+      accountPageForgotPassword: '',
+      accountPageLogin: '',
+      accountPageRegister: '',
+      accountPageSetPassword: '',
+      addToCartColor: '#415aff',
+      alignHeight: false,
+      allowInsecureWebhooks: false,
+      allowTracking: false,
+      appUninstalled: false,
+      cartConditionalFixedTabLoading: 'withProducts',
+      cartConditionalManuallySelectedPages: '',
+      cartCounterColor: '#6ae06a',
+      cartCounterFixedColor: '#FFF',
+      cartFixedBackgroundColor: '#000000',
+      cartIconColor: '#000',
+      cartIconFixedColor: '#FFF',
+      cartLoaded: true,
+      cartNotesPlaceholder: 'Enter note for checkout',
+      cartTermsContent: 'I agree with the terms and conditions.',
+      checkoutButtonTarget: '_self',
+      checkoutColor: '#000000',
+      collectionsHeading: 'Collections',
+      collectionsHeadingToggle: true,
+      collectionsImagesSizingCrop: 'center',
+      collectionsImagesSizingHeight: 400,
+      collectionsImagesSizingScale: 0,
+      collectionsImagesSizingToggle: false,
+      collectionsImagesSizingWidth: 400,
+      compatibilityPluginVersion: '1.0.4',
+      currencyDisplayStyle: 'symbol',
+      dataCacheLength: 120,
+      defaultPagesCreated: true,
+      directCheckout: false,
+      enableAutomaticSyncing: false,
+      enableBeta: false,
+      enableCartNotes: false,
+      enableCartTerms: false,
+      enableCustomCheckoutDomain: false,
+      enableCustomerAccounts: false,
+      enableDataCache: true,
+      enableDefaultPages: true,
+      enableDiscountCodes: false,
+      hideDecimals: false,
+      hidePagination: false,
+      id: 1,
+      inlineCartCounterTextColor: '#000',
+      isFree: false,
+      isLiteSync: false,
+      isPro: false,
+      isSyncingPosts: true,
+      itemsPerRequest: 250,
+      numPosts: 10,
+      pageCollections: 6,
+      pageCollectionsDefault: 6,
+      pageProducts: 5,
+      pageProductsDefault: 5,
+      pluginAuthor: 'WP Shopify',
+      pluginFreeBasename: 'wpshopify/wp-shopify.php',
+      pluginName: 'WP Shopify',
+      pluginTextdomain: 'wpshopify',
+      pluginVersion: '3.7.2',
+      priceWithCurrency: false,
+      pricingLocalCurrencyToggle: false,
+      pricingLocalCurrencyWithBase: false,
+      productsCompareAt: false,
+      productsHeading: 'Products',
+      productsHeadingToggle: true,
+      productsImagesShowZoom: false,
+      productsImagesSizingCrop: 'center',
+      productsImagesSizingHeight: 400,
+      productsImagesSizingScale: 0,
+      productsImagesSizingToggle: true,
+      productsImagesSizingWidth: 400,
+      productsLinkTarget: '_self',
+      productsLinkTo: 'wordpress',
+      productsPlpDescriptionsToggle: false,
+      productsShowPriceRange: true,
+      productsThumbnailImagesSizingCrop: 'center',
+      productsThumbnailImagesSizingHeight: 70,
+      productsThumbnailImagesSizingScale: 0,
+      productsThumbnailImagesSizingToggle: true,
+      productsThumbnailImagesSizingWidth: 70,
+      relatedProductsAmount: 4,
+      relatedProductsHeading: 'Related Products',
+      relatedProductsHeadingToggle: true,
+      relatedProductsImagesSizingCrop: 'center',
+      relatedProductsImagesSizingHeight: 0,
+      relatedProductsImagesSizingScale: 0,
+      relatedProductsImagesSizingToggle: false,
+      relatedProductsImagesSizingWidth: 0,
+      relatedProductsShow: true,
+      relatedProductsSort: 'random',
+      saveConnectionOnly: false,
+      searchBy: 'title',
+      searchExactMatch: false,
+      selectiveSyncAll: false,
+      selectiveSyncCollections: false,
+      selectiveSyncCustomers: false,
+      selectiveSyncOrders: false,
+      selectiveSyncProducts: true,
+      selectiveSyncShop: true,
+      showBreadcrumbs: false,
+      showFixedCartTab: true,
+      stylesAll: true,
+      stylesCore: false,
+      stylesGrid: false,
+      syncByCollections: [
+        {
+          id: 164430086192,
+          smart: false,
+          title: 'Super',
+        },
+      ],
+      syncByWebhooks: 'product_listings/add,product_listings/update,product_listings/remove',
+      syncMedia: false,
+      synchronousSync: false,
+      titleAsAlt: false,
+      urlCollections: '/collections/',
+      urlProducts: '/products/',
+      urlWebhooks: 'https://wpshopify.loc',
+      variantColor: '#000000',
+      variantStyle: 'dropdown',
+      wizardCompleted: true,
+    },
+    products: false,
+    syncing: {
+      hasConnection: true,
+      isClearing: false,
+      isConnecting: false,
+      isDisconnecting: false,
+      isSyncing: false,
+      manuallyCanceled: false,
+      reconnectingWebhooks: false,
+    },
+  },
+};
+
+window.matchMedia =
+  window.matchMedia ||
+  function () {
+    return {
+      matches: false,
+      addListener: function () {},
+      removeListener: function () {},
+    };
+  };

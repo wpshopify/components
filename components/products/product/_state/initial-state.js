@@ -56,6 +56,7 @@ function ProductInitialState({ payload, payloadSettings, componentId }) {
       false,
       payload
     ),
+    preSelectVariant: wp.hooks.applyFilters('product.buyButton.preSelectVariant', false, payload),
     payloadSettings: payloadSettings, // read only
     payload: payload, // read only
     componentId: componentId, // read only

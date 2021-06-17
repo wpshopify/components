@@ -1,7 +1,7 @@
 /** @jsx jsx */
 import { jsx, css } from '@emotion/react';
 import { usePortal } from '../../../../common/hooks';
-import { findPortalElement } from '../../../../common/utils';
+import { findPortalElement } from '/Users/andrew/www/devil/devilbox-new/data/www/wpshopify-utils';
 import { useProductState } from '../_state/hooks';
 
 function ProductDescription() {
@@ -63,6 +63,7 @@ function ProductDescription() {
     <div
       css={ProductDescriptionCSS}
       className='wps-component-products-description'
+      aria-label='Product Description'
       itemProp='description'
       dangerouslySetInnerHTML={{ __html: maybeTruncateDescription() }}
     />,

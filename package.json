@@ -5,7 +5,7 @@
   "module": "index.js",
   "scripts": {
     "build": "webpack --config webpack.config.babel.js",
-    "tests-unit": "jest --watch --detectOpenHandles -c='tests/unit/jest.config.unit.json'"
+    "tests": "jest --watch --maxWorkers=25%"
   },
   "author": "WP Shopify",
   "license": "GPL-2.0-or-later",
@@ -21,6 +21,7 @@
   ],
   "dependencies": {
     "@emotion/react": "^11.4.0",
+    "@testing-library/jest-dom": "^5.14.1",
     "@tippy.js/react": "^3.1.1",
     "@tippyjs/react": "^4.2.5",
     "@wordpress/element": "^3.1.1",
@@ -44,6 +45,7 @@
     "masonry-layout": "^4.2.2",
     "mixitup": "^3.3.1",
     "money": "^0.2.0",
+    "node-notifier": "^10.0.0",
     "object-hash": "^2.2.0",
     "react": "^17.0.2",
     "react-content-loader": "^6.0.3",
@@ -79,6 +81,10 @@
     "@babel/preset-env": "^7.14.5",
     "@babel/preset-react": "^7.14.5",
     "@babel/runtime": "^7.14.5",
+    "@emotion/jest": "^11.3.0",
+    "@testing-library/react": "^11.2.7",
+    "@testing-library/user-event": "^13.1.9",
+    "@wordpress/i18n": "^4.1.1",
     "babel-eslint": "^10.1.0",
     "babel-jest": "^27.0.2",
     "babel-loader": "^8.2.2",
@@ -89,6 +95,7 @@
     "babel-polyfill": "^6.26.0",
     "circular-dependency-plugin": "^5.2.2",
     "core-js": "^3.14.0",
+    "identity-obj-proxy": "^3.0.0",
     "jest": "^27.0.4",
     "jest-chain": "^1.1.5",
     "jest-dom": "^4.0.0",

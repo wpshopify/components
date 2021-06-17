@@ -1,7 +1,7 @@
 /** @jsx jsx */
 import { jsx, css } from '@emotion/react';
 import { shouldShowSaleNotice } from '../../../../../common/pricing/data';
-import { FilterHook } from '../../../../../common/utils';
+import { FilterHook } from '/Users/andrew/www/devil/devilbox-new/data/www/wpshopify-utils';
 
 function ProductPriceSaleNotice({ selectedVariant, prices, showPriceRange, children }) {
   const ProductPriceSaleNoticeCSS = css`

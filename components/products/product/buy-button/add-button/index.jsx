@@ -1,8 +1,7 @@
 /** @jsx jsx */
 import { jsx, css } from '@emotion/react';
-
 import { useAnime, pulse, fadeInBottomSlow } from '../../../../../common/animations';
-import { FilterHook } from '../../../../../common/utils';
+import { FilterHook } from '/Users/andrew/www/devil/devilbox-new/data/www/wpshopify-utils';
 import { buttonCSS } from '../../../../../common/css';
 import { checkoutRedirect } from '../../../../cart/checkout/common';
 
@@ -180,6 +179,9 @@ function AddButton({
     font-weight: ${payloadSettings.addToCartButtonTypeFontWeight
       ? payloadSettings.addToCartButtonTypeFontWeight
       : 'initial'};
+    font-style: ${payloadSettings.addToCartButtonTypeFontStyle
+      ? payloadSettings.addToCartButtonTypeFontStyle
+      : 'initial'};
     font-size: ${payloadSettings.addToCartButtonTypeFontSize
       ? payloadSettings.addToCartButtonTypeFontSize
       : 'initial'};
@@ -352,6 +354,7 @@ function AddButton({
       <button
         ref={button}
         type='button'
+        role='Button'
         itemProp='potentialAction'
         itemScope
         itemType='https://schema.org/BuyAction'
@@ -383,7 +386,9 @@ function AddButton({
 
 function AddButtonText({ buttonText, addedToCart, addToCartButtonTextColor, payload }) {
   const [originalText] = useState(buttonText);
-  const [text, setText] = useState(buttonText);
+  const [text, setText] = useState(() => {
+    return buttonText ? buttonText : 'Add to cart';
+  });
   const animeFadeInBottomSlow = useAnime(fadeInBottomSlow);
   const addedTest = useRef();
 
@@ -414,7 +419,7 @@ function AddButtonText({ buttonText, addedToCart, addToCartButtonTextColor, payl
 
   return (
     <FilterHook name='product.addToCart.text' args={[text, payload]}>
-      <span css={AddButtonTextCSS} ref={addedTest}>
+      <span css={AddButtonTextCSS} ref={addedTest} aria-label='Product Add to Cart Text'>
         {text}
       </span>
     </FilterHook>
@@ -442,7 +447,9 @@ function ProductAddButton({
   payloadSettings,
 }) {
   return (
-    <div className='wps-component wps-component-products-add-button wps-btn-wrapper'>
+    <div
+      className='wps-component wps-component-products-add-button wps-btn-wrapper'
+      aria-label='Product Add Button'>
       <AddButtonWrapper
         hasLink={hasLink}
         payload={payload}

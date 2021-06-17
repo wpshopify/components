@@ -1,7 +1,7 @@
 /** @jsx jsx */
 import { jsx, css } from '@emotion/react';
 import { useAnime, pulse } from '../../../../../../common/animations';
-import { FilterHook } from '../../../../../../common/utils';
+import { FilterHook } from '/Users/andrew/www/devil/devilbox-new/data/www/wpshopify-utils';
 import { buttonCSS, IconCSS } from '../../../../../../common/css';
 import { ProductOptionContext } from '../_state/context';
 
@@ -69,8 +69,12 @@ function ProductOptionTrigger({ missingSelections }) {
 
   const variantDropdownCSS = css`
     && {
-      background-color: ${productOptionState.payloadSettings.variantButtonColor};
-      color: ${productOptionState.payloadSettings.variantDropdownTextColor};
+      background-color: ${productOptionState.payloadSettings.variantButtonColor
+        ? productOptionState.payloadSettings.variantButtonColor
+        : 'black'};
+      color: ${productOptionState.payloadSettings.variantDropdownTextColor
+        ? productOptionState.payloadSettings.variantDropdownTextColor
+        : 'white'};
       font-family: ${productOptionState.payloadSettings.variantDropdownTypeFontFamily
         ? productOptionState.payloadSettings.variantDropdownTypeFontFamily
         : 'inherit'};
@@ -100,7 +104,8 @@ function ProductOptionTrigger({ missingSelections }) {
       className='wps-btn wps-icon wps-icon-dropdown wps-modal-trigger'
       onClick={onClick}
       ref={dropdownTrigger}
-      css={[IconCSS, buttonCSS, variantDropdownCSS]}>
+      css={[IconCSS, buttonCSS, variantDropdownCSS]}
+      aria-label='Product Variant Dropdown'>
       <FilterHook name='products.option.title.text'>{displayOptionName()}</FilterHook>
       <TriggerIcon />
     </button>

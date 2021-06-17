@@ -71,7 +71,11 @@ function ProductThumbnailImages({ product, payloadSettings }) {
   }
 
   return hasImages() ? (
-    <div className='wps-thumbnails-wrapper' css={thumbnailsWrapperCSS} onMouseEnter={onMouseEnter}>
+    <div
+      className='wps-thumbnails-wrapper'
+      aria-label='Product Thumbnails'
+      css={thumbnailsWrapperCSS}
+      onMouseEnter={onMouseEnter}>
       <Thumbnails payload={product} thumbnails={thumbnails} payloadSettings={payloadSettings} />
     </div>
   ) : null;

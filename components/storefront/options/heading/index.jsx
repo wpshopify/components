@@ -1,7 +1,7 @@
 /** @jsx jsx */
 import { jsx, css } from '@emotion/react';
 import { usePortal } from '../../../../common/hooks';
-import { FilterHook } from '../../../../common/utils';
+import { FilterHook } from '/Users/andrew/www/devil/devilbox-new/data/www/wpshopify-utils';
 
 function StorefrontFilterOptionsHeading({ dropzone }) {
   const headingCSS = css`

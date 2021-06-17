@@ -1,7 +1,7 @@
 import ErrorFallback from '../../error-fallback';
 import { ErrorBoundary } from 'react-error-boundary';
 import { CartContext } from '../_state/context';
-import { FilterHook } from '../../../common/utils';
+import { FilterHook } from '/Users/andrew/www/devil/devilbox-new/data/www/wpshopify-utils';
 import { useCheckout } from './common';
 import CartCheckoutButton from './button';
 

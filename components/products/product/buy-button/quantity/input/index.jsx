@@ -74,6 +74,7 @@ function ProductQuantityInput({ minQuantity, maxQuantity, addedToCart, payload }
       <input
         css={inputStyles}
         type='number'
+        aria-label='Product Quantity Input'
         name='wps-product-quantity'
         className='wps-product-quantity wps-form-input'
         value={quantityValue}

@@ -171,8 +171,6 @@ function fetchNextItems(itemsState, itemsDispatch) {
 }
 
 function useGetItemsQuery(state, dispatch, isMounted) {
-  console.log('state.newQueryId', state.newQueryId);
-
   return useQuery(
     'items::new::' + state.newQueryId,
     () => {
@@ -197,8 +195,6 @@ function useGetItemsQuery(state, dispatch, isMounted) {
         });
       },
       onSuccess: (newItems) => {
-        console.log('newItems', newItems);
-
         if (isMounted.current) {
           dispatch({ type: 'SET_IS_LOADING', payload: false });
 

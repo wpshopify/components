@@ -1,6 +1,5 @@
 /** @jsx jsx */
 import { jsx, css } from '@emotion/react';
-import { FilterHook } from '../../../common/utils';
 
 function StorefrontFilter({ heading, children, isOpen, setIsOpen }) {
   const filterHeadingCSS = css`

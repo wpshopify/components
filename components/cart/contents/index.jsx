@@ -1,7 +1,7 @@
 /** @jsx jsx */
 import { jsx, css } from '@emotion/react';
 import { CartLineItems } from '../lineitems';
-import { FilterHook } from '../../../common/utils';
+import { FilterHook } from '/Users/andrew/www/devil/devilbox-new/data/www/wpshopify-utils';
 import { getCache } from '/Users/andrew/www/devil/devilbox-new/data/www/wpshopify-api';
 
 function filterEmptyLineItems(lineItems) {

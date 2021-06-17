@@ -1,4 +1,3 @@
-export { decodeComponentPayloadSettings, underscoreToCamel } from './common/utils';
 export { useAction } from './common/hooks';
 export { updateNoticesState } from './common/state';
 export { default as ProductPlaceholder } from './components/products/product/placeholder';

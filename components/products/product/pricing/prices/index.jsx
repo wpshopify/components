@@ -3,7 +3,7 @@ import { jsx, css } from '@emotion/react';
 import { ProductPricingContext } from '../_state/context';
 import { useProductState } from '../../_state/hooks';
 import ProductPrice from '../price';
-import { FilterHook } from '../../../../../common/utils';
+import { FilterHook } from '/Users/andrew/www/devil/devilbox-new/data/www/wpshopify-utils';
 
 const ProductPricesCompareAt = wp.element.lazy(() =>
   import(/* webpackChunkName: 'ProductPricesCompareAt-public' */ '../compare-at')
@@ -30,7 +30,10 @@ function ProductPrices({ payloadSettings }) {
   `;
 
   return (
-    <div className='wps-component-products-pricing' css={ProductPricesCompareAtCSS}>
+    <div
+      className='wps-component-products-pricing'
+      aria-label='Product Pricing'
+      css={ProductPricesCompareAtCSS}>
       <FilterHook
         name='before.product.pricing'
         hasHTML={true}

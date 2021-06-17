@@ -2,7 +2,7 @@
 import { jsx, css } from '@emotion/react';
 import { StorefrontFilter } from '../../filter';
 import { StorefrontOptionsContext } from '../_state/context';
-import { FilterHook } from '../../../../common/utils';
+import { FilterHook } from '/Users/andrew/www/devil/devilbox-new/data/www/wpshopify-utils';
 import isEmpty from 'lodash/isEmpty';
 
 const StorefrontFilterOptionsGroupItems = wp.element.lazy(() =>

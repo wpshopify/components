@@ -2,7 +2,10 @@
 import { jsx, css } from '@emotion/react';
 import { useProductState, useProductDispatch } from '../_state/hooks';
 import { usePortal } from '../../../../common/hooks';
-import { findPortalElement, FilterHook } from '../../../../common/utils';
+import {
+  findPortalElement,
+  FilterHook,
+} from '/Users/andrew/www/devil/devilbox-new/data/www/wpshopify-utils';
 import size from 'lodash/size';
 
 const Notice = wp.element.lazy(() =>
@@ -55,7 +58,10 @@ function ProductBuyButton() {
   }, [productState.selectedOptions]);
 
   return usePortal(
-    <div css={buyButtonWrapperCSS} className='wps-component-products-buy-button'>
+    <div
+      css={buyButtonWrapperCSS}
+      className='wps-component-products-buy-button'
+      aria-label='Product Buy Button'>
       <FilterHook name='before.product.buyButton' hasHTML={true} args={[productState]} />
       <Suspense fallback={false}>
         {productState.payload.availableForSale ? (

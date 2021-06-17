@@ -1,10 +1,10 @@
-import { usePortal } from '../../../../common/hooks';
-import { FilterHook } from '../../../../common/utils';
-import { buttonCSS } from '../../../../common/css';
-import { InView } from 'react-intersection-observer';
-
 /** @jsx jsx */
 import { jsx, css } from '@emotion/react';
+
+import { usePortal } from '../../../../common/hooks';
+import { buttonCSS } from '../../../../common/css';
+import { InView } from 'react-intersection-observer';
+import { FilterHook } from '/Users/andrew/www/devil/devilbox-new/data/www/wpshopify-utils';
 
 const Loader = wp.element.lazy(() =>
   import(/* webpackChunkName: 'Loader-public' */ '../../../loader')

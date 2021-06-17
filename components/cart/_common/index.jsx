@@ -8,11 +8,16 @@ import {
   queryOptionsNoRefetch,
 } from '/Users/andrew/www/devil/devilbox-new/data/www/wpshopify-api';
 
+import {
+  getVariantsFromProducts,
+  getVariantIdFromLineItems,
+  getProductIdsFromLineItems,
+} from '/Users/andrew/www/devil/devilbox-new/data/www/wpshopify-utils';
+
 import to from 'await-to-js';
 import { useQuery } from 'react-query';
 import has from 'lodash/has';
 import isEmpty from 'lodash/isEmpty';
-import { getVariantIdFromLineItems, getVariantsFromProducts } from '../../../common/utils';
 
 const { useState } = wp.element;
 

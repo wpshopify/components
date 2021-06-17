@@ -29,7 +29,10 @@ function ClearSelections({ productDispatch, variantStyle }) {
 
   return (
     <p css={[ClearSelectionsCSS, slideInFromBottom]} onClick={onClear}>
-      Clear selections
+      {wp.hooks.applyFilters(
+        'product.clearSelection.text',
+        wp.i18n.__('Clear selections', 'wpshopify')
+      )}
     </p>
   );
 }

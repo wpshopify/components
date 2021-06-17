@@ -148,7 +148,7 @@ function ProductModalContent({ payload, payloadSettings, componentId }) {
   `;
 
   return (
-    <div className='wps-modal' css={ProductModalCSS}>
+    <div className='wps-modal' aria-label='Product Modal' css={ProductModalCSS}>
       <ProductModalCloseIcon />
       <div className='wps-modal-inner' css={ProductModalContentInnerCSS}>
         <Items

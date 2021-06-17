@@ -4,7 +4,7 @@ import { CollectionDescription } from './description';
 import { CollectionProducts } from './products';
 import { CollectionProvider } from './_state/provider';
 import { isShowingComponent } from '../../../common/components';
-import { itemWidthClass } from '../../../common/utils';
+import { itemWidthClass } from '/Users/andrew/www/devil/devilbox-new/data/www/wpshopify-utils';
 
 function Collection({ payload, payloadSettings, componentId }) {
   return (

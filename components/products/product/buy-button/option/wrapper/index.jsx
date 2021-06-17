@@ -1,6 +1,12 @@
 import { ProductOptionContext } from '../_state/context';
 import { useProductState, useProductDispatch } from '../../../_state/hooks';
-import { isPairMatch, createObj } from '../../../../../../common/utils';
+import {
+  createSelectedOptionsObject,
+  findVariantFromVariantId,
+  createObj,
+  isPairMatch,
+} from '/Users/andrew/www/devil/devilbox-new/data/www/wpshopify-utils';
+
 import isEmpty from 'lodash/isEmpty';
 const { useContext, useEffect, useRef } = wp.element;
 
@@ -43,6 +49,46 @@ function ProductOptionWrapper({ children }) {
         type: 'SET_IS_OPTION_SELECTED',
         payload: true,
       });
+    }
+
+    if (productState.preSelectVariant) {
+      var foundVariant = findVariantFromVariantId(
+        productState.preSelectVariant,
+        productState.payload
+      );
+
+      if (foundVariant) {
+        var createdOptions = createSelectedOptionsObject(foundVariant.selectedOptions);
+
+        productDispatch({ type: 'SET_ALL_SELECTED_OPTIONS', payload: true });
+
+        productDispatch({
+          type: 'SET_SELECTED_VARIANT',
+          payload: {
+            payload: productState.payload,
+            selectedOptions: createdOptions,
+          },
+        });
+
+        createdOptions.forEach((selectedOption) => {
+          productDispatch({
+            type: 'UPDATE_SELECTED_OPTIONS',
+            payload: selectedOption,
+          });
+
+          productOptionDispatch({
+            type: 'SET_SELECTED_OPTION',
+            payload: selectedOption,
+          });
+
+          productOptionDispatch({
+            type: 'SET_IS_OPTION_SELECTED',
+            payload: true,
+          });
+        });
+
+        wp.hooks.doAction('before.product.addToCart', productState);
+      }
     }
   }, []);
 

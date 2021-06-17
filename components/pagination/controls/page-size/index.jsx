@@ -97,7 +97,7 @@ function PaginationPageSize({ isLoading, payloadSettings, queryParams, dataType 
   return usePortal(
     <>
       {payloadSettings.paginationPageSize ? (
-        <div className='wps-component wps-component-sorting'>
+        <div className='wps-component wps-component-sorting' aria-label='Storefront Sorting'>
           <label className='wps-sorting-heading wps-mr-2' htmlFor='wps-sorting'>
             {wp.i18n.__('Page size:', 'wpshopify')}
           </label>

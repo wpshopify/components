@@ -1,17 +1,14 @@
 import filter from 'lodash/filter';
 import merge from 'lodash/merge';
 import head from 'lodash/head';
-import { createObj } from '../utils';
+import { createSelectedOptionsObjectFromVariants } from '/Users/andrew/www/devil/devilbox-new/data/www/wpshopify-utils';
 
 function getAvailableVariants(product) {
   if (!product) {
     return [];
   }
-  let combinations = product.variants.map((variant) => {
-    return variant.selectedOptions.map((selectableOption) =>
-      createObj(selectableOption.name, selectableOption.value)
-    );
-  });
+
+  let combinations = createSelectedOptionsObjectFromVariants(product.variants);
 
   return combinations.map((combination) => {
     return merge(...combination);
@@ -35,7 +32,9 @@ function onlyAvailableItems(items) {
 }
 
 function filterAvailableVariantsBySelectedOption(product, selectedOption) {
-  return filter(getAvailableVariants(product), selectedOption);
+  var availVariants = getAvailableVariants(product);
+
+  return filter(availVariants, selectedOption);
 }
 
 function calcLineItemTotal(price, quantity) {

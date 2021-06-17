@@ -9,7 +9,7 @@ function ProductVariantDropdowns({
   payloadSettings,
 }) {
   return (
-    <div className='wps-component wps-component-products-options'>
+    <div className='wps-component wps-component-products-options' aria-label='Product Options'>
       {options &&
         options.map((option) => (
           <ProductOption

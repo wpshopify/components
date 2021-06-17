@@ -26,7 +26,10 @@ function ProductQuantity({
   `;
 
   return (
-    <div className='wps-component wps-component-products-quantity' css={ProductQuantityCSS}>
+    <div
+      className='wps-component wps-component-products-quantity'
+      aria-label='Product Quantity'
+      css={ProductQuantityCSS}>
       <div className='wps-form-control wps-product-quantity-wrapper'>
         <ProductQuantityLabel showLabel={showLabel} labelText={labelText} />
         <ProductQuantityInput

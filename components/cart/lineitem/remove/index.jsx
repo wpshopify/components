@@ -1,7 +1,6 @@
-import { FilterHook } from '../../../../common/utils';
-
 /** @jsx jsx */
 import { jsx, css } from '@emotion/react';
+import { FilterHook } from '/Users/andrew/www/devil/devilbox-new/data/www/wpshopify-utils';
 
 function CartLineItemRemove({ onRemove }) {
   const removeStyles = css`

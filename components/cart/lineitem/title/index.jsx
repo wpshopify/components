@@ -1,7 +1,7 @@
-import { FilterHook } from '../../../../common/utils';
-import { mq } from '../../../../common/css';
 /** @jsx jsx */
 import { jsx, css } from '@emotion/react';
+import { FilterHook } from '/Users/andrew/www/devil/devilbox-new/data/www/wpshopify-utils';
+import { mq } from '../../../../common/css';
 
 function CartLineItemTitle({ lineItem }) {
   const CartLineItemTitleCSS = css`

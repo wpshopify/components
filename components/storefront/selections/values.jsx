@@ -2,7 +2,7 @@
 import { jsx, css } from '@emotion/react';
 import { IconRemove } from '../../../common/icons/icon-remove.jsx';
 import { createSelectionsOfType, buildNewSelection } from '../../../common/selections';
-import { FilterHook } from '../../../common/utils';
+import { FilterHook } from '/Users/andrew/www/devil/devilbox-new/data/www/wpshopify-utils';
 import { useStorefrontState, useStorefrontDispatch } from '../_state/hooks';
 
 function StorefrontSelectionsValue({ selectionType, val }) {

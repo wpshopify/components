@@ -3,8 +3,6 @@ import { CartInitialState } from './initial-state';
 import { CartContext } from './context';
 
 function CartProvider(props) {
-  console.log('props', props);
-
   const [state, dispatch] = wp.element.useReducer(
     CartReducer,
     CartInitialState(

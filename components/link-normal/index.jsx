@@ -35,6 +35,7 @@ function LinkNormal({ type, payload, linkTo, manualLink, target, classNames, chi
       )}
       className={className}
       css={linkCSS}
+      aria-label='Product Link'
       target={wp.hooks.applyFilters('misc.link.target', getTarget(target), type, payload)}>
       {children}
     </a>
