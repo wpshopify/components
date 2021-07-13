@@ -4,7 +4,7 @@ import {
   updateCheckoutAttributes,
   maybeFetchShop,
   queryOptionsNoRefetch,
-} from '/Users/andrew/www/devil/devilbox-new/data/www/wpshopify-api';
+} from '/Users/arobbins/www/_devilbox/devilbox/data/www/wpshopify-api';
 import { hasCustomCheckoutAttributes } from '../../../common/checkout';
 
 import isEmpty from 'lodash/isEmpty';

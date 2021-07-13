@@ -5,9 +5,9 @@ import {
   setCache,
   getCache,
   queryOptionsNoRefetch,
-} from '/Users/andrew/www/devil/devilbox-new/data/www/wpshopify-api';
-import { useIsMounted } from '/Users/andrew/www/devil/devilbox-new/data/www/wpshopify-hooks';
-import { findNonCachedVariants } from '/Users/andrew/www/devil/devilbox-new/data/www/wpshopify-utils';
+} from '/Users/arobbins/www/_devilbox/devilbox/data/www/wpshopify-api';
+import useIsMounted from 'ismounted';
+import { findNonCachedVariants } from '/Users/arobbins/www/_devilbox/devilbox/data/www/wpshopify-utils';
 import unionBy from 'lodash/unionBy';
 import has from 'lodash/has';
 import { useQuery } from 'react-query';

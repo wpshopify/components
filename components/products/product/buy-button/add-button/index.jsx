@@ -1,7 +1,7 @@
 /** @jsx jsx */
 import { jsx, css } from '@emotion/react';
 import { useAnime, pulse, fadeInBottomSlow } from '../../../../../common/animations';
-import { FilterHook } from '/Users/andrew/www/devil/devilbox-new/data/www/wpshopify-utils';
+import { FilterHook } from '/Users/arobbins/www/_devilbox/devilbox/data/www/wpshopify-utils';
 import { buttonCSS } from '../../../../../common/css';
 import { checkoutRedirect } from '../../../../cart/checkout/common';
 
@@ -13,7 +13,7 @@ import {
   getCache,
   buildClient,
   getCheckoutCache,
-} from '/Users/andrew/www/devil/devilbox-new/data/www/wpshopify-api';
+} from '/Users/arobbins/www/_devilbox/devilbox/data/www/wpshopify-api';
 
 import to from 'await-to-js';
 

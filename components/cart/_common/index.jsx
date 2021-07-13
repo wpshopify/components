@@ -6,13 +6,13 @@ import {
   buildInstances,
   queryProductsFromIds,
   queryOptionsNoRefetch,
-} from '/Users/andrew/www/devil/devilbox-new/data/www/wpshopify-api';
+} from '/Users/arobbins/www/_devilbox/devilbox/data/www/wpshopify-api';
 
 import {
   getVariantsFromProducts,
   getVariantIdFromLineItems,
   getProductIdsFromLineItems,
-} from '/Users/andrew/www/devil/devilbox-new/data/www/wpshopify-utils';
+} from '/Users/arobbins/www/_devilbox/devilbox/data/www/wpshopify-utils';
 
 import to from 'await-to-js';
 import { useQuery } from 'react-query';

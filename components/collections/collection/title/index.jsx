@@ -1,6 +1,6 @@
 import { CollectionContext } from '../_state/context';
 import { usePortal } from '../../../../common/hooks';
-import { findPortalElement } from '/Users/andrew/www/devil/devilbox-new/data/www/wpshopify-utils';
+import { findPortalElement } from '/Users/arobbins/www/_devilbox/devilbox/data/www/wpshopify-utils';
 import { hasLink } from '../../../../common/settings';
 
 const Link = wp.element.lazy(() => import(/* webpackChunkName: 'Link-public' */ '../../../link'));

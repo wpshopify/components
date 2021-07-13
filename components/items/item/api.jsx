@@ -8,7 +8,7 @@ import {
   isWordPressError,
   getWordPressErrorMessage,
   queryOptionsNoRefetch,
-} from '/Users/andrew/www/devil/devilbox-new/data/www/wpshopify-api';
+} from '/Users/arobbins/www/_devilbox/devilbox/data/www/wpshopify-api';
 
 import to from 'await-to-js';
 import isEmpty from 'lodash/isEmpty';

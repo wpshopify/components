@@ -1,5 +1,5 @@
 import update from 'immutability-helper';
-import { findVariantFromSelectedOptions } from '/Users/andrew/www/devil/devilbox-new/data/www/wpshopify-api';
+import { findVariantFromSelectedOptions } from '/Users/arobbins/www/_devilbox/devilbox/data/www/wpshopify-api';
 import { filterAvailableVariantsBySelectedOption } from '../../../../common/products';
 import { updateNoticesState } from '../../../../common/state';
 

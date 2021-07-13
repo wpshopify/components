@@ -1,6 +1,6 @@
 import isArray from 'lodash/isArray';
 import has from 'lodash/has';
-import { getHashFromQueryParams } from '/Users/andrew/www/devil/devilbox-new/data/www/wpshopify-utils';
+import { getHashFromQueryParams } from '/Users/arobbins/www/_devilbox/devilbox/data/www/wpshopify-utils';
 
 function getDefaultHasMoreItems(payload) {
   if (!payload || !payload.length) {

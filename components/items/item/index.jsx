@@ -1,10 +1,8 @@
 /** @jsx jsx */
 import { jsx, css } from '@emotion/react';
 import { useItemsState, useItemsDispatch } from '../_state/hooks';
-import {
-  useIsFirstRender,
-  useIsMounted,
-} from '/Users/andrew/www/devil/devilbox-new/data/www/wpshopify-hooks';
+import { useIsFirstRender } from '/Users/arobbins/www/_devilbox/devilbox/data/www/wpshopify-hooks';
+import useIsMounted from 'ismounted';
 
 const Placeholder = wp.element.lazy(() =>
   import(/* webpackChunkName: 'Placeholder-public' */ '../../../common/placeholders')
@@ -64,7 +62,7 @@ function Item({ children, customPayloadSettings, customPayload, isCustomLoading 
   
   */
   useEffect(() => {
-    if (itemsState.isLoading || isFirstRender.current) {
+    if (itemsState.isLoading || isFirstRender) {
       return;
     }
 
@@ -82,7 +80,7 @@ function Item({ children, customPayloadSettings, customPayload, isCustomLoading 
   }, [itemsState.payloadSettings.limit]);
 
   useEffect(() => {
-    if (itemsState.isLoading || isFirstRender.current) {
+    if (itemsState.isLoading || isFirstRender) {
       return;
     }
 
@@ -101,7 +99,7 @@ function Item({ children, customPayloadSettings, customPayload, isCustomLoading 
   }, [customPayload]);
 
   useEffect(() => {
-    if (itemsState.isLoading || isFirstRender.current) {
+    if (itemsState.isLoading || isFirstRender) {
       return;
     }
 
@@ -116,7 +114,7 @@ function Item({ children, customPayloadSettings, customPayload, isCustomLoading 
   }, [customPayloadSettings]);
 
   useEffect(() => {
-    if (isFirstRender.current) {
+    if (isFirstRender) {
       return;
     }
 

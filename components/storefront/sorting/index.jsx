@@ -2,7 +2,7 @@
 import { jsx, css } from '@emotion/react';
 import { useItemsState, useItemsDispatch } from '../../items/_state/hooks';
 import { usePortal } from '../../../common/hooks';
-import { FilterHook } from '/Users/andrew/www/devil/devilbox-new/data/www/wpshopify-utils';
+import { FilterHook } from '/Users/arobbins/www/_devilbox/devilbox/data/www/wpshopify-utils';
 import { useStorefrontState } from '../_state/hooks';
 const { useState } = wp.element;
 

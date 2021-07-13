@@ -16,7 +16,7 @@ import {
   setCheckoutCache,
   mergeCheckoutCacheVariants,
   mergeCheckoutCacheLineItems,
-} from '/Users/andrew/www/devil/devilbox-new/data/www/wpshopify-api';
+} from '/Users/arobbins/www/_devilbox/devilbox/data/www/wpshopify-api';
 import { calcCheckoutTotal } from '../../../common/products';
 import { updateNoticesState } from '../../../common/state';
 

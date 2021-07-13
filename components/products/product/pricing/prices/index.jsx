@@ -3,7 +3,7 @@ import { jsx, css } from '@emotion/react';
 import { ProductPricingContext } from '../_state/context';
 import { useProductState } from '../../_state/hooks';
 import ProductPrice from '../price';
-import { FilterHook } from '/Users/andrew/www/devil/devilbox-new/data/www/wpshopify-utils';
+import { FilterHook } from '/Users/arobbins/www/_devilbox/devilbox/data/www/wpshopify-utils';
 
 const ProductPricesCompareAt = wp.element.lazy(() =>
   import(/* webpackChunkName: 'ProductPricesCompareAt-public' */ '../compare-at')

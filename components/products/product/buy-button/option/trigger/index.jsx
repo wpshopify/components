@@ -1,7 +1,7 @@
 /** @jsx jsx */
 import { jsx, css } from '@emotion/react';
 import { useAnime, pulse } from '../../../../../../common/animations';
-import { FilterHook } from '/Users/andrew/www/devil/devilbox-new/data/www/wpshopify-utils';
+import { FilterHook } from '/Users/arobbins/www/_devilbox/devilbox/data/www/wpshopify-utils';
 import { buttonCSS, IconCSS } from '../../../../../../common/css';
 import { ProductOptionContext } from '../_state/context';
 

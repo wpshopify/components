@@ -17,7 +17,7 @@ import { calcLineItemTotal, isAvailable } from '../../../common/products';
 import { containerFluidCSS, flexRowCSS, flexColSmallCSS, mq } from '../../../common/css';
 import { getCurrencyCodeFromPayload } from '../../../common/pricing/data';
 
-import { FilterHook } from '/Users/andrew/www/devil/devilbox-new/data/www/wpshopify-utils';
+import { FilterHook } from '/Users/arobbins/www/_devilbox/devilbox/data/www/wpshopify-utils';
 
 /** @jsx jsx */
 import { jsx, css } from '@emotion/react';

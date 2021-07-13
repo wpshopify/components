@@ -16,7 +16,11 @@ function CartLineItemImage({ lineItem, cartState }) {
   );
 
   function placeholderImageUrl() {
-    return wpshopify.misc.pluginsDirURL + 'public/imgs/placeholder.png';
+    return wp.hooks.applyFilters(
+      'default.image.placeholder',
+      wpshopify.misc.pluginsDirURL + 'public/imgs/placeholder.png',
+      lineItem
+    );
   }
 
   function actualImageUrl() {

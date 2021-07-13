@@ -6,7 +6,7 @@ import compact from 'lodash/compact';
 import transform from 'lodash/transform';
 import map from 'lodash/map';
 import has from 'lodash/has';
-import { filterObj } from '/Users/andrew/www/devil/devilbox-new/data/www/wpshopify-api';
+import { filterObj } from '/Users/arobbins/www/_devilbox/devilbox/data/www/wpshopify-api';
 
 function buildQueryStringFromSelections(selections, connective) {
   if (isEmpty(selections)) {

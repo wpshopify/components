@@ -2,7 +2,7 @@ import update from 'immutability-helper';
 import has from 'lodash/has';
 import uniqBy from 'lodash/uniqBy';
 import isString from 'lodash/isString';
-import { getHashFromQueryParams } from '/Users/andrew/www/devil/devilbox-new/data/www/wpshopify-utils';
+import { getHashFromQueryParams } from '/Users/arobbins/www/_devilbox/devilbox/data/www/wpshopify-utils';
 import { updateNoticesState } from '../../../common/state';
 
 function limitReached(state) {

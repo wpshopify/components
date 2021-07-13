@@ -1,5 +1,5 @@
 import { usePortal } from '../../../../common/hooks';
-import { findPortalElement } from '/Users/andrew/www/devil/devilbox-new/data/www/wpshopify-utils';
+import { findPortalElement } from '/Users/arobbins/www/_devilbox/devilbox/data/www/wpshopify-utils';
 
 function CollectionDescription({ dropzone, description }) {
   return usePortal(

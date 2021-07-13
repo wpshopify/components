@@ -2,7 +2,7 @@
 import { jsx, css } from '@emotion/react';
 import ProductImage from '../image';
 import { ProductGalleryContext } from '../gallery/_state/context';
-import { FilterHook } from '/Users/andrew/www/devil/devilbox-new/data/www/wpshopify-utils';
+import { FilterHook } from '/Users/arobbins/www/_devilbox/devilbox/data/www/wpshopify-utils';
 
 function ProductThumbnailImage({ image, payload, payloadSettings }) {
   const { useEffect, useContext, useState } = wp.element;

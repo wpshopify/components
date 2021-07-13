@@ -1,7 +1,7 @@
 import filter from 'lodash/filter';
 import merge from 'lodash/merge';
 import head from 'lodash/head';
-import { createSelectedOptionsObjectFromVariants } from '/Users/andrew/www/devil/devilbox-new/data/www/wpshopify-utils';
+import { createSelectedOptionsObjectFromVariants } from '/Users/arobbins/www/_devilbox/devilbox/data/www/wpshopify-utils';
 
 function getAvailableVariants(product) {
   if (!product) {

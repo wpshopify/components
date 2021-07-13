@@ -1,5 +1,5 @@
 import PrettyPrice from '../../../../common/pricing/pretty';
-import { prettyDate } from '/Users/andrew/www/devil/devilbox-new/data/www/wpshopify-utils';
+import { prettyDate } from '/Users/arobbins/www/_devilbox/devilbox/data/www/wpshopify-utils';
 import { CustomersContext } from '../../_state/context';
 import { A } from 'hookrouter';
 import { Td } from '../../../tables/body/td';

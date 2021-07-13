@@ -1,5 +1,5 @@
 import has from 'lodash/has';
-import { createSlug } from '/Users/andrew/www/devil/devilbox-new/data/www/wpshopify-utils';
+import { createSlug } from '/Users/arobbins/www/_devilbox/devilbox/data/www/wpshopify-utils';
 
 function hasEnableCustomCheckoutDomain() {
   return wpshopify.settings.general.enableCustomCheckoutDomain;

@@ -4,7 +4,7 @@ import {
   createObj,
   isPairMatch,
   findVariantFromOptionObject,
-} from '/Users/andrew/www/devil/devilbox-new/data/www/wpshopify-utils';
+} from '/Users/arobbins/www/_devilbox/devilbox/data/www/wpshopify-utils';
 import PrettyPrice from '../../../../../../common/pricing/pretty';
 
 function ProductVariantButtonValue({

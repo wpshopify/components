@@ -2,7 +2,30 @@
 import { jsx, css } from '@emotion/react';
 import ProductQuantityLabel from './label';
 import { ProductQuantityInput } from './input';
-import { containsOnly } from '/Users/andrew/www/devil/devilbox-new/data/www/wpshopify-utils';
+
+function onlyExcludingDesc(excludes) {
+  if (!excludes) {
+    var onlyExcludingDesc = true;
+
+  } else {
+
+    if (typeof excludes === 'string') {
+
+      if (excludes === 'description') {
+        var onlyExcludingDesc = true;
+
+      } else {
+        var onlyExcludingDesc = false;
+      }
+
+    } else {
+      var onlyExcludingDesc = false;
+    }
+    
+  }
+
+  return onlyExcludingDesc;
+}
 
 function ProductQuantity({
   payload,
@@ -13,16 +36,13 @@ function ProductQuantity({
   addedToCart,
   excludes,
 }) {
-  if (!excludes) {
-    var onlyExcludingDesc = true;
-  } else {
-    var onlyExcludingDesc = containsOnly(excludes, ['description']);
-  }
+
+  const excludingDesc = onlyExcludingDesc(excludes)
 
   const ProductQuantityCSS = css`
-    border-top: ${onlyExcludingDesc ? '1px solid #e5e5e5' : 'none'};
-    border-bottom: ${onlyExcludingDesc ? '1px solid #e5e5e5' : 'none'};
-    padding-top: ${onlyExcludingDesc ? '25px' : '0'};
+    border-top: ${excludingDesc ? '1px solid #e5e5e5' : 'none'};
+    border-bottom: ${excludingDesc ? '1px solid #e5e5e5' : 'none'};
+    padding-top: ${excludingDesc ? '25px' : '0'};
   `;
 
   return (

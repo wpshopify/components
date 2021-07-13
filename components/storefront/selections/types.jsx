@@ -2,7 +2,7 @@
 import { jsx, css } from '@emotion/react';
 import { StorefrontSelectionsValues } from './values';
 import { getSelectionTypes } from '../../../common/selections';
-import { FilterHook } from '/Users/andrew/www/devil/devilbox-new/data/www/wpshopify-utils';
+import { FilterHook } from '/Users/arobbins/www/_devilbox/devilbox/data/www/wpshopify-utils';
 import { useStorefrontState } from '../_state/hooks';
 import isEmpty from 'lodash/isEmpty';
 

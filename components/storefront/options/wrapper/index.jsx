@@ -5,13 +5,12 @@ import TagsHeading from '../heading-tags';
 import StorefrontFilterOptionsGroup from '../group';
 import StorefrontFilterOptionsHeading from '../heading';
 import { usePortal } from '../../../../common/hooks';
-import { getFilterData } from '/Users/andrew/www/devil/devilbox-new/data/www/wpshopify-api';
+import { getFilterData } from '/Users/arobbins/www/_devilbox/devilbox/data/www/wpshopify-api';
 import {
-  sortAndCleanValues,
   lowercaseFilterOptions,
   formatFilterOptions,
   getDataFromResponse,
-} from '/Users/andrew/www/devil/devilbox-new/data/www/wpshopify-utils';
+} from '/Users/arobbins/www/_devilbox/devilbox/data/www/wpshopify-utils';
 import { StorefrontOptionsContext } from '../_state/context';
 import { useItemsDispatch } from '../../../items/_state/hooks';
 
@@ -23,6 +22,7 @@ function StorefrontOptionsWrapper({ payloadSettings, onSelectionChange, dropzone
   const itemsDispatch = useItemsDispatch();
 
   async function getAllFilterOptions() {
+
     var [respError, respData] = await to(getFilterData());
 
     if (respError) {
@@ -55,9 +55,6 @@ function StorefrontOptionsWrapper({ payloadSettings, onSelectionChange, dropzone
     getAllFilterOptions();
   }, []);
 
-  const tagsFilterOptions = sortAndCleanValues(storefrontOptionsState.filterOptions.tags);
-  const vendorsFilterOptions = sortAndCleanValues(storefrontOptionsState.filterOptions.vendors);
-  const typesFilterOptions = sortAndCleanValues(storefrontOptionsState.filterOptions.types);
 
   return usePortal(
     <>
@@ -70,7 +67,7 @@ function StorefrontOptionsWrapper({ payloadSettings, onSelectionChange, dropzone
         {payloadSettings.showTags ? (
           <StorefrontFilterOptionsGroup
             onSelectionChange={onSelectionChange}
-            filterOptions={tagsFilterOptions}
+            filterOptions={storefrontOptionsState.filterOptions.tags}
             heading={<TagsHeading />}
             groupType='tags'
           />
@@ -83,7 +80,7 @@ function StorefrontOptionsWrapper({ payloadSettings, onSelectionChange, dropzone
             heading={<VendorsHeading />}
             groupType='vendors'
             displayStyle='checkbox'
-            filterOptions={vendorsFilterOptions}
+            filterOptions={storefrontOptionsState.filterOptions.vendors}
           />
         ) : (
           ''
@@ -91,7 +88,7 @@ function StorefrontOptionsWrapper({ payloadSettings, onSelectionChange, dropzone
         {payloadSettings.showTypes ? (
           <StorefrontFilterOptionsGroup
             onSelectionChange={onSelectionChange}
-            filterOptions={typesFilterOptions}
+            filterOptions={storefrontOptionsState.filterOptions.types}
             heading={<TypesHeading />}
             groupType='types'
             displayStyle='checkbox'
