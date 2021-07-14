@@ -42,7 +42,9 @@ function calcLineItemTotal(price, quantity) {
 }
 
 function getVariantFromLineItem(checkoutVariants, lineItem) {
-  return head(filter(checkoutVariants, (vari) => vari.id === lineItem.variantId));
+  return head(
+    filter(checkoutVariants, (vari) => vari.id === lineItem.variantId)
+  );
 }
 
 function calcCheckoutTotal(checkoutState) {

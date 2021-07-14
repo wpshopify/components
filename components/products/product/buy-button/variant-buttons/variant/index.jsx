@@ -25,6 +25,7 @@ function ProductVariantButtonValue({
 
   if (showPriceUnderVariantButton && totalOptions === 1) {
     var variantObject = findVariantFromOptionObject(variant, variants);
+
   } else {
     var variantObject = false;
   }
@@ -36,7 +37,7 @@ function ProductVariantButtonValue({
   const defaultVariantStyles = `margin: 0 10px 10px 0;
     outline: none;
     border: 1px solid ${border};
-    font-size: 1em;
+    font-size: 16px;
     padding: 10px;
     border-radius: 5px;
     opacity: ${opacity};
@@ -138,6 +139,8 @@ function ProductVariantButtonValueButton({
 }
 
 function ProductVariantButtonPrice({ variantObject }) {
+
+  console.log('____ variantObject', variantObject);
   const variantObjectCSS = css`
     font-size: 15px;
     margin-top: 5px;

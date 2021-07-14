@@ -195,4 +195,10 @@ function usePayloadSettings(payloadSettings, customSettings) {
   return pSettings;
 }
 
-export { useOnClickOutside, usePortal, useAction, useCartToggle, usePayloadSettings };
+export {
+  useOnClickOutside,
+  usePortal,
+  useAction,
+  useCartToggle,
+  usePayloadSettings,
+};

@@ -1,5 +1,4 @@
 import has from 'lodash/has';
-import { createSlug } from '/Users/arobbins/www/_devilbox/devilbox/data/www/wpshopify-utils';
 
 function hasEnableCustomCheckoutDomain() {
   return wpshopify.settings.general.enableCustomCheckoutDomain;
@@ -26,7 +25,10 @@ function hasLink(payloadSettings) {
     return true;
   }
 
-  if (wpshopify.settings.general.enableDefaultPages && !payloadSettings.isSingular) {
+  if (
+    wpshopify.settings.general.enableDefaultPages &&
+    !payloadSettings.isSingular
+  ) {
     return true;
   }
 
@@ -115,18 +117,15 @@ function maybeAddSlashAtEnd(string) {
 }
 
 function getWordPressSingleLink(payload) {
-  let itemHandle = '';
   let url = '';
-
-  if (has(payload, 'handle')) {
-    itemHandle = createSlug(payload.handle);
-  } else if (has(payload, 'productTitle')) {
-    itemHandle = createSlug(payload.productTitle);
-  }
+  let itemHandle = payload.handle;
 
   if (payload.type.name === 'Collection') {
     url = wpshopify.settings.general.urlCollections;
-  } else if (payload.type.name === 'Product' || payload.type.name === 'ProductVariant') {
+  } else if (
+    payload.type.name === 'Product' ||
+    payload.type.name === 'ProductVariant'
+  ) {
     url = wpshopify.settings.general.urlProducts;
   }
 

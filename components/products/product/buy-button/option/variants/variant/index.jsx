@@ -28,6 +28,7 @@ function isVariantAvailableToSelect(
    If nothing is selected, then everything should be available to select
    */
   if (isEmpty(selectedOptions)) {
+    console.log('++ isEmpty');
     return true;
   }
 
@@ -38,15 +39,20 @@ function isVariantAvailableToSelect(
 
    */
   if (isOptionRowSelected(productOptionState)) {
+    console.log('++ isOptionRowSelected');
     return true;
   }
 
   if (isSelectedVariantAvailableToSelect(availableVariants, selectedVariant)) {
+    console.log('++ isSelectedVariantAvailableToSelect');
     return true;
   }
 
   var couldSelect = { ...selectedVariant, ...selectedOptions };
   var foundVariantFromSelectedOptions = findVariantFromVariantsList(couldSelect, variants);
+
+
+  console.log('++ foundVariantFromSelectedOptions', foundVariantFromSelectedOptions);
 
   if (foundVariantFromSelectedOptions.length) {
     return foundVariantFromSelectedOptions[0].availableForSale;
@@ -76,6 +82,8 @@ function ProductVariant({
     selectedVariant,
     variants
   );
+
+  console.log('isAvailableToSelect', isAvailableToSelect);
 
   function onSelection() {
     productDispatch({

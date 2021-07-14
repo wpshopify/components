@@ -12,7 +12,6 @@ function StorefrontOptionsReducer(state, action) {
     }
 
     case 'SET_FILTER_OPTIONS': {
-      console.log('action.payload', action.payload);
       return {
         ...state,
         filterOptions: update(state.filterOptions, { $set: action.payload }),

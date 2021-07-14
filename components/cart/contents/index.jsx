@@ -36,7 +36,7 @@ function CartContents(props) {
     overflow-y: scroll;
     -webkit-overflow-scrolling: touch;
     overflow-x: hidden;
-    padding-top: 4.5em;
+    padding-top: 3.5em;
     position: relative;
     flex: 1;
 

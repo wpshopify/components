@@ -49,15 +49,15 @@ function ProductOptionTrigger({ missingSelections }) {
     return selectedOption[option.name];
   }
 
-  function getSelectedOption() {
-    return productOptionState.selectedOption;
+  function getOptionValue() {
+    return getOptionName(productOptionState.selectedOption, productOptionState.option);
   }
 
   function optionNameWithSelect() {
     return (
       productOptionState.option.name +
-      ': ' +
-      getOptionName(getSelectedOption(), productOptionState.option)
+      ': ' + getOptionValue()
+      
     );
   }
 

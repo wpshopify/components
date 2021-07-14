@@ -195,6 +195,7 @@ function useGetItemsQuery(state, dispatch, isMounted) {
         });
       },
       onSuccess: (newItems) => {
+
         if (isMounted.current) {
           dispatch({ type: 'SET_IS_LOADING', payload: false });
 

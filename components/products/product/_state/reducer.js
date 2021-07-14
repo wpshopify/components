@@ -56,19 +56,25 @@ function ProductReducer(state, action) {
     case 'SET_ALL_SELECTED_OPTIONS':
       return {
         ...state,
-        allOptionsSelected: update(state.allOptionsSelected, { $set: action.payload }),
+        allOptionsSelected: update(state.allOptionsSelected, {
+          $set: action.payload,
+        }),
       };
 
     case 'UNSET_SELECTED_OPTIONS':
       return {
         ...state,
-        selectedOptions: update(state.selectedOptions, { $unset: [action.payload] }),
+        selectedOptions: update(state.selectedOptions, {
+          $unset: [action.payload],
+        }),
       };
 
     case 'UPDATE_SELECTED_OPTIONS':
       return {
         ...state,
-        selectedOptions: update(state.selectedOptions, { $merge: action.payload }),
+        selectedOptions: update(state.selectedOptions, {
+          $merge: action.payload,
+        }),
       };
 
     case 'REMOVE_SELECTED_OPTIONS':
@@ -80,14 +86,17 @@ function ProductReducer(state, action) {
     case 'SET_MISSING_SELECTIONS':
       return {
         ...state,
-        missingSelections: update(state.missingSelections, { $set: action.payload }),
+        missingSelections: update(state.missingSelections, {
+          $set: action.payload,
+        }),
       };
 
     case 'SET_AVAILABLE_VARIANTS':
       return {
         ...state,
         availableVariants: update(state.payload, {
-          $apply: (payload) => filterAvailableVariantsBySelectedOption(payload, action.payload),
+          $apply: (payload) =>
+            filterAvailableVariantsBySelectedOption(payload, action.payload),
         }),
       };
 
@@ -117,7 +126,9 @@ function ProductReducer(state, action) {
       };
 
     default: {
-      throw new Error(`Unhandled action type: ${action.type} in ProductReducer`);
+      throw new Error(
+        `Unhandled action type: ${action.type} in ProductReducer`
+      );
     }
   }
 }

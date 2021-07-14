@@ -57,6 +57,7 @@ const containerFluidCSS = css`
   padding: 0;
   margin-right: auto;
   margin-left: auto;
+  margin-bottom: 0;
   box-sizing: border-box;
 `;
 
