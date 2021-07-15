@@ -81,13 +81,14 @@ function shopHasInfo(shop) {
 
 function getShopifySingleLink(payload, type) {
   if (!payload.onlineStoreUrl) {
+    const handle = encodeURI(payload.handle);
     return (
       'https://' +
       wpshopify.settings.connection.storefront.domain +
       '/' +
       type +
       '/' +
-      encodeURI(payload.handle)
+      handle
     );
   }
 
