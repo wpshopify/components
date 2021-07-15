@@ -35,6 +35,9 @@ function ProductBuyButtonLeftInStock({ payload, selectedVariant, isTouched, allO
       if (cachedInventory) {
         cachedInventory = JSON.parse(cachedInventory);
 
+        console.log('++ cachedInventory', cachedInventory);
+        console.log('++ variantIDs', variantIDs);
+
         var variantIDs = findNonCachedVariants(cachedInventory, variantIDs);
 
         // Everything is cached, lets go

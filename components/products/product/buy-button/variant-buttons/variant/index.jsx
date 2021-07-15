@@ -140,7 +140,6 @@ function ProductVariantButtonValueButton({
 
 function ProductVariantButtonPrice({ variantObject }) {
 
-  console.log('____ variantObject', variantObject);
   const variantObjectCSS = css`
     font-size: 15px;
     margin-top: 5px;

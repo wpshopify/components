@@ -101,7 +101,10 @@ Responsible for: finding variants from product ids
 
 */
 function findVariantsFromProductIds(productsFromShopify, checkoutCache) {
-  var productInfoAndVariants = addProductInfoToVariants(productsFromShopify, checkoutCache);
+  var productInfoAndVariants = addProductInfoToVariants(
+    productsFromShopify,
+    checkoutCache
+  );
 
   var variantsMulti = onlyVariantsInCheckout(productInfoAndVariants);
   var variantsCombined = combineAllVariants(variantsMulti);
@@ -153,7 +156,9 @@ function updateLineItemQuantity(state, payload) {
 
 function mergeLineItemsOptions(lineItemOptions, lineItems, checkoutCache) {
   var newLineItemOptions = lineItems.map((lineItem) => {
-    var alreadyExists = some(checkoutCache.lineItemOptions, { variantId: lineItem.variantId });
+    var alreadyExists = some(checkoutCache.lineItemOptions, {
+      variantId: lineItem.variantId,
+    });
 
     if (alreadyExists) {
       return false;
@@ -192,7 +197,10 @@ function updateLineItemsAndVariants(checkoutCache, payload) {
       payload.lineItems,
       checkoutCache
     ),
-    variants: mergeCheckoutCacheVariants(checkoutCache.variants, payload.variants),
+    variants: mergeCheckoutCacheVariants(
+      checkoutCache.variants,
+      payload.variants
+    ),
   };
 }
 
@@ -217,8 +225,14 @@ Responsible for: removing line items and variants
 
 */
 function removeLineItemsAndVariants(checkoutCache, payload) {
-  checkoutCache.lineItems = filter(checkoutCache.lineItems, (o) => o.variantId !== payload);
-  checkoutCache.variants = filter(checkoutCache.variants, (o) => o.id !== payload);
+  checkoutCache.lineItems = filter(
+    checkoutCache.lineItems,
+    (o) => o.variantId !== payload
+  );
+  checkoutCache.variants = filter(
+    checkoutCache.variants,
+    (o) => o.id !== payload
+  );
   checkoutCache.lineItemOptions = filter(
     checkoutCache.lineItemOptions,
     (o) => o.variantId !== payload
@@ -287,7 +301,9 @@ function CartReducer(state, action) {
     case 'SET_BEFORE_DISCOUNT_TOTAL': {
       return {
         ...state,
-        beforeDiscountTotal: update(state.beforeDiscountTotal, { $set: action.payload }),
+        beforeDiscountTotal: update(state.beforeDiscountTotal, {
+          $set: action.payload,
+        }),
       };
     }
 
@@ -319,7 +335,8 @@ function CartReducer(state, action) {
 
     case 'UPDATE_LINE_ITEMS_AND_VARIANTS': {
       const checkoutCacheUpdated = update(state.checkoutCache, {
-        $apply: (checkoutCache) => updateLineItemsAndVariants(checkoutCache, action.payload),
+        $apply: (checkoutCache) =>
+          updateLineItemsAndVariants(checkoutCache, action.payload),
       });
 
       setCheckoutCache(action.payload.checkoutId, checkoutCacheUpdated);
@@ -335,7 +352,8 @@ function CartReducer(state, action) {
 
     case 'SET_LINE_ITEMS_AND_VARIANTS': {
       const newCheckoutCache = update(state.checkoutCache, {
-        $apply: (checkoutCache) => setLineItemsAndVariants(checkoutCache, action.payload.lineItems),
+        $apply: (checkoutCache) =>
+          setLineItemsAndVariants(checkoutCache, action.payload.lineItems),
       });
 
       // action.payload.products comes from an API call during bootstrap
@@ -369,7 +387,8 @@ function CartReducer(state, action) {
 
     case 'UPDATE_LINE_ITEM_QUANTITY': {
       const checkoutCacheUpdated = update(state.checkoutCache, {
-        $apply: (stateObj) => updateLineItemQuantity(stateObj, action.payload.lineItem),
+        $apply: (stateObj) =>
+          updateLineItemQuantity(stateObj, action.payload.lineItem),
       });
 
       setCheckoutCache(action.payload.checkoutId, checkoutCacheUpdated);
@@ -434,27 +453,38 @@ function CartReducer(state, action) {
     case 'SET_IS_REMOVING_DISCOUNT_CODE': {
       return {
         ...state,
-        isRemovingDiscountCode: update(state.isRemovingDiscountCode, { $set: action.payload }),
+        isRemovingDiscountCode: update(state.isRemovingDiscountCode, {
+          $set: action.payload,
+        }),
       };
     }
 
     case 'SET_IS_ADDING_DISCOUNT_CODE': {
       return {
         ...state,
-        isAddingDiscountCode: update(state.isRemovingDiscountCode, { $set: action.payload }),
+        isAddingDiscountCode: update(state.isRemovingDiscountCode, {
+          $set: action.payload,
+        }),
       };
     }
 
     case 'SET_IS_CALCULATING_TOTAL': {
       return {
         ...state,
-        isCalculatingTotal: update(state.isCalculatingTotal, { $set: action.payload }),
+        isCalculatingTotal: update(state.isCalculatingTotal, {
+          $set: action.payload,
+        }),
       };
     }
 
     case 'UPDATE_CHECKOUT_ATTRIBUTES': {
-      const attributes = uniqWith(concat(state.customAttributes, [action.payload]), isEqual);
-      const customAttributes = update(state.customAttributes, { $set: attributes });
+      const attributes = uniqWith(
+        concat(state.customAttributes, [action.payload]),
+        isEqual
+      );
+      const customAttributes = update(state.customAttributes, {
+        $set: attributes,
+      });
 
       const newState = {
         ...state,
@@ -515,7 +545,9 @@ function CartReducer(state, action) {
     case 'SET_BUILD_NEW_CHECKOUT': {
       return {
         ...state,
-        buildNewCheckout: update(state.buildNewCheckout, { $set: action.payload }),
+        buildNewCheckout: update(state.buildNewCheckout, {
+          $set: action.payload,
+        }),
       };
     }
 
@@ -536,7 +568,9 @@ function CartReducer(state, action) {
     case 'SET_IS_ADDING_LINEITEMS': {
       return {
         ...state,
-        isAddingLineItems: update(state.isAddingLineItems, { $set: action.payload }),
+        isAddingLineItems: update(state.isAddingLineItems, {
+          $set: action.payload,
+        }),
       };
     }
 

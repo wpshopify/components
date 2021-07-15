@@ -11,6 +11,8 @@ function filterEmptyLineItems(lineItems) {
 function CartContents(props) {
   const { useState } = wp.element;
 
+  const lineItems = filterEmptyLineItems(props.checkoutCache.variants)
+
   const [inventory] = useState(() => {
     var inv = getCache('wps-inventory-levels');
     if (inv) {
@@ -84,7 +86,7 @@ function CartContents(props) {
       ) : (
         <CartLineItems
           inventory={inventory}
-          lineItems={filterEmptyLineItems(props.checkoutCache.variants)}
+          lineItems={lineItems}
         />
       )}
     </section>

@@ -232,13 +232,17 @@ function CartWrapper() {
 
   return (
     <div ref={cartElement} className='wps-cart' css={cartCSS}>
-      {cartState.isUpdating && (
-        <div css={[updatingOverlay, fadeIn]}>
-          <div css={[updatingOverlayTextCSS, slideInFromTop]}>
-            Updating cart <Loader color='#000' center={true} />
+      <Suspense fallback='Loading cart ...'>
+        {cartState.isUpdating && (
+          <div css={[updatingOverlay, fadeIn]}>
+            
+              <div css={[updatingOverlayTextCSS, slideInFromTop]}>
+                Updating cart <Loader color='#000' center={true} />
+              </div>
+            
           </div>
-        </div>
-      )}
+        )}
+      </Suspense>
       {<CartButtons buttons={cartState.buttons} />}
       <Suspense fallback='Loading cart ...'>
         {cartState.isCartLoaded && (

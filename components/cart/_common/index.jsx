@@ -11,7 +11,6 @@ import {
 import {
   getVariantsFromProducts,
   getVariantIdFromLineItems,
-  getProductIdsFromLineItems,
 } from '/Users/arobbins/www/_devilbox/devilbox/data/www/wpshopify-utils';
 
 import to from 'await-to-js';
@@ -207,7 +206,7 @@ function useAddLineItems(cartState, cartDispatch, addCheckoutLineItems) {
   return useQuery(
     'checkout::addLineItems',
     () => {
-      return queryProductsFromIds(getProductIdsFromLineItems(addCheckoutLineItems));
+      return queryProductsFromIds(addCheckoutLineItems.productIds);
     },
     {
       enabled: cartState.isAddingLineItems,
@@ -224,19 +223,25 @@ function useAddLineItems(cartState, cartDispatch, addCheckoutLineItems) {
         const arrayOfVariantIds = getVariantIdFromLineItems(addCheckoutLineItems);
         const arrayOfVariants = getVariantsFromProducts(data, arrayOfVariantIds);
 
-        wp.hooks.doAction('product.addToCart', {
-          variants: arrayOfVariants,
-          lineItems: addCheckoutLineItems.lineItems,
-          checkoutId: cartState.checkoutId,
-          lineItemOptions: {
-            minQuantity: false,
-            maxQuantity: false,
-          },
-        });
+        console.log('arrayOfVariants', arrayOfVariants);
 
-        wp.hooks.doAction('cart.toggle', 'open');
+        if (arrayOfVariants) {
+          wp.hooks.doAction('product.addToCart', {
+            variants: arrayOfVariants,
+            lineItems: addCheckoutLineItems.lineItems,
+            checkoutId: cartState.checkoutId,
+            lineItemOptions: {
+              minQuantity: false,
+              maxQuantity: false,
+            },
+          });
+  
+          wp.hooks.doAction('cart.toggle', 'open');
+  
+        }
 
         cartDispatch({ type: 'SET_IS_UPDATING', payload: false });
+        
       },
       ...queryOptionsNoRefetch,
     }

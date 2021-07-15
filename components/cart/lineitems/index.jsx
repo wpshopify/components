@@ -1,6 +1,8 @@
 import { CartLineItem } from '../lineitem'
 
 function CartLineItems({ lineItems, inventory }) {
+
+  console.log('lineItems', lineItems);
   return (
     <>
       {lineItems &&
