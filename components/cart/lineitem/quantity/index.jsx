@@ -243,7 +243,7 @@ function CartLineItemQuantity({
     outline-offset: 0;
 
     &:hover {
-      background: #f5f5f5;
+      background: #fff;
     }
 
     &:focus {

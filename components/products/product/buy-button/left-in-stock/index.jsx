@@ -6,10 +6,10 @@ import {
   getCache,
   queryOptionsNoRefetch,
 } from '/Users/arobbins/www/_devilbox/devilbox/data/www/wpshopify-api';
-import useIsMounted from 'ismounted';
 import { findNonCachedVariants } from '/Users/arobbins/www/_devilbox/devilbox/data/www/wpshopify-utils';
 import unionBy from 'lodash/unionBy';
 import has from 'lodash/has';
+import useIsMounted from 'ismounted';
 import { useQuery } from 'react-query';
 
 function ProductBuyButtonLeftInStock({ payload, selectedVariant, isTouched, allOptionsSelected }) {
@@ -35,9 +35,6 @@ function ProductBuyButtonLeftInStock({ payload, selectedVariant, isTouched, allO
       if (cachedInventory) {
         cachedInventory = JSON.parse(cachedInventory);
 
-        console.log('++ cachedInventory', cachedInventory);
-        console.log('++ variantIDs', variantIDs);
-
         var variantIDs = findNonCachedVariants(cachedInventory, variantIDs);
 
         // Everything is cached, lets go
@@ -46,6 +43,7 @@ function ProductBuyButtonLeftInStock({ payload, selectedVariant, isTouched, allO
           setVariantInventory(cachedInventory);
           return Promise.resolve({ data: cachedInventory, cached: true });
         }
+        
       }
 
       return getVariantInventoryManagement({ ids: getVariantIds(payload) });

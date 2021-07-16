@@ -68,7 +68,7 @@ function ProductWrapper({ payloadSettings }) {
   function isAlignHeight() {
     return wpshopify.settings.general.alignHeight || productState.payloadSettings.alignHeight;
   }
-
+  
   return (
     <div
       css={ProductWrapperCSS}

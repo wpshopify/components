@@ -223,8 +223,6 @@ function useAddLineItems(cartState, cartDispatch, addCheckoutLineItems) {
         const arrayOfVariantIds = getVariantIdFromLineItems(addCheckoutLineItems);
         const arrayOfVariants = getVariantsFromProducts(data, arrayOfVariantIds);
 
-        console.log('arrayOfVariants', arrayOfVariants);
-
         if (arrayOfVariants) {
           wp.hooks.doAction('product.addToCart', {
             variants: arrayOfVariants,
